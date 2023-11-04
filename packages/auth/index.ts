@@ -2,6 +2,7 @@
 /* @see https://github.com/nextauthjs/next-auth/pull/8932 */
 
 import Discord from "@auth/core/providers/discord";
+import Facebook from "@auth/core/providers/facebook";
 import Google from "@auth/core/providers/google";
 import type { DefaultSession } from "@auth/core/types";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
@@ -24,10 +25,6 @@ declare module "next-auth" {
   }
 }
 
-console.log("IN HERE", {
-  clientId: env.AUTH_GOOGLE_CLIENT_ID,
-  clientSecret: env.AUTH_GOOGLE_CLIENT_SECRET,
-});
 export const {
   handlers: { GET, POST },
   auth,
@@ -40,6 +37,10 @@ export const {
     Google({
       clientId: env.AUTH_GOOGLE_CLIENT_ID,
       clientSecret: env.AUTH_GOOGLE_CLIENT_SECRET,
+    }),
+    Facebook({
+      clientId: env.AUTH_FACEBOOK_CLIENT_ID,
+      clientSecret: env.AUTH_FACEBOOK_CLIENT_SECRET,
     }),
   ],
   callbacks: {

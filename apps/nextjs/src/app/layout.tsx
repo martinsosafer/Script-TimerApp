@@ -42,7 +42,7 @@ export default function Layout(props: { children: React.ReactNode }) {
     <html lang="en">
       <body className={["font-sans", fontSans.variable].join(" ")}>
         <TRPCReactProvider headers={headers()}>
-          <RootLayout>{props.children}</RootLayout>
+          {props.children}
         </TRPCReactProvider>
       </body>
     </html>

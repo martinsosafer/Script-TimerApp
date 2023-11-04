@@ -18,6 +18,8 @@ export const env = createEnv({
     ),
     AUTH_GOOGLE_CLIENT_ID: z.string().min(1),
     AUTH_GOOGLE_CLIENT_SECRET: z.string().min(1),
+    AUTH_FACEBOOK_CLIENT_ID: z.string().min(1),
+    AUTH_FACEBOOK_CLIENT_SECRET: z.string().min(1),
   },
   client: {},
   runtimeEnv: {
@@ -27,6 +29,8 @@ export const env = createEnv({
     AUTH_URL: process.env.AUTH_URL,
     AUTH_GOOGLE_CLIENT_ID: process.env.AUTH_GOOGLE_CLIENT_ID,
     AUTH_GOOGLE_CLIENT_SECRET: process.env.AUTH_GOOGLE_CLIENT_SECRET,
+    AUTH_FACEBOOK_CLIENT_ID: process.env.AUTH_FACEBOOK_CLIENT_ID,
+    AUTH_FACEBOOK_CLIENT_SECRET: process.env.AUTH_FACEBOOK_CLIENT_SECRET,
   },
   skipValidation: !!process.env.CI || !!process.env.SKIP_ENV_VALIDATION,
 });
