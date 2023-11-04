@@ -22,18 +22,18 @@ const fontSans = Inter({
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Create T3 Turbo",
-  description: "Simple monorepo with shared backend for web & mobile apps",
+  title: "VoiceAI",
+  description: "Using AI for Voice",
   openGraph: {
-    title: "Create T3 Turbo",
-    description: "Simple monorepo with shared backend for web & mobile apps",
-    url: "https://create-t3-turbo.vercel.app",
-    siteName: "Create T3 Turbo",
+    title: "VoiceAi",
+    description: "Using AI for Voice",
+    url: "https://voiceai-tesserakt.vercel.app/",
+    siteName: "VoiceAI",
   },
   twitter: {
     card: "summary_large_image",
-    site: "@jullerino",
-    creator: "@jullerino",
+    site: "@gerryg",
+    creator: "@gerryg",
   },
 };
 
