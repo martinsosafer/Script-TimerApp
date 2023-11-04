@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
+import { RootLayout } from "./_components/RootLayout";
+
 import "~/styles/globals.css";
 
 import { headers } from "next/headers";
@@ -40,7 +42,7 @@ export default function Layout(props: { children: React.ReactNode }) {
     <html lang="en">
       <body className={["font-sans", fontSans.variable].join(" ")}>
         <TRPCReactProvider headers={headers()}>
-          {props.children}
+          <RootLayout>{props.children}</RootLayout>
         </TRPCReactProvider>
       </body>
     </html>
