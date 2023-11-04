@@ -1,5 +1,5 @@
 {
-  "name": "@acme/nextjs",
+  "name": "@voiceai/nextjs",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -13,9 +13,9 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@acme/api": "workspace:^0.1.0",
-    "@acme/auth": "workspace:^0.1.0",
-    "@acme/db": "workspace:^0.1.0",
+    "@voiceai/api": "workspace:^0.1.0",
+    "@voiceai/auth": "workspace:^0.1.0",
+    "@voiceai/db": "workspace:^0.1.0",
     "@t3-oss/env-nextjs": "^0.7.1",
     "@tanstack/react-query": "^5.4.3",
     "@tanstack/react-query-devtools": "^5.4.3",
@@ -31,10 +31,10 @@
     "zod": "^3.22.2"
   },
   "devDependencies": {
-    "@acme/eslint-config": "workspace:^0.2.0",
-    "@acme/prettier-config": "workspace:^0.1.0",
-    "@acme/tailwind-config": "workspace:^0.1.0",
-    "@acme/tsconfig": "workspace:^0.1.0",
+    "@voiceai/eslint-config": "workspace:^0.2.0",
+    "@voiceai/prettier-config": "workspace:^0.1.0",
+    "@voiceai/tailwind-config": "workspace:^0.1.0",
+    "@voiceai/tsconfig": "workspace:^0.1.0",
     "@types/node": "^18.18.8",
     "@types/react": "^18.2.34",
     "@types/react-dom": "^18.2.14",
@@ -47,10 +47,10 @@
   "eslintConfig": {
     "root": true,
     "extends": [
-      "@acme/eslint-config/base",
-      "@acme/eslint-config/nextjs",
-      "@acme/eslint-config/react"
+      "@voiceai/eslint-config/base",
+      "@voiceai/eslint-config/nextjs",
+      "@voiceai/eslint-config/react"
     ]
   },
-  "prettier": "@acme/prettier-config"
+  "prettier": "@voiceai/prettier-config"
 }

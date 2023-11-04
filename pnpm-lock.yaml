@@ -11,12 +11,12 @@ importers:
 
   .:
     devDependencies:
-      '@acme/prettier-config':
-        specifier: workspace:^0.1.0
-        version: link:tooling/prettier
       '@turbo/gen':
         specifier: ^1.10.16
         version: 1.10.16(@types/node@18.18.8)(typescript@5.2.2)
+      '@voiceai/prettier-config':
+        specifier: workspace:^0.1.0
+        version: link:tooling/prettier
       prettier:
         specifier: ^3.0.3
         version: 3.0.3
@@ -40,13 +40,13 @@ importers:
         version: 5.4.3(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0)
       '@trpc/client':
         specifier: next
-        version: 11.0.0-alpha-next-2023-10-26-15-15-56.93(@trpc/server@11.0.0-alpha-next-2023-10-26-15-15-56.93)
+        version: 11.0.0-alpha-next-2023-11-03-11-28-35.97(@trpc/server@11.0.0-alpha-next-2023-11-03-11-28-35.97)
       '@trpc/react-query':
         specifier: next
-        version: 11.0.0-next.92(@tanstack/react-query@5.4.3)(@trpc/client@11.0.0-alpha-next-2023-10-26-15-15-56.93)(@trpc/server@11.0.0-alpha-next-2023-10-26-15-15-56.93)(react-dom@18.2.0)(react@18.2.0)
+        version: 11.0.0-alpha-next-2023-11-03-11-28-35.97(@tanstack/react-query@5.4.3)(@trpc/client@11.0.0-alpha-next-2023-11-03-11-28-35.97)(@trpc/server@11.0.0-alpha-next-2023-11-03-11-28-35.97)(react-dom@18.2.0)(react@18.2.0)
       '@trpc/server':
         specifier: next
-        version: 11.0.0-alpha-next-2023-10-26-15-15-56.93
+        version: 11.0.0-alpha-next-2023-11-03-11-28-35.97
       expo:
         specifier: ^49.0.16
         version: 49.0.16(@babel/core@7.23.2)
@@ -93,21 +93,6 @@ importers:
         specifier: 2.2.0
         version: 2.2.0
     devDependencies:
-      '@acme/api':
-        specifier: workspace:^0.1.0
-        version: link:../../packages/api
-      '@acme/eslint-config':
-        specifier: workspace:^0.2.0
-        version: link:../../tooling/eslint
-      '@acme/prettier-config':
-        specifier: workspace:^0.1.0
-        version: link:../../tooling/prettier
-      '@acme/tailwind-config':
-        specifier: workspace:^0.1.0
-        version: link:../../tooling/tailwind
-      '@acme/tsconfig':
-        specifier: workspace:^0.1.0
-        version: link:../../tooling/typescript
       '@babel/core':
         specifier: ^7.23.2
         version: 7.23.2
@@ -126,6 +111,21 @@ importers:
       '@types/react':
         specifier: ^18.2.34
         version: 18.2.34
+      '@voiceai/api':
+        specifier: workspace:^0.1.0
+        version: link:../../packages/api
+      '@voiceai/eslint-config':
+        specifier: workspace:^0.2.0
+        version: link:../../tooling/eslint
+      '@voiceai/prettier-config':
+        specifier: workspace:^0.1.0
+        version: link:../../tooling/prettier
+      '@voiceai/tailwind-config':
+        specifier: workspace:^0.1.0
+        version: link:../../tooling/tailwind
+      '@voiceai/tsconfig':
+        specifier: workspace:^0.1.0
+        version: link:../../tooling/typescript
       eslint:
         specifier: ^8.52.0
         version: 8.52.0
@@ -141,15 +141,6 @@ importers:
 
   apps/nextjs:
     dependencies:
-      '@acme/api':
-        specifier: workspace:^0.1.0
-        version: link:../../packages/api
-      '@acme/auth':
-        specifier: workspace:^0.1.0
-        version: link:../../packages/auth
-      '@acme/db':
-        specifier: workspace:^0.1.0
-        version: link:../../packages/db
       '@t3-oss/env-nextjs':
         specifier: ^0.7.1
         version: 0.7.1(typescript@5.2.2)(zod@3.22.2)
@@ -164,16 +155,25 @@ importers:
         version: 5.5.0(@tanstack/react-query@5.4.3)(next@14.0.1)(react-dom@18.2.0)(react@18.2.0)
       '@trpc/client':
         specifier: next
-        version: 11.0.0-alpha-next-2023-10-26-15-15-56.93(@trpc/server@11.0.0-alpha-next-2023-10-26-15-15-56.93)
+        version: 11.0.0-alpha-next-2023-11-03-11-28-35.97(@trpc/server@11.0.0-alpha-next-2023-11-03-11-28-35.97)
       '@trpc/next':
         specifier: next
-        version: 11.0.0-next.92(@tanstack/react-query@5.4.3)(@trpc/client@11.0.0-alpha-next-2023-10-26-15-15-56.93)(@trpc/react-query@11.0.0-next.92)(@trpc/server@11.0.0-alpha-next-2023-10-26-15-15-56.93)(next@14.0.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 11.0.0-alpha-next-2023-11-03-11-28-35.97(@tanstack/react-query@5.4.3)(@trpc/client@11.0.0-alpha-next-2023-11-03-11-28-35.97)(@trpc/react-query@11.0.0-alpha-next-2023-11-03-11-28-35.97)(@trpc/server@11.0.0-alpha-next-2023-11-03-11-28-35.97)(next@14.0.1)(react-dom@18.2.0)(react@18.2.0)
       '@trpc/react-query':
         specifier: next
-        version: 11.0.0-next.92(@tanstack/react-query@5.4.3)(@trpc/client@11.0.0-alpha-next-2023-10-26-15-15-56.93)(@trpc/server@11.0.0-alpha-next-2023-10-26-15-15-56.93)(react-dom@18.2.0)(react@18.2.0)
+        version: 11.0.0-alpha-next-2023-11-03-11-28-35.97(@tanstack/react-query@5.4.3)(@trpc/client@11.0.0-alpha-next-2023-11-03-11-28-35.97)(@trpc/server@11.0.0-alpha-next-2023-11-03-11-28-35.97)(react-dom@18.2.0)(react@18.2.0)
       '@trpc/server':
         specifier: next
-        version: 11.0.0-alpha-next-2023-10-26-15-15-56.93
+        version: 11.0.0-alpha-next-2023-11-03-11-28-35.97
+      '@voiceai/api':
+        specifier: workspace:^0.1.0
+        version: link:../../packages/api
+      '@voiceai/auth':
+        specifier: workspace:^0.1.0
+        version: link:../../packages/auth
+      '@voiceai/db':
+        specifier: workspace:^0.1.0
+        version: link:../../packages/db
       next:
         specifier: ^14.0.1
         version: 14.0.1(react-dom@18.2.0)(react@18.2.0)
@@ -190,18 +190,6 @@ importers:
         specifier: ^3.22.2
         version: 3.22.2
     devDependencies:
-      '@acme/eslint-config':
-        specifier: workspace:^0.2.0
-        version: link:../../tooling/eslint
-      '@acme/prettier-config':
-        specifier: workspace:^0.1.0
-        version: link:../../tooling/prettier
-      '@acme/tailwind-config':
-        specifier: workspace:^0.1.0
-        version: link:../../tooling/tailwind
-      '@acme/tsconfig':
-        specifier: workspace:^0.1.0
-        version: link:../../tooling/typescript
       '@types/node':
         specifier: ^18.18.8
         version: 18.18.8
@@ -211,6 +199,18 @@ importers:
       '@types/react-dom':
         specifier: ^18.2.14
         version: 18.2.14
+      '@voiceai/eslint-config':
+        specifier: workspace:^0.2.0
+        version: link:../../tooling/eslint
+      '@voiceai/prettier-config':
+        specifier: workspace:^0.1.0
+        version: link:../../tooling/prettier
+      '@voiceai/tailwind-config':
+        specifier: workspace:^0.1.0
+        version: link:../../tooling/tailwind
+      '@voiceai/tsconfig':
+        specifier: workspace:^0.1.0
+        version: link:../../tooling/typescript
       dotenv-cli:
         specifier: ^7.3.0
         version: 7.3.0
@@ -229,18 +229,18 @@ importers:
 
   packages/api:
     dependencies:
-      '@acme/auth':
-        specifier: workspace:^0.1.0
-        version: link:../auth
-      '@acme/db':
-        specifier: workspace:^0.1.0
-        version: link:../db
       '@trpc/client':
         specifier: next
-        version: 11.0.0-alpha-next-2023-10-26-15-15-56.93(@trpc/server@11.0.0-alpha-next-2023-10-26-15-15-56.93)
+        version: 11.0.0-alpha-next-2023-11-03-11-28-35.97(@trpc/server@11.0.0-alpha-next-2023-11-03-11-28-35.97)
       '@trpc/server':
         specifier: next
-        version: 11.0.0-alpha-next-2023-10-26-15-15-56.93
+        version: 11.0.0-alpha-next-2023-11-03-11-28-35.97
+      '@voiceai/auth':
+        specifier: workspace:^0.1.0
+        version: link:../auth
+      '@voiceai/db':
+        specifier: workspace:^0.1.0
+        version: link:../db
       superjson:
         specifier: 2.2.0
         version: 2.2.0
@@ -248,13 +248,13 @@ importers:
         specifier: ^3.22.2
         version: 3.22.2
     devDependencies:
-      '@acme/eslint-config':
+      '@voiceai/eslint-config':
         specifier: workspace:^0.2.0
         version: link:../../tooling/eslint
-      '@acme/prettier-config':
+      '@voiceai/prettier-config':
         specifier: workspace:^0.1.0
         version: link:../../tooling/prettier
-      '@acme/tsconfig':
+      '@voiceai/tsconfig':
         specifier: workspace:^0.1.0
         version: link:../../tooling/typescript
       eslint:
@@ -269,9 +269,6 @@ importers:
 
   packages/auth:
     dependencies:
-      '@acme/db':
-        specifier: workspace:^0.1.0
-        version: link:../db
       '@auth/core':
         specifier: 0.18.0
         version: 0.18.0
@@ -281,6 +278,9 @@ importers:
       '@t3-oss/env-nextjs':
         specifier: ^0.7.1
         version: 0.7.1(typescript@5.2.2)(zod@3.22.2)
+      '@voiceai/db':
+        specifier: workspace:^0.1.0
+        version: link:../db
       next:
         specifier: ^14.0.1
         version: 14.0.1(react-dom@18.2.0)(react@18.2.0)
@@ -297,13 +297,13 @@ importers:
         specifier: ^3.22.2
         version: 3.22.2
     devDependencies:
-      '@acme/eslint-config':
+      '@voiceai/eslint-config':
         specifier: workspace:^0.2.0
         version: link:../../tooling/eslint
-      '@acme/prettier-config':
+      '@voiceai/prettier-config':
         specifier: workspace:^0.1.0
         version: link:../../tooling/prettier
-      '@acme/tsconfig':
+      '@voiceai/tsconfig':
         specifier: workspace:^0.1.0
         version: link:../../tooling/typescript
       eslint:
@@ -325,13 +325,13 @@ importers:
         specifier: ^0.28.6
         version: 0.28.6(@planetscale/database@1.11.0)
     devDependencies:
-      '@acme/eslint-config':
+      '@voiceai/eslint-config':
         specifier: workspace:^0.2.0
         version: link:../../tooling/eslint
-      '@acme/prettier-config':
+      '@voiceai/prettier-config':
         specifier: workspace:^0.1.0
         version: link:../../tooling/prettier
-      '@acme/tsconfig':
+      '@voiceai/tsconfig':
         specifier: workspace:^0.1.0
         version: link:../../tooling/typescript
       dotenv-cli:
@@ -380,15 +380,15 @@ importers:
         specifier: ^4.6.0
         version: 4.6.0(eslint@8.52.0)
     devDependencies:
-      '@acme/prettier-config':
-        specifier: workspace:^0.1.0
-        version: link:../prettier
-      '@acme/tsconfig':
-        specifier: workspace:^0.1.0
-        version: link:../typescript
       '@types/eslint':
         specifier: ^8.44.6
         version: 8.44.6
+      '@voiceai/prettier-config':
+        specifier: workspace:^0.1.0
+        version: link:../prettier
+      '@voiceai/tsconfig':
+        specifier: workspace:^0.1.0
+        version: link:../typescript
       eslint:
         specifier: ^8.52.0
         version: 8.52.0
@@ -410,7 +410,7 @@ importers:
         specifier: ^0.5.6
         version: 0.5.6(@ianvs/prettier-plugin-sort-imports@4.1.1)(prettier@3.0.3)
     devDependencies:
-      '@acme/tsconfig':
+      '@voiceai/tsconfig':
         specifier: workspace:^0.1.0
         version: link:../typescript
       typescript:
@@ -426,13 +426,13 @@ importers:
         specifier: 3.3.5
         version: 3.3.5
     devDependencies:
-      '@acme/eslint-config':
+      '@voiceai/eslint-config':
         specifier: workspace:^0.2.0
         version: link:../eslint
-      '@acme/prettier-config':
+      '@voiceai/prettier-config':
         specifier: workspace:^0.1.0
         version: link:../prettier
-      '@acme/tsconfig':
+      '@voiceai/tsconfig':
         specifier: workspace:^0.1.0
         version: link:../typescript
       eslint:
@@ -3547,55 +3547,54 @@ packages:
     resolution: {integrity: sha512-C5Mc6rdnsaJDjO3UpGW/CQTHtCKaYlScZTly4JIu97Jxo/odCiH0ITnDXSJPTOrEKk/ycSZ0AOgTmkDtkOsvIA==}
     dev: true
 
-  /@trpc/client@11.0.0-alpha-next-2023-10-26-15-15-56.93(@trpc/server@11.0.0-alpha-next-2023-10-26-15-15-56.93):
-    resolution: {integrity: sha512-Oz5AaCG3x5+WDo/O2B3ty23gc1k1M1fBEb8+9TCYZN747USP4E/jdRKCsXzoQiOTSQHAQncUlHqdhG3lUTi9xw==}
+  /@trpc/client@11.0.0-alpha-next-2023-11-03-11-28-35.97(@trpc/server@11.0.0-alpha-next-2023-11-03-11-28-35.97):
+    resolution: {integrity: sha512-0OASRO/0eH9NBYhHXSP3u8D9WpLQ8Xomisk+04Jib4y9G+LgxQMokDEZWCxogJTGAKYyyXa+yBcpK33X67O9/w==}
     peerDependencies:
-      '@trpc/server': 11.0.0-alpha-next-2023-10-26-15-15-56.93+d2abec87
+      '@trpc/server': 11.0.0-alpha-next-2023-11-03-11-28-35.97+be31c75e4
     dependencies:
-      '@trpc/server': 11.0.0-alpha-next-2023-10-26-15-15-56.93
+      '@trpc/server': 11.0.0-alpha-next-2023-11-03-11-28-35.97
     dev: false
 
-  /@trpc/next@11.0.0-next.92(@tanstack/react-query@5.4.3)(@trpc/client@11.0.0-alpha-next-2023-10-26-15-15-56.93)(@trpc/react-query@11.0.0-next.92)(@trpc/server@11.0.0-alpha-next-2023-10-26-15-15-56.93)(next@14.0.1)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-H3o5BhtAzuf3nR92eLJlMPi4jD8OOFdxWqxP+RDLyu0gYcEYn4pXh4nEPgrzGt1djLvlljtEnMEvjuoFrQQQQw==}
-    deprecated: bad publish
+  /@trpc/next@11.0.0-alpha-next-2023-11-03-11-28-35.97(@tanstack/react-query@5.4.3)(@trpc/client@11.0.0-alpha-next-2023-11-03-11-28-35.97)(@trpc/react-query@11.0.0-alpha-next-2023-11-03-11-28-35.97)(@trpc/server@11.0.0-alpha-next-2023-11-03-11-28-35.97)(next@14.0.1)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-fy/dTQtfp98lDMVrxwbwas4VUjX5PqyRww7ND1Gm1kU31azH0C+zbqttf4GAAZQmoS4CqE3qQ0V24rb7rf0LoQ==}
     peerDependencies:
       '@tanstack/react-query': ^5.0.0
-      '@trpc/client': 11.0.0-next.92+06cebb01
-      '@trpc/react-query': 11.0.0-next.92+06cebb01
-      '@trpc/server': 11.0.0-next.92+06cebb01
+      '@trpc/client': 11.0.0-alpha-next-2023-11-03-11-28-35.97+be31c75e4
+      '@trpc/react-query': 11.0.0-alpha-next-2023-11-03-11-28-35.97+be31c75e4
+      '@trpc/server': 11.0.0-alpha-next-2023-11-03-11-28-35.97+be31c75e4
       next: '*'
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
       '@tanstack/react-query': 5.4.3(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0)
-      '@trpc/client': 11.0.0-alpha-next-2023-10-26-15-15-56.93(@trpc/server@11.0.0-alpha-next-2023-10-26-15-15-56.93)
-      '@trpc/react-query': 11.0.0-next.92(@tanstack/react-query@5.4.3)(@trpc/client@11.0.0-alpha-next-2023-10-26-15-15-56.93)(@trpc/server@11.0.0-alpha-next-2023-10-26-15-15-56.93)(react-dom@18.2.0)(react@18.2.0)
-      '@trpc/server': 11.0.0-alpha-next-2023-10-26-15-15-56.93
+      '@trpc/client': 11.0.0-alpha-next-2023-11-03-11-28-35.97(@trpc/server@11.0.0-alpha-next-2023-11-03-11-28-35.97)
+      '@trpc/react-query': 11.0.0-alpha-next-2023-11-03-11-28-35.97(@tanstack/react-query@5.4.3)(@trpc/client@11.0.0-alpha-next-2023-11-03-11-28-35.97)(@trpc/server@11.0.0-alpha-next-2023-11-03-11-28-35.97)(react-dom@18.2.0)(react@18.2.0)
+      '@trpc/server': 11.0.0-alpha-next-2023-11-03-11-28-35.97
       next: 14.0.1(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-ssr-prepass: 1.5.0(react@18.2.0)
     dev: false
 
-  /@trpc/react-query@11.0.0-next.92(@tanstack/react-query@5.4.3)(@trpc/client@11.0.0-alpha-next-2023-10-26-15-15-56.93)(@trpc/server@11.0.0-alpha-next-2023-10-26-15-15-56.93)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-W6/AnO68p3MCQ7QnujYOnYnygHzwmmSW57rl4DcQqkLVrcADMdsKz7ZdrULFBasVi2azXMw2rj9kYvs8W2mwQg==}
-    deprecated: bad publish
+  /@trpc/react-query@11.0.0-alpha-next-2023-11-03-11-28-35.97(@tanstack/react-query@5.4.3)(@trpc/client@11.0.0-alpha-next-2023-11-03-11-28-35.97)(@trpc/server@11.0.0-alpha-next-2023-11-03-11-28-35.97)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-isk7YI5K/ayZ2c2GAthZ47v1AYPB5YjSp/jJkywUqtwfHmt8Fo7HTzDc/ApFouU5WaLFQ977Ui2L3GhnC6xFRA==}
     peerDependencies:
       '@tanstack/react-query': ^5.0.0
-      '@trpc/client': 11.0.0-next.92+06cebb01
-      '@trpc/server': 11.0.0-next.92+06cebb01
+      '@trpc/client': 11.0.0-alpha-next-2023-11-03-11-28-35.97+be31c75e4
+      '@trpc/server': 11.0.0-alpha-next-2023-11-03-11-28-35.97+be31c75e4
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
       '@tanstack/react-query': 5.4.3(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0)
-      '@trpc/client': 11.0.0-alpha-next-2023-10-26-15-15-56.93(@trpc/server@11.0.0-alpha-next-2023-10-26-15-15-56.93)
-      '@trpc/server': 11.0.0-alpha-next-2023-10-26-15-15-56.93
+      '@trpc/client': 11.0.0-alpha-next-2023-11-03-11-28-35.97(@trpc/server@11.0.0-alpha-next-2023-11-03-11-28-35.97)
+      '@trpc/server': 11.0.0-alpha-next-2023-11-03-11-28-35.97
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@trpc/server@11.0.0-alpha-next-2023-10-26-15-15-56.93:
-    resolution: {integrity: sha512-xOQakfePY/bRAy+yNa52PG9gvl5DtcJyHh4kYSVUDfMTBPxmU4ePFSZFSREMx0SpddbQ4c35AwGU4V4ngHCK/A==}
+  /@trpc/server@11.0.0-alpha-next-2023-11-03-11-28-35.97:
+    resolution: {integrity: sha512-p/6s1Yxvi+jOEHHLRWkuAyhSe6+lFti4zS1CF7bXH0a9x2+HrbCbCEZu+6TLeBHKQeNXsOkDbYrnoBgpFp3HIA==}
+    engines: {node: '>=18.0.0'}
     dev: false
 
   /@tsconfig/node10@1.0.9:

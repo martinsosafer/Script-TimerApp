@@ -1,5 +1,5 @@
 {
-  "name": "@acme/db",
+  "name": "@voiceai/db",
   "version": "0.1.0",
   "private": true,
   "main": "./index.ts",
@@ -18,9 +18,9 @@
     "drizzle-orm": "^0.28.6"
   },
   "devDependencies": {
-    "@acme/eslint-config": "workspace:^0.2.0",
-    "@acme/prettier-config": "workspace:^0.1.0",
-    "@acme/tsconfig": "workspace:^0.1.0",
+    "@voiceai/eslint-config": "workspace:^0.2.0",
+    "@voiceai/prettier-config": "workspace:^0.1.0",
+    "@voiceai/tsconfig": "workspace:^0.1.0",
     "dotenv-cli": "^7.3.0",
     "drizzle-kit": "^0.19.13",
     "eslint": "^8.52.0",
@@ -30,8 +30,8 @@
   "eslintConfig": {
     "root": true,
     "extends": [
-      "@acme/eslint-config/base"
+      "@voiceai/eslint-config/base"
     ]
   },
-  "prettier": "@acme/prettier-config"
+  "prettier": "@voiceai/prettier-config"
 }
