@@ -4,14 +4,7 @@ import { auth } from "@voiceai/auth";
 import { Button } from "@voiceai/ui";
 
 import { ChatWindow } from "./_components/ai/chat/chat-window";
-import SloganGenerator from "./_components/ai/completion";
 import { AuthShowcase } from "./_components/auth-showcase";
-// import {
-//   CreatePostForm,
-//   PostCardSkeleton,
-//   PostList,
-// } from "./_components/posts";
-
 import { VoiceList } from "./_components/voices/list";
 
 export const runtime = "edge";
@@ -28,8 +21,6 @@ export default async function HomePage() {
         <AuthShowcase />
 
         <Button>TEST</Button>
-
-        {/* <SloganGenerator /> */}
 
         {session && (
           <>
@@ -52,21 +43,6 @@ export default async function HomePage() {
             </Suspense>
           </>
         )}
-
-        {/* <CreatePostForm />
-        <div className="h-[40vh] w-full max-w-2xl overflow-y-scroll">
-          <Suspense
-            fallback={
-              <div className="flex w-full flex-col gap-4">
-                <PostCardSkeleton />
-                <PostCardSkeleton />
-                <PostCardSkeleton />
-              </div>
-            }
-          >
-            <PostList />
-          </Suspense>
-        </div> */}
       </div>
     </main>
   );
