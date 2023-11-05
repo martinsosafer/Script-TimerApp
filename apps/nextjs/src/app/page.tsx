@@ -1,4 +1,6 @@
-import { Suspense } from "react";
+// import { Suspense } from "react";
+
+import { Button } from "@voiceai/ui";
 
 import { AuthShowcase } from "./_components/auth-showcase";
 
@@ -17,7 +19,9 @@ export default function HomePage() {
         <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
           VoiceAI
         </h1>
-        <AuthShowcase />
+        {/* <AuthShowcase /> */}
+
+        <Button>TEST</Button>
 
         {/* <CreatePostForm />
         <div className="h-[40vh] w-full max-w-2xl overflow-y-scroll">
