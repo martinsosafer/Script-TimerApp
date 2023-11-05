@@ -12,10 +12,11 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@voiceai/auth": "workspace:^0.1.0",
-    "@voiceai/db": "workspace:^0.1.0",
     "@trpc/client": "next",
     "@trpc/server": "next",
+    "@voiceai/auth": "workspace:^0.1.0",
+    "@voiceai/db": "workspace:^0.1.0",
+    "axios": "^1.6.0",
     "superjson": "2.2.0",
     "zod": "^3.22.2"
   },
