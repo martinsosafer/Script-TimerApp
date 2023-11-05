@@ -1,22 +1,14 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-/* eslint-disable */
 "use client";
 
 import { toast, ToastContainer } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
 
-import { ReactElement, useRef, useState } from "react";
-import type { FormEvent } from "react";
-// import { UploadDocumentsForm } from "@/components/UploadDocumentsForm";
+import { useRef, useState } from "react";
+import type { FormEvent, ReactElement } from "react";
 import { useChat } from "ai/react";
 
-// import type { AgentStep } from "langchain/schema";
-
 import { ChatMessageBubble } from "./chat-message-bubble";
-
-// import { IntermediateStep } from "./IntermediateStep";
 
 export function ChatWindow(props: {
   endpoint: string;

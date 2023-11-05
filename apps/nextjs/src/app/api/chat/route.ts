@@ -20,21 +20,9 @@ export async function POST(req: NextRequest) {
      * but don't want them in the chat history.
      */
 
-    const streamResponse = await copilot(body.messages ?? []);
-
-    const textEncoder = new TextEncoder();
-    const fakeStream = new ReadableStream({
-      async start(controller) {
-        for (const character of streamResponse.output) {
-          controller.enqueue(textEncoder.encode(character));
-          await new Promise((resolve) => setTimeout(resolve, 5));
-        }
-        controller.close();
-      },
-    });
-
-    return new StreamingTextResponse(fakeStream);
+    return copilot(body.messages ?? []);
   } catch (e: any) {
+    console.log("CAUGHT YOU", e);
     return NextResponse.json({ error: e.message }, { status: 500 });
   }
 }
