@@ -3,9 +3,6 @@ import type { Config } from "tailwindcss";
 import baseConfig from "@voiceai/tailwind-config";
 
 export default {
-  content: [
-    "./src/**/*.{ts,tsx}",
-    "../../packages/ui-library/@/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: [],
   presets: [baseConfig],
 } satisfies Config;
