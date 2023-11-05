@@ -2,6 +2,8 @@
 
 import { Button } from "@voiceai/ui";
 
+import { ChatWindow } from "./_components/ai/chat/chat-window";
+import SloganGenerator from "./_components/ai/completion";
 import { AuthShowcase } from "./_components/auth-showcase";
 
 // import {
@@ -22,6 +24,19 @@ export default function HomePage() {
         {/* <AuthShowcase /> */}
 
         <Button>TEST</Button>
+
+        {/* <SloganGenerator /> */}
+
+        <div className="w-full ">
+          <ChatWindow
+            endpoint="api/chat"
+            emptyStateComponent={<>empty</>}
+            placeholder="Hello, how can I help you today?"
+            titleText="VoiceAI"
+            emoji="🔊"
+            // showIntermediateStepsToggle={true}
+          ></ChatWindow>
+        </div>
 
         {/* <CreatePostForm />
         <div className="h-[40vh] w-full max-w-2xl overflow-y-scroll">
