@@ -32,6 +32,13 @@ export const {
   signOut,
 } = NextAuth({
   adapter: DrizzleAdapter(db, tableCreator),
+  pages: {
+    signIn: "/signin",
+    signOut: "/signout",
+    error: "/auth/error",
+    verifyRequest: "/auth/verify-request",
+    newUser: "/auth/new-user",
+  },
   providers: [
     Discord,
     Google({
@@ -51,5 +58,8 @@ export const {
         id: user.id,
       },
     }),
+    authorized({ auth }) {
+      return !!auth?.user;
+    },
   },
 });
