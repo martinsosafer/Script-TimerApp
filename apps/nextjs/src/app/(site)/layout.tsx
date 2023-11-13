@@ -1,6 +1,15 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
+import TopNavigation from "../_components/top-navigation";
+
+import "~/styles/globals.css";
+
+import { headers } from "next/headers";
+
+import Sidebar from "../_components/layout-console";
+import { TRPCReactProvider } from "../providers";
+
 const fontSans = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -33,7 +42,11 @@ export default function Layout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" className="h-full">
       <body className={["font-sans", "h-full", fontSans.variable].join(" ")}>
-        {props.children}
+        <TopNavigation />
+        <TRPCReactProvider headers={headers()}>
+          <Sidebar>{props.children}</Sidebar>
+          {/* {props.children} */}
+        </TRPCReactProvider>
       </body>
     </html>
   );

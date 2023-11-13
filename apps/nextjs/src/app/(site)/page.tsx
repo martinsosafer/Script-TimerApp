@@ -3,9 +3,9 @@ import { Suspense } from "react";
 import { auth } from "@voiceai/auth";
 import { Button, TiptapEditor } from "@voiceai/ui";
 
-import { ChatWindow } from "./_components/ai/chat/chat-window";
-import { AuthShowcase } from "./_components/auth-showcase";
-import { VoiceList } from "./_components/voices/list";
+import { ChatWindow } from "../_components/ai/chat/chat-window";
+import { AuthShowcase } from "../_components/auth-showcase";
+import { VoiceList } from "../_components/voices/list";
 
 export const runtime = "edge";
 

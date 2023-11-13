@@ -30,7 +30,7 @@ const TopNavigation = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className="fixed top-0 z-50 flex w-full flex-col justify-between bg-blue-700 p-3">
+    <div className=" top-0 z-50 flex w-full flex-col justify-between bg-blue-700 p-3">
       {/* Logo and Hamburger Icon */}
       <div className="flex items-center justify-between">
         <div className="hidden text-center text-2xl text-white md:block">

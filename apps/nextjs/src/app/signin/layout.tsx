@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
+import "~/styles/globals.css";
+
+import { headers } from "next/headers";
+
+import { TRPCReactProvider } from "../providers";
+
 const fontSans = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -33,7 +39,10 @@ export default function Layout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" className="h-full">
       <body className={["font-sans", "h-full", fontSans.variable].join(" ")}>
-        {props.children}
+        <TRPCReactProvider headers={headers()}>
+          {props.children}
+          {/* {props.children} */}
+        </TRPCReactProvider>
       </body>
     </html>
   );
