@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
-import { RootLayout } from "./_components/RootLayout";
+import TopNavigation from "./_components/top-navigation";
 
 import "~/styles/globals.css";
 
@@ -41,6 +41,7 @@ export default function Layout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" className="h-full">
       <body className={["font-sans", "h-full", fontSans.variable].join(" ")}>
+        <TopNavigation />
         <TRPCReactProvider headers={headers()}>
           {props.children}
         </TRPCReactProvider>
