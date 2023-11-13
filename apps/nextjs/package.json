@@ -25,6 +25,7 @@
     "@voiceai/api": "workspace:^0.1.0",
     "@voiceai/auth": "workspace:^0.1.0",
     "@voiceai/db": "workspace:^0.1.0",
+    "@voiceai/pay": "workspace:^0.1.0",
     "@voiceai/ui": "workspace:^0.1.0",
     "ai": "^2.2.20",
     "clsx": "^2.0.0",

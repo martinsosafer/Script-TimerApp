@@ -1,12 +1,12 @@
-import { auth, signIn, signOut } from "@voiceai/auth";
+import Image from "next/image";
 
-import { AuthShowcase } from "../_components/auth-showcase";
+import { signIn } from "@voiceai/auth";
+
+import coverImg from "../../../public/ai_cover_image.png";
 
 export const runtime = "edge";
 
 export default async function SignIn() {
-  const session = await auth();
-
   return (
     <>
       <div className="flex min-h-full flex-1">
@@ -127,10 +127,10 @@ export default async function SignIn() {
           </div>
         </div>
         <div className="relative hidden w-0 flex-1 lg:block">
-          <img
+          <Image
             className="absolute inset-0 h-full w-full object-cover"
-            src="https://images.unsplash.com/photo-1496917756835-20cb06e75b4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80"
-            alt=""
+            src={coverImg}
+            alt="Picture of the author"
           />
         </div>
       </div>

@@ -1,5 +1,5 @@
 {
-  "name": "@voiceai/api",
+  "name": "@voiceai/pay",
   "version": "0.1.0",
   "private": true,
   "main": "./index.ts",
@@ -12,13 +12,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@trpc/client": "next",
-    "@trpc/server": "next",
-    "@voiceai/auth": "workspace:^0.1.0",
-    "@voiceai/db": "workspace:^0.1.0",
-    "@voiceai/pay": "workspace:^0.1.0",
-    "axios": "^1.6.0",
-    "superjson": "2.2.0",
+    "@stripe/stripe-js": "^2.1.11",
+    "stripe": "^14.4.0",
     "zod": "^3.22.2"
   },
   "devDependencies": {
