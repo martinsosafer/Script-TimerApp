@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 
 import { auth } from "@voiceai/auth";
-import { Button } from "@voiceai/ui";
+import { Button, TiptapEditor } from "@voiceai/ui";
 
 import { ChatWindow } from "./_components/ai/chat/chat-window";
 import { AuthShowcase } from "./_components/auth-showcase";
@@ -19,7 +19,7 @@ export default async function HomePage() {
           VoiceAI
         </h1>
         <AuthShowcase />
-
+        <TiptapEditor />
         <Button>TEST</Button>
 
         {session && (
