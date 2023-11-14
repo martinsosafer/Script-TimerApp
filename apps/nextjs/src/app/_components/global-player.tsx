@@ -1,23 +1,96 @@
 "use client";
 
-// import useSound from "use-sound";
-// import { useEffect, useState } from "react";
-// import { BsPauseFill, BsPlayFill } from "react-icons/bs";
-// import { HiSpeakerWave, HiSpeakerXMark } from "react-icons/hi2";
-// import { AiFillStepBackward, AiFillStepForward } from "react-icons/ai";
+import { useEffect, useState } from "react";
 
-// import { Song } from "@/types";
-// import usePlayer from "@/hooks/usePlayer";
-
-// import LikeButton from "./LikeButton";
-// import MediaItem from "./MediaItem";
-// import Slider from "./Slider";
 import { usePlayer } from "../providers/player-context";
 
 interface PlayerContentProps {
   //   song: Song;
   //   songUrl: string;
 }
+interface AudioDataChunk {
+  value: Uint8Array;
+  done: boolean;
+}
+const audioContext = new AudioContext();
+
+const processAudioData = async (
+  reader: ReadableStreamDefaultReader<Uint8Array>,
+) => {
+  console.log("in reader", reader);
+  const audioBuffer = await new Promise(async (resolve, reject) => {
+    const chunks = [];
+    let stream = await reader.read();
+
+    console.log("stream", stream);
+    while (!stream.done) {
+      chunks.push(stream.value);
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      stream = await reader.read();
+    }
+
+    const concatenatedData = new Uint8Array(
+      chunks.reduce((acc, chunk) => acc + chunk.length, 0),
+    );
+    let offset = 0;
+    for (const chunk of chunks) {
+      concatenatedData.set(chunk, offset);
+      offset += chunk.length;
+    }
+
+    // audioContext.decodeAudioData(concatenatedData.buffer, resolve, reject);
+
+    audioContext.decodeAudioData(concatenatedData.buffer, (buffer) => {
+      const audioSource = audioContext.createBufferSource();
+      audioSource.buffer = buffer;
+      audioSource.connect(audioContext.destination);
+      audioSource.start(0);
+    });
+  });
+
+  // Now you can use the audioBuffer for playback or other processing
+};
+
+const streamTranscript = async (voiceId: string) => {
+  const response = await fetch(`/api/voice`, {
+    method: "POST",
+
+    headers: {
+      "Content-Type": "application/json",
+    },
+
+    body: JSON.stringify({
+      voice_id: voiceId,
+      message: `According to all known laws
+        of aviation,
+        
+          
+        there is no way a bee
+        should be able to fly.
+        
+          
+        Its wings are too small to get
+        its fat little body off the ground.
+        
+          
+        The bee, of course, flies anyway
+        
+          
+        because bees don't care
+        what humans think is impossible.
+        
+          
+        Yellow, black. Yellow, black.
+        Yellow, black. Yellow, black.`,
+    }), // body data type must match "Content-Type" header
+  });
+  console.log("response", response);
+  const startTime = 0;
+  if (response.body) {
+    const reader = response.body.getReader();
+    processAudioData(reader);
+  }
+};
 
 const PlayerContent: React.FC<PlayerContentProps> = (
   {
@@ -28,74 +101,20 @@ const PlayerContent: React.FC<PlayerContentProps> = (
   const { state } = usePlayer();
   const { currentSongId } = state;
   console.log("IN PLAYER", state, currentSongId);
-  //   const player = usePlayer();
-  //   const [volume, setVolume] = useState(1);
-  //   const [isPlaying, setIsPlaying] = useState(false);
 
-  //   const Icon = isPlaying ? BsPauseFill : BsPlayFill;
-  //   const VolumeIcon = volume === 0 ? HiSpeakerXMark : HiSpeakerWave;
+  useEffect(() => {
+    if (currentSongId) {
+      streamTranscript(currentSongId);
+    }
+  }, [currentSongId]);
 
-  const onPlayNext = () => {
-    // if (player.ids.length === 0) {
-    //   return;
-    // }
-    // const currentIndex = player.ids.findIndex((id) => id === player.activeId);
-    // const nextSong = player.ids[currentIndex + 1];
-    // if (!nextSong) {
-    //   return player.setId(player.ids[0]);
-    // }
-    // player.setId(nextSong);
-  };
+  const onPlayNext = () => {};
 
-  const onPlayPrevious = () => {
-    // if (player.ids.length === 0) {
-    //   return;
-    // }
-    // const currentIndex = player.ids.findIndex((id) => id === player.activeId);
-    // const previousSong = player.ids[currentIndex - 1];
-    // if (!previousSong) {
-    //   return player.setId(player.ids[player.ids.length - 1]);
-    // }
-    // player.setId(previousSong);
-  };
+  const onPlayPrevious = () => {};
 
-  //   const [play, { pause, sound }] = useSound(
-  //     songUrl,
-  //     {
-  //       volume: volume,
-  //       onplay: () => setIsPlaying(true),
-  //       onend: () => {
-  //         setIsPlaying(false);
-  //         onPlayNext();
-  //       },
-  //       onpause: () => setIsPlaying(false),
-  //       format: ['mp3']
-  //     }
-  //   );
+  const handlePlay = () => {};
 
-  //   useEffect(() => {
-  //     sound?.play();
-
-  //     return () => {
-  //       sound?.unload();
-  //     }
-  //   }, [sound]);
-
-  const handlePlay = () => {
-    // if (!isPlaying) {
-    //   play();
-    // } else {
-    //   pause();
-    // }
-  };
-
-  const toggleMute = () => {
-    // if (volume === 0) {
-    //   setVolume(1);
-    // } else {
-    //   setVolume(0);
-    // }
-  };
+  const toggleMute = () => {};
 
   return (
     <div
