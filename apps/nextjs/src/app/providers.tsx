@@ -10,6 +10,7 @@ import superjson from "superjson";
 
 import { env } from "~/env.mjs";
 import { api } from "~/utils/api";
+import { PlayerProvider } from "./providers/player-context";
 
 const getBaseUrl = () => {
   if (typeof window !== "undefined") return ""; // browser should use relative url
@@ -58,7 +59,9 @@ export function TRPCReactProvider(props: {
     <api.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
         <ReactQueryStreamedHydration transformer={superjson}>
-          <ThemeProvider attribute="class">{props.children}</ThemeProvider>
+          <ThemeProvider attribute="class">
+            <PlayerProvider>{props.children}</PlayerProvider>
+          </ThemeProvider>
         </ReactQueryStreamedHydration>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>

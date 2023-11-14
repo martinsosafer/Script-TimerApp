@@ -7,6 +7,7 @@ import "~/styles/globals.css";
 
 import { headers } from "next/headers";
 
+import Player from "../_components/global-player";
 import Sidebar from "../_components/layout-console";
 import { TRPCReactProvider } from "../providers";
 
@@ -45,7 +46,7 @@ export default function Layout(props: { children: React.ReactNode }) {
         <TopNavigation />
         <TRPCReactProvider headers={headers()}>
           <Sidebar>{props.children}</Sidebar>
-          {/* {props.children} */}
+          <Player />
         </TRPCReactProvider>
       </body>
     </html>

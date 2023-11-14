@@ -2,11 +2,15 @@
 
 import { useState } from "react";
 
+import { Button } from "@voiceai/ui";
+
+import { usePlayer } from "~/app/providers/player-context";
 import { api } from "~/utils/api";
 import type { RouterOutputs } from "~/utils/api";
 
 export function VoiceList() {
   const [voices] = api.voice.all.useSuspenseQuery();
+  const { dispatch } = usePlayer();
 
   if (voices.length === 0) {
     return (
@@ -21,43 +25,47 @@ export function VoiceList() {
       </div>
     );
   }
+  const handleSongClick = (songId: string) => {
+    // Set the current song in the global state
+    console.log("setting state", songId);
+    dispatch({ type: "SET_CURRENT_SONG", payload: songId });
+  };
 
   return (
     <div className="flex w-full flex-col gap-4">
-      <ul className="divide-y divide-white/5">
+      {/* <ul className="divide-y divide-white/5"> */}
+      <ul role="list" className="divide-y divide-gray-100">
         {voices.map((voice) => (
-          <li key={voice.voice_id} className="py-4">
-            <div className="flex items-center gap-x-3">
-              {/* <img
-                src={voice.user.imageUrl}
-                alt=""
-                className="h-6 w-6 flex-none rounded-full bg-gray-800"
-              /> */}
-              <h3 className="flex-auto truncate text-sm font-semibold leading-6 text-white">
-                {/* @ts-expect-error will type this later */}
-                {voice.name}
-              </h3>
-              {/* <time
-                dateTime={item.dateTime}
-                className="flex-none text-xs text-gray-500"
-              >
-                {item.date}
-              </time> */}
+          <li
+            key={voice.voice_id}
+            className="flex items-center justify-between gap-x-6 py-5"
+          >
+            <div className="flex min-w-0 gap-x-4">
+              {/* <img className="h-12 w-12 flex-none rounded-full bg-gray-50" src={person.imageUrl} alt="" /> */}
+              <div className="min-w-0 flex-auto">
+                <p className="text-sm font-semibold leading-6">
+                  {/* @ts-expect-error will type this later */}
+                  {voice.name}
+                </p>
+                <p className="mt-1 truncate text-xs leading-5">
+                  {/* @ts-expect-error will type this later */}
+                  {voice.labels.accent}
+                </p>
+              </div>
             </div>
-            <p className="mt-3 truncate text-sm text-gray-500">
-              Voice ID: <span className="text-gray-400">{voice.voice_id}</span>{" "}
-              <span className="font-mono text-gray-400">
-                {/* @ts-expect-error will type this later */}
-                Accent: {voice.labels.accent}
-              </span>{" "}
-              <span className="text-gray-400">
-                {/* @ts-expect-error will type this later */}
-                Gender: {voice.labels.gender}
-              </span>
-            </p>
+            <Button onClick={() => handleSongClick(voice.voice_id)}>
+              Generate
+            </Button>
           </li>
         ))}
       </ul>
+      <Button
+      // className="flex w-full items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
+      >
+        View all
+      </Button>
+
+      {/* </ul> */}
     </div>
   );
 }

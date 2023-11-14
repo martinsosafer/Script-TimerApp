@@ -1,9 +1,14 @@
-"use client";
+// "use client";
 
 // import { HiHome } from "react-icons/hi";
 // import { BiSearch } from "react-icons/bi";
+import { Suspense } from "react";
 import { usePathname } from "next/navigation";
 import { twMerge } from "tailwind-merge";
+
+import { auth } from "@voiceai/auth";
+
+import { VoiceList } from "../_components/voices/list";
 
 // import { Song } from "@/types";
 // import usePlayer from "@/hooks/usePlayer";
@@ -18,7 +23,9 @@ interface SidebarProps {
   //   songs: Song[];
 }
 
-const Sidebar = ({ children }: SidebarProps) => {
+const Sidebar = async ({ children }: SidebarProps) => {
+  const session = await auth();
+
   //   const pathname = usePathname();
   //   const player = usePlayer();
 
@@ -51,9 +58,8 @@ const Sidebar = ({ children }: SidebarProps) => {
     >
       <div
         className="
-          hidden 
           h-full 
-          w-[300px] 
+          w-1/3
           flex-col 
           gap-y-2 
           bg-black 
@@ -61,7 +67,19 @@ const Sidebar = ({ children }: SidebarProps) => {
           md:flex
         "
       >
-        <div className="h-full overflow-y-auto">test</div>
+        <div className="h-full overflow-y-auto">
+          {session && (
+            <>
+              <Suspense
+                fallback={
+                  <div className="flex w-full flex-col gap-4">LOADING</div>
+                }
+              >
+                <VoiceList />
+              </Suspense>
+            </>
+          )}
+        </div>
       </div>
       <main className="h-full flex-1 overflow-y-auto py-2">{children}</main>
     </div>

@@ -15,16 +15,18 @@ export default async function HomePage() {
   return (
     <main className="flex h-screen flex-col items-center bg-gradient-to-b text-white">
       <div className="container mt-12 flex flex-col items-center justify-center gap-4 py-8">
-        <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
+        {/* <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
           VoiceAI
-        </h1>
+        </h1> */}
         <AuthShowcase />
-        <TiptapEditor />
-        <Button>TEST</Button>
+        <TiptapEditor
+          content={"Hello World!"}
+          className="w-full rounded-md border-4 border-red-500"
+        />
 
         {session && (
           <>
-            <div className="w-full ">
+            {/* <div className="w-full ">
               <ChatWindow
                 endpoint="api/chat"
                 emptyStateComponent={<>empty</>}
@@ -40,7 +42,7 @@ export default async function HomePage() {
               }
             >
               <VoiceList />
-            </Suspense>
+            </Suspense> */}
           </>
         )}
       </div>

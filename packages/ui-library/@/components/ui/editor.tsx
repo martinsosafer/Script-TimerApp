@@ -4,13 +4,21 @@ import type { Editor } from "@tiptap/react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
-const TiptapEditor = () => {
+const TiptapEditor = ({ ...props }) => {
+  const { className, content } = props;
   const editor: Editor | null = useEditor({
     extensions: [StarterKit],
-    content: "<p>Hello World! 🌎️</p>",
+    content: content,
+    editorProps: {
+      attributes: {
+        class: "h-32 w-full",
+      },
+    },
   });
 
-  return editor ? <EditorContent editor={editor} /> : null;
+  return editor ? (
+    <EditorContent className={className} editor={editor} />
+  ) : null;
 };
 
 export { TiptapEditor };
