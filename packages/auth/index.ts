@@ -36,8 +36,8 @@ export const {
     signIn: "/signin",
     signOut: "/signout",
     error: "/auth/error",
-    verifyRequest: "/auth/verify-request",
-    newUser: "/auth/new-user",
+    // verifyRequest: "/auth/verify-request",
+    // newUser: "/auth/new-user",
   },
   providers: [
     Discord,
