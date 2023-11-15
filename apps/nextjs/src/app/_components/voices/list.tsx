@@ -25,10 +25,10 @@ export function VoiceList() {
       </div>
     );
   }
-  const handleSongClick = (songId: string) => {
+  const handleVoiceClick = (voiceId: string) => {
     // Set the current song in the global state
-    console.log("setting state", songId);
-    dispatch({ type: "SET_CURRENT_SONG", payload: songId });
+    console.log("setting state", voiceId);
+    dispatch({ type: "SET_CURRENT_VOICE", payload: voiceId });
   };
 
   return (
@@ -53,7 +53,7 @@ export function VoiceList() {
                 </p>
               </div>
             </div>
-            <Button onClick={() => handleSongClick(voice.voice_id)}>
+            <Button onClick={() => handleVoiceClick(voice.voice_id)}>
               Generate
             </Button>
           </li>

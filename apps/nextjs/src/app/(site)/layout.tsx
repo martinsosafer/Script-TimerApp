@@ -41,14 +41,12 @@ export const metadata: Metadata = {
 
 export default function Layout(props: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="h-full">
-      <body className={["font-sans", "h-full", fontSans.variable].join(" ")}>
-        <TopNavigation />
-        <TRPCReactProvider headers={headers()}>
-          <Sidebar>{props.children}</Sidebar>
-          <Player />
-        </TRPCReactProvider>
-      </body>
-    </html>
+    <>
+      <TopNavigation />
+      <TRPCReactProvider headers={headers()}>
+        <Sidebar>{props.children}</Sidebar>
+        <Player />
+      </TRPCReactProvider>
+    </>
   );
 }

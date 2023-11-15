@@ -1,11 +1,7 @@
-import { Suspense } from "react";
-
 import { auth } from "@voiceai/auth";
-import { Button, TiptapEditor } from "@voiceai/ui";
 
-import { ChatWindow } from "../_components/ai/chat/chat-window";
 import { AuthShowcase } from "../_components/auth-showcase";
-import { VoiceList } from "../_components/voices/list";
+import SpeechEditor from "../_components/speech-editor";
 
 export const runtime = "edge";
 
@@ -15,14 +11,8 @@ export default async function HomePage() {
   return (
     <main className="flex h-screen flex-col items-center bg-gradient-to-b text-white">
       <div className="container mt-12 flex flex-col items-center justify-center gap-4 py-8">
-        {/* <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-          VoiceAI
-        </h1> */}
         <AuthShowcase />
-        <TiptapEditor
-          content={"Hello World!"}
-          className="w-full rounded-md border-4 border-red-500"
-        />
+        <SpeechEditor />
 
         {session && (
           <>

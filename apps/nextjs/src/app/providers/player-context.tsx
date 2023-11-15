@@ -3,11 +3,12 @@ import { createContext, useContext, useReducer } from "react";
 
 // Define types
 interface PlayerState {
-  currentSongId: string | null;
+  currentVoiceId: string | null;
+  speech: string | null; // New property for speech
 }
 
 interface PlayerAction {
-  type: "SET_CURRENT_SONG";
+  type: "SET_CURRENT_VOICE" | "SET_SPEECH"; // Added action type for speech
   payload: string;
 }
 
@@ -18,7 +19,8 @@ interface PlayerContextProps {
 
 // Initial state
 const initialState: PlayerState = {
-  currentSongId: null,
+  currentVoiceId: null,
+  speech: null,
 };
 
 // Reducer function
@@ -27,8 +29,10 @@ const playerReducer = (
   action: PlayerAction,
 ): PlayerState => {
   switch (action.type) {
-    case "SET_CURRENT_SONG":
-      return { ...state, currentSongId: action.payload };
+    case "SET_CURRENT_VOICE":
+      return { ...state, currentVoiceId: action.payload };
+    case "SET_SPEECH":
+      return { ...state, speech: action.payload };
     default:
       return state;
   }

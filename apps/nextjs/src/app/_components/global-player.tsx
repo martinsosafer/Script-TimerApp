@@ -8,15 +8,12 @@ interface PlayerContentProps {
   //   song: Song;
   //   songUrl: string;
 }
-interface AudioDataChunk {
-  value: Uint8Array;
-  done: boolean;
-}
+
 const audioContext = new AudioContext();
 
 const processAudioData = async (
   reader: ReadableStreamDefaultReader<Uint8Array>,
-) => {
+): Promise<void> => {
   console.log("in reader", reader);
   const audioBuffer = await new Promise(async (resolve, reject) => {
     const chunks = [];
@@ -24,6 +21,7 @@ const processAudioData = async (
 
     console.log("stream", stream);
     while (!stream.done) {
+      console.log("NEW CHUNK");
       chunks.push(stream.value);
       await new Promise((resolve) => setTimeout(resolve, 0));
       stream = await reader.read();
@@ -38,8 +36,7 @@ const processAudioData = async (
       offset += chunk.length;
     }
 
-    // audioContext.decodeAudioData(concatenatedData.buffer, resolve, reject);
-
+    console.log("PLAYING");
     audioContext.decodeAudioData(concatenatedData.buffer, (buffer) => {
       const audioSource = audioContext.createBufferSource();
       audioSource.buffer = buffer;
@@ -47,11 +44,13 @@ const processAudioData = async (
       audioSource.start(0);
     });
   });
-
-  // Now you can use the audioBuffer for playback or other processing
 };
 
-const streamTranscript = async (voiceId: string) => {
+const streamTranscript = async (
+  voiceId: string,
+  speech: string,
+): Promise<void> => {
+  console.log("SENDING", speech);
   const response = await fetch(`/api/voice`, {
     method: "POST",
 
@@ -61,31 +60,11 @@ const streamTranscript = async (voiceId: string) => {
 
     body: JSON.stringify({
       voice_id: voiceId,
-      message: `According to all known laws
-        of aviation,
-        
-          
-        there is no way a bee
-        should be able to fly.
-        
-          
-        Its wings are too small to get
-        its fat little body off the ground.
-        
-          
-        The bee, of course, flies anyway
-        
-          
-        because bees don't care
-        what humans think is impossible.
-        
-          
-        Yellow, black. Yellow, black.
-        Yellow, black. Yellow, black.`,
-    }), // body data type must match "Content-Type" header
+      message: speech,
+    }),
   });
   console.log("response", response);
-  const startTime = 0;
+
   if (response.body) {
     const reader = response.body.getReader();
     processAudioData(reader);
@@ -99,14 +78,14 @@ const PlayerContent: React.FC<PlayerContentProps> = (
   },
 ) => {
   const { state } = usePlayer();
-  const { currentSongId } = state;
-  console.log("IN PLAYER", state, currentSongId);
+  const { currentVoiceId, speech } = state;
+  console.log("IN PLAYER", state, currentVoiceId, speech);
 
   useEffect(() => {
-    if (currentSongId) {
-      streamTranscript(currentSongId);
+    if (currentVoiceId) {
+      streamTranscript(currentVoiceId, speech ?? "");
     }
-  }, [currentSongId]);
+  }, [currentVoiceId, speech]);
 
   const onPlayNext = () => {};
 
