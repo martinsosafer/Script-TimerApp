@@ -81,11 +81,22 @@ const PlayerContent: React.FC<PlayerContentProps> = (
   const { currentVoiceId, speech } = state;
   console.log("IN PLAYER", state, currentVoiceId, speech);
 
+  const [currentVoiceIdState, setCurrentVoiceIdState] = useState<string | null>(
+    null,
+  );
+
   useEffect(() => {
-    if (currentVoiceId) {
-      streamTranscript(currentVoiceId, speech ?? "");
+    // Check if voiceId has changed
+    if (currentVoiceId !== currentVoiceIdState) {
+      // Update the currentVoiceIdState
+      setCurrentVoiceIdState(currentVoiceId);
+
+      // Call streamTranscript only when voiceId changes
+      if (currentVoiceId) {
+        streamTranscript(currentVoiceId, speech ?? "");
+      }
     }
-  }, [currentVoiceId, speech]);
+  }, [currentVoiceId, speech, currentVoiceIdState]);
 
   const onPlayNext = () => {};
 
