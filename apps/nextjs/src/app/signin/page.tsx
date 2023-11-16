@@ -46,7 +46,7 @@ export default async function SignIn() {
                       await signIn("facebook", { redirectTo: "/" });
                     }}
                   >
-                    <button className="flex w-full items-center justify-center gap-3 rounded-md bg-[#1877F2] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1D9BF0]">
+                    <button className="flex w-full items-center justify-center gap-3 rounded-md bg-[#1877F2] px-3 py-1.5 text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1D9BF0]">
                       <svg
                         version="1.1"
                         className="h-5 w-5"

@@ -25,7 +25,7 @@ const SpeechEditor: React.FC<SpeechEditorProps> = ({}) => {
     <>
       <TiptapEditor
         content={state.speech ?? ""}
-        className="w-full rounded-md border-4 border-red-500"
+        className="h-full w-full rounded-md px-4 pt-8"
         onChange={handleEditorChange}
       />
     </>

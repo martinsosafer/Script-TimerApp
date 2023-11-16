@@ -9,14 +9,18 @@ export default async function HomePage() {
   const session = await auth();
 
   return (
-    <main className="flex h-screen flex-col items-center bg-gradient-to-b text-white">
-      <div className="container mt-12 flex flex-col items-center justify-center gap-4 py-8">
+    <div className="container flex h-full flex-col items-start justify-start gap-4 py-8">
+      {/* <div className="self-end">
         <AuthShowcase />
-        <SpeechEditor />
+      </div> */}
 
-        {session && (
-          <>
-            {/* <div className="w-full ">
+      <div className="flex h-5/6 w-full flex-col items-center rounded-lg bg-white">
+        <SpeechEditor />
+      </div>
+
+      {session && (
+        <>
+          {/* <div className="w-full ">
               <ChatWindow
                 endpoint="api/chat"
                 emptyStateComponent={<>empty</>}
@@ -33,9 +37,8 @@ export default async function HomePage() {
             >
               <VoiceList />
             </Suspense> */}
-          </>
-        )}
-      </div>
-    </main>
+        </>
+      )}
+    </div>
   );
 }
