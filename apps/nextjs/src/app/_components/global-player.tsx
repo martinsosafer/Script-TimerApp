@@ -1,6 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import PlayIcon from "@heroicons/react/24/outline/PlayIcon";
+import BackwardIcon from "@heroicons/react/24/solid/BackwardIcon";
+import ForwardIcon from "@heroicons/react/24/solid/ForwardIcon";
+import HeartIcon from "@heroicons/react/24/solid/HeartIcon";
 
 import { usePlayer } from "../providers/player-context";
 
@@ -98,6 +102,8 @@ const PlayerContent: React.FC<PlayerContentProps> = (
     }
   }, [currentVoiceId, speech, currentVoiceIdState]);
 
+  const [progress, setProgress] = useState(0);
+
   const onPlayNext = () => {};
 
   const onPlayPrevious = () => {};
@@ -120,93 +126,50 @@ const PlayerContent: React.FC<PlayerContentProps> = (
     >
       <div className="grid h-full grid-cols-2 md:grid-cols-3">
         <div className="flex w-full justify-start">
-          <div className="flex items-center gap-x-4">
-            {/* <MediaItem data={song} />
-            <LikeButton songId={song.id} /> */}
-          </div>
+          <HeartIcon width={30} className="fill-slate-100 hover:fill-red-400" />
         </div>
 
-        <div
-          className="
-            col-auto 
-            flex 
-            w-full 
-            items-center 
-            justify-end 
-            md:hidden
-          "
-        >
+        <div className="relative mt-2 w-full">
           <div
-            onClick={handlePlay}
             className="
-              flex
-              h-10
-              w-10 
-              cursor-pointer 
-              items-center 
-              justify-center 
-              rounded-full 
-              bg-white 
-              p-1
-            "
-          >
-            {/* <Icon size={30} className="text-black" /> */}
-          </div>
-        </div>
-
-        <div
-          className="
-            hidden
+            grid
             h-full
-            w-full 
-            max-w-[722px] 
-            items-center 
-            justify-center 
-            gap-x-6 
+            w-full
+            max-w-[722px]
+            items-center
+            justify-center
+            gap-x-6
             md:flex
           "
-        >
-          {/* <AiFillStepBackward
-            onClick={onPlayPrevious}
-            size={30} 
-            className="
-              text-neutral-400 
-              cursor-pointer 
-              hover:text-white 
-              transition
-            "
-          /> */}
-          <div
-            onClick={handlePlay}
-            className="
-              flex 
-              h-10 
-              w-10
-              cursor-pointer
-              items-center 
-              justify-center 
-              rounded-full 
-              bg-white 
-              p-1
-            "
           >
-            {/* <Icon size={30} className="text-black" /> */}
+            <BackwardIcon
+              width={30}
+              className="cursor-pointer text-white hover:text-gray-300"
+              onClick={onPlayPrevious}
+            />
+            <PlayIcon
+              width={30}
+              className="cursor-pointer text-white hover:text-gray-300"
+              onClick={handlePlay}
+            />
+            <ForwardIcon
+              width={30}
+              className="cursor-pointer text-white hover:text-gray-300"
+              onClick={onPlayNext}
+            />
           </div>
-          {/* <AiFillStepForward
-            onClick={onPlayNext}
-            size={30} 
-            className="
-              text-neutral-400 
-              cursor-pointer 
-              hover:text-white 
-              transition
-            " 
-          /> */}
+          <div className="inset-0 flex items-center">
+            <div className="h-1 w-full bg-gray-200">
+              <div className="h-1 bg-blue-500" style={{ width: "50%" }}></div>{" "}
+              {/* Example: Set to 50% for demonstration */}
+            </div>
+          </div>
         </div>
+      </div>
 
-        <div className="hidden w-full justify-end pr-2 md:flex">
-          <div className="flex w-[120px] items-center gap-x-2">
-            {/* <VolumeIcon 
+      <div className="hidden w-full justify-end pr-2 md:flex">
+        <div className="flex w-[120px] items-center gap-x-2">
+          {/* <VolumeIcon 
               onClick={toggleMute} 
               className="cursor-pointer" 
               size={34} 
@@ -215,7 +178,6 @@ const PlayerContent: React.FC<PlayerContentProps> = (
               value={volume} 
               onChange={(value) => setVolume(value)}
             /> */}
-          </div>
         </div>
       </div>
     </div>

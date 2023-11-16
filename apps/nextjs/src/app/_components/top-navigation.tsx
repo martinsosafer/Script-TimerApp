@@ -11,6 +11,7 @@ import UserIcon from "@heroicons/react/24/outline/UserIcon";
 import Avatar from "boring-avatars";
 
 import {
+  Button,
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuList,
@@ -39,9 +40,12 @@ const TopNavigation = () => {
 
         {/* Mobile Hamburger Icon */}
         <div className="md:hidden">
-          <button onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}>
+          <Button
+            variant="ghost"
+            onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}
+          >
             <Bars3Icon className="h-6 w-6 text-white" />
-          </button>
+          </Button>
         </div>
 
         {/* Logo Centered for Mobile and Desktop View */}
@@ -74,9 +78,9 @@ const TopNavigation = () => {
         </div>
 
         {/* User Avatar */}
-        <div className="hidden items-center rounded-full border border-white p-2 md:flex">
+        <div className="hidden  items-center rounded-full border border-white px-2 py-2 md:flex">
           <Avatar
-            size={40}
+            size={30}
             name={USER_ONE}
             variant="pixel" // You can choose other variants like 'beam', 'pixel', etc.
             colors={["#92A1C6", "#146A7C", "#F0AB3D", "#C271B4", "#C20D90"]} // Define your color palette

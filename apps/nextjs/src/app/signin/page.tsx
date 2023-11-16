@@ -19,7 +19,7 @@ export default async function SignIn() {
                 <h1 className="text-2xl font-semibold tracking-tight">
                   Log In to InstaVoice
                 </h1>
-                <p className="text-muted-foreground text-sm">
+                <p className="text-sm text-muted-foreground">
                   Your voice matters, lets get started
                 </p>
               </div>
@@ -29,7 +29,7 @@ export default async function SignIn() {
                     <span className="w-full border-t" />
                   </div>
                   <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-background text-muted-foreground px-2">
+                    <span className="bg-background px-2 text-muted-foreground">
                       Continue with
                     </span>
                   </div>
@@ -116,18 +116,18 @@ export default async function SignIn() {
                   </button>
                 </form>
               </div>
-              <p className="text-muted-foreground px-8 text-center text-sm">
+              <p className="px-8 text-center text-sm text-muted-foreground">
                 By clicking continue, you agree to our{" "}
                 <Link
                   href="/terms"
-                  className="hover:text-primary underline underline-offset-4"
+                  className="underline underline-offset-4 hover:text-primary"
                 >
                   Terms of Service
                 </Link>{" "}
                 and{" "}
                 <Link
                   href="/privacy"
-                  className="hover:text-primary underline underline-offset-4"
+                  className="underline underline-offset-4 hover:text-primary"
                 >
                   Privacy Policy
                 </Link>
@@ -135,7 +135,7 @@ export default async function SignIn() {
               </p>
             </div>
           </div>
-          <div className="bg-muted relative h-full flex-col p-10 text-white dark:border-r lg:flex">
+          <div className="relative h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
             <Image
               className="h-md absolute bottom-0 right-0 z-20 hidden w-full rounded-lg object-cover md:block"
               src={coverImg}

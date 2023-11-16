@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import PlayCircleIcon from "@heroicons/react/24/outline/PlayCircleIcon";
+import UserCircleIcon from "@heroicons/react/24/outline/UserCircleIcon";
 
 import { Button } from "@voiceai/ui";
 
@@ -11,6 +13,18 @@ import type { RouterOutputs } from "~/utils/api";
 export function VoiceList() {
   const [voices] = api.voice.all.useSuspenseQuery();
   const { dispatch } = usePlayer();
+  const [currentPage, setCurrentPage] = useState(1);
+  const voicesPerPage = 10;
+
+  const indexOfLastVoice = currentPage * voicesPerPage;
+  const indexOfFirstVoice = indexOfLastVoice - voicesPerPage;
+  const currentVoices = voices.slice(indexOfFirstVoice, indexOfLastVoice);
+
+  // Pagination logic
+  const totalPages = Math.ceil(voices.length / voicesPerPage);
+
+  // Function to change page
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   if (voices.length === 0) {
     return (
@@ -32,40 +46,51 @@ export function VoiceList() {
   };
 
   return (
-    <div className="flex w-full flex-col gap-4">
-      {/* <ul className="divide-y divide-white/5"> */}
-      <ul role="list" className="divide-y divide-gray-100">
-        {voices.map((voice) => (
+    <div className="flex h-full w-full flex-col justify-between gap-4">
+      {/* Voices grid */}
+      <ul className="grid grid-cols-2 gap-4">
+        {currentVoices.map((voice) => (
           <li
             key={voice.voice_id}
-            className="flex items-center justify-between gap-x-6 py-5"
+            className="flex flex-col justify-center rounded-lg border p-4"
           >
-            <div className="flex min-w-0 gap-x-4">
-              {/* <img className="h-12 w-12 flex-none rounded-full bg-gray-50" src={person.imageUrl} alt="" /> */}
-              <div className="min-w-0 flex-auto">
-                <p className="text-sm font-semibold leading-6">
-                  {/* @ts-expect-error will type this later */}
-                  {voice.name}
-                </p>
-                <p className="mt-1 truncate text-xs leading-5">
-                  {/* @ts-expect-error will type this later */}
-                  {voice.labels.accent}
-                </p>
-              </div>
+            <div className="flex items-center justify-between">
+              <UserCircleIcon className="h-10 w-10 flex-none rounded-full text-gray-400" />
+              <p className="flex-grow text-center text-sm font-semibold text-black">
+                {/* @ts-expect-error will type this later */}
+                {voice.name}
+              </p>
+              <button
+                onClick={() => handleVoiceClick(voice.voice_id)}
+                className="rounded-full border border-transparent bg-transparent p-2 text-black shadow-sm hover:bg-gray-200"
+              >
+                <PlayCircleIcon className="h-8 w-8" />
+              </button>
             </div>
-            <Button onClick={() => handleVoiceClick(voice.voice_id)}>
-              Generate
-            </Button>
+            <div className="mt-2 text-center text-sm text-gray-500">
+              {/* @ts-expect-error will type this later */}
+              <p> {voice.gender && voice.gender}</p>
+              {/* @ts-expect-error will type this later */}
+              <p> {voice.labels.accent && voice.labels.accent}</p>
+            </div>
           </li>
         ))}
       </ul>
-      <Button
-      // className="flex w-full items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
-      >
-        View all
-      </Button>
-
-      {/* </ul> */}
+      {/* Pagination */}
+      <div className="mt-8 flex items-center justify-center gap-2">
+        {Array.from({ length: totalPages }, (_, i) => (
+          <Button
+            variant="ghost"
+            key={i}
+            onClick={() => paginate(i + 1)}
+            className={`h-10 w-10 rounded-sm shadow-none ${
+              currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-300"
+            }`}
+          >
+            {i + 1}
+          </Button>
+        ))}
+      </div>
     </div>
   );
 }

@@ -51,8 +51,10 @@ const Sidebar = async ({ children }: SidebarProps) => {
     <div
       className={twMerge(
         `
-        flex 
-        h-full
+        border-gray 
+        flex
+         h-full
+         bg-gray-200
         `,
       )}
     >
@@ -62,12 +64,12 @@ const Sidebar = async ({ children }: SidebarProps) => {
           w-1/3
           flex-col 
           gap-y-2 
-          bg-black 
-          p-2 
+          bg-white 
+          p-4
           md:flex
         "
       >
-        <div className="h-full overflow-y-auto">
+        <div className="h-5/6 overflow-y-auto">
           {session && (
             <>
               <Suspense
@@ -81,7 +83,7 @@ const Sidebar = async ({ children }: SidebarProps) => {
           )}
         </div>
       </div>
-      <main className="h-full flex-1 overflow-y-auto py-2">{children}</main>
+      <div className="h-full flex-1 overflow-y-auto">{children}</div>
     </div>
   );
 };
