@@ -3,7 +3,8 @@
 import React from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { BiBold, BiItalic, BiUnderline } from "react-icons/bi"; // Assuming you are using react-icons for simplicity
+
+// import { BiBold, BiItalic, BiUnderline } from "react-icons/bi"; // Assuming you are using react-icons for simplicity
 
 interface TiptapEditorProps {
   className?: string;
@@ -38,7 +39,7 @@ const TiptapEditor = ({ className, content, onChange }: TiptapEditorProps) => {
   return (
     <div className={`flex flex-col ${className}`}>
       <EditorContent editor={editor} className="flex-grow" />
-      <div className="flex items-center justify-between border-t p-2">
+      {/* <div className="flex items-center justify-between border-t p-2">
         <button
           onClick={() =>
             applyFormat(() => editor.chain().focus().toggleBold().run())
@@ -63,7 +64,7 @@ const TiptapEditor = ({ className, content, onChange }: TiptapEditorProps) => {
         >
           <BiUnderline size="1.25em" />
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };
