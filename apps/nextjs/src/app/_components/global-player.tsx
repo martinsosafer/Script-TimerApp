@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import ArrowDownOnSquareIcon from "@heroicons/react/24/outline/ArrowDownOnSquareIcon";
 import PlayIcon from "@heroicons/react/24/outline/PlayIcon";
-import BackwardIcon from "@heroicons/react/24/solid/BackwardIcon";
-import ForwardIcon from "@heroicons/react/24/solid/ForwardIcon";
-import HeartIcon from "@heroicons/react/24/solid/HeartIcon";
+import TrashIcon from "@heroicons/react/24/outline/TrashIcon";
+import UserIcon from "@heroicons/react/24/solid/UserIcon";
 
 import { usePlayer } from "../providers/player-context";
 
@@ -117,67 +117,54 @@ const PlayerContent: React.FC<PlayerContentProps> = (
       className="
       fixed 
       bottom-0 
-      h-[80px] 
+      h-24
       w-full 
-      bg-black 
-      px-4 
-      py-2
+      bg-gray-200 
+      px-4 py-4 
+      sm:px-6
     "
     >
-      <div className="grid h-full grid-cols-2 md:grid-cols-3">
-        <div className="flex w-full justify-start">
-          <HeartIcon width={30} className="fill-slate-100 hover:fill-red-400" />
+      <div className="grid h-full w-full grid-cols-1 place-content-between content-center rounded-2xl bg-white p-3 shadow-md shadow-gray-900 md:grid-cols-3 md:p-4">
+        <div className="flex items-center justify-center rounded-md border border-gray-100 px-2 py-1 md:w-1/4 md:justify-start">
+          <UserIcon className="h-5 w-5 flex-none rounded-full text-gray-400 md:h-8 md:w-8" />
+          {/* {voice.name} */}
         </div>
 
-        <div className="relative mt-2 w-full">
-          <div
-            className="
-            grid
-            h-full
-            w-full
-            max-w-[722px]
-            items-center
-            justify-center
-            gap-x-6
-            md:flex
-          "
-          >
-            <BackwardIcon
-              width={30}
-              className="cursor-pointer text-white hover:text-gray-300"
-              onClick={onPlayPrevious}
-            />
+        {/* Playback Control */}
+        <div
+          className="
+          flex
+          h-full w-full
+          flex-col
+          items-center
+          gap-x-2
+          gap-y-2
+          md:flex-row md:gap-y-0
+        "
+        >
+          <button onClick={handlePlay}>
             <PlayIcon
               width={30}
-              className="cursor-pointer text-white hover:text-gray-300"
-              onClick={handlePlay}
+              className="cursor-pointer fill-gray-700 hover:text-gray-300"
             />
-            <ForwardIcon
-              width={30}
-              className="cursor-pointer text-white hover:text-gray-300"
-              onClick={onPlayNext}
-            />
-          </div>
-          <div className="inset-0 flex items-center">
-            <div className="h-1 w-full bg-gray-200">
-              <div className="h-1 bg-blue-500" style={{ width: "50%" }}></div>{" "}
-              {/* Example: Set to 50% for demonstration */}
-            </div>
+          </button>
+
+          <div className="h-2 w-full rounded-full bg-gray-200">
+            <div
+              className="h-2 rounded-full bg-blue-500"
+              style={{ width: "50%" }}
+            ></div>
           </div>
         </div>
-      </div>
 
-      <div className="hidden w-full justify-end pr-2 md:flex">
-        <div className="flex w-[120px] items-center gap-x-2">
-          {/* <VolumeIcon 
-              onClick={toggleMute} 
-              className="cursor-pointer" 
-              size={34} 
-            />
-            <Slider 
-              value={volume} 
-              onChange={(value) => setVolume(value)}
-            /> */}
+        {/* Action Icons */}
+        <div className="flex items-center justify-center gap-x-2 md:justify-end">
+          <button>
+            <ArrowDownOnSquareIcon width={30} className="stroke-black" />
+          </button>
+          <button>
+            <TrashIcon width={30} className="stroke-black" />
+          </button>
         </div>
       </div>
     </div>
