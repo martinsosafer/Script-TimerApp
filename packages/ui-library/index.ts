@@ -10,4 +10,4 @@ export {
   NavigationMenuIndicator,
   NavigationMenuViewport,
 } from "./@/components/ui/navigation-menu";
-export { TiptapEditor } from "./@/components/ui/editor";
+export { SimpleEditor } from "./@/components/ui/editor";

@@ -117,7 +117,7 @@ const PlayerContent: React.FC<PlayerContentProps> = (
       className="
       fixed 
       bottom-0 
-      h-24
+      h-32
       w-full 
       bg-gray-200 
       px-4 py-4 
