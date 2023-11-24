@@ -14,7 +14,7 @@ export default async function HomePage() {
         <AuthShowcase />
       </div> */}
 
-      <div className="flex h-5/6 w-full flex-col items-center rounded-lg bg-white">
+      <div className="flex h-5/6 w-full flex-col items-center rounded-xl bg-white p-4">
         <SpeechEditor />
       </div>
 

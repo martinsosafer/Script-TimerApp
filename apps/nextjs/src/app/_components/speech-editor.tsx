@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { Button, TiptapEditor } from "@voiceai/ui";
+import { Button, SimpleEditor } from "@voiceai/ui";
 
 import { usePlayer } from "../providers/player-context";
 
@@ -13,6 +13,7 @@ const SpeechEditor: React.FC<SpeechEditorProps> = ({}) => {
 
   // Function to update the speech value
   const setSpeech = (newSpeech: string) => {
+    console.log("SETTING SPEECH", newSpeech);
     dispatch({ type: "SET_SPEECH", payload: newSpeech });
   };
 
@@ -23,7 +24,7 @@ const SpeechEditor: React.FC<SpeechEditorProps> = ({}) => {
 
   return (
     <>
-      <TiptapEditor
+      <SimpleEditor
         content={state.speech ?? ""}
         className="h-full w-full rounded-md px-4 pt-8"
         onChange={handleEditorChange}

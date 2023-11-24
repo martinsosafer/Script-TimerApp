@@ -64,7 +64,7 @@ const TopNavigation = () => {
                 .map((item) => (
                   <NavigationMenuItem key={item.name}>
                     <Link
-                      className="flex items-center p-2 text-white hover:bg-blue-800"
+                      className="flex items-center rounded-md p-2 text-white hover:bg-blue-800"
                       href={item.href}
                       passHref
                     >

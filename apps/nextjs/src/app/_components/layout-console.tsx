@@ -51,9 +51,7 @@ const Sidebar = async ({ children }: SidebarProps) => {
     <div
       className={twMerge(
         `
-        border-gray 
         flex
-         h-full
          bg-gray-200
         `,
       )}
@@ -83,7 +81,7 @@ const Sidebar = async ({ children }: SidebarProps) => {
           )}
         </div>
       </div>
-      <div className="h-full flex-1 overflow-y-auto">{children}</div>
+      <div className="h-5/6 w-full overflow-y-auto">{children}</div>
     </div>
   );
 };
