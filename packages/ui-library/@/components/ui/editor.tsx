@@ -1,38 +1,88 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import ArrowUTurnLeftIcon from "@heroicons/react/24/outline/ArrowUturnLeftIcon";
 import ArrowUTurnRightIcon from "@heroicons/react/24/outline/ArrowUturnRightIcon";
+import ClipboardIcon from "@heroicons/react/24/outline/ClipboardIcon";
 import Bold from "@tiptap/extension-bold";
+import CharacterCount from "@tiptap/extension-character-count";
 import Document from "@tiptap/extension-document";
+import History from "@tiptap/extension-history";
 import Italic from "@tiptap/extension-italic";
 import Paragraph from "@tiptap/extension-paragraph";
+import Placeholder from "@tiptap/extension-placeholder";
 import Text from "@tiptap/extension-text";
+import Typography from "@tiptap/extension-typography";
 import Underline from "@tiptap/extension-underline";
-// TODO: create button to give word count
-// import CharacterCount from "@tiptap/extension-character-count";
 import type { Editor } from "@tiptap/react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import classNames from "classnames";
 
 import { Button } from "./button";
 
-function SimpleEditor({ content, onChange, className }) {
+interface SimpleEditorProps {
+  className?: string;
+  content?: string;
+  onChange: (content: string) => void;
+}
+
+function SimpleEditor({ content, onChange, className }: SimpleEditorProps) {
+  const [charCount, setCharCount] = useState(0);
+  const [showCharCount, setShowCharCount] = useState(false);
+
   const editor = useEditor({
-    extensions: [Document, History, Paragraph, Text, Bold, Underline, Italic],
+    extensions: [
+      Document,
+      History,
+      Paragraph,
+      Text,
+      Bold,
+      Underline,
+      Italic,
+      Typography,
+      CharacterCount.configure({}),
+      Placeholder.configure({
+        emptyEditorClass: "is-editor-empty",
+        placeholder: "Type something...",
+      }),
+    ],
     content: content,
+    onUpdate: ({ editor }) => {
+      onChange(editor.getText());
+      setCharCount(editor.storage.characterCount.characters());
+    },
   }) as Editor;
 
+  useEffect(() => {
+    if (editor) {
+      setCharCount(editor.storage.characterCount.characters());
+    }
+  }, [editor]);
+
+  const toggleCharCountDisplay = () => {
+    setShowCharCount(!showCharCount);
+  };
+
+  const copyToClipboard = () => {
+    if (editor && navigator.clipboard) {
+      const content = editor.getText();
+      navigator.clipboard
+        .writeText(content)
+        .then(() => console.log("Content copied to clipboard"))
+        .catch((err) => console.error("Failed to copy content", err));
+    }
+  };
+
   const toggleBold = useCallback(() => {
-    // editor.chain().focus().toggleBold().run();
+    editor.chain().focus().toggleBold().run();
   }, [editor]);
 
   const toggleUnderline = useCallback(() => {
-    // editor.chain().focus().toggleUnderline().run();
+    editor.chain().focus().toggleUnderline().run();
   }, [editor]);
 
   const toggleItalic = useCallback(() => {
-    // editor.chain().focus().toggleItalic().run();
+    editor.chain().focus().toggleItalic().run();
   }, [editor]);
 
   if (!editor) {
@@ -40,134 +90,80 @@ function SimpleEditor({ content, onChange, className }) {
   }
 
   return (
-    <div className="mb-4 flex h-full w-full flex-col rounded-md px-8 py-5">
-      {/* TODO add other buttons */}
-      <EditorContent editor={editor} />
-      <div className="z-30 m-0 flex h-[50px] w-full items-center justify-evenly gap-8 self-center py-4">
-        <Button
-          className="menu-button"
-          // onClick={() => editor.chain().focus().undo().run()}
-          // disabled={!editor.can().undo()}
-        >
-          <ArrowUTurnLeftIcon className="h-5 w-5 text-black" />
-        </Button>
-        <Button
-          className="menu-button"
-          // onClick={() => editor.chain().focus().redo().run()}
-          // disabled={!editor.can().redo()}
-        >
-          <ArrowUTurnRightIcon className="h-5 w-5 text-black" />
-        </Button>
-        <Button
-          className={classNames("menu-button", {
-            // "is-active": editor.isActive("bold"),
-          })}
-          onClick={toggleBold}
-        >
-          Bold
-        </Button>
-        <Button
-          className={classNames("menu-button", {
-            // "is-active": editor.isActive("underline"),
-          })}
-          onClick={toggleUnderline}
-        >
-          Underline
-        </Button>
-        <Button
-          className={classNames("menu-button", {
-            // "is-active": editor.isActive("intalic"),
-          })}
-          onClick={toggleItalic}
-        >
-          Italic
-        </Button>
-      </div>
+    <div
+      className={classNames(
+        "mb-4 flex h-full w-full flex-col rounded-md px-8 py-5",
+        className,
+      )}
+    >
+      {editor && (
+        <>
+          {/* TODO add other buttons */}
+          <EditorContent editor={editor} />
+          <div className="z-30 m-0 flex h-[50px] w-full items-center justify-start gap-8 self-start py-4">
+            <div className="flex items-center justify-between">
+              <Button
+                className="menu-button mr-1 border border-slate-500"
+                onClick={() => editor.chain().focus().undo().run()}
+                disabled={!editor.can().undo()}
+              >
+                <ArrowUTurnLeftIcon className="h-5 w-5 text-black" />
+              </Button>
+              <Button
+                className="menu-button mr-1 border border-slate-500"
+                onClick={() => editor.chain().focus().redo().run()}
+                disabled={!editor.can().redo()}
+              >
+                <ArrowUTurnRightIcon className="h-5 w-5 text-black" />
+              </Button>
+              <Button
+                className="menu-button border border-slate-500"
+                disabled={charCount === 0}
+                onClick={copyToClipboard}
+              >
+                <ClipboardIcon className="h-5 w-5 text-black" />
+              </Button>
+            </div>
+            <div className="flex w-1/4 items-center justify-between">
+              <Button
+                className={classNames("menu-button border border-slate-500", {
+                  "is-active": editor.isActive("bold"),
+                })}
+                onClick={toggleBold}
+              >
+                Bold
+              </Button>
+              <Button
+                className={classNames("menu-button border border-slate-500", {
+                  "is-active": editor.isActive("underline"),
+                })}
+                onClick={toggleUnderline}
+              >
+                Underline
+              </Button>
+              <Button
+                className={classNames("menu-button border border-slate-500", {
+                  "is-active": editor.isActive("intalic"),
+                })}
+                onClick={toggleItalic}
+              >
+                Italic
+              </Button>
+            </div>
+            <div className="flex w-1/2 items-center justify-between">
+              <Button
+                className="border border-slate-500"
+                onClick={toggleCharCountDisplay}
+              >
+                Word count
+              </Button>
+              {showCharCount && <span className="text-black">{charCount}</span>}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
-// const MenuBar = (editor) => {
-//   if (!editor) {
-//     return null;
-//   }
-
-//   return (
-//     <div className="flex w-full border border-gray-400 p-2 text-black">
-//       <div className="flex w-1/3 justify-evenly">
-//         <Button onClick={() => editor.value.chain().focus().toggleBold().run()}>
-//           Bold
-//         </Button>
-
-//         <Button
-//         // onClick={() => editor.chain().focus().setUnderline().run()}
-//         // disabled={editor.isActive("underline")}
-//         >
-//           Underline
-//         </Button>
-
-//         <Button
-//         // onClick={() => editor.chain().focus().toggleItalic().run()}
-//         // disabled={!editor.can().chain().focus().toggleItalic().run()}
-//         // className={editor.isActive("italic") ? "is-active" : ""}
-//         >
-//           Italic
-//         </Button>
-//       </div>
-//       <div className="flex w-1/5 justify-evenly">
-//         <Button
-//         // onClick={() => editor.chain().focus().undo().run()}
-//         // disabled={!editor.can().chain().focus().undo().run()}
-//         >
-//           <ArrowUTurnLeftIcon className="h-5 w-5 text-black" />
-//         </Button>
-//         <Button
-//         // onClick={() => editor.chain().focus().redo().run()}
-//         // disabled={!editor.can().chain().focus().redo().run()}
-//         >
-//           <ArrowUTurnRightIcon className="h-5 w-5 text-black" />
-//         </Button>
-//       </div>
-//       {/* <div>Characters:{editor.storage.characterCount.characters()}</div> */}
-//     </div>
-//   );
-// };
-
-// const TiptapEditor = ({ className, content, onChange }) => {
-//   const editor = useEditor({
-//     extensions: [
-//       Document,
-//       Paragraph,
-//       Text,
-//       CharacterCount,
-//       Bold,
-//       Italic,
-//       Underline,
-//     ],
-
-//     content: content,
-
-//     onUpdate: ({ editor }) => {
-//       onChange(editor.getHTML()); // Use getHTML() for rich text
-//     },
-//     editorProps: {
-//       attributes: {
-//         class:
-//           "outline-none ring-transparent prose h-full w-full border-collapse border-gray-400 border rounded-t-md text-black p-2",
-//       },
-//     },
-//   });
-
-//   if (!editor) {
-//     return null;
-//   }
-
-//   return (
-//     <div className={`flex flex-col ${className}`}>
-//       hiii
-//       <EditorContent editor={editor} className="h-5/6 w-full" />
-//       <MenuBar editor={editor} />
-//     </div>
-//   );
-// };
 
 export { SimpleEditor };

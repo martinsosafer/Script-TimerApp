@@ -13,6 +13,7 @@ const SpeechEditor: React.FC<SpeechEditorProps> = ({}) => {
 
   // Function to update the speech value
   const setSpeech = (newSpeech: string) => {
+    console.log("SETTING SPEECH", newSpeech);
     dispatch({ type: "SET_SPEECH", payload: newSpeech });
   };
 
