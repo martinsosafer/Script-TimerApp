@@ -1,20 +1,76 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import PlayCircleIcon from "@heroicons/react/24/outline/PlayCircleIcon";
-import UserCircleIcon from "@heroicons/react/24/outline/UserCircleIcon";
 
-import { Button } from "@voiceai/ui";
+import {
+  Button,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@voiceai/ui";
 
 import { usePlayer } from "~/app/providers/player-context";
 import { api } from "~/utils/api";
 import type { RouterOutputs } from "~/utils/api";
+import { useIsTruncated } from "../../hooks/useIsTruncated";
+
+function VoiceListItem({ voice, onClick }) {
+  const textRef = useRef(null);
+  const isTruncated = useIsTruncated(textRef);
+
+  return (
+    <li className="flex min-h-[10px] max-w-xs flex-col items-center justify-center rounded-lg border p-4">
+      <div className="w-full text-center">
+        {!isTruncated && (
+          <p
+            ref={textRef}
+            className="truncate text-center text-sm font-semibold text-black"
+          >
+            {voice.name}
+          </p>
+        )}
+        {isTruncated && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <p
+                ref={textRef}
+                className="truncate text-center text-sm font-semibold text-black"
+              >
+                {voice.name}
+              </p>
+            </TooltipTrigger>
+            <TooltipContent
+              side="top"
+              align="right"
+              className="max-w-xs rounded-md bg-slate-600 px-4 py-2 text-sm text-gray-200 shadow-lg"
+            >
+              {voice.name}
+            </TooltipContent>
+          </Tooltip>
+        )}
+      </div>
+      <div className="mb-2 flex flex-col justify-evenly text-center text-sm text-gray-500">
+        <p> {voice.gender && voice.gender}</p>
+
+        <p> {voice.labels.accent && voice.labels.accent}</p>
+      </div>
+      <Button
+        onClick={onClick}
+        className="m-0 rounded-full border border-transparent bg-transparent p-0 text-black shadow-sm hover:bg-gray-200"
+      >
+        <PlayCircleIcon className="h-8 w-8" />
+      </Button>
+    </li>
+  );
+}
 
 export function VoiceList() {
   const [voices] = api.voice.all.useSuspenseQuery();
   const { dispatch } = usePlayer();
   const [currentPage, setCurrentPage] = useState(1);
-  const voicesPerPage = 10;
+  const voicesPerPage = 12;
 
   const indexOfLastVoice = currentPage * voicesPerPage;
   const indexOfFirstVoice = indexOfLastVoice - voicesPerPage;
@@ -46,52 +102,35 @@ export function VoiceList() {
   };
 
   return (
-    <div className="flex h-full w-full flex-col justify-between gap-4">
-      {/* Voices grid */}
-      <ul className="grid grid-cols-2 gap-4">
-        {currentVoices.map((voice) => (
-          <li
-            key={voice.voice_id}
-            className="flex flex-col justify-center rounded-lg border p-4"
-          >
-            <div className="flex items-center justify-between">
-              <UserCircleIcon className="h-10 w-10 flex-none rounded-full text-gray-400" />
-              <p className="flex-grow text-center text-sm font-semibold text-black">
-                {/* @ts-expect-error will type this later */}
-                {voice.name}
-              </p>
-              <button
-                onClick={() => handleVoiceClick(voice.voice_id)}
-                className="rounded-full border border-transparent bg-transparent p-2 text-black shadow-sm hover:bg-gray-200"
-              >
-                <PlayCircleIcon className="h-8 w-8" />
-              </button>
-            </div>
-            <div className="mt-2 text-center text-sm text-gray-500">
-              {/* @ts-expect-error will type this later */}
-              <p> {voice.gender && voice.gender}</p>
-              {/* @ts-expect-error will type this later */}
-              <p> {voice.labels.accent && voice.labels.accent}</p>
-            </div>
-          </li>
-        ))}
-      </ul>
-      {/* Pagination */}
-      <div className="mt-8 flex items-center justify-center gap-2">
-        {Array.from({ length: totalPages }, (_, i) => (
-          <Button
-            variant="ghost"
-            key={i}
-            onClick={() => paginate(i + 1)}
-            className={`h-10 w-10 rounded-sm shadow-none ${
-              currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-300"
-            }`}
-          >
-            {i + 1}
-          </Button>
-        ))}
+    <TooltipProvider>
+      <div className="flex min-h-full w-full flex-col justify-between gap-4">
+        {/* Voices grid */}
+        <ul className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+          {currentVoices.map((voice) => (
+            <VoiceListItem
+              key={voice.voice_id}
+              voice={voice}
+              onClick={() => handleVoiceClick(voice.voice_id)}
+            />
+          ))}
+        </ul>
+        {/* Pagination */}
+        <div className="mt-8 flex min-h-max items-center justify-center gap-2">
+          {Array.from({ length: totalPages }, (_, i) => (
+            <Button
+              variant="ghost"
+              key={i}
+              onClick={() => paginate(i + 1)}
+              className={`h-10 w-10 rounded-sm shadow-none ${
+                currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-300"
+              }`}
+            >
+              {i + 1}
+            </Button>
+          ))}
+        </div>
       </div>
-    </div>
+    </TooltipProvider>
   );
 }
 

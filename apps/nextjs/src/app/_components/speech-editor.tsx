@@ -26,7 +26,6 @@ const SpeechEditor: React.FC<SpeechEditorProps> = ({}) => {
     <>
       <SimpleEditor
         content={state.speech ?? ""}
-        className="h-full w-full rounded-md px-4 pt-8"
         onChange={handleEditorChange}
       />
     </>

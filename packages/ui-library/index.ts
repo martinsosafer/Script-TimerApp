@@ -11,3 +11,9 @@ export {
   NavigationMenuViewport,
 } from "./@/components/ui/navigation-menu";
 export { SimpleEditor } from "./@/components/ui/editor";
+export {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+  TooltipProvider,
+} from "./@/components/ui/tooltip";

@@ -1,34 +1,34 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import Bars3Icon from "@heroicons/react/24/outline/Bars3Icon";
-import ChartPieIcon from "@heroicons/react/24/outline/ChartPieIcon";
-import ClipboardIcon from "@heroicons/react/24/outline/ClipboardIcon";
-import ClockIcon from "@heroicons/react/24/outline/ClockIcon";
-import FolderIcon from "@heroicons/react/24/outline/FolderIcon";
-import UserIcon from "@heroicons/react/24/outline/UserIcon";
-import Avatar from "boring-avatars";
+import CogIcon from "@heroicons/react/24/outline/CogIcon";
 
-import {
-  Button,
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuList,
-} from "@voiceai/ui";
-
-const navItems = [
-  { name: "Generate voice & script", href: "/generate", icon: ClipboardIcon },
-  { name: "History", href: "/history", icon: ClockIcon },
-  { name: "Voice library", href: "/voice-library", icon: FolderIcon },
-  { name: "Resources", href: "/resources", icon: ChartPieIcon },
-  { name: "Account", href: "/account", icon: UserIcon, mobileOnly: true },
-];
-
-const USER_ONE = "User one";
+import { Button } from "@voiceai/ui";
 
 const TopNavigation = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
+
+  const dropdownRef = useRef(null);
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
+      setDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    // Attach the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      // Remove the event listener on cleanup
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className=" top-0 z-50 flex w-full flex-col justify-between bg-blue-700 p-3">
@@ -39,14 +39,14 @@ const TopNavigation = () => {
         </div>
 
         {/* Mobile Hamburger Icon */}
-        <div className="md:hidden">
+        {/* <div className="md:hidden">
           <Button
             variant="ghost"
             onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}
           >
             <Bars3Icon className="h-6 w-6 text-white" />
           </Button>
-        </div>
+        </div> */}
 
         {/* Logo Centered for Mobile and Desktop View */}
         <div className="flex-grow md:hidden">
@@ -55,42 +55,46 @@ const TopNavigation = () => {
           </div>
         </div>
 
-        {/* Desktop Navigation Items */}
-        <div className="hidden md:block">
-          <NavigationMenu>
-            <NavigationMenuList>
-              {navItems
-                .filter((item) => !item.mobileOnly)
-                .map((item) => (
-                  <NavigationMenuItem key={item.name}>
-                    <Link
-                      className="flex items-center rounded-md p-2 text-white hover:bg-blue-800"
-                      href={item.href}
-                      passHref
-                    >
-                      <item.icon className="mr-2 h-5 w-5" />
-                      {item.name}
-                    </Link>
-                  </NavigationMenuItem>
-                ))}
-            </NavigationMenuList>
-          </NavigationMenu>
+        <div className="relative">
+          <Button
+            variant="ghost"
+            className="bg-transparent  focus:text-neutral-500"
+            onClick={() => setDropdownOpen(!isDropdownOpen)}
+          >
+            <CogIcon className="h-6 w-6 text-white" />
+          </Button>
+          {isDropdownOpen && (
+            <div
+              ref={dropdownRef}
+              className="absolute right-0 mt-2 w-48 rounded-md bg-white shadow-lg"
+            >
+              <Link
+                href="/settings"
+                passHref
+                className="block rounded-md px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                Settings
+              </Link>
+              <button
+                onClick={() => {
+                  /* Handle logout logic */
+                }}
+                className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+              >
+                Log out
+              </button>
+            </div>
+          )}
         </div>
 
-        {/* User Avatar */}
-        <div className="hidden  items-center rounded-full border border-white px-2 py-2 md:flex">
-          <Avatar
-            size={30}
-            name={USER_ONE}
-            variant="pixel" // You can choose other variants like 'beam', 'pixel', etc.
-            colors={["#92A1C6", "#146A7C", "#F0AB3D", "#C271B4", "#C20D90"]} // Define your color palette
-          />
-          <span className="ml-2 text-white">{USER_ONE}</span>
-        </div>
+        {/* setting drop down */}
+        {/* <div className="hidden items-center rounded-full border border-white px-2 py-2 md:flex">
+          <CogIcon className="h-6 w-6" />
+        </div> */}
       </div>
 
       {/* Mobile Navigation Menu, shown/hidden based on state */}
-      {isMobileMenuOpen && (
+      {/* {isMobileMenuOpen && (
         <div className="flex w-full grow flex-col justify-center">
           <NavigationMenu
             className={`md:hidden ${
@@ -113,7 +117,7 @@ const TopNavigation = () => {
             </NavigationMenuList>
           </NavigationMenu>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

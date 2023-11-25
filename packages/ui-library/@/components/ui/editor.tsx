@@ -92,7 +92,7 @@ function SimpleEditor({ content, onChange, className }: SimpleEditorProps) {
   return (
     <div
       className={classNames(
-        "mb-4 flex h-full w-full flex-col rounded-md px-8 py-5",
+        "h-inherit flex w-full flex-col rounded-md px-8 py-4 text-stone-900",
         className,
       )}
     >
@@ -100,7 +100,7 @@ function SimpleEditor({ content, onChange, className }: SimpleEditorProps) {
         <>
           {/* TODO add other buttons */}
           <EditorContent editor={editor} />
-          <div className="z-30 m-0 flex h-[50px] w-full items-center justify-start gap-8 self-start py-4">
+          <div className="z-30 flex w-full items-center justify-start gap-8 self-center pt-3">
             <div className="flex items-center justify-between">
               <Button
                 className="menu-button mr-1 border border-slate-500"

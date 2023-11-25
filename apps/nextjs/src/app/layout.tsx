@@ -32,7 +32,13 @@ export const metadata: Metadata = {
 export default function Layout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" className="h-full">
-      <body className={["font-sans", "h-full", fontSans.variable].join(" ")}>
+      <body
+        className={[
+          "font-sans",
+          "h-screen bg-transparent",
+          fontSans.variable,
+        ].join(" ")}
+      >
         {props.children}
       </body>
     </html>
