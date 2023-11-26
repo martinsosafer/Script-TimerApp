@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef, useState } from "react";
-import PlayCircleIcon from "@heroicons/react/24/outline/PlayCircleIcon";
+import CogSix6Icon from "@heroicons/react/24/outline/Cog6ToothIcon";
+import classNames from "classnames";
 
 import {
   Button,
@@ -138,7 +139,9 @@ export function VoiceList() {
               <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                 <Avatar className="h-8 w-8">
                   <AvatarImage src="/avatars/01.png" alt="@shadcn" />
-                  <AvatarFallback>SC</AvatarFallback>
+                  <AvatarFallback>
+                    <CogSix6Icon className="h-6 w-6 text-white" />
+                  </AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
