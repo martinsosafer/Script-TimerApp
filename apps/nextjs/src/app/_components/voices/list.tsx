@@ -97,9 +97,9 @@ export function VoiceList() {
       </div>
     );
   }
-  const handleVoiceClick = (voiceId: string) => {
-    console.log("setting state", voiceId);
-    dispatch({ type: "SET_CURRENT_VOICE", payload: voiceId });
+  const handleVoiceClick = (voice: any) => {
+    console.log("setting state", voice);
+    dispatch({ type: "SET_CURRENT_VOICE", payload: voice });
   };
 
   return (
@@ -111,7 +111,7 @@ export function VoiceList() {
             <VoiceListItem
               key={voice.id}
               voice={voice}
-              onClick={() => handleVoiceClick(voice.id)}
+              onClick={() => handleVoiceClick(voice)}
             />
           ))}
         </ul>

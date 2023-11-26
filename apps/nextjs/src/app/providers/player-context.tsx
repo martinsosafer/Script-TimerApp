@@ -1,9 +1,18 @@
 import type { Dispatch, ReactNode } from "react";
 import { createContext, useContext, useReducer } from "react";
 
+// Define a type for the voice object
+interface Voice {
+  // Define the properties of the voice object
+  // Adjust these based on the actual properties of your currentVoice object
+  id: string;
+  name: number;
+  // Add more properties as needed
+}
+
 // Define types
 interface PlayerState {
-  currentVoiceId: string | null;
+  currentVoice: Voice | null;
   speech: string | null; // New property for speech
 }
 
@@ -19,7 +28,7 @@ interface PlayerContextProps {
 
 // Initial state
 const initialState: PlayerState = {
-  currentVoiceId: null,
+  currentVoice: null,
   speech: null,
 };
 
@@ -30,7 +39,7 @@ const playerReducer = (
 ): PlayerState => {
   switch (action.type) {
     case "SET_CURRENT_VOICE":
-      return { ...state, currentVoiceId: action.payload };
+      return { ...state, currentVoice: action.payload as unknown as Voice };
     case "SET_SPEECH":
       return { ...state, speech: action.payload };
     default:
