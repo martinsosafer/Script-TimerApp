@@ -25,6 +25,9 @@ export const voiceRouter = createTRPCRouter({
       return [];
     }
   }),
+  list: protectedProcedure.query(async ({ ctx }) => {
+    return ctx.db.query.voices.findMany({ orderBy: desc(schema.voices.id) });
+  }),
   // byId: publicProcedure
   //   .input(z.object({ id: z.number() }))
   //   .query(({ ctx, input }) => {

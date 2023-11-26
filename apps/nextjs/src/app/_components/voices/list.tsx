@@ -16,6 +16,7 @@ import { api } from "~/utils/api";
 import type { RouterOutputs } from "~/utils/api";
 import { useIsTruncated } from "../../hooks/useIsTruncated";
 
+// @ts-expect-error type this later
 function VoiceListItem({ voice, onClick }) {
   const textRef = useRef(null);
   const isTruncated = useIsTruncated(textRef);
@@ -43,7 +44,7 @@ function VoiceListItem({ voice, onClick }) {
             </TooltipTrigger>
             <TooltipContent
               side="top"
-              align="right"
+              align="end"
               className="max-w-xs rounded-md bg-slate-600 px-4 py-2 text-sm text-gray-200 shadow-lg"
             >
               {voice.name}
@@ -52,9 +53,9 @@ function VoiceListItem({ voice, onClick }) {
         )}
       </div>
       <div className="mb-2 flex flex-col justify-evenly text-center text-sm text-gray-500">
-        <p> {voice.gender && voice.gender}</p>
+        {/* <p> {voice.gender && voice.gender}</p>
 
-        <p> {voice.labels.accent && voice.labels.accent}</p>
+        <p> {voice.labels.accent && voice.labels.accent}</p> */}
       </div>
       <Button
         onClick={onClick}
@@ -67,7 +68,8 @@ function VoiceListItem({ voice, onClick }) {
 }
 
 export function VoiceList() {
-  const [voices] = api.voice.all.useSuspenseQuery();
+  const [voices] = api.voice.list.useSuspenseQuery();
+  console.log("IN VOICES", voices);
   const { dispatch } = usePlayer();
   const [currentPage, setCurrentPage] = useState(1);
   const voicesPerPage = 12;
@@ -96,7 +98,6 @@ export function VoiceList() {
     );
   }
   const handleVoiceClick = (voiceId: string) => {
-    // Set the current song in the global state
     console.log("setting state", voiceId);
     dispatch({ type: "SET_CURRENT_VOICE", payload: voiceId });
   };
@@ -108,9 +109,9 @@ export function VoiceList() {
         <ul className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
           {currentVoices.map((voice) => (
             <VoiceListItem
-              key={voice.voice_id}
+              key={voice.id}
               voice={voice}
-              onClick={() => handleVoiceClick(voice.voice_id)}
+              onClick={() => handleVoiceClick(voice.id)}
             />
           ))}
         </ul>
