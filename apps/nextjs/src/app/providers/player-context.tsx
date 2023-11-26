@@ -14,10 +14,11 @@ interface Voice {
 interface PlayerState {
   currentVoice: Voice | null;
   speech: string | null; // New property for speech
+  audio: string | null; // New property for audio
 }
 
 interface PlayerAction {
-  type: "SET_CURRENT_VOICE" | "SET_SPEECH"; // Added action type for speech
+  type: "SET_CURRENT_VOICE" | "SET_SPEECH" | "SET_AUDIO"; // Added action type for speech
   payload: string;
 }
 
@@ -30,6 +31,7 @@ interface PlayerContextProps {
 const initialState: PlayerState = {
   currentVoice: null,
   speech: null,
+  audio: null,
 };
 
 // Reducer function
@@ -42,6 +44,8 @@ const playerReducer = (
       return { ...state, currentVoice: action.payload as unknown as Voice };
     case "SET_SPEECH":
       return { ...state, speech: action.payload };
+    case "SET_AUDIO":
+      return { ...state, audio: action.payload };
     default:
       return state;
   }

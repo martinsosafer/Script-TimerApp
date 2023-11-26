@@ -1,6 +1,5 @@
 import { auth } from "@voiceai/auth";
 
-import { AuthShowcase } from "../_components/auth-showcase";
 import SpeechEditor from "../_components/speech-editor";
 
 export const runtime = "edge";
@@ -10,10 +9,6 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* <div className="self-end">
-        <AuthShowcase />
-      </div> */}
-
       <div className="flex w-full flex-col items-center rounded-md bg-white">
         <SpeechEditor />
       </div>

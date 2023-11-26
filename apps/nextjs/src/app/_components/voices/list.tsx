@@ -69,7 +69,7 @@ function VoiceListItem({ voice, onClick }) {
 
 export function VoiceList() {
   const [voices] = api.voice.list.useSuspenseQuery();
-  console.log("IN VOICES", voices);
+
   const { dispatch } = usePlayer();
   const [currentPage, setCurrentPage] = useState(1);
   const voicesPerPage = 12;

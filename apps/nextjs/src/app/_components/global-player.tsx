@@ -1,43 +1,27 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import ArrowDownOnSquareIcon from "@heroicons/react/24/outline/ArrowDownOnSquareIcon";
 import PlayIcon from "@heroicons/react/24/outline/PlayIcon";
 import TrashIcon from "@heroicons/react/24/outline/TrashIcon";
 import UserIcon from "@heroicons/react/24/solid/UserIcon";
 
-import { api } from "~/utils/api";
 import { usePlayer } from "../providers/player-context";
 
-interface PlayerContentProps {
-  //   song: Song;
-  //   songUrl: string;
-}
+interface PlayerContentProps {}
 
-const PlayerContent: React.FC<PlayerContentProps> = (
-  {
-    //   song,
-    //   songUrl,
-  },
-) => {
+const PlayerContent: React.FC<PlayerContentProps> = () => {
   const { state } = usePlayer();
-  const { currentVoice, speech } = state;
-
-  const [currentVoiceIdState, setCurrentVoiceIdState] = useState<string | null>(
-    null,
-  );
+  const { audio } = state;
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const { mutateAsync: generateVoice, error } = api.voice.create.useMutation({
-    async onSuccess(data) {
-      console.log("IN HERE", data);
-      const dataURI = `data:audio/mpeg;base64,${data?.audio}`;
-      console.log("data uri", dataURI);
-      audioRef.current!.src = dataURI;
-      // await context.post.all.invalidate();
-    },
-  });
+  useEffect(() => {
+    if (audio && audio.length > 0) {
+      audioRef.current!.src = audio!;
+      audioRef.current!.play();
+    }
+  }, [audio]);
 
   return (
     <div
@@ -69,21 +53,7 @@ const PlayerContent: React.FC<PlayerContentProps> = (
           md:flex-row md:gap-y-0
         "
         >
-          <button
-            onClick={async (e) => {
-              try {
-                await generateVoice({
-                  voice_id: currentVoice?.id ?? "",
-                  message: speech ?? "",
-                });
-                // setTitle("");
-                // setContent("");
-                // await context.post.all.invalidate();
-              } catch {
-                // noop
-              }
-            }}
-          >
+          <button>
             <PlayIcon
               width={30}
               className="cursor-pointer fill-gray-700 hover:text-gray-300"

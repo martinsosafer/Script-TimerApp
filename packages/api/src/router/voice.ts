@@ -18,7 +18,7 @@ export const voiceRouter = createTRPCRouter({
       const voices = (await response.json()) as {
         voices: [{ voice_id: string }];
       };
-      console.log("in voices", voices);
+
       return voices.voices;
     } catch (error) {
       console.error("Error in 11labs", error);
