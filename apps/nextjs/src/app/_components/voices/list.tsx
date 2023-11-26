@@ -43,10 +43,7 @@ function VoiceListItem({ voice, onClick }) {
         </Avatar>
         <div className="flex flex-grow flex-col">
           <p className="overflow-hidden whitespace-nowrap text-sm font-medium leading-none">
-            Sofia Davis
-          </p>
-          <p className="overflow-hidden whitespace-nowrap text-sm text-muted-foreground">
-            m@example.com
+            {voice.name}
           </p>
         </div>
       </CardContent>
