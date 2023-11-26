@@ -10,6 +10,19 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@voiceai/ui";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@voiceai/ui/@/components/ui/avatar";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@voiceai/ui/@/components/ui/card";
 
 import { usePlayer } from "~/app/providers/player-context";
 import { api } from "~/utils/api";
@@ -22,48 +35,22 @@ function VoiceListItem({ voice, onClick }) {
   const isTruncated = useIsTruncated(textRef);
 
   return (
-    <li className="flex min-h-[10px] max-w-xs flex-col items-center justify-center rounded-lg border p-4">
-      <div className="w-full text-center">
-        {!isTruncated && (
-          <p
-            ref={textRef}
-            className="truncate text-center text-sm font-semibold text-black"
-          >
-            {voice.name}
+    <Card className="flex w-full" onClick={onClick}>
+      <CardContent className="flex w-full items-center space-x-4 p-4">
+        <Avatar>
+          <AvatarImage src="/avatars/01.png" className="max-w-full" />
+          <AvatarFallback>OM</AvatarFallback>
+        </Avatar>
+        <div className="flex flex-grow flex-col">
+          <p className="overflow-hidden whitespace-nowrap text-sm font-medium leading-none">
+            Sofia Davis
           </p>
-        )}
-        {isTruncated && (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <p
-                ref={textRef}
-                className="truncate text-center text-sm font-semibold text-black"
-              >
-                {voice.name}
-              </p>
-            </TooltipTrigger>
-            <TooltipContent
-              side="top"
-              align="end"
-              className="max-w-xs rounded-md bg-slate-600 px-4 py-2 text-sm text-gray-200 shadow-lg"
-            >
-              {voice.name}
-            </TooltipContent>
-          </Tooltip>
-        )}
-      </div>
-      <div className="mb-2 flex flex-col justify-evenly text-center text-sm text-gray-500">
-        {/* <p> {voice.gender && voice.gender}</p>
-
-        <p> {voice.labels.accent && voice.labels.accent}</p> */}
-      </div>
-      <Button
-        onClick={onClick}
-        className="m-0 rounded-full border border-transparent bg-transparent p-0 text-black shadow-sm hover:bg-gray-200"
-      >
-        <PlayCircleIcon className="h-8 w-8" />
-      </Button>
-    </li>
+          <p className="overflow-hidden whitespace-nowrap text-sm text-muted-foreground">
+            m@example.com
+          </p>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 
@@ -72,7 +59,7 @@ export function VoiceList() {
 
   const { dispatch } = usePlayer();
   const [currentPage, setCurrentPage] = useState(1);
-  const voicesPerPage = 12;
+  const voicesPerPage = 4;
 
   const indexOfLastVoice = currentPage * voicesPerPage;
   const indexOfFirstVoice = indexOfLastVoice - voicesPerPage;
@@ -102,35 +89,39 @@ export function VoiceList() {
   };
 
   return (
-    <TooltipProvider>
-      <div className="flex min-h-full w-full flex-col justify-between gap-4">
-        {/* Voices grid */}
-        <ul className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-          {currentVoices.map((voice) => (
-            <VoiceListItem
-              key={voice.id}
-              voice={voice}
-              onClick={() => handleVoiceClick(voice)}
-            />
-          ))}
-        </ul>
-        {/* Pagination */}
-        <div className="mt-8 flex min-h-max items-center justify-center gap-2">
-          {Array.from({ length: totalPages }, (_, i) => (
-            <Button
-              variant="ghost"
-              key={i}
-              onClick={() => paginate(i + 1)}
-              className={`h-10 w-10 rounded-sm shadow-none ${
-                currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-300"
-              }`}
-            >
-              {i + 1}
-            </Button>
-          ))}
-        </div>
-      </div>
-    </TooltipProvider>
+    <Card className="flex min-h-full flex-col bg-white text-black">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        {/* <CardTitle className="text-sm font-medium">Total Revenue</CardTitle> */}
+        {/* Additional content for the header */}
+      </CardHeader>
+      <CardContent className="min-h-fit flex-grow">
+        <TooltipProvider>
+          <ul className="grid w-full grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-2">
+            {currentVoices.map((voice) => (
+              <VoiceListItem
+                key={voice.id}
+                voice={voice}
+                onClick={() => handleVoiceClick(voice)}
+              />
+            ))}
+          </ul>
+        </TooltipProvider>
+      </CardContent>
+      <CardFooter className="mx-auto min-h-fit">
+        {Array.from({ length: totalPages }, (_, i) => (
+          <Button
+            variant="ghost"
+            key={i}
+            onClick={() => paginate(i + 1)}
+            className={`h-10 w-10 rounded-sm shadow-none ${
+              currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-300"
+            }`}
+          >
+            {i + 1}
+          </Button>
+        ))}
+      </CardFooter>
+    </Card>
   );
 }
 
