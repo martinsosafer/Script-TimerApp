@@ -28,28 +28,4 @@ export const voiceRouter = createTRPCRouter({
   list: protectedProcedure.query(async ({ ctx }) => {
     return ctx.db.query.voices.findMany({ orderBy: desc(schema.voices.id) });
   }),
-  // byId: publicProcedure
-  //   .input(z.object({ id: z.number() }))
-  //   .query(({ ctx, input }) => {
-  //     // return ctx.db
-  //     //   .select()
-  //     //   .from(schema.post)
-  //     //   .where(eq(schema.post.id, input.id));
-  //     return ctx.db.query.post.findFirst({
-  //       where: eq(schema.post.id, input.id),
-  //     });
-  //   }),
-  // create: protectedProcedure
-  //   .input(
-  //     z.object({
-  //       title: z.string().min(1),
-  //       content: z.string().min(1),
-  //     }),
-  //   )
-  //   .mutation(({ ctx, input }) => {
-  //     return ctx.db.insert(schema.post).values(input);
-  //   }),
-  // delete: protectedProcedure.input(z.number()).mutation(({ ctx, input }) => {
-  //   return ctx.db.delete(schema.post).where(eq(schema.post.id, input));
-  // }),
 });
