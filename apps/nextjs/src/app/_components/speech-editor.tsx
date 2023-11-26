@@ -3,6 +3,20 @@
 import { useEffect, useState } from "react";
 
 import { Button, SimpleEditor } from "@voiceai/ui";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@voiceai/ui/@/components/ui/avatar";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@voiceai/ui/@/components/ui/card";
+import { Icons } from "@voiceai/ui/@/components/ui/icons";
 
 import { api } from "~/utils/api";
 import { usePlayer } from "../providers/player-context";
@@ -10,6 +24,7 @@ import { usePlayer } from "../providers/player-context";
 interface SpeechEditorProps {}
 
 const SpeechEditor: React.FC<SpeechEditorProps> = ({}) => {
+  const [loading, setLoading] = useState(false);
   const { state, dispatch } = usePlayer();
   const { currentVoice, speech } = state;
 
@@ -31,35 +46,51 @@ const SpeechEditor: React.FC<SpeechEditorProps> = ({}) => {
 
   return (
     <>
-      <SimpleEditor
-        content={state.speech ?? ""}
-        onChange={handleEditorChange}
-      />
-      <div className="flex items-center space-x-4 text-black">
-        {/* <Avatar>
-          <AvatarImage src="/avatars/02.png" />
-          <AvatarFallback>JL</AvatarFallback>
-        </Avatar> */}
-        <div>
-          <p className="text-sm font-medium leading-none">
-            {currentVoice?.name}
-          </p>
-          <p className="text-sm text-muted-foreground">p@example.com</p>
-        </div>
-        <Button
-          onClick={async () => {
-            try {
-              await generateVoice({
-                voice_id: currentVoice?.id ?? "",
-                message: speech ?? "",
-              });
-            } catch {}
-          }}
-          className="w-full"
-        >
-          Generate
-        </Button>
-      </div>
+      <Card className="bg-white">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          {/* <CardTitle className="text-sm font-medium">Total Revenue</CardTitle> */}
+        </CardHeader>
+        <CardContent>
+          <SimpleEditor
+            content={state.speech ?? ""}
+            onChange={handleEditorChange}
+          />
+        </CardContent>
+        <CardFooter>
+          <div className="mx-4 inline-flex items-center justify-center whitespace-nowrap rounded-md bg-primary px-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-5">
+            <Avatar className="py-2">
+              <AvatarImage src="/avatars/01.png" />
+              <AvatarFallback className="text-white">OM</AvatarFallback>
+            </Avatar>
+            <div className="mx-4">
+              <p className="text-sm font-medium leading-none">
+                {currentVoice?.name}
+              </p>
+              {/* <p className="text-sm text-muted-foreground">m@example.com</p> */}
+            </div>
+          </div>
+
+          <Button
+            onClick={async () => {
+              setLoading(true);
+              try {
+                await generateVoice({
+                  voice_id: currentVoice?.id ?? "",
+                  message: speech ?? "",
+                });
+                setLoading(false);
+              } catch {}
+            }}
+            className="w-full"
+          >
+            {loading ? (
+              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              "Generate"
+            )}
+          </Button>
+        </CardFooter>
+      </Card>
     </>
   );
 };

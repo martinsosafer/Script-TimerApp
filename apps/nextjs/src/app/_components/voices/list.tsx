@@ -98,7 +98,6 @@ export function VoiceList() {
     );
   }
   const handleVoiceClick = (voice: any) => {
-    console.log("setting state", voice);
     dispatch({ type: "SET_CURRENT_VOICE", payload: voice });
   };
 

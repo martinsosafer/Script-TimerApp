@@ -9,9 +9,9 @@ export default async function HomePage() {
 
   return (
     <>
-      <div className="flex w-full flex-col items-center rounded-md bg-white">
-        <SpeechEditor />
-      </div>
+      {/* <div className="flex w-full flex-col items-center rounded-md bg-white"> */}
+      <SpeechEditor />
+      {/* </div> */}
 
       {/* <div className="w-full ">
               <ChatWindow
