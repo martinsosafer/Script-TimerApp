@@ -48,16 +48,31 @@ function VoiceListItem({ voice, onClick }) {
   const isTruncated = useIsTruncated(textRef);
 
   return (
-    <Card className="flex w-full" onClick={onClick}>
-      <CardContent className="flex w-full items-center space-x-4 p-4">
-        <Avatar>
+    <Card className="flex min-w-full" onClick={onClick}>
+      <CardContent className="flex w-full flex-col items-center space-x-1 py-4 md:justify-start lg:flex-row xl:space-x-4">
+        <Avatar className="mb-1 hidden self-center lg:mb-0 lg:block">
           <AvatarImage src="/avatars/01.png" className="max-w-full" />
           <AvatarFallback>OM</AvatarFallback>
         </Avatar>
-        <div className="flex flex-grow flex-col">
-          <p className="overflow-hidden whitespace-nowrap text-sm font-medium leading-none">
-            {voice.name}
-          </p>
+        <div className="flex min-w-0 flex-1 flex-col">
+          {" "}
+          {/* Ensuring that the div can shrink */}
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <p
+                  ref={textRef}
+                  className="truncate text-xs font-medium leading-none md:text-sm"
+                  // Remove any width constraints here so the truncation can happen naturally
+                >
+                  {voice.name}
+                </p>
+              </TooltipTrigger>
+              {isTruncated && (
+                <TooltipContent side="top">{voice.name}</TooltipContent>
+              )}
+            </Tooltip>
+          </TooltipProvider>
         </div>
       </CardContent>
     </Card>
@@ -112,7 +127,7 @@ export function VoiceList() {
   return (
     <Card className="flex min-h-full flex-col bg-white text-black">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <div className="ml-auto flex items-center space-x-4">
+        <div className="flex w-full items-center justify-evenly space-x-2 self-center lg:space-x-1">
           <Input
             type="search"
             placeholder="Search..."
@@ -199,17 +214,15 @@ export function VoiceList() {
         </div>
       </CardHeader>
       <CardContent className="min-h-fit flex-grow">
-        <TooltipProvider>
-          <ul className="grid w-full grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-2">
-            {currentVoices.map((voice) => (
-              <VoiceListItem
-                key={voice.id}
-                voice={voice}
-                onClick={() => handleVoiceClick(voice)}
-              />
-            ))}
-          </ul>
-        </TooltipProvider>
+        <ul className="grid w-full grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-2">
+          {currentVoices.map((voice) => (
+            <VoiceListItem
+              key={voice.id}
+              voice={voice}
+              onClick={() => handleVoiceClick(voice)}
+            />
+          ))}
+        </ul>
       </CardContent>
       <CardFooter className="mx-auto min-h-fit">
         {Array.from({ length: totalPages }, (_, i) => (
