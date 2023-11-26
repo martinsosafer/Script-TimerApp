@@ -33,9 +33,12 @@ export const voiceRouter = createTRPCRouter({
       z.object({
         voice_id: z.string().min(1),
         message: z.string().min(1),
+        similarity: z.number().min(0).max(1).default(0.8),
+        stability: z.number().min(0).max(1).default(0.5),
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      console.log("IN PUT INPUT ", input);
       const voice = await ctx.db.query.voices.findFirst({
         where: eq(schema.voices.id, input.voice_id),
       });
@@ -53,8 +56,8 @@ export const voiceRouter = createTRPCRouter({
             model_id: "eleven_multilingual_v2",
             text: input.message,
             voice_settings: {
-              similarity_boost: 0.8,
-              stability: 0.5,
+              similarity_boost: input.similarity,
+              stability: input.stability,
               // style: 0.5,
               // use_speaker_boost: true,
             },

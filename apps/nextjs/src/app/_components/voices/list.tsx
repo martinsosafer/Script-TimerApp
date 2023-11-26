@@ -23,6 +23,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@voiceai/ui/@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+} from "@voiceai/ui/@/components/ui/dropdown-menu";
+import { Input } from "@voiceai/ui/@/components/ui/input";
+import { Label } from "@voiceai/ui/@/components/ui/label";
+import { Slider } from "@voiceai/ui/@/components/ui/slider";
 
 import { usePlayer } from "~/app/providers/player-context";
 import { api } from "~/utils/api";
@@ -53,8 +66,12 @@ function VoiceListItem({ voice, onClick }) {
 
 export function VoiceList() {
   const [voices] = api.voice.list.useSuspenseQuery();
+  // const [stability, setStability] = useState([0.5]);
+  const [similarityBoost, setSimilarityBoost] = useState([0.8]);
 
-  const { dispatch } = usePlayer();
+  const { dispatch, state } = usePlayer();
+  const { currentVoice, speech, stability, similarity } = state;
+
   const [currentPage, setCurrentPage] = useState(1);
   const voicesPerPage = 4;
 
@@ -85,11 +102,101 @@ export function VoiceList() {
     dispatch({ type: "SET_CURRENT_VOICE", payload: voice });
   };
 
+  const handleStabilityChange = (stability: number[]) => {
+    dispatch({ type: "SET_STABILITY", payload: stability?.[0] ?? 0.5 });
+  };
+  const handleSimilarityChange = (similarity: number[]) => {
+    dispatch({ type: "SET_SIMILARITY", payload: similarity?.[0] ?? 0.8 });
+  };
+
   return (
     <Card className="flex min-h-full flex-col bg-white text-black">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        {/* <CardTitle className="text-sm font-medium">Total Revenue</CardTitle> */}
-        {/* Additional content for the header */}
+        <div className="ml-auto flex items-center space-x-4">
+          <Input
+            type="search"
+            placeholder="Search..."
+            className="md:w-[100px] lg:w-[300px]"
+          />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage src="/avatars/01.png" alt="@shadcn" />
+                  <AvatarFallback>SC</AvatarFallback>
+                </Avatar>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              className="w-56"
+              align="end"
+              forceMount
+              side="bottom"
+            >
+              <div className="grid gap-2 pt-2">
+                <DropdownMenuLabel className="font-normal">
+                  <div className="grid gap-4">
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="top-p">Stability</Label>
+                      <span className="w-12 rounded-md border border-transparent px-2 py-0.5 text-right text-sm text-muted-foreground hover:border-border">
+                        {stability}
+                      </span>
+                    </div>
+                    <Slider
+                      id="top-p"
+                      max={1}
+                      defaultValue={[stability]}
+                      step={0.1}
+                      onValueChange={handleStabilityChange}
+                      className="[&_[role=slider]]:h-4 [&_[role=slider]]:w-4"
+                      aria-label="Top P"
+                    />
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuLabel className="font-normal">
+                  <div className="grid gap-4">
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="top-p">Similarity Boost</Label>
+                      <span className="w-12 rounded-md border border-transparent px-2 py-0.5 text-right text-sm text-muted-foreground hover:border-border">
+                        {similarity}
+                      </span>
+                    </div>
+                    <Slider
+                      id="top-p"
+                      max={1}
+                      defaultValue={[similarity]}
+                      step={0.1}
+                      onValueChange={handleSimilarityChange}
+                      className="[&_[role=slider]]:h-4 [&_[role=slider]]:w-4"
+                      aria-label="Top P"
+                    />
+                  </div>
+                </DropdownMenuLabel>
+              </div>
+              <DropdownMenuSeparator />
+              {/* <DropdownMenuGroup>
+              <DropdownMenuItem>
+                Profile
+                <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                Billing
+                <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                Settings
+                <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+              </DropdownMenuItem>
+              <DropdownMenuItem>New Team</DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              Log out
+              <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            </DropdownMenuItem> */}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </CardHeader>
       <CardContent className="min-h-fit flex-grow">
         <TooltipProvider>

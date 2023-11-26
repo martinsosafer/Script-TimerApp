@@ -15,11 +15,18 @@ interface PlayerState {
   currentVoice: Voice | null;
   speech: string | null; // New property for speech
   audio: string | null; // New property for audio
+  similarity: number; // New property for similarity
+  stability: number; // New property for stability
 }
 
 interface PlayerAction {
-  type: "SET_CURRENT_VOICE" | "SET_SPEECH" | "SET_AUDIO"; // Added action type for speech
-  payload: string;
+  type:
+    | "SET_CURRENT_VOICE"
+    | "SET_SPEECH"
+    | "SET_AUDIO"
+    | "SET_STABILITY"
+    | "SET_SIMILARITY"; // Added action type for speech
+  payload: string | number;
 }
 
 interface PlayerContextProps {
@@ -32,6 +39,8 @@ const initialState: PlayerState = {
   currentVoice: null,
   speech: null,
   audio: null,
+  similarity: 0.8,
+  stability: 0.5,
 };
 
 // Reducer function
@@ -43,9 +52,13 @@ const playerReducer = (
     case "SET_CURRENT_VOICE":
       return { ...state, currentVoice: action.payload as unknown as Voice };
     case "SET_SPEECH":
-      return { ...state, speech: action.payload };
+      return { ...state, speech: action.payload as unknown as string };
     case "SET_AUDIO":
-      return { ...state, audio: action.payload };
+      return { ...state, audio: action.payload as unknown as string };
+    case "SET_SIMILARITY":
+      return { ...state, similarity: action.payload as unknown as number };
+    case "SET_STABILITY":
+      return { ...state, stability: action.payload as unknown as number };
     default:
       return state;
   }

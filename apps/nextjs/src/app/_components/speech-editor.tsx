@@ -26,7 +26,7 @@ interface SpeechEditorProps {}
 const SpeechEditor: React.FC<SpeechEditorProps> = ({}) => {
   const [loading, setLoading] = useState(false);
   const { state, dispatch } = usePlayer();
-  const { currentVoice, speech } = state;
+  const { currentVoice, speech, stability, similarity } = state;
 
   const { mutateAsync: generateVoice, error } = api.voice.create.useMutation({
     onSuccess(data) {
@@ -77,6 +77,8 @@ const SpeechEditor: React.FC<SpeechEditorProps> = ({}) => {
                 await generateVoice({
                   voice_id: currentVoice?.id ?? "",
                   message: speech ?? "",
+                  stability: stability,
+                  similarity: similarity,
                 });
                 setLoading(false);
               } catch {}
