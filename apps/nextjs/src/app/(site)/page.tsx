@@ -20,12 +20,6 @@ export default async function HomePage() {
         <TabsList>
           <TabsTrigger value="voice">Voice</TabsTrigger>
           <TabsTrigger value="chat">Chat</TabsTrigger>
-          {/* <TabsTrigger value="reports" disabled>
-            Reports
-          </TabsTrigger>
-          <TabsTrigger value="notifications" disabled>
-            Notifications
-          </TabsTrigger> */}
         </TabsList>
         <TabsContent value="voice" className="space-y-4">
           <SpeechEditor />
@@ -41,27 +35,6 @@ export default async function HomePage() {
           ></ChatWindow>
         </TabsContent>
       </Tabs>
-      {/* <div className="flex w-full flex-col items-center rounded-md bg-white"> */}
-      {/* <SpeechEditor /> */}
-      {/* </div> */}
-
-      {/* <div className="w-full ">
-              <ChatWindow
-                endpoint="api/chat"
-                emptyStateComponent={<>empty</>}
-                placeholder="Hello, how can I help you today?"
-                titleText="VoiceAI"
-                emoji="🔊"
-                // showIntermediateStepsToggle={true}
-              ></ChatWindow>
-            </div>
-            <Suspense
-              fallback={
-                <div className="flex w-full flex-col gap-4">LOADING</div>
-              }
-            >
-              <VoiceList />
-            </Suspense> */}
     </>
   );
 }

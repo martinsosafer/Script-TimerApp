@@ -7,6 +7,7 @@ import { twMerge } from "tailwind-merge";
 import { auth } from "@voiceai/auth";
 
 import { VoiceList } from "../_components/voices/list";
+import { VoiceSettings } from "../_components/voices/voices-mobile";
 
 interface SidebarProps {
   children: React.ReactNode;
@@ -14,10 +15,9 @@ interface SidebarProps {
 
 const Sidebar = async ({ children }: SidebarProps) => {
   const session = await auth();
-
   return (
     <main className="sidebar-container flex">
-      <div className="ml-4 flex w-1/2 flex-col justify-between rounded-md bg-white p-4">
+      <div className="ml-4 hidden w-1/2 flex-col justify-between rounded-md bg-white p-4 md:flex">
         {session && (
           <Suspense
             fallback={<div className="flex w-full flex-col gap-4">LOADING</div>}
@@ -26,7 +26,10 @@ const Sidebar = async ({ children }: SidebarProps) => {
           </Suspense>
         )}
       </div>
-      <div className="container">{children}</div>
+      <div className="container">
+        <VoiceSettings className="flex md:hidden" />
+        {children}
+      </div>
     </main>
   );
 };
