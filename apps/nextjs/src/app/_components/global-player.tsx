@@ -23,6 +23,23 @@ const PlayerContent: React.FC<PlayerContentProps> = () => {
     }
   }, [audio]);
 
+  const handleDownload = () => {
+    console.log("CALLED");
+    const blob = new Blob([audio!], { type: "audio/mpeg" });
+
+    // Create a temporary URL for the Blob and trigger a download
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "voice.mp3";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    // Revoke the temporary URL
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div
       className="
@@ -69,7 +86,7 @@ const PlayerContent: React.FC<PlayerContentProps> = () => {
 
         {/* Action Icons */}
         <div className="flex items-center justify-center gap-x-2 md:justify-end">
-          <button>
+          <button type="button" onClick={handleDownload}>
             <ArrowDownOnSquareIcon width={30} className="stroke-black" />
           </button>
           <button>
