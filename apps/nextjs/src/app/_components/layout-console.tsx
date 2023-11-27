@@ -16,8 +16,8 @@ interface SidebarProps {
 const Sidebar = async ({ children }: SidebarProps) => {
   const session = await auth();
   return (
-    <main className="sidebar-container flex">
-      <div className="ml-4 hidden w-1/2 flex-col justify-between rounded-md bg-white p-4 md:flex">
+    <main className="my-6 flex h-full overflow-y-scroll sm:mb-2">
+      <div className="ml-4 hidden h-5/6 w-1/2 flex-col justify-between rounded-md bg-white p-4 sm:flex">
         {session && (
           <Suspense
             fallback={<div className="flex w-full flex-col gap-4">LOADING</div>}

@@ -77,16 +77,31 @@
   }
 } */
 
+/* Default styles for smaller screens */
 .ProseMirror {
   margin-top: 4px;
-  padding: 48px 8px 8px;
-  height: 300px;
+  padding: 10px 4px;
+  height: 25px;
+  min-height: 250px;
+  max-height: 450px;
   border: 1px solid #e8e8e8;
   border-radius: 4px;
 }
 
-.ProseMirror {
-  padding-top: 8px;
+/* Styles for medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .ProseMirror {
+    height: 300px;
+    padding: 10px 6px; /* Slightly larger padding for medium screens */
+  }
+}
+
+/* Styles for large devices (desktops, 1024px and up) */
+@media (min-width: 1024px) {
+  .ProseMirror {
+    height: 500px;
+    padding: 10px 8px; /* Original padding for large screens */
+  }
 }
 
 .ProseMirror-focused {
@@ -101,11 +116,4 @@
   float: left;
   height: 0;
   pointer-events: none;
-}
-
-.sidebar-container {
-  max-height: calc(100vh - 128px);
-  width: 100%;
-  overflow-y: hidden;
-  padding-bottom: 100px;
 }

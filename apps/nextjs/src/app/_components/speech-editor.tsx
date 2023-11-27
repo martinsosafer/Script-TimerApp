@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Button, SimpleEditor } from "@voiceai/ui";
 import {
@@ -11,10 +11,8 @@ import {
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from "@voiceai/ui/@/components/ui/card";
 import { Icons } from "@voiceai/ui/@/components/ui/icons";
 
@@ -46,15 +44,15 @@ const SpeechEditor: React.FC<SpeechEditorProps> = ({}) => {
 
   return (
     <>
-      <Card className="bg-white">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          {/* <CardTitle className="text-sm font-medium">Total Revenue</CardTitle> */}
-        </CardHeader>
+      <Card className="flex flex-shrink flex-col justify-between bg-white md:h-5/6">
         <CardContent>
-          <SimpleEditor
-            content={state.speech ?? ""}
-            onChange={handleEditorChange}
-          />
+          <div className="self-start pt-2">
+            <SimpleEditor
+              content={state.speech ?? ""}
+              onChange={handleEditorChange}
+              className=""
+            />
+          </div>
         </CardContent>
         <CardFooter>
           <div className="mx-4 inline-flex items-center justify-center whitespace-nowrap rounded-md bg-primary px-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-5">
