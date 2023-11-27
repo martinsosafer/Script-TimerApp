@@ -28,9 +28,8 @@ const PlayerContent: React.FC<PlayerContentProps> = () => {
       className="
       fixed 
       bottom-0 
-      h-32
       w-full 
-      bg-gray-200 
+      bg-white 
       px-4 py-4 
       sm:px-6
     "
@@ -53,19 +52,19 @@ const PlayerContent: React.FC<PlayerContentProps> = () => {
           md:flex-row md:gap-y-0
         "
         >
-          <button>
+          {/* <button>
             <PlayIcon
               width={30}
               className="cursor-pointer fill-gray-700 hover:text-gray-300"
             />
-          </button>
+          </button> */}
           <audio ref={audioRef} controls />
-          <div className="h-2 w-full rounded-full bg-gray-200">
+          {/* <div className="h-2 w-full rounded-full bg-gray-200">
             <div
               className="h-2 rounded-full bg-blue-500"
               style={{ width: "50%" }}
             ></div>
-          </div>
+          </div> */}
         </div>
 
         {/* Action Icons */}
