@@ -168,11 +168,12 @@ export function ChatWindow(props: {
       </div>
 
       <form onSubmit={sendMessage} className="flex w-full flex-col text-black">
-        <div className="mt-4 flex w-full">
+        <div className="mt-4 flex w-full justify-between">
           <Input
             value={input}
             placeholder={placeholder ?? "What's it like to be a pirate?"}
             onChange={handleInputChange}
+            className="w-10/12"
           />
           <Button type="submit">
             <div
@@ -181,7 +182,7 @@ export function ChatWindow(props: {
                 chatEndpointIsLoading || intermediateStepsLoading
                   ? ""
                   : "hidden"
-              } flex justify-center`}
+              } ml-1 flex justify-center`}
             >
               <svg
                 aria-hidden="true"

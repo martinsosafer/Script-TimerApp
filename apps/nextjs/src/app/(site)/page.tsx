@@ -15,16 +15,16 @@ export default async function HomePage() {
   const session = await auth();
 
   return (
-    <>
-      <Tabs defaultValue="voice" className="space-y-4 bg-white p-8">
-        <TabsList>
+    <div className="flex flex-shrink flex-col">
+      <Tabs defaultValue="voice" className="flex flex-col space-y-2 p-4">
+        <TabsList className="self-center md:self-end">
           <TabsTrigger value="voice">Voice</TabsTrigger>
           <TabsTrigger value="chat">Chat</TabsTrigger>
         </TabsList>
         <TabsContent value="voice" className="space-y-4">
           <SpeechEditor />
         </TabsContent>
-        <TabsContent value="chat" className="space-y-4">
+        <TabsContent value="chat" className="space-y-4 rounded-lg bg-white">
           <ChatWindow
             endpoint="api/chat"
             emptyStateComponent={<>empty</>}
@@ -35,6 +35,6 @@ export default async function HomePage() {
           ></ChatWindow>
         </TabsContent>
       </Tabs>
-    </>
+    </div>
   );
 }
