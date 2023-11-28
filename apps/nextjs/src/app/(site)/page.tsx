@@ -15,16 +15,16 @@ export default async function HomePage() {
   const session = await auth();
 
   return (
-    <div className="flex flex-shrink flex-col justify-start">
+    <div className=" flex flex-shrink flex-col justify-start">
       <Tabs defaultValue="voice" className="flex flex-col space-y-2 p-4">
-        <TabsList className="self-center md:self-end">
+        <TabsList className="self-center md:absolute md:end-16 md:mt-5 md:self-end">
           <TabsTrigger value="voice">Voice</TabsTrigger>
           <TabsTrigger value="chat">Chat</TabsTrigger>
         </TabsList>
-        <TabsContent value="voice" className="space-y-4">
+        <TabsContent value="voice" className="mt-0 space-y-4">
           <SpeechEditor />
         </TabsContent>
-        <TabsContent value="chat" className="space-y-4 rounded-lg bg-white">
+        <TabsContent value="chat" className="flex items-start bg-white">
           <ChatWindow
             endpoint="api/chat"
             emptyStateComponent={<>empty</>}

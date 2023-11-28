@@ -97,14 +97,14 @@ function SimpleEditor({ content, onChange, className }: SimpleEditorProps) {
   return (
     <div
       className={classNames(
-        "flex flex-col rounded-md bg-white p-4 text-stone-900",
+        "flex flex-col rounded-md bg-white py-4 pt-4 text-stone-900",
         className,
       )}
     >
-      <div className="relative flex-grow">
+      <div className="relative flex-shrink">
         <EditorContent
           editor={editor}
-          className="h-full max-h-[500px] min-h-[250px] resize-y overflow-auto p-2 sm:h-4/6 md:h-5/6"
+          className="h-full max-h-[500px] min-h-[250px] overflow-auto p-2 sm:h-4/6 md:h-5/6"
         />
         {showCharCount && (
           <div className="absolute bottom-0 right-0 mb-2 mr-2 text-sm text-gray-600">
@@ -112,7 +112,7 @@ function SimpleEditor({ content, onChange, className }: SimpleEditorProps) {
           </div>
         )}
       </div>
-      <div className="flex flex-wrap items-center justify-center gap-2 pt-3 md:justify-start">
+      <div className="flex flex-col items-center justify-center gap-2 pt-3 md:flex-row lg:justify-start">
         <div className="flex gap-1">
           <Button
             className={classNames("border border-slate-500", {

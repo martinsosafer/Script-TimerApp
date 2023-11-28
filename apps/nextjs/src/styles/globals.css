@@ -96,9 +96,9 @@
 }
 
 /* Styles for large devices (desktops, 1024px and up) */
-@media (min-width: 1024px) {
+@media (min-width: 1027px) {
   .ProseMirror {
-    height: 500px;
+    height: 400px;
     padding: 10px 8px; /* Original padding for large screens */
   }
 }

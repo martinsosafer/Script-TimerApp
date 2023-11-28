@@ -43,55 +43,53 @@ const SpeechEditor: React.FC<SpeechEditorProps> = ({}) => {
   };
 
   return (
-    <>
-      <Card className="flex flex-shrink flex-col justify-between bg-white">
-        <CardContent>
-          <div className="self-start pt-2">
-            <SimpleEditor
-              content={state.speech ?? ""}
-              onChange={handleEditorChange}
-              className=""
-            />
+    <Card className="flex flex-shrink flex-col justify-between bg-white">
+      <CardContent>
+        <div className="self-start pt-1">
+          <SimpleEditor
+            content={state.speech ?? ""}
+            onChange={handleEditorChange}
+            className="min-h-[150px] w-full"
+          />
+        </div>
+      </CardContent>
+      <CardFooter className="flex items-center justify-between px-4">
+        <div className="mx-2 inline-flex items-center justify-center whitespace-nowrap rounded-md bg-primary px-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-5">
+          <Avatar className="py-2">
+            <AvatarImage src="/avatars/01.png" />
+            <AvatarFallback className="text-white">OM</AvatarFallback>
+          </Avatar>
+          <div className="mx-4">
+            <p className="text-sm font-medium leading-none">
+              {currentVoice?.name}
+            </p>
+            {/* <p className="text-sm text-muted-foreground">m@example.com</p> */}
           </div>
-        </CardContent>
-        <CardFooter>
-          <div className="mx-4 inline-flex items-center justify-center whitespace-nowrap rounded-md bg-primary px-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-5">
-            <Avatar className="py-2">
-              <AvatarImage src="/avatars/01.png" />
-              <AvatarFallback className="text-white">OM</AvatarFallback>
-            </Avatar>
-            <div className="mx-4">
-              <p className="text-sm font-medium leading-none">
-                {currentVoice?.name}
-              </p>
-              {/* <p className="text-sm text-muted-foreground">m@example.com</p> */}
-            </div>
-          </div>
+        </div>
 
-          <Button
-            onClick={async () => {
-              setLoading(true);
-              try {
-                await generateVoice({
-                  voice_id: currentVoice?.id ?? "",
-                  message: speech ?? "",
-                  stability: stability,
-                  similarity: similarity,
-                });
-                setLoading(false);
-              } catch {}
-            }}
-            className="w-full"
-          >
-            {loading ? (
-              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              "Generate"
-            )}
-          </Button>
-        </CardFooter>
-      </Card>
-    </>
+        <Button
+          onClick={async () => {
+            setLoading(true);
+            try {
+              await generateVoice({
+                voice_id: currentVoice?.id ?? "",
+                message: speech ?? "",
+                stability: stability,
+                similarity: similarity,
+              });
+              setLoading(false);
+            } catch {}
+          }}
+          className="w-full"
+        >
+          {loading ? (
+            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            "Generate"
+          )}
+        </Button>
+      </CardFooter>
+    </Card>
   );
 };
 

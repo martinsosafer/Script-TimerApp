@@ -126,7 +126,7 @@ export function VoiceList() {
   };
 
   return (
-    <Card className="flex min-h-full flex-col bg-white text-black">
+    <Card className="mt-2 flex min-h-full flex-col bg-white text-black">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <div className="flex w-full items-center justify-evenly space-x-2 self-center lg:space-x-1">
           <Input

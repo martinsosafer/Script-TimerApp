@@ -146,7 +146,7 @@ export function ChatWindow(props: {
   }
 
   return (
-    <div className="flex max-h-[500px] flex-grow flex-col items-center overflow-hidden rounded border p-4 md:p-8">
+    <div className="flex max-h-[500px] flex-grow flex-col items-center overflow-hidden rounded-xl border p-8">
       <div
         className="flex w-full flex-grow flex-col-reverse overflow-auto transition-[flex-grow] ease-in-out"
         ref={messageContainerRef}
@@ -167,22 +167,25 @@ export function ChatWindow(props: {
             )}
       </div>
 
-      <form onSubmit={sendMessage} className="flex w-full flex-col text-black">
-        <div className="mt-4 flex w-full justify-between">
+      <form
+        onSubmit={sendMessage}
+        className="mb-4 mt-6 flex w-full flex-col text-black"
+      >
+        <div className="flex sm:justify-evenly">
           <Input
             value={input}
             placeholder={placeholder ?? "What's it like to be a pirate?"}
             onChange={handleInputChange}
-            className="w-10/12"
+            className="w-9/12"
           />
-          <Button type="submit">
+          <Button type="submit" className="ml-1 sm:m-0">
             <div
               role="status"
               className={`${
                 chatEndpointIsLoading || intermediateStepsLoading
                   ? ""
                   : "hidden"
-              } ml-1 flex justify-center`}
+              } ml-1 flex justify-center `}
             >
               <svg
                 aria-hidden="true"
@@ -208,7 +211,7 @@ export function ChatWindow(props: {
         </div>
       </form>
 
-      {messages.length === 0 && emptyStateComponent}
+      {/* {messages.length === 0 && emptyStateComponent} */}
 
       <ToastContainer />
     </div>
