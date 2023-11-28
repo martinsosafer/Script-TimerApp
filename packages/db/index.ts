@@ -2,9 +2,11 @@ import { neon, neonConfig } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 
 import * as auth from "./schema/auth";
+import * as credit from "./schema/credit";
+import * as generation from "./schema/generation";
 import * as voice from "./schema/voice";
 
-export const schema = { ...auth, ...voice };
+export const schema = { ...auth, ...credit, ...generation, ...voice };
 
 export { pgTable as tableCreator } from "./schema/_table";
 
