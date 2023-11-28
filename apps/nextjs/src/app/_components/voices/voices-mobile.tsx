@@ -52,7 +52,7 @@ export const VoiceSettings = ({ ...rest }) => {
     <div {...rest}>
       <VoiceSettingsModal ref={profileModalRef} />
       <Button
-        className="my-4 w-full"
+        className="mt-4 w-full"
         onClick={() => profileModalRef.current?.click()}
       >
         Voice Settings{" "}

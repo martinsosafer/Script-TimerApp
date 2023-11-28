@@ -4,6 +4,11 @@ import React, { useCallback, useEffect, useState } from "react";
 import ArrowUTurnLeftIcon from "@heroicons/react/24/outline/ArrowUturnLeftIcon";
 import ArrowUTurnRightIcon from "@heroicons/react/24/outline/ArrowUturnRightIcon";
 import ClipboardIcon from "@heroicons/react/24/outline/ClipboardIcon";
+import {
+  FontBoldIcon,
+  FontItalicIcon,
+  UnderlineIcon,
+} from "@radix-ui/react-icons";
 import Bold from "@tiptap/extension-bold";
 import CharacterCount from "@tiptap/extension-character-count";
 import Document from "@tiptap/extension-document";
@@ -59,11 +64,11 @@ function SimpleEditor({ content, onChange, className }: SimpleEditorProps) {
     }
   }, [editor]);
 
-  const toggleCharCountDisplay = () => {
+  const toggleCharCountDisplay = useCallback(() => {
     setShowCharCount(!showCharCount);
-  };
+  }, [showCharCount]);
 
-  const copyToClipboard = () => {
+  const copyToClipboard = useCallback(() => {
     if (editor && navigator.clipboard) {
       const content = editor.getText();
       navigator.clipboard
@@ -71,7 +76,7 @@ function SimpleEditor({ content, onChange, className }: SimpleEditorProps) {
         .then(() => console.log("Content copied to clipboard"))
         .catch((err) => console.error("Failed to copy content", err));
     }
-  };
+  }, [editor]);
 
   const toggleBold = useCallback(() => {
     editor.chain().focus().toggleBold().run();
@@ -92,76 +97,78 @@ function SimpleEditor({ content, onChange, className }: SimpleEditorProps) {
   return (
     <div
       className={classNames(
-        "h-inherit flex w-full flex-col rounded-md px-8 py-4 text-stone-900",
+        "flex flex-col rounded-md bg-white py-4 pt-4 text-stone-900",
         className,
       )}
     >
-      {editor && (
-        <>
-          {/* TODO add other buttons */}
-          <EditorContent editor={editor} />
-          <div className="z-30 flex w-full items-center justify-start gap-8 self-center pt-3">
-            <div className="flex items-center justify-between">
-              <Button
-                className="menu-button mr-1 border border-slate-500"
-                onClick={() => editor.chain().focus().undo().run()}
-                disabled={!editor.can().undo()}
-              >
-                <ArrowUTurnLeftIcon className="h-5 w-5 text-black" />
-              </Button>
-              <Button
-                className="menu-button mr-1 border border-slate-500"
-                onClick={() => editor.chain().focus().redo().run()}
-                disabled={!editor.can().redo()}
-              >
-                <ArrowUTurnRightIcon className="h-5 w-5 text-black" />
-              </Button>
-              <Button
-                className="menu-button border border-slate-500"
-                disabled={charCount === 0}
-                onClick={copyToClipboard}
-              >
-                <ClipboardIcon className="h-5 w-5 text-black" />
-              </Button>
-            </div>
-            <div className="flex w-1/4 items-center justify-between">
-              <Button
-                className={classNames("menu-button border border-slate-500", {
-                  "is-active": editor.isActive("bold"),
-                })}
-                onClick={toggleBold}
-              >
-                Bold
-              </Button>
-              <Button
-                className={classNames("menu-button border border-slate-500", {
-                  "is-active": editor.isActive("underline"),
-                })}
-                onClick={toggleUnderline}
-              >
-                Underline
-              </Button>
-              <Button
-                className={classNames("menu-button border border-slate-500", {
-                  "is-active": editor.isActive("intalic"),
-                })}
-                onClick={toggleItalic}
-              >
-                Italic
-              </Button>
-            </div>
-            <div className="flex w-1/2 items-center justify-between">
-              <Button
-                className="border border-slate-500"
-                onClick={toggleCharCountDisplay}
-              >
-                Word count
-              </Button>
-              {showCharCount && <span className="text-black">{charCount}</span>}
-            </div>
+      <div className="relative flex-shrink">
+        <EditorContent
+          editor={editor}
+          className="h-full max-h-[500px] min-h-[250px] overflow-auto p-2 sm:h-4/6 md:h-5/6"
+        />
+        {showCharCount && (
+          <div className="absolute bottom-0 right-0 mb-2 mr-2 text-sm text-gray-600">
+            {charCount}
           </div>
-        </>
-      )}
+        )}
+      </div>
+      <div className="flex flex-col items-center justify-center gap-2 pt-3 md:flex-row lg:justify-start">
+        <div className="flex gap-1">
+          <Button
+            className={classNames("border border-slate-500", {
+              "is-active": editor.isActive("bold"),
+            })}
+            onClick={toggleBold}
+          >
+            <FontBoldIcon className="h-5 w-5" />
+          </Button>
+          <Button
+            className={classNames("border border-slate-500", {
+              "is-active": editor.isActive("underline"),
+            })}
+            onClick={toggleUnderline}
+          >
+            <UnderlineIcon className="h-5 w-5" />
+          </Button>
+          <Button
+            className={classNames("border border-slate-500", {
+              "is-active": editor.isActive("italic"),
+            })}
+            onClick={toggleItalic}
+          >
+            <FontItalicIcon className="h-5 w-5" />
+          </Button>
+          <Button
+            className="border border-slate-500"
+            onClick={toggleCharCountDisplay}
+          >
+            Word count
+          </Button>
+        </div>
+        <div className="flex gap-1">
+          <Button
+            className="border border-slate-500"
+            onClick={() => editor.chain().focus().undo().run()}
+            disabled={!editor.can().undo()}
+          >
+            <ArrowUTurnLeftIcon className="h-5 w-5" />
+          </Button>
+          <Button
+            className="border border-slate-500"
+            onClick={() => editor.chain().focus().redo().run()}
+            disabled={!editor.can().redo()}
+          >
+            <ArrowUTurnRightIcon className="h-5 w-5" />
+          </Button>
+          <Button
+            className="border border-slate-500"
+            disabled={charCount === 0}
+            onClick={copyToClipboard}
+          >
+            <ClipboardIcon className="h-5 w-5" />
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }

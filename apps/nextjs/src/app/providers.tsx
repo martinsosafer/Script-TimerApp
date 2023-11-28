@@ -59,7 +59,7 @@ export function TRPCReactProvider(props: {
     <api.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
         <ReactQueryStreamedHydration transformer={superjson}>
-          <ThemeProvider attribute="class">
+          <ThemeProvider attribute="class" defaultTheme="light">
             <PlayerProvider>{props.children}</PlayerProvider>
           </ThemeProvider>
         </ReactQueryStreamedHydration>

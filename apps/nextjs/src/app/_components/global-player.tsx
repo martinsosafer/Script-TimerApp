@@ -25,7 +25,7 @@ const PlayerContent: React.FC<PlayerContentProps> = () => {
 
   const handleDownload = () => {
     console.log("CALLED");
-    const blob = new Blob([audio!], { type: "audio/mpeg" });
+    const blob = new Blob([audio], { type: "audio/mpeg" });
 
     // Create a temporary URL for the Blob and trigger a download
     const url = URL.createObjectURL(blob);
@@ -47,11 +47,11 @@ const PlayerContent: React.FC<PlayerContentProps> = () => {
       bottom-0 
       w-full 
       bg-white 
-      px-4 py-4 
+      px-4 py-2 
       sm:px-6
     "
     >
-      <div className="grid h-full w-full grid-cols-1 place-content-between content-center rounded-2xl bg-white p-3 shadow-md shadow-gray-900 md:grid-cols-3 md:p-4">
+      <div className="grid w-full grid-cols-3 place-content-between content-center rounded-2xl bg-white p-3 shadow-md shadow-gray-900 md:p-4">
         <div className="flex items-center justify-center rounded-md border border-gray-100 px-2 py-1 md:w-1/4 md:justify-start">
           <UserIcon className="h-5 w-5 flex-none rounded-full text-gray-400 md:h-8 md:w-8" />
           {/* {voice.name} */}

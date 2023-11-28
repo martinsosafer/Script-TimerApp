@@ -44,7 +44,7 @@ export default function Layout(props: { children: React.ReactNode }) {
     <div className="flex h-full flex-col bg-white">
       <TopNavigation />
       <TRPCReactProvider headers={headers()}>
-        <div className="mt-8 flex-col overflow-auto">
+        <div className="h-full flex-col overflow-y-scroll md:overflow-hidden">
           <Sidebar>{props.children}</Sidebar>
           <Player />
         </div>
