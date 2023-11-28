@@ -19,6 +19,7 @@ export const historyRouter = createTRPCRouter({
         schema.generations,
         eq(schema.credits.generationId, schema.generations.id),
       )
-      .where(and(eq(schema.credits.userId, ctx.session.user.id)));
+      .where(and(eq(schema.credits.userId, ctx.session.user.id)))
+      .orderBy(desc(schema.credits.created_at));
   }),
 });
