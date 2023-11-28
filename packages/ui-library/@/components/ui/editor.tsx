@@ -102,7 +102,10 @@ function SimpleEditor({ content, onChange, className }: SimpleEditorProps) {
       )}
     >
       <div className="relative flex-grow">
-        <EditorContent editor={editor} className="h-full sm:h-4/6 md:h-5/6" />
+        <EditorContent
+          editor={editor}
+          className="h-full max-h-[500px] min-h-[250px] resize-y overflow-auto p-2 sm:h-4/6 md:h-5/6"
+        />
         {showCharCount && (
           <div className="absolute bottom-0 right-0 mb-2 mr-2 text-sm text-gray-600">
             {charCount}

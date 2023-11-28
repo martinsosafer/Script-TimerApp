@@ -15,7 +15,7 @@ export default async function HomePage() {
   const session = await auth();
 
   return (
-    <div className="flex flex-shrink flex-col">
+    <div className="flex flex-shrink flex-col justify-start">
       <Tabs defaultValue="voice" className="flex flex-col space-y-2 p-4">
         <TabsList className="self-center md:self-end">
           <TabsTrigger value="voice">Voice</TabsTrigger>

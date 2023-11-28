@@ -44,7 +44,7 @@ const SpeechEditor: React.FC<SpeechEditorProps> = ({}) => {
 
   return (
     <>
-      <Card className="flex flex-shrink flex-col justify-between bg-white ">
+      <Card className="flex flex-shrink flex-col justify-between bg-white">
         <CardContent>
           <div className="self-start pt-2">
             <SimpleEditor
