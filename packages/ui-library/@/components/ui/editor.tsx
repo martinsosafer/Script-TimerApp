@@ -107,7 +107,7 @@ function SimpleEditor({ content, onChange, className }: SimpleEditorProps) {
           className="h-full max-h-[500px] min-h-[250px] overflow-auto p-2 sm:h-4/6 md:h-5/6"
         />
         {showCharCount && (
-          <div className="absolute bottom-0 right-0 mb-2 mr-2 text-sm text-gray-600">
+          <div className="absolute bottom-0 right-0 mb-2 mr-3 text-sm text-gray-600">
             {charCount}
           </div>
         )}

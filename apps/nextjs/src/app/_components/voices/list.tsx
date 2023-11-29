@@ -2,7 +2,6 @@
 
 import { useRef, useState } from "react";
 import CogSix6Icon from "@heroicons/react/24/outline/Cog6ToothIcon";
-import classNames from "classnames";
 
 import {
   Button,
@@ -19,19 +18,14 @@ import {
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from "@voiceai/ui/@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@voiceai/ui/@/components/ui/dropdown-menu";
 import { Input } from "@voiceai/ui/@/components/ui/input";
@@ -64,7 +58,6 @@ function VoiceListItem({ voice, onClick }) {
                 <p
                   ref={textRef}
                   className="truncate text-xs font-medium leading-none md:text-sm"
-                  // Remove any width constraints here so the truncation can happen naturally
                 >
                   {voice.name}
                 </p>
@@ -192,26 +185,6 @@ export function VoiceList() {
                 </DropdownMenuLabel>
               </div>
               <DropdownMenuSeparator />
-              {/* <DropdownMenuGroup>
-              <DropdownMenuItem>
-                Profile
-                <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                Billing
-                <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                Settings
-                <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-              </DropdownMenuItem>
-              <DropdownMenuItem>New Team</DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              Log out
-              <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-            </DropdownMenuItem> */}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
