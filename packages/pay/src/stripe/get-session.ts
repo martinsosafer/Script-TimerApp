@@ -6,7 +6,7 @@ import { stripe } from "./stripe";
 export type { Stripe } from "stripe";
 
 export const CURRENCY = "usd";
-const YOUR_DOMAIN = process.env.VERCEL_URL;
+const YOUR_DOMAIN = "https://voiceai-tesserakt.vercel.app";
 
 export async function createCheckoutSession(
   userID: string,
