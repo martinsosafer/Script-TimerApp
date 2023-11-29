@@ -75,6 +75,13 @@ const TopNavigation = () => {
               >
                 Settings
               </Link>
+              <Link
+                href="/history"
+                passHref
+                className="block rounded-md px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                History
+              </Link>
               <button
                 onClick={() => {
                   /* Handle logout logic */
