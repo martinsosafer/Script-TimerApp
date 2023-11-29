@@ -35,7 +35,9 @@ const TopNavigation = () => {
       {/* Logo and Hamburger Icon */}
       <div className="flex items-center justify-between">
         <div className="hidden text-center text-2xl text-white md:block">
-          insta<strong>voice</strong>
+          <Link href="/" passHref>
+            insta<strong>voice</strong>
+          </Link>
         </div>
 
         {/* Mobile Hamburger Icon */}
@@ -51,7 +53,9 @@ const TopNavigation = () => {
         {/* Logo Centered for Mobile and Desktop View */}
         <div className="flex-grow md:hidden">
           <div className="text-center text-2xl text-white">
-            insta<strong>voice</strong>
+            <Link href="/" passHref>
+              insta<strong>voice</strong>
+            </Link>
           </div>
         </div>
 

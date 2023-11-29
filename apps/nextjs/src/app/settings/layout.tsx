@@ -56,7 +56,7 @@ export default function Layout(props: { children: React.ReactNode }) {
           <div className="space-y-0.5">
             <h2 className="text-2xl font-bold tracking-tight">Settings</h2>
             <p className="text-muted-foreground">
-              Manage your account settings and set e-mail preferences.
+              Manage your account settings.
             </p>
           </div>
           <Separator className="my-6" />
