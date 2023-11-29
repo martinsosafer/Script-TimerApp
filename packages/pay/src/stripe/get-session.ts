@@ -8,7 +8,9 @@ export type { Stripe } from "stripe";
 export const CURRENCY = "usd";
 const YOUR_DOMAIN = process.env.AUTH_URL;
 
-export async function createCheckoutSession(): Promise<Stripe.Checkout.Session> {
+export async function createCheckoutSession(
+  userID: string,
+): Promise<Stripe.Checkout.Session> {
   const checkoutSession: Stripe.Checkout.Session =
     await stripe.checkout.sessions.create({
       line_items: [
@@ -20,7 +22,8 @@ export async function createCheckoutSession(): Promise<Stripe.Checkout.Session> 
       ],
       mode: "subscription",
       ui_mode: "embedded",
-      return_url: `${YOUR_DOMAIN}/return`,
+      client_reference_id: userID,
+      return_url: `${YOUR_DOMAIN}/settings/billing?session_id={CHECKOUT_SESSION_ID}`,
     });
 
   return checkoutSession;

@@ -15,5 +15,5 @@ export default {
   dbCredentials: {
     connectionString: process.env.DATABASE_URL,
   },
-  tablesFilter: ["tkt_properties_*"],
+  tablesFilter: ["voiceai_*"],
 } satisfies Config;

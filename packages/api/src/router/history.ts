@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { and, desc, eq, schema } from "@voiceai/db";
 
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const historyRouter = createTRPCRouter({
   list: protectedProcedure.query(async ({ ctx }) => {
