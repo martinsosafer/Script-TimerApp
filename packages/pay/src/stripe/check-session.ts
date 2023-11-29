@@ -6,7 +6,7 @@ import { stripe } from "./stripe";
 export type { Stripe } from "stripe";
 
 export const CURRENCY = "usd";
-const YOUR_DOMAIN = process.env.AUTH_URL;
+const YOUR_DOMAIN = process.env.VERCEL_URL;
 
 export async function checkSession(
   sessionId: string,
