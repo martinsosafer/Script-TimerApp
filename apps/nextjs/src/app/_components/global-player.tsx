@@ -46,7 +46,7 @@ const PlayerContent: React.FC<PlayerContentProps> = () => {
       fixed 
       bottom-0 
       w-full 
-      bg-white 
+      bg-zinc-100 
       px-4 py-2 
       sm:px-6
     "
