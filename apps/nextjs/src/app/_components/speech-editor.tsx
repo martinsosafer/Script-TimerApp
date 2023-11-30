@@ -17,6 +17,7 @@ import {
 import { Icons } from "@voiceai/ui/@/components/ui/icons";
 
 import { api } from "~/utils/api";
+import { generateRandomString } from "~/utils/helpers";
 import { usePlayer } from "../providers/player-context";
 
 interface SpeechEditorProps {}
@@ -42,6 +43,19 @@ const SpeechEditor: React.FC<SpeechEditorProps> = ({}) => {
     setSpeech(content);
   };
 
+  const getInitials = (name: string): string =>
+    name ? name.substring(0, 2).toUpperCase() : "OM";
+
+  // Function to create the avatar URL
+  const createAvatarUrl = (): string => {
+    const randomString: string = generateRandomString();
+    const initials: string = getInitials(currentVoice?.name);
+    return `https://avatar.vercel.sh/${randomString}?text=${initials}`;
+  };
+
+  // Avatar URL
+  const avatarUrl: string = createAvatarUrl();
+
   return (
     <Card className="flex flex-shrink flex-col justify-between bg-white">
       <CardContent>
@@ -56,7 +70,7 @@ const SpeechEditor: React.FC<SpeechEditorProps> = ({}) => {
       <CardFooter className="flex items-center justify-between px-4">
         <div className="mx-2 inline-flex items-center whitespace-nowrap rounded-md bg-primary px-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-5">
           <Avatar className="py-2">
-            <AvatarImage src="/avatars/01.png" />
+            <AvatarImage src={avatarUrl} className="rounded-full" />
             <AvatarFallback className="border border-stone-500 bg-black text-white">
               OM
             </AvatarFallback>
