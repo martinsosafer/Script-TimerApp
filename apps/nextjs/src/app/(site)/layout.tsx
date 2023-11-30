@@ -41,7 +41,7 @@ export const metadata: Metadata = {
 
 export default function Layout(props: { children: React.ReactNode }) {
   return (
-    <div className="flex h-full flex-col bg-white">
+    <div className="flex h-full flex-col bg-zinc-100">
       <TopNavigation />
       <TRPCReactProvider headers={headers()}>
         <div className="h-full flex-col overflow-y-scroll md:overflow-hidden">

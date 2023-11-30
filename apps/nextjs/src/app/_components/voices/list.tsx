@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import CogSix6Icon from "@heroicons/react/24/outline/Cog6ToothIcon";
+import MagnifyingGlassIcon from "@heroicons/react/24/outline/MagnifyingGlassIcon";
 
 import {
   Button,
@@ -122,20 +123,18 @@ export function VoiceList() {
     <Card className="mt-2 flex min-h-full flex-col bg-white text-black">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <div className="flex w-full items-center justify-evenly space-x-2 self-center lg:space-x-1">
-          <Input
-            type="search"
-            placeholder="Search..."
-            className="md:w-[100px] lg:w-[300px]"
-          />
+          <div className="relative flex items-center">
+            <Input
+              type="search"
+              placeholder="Search"
+              className="bg-gray-100 pl-8 md:w-[100px] lg:w-[300px]"
+            />
+            <MagnifyingGlassIcon className="absolute left-2 h-5 w-5 text-muted-foreground" />
+          </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src="/avatars/01.png" alt="@shadcn" />
-                  <AvatarFallback>
-                    <CogSix6Icon className="h-6 w-6 text-white" />
-                  </AvatarFallback>
-                </Avatar>
+              <Button className="relative bg-gray-100 hover:bg-gray-300">
+                <CogSix6Icon className="h-7 w-7 fill-zinc-400 stroke-gray-100" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent

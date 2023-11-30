@@ -115,6 +115,7 @@ function SimpleEditor({ content, onChange, className }: SimpleEditorProps) {
       <div className="flex flex-col items-center justify-center gap-2 pt-3 md:flex-row lg:justify-start">
         <div className="flex gap-1">
           <Button
+            variant="ghost"
             className={classNames("border border-slate-500", {
               "is-active": editor.isActive("bold"),
             })}
@@ -123,6 +124,7 @@ function SimpleEditor({ content, onChange, className }: SimpleEditorProps) {
             <FontBoldIcon className="h-5 w-5" />
           </Button>
           <Button
+            variant="ghost"
             className={classNames("border border-slate-500", {
               "is-active": editor.isActive("underline"),
             })}
@@ -131,6 +133,7 @@ function SimpleEditor({ content, onChange, className }: SimpleEditorProps) {
             <UnderlineIcon className="h-5 w-5" />
           </Button>
           <Button
+            variant="ghost"
             className={classNames("border border-slate-500", {
               "is-active": editor.isActive("italic"),
             })}
@@ -139,6 +142,7 @@ function SimpleEditor({ content, onChange, className }: SimpleEditorProps) {
             <FontItalicIcon className="h-5 w-5" />
           </Button>
           <Button
+            variant="ghost"
             className="border border-slate-500"
             onClick={toggleCharCountDisplay}
           >
@@ -147,6 +151,7 @@ function SimpleEditor({ content, onChange, className }: SimpleEditorProps) {
         </div>
         <div className="flex gap-1">
           <Button
+            variant="ghost"
             className="border border-slate-500"
             onClick={() => editor.chain().focus().undo().run()}
             disabled={!editor.can().undo()}
@@ -154,6 +159,7 @@ function SimpleEditor({ content, onChange, className }: SimpleEditorProps) {
             <ArrowUTurnLeftIcon className="h-5 w-5" />
           </Button>
           <Button
+            variant="ghost"
             className="border border-slate-500"
             onClick={() => editor.chain().focus().redo().run()}
             disabled={!editor.can().redo()}
@@ -161,6 +167,7 @@ function SimpleEditor({ content, onChange, className }: SimpleEditorProps) {
             <ArrowUTurnRightIcon className="h-5 w-5" />
           </Button>
           <Button
+            variant="ghost"
             className="border border-slate-500"
             disabled={charCount === 0}
             onClick={copyToClipboard}
