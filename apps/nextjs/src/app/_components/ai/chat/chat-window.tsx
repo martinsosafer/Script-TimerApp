@@ -146,7 +146,7 @@ export function ChatWindow(props: {
   }
 
   return (
-    <div className="flex max-h-[500px] flex-grow flex-col items-center overflow-hidden rounded-xl border p-8">
+    <div className="flex max-h-[500px] min-h-[250px] flex-grow flex-col items-center overflow-hidden rounded-xl border p-8 md:min-h-[600px]">
       <div
         className="flex w-full flex-grow flex-col-reverse overflow-auto transition-[flex-grow] ease-in-out"
         ref={messageContainerRef}
