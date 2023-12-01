@@ -25,19 +25,16 @@ const PlayerContent: React.FC<PlayerContentProps> = () => {
 
   const handleDownload = () => {
     console.log("CALLED");
-    const blob = new Blob([audio], { type: "audio/mpeg" });
+    // const blob = new Blob([audio], { type: "audio/mpeg" });
 
     // Create a temporary URL for the Blob and trigger a download
-    const url = URL.createObjectURL(blob);
+    // const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
-    a.href = url;
+    a.href = audio ?? "";
     a.download = "voice.mp3";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-
-    // Revoke the temporary URL
-    URL.revokeObjectURL(url);
   };
 
   return (
