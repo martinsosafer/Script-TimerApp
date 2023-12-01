@@ -6,7 +6,7 @@ interface Voice {
   // Define the properties of the voice object
   // Adjust these based on the actual properties of your currentVoice object
   id: string;
-  name: number;
+  name: string;
   // Add more properties as needed
 }
 

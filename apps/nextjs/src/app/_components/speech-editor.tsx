@@ -49,7 +49,7 @@ const SpeechEditor: React.FC<SpeechEditorProps> = ({}) => {
   // Function to create the avatar URL
   const createAvatarUrl = (): string => {
     const randomString: string = generateRandomString();
-    const initials: string = getInitials(currentVoice?.name);
+    const initials: string = getInitials(currentVoice?.name ?? "IV");
     return `https://avatar.vercel.sh/${randomString}?text=${initials}`;
   };
 
