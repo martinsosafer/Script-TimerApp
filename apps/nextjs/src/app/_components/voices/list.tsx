@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import CogSix6Icon from "@heroicons/react/24/outline/Cog6ToothIcon";
 import MagnifyingGlassIcon from "@heroicons/react/24/outline/MagnifyingGlassIcon";
+import { useDebounce } from "use-debounce";
 
 import {
   Button,
@@ -36,7 +37,6 @@ import { cn } from "@voiceai/ui/@/lib/utils";
 
 import { usePlayer } from "~/app/providers/player-context";
 import { api } from "~/utils/api";
-import type { RouterOutputs } from "~/utils/api";
 import { useIsTruncated } from "../../hooks/useIsTruncated";
 
 // @ts-expect-error type this later
@@ -84,7 +84,10 @@ function VoiceListItem({ voice, onClick }) {
 }
 
 export function VoiceList() {
-  const [voices] = api.voice.list.useSuspenseQuery();
+  const [search, setSearch] = useState("");
+  const [debouncedSearch] = useDebounce(search, 1000);
+
+  const [voices] = api.voice.list.useSuspenseQuery({ name: debouncedSearch });
 
   const { dispatch, state } = usePlayer();
   const { stability, similarity } = state;
@@ -132,9 +135,11 @@ export function VoiceList() {
         <div className="flex w-full items-center justify-evenly space-x-2 self-center lg:space-x-1">
           <div className="relative flex items-center">
             <Input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
               type="search"
               placeholder="Search"
-              className="bg-gray-100 pl-8 md:w-[100px] lg:w-[300px]"
+              className="bg-gray-100 pl-8 text-black md:w-[100px] lg:w-[300px]"
             />
             <MagnifyingGlassIcon className="absolute left-2 h-5 w-5 text-muted-foreground" />
           </div>

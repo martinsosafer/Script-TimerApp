@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { desc, eq, schema } from "@voiceai/db";
+import { desc, eq, ilike, like, schema } from "@voiceai/db";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
@@ -25,9 +25,22 @@ export const voiceRouter = createTRPCRouter({
       return [];
     }
   }),
-  list: protectedProcedure.query(async ({ ctx }) => {
-    return ctx.db.query.voices.findMany({ orderBy: desc(schema.voices.id) });
-  }),
+  list: protectedProcedure
+    .input(
+      z.object({
+        name: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      if (input?.name && input?.name.length > 0) {
+        return await ctx.db
+          .select()
+          .from(schema.voices)
+          .where(ilike(schema.voices.name, `%${input.name}%`));
+      }
+
+      return ctx.db.query.voices.findMany({ orderBy: desc(schema.voices.id) });
+    }),
   create: protectedProcedure
     .input(
       z.object({
