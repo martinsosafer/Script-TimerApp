@@ -76,7 +76,7 @@ const SpeechEditor: React.FC<SpeechEditorProps> = ({}) => {
           <Avatar className="py-2">
             <AvatarImage src={avatarUrl} className="rounded-full" />
             <AvatarFallback className="border border-stone-500 bg-blue-700 text-white">
-              OM
+              IV
             </AvatarFallback>
           </Avatar>
           <div className="mx-4 max-w-xs">

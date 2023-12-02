@@ -2,20 +2,32 @@
 
 import { useEffect, useRef } from "react";
 import ArrowDownOnSquareIcon from "@heroicons/react/24/outline/ArrowDownOnSquareIcon";
-import PlayIcon from "@heroicons/react/24/outline/PlayIcon";
-import TrashIcon from "@heroicons/react/24/outline/TrashIcon";
-import UserIcon from "@heroicons/react/24/solid/UserIcon";
 
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@voiceai/ui/@/components/ui/avatar";
+
+import { generateRandomString } from "~/utils/helpers";
 import { usePlayer } from "../providers/player-context";
 
 interface PlayerContentProps {}
 
 const PlayerContent: React.FC<PlayerContentProps> = () => {
   const { state } = usePlayer();
-  const { audio } = state;
+  const { audio, currentVoice } = state;
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const getInitials = (name: string): string =>
+    name ? name.substring(0, 2).toUpperCase() : "IV";
 
+  const createAvatarUrl = (): string => {
+    const randomString: string = generateRandomString();
+    const initials: string = getInitials(currentVoice?.name ?? "IV");
+    return `https://avatar.vercel.sh/${randomString}?text=${initials}`;
+  };
+  const avatarUrl: string = createAvatarUrl();
   useEffect(() => {
     if (audio && audio.length > 0) {
       audioRef.current!.src = audio!;
@@ -24,11 +36,6 @@ const PlayerContent: React.FC<PlayerContentProps> = () => {
   }, [audio]);
 
   const handleDownload = () => {
-    console.log("CALLED");
-    // const blob = new Blob([audio], { type: "audio/mpeg" });
-
-    // Create a temporary URL for the Blob and trigger a download
-    // const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = audio ?? "";
     a.download = "voice.mp3";
@@ -50,8 +57,19 @@ const PlayerContent: React.FC<PlayerContentProps> = () => {
     >
       <div className="grid w-full grid-cols-3 place-content-between content-center rounded-2xl bg-white p-3 shadow-md shadow-gray-900 md:p-4">
         <div className="flex items-center justify-center rounded-md border border-gray-100 px-2 py-1 md:w-1/4 md:justify-start">
-          <UserIcon className="h-5 w-5 flex-none rounded-full text-gray-400 md:h-8 md:w-8" />
-          {/* {voice.name} */}
+          <div className="mx-2 inline-flex items-center whitespace-nowrap rounded-md bg-blue-700 px-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-5">
+            <Avatar className="py-2">
+              <AvatarImage src={avatarUrl} className="rounded-full" />
+              <AvatarFallback className="border border-stone-500 bg-blue-700 text-white">
+                IV
+              </AvatarFallback>
+            </Avatar>
+            <div className="mx-4 max-w-xs">
+              <p className="truncate text-sm font-medium leading-none">
+                {currentVoice?.name}
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Playback Control */}
