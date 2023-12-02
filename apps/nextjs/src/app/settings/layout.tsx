@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
+import { signOut } from "@voiceai/auth";
 import { Separator } from "@voiceai/ui/@/components/ui/separator";
 
 import TopNavigation from "../_components/top-navigation";
@@ -48,9 +49,15 @@ const sidebarNavItems = [
 ];
 
 export default function Layout(props: { children: React.ReactNode }) {
+  async function signOutServer() {
+    "use server"; // mark function as a server action (fixes the error)
+    await signOut();
+    return null;
+  }
+
   return (
     <div className="flex h-full flex-col ">
-      <TopNavigation />
+      <TopNavigation signOut={signOutServer} />
       <TRPCReactProvider headers={headers()}>
         <div className="hidden space-y-6 p-10 pb-16 md:block">
           <div className="space-y-0.5">

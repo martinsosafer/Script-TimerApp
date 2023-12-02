@@ -4,13 +4,14 @@ import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import CogIcon from "@heroicons/react/24/outline/CogIcon";
 
+import { auth, signIn, signOut } from "@voiceai/auth";
 import { Button } from "@voiceai/ui";
 
-const TopNavigation = () => {
+const TopNavigation = ({ signOut }: { signOut: () => Promise<null> }) => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
-  const dropdownRef = useRef(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleClickOutside = (event: MouseEvent) => {
     if (
@@ -86,9 +87,10 @@ const TopNavigation = () => {
               >
                 History
               </Link>
+              {/* <AuthShowcase /> */}
               <button
-                onClick={() => {
-                  /* Handle logout logic */
+                onClick={async () => {
+                  await signOut();
                 }}
                 className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
               >

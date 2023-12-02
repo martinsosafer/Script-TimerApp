@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
+import { signOut } from "@voiceai/auth";
+
 import TopNavigation from "../_components/top-navigation";
 
 import "~/styles/globals.css";
@@ -40,9 +42,15 @@ export const metadata: Metadata = {
 };
 
 export default function Layout(props: { children: React.ReactNode }) {
+  async function signOutServer() {
+    "use server"; // mark function as a server action (fixes the error)
+    await signOut();
+    return null;
+  }
+
   return (
     <div className="flex h-full flex-col bg-white text-black">
-      <TopNavigation />
+      <TopNavigation signOut={signOutServer} />
       <TRPCReactProvider headers={headers()}>
         <div className="mx-8 mt-8 flex-col overflow-auto">{props.children}</div>
       </TRPCReactProvider>
