@@ -86,9 +86,6 @@ const PlayerContent: React.FC<PlayerContentProps> = () => {
           <button type="button" onClick={handleDownload}>
             <ArrowDownOnSquareIcon width={30} className="stroke-black" />
           </button>
-          <button>
-            <TrashIcon width={30} className="stroke-black" />
-          </button>
         </div>
       </div>
     </div>
