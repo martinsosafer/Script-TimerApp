@@ -20,7 +20,7 @@ import Text from "@tiptap/extension-text";
 import Typography from "@tiptap/extension-typography";
 import Underline from "@tiptap/extension-underline";
 import type { Editor } from "@tiptap/react";
-import { EditorContent, useEditor } from "@tiptap/react";
+import { EditorContent, EditorProvider, useEditor } from "@tiptap/react";
 import classNames from "classnames";
 
 import { Button } from "./button";
@@ -29,9 +29,15 @@ interface SimpleEditorProps {
   className?: string;
   content?: string;
   onChange: (content: string) => void;
+  updatedContent?: string;
 }
 
-function SimpleEditor({ content, onChange, className }: SimpleEditorProps) {
+function SimpleEditor({
+  content,
+  onChange,
+  className,
+  updatedContent,
+}: SimpleEditorProps) {
   const [charCount, setCharCount] = useState(0);
   const [showCharCount, setShowCharCount] = useState(false);
 
@@ -56,7 +62,13 @@ function SimpleEditor({ content, onChange, className }: SimpleEditorProps) {
       onChange(editor.getText());
       setCharCount(editor.storage.characterCount.characters());
     },
-  }) as Editor;
+  })!;
+
+  useEffect(() => {
+    if (editor && updatedContent?.length) {
+      editor.commands.setContent(updatedContent);
+    }
+  }, [updatedContent]);
 
   useEffect(() => {
     if (editor) {

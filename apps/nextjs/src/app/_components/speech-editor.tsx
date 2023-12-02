@@ -12,7 +12,6 @@ import {
   Card,
   CardContent,
   CardFooter,
-  CardHeader,
 } from "@voiceai/ui/@/components/ui/card";
 import { Icons } from "@voiceai/ui/@/components/ui/icons";
 
@@ -79,7 +78,6 @@ const SpeechEditor: React.FC<SpeechEditorProps> = ({}) => {
             <p className="truncate text-sm font-medium leading-none">
               {currentVoice?.name}
             </p>
-            {/* <p className="text-sm text-muted-foreground">m@example.com</p> */}
           </div>
         </div>
 
