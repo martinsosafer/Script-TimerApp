@@ -13,6 +13,11 @@ import {
   CardContent,
   CardFooter,
 } from "@voiceai/ui/@/components/ui/card";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@voiceai/ui/@/components/ui/hover-card";
 import { Icons } from "@voiceai/ui/@/components/ui/icons";
 
 import { api } from "~/utils/api";
@@ -81,27 +86,35 @@ const SpeechEditor: React.FC<SpeechEditorProps> = ({}) => {
           </div>
         </div>
 
-        <Button
-          onClick={async () => {
-            setLoading(true);
-            try {
-              await generateVoice({
-                voice_id: currentVoice?.id ?? "",
-                message: speech ?? "",
-                stability: stability,
-                similarity: similarity,
-              });
-              setLoading(false);
-            } catch {}
-          }}
-          className="w-9/12 bg-blue-700"
-        >
-          {loading ? (
-            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            "Generate"
-          )}
-        </Button>
+        <HoverCard>
+          <HoverCardTrigger className="w-full">
+            <Button
+              disabled={currentVoice?.id === undefined || loading}
+              onClick={async () => {
+                setLoading(true);
+                try {
+                  await generateVoice({
+                    voice_id: currentVoice?.id ?? "",
+                    message: speech ?? "",
+                    stability: stability,
+                    similarity: similarity,
+                  });
+                  setLoading(false);
+                } catch {}
+              }}
+              className="w-full bg-blue-700"
+            >
+              {loading ? (
+                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                "Generate"
+              )}
+            </Button>
+          </HoverCardTrigger>
+          <HoverCardContent side="top">
+            Choose a voice on the left before generating
+          </HoverCardContent>
+        </HoverCard>
       </CardFooter>
     </Card>
   );

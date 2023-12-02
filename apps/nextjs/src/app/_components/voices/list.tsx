@@ -32,6 +32,7 @@ import {
 import { Input } from "@voiceai/ui/@/components/ui/input";
 import { Label } from "@voiceai/ui/@/components/ui/label";
 import { Slider } from "@voiceai/ui/@/components/ui/slider";
+import { cn } from "@voiceai/ui/@/lib/utils";
 
 import { usePlayer } from "~/app/providers/player-context";
 import { api } from "~/utils/api";
@@ -42,16 +43,24 @@ import { useIsTruncated } from "../../hooks/useIsTruncated";
 function VoiceListItem({ voice, onClick }) {
   const textRef = useRef(null);
   const isTruncated = useIsTruncated(textRef);
+  const { state } = usePlayer();
+
+  const { currentVoice } = state;
 
   return (
-    <Card className="flex min-w-full" onClick={onClick}>
+    <Card
+      className={cn(
+        "flex min-w-full",
+        currentVoice?.id === voice.id ? "ring ring-blue-500" : "",
+      )}
+      onClick={onClick}
+    >
       <CardContent className="flex w-full flex-col items-center space-x-1 py-4 md:justify-start lg:flex-row xl:space-x-4">
         <Avatar className="mb-1 hidden self-center lg:mb-0 lg:block">
           <AvatarImage src="/avatars/01.png" className="max-w-full" />
           <AvatarFallback>OM</AvatarFallback>
         </Avatar>
         <div className="flex min-w-0 flex-1 flex-col">
-          {" "}
           {/* Ensuring that the div can shrink */}
           <TooltipProvider>
             <Tooltip>
@@ -76,11 +85,9 @@ function VoiceListItem({ voice, onClick }) {
 
 export function VoiceList() {
   const [voices] = api.voice.list.useSuspenseQuery();
-  // const [stability, setStability] = useState([0.5]);
-  const [similarityBoost, setSimilarityBoost] = useState([0.8]);
 
   const { dispatch, state } = usePlayer();
-  const { currentVoice, speech, stability, similarity } = state;
+  const { stability, similarity } = state;
 
   const [currentPage, setCurrentPage] = useState(1);
   const voicesPerPage = 4;
