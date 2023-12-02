@@ -93,7 +93,7 @@ export function VoiceList() {
   const { stability, similarity } = state;
 
   const [currentPage, setCurrentPage] = useState(1);
-  const voicesPerPage = 4;
+  const voicesPerPage = 8;
 
   const indexOfLastVoice = currentPage * voicesPerPage;
   const indexOfFirstVoice = indexOfLastVoice - voicesPerPage;
