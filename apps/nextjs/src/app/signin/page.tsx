@@ -34,7 +34,7 @@ export default async function SignIn() {
                     </span>
                   </div>
                 </div>
-                <form
+                {/* <form
                   action={async () => {
                     "use server";
                     await signIn("facebook", { redirectTo: "/" });
@@ -77,7 +77,7 @@ export default async function SignIn() {
                       Facebook
                     </span>
                   </button>
-                </form>
+                </form> */}
                 <form
                   action={async () => {
                     "use server";
@@ -169,13 +169,7 @@ export default async function SignIn() {
             </div>
             <div className="relative z-20">
               <blockquote className="space-y-2">
-                <p className="text-lg">
-                  &ldquo;Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and containing Lorem Ipsum
-                  passages, -Adam Warren&rdquo;
-                </p>
+                <p className="text-lg">&ldquo;InstaVoice&rdquo;</p>
                 <footer className="text-sm">Sofia Davis</footer>
               </blockquote>
             </div>
