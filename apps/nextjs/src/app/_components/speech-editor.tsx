@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 import { Button, SimpleEditor } from "@voiceai/ui";
 import {
@@ -19,6 +20,7 @@ import {
   HoverCardTrigger,
 } from "@voiceai/ui/@/components/ui/hover-card";
 import { Icons } from "@voiceai/ui/@/components/ui/icons";
+import { toast, ToastAction } from "@voiceai/ui/@/components/ui/toast";
 
 import { api } from "~/utils/api";
 import { generateRandomString } from "~/utils/helpers";
@@ -27,14 +29,42 @@ import { usePlayer } from "../providers/player-context";
 interface SpeechEditorProps {}
 
 const SpeechEditor: React.FC<SpeechEditorProps> = ({}) => {
+  const { data: subscription } = api.subscription.mySubscription.useQuery();
+
   const [loading, setLoading] = useState(false);
   const { state, dispatch } = usePlayer();
   const { currentVoice, speech, stability, similarity } = state;
+
+  const gatewayFreePlan = (): boolean => {
+    return Boolean(
+      speech && speech?.length > 250 && subscription?.status !== "ACTIVE",
+    );
+  };
 
   const { mutateAsync: generateVoice, error } = api.voice.create.useMutation({
     onSuccess(data) {
       const dataURI = `data:audio/mpeg;base64,${data?.audio}`;
       dispatch({ type: "SET_AUDIO", payload: dataURI });
+    },
+    onError(error) {
+      setLoading(false);
+      console.log("IN ERROR", error?.data?.code);
+      if (error?.data?.code === "FORBIDDEN") {
+        toast({
+          title: "Upgrade your plan",
+          description: "The base plan only supports up to 250 characters",
+          action: (
+            <ToastAction altText="subscribe">
+              <Link href="/settings/billing">Subscribe</Link>
+            </ToastAction>
+          ),
+        });
+      } else {
+        toast({
+          title: "Something went wrong",
+          description: "Please try again later",
+        });
+      }
     },
   });
 
@@ -44,6 +74,17 @@ const SpeechEditor: React.FC<SpeechEditorProps> = ({}) => {
   };
 
   const handleEditorChange = (content: string) => {
+    if (gatewayFreePlan()) {
+      toast({
+        title: "Upgrade your plan",
+        description: "The base plan only supports up to 250 characters",
+        action: (
+          <ToastAction altText="subscribe">
+            <Link href="/settings/billing">Subscribe</Link>
+          </ToastAction>
+        ),
+      });
+    }
     setSpeech(content);
   };
 
@@ -89,7 +130,9 @@ const SpeechEditor: React.FC<SpeechEditorProps> = ({}) => {
         <HoverCard>
           <HoverCardTrigger className="w-full">
             <Button
-              disabled={currentVoice?.id === undefined || loading}
+              disabled={
+                currentVoice?.id === undefined || loading || gatewayFreePlan()
+              }
               onClick={async () => {
                 setLoading(true);
                 try {

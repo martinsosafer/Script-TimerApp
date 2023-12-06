@@ -9,6 +9,8 @@ import "~/styles/globals.css";
 
 import { headers } from "next/headers";
 
+import { Toaster } from "@voiceai/ui/@/components/ui/toaster";
+
 import Player from "../_components/global-player";
 import Sidebar from "../_components/layout-console";
 import { TRPCReactProvider } from "../providers";
@@ -56,6 +58,7 @@ export default function Layout(props: { children: React.ReactNode }) {
           <Sidebar>{props.children}</Sidebar>
           <Player />
         </div>
+        <Toaster />
       </TRPCReactProvider>
     </div>
   );

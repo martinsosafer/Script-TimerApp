@@ -14,6 +14,8 @@ import { auth } from "@voiceai/auth";
 import type { Session } from "@voiceai/auth";
 import { db } from "@voiceai/db";
 
+export { TRPCError } from "@trpc/server";
+
 /**
  * 1. CONTEXT
  *

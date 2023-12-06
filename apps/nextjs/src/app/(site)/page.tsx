@@ -24,7 +24,7 @@ export default async function HomePage() {
         <TabsList className="self-center md:absolute md:end-16 md:mt-3 md:self-end">
           <TabsTrigger value="voice">Voice</TabsTrigger>
           <TabsTrigger value="grammar">Grammar Check</TabsTrigger>
-          <TabsTrigger value="chat">Chat</TabsTrigger>
+          <TabsTrigger value="chat">Script Coach</TabsTrigger>
         </TabsList>
         <TabsContent value="voice" className="mt-0 space-y-4">
           <SpeechEditor />

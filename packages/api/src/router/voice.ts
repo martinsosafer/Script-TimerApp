@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { desc, eq, ilike, like, schema } from "@voiceai/db";
 
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, TRPCError } from "../trpc";
 
 export const voiceRouter = createTRPCRouter({
   all: protectedProcedure.query(async ({ ctx }) => {
@@ -51,7 +51,22 @@ export const voiceRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      console.log("IN PUT INPUT ", input);
+      const subscription = await ctx.db.query.subscriptions.findFirst({
+        where: eq(schema.subscriptions.userId, ctx.session.user.id),
+      });
+
+      const isFreePlanGated =
+        input.message &&
+        input.message?.length > 250 &&
+        subscription?.status !== "ACTIVE";
+
+      if (isFreePlanGated) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Subscribe to a plan to generate more than 250 characters.",
+        });
+      }
+
       const voice = await ctx.db.query.voices.findFirst({
         where: eq(schema.voices.id, input.voice_id),
       });
