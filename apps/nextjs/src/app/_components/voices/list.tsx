@@ -211,7 +211,7 @@ export function VoiceList() {
           ))}
         </ul>
       </CardContent>
-      <CardFooter className="mx-auto min-h-fit">
+      <CardFooter className="mx-auto flex min-h-fit w-full justify-evenly">
         {Array.from({ length: totalPages }, (_, i) => (
           <Button
             variant="ghost"
