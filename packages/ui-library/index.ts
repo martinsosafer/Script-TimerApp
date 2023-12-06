@@ -17,3 +17,4 @@ export {
   TooltipContent,
   TooltipProvider,
 } from "./@/components/ui/tooltip";
+export { CustomAudioPlayer } from "./@/components/ui/custom-audio-player";
