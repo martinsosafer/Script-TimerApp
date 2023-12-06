@@ -186,6 +186,14 @@ function SimpleEditor({
           >
             <ClipboardIcon className="h-5 w-5" />
           </Button>
+          <Button
+            variant="ghost"
+            className="border border-slate-500"
+            // disabled={}
+            // onClick={}
+          >
+            Share
+          </Button>
         </div>
       </div>
     </div>
