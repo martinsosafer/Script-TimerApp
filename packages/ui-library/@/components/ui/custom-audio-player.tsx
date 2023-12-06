@@ -53,15 +53,15 @@ const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({ src }) => {
 
   return (
     <div className="w-full">
-      <div className="flex items-center gap-4">
-        <button onClick={togglePlayPause}>
+      <div className="flex items-center gap-2">
+        <button onClick={togglePlayPause} className="shrink-0">
           {isPlaying ? (
             <PauseIcon className="h-6 w-6" />
           ) : (
             <PlayIcon className="h-6 w-6" />
           )}
         </button>
-        <div className="flex-1">
+        <div className="flex-grow">
           <div className="h-1.5 w-full rounded-full bg-gray-200">
             <div
               className="h-1.5 rounded-full bg-blue-600"
@@ -69,7 +69,7 @@ const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({ src }) => {
             ></div>
           </div>
         </div>
-        <div>
+        <div className="shrink-0 text-xs sm:text-sm">
           {duration
             ? `${formatTime(currentTime)} / ${formatTime(duration)}`
             : "00:00 / 00:00"}

@@ -80,6 +80,7 @@ const PlayerContent: React.FC<PlayerContentProps> = () => {
           h-full w-full
           flex-col
           items-center
+          justify-center
           gap-x-2
           gap-y-2
           md:flex-row md:gap-y-0
@@ -89,7 +90,7 @@ const PlayerContent: React.FC<PlayerContentProps> = () => {
         </div>
 
         {/* Action Icons */}
-        <div className="flex items-center justify-center gap-x-2 md:justify-end">
+        <div className="flex items-center justify-end gap-x-2">
           <button type="button" onClick={handleDownload}>
             <ArrowDownOnSquareIcon width={30} className="stroke-black" />
           </button>
