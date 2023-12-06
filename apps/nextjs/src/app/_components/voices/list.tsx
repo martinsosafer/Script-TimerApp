@@ -218,7 +218,7 @@ export function VoiceList() {
             key={i}
             onClick={() => paginate(i + 1)}
             className={`h-10 w-10 rounded-sm shadow-none ${
-              currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-300"
+              currentPage === i + 1 ? "bg-blue-700 text-white" : "bg-gray-300"
             }`}
           >
             {i + 1}
