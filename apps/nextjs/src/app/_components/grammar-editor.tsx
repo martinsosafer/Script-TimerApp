@@ -63,7 +63,7 @@ const GrammarEditor: React.FC<GrammarEditorProps> = ({}) => {
 
             checkAndPublish(speech ?? "");
           }}
-          className="w-full bg-blue-700"
+          className="w-full bg-blue-700 hover:bg-blue-700"
         >
           {loading ? (
             <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />

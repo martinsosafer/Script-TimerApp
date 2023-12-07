@@ -178,7 +178,10 @@ export function ChatWindow(props: {
             onChange={handleInputChange}
             className="w-9/12"
           />
-          <Button type="submit" className="ml-1 bg-blue-700 sm:m-0">
+          <Button
+            type="submit"
+            className="ml-1 bg-blue-700 hover:bg-blue-700 sm:m-0"
+          >
             <div
               role="status"
               className={`${
