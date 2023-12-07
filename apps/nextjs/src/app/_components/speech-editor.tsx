@@ -113,14 +113,14 @@ const SpeechEditor: React.FC<SpeechEditorProps> = ({}) => {
         </div>
       </CardContent>
       <CardFooter className="flex items-center justify-between px-4">
-        <div className="mx-2 inline-flex items-center whitespace-nowrap rounded-md bg-blue-700 px-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-5">
+        <div className="mx-2 inline-flex items-center whitespace-nowrap rounded-lg bg-blue-700 px-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-5">
           <Avatar className="py-2">
             <AvatarImage src={avatarUrl} className="rounded-full" />
-            <AvatarFallback className="border border-stone-500 bg-blue-700 text-white">
+            <AvatarFallback className="border border-stone-500 bg-blue-700 text-white hover:bg-blue-700">
               IV
             </AvatarFallback>
           </Avatar>
-          <div className="mx-4 max-w-xs">
+          <div className="mx-4 max-w-min truncate">
             <p className="truncate text-sm font-medium leading-none">
               {currentVoice?.name}
             </p>
@@ -145,7 +145,7 @@ const SpeechEditor: React.FC<SpeechEditorProps> = ({}) => {
                   setLoading(false);
                 } catch {}
               }}
-              className="w-full bg-blue-700"
+              className="w-full bg-blue-700 hover:bg-blue-700"
             >
               {loading ? (
                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
