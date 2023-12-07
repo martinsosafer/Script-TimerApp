@@ -211,14 +211,14 @@ export function VoiceList() {
           ))}
         </ul>
       </CardContent>
-      <CardFooter className="mx-auto min-h-fit">
+      <CardFooter className="mx-auto flex min-h-fit w-full justify-evenly">
         {Array.from({ length: totalPages }, (_, i) => (
           <Button
             variant="ghost"
             key={i}
             onClick={() => paginate(i + 1)}
             className={`h-10 w-10 rounded-sm shadow-none ${
-              currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-300"
+              currentPage === i + 1 ? "bg-blue-700 text-white" : "bg-gray-300"
             }`}
           >
             {i + 1}
