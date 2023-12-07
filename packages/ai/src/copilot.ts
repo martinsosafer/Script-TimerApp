@@ -8,6 +8,7 @@ export const copilot = async (messages: VercelChatMessage[] = []) => {
 
   const llm = new ChatOpenAI({
     streaming: true,
+    modelName: "gpt-4-1106-preview",
   });
 
   llm
