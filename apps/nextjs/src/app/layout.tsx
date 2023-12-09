@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { useIntercom } from "react-use-intercom";
 
 const fontSans = Inter({
   subsets: ["latin"],

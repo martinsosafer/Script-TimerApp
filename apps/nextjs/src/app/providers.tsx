@@ -6,11 +6,14 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental";
 import { loggerLink, unstable_httpBatchStreamLink } from "@trpc/client";
 import { ThemeProvider } from "next-themes";
+import { IntercomProvider } from "react-use-intercom";
 import superjson from "superjson";
 
 import { env } from "~/env.mjs";
 import { api } from "~/utils/api";
 import { PlayerProvider } from "./providers/player-context";
+
+const INTERCOM_APP_ID = "ulamwjwr";
 
 const getBaseUrl = () => {
   if (typeof window !== "undefined") return ""; // browser should use relative url
@@ -59,9 +62,15 @@ export function TRPCReactProvider(props: {
     <api.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
         <ReactQueryStreamedHydration transformer={superjson}>
-          <ThemeProvider attribute="class" defaultTheme="light">
-            <PlayerProvider>{props.children}</PlayerProvider>
-          </ThemeProvider>
+          <IntercomProvider
+            appId={"ulamwjwr"}
+            autoBoot
+            apiBase="https://api-iam.intercom.io"
+          >
+            <ThemeProvider attribute="class" defaultTheme="light">
+              <PlayerProvider>{props.children}</PlayerProvider>
+            </ThemeProvider>
+          </IntercomProvider>
         </ReactQueryStreamedHydration>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
