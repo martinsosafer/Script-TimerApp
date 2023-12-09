@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import CogIcon from "@heroicons/react/24/outline/CogIcon";
+import { useIntercom } from "react-use-intercom";
 
 import { auth, signIn, signOut } from "@voiceai/auth";
 import { Button } from "@voiceai/ui";
@@ -10,6 +11,7 @@ import { Button } from "@voiceai/ui";
 const TopNavigation = ({ signOut }: { signOut: () => Promise<null> }) => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const { boot, shutdown, hide, show, update } = useIntercom();
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -61,6 +63,8 @@ const TopNavigation = ({ signOut }: { signOut: () => Promise<null> }) => {
         </div>
 
         <div className="relative">
+          <Button onClick={() => show()}>Need Help?</Button>
+
           <Button
             variant="ghost"
             className="bg-transparent  focus:text-neutral-500"

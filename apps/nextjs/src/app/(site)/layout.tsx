@@ -52,8 +52,8 @@ export default function Layout(props: { children: React.ReactNode }) {
 
   return (
     <div className="flex h-full flex-col bg-zinc-100">
-      <TopNavigation signOut={signOutServer} />
       <TRPCReactProvider headers={headers()}>
+        <TopNavigation signOut={signOutServer} />
         <div className="h-full flex-col overflow-y-scroll md:overflow-hidden">
           <Sidebar>{props.children}</Sidebar>
           <Player />

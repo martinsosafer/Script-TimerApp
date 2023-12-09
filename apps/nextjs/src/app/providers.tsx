@@ -13,8 +13,6 @@ import { env } from "~/env.mjs";
 import { api } from "~/utils/api";
 import { PlayerProvider } from "./providers/player-context";
 
-const INTERCOM_APP_ID = "ulamwjwr";
-
 const getBaseUrl = () => {
   if (typeof window !== "undefined") return ""; // browser should use relative url
   if (env.VERCEL_URL) return env.VERCEL_URL; // SSR should use vercel url
