@@ -83,8 +83,8 @@ function VoiceListItem({ voice, onClick }) {
           </CardContent>
         </Card>
       </HoverCardTrigger>
-      <HoverCardContent className="w-80">
-        <div className="flex justify-between">
+      <HoverCardContent>
+        <div className="flex justify-between space-x-4">
           <Avatar>
             <AvatarImage src={voice.picture} />
             <AvatarFallback>IV</AvatarFallback>
