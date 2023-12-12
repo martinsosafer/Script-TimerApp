@@ -11,7 +11,7 @@ const config = {
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
   images: {
-    domains: ["i.pravatar.cc"],
+    domains: ["xsgames.co"],
   },
 };
 

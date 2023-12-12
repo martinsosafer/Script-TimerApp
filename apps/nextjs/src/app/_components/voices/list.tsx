@@ -64,10 +64,7 @@ function VoiceListItem({ voice, onClick }) {
         >
           <CardContent className="flex w-full flex-col items-center space-x-1 py-4 md:justify-start lg:flex-row xl:space-x-4">
             <Avatar className="mb-1 hidden self-center lg:mb-0 lg:block">
-              <AvatarImage
-                src={`https://i.pravatar.cc/150?u=${voice.id}`}
-                className="max-w-full"
-              />
+              <AvatarImage src={voice.picture} className="max-w-full" />
               <AvatarFallback>OM</AvatarFallback>
             </Avatar>
             <div className="flex min-w-0 flex-1 flex-col">
@@ -89,7 +86,7 @@ function VoiceListItem({ voice, onClick }) {
       <HoverCardContent className="w-80">
         <div className="flex justify-between space-x-4">
           <Avatar>
-            <AvatarImage src={`https://i.pravatar.cc/150?u=${voice.id}`} />
+            <AvatarImage src={voice.picture} />
             <AvatarFallback>IV</AvatarFallback>
           </Avatar>
           <div className="space-y-1">

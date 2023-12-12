@@ -7,6 +7,7 @@ interface Voice {
   // Adjust these based on the actual properties of your currentVoice object
   id: string;
   name: string;
+  picture: string;
   // Add more properties as needed
 }
 

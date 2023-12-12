@@ -94,7 +94,7 @@ const SpeechEditor: React.FC<SpeechEditorProps> = ({}) => {
   // Function to create the avatar URL
   const createAvatarUrl = (): string => {
     if (currentVoice?.id) {
-      return `https://i.pravatar.cc/150?u=${currentVoice?.id}`;
+      return currentVoice?.picture;
     }
     const randomString: string = generateRandomString();
     const initials: string = getInitials(currentVoice?.name ?? "IV");
