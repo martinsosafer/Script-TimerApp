@@ -30,6 +30,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@voiceai/ui/@/components/ui/dropdown-menu";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@voiceai/ui/@/components/ui/hover-card";
 import { Input } from "@voiceai/ui/@/components/ui/input";
 import { Label } from "@voiceai/ui/@/components/ui/label";
 import { Slider } from "@voiceai/ui/@/components/ui/slider";
@@ -46,40 +51,57 @@ function VoiceListItem({ voice, onClick }) {
   const { state } = usePlayer();
 
   const { currentVoice } = state;
-
+  console.log("IN VOICE", voice);
   return (
-    <Card
-      className={cn(
-        "flex min-w-full",
-        currentVoice?.id === voice.id ? "ring ring-blue-500" : "",
-      )}
-      onClick={onClick}
-    >
-      <CardContent className="flex w-full flex-col items-center space-x-1 py-4 md:justify-start lg:flex-row xl:space-x-4">
-        <Avatar className="mb-1 hidden self-center lg:mb-0 lg:block">
-          <AvatarImage src="/avatars/01.png" className="max-w-full" />
-          <AvatarFallback>OM</AvatarFallback>
-        </Avatar>
-        <div className="flex min-w-0 flex-1 flex-col">
-          {/* Ensuring that the div can shrink */}
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <p
-                  ref={textRef}
-                  className="truncate text-xs font-medium leading-none md:text-sm"
-                >
-                  {voice.name}
-                </p>
-              </TooltipTrigger>
-              {isTruncated && (
-                <TooltipContent side="top">{voice.name}</TooltipContent>
-              )}
-            </Tooltip>
-          </TooltipProvider>
+    <HoverCard>
+      <HoverCardTrigger asChild>
+        <Card
+          className={cn(
+            "flex min-w-full cursor-pointer",
+            currentVoice?.id === voice.id ? "ring ring-blue-500" : "",
+          )}
+          onClick={onClick}
+        >
+          <CardContent className="flex w-full flex-col items-center space-x-1 py-4 md:justify-start lg:flex-row xl:space-x-4">
+            <Avatar className="mb-1 hidden self-center lg:mb-0 lg:block">
+              <AvatarImage
+                src={`https://i.pravatar.cc/150?u=${voice.id}`}
+                className="max-w-full"
+              />
+              <AvatarFallback>OM</AvatarFallback>
+            </Avatar>
+            <div className="flex min-w-0 flex-1 flex-col">
+              <p
+                ref={textRef}
+                className="truncate text-xs font-medium leading-none md:text-sm"
+              >
+                {voice.name}{" "}
+                {voice.metadata?.labels?.gender && (
+                  <span className="capitalize">
+                    ({voice.metadata?.labels?.gender})
+                  </span>
+                )}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </HoverCardTrigger>
+      <HoverCardContent className="w-80">
+        <div className="flex justify-between space-x-4">
+          <Avatar>
+            <AvatarImage src={`https://i.pravatar.cc/150?u=${voice.id}`} />
+            <AvatarFallback>IV</AvatarFallback>
+          </Avatar>
+          <div className="space-y-1">
+            <h4 className="text-sm font-semibold">{voice.name}</h4>
+            <p className="text-sm capitalize">
+              {voice.metadata?.labels?.age} {voice.metadata?.labels?.accent}{" "}
+              {voice.metadata?.labels?.description}
+            </p>
+          </div>
         </div>
-      </CardContent>
-    </Card>
+      </HoverCardContent>
+    </HoverCard>
   );
 }
 

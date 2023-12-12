@@ -21,10 +21,16 @@ export default async function HomePage() {
         defaultValue="voice"
         className="flex flex-col space-y-2 p-4 md:-mt-2 md:space-y-0"
       >
-        <TabsList className="self-center md:absolute md:end-16 md:mt-3 md:self-end">
-          <TabsTrigger value="voice">Voice</TabsTrigger>
-          <TabsTrigger value="grammar">Grammar Check</TabsTrigger>
-          <TabsTrigger value="chat">Script Coach</TabsTrigger>
+        <TabsList className="mx-2 self-center md:absolute md:end-16 md:mt-3 md:self-end">
+          <TabsTrigger className="bg-[#5A9F75]" value="voice">
+            Voice
+          </TabsTrigger>
+          <TabsTrigger className="bg-[#EF5353] text-black" value="grammar">
+            Grammar Check
+          </TabsTrigger>
+          <TabsTrigger className="bg-[#FF9900]" value="chat">
+            Script Coach
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="voice" className="mt-0 space-y-4">
           <SpeechEditor />
