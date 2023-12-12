@@ -25,6 +25,9 @@ const PlayerContent: React.FC<PlayerContentProps> = () => {
     name ? name.substring(0, 2).toUpperCase() : "IV";
 
   const createAvatarUrl = (): string => {
+    if (currentVoice?.id) {
+      return `https://i.pravatar.cc/150?u=${currentVoice?.id}`;
+    }
     const randomString: string = generateRandomString();
     const initials: string = getInitials(currentVoice?.name ?? "IV");
     return `https://avatar.vercel.sh/${randomString}?text=${initials}`;
