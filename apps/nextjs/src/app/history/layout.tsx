@@ -50,8 +50,8 @@ export default function Layout(props: { children: React.ReactNode }) {
 
   return (
     <div className="flex h-full flex-col bg-white text-black">
-      <TopNavigation signOut={signOutServer} />
       <TRPCReactProvider headers={headers()}>
+        <TopNavigation signOut={signOutServer} />
         <div className="mx-8 mt-8 flex-col overflow-auto">{props.children}</div>
       </TRPCReactProvider>
     </div>
