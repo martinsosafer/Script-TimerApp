@@ -17,7 +17,7 @@ export default async function SignIn() {
             <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
               <div className="flex flex-col space-y-2 text-center">
                 <h1 className="text-2xl font-semibold tracking-tight">
-                  Log In to InstaVoice
+                  Log In to Script Timer
                 </h1>
                 <p className="text-sm text-muted-foreground">
                   Your voice matters, lets get started
@@ -119,14 +119,16 @@ export default async function SignIn() {
               <p className="px-8 text-center text-sm text-muted-foreground">
                 By clicking continue, you agree to our{" "}
                 <Link
-                  href="/terms"
+                  href="https://script-timer.com/script-timer-terms-of-service/"
+                  target="_blank"
                   className="underline underline-offset-4 hover:text-primary"
                 >
                   Terms of Service
                 </Link>{" "}
                 and{" "}
                 <Link
-                  href="/privacy"
+                  href="https://script-timer.com/script-timer-privacy-policy"
+                  target="_blank"
                   className="underline underline-offset-4 hover:text-primary"
                 >
                   Privacy Policy
@@ -165,11 +167,15 @@ export default async function SignIn() {
               >
                 <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3" />
               </svg>
-              InstaVoice
+              Script Timer
             </div>
             <div className="relative z-20">
               <blockquote className="space-y-2">
-                <p className="text-lg">&ldquo;InstaVoice&rdquo;</p>
+                <p className="text-lg">
+                  &ldquo;Script Timer and the Ai has transformed the way we
+                  create, test, and deliver our best content. And, it saves us
+                  hours AND expense every week. Game-changer!&rdquo;
+                </p>
                 <footer className="text-sm">Sofia Davis</footer>
               </blockquote>
             </div>
