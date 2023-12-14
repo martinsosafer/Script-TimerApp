@@ -22,7 +22,6 @@ export const History = ({ ...rest }) => {
       <TableCaption>A list of your history.</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px]">Type</TableHead>
           <TableHead>Prompt</TableHead>
           <TableHead>Credits Used</TableHead>
           <TableHead>Time</TableHead>
@@ -33,7 +32,6 @@ export const History = ({ ...rest }) => {
         {!isLoading &&
           data?.map((history) => (
             <TableRow key={history.credit_id}>
-              <TableCell className="font-medium">{history.type}</TableCell>
               <TableCell>{history.prompt}</TableCell>
               <TableCell>{history.credits}</TableCell>
               <TableCell>{history.created_at!.toDateString()}</TableCell>
