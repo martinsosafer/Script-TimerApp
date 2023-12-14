@@ -51,7 +51,7 @@ function VoiceListItem({ voice, onClick }) {
   const { state } = usePlayer();
 
   const { currentVoice } = state;
-  console.log("IN VOICE", voice);
+
   return (
     <HoverCard>
       <HoverCardTrigger asChild>
@@ -117,7 +117,7 @@ export function VoiceList() {
   const { stability, similarity } = state;
 
   const [currentPage, setCurrentPage] = useState(1);
-  const voicesPerPage = 8;
+  const voicesPerPage = 6;
 
   const indexOfLastVoice = currentPage * voicesPerPage;
   const indexOfFirstVoice = indexOfLastVoice - voicesPerPage;
