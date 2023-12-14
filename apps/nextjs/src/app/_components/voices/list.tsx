@@ -79,6 +79,11 @@ function VoiceListItem({ voice, onClick }) {
                   </span>
                 )}
               </p>
+              <audio
+                src={voice?.metadata?.preview_url}
+                controls
+                className="max-w-[7rem] overflow-hidden"
+              />
             </div>
           </CardContent>
         </Card>
