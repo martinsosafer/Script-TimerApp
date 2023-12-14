@@ -1,5 +1,7 @@
 "use client";
 
+import ArrowDownOnSquareIcon from "@heroicons/react/24/outline/ArrowDownOnSquareIcon";
+
 import {
   Table,
   TableBody,
@@ -14,7 +16,7 @@ import { api } from "~/utils/api";
 
 export const History = ({ ...rest }) => {
   const { data, isLoading } = api.history.list.useQuery();
-  console.log("HEREHERE", data);
+
   return (
     <Table>
       <TableCaption>A list of your history.</TableCaption>
@@ -24,6 +26,7 @@ export const History = ({ ...rest }) => {
           <TableHead>Prompt</TableHead>
           <TableHead>Credits Used</TableHead>
           <TableHead>Time</TableHead>
+          <TableHead>Download</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -34,6 +37,21 @@ export const History = ({ ...rest }) => {
               <TableCell>{history.prompt}</TableCell>
               <TableCell>{history.credits}</TableCell>
               <TableCell>{history.created_at!.toDateString()}</TableCell>
+              <TableCell>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const a = document.createElement("a");
+                    a.href = `data:audio/mpeg;base64,${history.file}` ?? "";
+                    a.download = "voice.mp3";
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                  }}
+                >
+                  <ArrowDownOnSquareIcon width={30} className="stroke-black" />
+                </button>
+              </TableCell>
             </TableRow>
           ))}
         {isLoading && (
