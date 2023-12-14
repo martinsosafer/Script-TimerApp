@@ -82,6 +82,7 @@ function VoiceListItem({ voice, onClick }) {
               <audio
                 src={voice?.metadata?.preview_url}
                 controls
+                controlsList="nofullscreen nodownload noremoteplayback noplaybackrate"
                 className="max-w-[7rem] overflow-hidden"
               />
             </div>

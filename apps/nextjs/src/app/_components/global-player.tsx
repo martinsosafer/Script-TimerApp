@@ -64,12 +64,12 @@ const PlayerContent: React.FC<PlayerContentProps> = () => {
       <div className="grid w-full grid-cols-3 place-content-between content-center rounded-2xl bg-white p-3 shadow-md shadow-gray-900 md:p-4">
         <div className="mx-2 inline-flex h-10 max-w-min items-center self-center whitespace-nowrap rounded-lg bg-blue-700 px-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-5">
           <Avatar className="py-2">
-            <AvatarImage src={avatarUrl} className="rounded-full" />
+            <AvatarImage src={avatarUrl} className="max-w-min rounded-full" />
             <AvatarFallback className="border border-stone-500 bg-blue-700 text-white hover:bg-blue-700">
               IV
             </AvatarFallback>
           </Avatar>
-          <div className="mx-4 max-w-min">
+          <div className="max-w-min">
             <p className="truncate text-sm font-medium leading-none">
               {currentVoice?.name}
             </p>
