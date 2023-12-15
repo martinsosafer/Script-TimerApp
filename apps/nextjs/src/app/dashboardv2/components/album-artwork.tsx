@@ -52,11 +52,11 @@ export function AlbumArtwork({
         <ContextMenuContent className="w-40">
           <ContextMenuItem>Add to Library</ContextMenuItem>
           <ContextMenuSub>
-            <ContextMenuSubTrigger>Add to Playlist</ContextMenuSubTrigger>
+            <ContextMenuSubTrigger>Add to Script</ContextMenuSubTrigger>
             <ContextMenuSubContent className="w-48">
               <ContextMenuItem>
                 {/* <PlusCircledIcon className="mr-2 h-4 w-4" /> */}
-                New Playlist
+                New Script
               </ContextMenuItem>
               <ContextMenuSeparator />
               {playlists.map((playlist) => (
@@ -81,7 +81,7 @@ export function AlbumArtwork({
           <ContextMenuSeparator />
           <ContextMenuItem>Play Next</ContextMenuItem>
           <ContextMenuItem>Play Later</ContextMenuItem>
-          <ContextMenuItem>Create Station</ContextMenuItem>
+          <ContextMenuItem>Create Script</ContextMenuItem>
           <ContextMenuSeparator />
           <ContextMenuItem>Like</ContextMenuItem>
           <ContextMenuItem>Share</ContextMenuItem>

@@ -67,7 +67,7 @@ export default function MusicPage() {
                     voice would preview the voice. In the future we could make
                     the voice have a "profile" similar to spotify where you can
                     see more details about the voice and past generations and
-                    stuff
+                    stuff. Pro tip: right click on an image for a quick menu
                   </p>
                 </div>
               </div>
