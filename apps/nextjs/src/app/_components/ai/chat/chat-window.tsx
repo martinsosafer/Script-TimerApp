@@ -136,6 +136,7 @@ export function ChatWindow(props: {
         ]);
       } else {
         if (json.error) {
+          console.log(json.error);
           toast(json.error, {
             theme: "dark",
           });
