@@ -34,7 +34,7 @@ export default async function SignIn() {
                     </span>
                   </div>
                 </div>
-                {/* <form
+                <form
                   action={async () => {
                     "use server";
                     await signIn("facebook", { redirectTo: "/" });
@@ -77,7 +77,7 @@ export default async function SignIn() {
                       Facebook
                     </span>
                   </button>
-                </form> */}
+                </form>
                 <form
                   action={async () => {
                     "use server";

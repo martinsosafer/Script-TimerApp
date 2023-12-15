@@ -63,7 +63,11 @@ export default function MusicPage() {
                     Listen Now
                   </h2>
                   <p className="text-sm text-muted-foreground">
-                    Top voices for you. Updated regularly.
+                    Top voices for you. Updated regularly. Gerry: Clicking on a
+                    voice would preview the voice. In the future we could make
+                    the voice have a "profile" similar to spotify where you can
+                    see more details about the voice and past generations and
+                    stuff
                   </p>
                 </div>
               </div>

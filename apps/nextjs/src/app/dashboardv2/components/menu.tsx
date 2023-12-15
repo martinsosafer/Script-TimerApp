@@ -21,21 +21,21 @@ export function Menu() {
       <MenubarMenu>
         <MenubarTrigger className="font-bold">Script Timer</MenubarTrigger>
         <MenubarContent>
-          <MenubarItem>About Music</MenubarItem>
+          <MenubarItem>About Script Timer</MenubarItem>
           <MenubarSeparator />
           <MenubarItem>
             Preferences... <MenubarShortcut>⌘,</MenubarShortcut>
           </MenubarItem>
           <MenubarSeparator />
           <MenubarItem>
-            Hide Music... <MenubarShortcut>⌘H</MenubarShortcut>
+            Hide Voices... <MenubarShortcut>⌘H</MenubarShortcut>
           </MenubarItem>
           <MenubarItem>
             Hide Others... <MenubarShortcut>⇧⌘H</MenubarShortcut>
           </MenubarItem>
           <MenubarShortcut />
           <MenubarItem>
-            Quit Music <MenubarShortcut>⌘Q</MenubarShortcut>
+            Log out of Script Timer <MenubarShortcut>⌘Q</MenubarShortcut>
           </MenubarItem>
         </MenubarContent>
       </MenubarMenu>
@@ -46,20 +46,20 @@ export function Menu() {
             <MenubarSubTrigger>New</MenubarSubTrigger>
             <MenubarSubContent className="w-[230px]">
               <MenubarItem>
-                Playlist <MenubarShortcut>⌘N</MenubarShortcut>
+                Voice <MenubarShortcut>⌘N</MenubarShortcut>
               </MenubarItem>
               <MenubarItem disabled>
-                Playlist from Selection <MenubarShortcut>⇧⌘N</MenubarShortcut>
+                Voice from Selection <MenubarShortcut>⇧⌘N</MenubarShortcut>
               </MenubarItem>
               <MenubarItem>
-                Smart Playlist... <MenubarShortcut>⌥⌘N</MenubarShortcut>
+                Generate Voice... <MenubarShortcut>⌥⌘N</MenubarShortcut>
               </MenubarItem>
-              <MenubarItem>Playlist Folder</MenubarItem>
-              <MenubarItem disabled>Genius Playlist</MenubarItem>
+              <MenubarItem>Voice Library</MenubarItem>
+              <MenubarItem disabled>Community Voices</MenubarItem>
             </MenubarSubContent>
           </MenubarSub>
           <MenubarItem>
-            Open Stream URL... <MenubarShortcut>⌘U</MenubarShortcut>
+            Import Voice URL... <MenubarShortcut>⌘U</MenubarShortcut>
           </MenubarItem>
           <MenubarItem>
             Close Window <MenubarShortcut>⌘W</MenubarShortcut>
@@ -68,24 +68,24 @@ export function Menu() {
           <MenubarSub>
             <MenubarSubTrigger>Library</MenubarSubTrigger>
             <MenubarSubContent>
-              <MenubarItem>Update Cloud Library</MenubarItem>
-              <MenubarItem>Update Genius</MenubarItem>
+              <MenubarItem>Update Voice Library</MenubarItem>
+              <MenubarItem>Update Models</MenubarItem>
               <MenubarSeparator />
               <MenubarItem>Organize Library...</MenubarItem>
               <MenubarItem>Export Library...</MenubarItem>
               <MenubarSeparator />
-              <MenubarItem>Import Playlist...</MenubarItem>
-              <MenubarItem disabled>Export Playlist...</MenubarItem>
+              <MenubarItem>Import Voice...</MenubarItem>
+              <MenubarItem disabled>Export Voice...</MenubarItem>
               <MenubarItem>Show Duplicate Items</MenubarItem>
               <MenubarSeparator />
-              <MenubarItem>Get Album Artwork</MenubarItem>
-              <MenubarItem disabled>Get Track Names</MenubarItem>
+              <MenubarItem>Get Voice Artwork</MenubarItem>
+              <MenubarItem disabled>Get Voice Names</MenubarItem>
             </MenubarSubContent>
           </MenubarSub>
           <MenubarItem>
             Import... <MenubarShortcut>⌘O</MenubarShortcut>
           </MenubarItem>
-          <MenubarItem disabled>Burn Playlist to Disc...</MenubarItem>
+          <MenubarItem disabled>Download Voice to ...</MenubarItem>
           <MenubarSeparator />
           <MenubarItem>
             Show in Finder <MenubarShortcut>⇧⌘R</MenubarShortcut>{" "}
@@ -167,7 +167,7 @@ export function Menu() {
         <MenubarTrigger>View</MenubarTrigger>
         <MenubarContent>
           <MenubarCheckboxItem>Show Playing Next</MenubarCheckboxItem>
-          <MenubarCheckboxItem checked>Show Lyrics</MenubarCheckboxItem>
+          <MenubarCheckboxItem checked>Show Script</MenubarCheckboxItem>
           <MenubarSeparator />
           <MenubarItem inset disabled>
             Show Status Bar
@@ -182,7 +182,7 @@ export function Menu() {
       <MenubarMenu>
         <MenubarTrigger className="hidden md:block">Account</MenubarTrigger>
         <MenubarContent forceMount>
-          <MenubarLabel inset>Switch Account</MenubarLabel>
+          <MenubarLabel inset>Switch Voice</MenubarLabel>
           <MenubarSeparator />
           <MenubarRadioGroup value="benoit">
             <MenubarRadioItem value="andy">Andy</MenubarRadioItem>
@@ -190,7 +190,7 @@ export function Menu() {
             <MenubarRadioItem value="Luis">Luis</MenubarRadioItem>
           </MenubarRadioGroup>
           <MenubarSeparator />
-          <MenubarItem inset>Manage Family...</MenubarItem>
+          <MenubarItem inset>Manage Account...</MenubarItem>
           <MenubarSeparator />
           <MenubarItem inset>Add Account...</MenubarItem>
         </MenubarContent>
