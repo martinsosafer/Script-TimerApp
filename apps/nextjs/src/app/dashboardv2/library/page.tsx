@@ -94,7 +94,7 @@ export default function MusicPage() {
                   Made for You
                 </h2>
                 <p className="text-sm text-muted-foreground">
-                  Your personal playlists. Updated daily.
+                  Your personal voices. Unique to you.
                 </p>
               </div>
               <Separator className="my-4" />
