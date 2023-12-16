@@ -14,7 +14,7 @@ import { PodcastEmptyPlaceholder } from "../components/podcast-empty-placeholder
 import { listenNowAlbums, madeForYouAlbums } from "../data/albums";
 
 export const metadata: Metadata = {
-  title: "Music App",
+  title: "Library",
   description: "Example music app using the components.",
 };
 

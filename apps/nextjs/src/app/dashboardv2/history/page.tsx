@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { History } from "../../_components/history";
 
 export const metadata: Metadata = {
-  title: "Music App",
+  title: "History",
   description: "Example music app using the components.",
 };
 

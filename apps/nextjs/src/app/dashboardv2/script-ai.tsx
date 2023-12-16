@@ -95,7 +95,7 @@ export function ScriptAI({}) {
             {/* <CodeViewer /> */}
             <ToggleAudio audio={audio} open={open} />
           </div>
-          <PresetActions />
+          {/* <PresetActions /> */}
         </div>
       </div>
       <Separator />

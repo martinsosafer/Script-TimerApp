@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Chat } from "../components/chat/chat";
 
 export const metadata: Metadata = {
-  title: "Music App",
+  title: "Script Coach",
   description: "Example music app using the components.",
 };
 
