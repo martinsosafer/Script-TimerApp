@@ -1,6 +1,5 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { StreamingTextResponse } from "ai";
 
 import { copilot } from "@voiceai/ai";
 import { auth } from "@voiceai/auth";

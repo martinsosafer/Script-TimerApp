@@ -11,13 +11,15 @@ import {
 import { Label } from "@voiceai/ui/@/components/ui/label";
 import { Slider } from "@voiceai/ui/@/components/ui/slider";
 
-interface TopPSelectorProps {
-  defaultValue: SliderProps["defaultValue"];
+interface StabilitySelectorProps {
+  value: SliderProps["value"];
+  onValueChange?: SliderProps["onValueChange"];
 }
 
-export function TopPSelector({ defaultValue }: TopPSelectorProps) {
-  const [value, setValue] = React.useState(defaultValue);
-
+export function StabilitySelector({
+  value,
+  onValueChange,
+}: StabilitySelectorProps) {
   return (
     <div className="grid gap-2 pt-2">
       <HoverCard openDelay={200}>
@@ -34,7 +36,7 @@ export function TopPSelector({ defaultValue }: TopPSelectorProps) {
               max={1}
               defaultValue={value}
               step={0.1}
-              onValueChange={setValue}
+              onValueChange={onValueChange}
               className="[&_[role=slider]]:h-4 [&_[role=slider]]:w-4"
               aria-label="Top P"
             />

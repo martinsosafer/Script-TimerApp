@@ -9,6 +9,8 @@ import { ThemeProvider } from "next-themes";
 import { IntercomProvider } from "react-use-intercom";
 import superjson from "superjson";
 
+import { TooltipProvider } from "@voiceai/ui";
+
 import { env } from "~/env.mjs";
 import { api } from "~/utils/api";
 import { PlayerProvider } from "./providers/player-context";
@@ -65,8 +67,10 @@ export function TRPCReactProvider(props: {
             autoBoot
             apiBase="https://api-iam.intercom.io"
           >
-            <ThemeProvider attribute="class" defaultTheme="light">
-              <PlayerProvider>{props.children}</PlayerProvider>
+            <ThemeProvider attribute="class" defaultTheme="dark">
+              <TooltipProvider>
+                <PlayerProvider>{props.children}</PlayerProvider>
+              </TooltipProvider>
             </ThemeProvider>
           </IntercomProvider>
         </ReactQueryStreamedHydration>

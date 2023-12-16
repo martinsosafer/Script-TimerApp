@@ -51,16 +51,16 @@ export default function Layout(props: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="">
+    <div className="h-screen bg-background">
       <TRPCReactProvider headers={headers()}>
         <Menu />
-        <div className="border-t">
-          <div className="bg-background">
-            <div className="grid lg:grid-cols-5">
-              <Sidebar playlists={playlists} className="hidden lg:block" />
-              <div className="col-span-4">{props.children}</div>
-            </div>
-          </div>
+        {/* <div className="border-t"> */}
+        {/* <div className="bg-background"> */}
+        <div className="grid lg:grid-cols-5">
+          <Sidebar playlists={playlists} className="hidden lg:block" />
+          <div className="col-span-4">{props.children}</div>
+          {/* </div> */}
+          {/* </div> */}
         </div>
         <Toaster />
       </TRPCReactProvider>

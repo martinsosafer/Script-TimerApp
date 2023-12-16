@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 
-import { ChatWindow } from "../../_components/ai/chat/chat-window";
+import { Chat } from "../components/chat/chat";
 
 export const metadata: Metadata = {
   title: "Music App",
@@ -11,14 +10,7 @@ export const metadata: Metadata = {
 export default function ChatPage() {
   return (
     <div className="w-full">
-      <ChatWindow
-        endpoint="/api/chat"
-        emptyStateComponent={<>empty</>}
-        placeholder="Hello, how can I help you today?"
-        titleText="VoiceAI"
-        emoji="🔊"
-        // showIntermediateStepsToggle={true}
-      ></ChatWindow>
+      <Chat />
     </div>
   );
 }

@@ -27,17 +27,28 @@ import { useMutationObserver } from "@voiceai/ui/@/hooks/use-mutation-observer";
 import { CaretSortIcon, CheckIcon } from "@voiceai/ui/@/icons/icons";
 import { cn } from "@voiceai/ui/@/lib/utils";
 
+import { api } from "~/utils/api";
 import type { Model, ModelType } from "../data/models";
+
+export const genders = ["male", "female"] as const;
 
 interface ModelSelectorProps extends PopoverProps {
   types: readonly ModelType[];
   models: Model[];
+  onModelSelect: React.Dispatch<React.SetStateAction<null>>;
 }
 
-export function ModelSelector({ models, types, ...props }: ModelSelectorProps) {
+export function ModelSelector({
+  models,
+  types,
+  onModelSelect,
+  ...props
+}: ModelSelectorProps) {
   const [open, setOpen] = React.useState(false);
-  const [selectedModel, setSelectedModel] = React.useState<Model>(models[0]);
-  const [peekedModel, setPeekedModel] = React.useState<Model>(models[0]);
+  const { data: voices = [] } = api.voice.list.useQuery({ name: "" });
+
+  const [selectedModel, setSelectedModel] = React.useState<Model>(voices[0]);
+  const [peekedModel, setPeekedModel] = React.useState<Model>(voices[0]);
 
   return (
     <div className="grid gap-2">
@@ -50,8 +61,8 @@ export function ModelSelector({ models, types, ...props }: ModelSelectorProps) {
           className="w-[260px] text-sm"
           side="left"
         >
-          The model which will generate the completion. Some models are suitable
-          for natural language tasks, others specialize in code. Learn more.
+          The voices which will generate the script. Voices differ in everything
+          from age, style, accent, gender, and more.
         </HoverCardContent>
       </HoverCard>
       <Popover open={open} onOpenChange={setOpen} {...props}>
@@ -76,17 +87,19 @@ export function ModelSelector({ models, types, ...props }: ModelSelectorProps) {
               className="min-h-[280px]"
             >
               <div className="grid gap-2">
-                <h4 className="font-medium leading-none">{peekedModel.name}</h4>
+                <h4 className="font-medium leading-none">
+                  {peekedModel?.name}
+                </h4>
                 <div className="text-sm text-muted-foreground">
-                  {peekedModel.description}
+                  description here
                 </div>
-                {peekedModel.strengths ? (
+                {peekedModel?.strengths ? (
                   <div className="mt-4 grid gap-2">
                     <h5 className="text-sm font-medium leading-none">
                       Strengths
                     </h5>
                     <ul className="text-sm text-muted-foreground">
-                      {peekedModel.strengths}
+                      strengths here
                     </ul>
                   </div>
                 ) : null}
@@ -97,18 +110,25 @@ export function ModelSelector({ models, types, ...props }: ModelSelectorProps) {
                 <CommandInput placeholder="Search Models..." />
                 <CommandEmpty>No Models found.</CommandEmpty>
                 <HoverCardTrigger />
-                {types.map((type) => (
-                  <CommandGroup key={type} heading={type}>
-                    {models
-                      .filter((model) => model.type === type)
-                      .map((model) => (
+                {genders.map((type) => (
+                  <CommandGroup
+                    key={type}
+                    heading={type}
+                    className="capitalize"
+                  >
+                    {voices
+                      .filter(
+                        (voice) => voice?.metadata?.labels?.gender === type,
+                      )
+                      .map((voice) => (
                         <ModelItem
-                          key={model.id}
-                          model={model}
-                          isSelected={selectedModel?.id === model.id}
-                          onPeek={(model) => setPeekedModel(model)}
+                          key={voice.id}
+                          model={voice}
+                          isSelected={selectedModel?.id === voice.id}
+                          onPeek={(model) => setPeekedModel(voice)}
                           onSelect={() => {
-                            setSelectedModel(model);
+                            setSelectedModel(voice);
+                            onModelSelect(voice);
                             setOpen(false);
                           }}
                         />
