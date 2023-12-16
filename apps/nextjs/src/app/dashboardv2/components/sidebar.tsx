@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { Button } from "@voiceai/ui/@/components/ui/button";
 import { ScrollArea } from "@voiceai/ui/@/components/ui/scroll-area";
@@ -11,7 +14,9 @@ interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   playlists: Playlist[];
 }
 
-export function Sidebar({ className, playlists }: SidebarProps) {
+export function Sidebar({ className }: SidebarProps) {
+  const pathname = usePathname();
+
   return (
     <div className={cn("pb-12", className)}>
       <div className="space-y-4 py-4">
@@ -21,7 +26,10 @@ export function Sidebar({ className, playlists }: SidebarProps) {
           </h2>
           <div className="space-y-1">
             <Link href={`/dashboardv2`}>
-              <Button variant="secondary" className="w-full justify-start">
+              <Button
+                variant={pathname === "/dashboardv2" ? "secondary" : "ghost"}
+                className="w-full justify-start"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -39,7 +47,12 @@ export function Sidebar({ className, playlists }: SidebarProps) {
               </Button>
             </Link>
             <Link href={`/dashboardv2/chat`}>
-              <Button variant="secondary" className="w-full justify-start">
+              <Button
+                variant={
+                  pathname === "/dashboardv2/chat" ? "secondary" : "ghost"
+                }
+                className="w-full justify-start"
+              >
                 {/* <Link href={`/dashboardv2/chat`}> */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -87,7 +100,12 @@ export function Sidebar({ className, playlists }: SidebarProps) {
           </h2>
           <div className="space-y-1">
             <Link href={`/dashboardv2/library`}>
-              <Button variant="ghost" className="w-full justify-start">
+              <Button
+                variant={
+                  pathname === "/dashboardv2/library" ? "secondary" : "ghost"
+                }
+                className="w-full justify-start"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -156,7 +174,12 @@ export function Sidebar({ className, playlists }: SidebarProps) {
               Artists
             </Button> */}
             <Link href={`/dashboardv2/history`}>
-              <Button variant="ghost" className="w-full justify-start">
+              <Button
+                variant={
+                  pathname === "/dashboardv2/history" ? "secondary" : "ghost"
+                }
+                className="w-full justify-start"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
