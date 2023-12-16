@@ -1,6 +1,9 @@
+"use client";
+
+import { useTheme } from "next-themes";
+
 import {
   Menubar,
-  MenubarCheckboxItem,
   MenubarContent,
   MenubarItem,
   MenubarLabel,
@@ -16,6 +19,8 @@ import {
 } from "@voiceai/ui/@/components/ui/menubar";
 
 export function Menu() {
+  const { theme, setTheme } = useTheme();
+
   return (
     <Menubar className="sticky rounded-none border-b border-none px-2 lg:px-4">
       <MenubarMenu>
@@ -166,17 +171,17 @@ export function Menu() {
       <MenubarMenu>
         <MenubarTrigger>View</MenubarTrigger>
         <MenubarContent>
-          <MenubarCheckboxItem>Show Playing Next</MenubarCheckboxItem>
-          <MenubarCheckboxItem checked>Show Script</MenubarCheckboxItem>
+          <MenubarLabel inset>Switch Theme</MenubarLabel>
           <MenubarSeparator />
-          <MenubarItem inset disabled>
-            Show Status Bar
-          </MenubarItem>
-          <MenubarSeparator />
-          <MenubarItem inset>Hide Sidebar</MenubarItem>
-          <MenubarItem disabled inset>
-            Enter Full Screen
-          </MenubarItem>
+          <MenubarRadioGroup
+            value={theme}
+            onValueChange={(value: string) => {
+              setTheme(value);
+            }}
+          >
+            <MenubarRadioItem value="dark">Dark</MenubarRadioItem>
+            <MenubarRadioItem value="light">Light</MenubarRadioItem>
+          </MenubarRadioGroup>
         </MenubarContent>
       </MenubarMenu>
       <MenubarMenu>
