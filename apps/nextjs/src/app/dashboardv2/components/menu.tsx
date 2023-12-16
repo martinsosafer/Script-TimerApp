@@ -39,9 +39,7 @@ export function Menu() {
             Hide Others... <MenubarShortcut>⇧⌘H</MenubarShortcut>
           </MenubarItem>
           <MenubarShortcut />
-          <MenubarItem>
-            Log out of Script Timer <MenubarShortcut>⌘Q</MenubarShortcut>
-          </MenubarItem>
+          <MenubarItem>Log out</MenubarItem>
         </MenubarContent>
       </MenubarMenu>
       <MenubarMenu>
