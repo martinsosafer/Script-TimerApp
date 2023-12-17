@@ -26,11 +26,9 @@ import { api } from "~/utils/api";
 import { ModelSelector } from "../components/model-selector";
 import { SaveScript } from "../components/save-script";
 import { ScriptSelector } from "../components/script-selector";
-import { ScriptsEmptyPlaceholder } from "../components/scripts-empty-placeholder";
 import { Share } from "../components/share";
 import { SimilaritySelector } from "../components/similarity-selector";
 import { StabilitySelector } from "../components/stability-selector";
-import { ToggleAudio } from "../components/toggle-audio";
 import { models, types } from "../data/models";
 
 export function ScriptAI({}) {

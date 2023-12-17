@@ -25,7 +25,7 @@ export function Sidebar({ className }: SidebarProps) {
             Services
           </h2>
           <div className="space-y-1">
-            <Link href={`/`}>
+            <Link href={`/`} shallow={true}>
               <Button
                 variant={pathname === "/" ? "secondary" : "ghost"}
                 className="w-full justify-start"
