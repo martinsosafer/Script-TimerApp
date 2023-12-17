@@ -2,9 +2,14 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { signIn } from "@voiceai/auth";
+import { Button } from "@voiceai/ui/@/components/ui/button";
+import { Icons } from "@voiceai/ui/@/components/ui/icons";
+import { Input } from "@voiceai/ui/@/components/ui/input";
+import { Label } from "@voiceai/ui/@/components/ui/label";
 import { cn } from "@voiceai/ui/@/lib/utils";
 
 import coverImg from "../../../public/login-banner-photo.png";
+import { LoginWithEmailForm } from "./signin-button";
 
 export const runtime = "edge";
 
@@ -24,6 +29,9 @@ export default async function SignIn() {
                 </p>
               </div>
               <div className={cn("grid gap-6")}>
+                <LoginWithEmailForm />
+
+                {/* </form> */}
                 <div className="relative">
                   <div className="absolute inset-0 flex items-center">
                     <span className="w-full border-t" />
@@ -34,7 +42,7 @@ export default async function SignIn() {
                     </span>
                   </div>
                 </div>
-                <form
+                {/* <form
                   action={async () => {
                     "use server";
                     await signIn("facebook", { redirectTo: "/" });
@@ -77,7 +85,7 @@ export default async function SignIn() {
                       Facebook
                     </span>
                   </button>
-                </form>
+                </form> */}
                 <form
                   action={async () => {
                     "use server";
