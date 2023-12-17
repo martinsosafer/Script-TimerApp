@@ -1,10 +1,10 @@
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { CopyIcon } from "@radix-ui/react-icons";
 
 import { Button } from "@voiceai/ui/@/components/ui/button";
-import { IconCheck, IconCopy } from "@voiceai/ui/@/components/ui/icons";
+import { IconCheck } from "@voiceai/ui/@/components/ui/icons";
 import { Input } from "@voiceai/ui/@/components/ui/input";
 import { Label } from "@voiceai/ui/@/components/ui/label";
 import {
