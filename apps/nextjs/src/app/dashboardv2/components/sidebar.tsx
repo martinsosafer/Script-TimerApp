@@ -134,7 +134,7 @@ export function Sidebar({ className }: SidebarProps) {
         </div>
         <div className="py-2">
           <h2 className="relative px-7 text-lg font-semibold tracking-tight">
-            Available Voices
+            Preview Available Voices
           </h2>
           <ScrollArea className="h-[300px] px-1">
             <div className="space-y-1 p-2">
