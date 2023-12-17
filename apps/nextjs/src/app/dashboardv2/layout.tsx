@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 
 import { signOut } from "@voiceai/auth";
 
-import { Menu } from "../components/menu";
+import { Menu } from "./components/menu";
 
 import "~/styles/globals.css";
 
@@ -11,9 +11,9 @@ import { headers } from "next/headers";
 
 import { Toaster } from "@voiceai/ui/@/components/ui/toaster";
 
-import { TRPCReactProvider } from "../../providers";
-import { Sidebar } from "../components/sidebar";
-import { playlists } from "../data/playlists";
+import { TRPCReactProvider } from "../providers";
+import { Sidebar } from "./components/sidebar";
+import { playlists } from "./data/playlists";
 
 const fontSans = Inter({
   subsets: ["latin"],
