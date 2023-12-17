@@ -46,6 +46,7 @@ export function ScriptAI({}) {
   const [stability, setStability] = React.useState([0.5]);
   // If script is selected from URL path parameter, load in state from db
   const { scriptId } = useParams();
+  console.log("IN SCRIPT ID", scriptId);
   const { data: scriptDetails } = api.script.get.useQuery(
     { id: scriptId?.[0] ?? "" },
     { enabled: Boolean(scriptId?.[0]) },
