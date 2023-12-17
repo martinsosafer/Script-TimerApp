@@ -219,14 +219,12 @@ export function ScriptAI({}) {
                         className="h-full min-h-[300px] lg:min-h-[700px] xl:min-h-[700px]"
                       />
                     ) : (
-                      <div className="cursor-pointer rounded-md border bg-muted text-center">
-                        <span className="">
-                          Your AI Coach would revise your script here
-                        </span>
+                      <div className="flex cursor-pointer flex-col items-center justify-evenly rounded-md border bg-muted p-1 text-center">
+                        <span>Click below to revise your script.</span>
                         <Button
+                          className="border-2 border-dashed"
                           onClick={() => {
                             setLoading(true);
-
                             checkAndPublish(script);
                           }}
                         >
