@@ -45,7 +45,7 @@ export const scriptRouter = createTRPCRouter({
     .input(
       z.object({
         name: z.string().min(1).max(100),
-        script: z.string().min(1).max(10000),
+        script: z.string().min(1).max(10000).default(""),
       }),
     )
     .mutation(async ({ ctx, input }) => {

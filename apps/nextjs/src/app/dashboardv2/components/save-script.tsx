@@ -23,7 +23,7 @@ import { api } from "~/utils/api";
 interface SaveScriptProps {
   script: string;
 }
-export function SaveScript({ script }: SaveScriptProps) {
+export function SaveScript({ script = "" }: SaveScriptProps) {
   const router = useRouter();
 
   const [open, setOpen] = React.useState(false);
