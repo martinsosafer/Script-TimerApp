@@ -125,7 +125,7 @@ export function SaveScript({ script = "" }: SaveScriptProps) {
                     })
                   : await createScript({
                       name: name,
-                      script: script,
+                      script: script.length > 1 ? script : undefined,
                     });
                 setLoading(false);
               } catch {}
