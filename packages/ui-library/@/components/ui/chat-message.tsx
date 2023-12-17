@@ -39,38 +39,20 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
             p({ children }) {
               return <p className="mb-2 last:mb-0">{children}</p>;
             },
-            // @ts-expect-error ignore for now
-            code({ node, inline, className, children, ...props }) {
-              // @ts-expect-error ignore for now
-              if (children.length) {
-                // @ts-expect-error ignore for now
-                if (children[0] == "▍") {
-                  return (
-                    <span className="mt-1 animate-pulse cursor-default">▍</span>
-                  );
-                }
-                // @ts-expect-error ignore for now
-
-                children[0] = (children[0] as string).replace("`▍`", "▍");
-              }
-
+            code(props) {
+              const { children, className, node, ...rest } = props;
               const match = /language-(\w+)/.exec(className || "");
-
-              if (inline) {
-                return (
-                  <code className={className} {...props}>
-                    {children}
-                  </code>
-                );
-              }
-
-              return (
+              return match ? (
                 <CodeBlock
                   key={Math.random()}
                   language={match?.[1] || ""}
                   value={String(children).replace(/\n$/, "")}
                   {...props}
                 />
+              ) : (
+                <code {...rest} className={className}>
+                  {children}
+                </code>
               );
             },
           }}
