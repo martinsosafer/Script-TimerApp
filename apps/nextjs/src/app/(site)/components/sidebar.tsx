@@ -25,9 +25,9 @@ export function Sidebar({ className }: SidebarProps) {
             Services
           </h2>
           <div className="space-y-1">
-            <Link href={`/dashboardv2`}>
+            <Link href={`/`}>
               <Button
-                variant={pathname === "/dashboardv2" ? "secondary" : "ghost"}
+                variant={pathname === "/" ? "secondary" : "ghost"}
                 className="w-full justify-start"
               >
                 <svg
@@ -46,11 +46,9 @@ export function Sidebar({ className }: SidebarProps) {
                 Script Voice
               </Button>
             </Link>
-            <Link href={`/dashboardv2/chat`}>
+            <Link href={`/chat`}>
               <Button
-                variant={
-                  pathname === "/dashboardv2/chat" ? "secondary" : "ghost"
-                }
+                variant={pathname === "/chat" ? "secondary" : "ghost"}
                 className="w-full justify-start"
               >
                 {/* <Link href={`/dashboardv2/chat`}> */}
@@ -79,11 +77,9 @@ export function Sidebar({ className }: SidebarProps) {
             Library
           </h2>
           <div className="space-y-1">
-            <Link href={`/dashboardv2/library`}>
+            <Link href={`/library`}>
               <Button
-                variant={
-                  pathname === "/dashboardv2/library" ? "secondary" : "ghost"
-                }
+                variant={pathname === "/library" ? "secondary" : "ghost"}
                 className="w-full justify-start"
               >
                 <svg
@@ -105,11 +101,9 @@ export function Sidebar({ className }: SidebarProps) {
                 Voice Library
               </Button>
             </Link>
-            <Link href={`/dashboardv2/history`}>
+            <Link href={`/history`}>
               <Button
-                variant={
-                  pathname === "/dashboardv2/history" ? "secondary" : "ghost"
-                }
+                variant={pathname === "/history" ? "secondary" : "ghost"}
                 className="w-full justify-start"
               >
                 <svg

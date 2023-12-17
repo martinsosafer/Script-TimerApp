@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 
 import { signOut } from "@voiceai/auth";
 
-import TopNavigation from "../_components/top-navigation";
+import { Menu } from "./components/menu";
 
 import "~/styles/globals.css";
 
@@ -11,9 +11,9 @@ import { headers } from "next/headers";
 
 import { Toaster } from "@voiceai/ui/@/components/ui/toaster";
 
-import Player from "../_components/global-player";
-import Sidebar from "../_components/layout-console";
 import { TRPCReactProvider } from "../providers";
+import { Sidebar } from "./components/sidebar";
+import { playlists } from "./data/playlists";
 
 const fontSans = Inter({
   subsets: ["latin"],
@@ -51,12 +51,16 @@ export default function Layout(props: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="flex h-full flex-col bg-zinc-100">
+    <div className="h-screen bg-background">
       <TRPCReactProvider headers={headers()}>
-        <TopNavigation signOut={signOutServer} />
-        <div className="h-full flex-col overflow-y-scroll md:overflow-hidden">
-          <Sidebar>{props.children}</Sidebar>
-          <Player />
+        <Menu signOut={signOutServer} />
+        {/* <div className="border-t"> */}
+        {/* <div className="bg-background"> */}
+        <div className="grid lg:grid-cols-5">
+          <Sidebar playlists={playlists} className="hidden lg:block" />
+          <div className="col-span-4">{props.children}</div>
+          {/* </div> */}
+          {/* </div> */}
         </div>
         <Toaster />
       </TRPCReactProvider>

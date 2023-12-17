@@ -9,6 +9,8 @@ import "~/styles/globals.css";
 
 import { headers } from "next/headers";
 
+import { Toaster } from "@voiceai/ui/@/components/ui/toaster";
+
 import Player from "../_components/global-player";
 import Sidebar from "../_components/layout-console";
 import { TRPCReactProvider } from "../providers";
@@ -49,10 +51,14 @@ export default function Layout(props: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="flex h-full flex-col bg-white text-black">
+    <div className="flex h-full flex-col bg-zinc-100">
       <TRPCReactProvider headers={headers()}>
         <TopNavigation signOut={signOutServer} />
-        <div className="mx-8 mt-8 flex-col overflow-auto">{props.children}</div>
+        <div className="h-full flex-col overflow-y-scroll md:overflow-hidden">
+          <Sidebar>{props.children}</Sidebar>
+          <Player />
+        </div>
+        <Toaster />
       </TRPCReactProvider>
     </div>
   );
