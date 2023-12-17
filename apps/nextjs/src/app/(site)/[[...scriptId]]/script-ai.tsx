@@ -129,7 +129,7 @@ export function ScriptAI({}) {
   return (
     <div className=" h-full flex-col md:flex">
       <div className="container flex flex-col items-start justify-between space-y-2 py-4 sm:flex-row sm:items-center sm:space-y-0 md:h-16">
-        <h2 className="text-lg font-semibold">Script</h2>
+        <h2 className="mr-2 text-lg font-semibold">Script</h2>
         <div className="ml-auto flex w-full space-x-2 sm:justify-end">
           <ScriptSelector />
           <SaveScript script={script} />
