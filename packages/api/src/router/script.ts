@@ -22,7 +22,7 @@ export const scriptRouter = createTRPCRouter({
   get: protectedProcedure
     .input(
       z.object({
-        id: z.string().min(1),
+        id: z.string().min(5),
       }),
     )
     .query(async ({ ctx, input }) => {
@@ -63,7 +63,7 @@ export const scriptRouter = createTRPCRouter({
   update: protectedProcedure
     .input(
       z.object({
-        id: z.string().min(1),
+        id: z.string().min(5),
         name: z.string().min(1).max(100).optional(),
         script: z.string().min(1).max(10000).optional(),
       }),
