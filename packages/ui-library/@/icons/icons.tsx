@@ -1,1 +1,7 @@
-export { CaretSortIcon, CheckIcon, PlayIcon } from "@radix-ui/react-icons";
+export {
+  CaretSortIcon,
+  CheckIcon,
+  PlayIcon,
+  MagicWandIcon,
+  SpeakerLoudIcon,
+} from "@radix-ui/react-icons";

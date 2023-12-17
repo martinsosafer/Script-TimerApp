@@ -29,12 +29,10 @@ import { ScriptSelector } from "../components/script-selector";
 import { Share } from "../components/share";
 import { SimilaritySelector } from "../components/similarity-selector";
 import { StabilitySelector } from "../components/stability-selector";
+import { ToggleAudio } from "../components/toggle-audio";
 import { models, types } from "../data/models";
 
 export function ScriptAI({}) {
-  // Get all scripts to set default state
-  const { data: scripts = [] } = api.script.list.useQuery();
-
   const [open, setOpen] = React.useState(false);
 
   // Script AI parameters
@@ -74,12 +72,18 @@ export function ScriptAI({}) {
   // Generate audio voice
   const [audio, setAudio] = React.useState("");
   const [loading, setLoading] = React.useState(false);
+  const toggleAudioRef = React.useRef<React.Ref<HTMLButtonElement>>(null);
   const { mutateAsync: generateVoice, error } = api.voice.create.useMutation({
     onSuccess(data) {
       const dataURI = `data:audio/mpeg;base64,${data?.audio}`;
       setAudio(dataURI);
       setOpen(true);
       setLoading(false);
+      console.log("clicking");
+      if (toggleAudioRef?.current) {
+        // @ts-expect-error weird typing with ref
+        toggleAudioRef.current?.click();
+      }
     },
     onError(error) {
       setLoading(false);
@@ -112,16 +116,14 @@ export function ScriptAI({}) {
 
           <div className="hidden space-x-2 md:flex">
             {/* <CodeViewer /> */}
-            {/* <ToggleAudio audio={audio} open={open} /> */}
             <Share />
           </div>
+          <ToggleAudio ref={toggleAudioRef} audio={audio} />
           {/* <PresetActions /> */}
         </div>
       </div>
       <Separator />
-      {/* {scripts?.length === 0 ? (
-        <ScriptsEmptyPlaceholder />
-      ) : ( */}
+
       <Tabs defaultValue="complete" className="flex-1">
         <div className="container h-full py-6">
           <div className="grid h-full items-stretch gap-6 md:grid-cols-[1fr_200px]">
