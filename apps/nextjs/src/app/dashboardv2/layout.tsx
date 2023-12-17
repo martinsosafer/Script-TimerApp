@@ -53,7 +53,7 @@ export default function Layout(props: { children: React.ReactNode }) {
   return (
     <div className="h-screen bg-background">
       <TRPCReactProvider headers={headers()}>
-        <Menu />
+        <Menu signOut={signOutServer} />
         {/* <div className="border-t"> */}
         {/* <div className="bg-background"> */}
         <div className="grid lg:grid-cols-5">

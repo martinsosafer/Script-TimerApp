@@ -18,7 +18,7 @@ import {
   MenubarTrigger,
 } from "@voiceai/ui/@/components/ui/menubar";
 
-export function Menu() {
+export function Menu({ signOut }: { signOut: () => Promise<null> }) {
   const { theme, setTheme } = useTheme();
 
   return (
@@ -39,7 +39,13 @@ export function Menu() {
             Hide Others... <MenubarShortcut>⇧⌘H</MenubarShortcut>
           </MenubarItem>
           <MenubarShortcut />
-          <MenubarItem>Log out</MenubarItem>
+          <MenubarItem
+            onClick={async () => {
+              await signOut();
+            }}
+          >
+            Log out
+          </MenubarItem>
         </MenubarContent>
       </MenubarMenu>
       <MenubarMenu>
