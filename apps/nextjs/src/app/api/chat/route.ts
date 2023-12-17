@@ -4,6 +4,8 @@ import { NextResponse } from "next/server";
 import { copilot } from "@voiceai/ai";
 import { auth } from "@voiceai/auth";
 
+// import { db } from "@voiceai/db";
+
 export const runtime = "edge";
 
 /**
@@ -21,11 +23,6 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-
-    /**
-     * We represent intermediate steps as system messages for display purposes,
-     * but don't want them in the chat history.
-     */
 
     return copilot(body.messages ?? []);
   } catch (e: any) {

@@ -11,7 +11,7 @@ import {
 import { Input } from "@voiceai/ui/@/components/ui/input";
 import { Label } from "@voiceai/ui/@/components/ui/label";
 
-export function PodcastEmptyPlaceholder() {
+export function CustomVoiceEmptyPlaceholder() {
   return (
     <div className="flex h-[450px] shrink-0 items-center justify-center rounded-md border border-dashed">
       <div className="mx-auto flex max-w-[420px] flex-col items-center justify-center text-center">

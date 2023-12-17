@@ -10,7 +10,7 @@ import {
 } from "@voiceai/ui/@/components/ui/tabs";
 
 import { AlbumArtwork } from "../components/album-artwork";
-import { PodcastEmptyPlaceholder } from "../components/podcast-empty-placeholder";
+import { CustomVoiceEmptyPlaceholder } from "../components/custom-voice-empty-placeholder";
 import { listenNowAlbums, madeForYouAlbums } from "../data/albums";
 
 export const metadata: Metadata = {
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   description: "Example music app using the components.",
 };
 
-export default function MusicPage() {
+export default function LibraryPage() {
   return (
     <>
       <div className="col-span-3 lg:col-span-4 lg:border-l">
@@ -110,7 +110,7 @@ export default function MusicPage() {
                 </div>
               </div>
               <Separator className="my-4" />
-              <PodcastEmptyPlaceholder />
+              <CustomVoiceEmptyPlaceholder />
             </TabsContent>
           </Tabs>
         </div>
