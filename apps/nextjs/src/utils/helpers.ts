@@ -1,3 +1,5 @@
+import type { DragEvent } from "react";
+
 // helpers.ts
 
 export const generateRandomString = (length = 6): string => {
@@ -10,4 +12,25 @@ export const generateRandomString = (length = 6): string => {
   }
 
   return result;
+};
+
+export const useDragAndDrop = (
+  revisedScript: string,
+  setScript: (script: string) => void,
+) => {
+  const handleDragStart = (event: DragEvent<HTMLTextAreaElement>) => {
+    event.dataTransfer.setData("text/plain", revisedScript);
+  };
+
+  const handleDrop = (event: DragEvent<HTMLTextAreaElement>) => {
+    event.preventDefault();
+    const droppedText = event.dataTransfer.getData("text/plain");
+    setScript(droppedText);
+  };
+
+  const handleDragOver = (event: DragEvent<HTMLTextAreaElement>) => {
+    event.preventDefault(); // Necessary for the drop event to fire
+  };
+
+  return { handleDragStart, handleDrop, handleDragOver };
 };
