@@ -36,7 +36,7 @@ export default function Layout(props: { children: React.ReactNode }) {
       <body
         className={[
           "font-sans",
-          "h-screen bg-transparent",
+          "h-screen bg-background",
           fontSans.variable,
         ].join(" ")}
       >

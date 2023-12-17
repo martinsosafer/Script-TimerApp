@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { CopyIcon } from "@radix-ui/react-icons";
 import { useCompletion } from "ai/react";
 
 import { Button } from "@voiceai/ui/@/components/ui/button";
@@ -11,7 +12,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@voiceai/ui/@/components/ui/hover-card";
-import { Icons } from "@voiceai/ui/@/components/ui/icons";
+import { IconCheck, Icons } from "@voiceai/ui/@/components/ui/icons";
 import { Separator } from "@voiceai/ui/@/components/ui/separator";
 import {
   Tabs,
@@ -21,8 +22,15 @@ import {
 } from "@voiceai/ui/@/components/ui/tabs";
 import { Textarea } from "@voiceai/ui/@/components/ui/textarea";
 import { toast, ToastAction } from "@voiceai/ui/@/components/ui/toast";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@voiceai/ui/@/components/ui/tooltip";
+import { useCopyToClipboard } from "@voiceai/ui/@/hooks/use-copy-to-clipboard";
 
 import { api } from "~/utils/api";
+import { useDragAndDrop } from "~/utils/helpers";
 import { ModelSelector } from "../components/model-selector";
 import { SaveScript } from "../components/save-script";
 import { ScriptSelector } from "../components/script-selector";
@@ -106,10 +114,22 @@ export function ScriptAI({}) {
     },
   });
 
+  // Drag and drop functionality
+  const { handleDragStart, handleDrop, handleDragOver } = useDragAndDrop(
+    revisedScript,
+    setScript,
+  );
+  const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 });
+
+  const onCopy = () => {
+    if (isCopied) return;
+    copyToClipboard(revisedScript);
+  };
+
   return (
     <div className=" h-full flex-col md:flex">
       <div className="container flex flex-col items-start justify-between space-y-2 py-4 sm:flex-row sm:items-center sm:space-y-0 md:h-16">
-        <h2 className="text-lg font-semibold">Script</h2>
+        <h2 className="mr-2 text-lg font-semibold">Script</h2>
         <div className="ml-auto flex w-full space-x-2 sm:justify-end">
           <ScriptSelector />
           <SaveScript script={script} />
@@ -207,26 +227,46 @@ export function ScriptAI({}) {
                     <Textarea
                       value={script}
                       onChange={(e) => setScript(e.target.value)}
-                      placeholder="Your script would go here"
+                      onDrop={handleDrop}
+                      onDragOver={handleDragOver}
+                      placeholder="Your script here..."
                       className="h-full min-h-[300px] lg:min-h-[700px] xl:min-h-[700px]"
                     />
 
                     {revisedScript.length > 0 ? (
-                      <Textarea
-                        value={revisedScript}
-                        onClick={() => {}}
-                        placeholder="Your revised script"
-                        className="h-full min-h-[300px] lg:min-h-[700px] xl:min-h-[700px]"
-                      />
+                      <div className="relative">
+                        <Textarea
+                          value={revisedScript}
+                          onChange={(e) => setRevisedScript(e.target.value)}
+                          draggable="true"
+                          onDragStart={handleDragStart}
+                          className="h-full min-h-[300px] lg:min-h-[700px] xl:min-h-[700px]"
+                        />
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              className="absolute right-0 top-0 mr-2 mt-2 px-3"
+                              onClick={onCopy}
+                            >
+                              {isCopied ? <IconCheck /> : <CopyIcon />}
+                              <span className="sr-only">Copy message</span>
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            Click to copy, or drag and drop.
+                          </TooltipContent>
+                        </Tooltip>
+                      </div>
                     ) : (
-                      <div className="cursor-pointer rounded-md border bg-muted text-center">
-                        <span className="">
-                          Your AI Coach would revise your script here
-                        </span>
+                      <div className="flex cursor-pointer flex-col items-center justify-evenly rounded-md border bg-muted p-1 text-center">
+                        <span>Click below to revise your script.</span>
                         <Button
+                          className="border-2 border-dashed"
                           onClick={() => {
                             setLoading(true);
-
                             checkAndPublish(script);
                           }}
                         >
