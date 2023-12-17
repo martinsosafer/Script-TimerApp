@@ -10,9 +10,14 @@ import { api } from "~/utils/api";
 export function VoiceLibrary() {
   const { data: voices } = api.voice.list.useQuery({ name: "" });
 
-  const [audio, setAudio] = React.useState(new Audio());
+  const [audio, setAudio] = React.useState<HTMLAudioElement | null>(null);
+
+  React.useEffect(() => {
+    setAudio(new Audio()); // only call client
+  }, []);
 
   const playAudio = (audioSrc: string) => {
+    if (!audio) return;
     audio.src = audioSrc;
     audio.play();
   };

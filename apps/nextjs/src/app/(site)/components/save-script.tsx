@@ -48,7 +48,7 @@ export function SaveScript({ script = "" }: SaveScriptProps) {
         console.log("DONE CREATING SCRIPT", data);
         setLoading(false);
         setOpen(false);
-        router.push(`/dashboardv2/${data?.id}`, { scroll: false });
+        router.push(`/${data?.id}`, { scroll: false });
       },
       onError(error) {
         setLoading(false);

@@ -55,7 +55,7 @@ export function ScriptSelector({ ...props }: ScriptSelectorProps) {
           <CommandInput placeholder="Search scripts..." />
           <CommandEmpty>No scripts found.</CommandEmpty>
           <CommandGroup className="pt-0">
-            <CommandItem onSelect={() => router.push("/dashboardv2")}>
+            <CommandItem onSelect={() => router.push("/")}>
               Create New
             </CommandItem>
           </CommandGroup>
@@ -64,7 +64,7 @@ export function ScriptSelector({ ...props }: ScriptSelectorProps) {
               <CommandItem
                 key={script.id}
                 onSelect={() => {
-                  router.push(`/dashboardv2/${script.id}`, { scroll: false });
+                  router.push(`/${script.id}`, { scroll: false });
                   setOpen(false);
                 }}
               >

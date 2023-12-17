@@ -51,7 +51,7 @@ export function Sidebar({ className }: SidebarProps) {
                 variant={pathname === "/chat" ? "secondary" : "ghost"}
                 className="w-full justify-start"
               >
-                {/* <Link href={`/dashboardv2/chat`}> */}
+                {/* <Link href={`/chat`}> */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
