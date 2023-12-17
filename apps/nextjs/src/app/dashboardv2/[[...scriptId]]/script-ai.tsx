@@ -27,6 +27,7 @@ import { ModelSelector } from "../components/model-selector";
 import { SaveScript } from "../components/save-script";
 import { ScriptSelector } from "../components/script-selector";
 import { ScriptsEmptyPlaceholder } from "../components/scripts-empty-placeholder";
+import { Share } from "../components/share";
 import { SimilaritySelector } from "../components/similarity-selector";
 import { StabilitySelector } from "../components/stability-selector";
 import { ToggleAudio } from "../components/toggle-audio";
@@ -112,7 +113,8 @@ export function ScriptAI({}) {
 
           <div className="hidden space-x-2 md:flex">
             {/* <CodeViewer /> */}
-            <ToggleAudio audio={audio} open={open} />
+            {/* <ToggleAudio audio={audio} open={open} /> */}
+            <Share />
           </div>
           {/* <PresetActions /> */}
         </div>
