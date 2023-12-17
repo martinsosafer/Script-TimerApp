@@ -10,36 +10,34 @@ import {
   ContextMenuSubTrigger,
   ContextMenuTrigger,
 } from "@voiceai/ui/@/components/ui/context-menu";
-// import { PlusCircledIcon } from "@radix-ui/react-icons"
-
 import { cn } from "@voiceai/ui/@/lib/utils";
 
-import type { Album } from "../data/albums";
+import type { RouterOutputs } from "~/utils/api";
 import { playlists } from "../data/playlists";
 
-interface AlbumArtworkProps extends React.HTMLAttributes<HTMLDivElement> {
-  album: Album;
+interface VoiceArtworkProps extends React.HTMLAttributes<HTMLDivElement> {
+  voice: RouterOutputs["voice"]["list"][number];
   aspectRatio?: "portrait" | "square";
   width?: number;
   height?: number;
 }
 
-export function AlbumArtwork({
-  album,
+export function VoiceArtwork({
+  voice,
   aspectRatio = "portrait",
   width,
   height,
   className,
   ...props
-}: AlbumArtworkProps) {
+}: VoiceArtworkProps) {
   return (
     <div className={cn("space-y-3", className)} {...props}>
       <ContextMenu>
         <ContextMenuTrigger>
           <div className="overflow-hidden rounded-md">
             <Image
-              src={album.cover}
-              alt={album.name}
+              src={`${voice.picture}?w=300&dpr=2&q=80`}
+              alt={voice.name ?? ""}
               width={width}
               height={height}
               className={cn(
@@ -88,8 +86,8 @@ export function AlbumArtwork({
         </ContextMenuContent>
       </ContextMenu>
       <div className="space-y-1 text-sm">
-        <h3 className="font-medium leading-none">{album.name}</h3>
-        <p className="text-xs text-muted-foreground">{album.artist}</p>
+        <h3 className="font-medium leading-none">{voice.name}</h3>
+        <p className="text-xs text-muted-foreground">{voice.description}</p>
       </div>
     </div>
   );
