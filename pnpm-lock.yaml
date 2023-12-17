@@ -341,10 +341,10 @@ importers:
     dependencies:
       '@auth/core':
         specifier: 0.18.0
-        version: 0.18.0(nodemailer@6.9.7)
+        version: 0.18.0
       '@auth/drizzle-adapter':
         specifier: ^0.3.5
-        version: 0.3.6(nodemailer@6.9.7)
+        version: 0.3.6
       '@t3-oss/env-nextjs':
         specifier: ^0.7.1
         version: 0.7.1(typescript@5.2.2)(zod@3.22.4)
@@ -359,10 +359,7 @@ importers:
         version: 14.0.2(react-dom@18.2.0)(react@18.2.0)
       next-auth:
         specifier: 5.0.0-beta.3
-        version: 5.0.0-beta.3(next@14.0.2)(nodemailer@6.9.7)(react@18.2.0)
-      nodemailer:
-        specifier: ^6.9.7
-        version: 6.9.7
+        version: 5.0.0-beta.3(next@14.0.2)(react@18.2.0)
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -790,7 +787,7 @@ packages:
       - encoding
     dev: false
 
-  /@auth/core@0.18.0(nodemailer@6.9.7):
+  /@auth/core@0.18.0:
     resolution: {integrity: sha512-Xb41H3FIv4PlTZmwoFvntaNlVTwIqFxIg7i0/ieHOOxf/7H8EJpGTWoNrqKhwMyZEPU6fHp+VcUiqdX3vFrWSg==}
     peerDependencies:
       nodemailer: ^6.8.0
@@ -801,16 +798,15 @@ packages:
       '@panva/hkdf': 1.1.1
       cookie: 0.5.0
       jose: 4.15.4
-      nodemailer: 6.9.7
       oauth4webapi: 2.3.0
       preact: 10.11.3
       preact-render-to-string: 5.2.3(preact@10.11.3)
     dev: false
 
-  /@auth/drizzle-adapter@0.3.6(nodemailer@6.9.7):
+  /@auth/drizzle-adapter@0.3.6:
     resolution: {integrity: sha512-NcVjmFKaNDgR8sIiWdtt6tPuoOulW3tRnRA0F8FTJrCxwrLB/YK+rW0FkKZSDOFV8S50XESnz7SAinwRFzV0mQ==}
     dependencies:
-      '@auth/core': 0.18.0(nodemailer@6.9.7)
+      '@auth/core': 0.18.0
     transitivePeerDependencies:
       - nodemailer
     dev: false
@@ -11873,7 +11869,7 @@ packages:
     engines: {node: '>= 0.4.0'}
     dev: true
 
-  /next-auth@5.0.0-beta.3(next@14.0.2)(nodemailer@6.9.7)(react@18.2.0):
+  /next-auth@5.0.0-beta.3(next@14.0.2)(react@18.2.0):
     resolution: {integrity: sha512-WOKhATBFGeONV+29HzFmspNmL7NXxrsCWLfaDKmAd/4DD1nqXE0BzNFH8t3SJBx7PUDMnB6F7xB76LM/AaV1MQ==}
     peerDependencies:
       next: ^14
@@ -11883,9 +11879,8 @@ packages:
       nodemailer:
         optional: true
     dependencies:
-      '@auth/core': 0.18.0(nodemailer@6.9.7)
+      '@auth/core': 0.18.0
       next: 14.0.2(react-dom@18.2.0)(react@18.2.0)
-      nodemailer: 6.9.7
       react: 18.2.0
     dev: false
 
@@ -12019,11 +12014,6 @@ packages:
   /node-stream-zip@1.15.0:
     resolution: {integrity: sha512-LN4fydt9TqhZhThkZIVQnF9cwjU3qmUH9h78Mx/K7d3VvfRqqwthLwJEUOEL0QPZ0XQmNN7be5Ggit5+4dq3Bw==}
     engines: {node: '>=0.12.0'}
-    dev: false
-
-  /nodemailer@6.9.7:
-    resolution: {integrity: sha512-rUtR77ksqex/eZRLmQ21LKVH5nAAsVicAtAYudK7JgwenEDZ0UIQ1adUGqErz7sMkWYxWTTU1aeP2Jga6WQyJw==}
-    engines: {node: '>=6.0.0'}
     dev: false
 
   /nopt@7.2.0:
