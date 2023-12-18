@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useTheme } from "next-themes";
 
 import {
@@ -22,7 +23,7 @@ export function Menu({ signOut }: { signOut: () => Promise<null> }) {
   const { theme, setTheme } = useTheme();
 
   return (
-    <Menubar className="sticky top-0 rounded-none border-b border-none px-2 lg:px-4">
+    <Menubar className="sticky top-0 z-50 rounded-none border-b border-none bg-background px-2 lg:px-4">
       <MenubarMenu>
         <MenubarTrigger className="font-bold">Script Timer</MenubarTrigger>
         <MenubarContent>
@@ -169,6 +170,91 @@ export function Menu({ signOut }: { signOut: () => Promise<null> }) {
                 <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
               </svg>
             </MenubarShortcut>
+          </MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+      <MenubarMenu>
+        <MenubarTrigger>Navigate</MenubarTrigger>
+        <MenubarContent>
+          <MenubarItem asChild>
+            <Link href={`/`} className="flex items-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="mr-2 h-4 w-4"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <polygon points="10 8 16 12 10 16 10 8" />
+              </svg>
+              Script Voice
+            </Link>
+          </MenubarItem>
+          <MenubarItem asChild>
+            <Link href={`/chat`} className="flex items-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="mr-2 h-4 w-4"
+              >
+                <rect width="7" height="7" x="3" y="3" rx="1" />
+                <rect width="7" height="7" x="14" y="3" rx="1" />
+                <rect width="7" height="7" x="14" y="14" rx="1" />
+                <rect width="7" height="7" x="3" y="14" rx="1" />
+              </svg>
+              Chat
+            </Link>
+          </MenubarItem>
+          <MenubarSeparator />
+          <MenubarItem asChild>
+            <Link href={`/library`} className="flex items-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="mr-2 h-4 w-4"
+              >
+                <path d="M21 15V6" />
+                <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+                <path d="M12 12H3" />
+                <path d="M16 6H3" />
+                <path d="M12 18H3" />
+              </svg>
+              Voice Library
+            </Link>
+          </MenubarItem>
+          <MenubarItem asChild>
+            <Link href={`/history`} className="flex items-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="mr-2 h-4 w-4"
+              >
+                <path d="m16 6 4 14" />
+                <path d="M12 6v14" />
+                <path d="M8 8v12" />
+                <path d="M4 4v16" />
+              </svg>
+              Generation History
+            </Link>
           </MenubarItem>
         </MenubarContent>
       </MenubarMenu>
