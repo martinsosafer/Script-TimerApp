@@ -33,13 +33,7 @@ export function Menu({ signOut }: { signOut: () => Promise<null> }) {
             Preferences... <MenubarShortcut>⌘,</MenubarShortcut>
           </MenubarItem>
           <MenubarSeparator />
-          <MenubarItem>
-            Hide Voices... <MenubarShortcut>⌘H</MenubarShortcut>
-          </MenubarItem>
-          <MenubarItem>
-            Hide Others... <MenubarShortcut>⇧⌘H</MenubarShortcut>
-          </MenubarItem>
-          <MenubarShortcut />
+          {/* <MenubarShortcut /> */}
           <MenubarItem
             onClick={async () => {
               await signOut();
@@ -49,7 +43,7 @@ export function Menu({ signOut }: { signOut: () => Promise<null> }) {
           </MenubarItem>
         </MenubarContent>
       </MenubarMenu>
-      <MenubarMenu>
+      {/* <MenubarMenu>
         <MenubarTrigger className="relative">File</MenubarTrigger>
         <MenubarContent>
           <MenubarSub>
@@ -107,8 +101,8 @@ export function Menu({ signOut }: { signOut: () => Promise<null> }) {
             Print... <MenubarShortcut>⌘P</MenubarShortcut>
           </MenubarItem>
         </MenubarContent>
-      </MenubarMenu>
-      <MenubarMenu>
+      </MenubarMenu> */}
+      {/* <MenubarMenu>
         <MenubarTrigger>Edit</MenubarTrigger>
         <MenubarContent>
           <MenubarItem disabled>
@@ -172,7 +166,7 @@ export function Menu({ signOut }: { signOut: () => Promise<null> }) {
             </MenubarShortcut>
           </MenubarItem>
         </MenubarContent>
-      </MenubarMenu>
+      </MenubarMenu> */}
       <MenubarMenu>
         <MenubarTrigger>Navigate</MenubarTrigger>
         <MenubarContent>
@@ -274,7 +268,7 @@ export function Menu({ signOut }: { signOut: () => Promise<null> }) {
           </MenubarRadioGroup>
         </MenubarContent>
       </MenubarMenu>
-      <MenubarMenu>
+      {/* <MenubarMenu>
         <MenubarTrigger className="hidden md:block">Account</MenubarTrigger>
         <MenubarContent forceMount>
           <MenubarLabel inset>Switch Voice</MenubarLabel>
@@ -289,7 +283,7 @@ export function Menu({ signOut }: { signOut: () => Promise<null> }) {
           <MenubarSeparator />
           <MenubarItem inset>Add Account...</MenubarItem>
         </MenubarContent>
-      </MenubarMenu>
+      </MenubarMenu> */}
     </Menubar>
   );
 }
