@@ -40,22 +40,20 @@ export const metadata: Metadata = {
 
 export default function Layout(props: { children: React.ReactNode }) {
   async function signOutServer() {
-    "use server"; // mark function as a server action (fixes the error)
+    "use server";
     await signOut();
     return null;
   }
 
   return (
-    <div className="h-screen bg-background">
+    <div className="h-screen overflow-hidden bg-background">
       <TRPCReactProvider headers={headers()}>
         <Menu signOut={signOutServer} />
-        {/* <div className="border-t"> */}
-        {/* <div className="bg-background"> */}
         <div className="grid lg:grid-cols-5">
           <Sidebar playlists={playlists} className="hidden lg:block" />
-          <div className="col-span-4">{props.children}</div>
-          {/* </div> */}
-          {/* </div> */}
+          <div className="col-span-4 h-screen overflow-auto">
+            {props.children}
+          </div>
         </div>
         <Toaster />
         <IdentifyAnalytics />

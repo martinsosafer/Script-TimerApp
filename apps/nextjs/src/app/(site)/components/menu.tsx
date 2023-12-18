@@ -22,7 +22,7 @@ export function Menu({ signOut }: { signOut: () => Promise<null> }) {
   const { theme, setTheme } = useTheme();
 
   return (
-    <Menubar className="sticky rounded-none border-b border-none px-2 lg:px-4">
+    <Menubar className="sticky top-0 rounded-none border-b border-none px-2 lg:px-4">
       <MenubarMenu>
         <MenubarTrigger className="font-bold">Script Timer</MenubarTrigger>
         <MenubarContent>
