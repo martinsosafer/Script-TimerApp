@@ -2,19 +2,33 @@
 
 import { useEffect } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { AnalyticsBrowser } from "@segment/analytics-next";
 
-export const analytics = AnalyticsBrowser.load({
-  writeKey: process.env.NEXT_PUBLIC_SEGMENT_WRITE_KEY!,
-});
+import { analytics } from "~/lib/analytics";
+import { api } from "~/utils/api";
 
-export default function Analytics() {
+export function PageAnalytics() {
+  // const { data: session } = api.auth.getSession.useQuery();
+  // console.log("session", session);
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   useEffect(() => {
     analytics.page();
   }, [pathname, searchParams]);
+
+  return null;
+}
+
+// Can only be used on pages with logged in users
+export function IdentifyAnalytics() {
+  const { data: session } = api.auth.getSession.useQuery();
+
+  if (session?.user?.id) {
+    analytics.identify(session?.user?.id, {
+      email: session?.user?.email,
+      name: session?.user?.name,
+    });
+  }
 
   return null;
 }

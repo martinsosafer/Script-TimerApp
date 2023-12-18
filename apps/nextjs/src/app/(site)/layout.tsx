@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 
 import { signOut } from "@voiceai/auth";
 
@@ -11,14 +10,10 @@ import { headers } from "next/headers";
 
 import { Toaster } from "@voiceai/ui/@/components/ui/toaster";
 
+import { IdentifyAnalytics } from "../analytics";
 import { TRPCReactProvider } from "../providers";
 import { Sidebar } from "./components/sidebar";
 import { playlists } from "./data/playlists";
-
-const fontSans = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
 
 /**
  * Since we're passing `headers()` to the `TRPCReactProvider` we need to
@@ -63,6 +58,7 @@ export default function Layout(props: { children: React.ReactNode }) {
           {/* </div> */}
         </div>
         <Toaster />
+        <IdentifyAnalytics />
       </TRPCReactProvider>
     </div>
   );

@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { useIntercom } from "react-use-intercom";
 
-import Analytics from "./analytics";
+import { PageAnalytics } from "./analytics";
 
 const fontSans = Inter({
   subsets: ["latin"],
@@ -44,7 +43,7 @@ export default function Layout(props: { children: React.ReactNode }) {
       >
         {props.children}
       </body>
-      <Analytics />
+      <PageAnalytics />
     </html>
   );
 }
