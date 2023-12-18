@@ -8,7 +8,7 @@ import { Input } from "@voiceai/ui/@/components/ui/input";
 import { Label } from "@voiceai/ui/@/components/ui/label";
 import { cn } from "@voiceai/ui/@/lib/utils";
 
-import coverImg from "../../../public/login-banner-photo.png";
+import coverImg from "../../../public/login_photo.png";
 import { LoginWithEmailForm } from "./signin-button";
 
 export const runtime = "edge";
@@ -162,7 +162,7 @@ export default async function SignIn() {
               />
             </div> */}
             <div className="absolute inset-0 bg-zinc-900" />
-            <div className="relative z-20 flex items-center text-lg font-medium">
+            {/* <div className="relative z-20 flex items-center text-lg font-medium">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -186,7 +186,7 @@ export default async function SignIn() {
                 </p>
                 <footer className="text-sm">Sofia Davis</footer>
               </blockquote>
-            </div>
+            </div> */}
           </div>
         </div>
       </>
