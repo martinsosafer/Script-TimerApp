@@ -57,16 +57,19 @@ export function Library() {
               <div className="relative">
                 <ScrollArea>
                   <div className="flex space-x-4 pb-4">
-                    {voices.map((voice) => (
-                      <VoiceArtwork
-                        key={voice.name}
-                        voice={voice}
-                        className="w-[250px]"
-                        aspectRatio="portrait"
-                        width={250}
-                        height={330}
-                      />
-                    ))}
+                    {voices.map(
+                      (voice) =>
+                        voice?.gender === "MALE" && (
+                          <VoiceArtwork
+                            key={voice.name}
+                            voice={voice}
+                            className="w-[250px]"
+                            aspectRatio="portrait"
+                            width={250}
+                            height={330}
+                          />
+                        ),
+                    )}
                   </div>
                   <ScrollBar orientation="horizontal" />
                 </ScrollArea>
@@ -81,7 +84,7 @@ export function Library() {
               </div>
               <Separator className="my-4" />
               <div className="relative">
-                <ScrollArea>
+                {/* <ScrollArea>
                   <div className="flex space-x-4 pb-4">
                     {voices.map((voice) => (
                       <VoiceArtwork
@@ -93,6 +96,24 @@ export function Library() {
                         height={150}
                       />
                     ))}
+                  </div>
+                  <ScrollBar orientation="horizontal" />
+                </ScrollArea> */}
+                <ScrollArea>
+                  <div className="flex space-x-4 pb-4">
+                    {voices.map(
+                      (voice) =>
+                        voice?.gender === "FEMALE" && (
+                          <VoiceArtwork
+                            key={voice.name}
+                            voice={voice}
+                            className="w-[250px]"
+                            aspectRatio="portrait"
+                            width={250}
+                            height={330}
+                          />
+                        ),
+                    )}
                   </div>
                   <ScrollBar orientation="horizontal" />
                 </ScrollArea>
