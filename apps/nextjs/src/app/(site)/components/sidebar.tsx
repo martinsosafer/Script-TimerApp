@@ -67,7 +67,7 @@ export function Sidebar({ className }: SidebarProps) {
                   <rect width="7" height="7" x="14" y="14" rx="1" />
                   <rect width="7" height="7" x="3" y="14" rx="1" />
                 </svg>
-                Chat
+                Script Coach
               </Button>
             </Link>
           </div>
