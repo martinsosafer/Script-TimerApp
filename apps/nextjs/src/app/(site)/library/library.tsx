@@ -1,5 +1,7 @@
 "use client";
 
+import * as React from "react";
+
 import { ScrollArea, ScrollBar } from "@voiceai/ui/@/components/ui/scroll-area";
 import { Separator } from "@voiceai/ui/@/components/ui/separator";
 import {
@@ -16,6 +18,17 @@ import { VoiceArtwork } from "../components/voice-artwork";
 export function Library() {
   const { data: voices = [] } = api.voice.list.useQuery({ name: "" });
 
+  const [audio, setAudio] = React.useState<HTMLAudioElement | null>(null);
+
+  React.useEffect(() => {
+    setAudio(new Audio()); // only call client
+  }, []);
+
+  const playAudio = (audioSrc: string) => {
+    if (!audio) return;
+    audio.src = audioSrc;
+    audio.play();
+  };
   return (
     <>
       <div className="col-span-3 lg:col-span-4 lg:border-l">
@@ -39,11 +52,7 @@ export function Library() {
                     Listen Now
                   </h2>
                   <p className="text-sm text-muted-foreground">
-                    Top voices for you. Updated regularly. Gerry: Clicking on a
-                    voice would preview the voice. In the future we could make
-                    the voice have a "profile" similar to spotify where you can
-                    see more details about the voice and past generations and
-                    stuff. Pro tip: right click on an image for a quick menu
+                    Top voices for you. Updated regularly. Click to preview!
                   </p>
                 </div>
               </div>
@@ -61,9 +70,15 @@ export function Library() {
                       (voice) =>
                         voice?.gender === "MALE" && (
                           <VoiceArtwork
+                            onClick={() =>
+                              playAudio(
+                                // @ts-expect-error jsonb types are hard
+                                (voice?.metadata?.preview_url as string) ?? "",
+                              )
+                            }
                             key={voice.name}
                             voice={voice}
-                            className="w-[250px]"
+                            className="w-[250px] cursor-pointer"
                             aspectRatio="portrait"
                             width={250}
                             height={330}
@@ -105,9 +120,15 @@ export function Library() {
                       (voice) =>
                         voice?.gender === "FEMALE" && (
                           <VoiceArtwork
+                            onClick={() =>
+                              playAudio(
+                                // @ts-expect-error jsonb types are hard
+                                (voice?.metadata?.preview_url as string) ?? "",
+                              )
+                            }
                             key={voice.name}
                             voice={voice}
-                            className="w-[250px]"
+                            className="w-[250px] cursor-pointer"
                             aspectRatio="portrait"
                             width={250}
                             height={330}
