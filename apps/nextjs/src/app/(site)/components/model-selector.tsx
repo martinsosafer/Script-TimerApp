@@ -47,8 +47,8 @@ export function ModelSelector({
   const [open, setOpen] = React.useState(false);
   const { data: voices = [] } = api.voice.list.useQuery({ name: "" });
 
-  const [selectedModel, setSelectedModel] = React.useState<Model>(voices[0]);
-  const [peekedModel, setPeekedModel] = React.useState<Model>(voices[0]);
+  const [selectedModel, setSelectedModel] = React.useState<Model | null>(null);
+  const [peekedModel, setPeekedModel] = React.useState<Model | null>(null);
 
   return (
     <div className="grid gap-2">
