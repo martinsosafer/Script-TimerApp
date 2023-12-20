@@ -5,26 +5,6 @@ import { and, asc, eq, ilike, like, schema } from "@voiceai/db";
 import { createTRPCRouter, protectedProcedure, TRPCError } from "../trpc";
 
 export const voiceRouter = createTRPCRouter({
-  all: protectedProcedure.query(async ({ ctx }) => {
-    try {
-      const response = await fetch("https://api.elevenlabs.io/v1/voices", {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "xi-api-key": process.env.INTEGRATION_11LABS_API_KEY ?? "",
-          accept: "application/json",
-        },
-      });
-      const voices = (await response.json()) as {
-        voices: [{ voice_id: string }];
-      };
-
-      return voices.voices;
-    } catch (error) {
-      console.error("Error in 11labs", error);
-      return [];
-    }
-  }),
   list: protectedProcedure
     .input(
       z.object({
@@ -48,7 +28,7 @@ export const voiceRouter = createTRPCRouter({
         .select()
         .from(schema.voices)
         .where(eq(schema.voices.active, true))
-        .orderBy(asc(schema.voices.name));
+        .orderBy(asc(schema.voices.rank));
     }),
   create: protectedProcedure
     .input(

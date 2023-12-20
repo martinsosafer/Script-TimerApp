@@ -1,5 +1,6 @@
 import {
   boolean,
+  integer,
   jsonb,
   pgEnum,
   text,
@@ -15,6 +16,7 @@ export const voiceGender = pgEnum("voice_gender", ["MALE", "FEMALE", "OTHER"]);
 export const voices = pgTable("voice", {
   id: uuid("id").notNull().primaryKey().defaultRandom(),
   external_id: text("external_id").notNull(),
+  rank: integer("rank").notNull().default(0),
   active: boolean("active").notNull().default(false),
   type: voiceType("voice_type").notNull().default("OTHER"),
   gender: voiceGender("gender").notNull().default("OTHER"),
