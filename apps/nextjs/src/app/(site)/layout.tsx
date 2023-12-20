@@ -49,8 +49,8 @@ export default function Layout(props: { children: React.ReactNode }) {
     <div className="h-screen overflow-hidden bg-background">
       <TRPCReactProvider headers={headers()}>
         <Menu signOut={signOutServer} />
-        <div className="grid lg:grid-cols-5">
-          <Sidebar playlists={playlists} className="hidden lg:block" />
+        <div className="grid ">
+          {/* <Sidebar playlists={playlists} className="hidden lg:block" /> */}
           <div className="col-span-4 h-screen overflow-auto">
             {props.children}
           </div>

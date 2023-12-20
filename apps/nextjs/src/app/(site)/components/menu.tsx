@@ -168,7 +168,7 @@ export function Menu({ signOut }: { signOut: () => Promise<null> }) {
         </MenubarContent>
       </MenubarMenu> */}
       <MenubarMenu>
-        <MenubarTrigger>Navigate</MenubarTrigger>
+        <MenubarTrigger>Products</MenubarTrigger>
         <MenubarContent>
           <MenubarItem asChild>
             <Link href={`/`} className="flex items-center">
