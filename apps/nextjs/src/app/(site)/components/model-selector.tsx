@@ -91,7 +91,7 @@ export function ModelSelector({
                   {peekedModel?.name}
                 </h4>
                 <div className="text-sm text-muted-foreground">
-                  description here
+                  {peekedModel?.description}
                 </div>
                 {peekedModel?.strengths ? (
                   <div className="mt-4 grid gap-2">
