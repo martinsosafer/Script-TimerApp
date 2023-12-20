@@ -38,6 +38,7 @@ export function VoiceArtwork({
             <Image
               src={`${voice.picture}?w=300&dpr=2&q=80`}
               alt={voice.name ?? ""}
+              priority={true}
               width={width}
               height={height}
               className={cn(
