@@ -216,7 +216,7 @@ export function ScriptAI({}) {
                   <Textarea
                     value={script}
                     onChange={(e) => setScript(e.target.value)}
-                    placeholder="Write your script here. Then on the right choose a voice model, and click generate. This is a protopye frontend for feedback, I haven't hooked up all the api calls yet. But I think an UI like this may look more professional and helps us have more features in a more extensible way. The top nav has a lot of menu options, I added examples but we can add functionality there as quick action items for people to do with their work. switching the mode activates the grammar/spell checker that can revise your script. I can add colors and logos to the site but wanted to get usability feedback before i go too deep into making it live"
+                    placeholder={`Write your script here, choose your voice model from the right dropdown and generate to hear your voice. Like your script? Save it by clicking the "Save" button on the top right. Listen and download after generating by toggling the voice player using the upmost top-right button.`}
                     className="min-h-[400px] flex-1 p-4 md:min-h-[700px] lg:min-h-[700px]"
                   />
                 </div>

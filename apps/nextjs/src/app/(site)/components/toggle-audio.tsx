@@ -22,7 +22,7 @@ interface ToggleAudioProps {
 export const ToggleAudio = React.forwardRef(
   ({ audio }: ToggleAudioProps, ref) => {
     return (
-      <div className="grid  gap-2">
+      <div className="grid gap-2">
         <Sheet>
           <SheetTrigger asChild ref={ref as React.Ref<HTMLButtonElement>}>
             <Button type="button" size="sm" className="px-3">
@@ -35,16 +35,23 @@ export const ToggleAudio = React.forwardRef(
             <SheetHeader>
               <SheetTitle>Voice Player</SheetTitle>
               <SheetDescription>
-                Listen to your voice. You can also download it.
+                Listen to your voice. You can also download it, just hit play!
               </SheetDescription>
             </SheetHeader>
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
-                <audio
-                  controls
-                  src={audio}
-                  className="col-span-2 col-start-2 mx-auto w-full"
-                />
+                {audio ? (
+                  <audio
+                    controls
+                    src={audio}
+                    className="col-span-2 col-start-2 mx-auto w-full"
+                  />
+                ) : (
+                  <h3 className="col-span-2 col-start-2  mx-auto w-full">
+                    No audio generated, make a voice by creating one in the
+                    Script Voice console
+                  </h3>
+                )}
               </div>
               {/* <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="username" className="text-right">
