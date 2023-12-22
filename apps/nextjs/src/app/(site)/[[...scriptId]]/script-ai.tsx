@@ -13,6 +13,8 @@ import {
   HoverCardTrigger,
 } from "@voiceai/ui/@/components/ui/hover-card";
 import { IconCheck, Icons } from "@voiceai/ui/@/components/ui/icons";
+import { Label } from "@voiceai/ui/@/components/ui/label";
+import { ScrollArea } from "@voiceai/ui/@/components/ui/scroll-area";
 import { Separator } from "@voiceai/ui/@/components/ui/separator";
 import {
   Tabs,
@@ -38,6 +40,7 @@ import { Share } from "../components/share";
 import { SimilaritySelector } from "../components/similarity-selector";
 import { StabilitySelector } from "../components/stability-selector";
 import { ToggleAudio } from "../components/toggle-audio";
+import { VoiceLibrary } from "../components/voice-library";
 import { models, types } from "../data/models";
 
 export function ScriptAI({}) {
@@ -138,7 +141,12 @@ export function ScriptAI({}) {
             {/* <CodeViewer /> */}
             <Share />
           </div>
-          <ToggleAudio ref={toggleAudioRef} audio={audio} />
+          <Tooltip>
+            <TooltipTrigger>
+              <ToggleAudio ref={toggleAudioRef} audio={audio} />
+            </TooltipTrigger>
+            <TooltipContent>Click to open your voice player</TooltipContent>
+          </Tooltip>
           {/* <PresetActions /> */}
         </div>
       </div>
@@ -152,7 +160,7 @@ export function ScriptAI({}) {
                 <HoverCard openDelay={200}>
                   <HoverCardTrigger asChild>
                     <span className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                      Mode
+                      Create a
                     </span>
                   </HoverCardTrigger>
                   <HoverCardContent className="w-[320px] text-sm" side="left">
@@ -209,6 +217,16 @@ export function ScriptAI({}) {
                   "Generate"
                 )}
               </Button>
+              <div className="py-2">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="similarity">Preview Voices</Label>
+                </div>
+                <ScrollArea className="h-[300px] px-1">
+                  <div className="space-y-1 p-2">
+                    <VoiceLibrary />
+                  </div>
+                </ScrollArea>
+              </div>
             </div>
             <div className="md:order-1">
               <TabsContent value="complete" className="mt-0 border-0 p-0">

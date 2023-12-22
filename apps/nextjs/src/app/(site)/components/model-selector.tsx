@@ -54,7 +54,7 @@ export function ModelSelector({
     <div className="grid gap-2">
       <HoverCard openDelay={200}>
         <HoverCardTrigger asChild>
-          <Label htmlFor="model">Model</Label>
+          <Label htmlFor="model">Choose Your Voice Actor</Label>
         </HoverCardTrigger>
         <HoverCardContent
           align="start"
@@ -71,10 +71,10 @@ export function ModelSelector({
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            aria-label="Select a model"
+            aria-label="Select a voice"
             className="w-full justify-between"
           >
-            {selectedModel ? selectedModel.name : "Select a model..."}
+            {selectedModel ? selectedModel.name : "Select a voice..."}
             <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
