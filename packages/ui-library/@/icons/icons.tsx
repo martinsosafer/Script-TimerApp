@@ -4,4 +4,5 @@ export {
   PlayIcon,
   MagicWandIcon,
   SpeakerLoudIcon,
+  HeartIcon,
 } from "@radix-ui/react-icons";

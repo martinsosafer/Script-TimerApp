@@ -17,6 +17,7 @@ import { Icons } from "@voiceai/ui/@/components/ui/icons";
 import { Input } from "@voiceai/ui/@/components/ui/input";
 import { Label } from "@voiceai/ui/@/components/ui/label";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
+import { HeartIcon } from "@voiceai/ui/@/icons/icons";
 
 import { api } from "~/utils/api";
 
@@ -82,7 +83,10 @@ export function SaveScript({ script = "" }: SaveScriptProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="secondary">Save</Button>
+        <Button variant="secondary">
+          <HeartIcon className="mx-2 h-4 w-4" />
+          Save
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[475px]">
         <DialogHeader>

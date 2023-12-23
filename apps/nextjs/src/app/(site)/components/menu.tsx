@@ -168,7 +168,7 @@ export function Menu({ signOut }: { signOut: () => Promise<null> }) {
         </MenubarContent>
       </MenubarMenu> */}
       <MenubarMenu>
-        <MenubarTrigger>Products</MenubarTrigger>
+        <MenubarTrigger>Services</MenubarTrigger>
         <MenubarContent>
           <MenubarItem asChild>
             <Link href={`/`} className="flex items-center">
@@ -185,7 +185,7 @@ export function Menu({ signOut }: { signOut: () => Promise<null> }) {
                 <circle cx="12" cy="12" r="10" />
                 <polygon points="10 8 16 12 10 16 10 8" />
               </svg>
-              Script Voice
+              Text2Speech
             </Link>
           </MenubarItem>
           <MenubarItem asChild>
@@ -227,7 +227,7 @@ export function Menu({ signOut }: { signOut: () => Promise<null> }) {
                 <path d="M16 6H3" />
                 <path d="M12 18H3" />
               </svg>
-              Voice Library
+              Voice Actor Library
             </Link>
           </MenubarItem>
           <MenubarItem asChild>
@@ -247,13 +247,25 @@ export function Menu({ signOut }: { signOut: () => Promise<null> }) {
                 <path d="M8 8v12" />
                 <path d="M4 4v16" />
               </svg>
-              Generation History
+              History
             </Link>
           </MenubarItem>
         </MenubarContent>
       </MenubarMenu>
       <MenubarMenu>
-        <MenubarTrigger>View</MenubarTrigger>
+        <MenubarTrigger>Learn</MenubarTrigger>
+        <MenubarContent>
+          <MenubarItem asChild>
+            {/* <Link href={`/`} className="flex items-center"> */}
+            <>
+              Prompt Resources
+              {/* </Link> */}
+            </>
+          </MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+      <MenubarMenu>
+        <MenubarTrigger>Theme</MenubarTrigger>
         <MenubarContent>
           <MenubarLabel inset>Switch Theme</MenubarLabel>
           <MenubarSeparator />
