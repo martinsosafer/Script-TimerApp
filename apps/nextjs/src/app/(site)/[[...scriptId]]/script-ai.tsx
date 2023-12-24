@@ -40,6 +40,7 @@ import { Share } from "../components/share";
 import { SimilaritySelector } from "../components/similarity-selector";
 import { StabilitySelector } from "../components/stability-selector";
 import { ToggleAudio } from "../components/toggle-audio";
+import { ToggleLibrary } from "../components/toggle-voice-library";
 import { VoiceLibrary } from "../components/voice-library";
 import { models, types } from "../data/models";
 
@@ -137,10 +138,16 @@ export function ScriptAI({}) {
           <ScriptSelector />
           <SaveScript script={script} />
 
-          <div className="hidden space-x-2 md:flex">
+          <div className="flex">
             {/* <CodeViewer /> */}
             <Share />
           </div>
+          <Tooltip>
+            <TooltipTrigger>
+              <ToggleLibrary />
+            </TooltipTrigger>
+            <TooltipContent>Click to open your voice library</TooltipContent>
+          </Tooltip>
           <Tooltip>
             <TooltipTrigger>
               <ToggleAudio ref={toggleAudioRef} audio={audio} />
