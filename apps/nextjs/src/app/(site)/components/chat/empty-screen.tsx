@@ -25,7 +25,8 @@ export function EmptyScreen({ setInput }: Pick<UseChatHelpers, "setInput">) {
       <div className="rounded-lg border bg-background p-8">
         <h1 className="mb-2 text-lg font-semibold">I am your Script Coach</h1>
         <p className="mb-2 leading-normal text-muted-foreground">
-          an Ai model designed to help you. I am specially made for
+          an Ai <span className="line-through">SUPERHERO</span>,
+          &lsquo;model&lsquo; designed to help you. I am specially made for
           presentations, speeches, videos, and can do much, much more.
           {/* <ExternalLink href="https://nextjs.org">Next.js</ExternalLink> and{' '}
           <ExternalLink href="https://vercel.com/storage/kv">
