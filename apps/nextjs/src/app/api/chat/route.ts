@@ -4,6 +4,8 @@ import { NextResponse } from "next/server";
 import { copilot } from "@voiceai/ai";
 import { auth } from "@voiceai/auth";
 
+import { prompts } from "~/app/(site)/data/prompts";
+
 // import { db } from "@voiceai/db";
 
 export const runtime = "edge";
@@ -24,7 +26,15 @@ export async function POST(req: NextRequest) {
 
     const body = await req.json();
 
-    return copilot(body.messages ?? []);
+    let systemMessage = "";
+    if (body?.prompt) {
+      const promptContent = prompts.find(
+        (prompt) => prompt.id === body?.prompt,
+      );
+
+      systemMessage = promptContent?.prompt_ai ?? "";
+    }
+    return copilot(systemMessage, body.messages ?? []);
   } catch (e: any) {
     console.log("CAUGHT YOU", e);
     return NextResponse.json({ error: e.message }, { status: 500 });

@@ -46,7 +46,6 @@ export function SaveScript({ script = "" }: SaveScriptProps) {
   const { mutateAsync: createScript, error: errorCreatingScript } =
     api.script.create.useMutation({
       onSuccess(data) {
-        console.log("DONE CREATING SCRIPT", data);
         setLoading(false);
         setOpen(false);
         router.push(`/${data?.id}`, { scroll: false });

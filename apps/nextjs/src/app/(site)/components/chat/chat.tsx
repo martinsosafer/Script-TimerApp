@@ -20,6 +20,7 @@ import { toast } from "@voiceai/ui/@/components/ui/toast";
 import { useLocalStorage } from "@voiceai/ui/@/hooks/use-local-storage";
 import { cn } from "@voiceai/ui/@/lib/utils";
 
+import type { Prompt, PromptType } from "../../data/prompts";
 import { ChatList } from "./chat-list";
 import { ChatPanel } from "./chat-panel";
 import { EmptyScreen } from "./empty-screen";
@@ -36,6 +37,8 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
     null,
   );
   const [previewTokenDialog, setPreviewTokenDialog] = useState(IS_PREVIEW);
+  const [prompt, setPrompt] = useState<Prompt | null>(null);
+  console.log("PROMPT", prompt);
   const [previewTokenInput, setPreviewTokenInput] = useState(
     previewToken ?? "",
   );
@@ -47,6 +50,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
       body: {
         id,
         previewToken,
+        prompt: prompt?.id,
       },
       onResponse(response) {
         if (response.status === 401) {
@@ -73,7 +77,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
             <ChatScrollAnchor trackVisibility={isLoading} />
           </>
         ) : (
-          <EmptyScreen setInput={setInput} />
+          <EmptyScreen setInput={setInput} setPrompt={setPrompt} />
         )}
       </div>
       <ChatPanel

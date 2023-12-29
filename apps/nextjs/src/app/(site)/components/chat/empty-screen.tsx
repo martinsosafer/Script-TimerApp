@@ -1,25 +1,16 @@
+import * as React from "react";
 import type { UseChatHelpers } from "ai/react";
 
-import { Button } from "@voiceai/ui/@/components/ui/button";
-// import { ExternalLink } from '@/components/external-link'
-import { IconArrowRight } from "@voiceai/ui/@/components/ui/icons";
+import { prompts, types } from "../../data/prompts";
+import type { Prompt } from "../../data/prompts";
+import { ChatPromptSelector } from "../chat-prompt-selector";
 
-const exampleMessages = [
-  {
-    heading: "Write an action script",
-    message: `Write me an action script`,
-  },
-  {
-    heading: "Summarize a script",
-    message: "Summarize this script: \n",
-  },
-  {
-    heading: "Revise a script",
-    message: `Revise this script: \n`,
-  },
-];
-
-export function EmptyScreen({ setInput }: Pick<UseChatHelpers, "setInput">) {
+export function EmptyScreen({
+  setInput,
+  setPrompt,
+}: Pick<UseChatHelpers, "setInput"> & {
+  setPrompt: React.Dispatch<React.SetStateAction<Prompt | null>>;
+}) {
   return (
     <div className="mx-auto max-w-2xl px-4">
       <div className="rounded-lg border bg-background p-8">
@@ -34,11 +25,22 @@ export function EmptyScreen({ setInput }: Pick<UseChatHelpers, "setInput">) {
           </ExternalLink> */}
           .
         </p>
-        <p className="leading-normal text-muted-foreground">
+        {/* <p className="leading-normal text-muted-foreground">
           What do you want to make today?
-        </p>
+        </p> */}
         <div className="mt-4 flex flex-col items-start space-y-2">
-          {exampleMessages.map((message, index) => (
+          <ChatPromptSelector
+            onPromptSelect={(prompt) => {
+              console.log("IN VALUE", prompt);
+              // @ts-expect-error dunno why cant type this
+              setInput(prompt?.prompt_display ?? "");
+              // @ts-expect-error dunno why cant type this
+              setPrompt(prompt);
+            }}
+            types={types}
+            prompts={prompts}
+          />
+          {/* {exampleMessages.map((message, index) => (
             <Button
               key={index}
               variant="link"
@@ -48,7 +50,7 @@ export function EmptyScreen({ setInput }: Pick<UseChatHelpers, "setInput">) {
               <IconArrowRight className="mr-2 text-muted-foreground" />
               {message.heading}
             </Button>
-          ))}
+          ))} */}
         </div>
       </div>
     </div>
