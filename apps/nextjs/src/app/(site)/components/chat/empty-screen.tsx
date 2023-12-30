@@ -3,6 +3,7 @@ import type { UseChatHelpers } from "ai/react";
 
 import { prompts, types } from "../../data/prompts";
 import type { Prompt } from "../../data/prompts";
+import { ChatPromptAccordion } from "../chat-prompt-accordion";
 import { ChatPromptSelector } from "../chat-prompt-selector";
 
 export function EmptyScreen({
@@ -31,7 +32,16 @@ export function EmptyScreen({
         <div className="mt-4 flex flex-col items-start space-y-2">
           <ChatPromptSelector
             onPromptSelect={(prompt) => {
-              console.log("IN VALUE", prompt);
+              // @ts-expect-error dunno why cant type this
+              setInput(prompt?.prompt_display ?? "");
+              // @ts-expect-error dunno why cant type this
+              setPrompt(prompt);
+            }}
+            types={types}
+            prompts={prompts}
+          />
+          <ChatPromptAccordion
+            onPromptSelect={(prompt) => {
               // @ts-expect-error dunno why cant type this
               setInput(prompt?.prompt_display ?? "");
               // @ts-expect-error dunno why cant type this
