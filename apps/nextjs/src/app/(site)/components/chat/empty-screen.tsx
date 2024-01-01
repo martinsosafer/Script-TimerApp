@@ -40,16 +40,6 @@ export function EmptyScreen({
             types={types}
             prompts={prompts}
           />
-          <ChatPromptAccordion
-            onPromptSelect={(prompt) => {
-              // @ts-expect-error dunno why cant type this
-              setInput(prompt?.prompt_display ?? "");
-              // @ts-expect-error dunno why cant type this
-              setPrompt(prompt);
-            }}
-            types={types}
-            prompts={prompts}
-          />
           {/* {exampleMessages.map((message, index) => (
             <Button
               key={index}

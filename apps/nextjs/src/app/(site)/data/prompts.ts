@@ -21,7 +21,7 @@ export interface Prompt<Type = string> {
 export const prompts: Prompt<PromptType>[] = [
   {
     id: "464a47c3-7ab5-44d7-b669-f9cb5a9e8465",
-    name: "GENERATE FOUR ATTENTION GRABBING HEADLINES",
+    name: "Generate Four Attention Grabbing Headlines",
     description: "Great strong voice",
     type: "GRAB ATTENTION WITH HEADLINES & OPENINGS",
     prompt_display: `I'd be happy to help you generate multiple  headlines known to grab attention.  Let's start in the following categories: Actionable (How To...), Analytical (Here's a breakdown), Aspirational (Yes, you can...), and Anthropological (Here's why)... Please fill in the blanks:  I am going to give you a Topic,  “____” For an audience  “____” and an outcome that this audience desires  “___”`,
@@ -31,7 +31,7 @@ export const prompts: Prompt<PromptType>[] = [
   },
   {
     id: "c305f976-8e38-42b1-9fb7-d21b2e34f0da",
-    name: "CREATE A TITLE FOR MY SCRIPT",
+    name: "Create a Title for My Script",
     description: "Shayle is an english soft woman",
     type: "GRAB ATTENTION WITH HEADLINES & OPENINGS",
     strengths: "Soothing, comforting, and kind",
@@ -40,7 +40,7 @@ export const prompts: Prompt<PromptType>[] = [
   },
   {
     id: "ac0797b0-7e31-43b6-a494-da7e2ab43445",
-    name: "CRAFT MY INTRODUCTION",
+    name: "Craft My Introduction",
     description: "Young voice suitable for children's stories",
     type: "GRAB ATTENTION WITH HEADLINES & OPENINGS",
     strengths: "Playful, youthful, and energetic",
@@ -322,5 +322,60 @@ export const prompts: Prompt<PromptType>[] = [
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are a leading speaker with expert copywriting skills for writing speeches and presentations. Using my script that I will send later as a reference, assist users in integrating storytelling into their presentations, focusing on relatable anecdotes and examples that align with their key messages. If you understand, ask me about my script.`,
     prompt_display: `Stories can transform your presentation. Share your main points, and I'll help weave in compelling narratives.`,
+  },
+  {
+    id: "43d72fba-5464-4704-b018-3b4f50d0410d",
+    name: "Enhance Audience Engagement",
+    description:
+      "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
+    type: "ENHANCE YOUR PRESENTATION",
+    strengths:
+      "Reading long-form content, such as articles, books, and other media",
+    prompt_ai: `You are a leading speaker with expert copywriting skills for writing speeches and presentations. Using my script that I will send later as a reference, offer strategies for audience interaction, including questions, polls, and participatory activities tailored to the audience's profile and presentation topic. If you understand, ask me about my script.`,
+    prompt_display: `Engage your audience effectively. Tell me about your audience, and I'll suggest interactive techniques.`,
+  },
+  {
+    id: "4f1f768c-3501-436a-994e-da9138afd569",
+    name: "Effective Data Presentation",
+    description:
+      "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
+    type: "ENHANCE YOUR PRESENTATION",
+    strengths:
+      "Reading long-form content, such as articles, books, and other media",
+    prompt_ai: `You are a leading speaker with expert copywriting skills for writing speeches and presentations. Using my script that I will send later as a reference, guide on presenting data in an accessible and engaging way, using graphs, charts, and infographics. Emphasize simplicity and clarity. If you understand, ask me about my script.`,
+    prompt_display: `Data can be compelling. Share your data slides, and I'll help make them more impactful.`,
+  },
+  {
+    id: "b3fb4fc8-dd21-4831-8369-768292867dab",
+    name: "Craft a Strong Conclusion",
+    description:
+      "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
+    type: "ENHANCE YOUR PRESENTATION",
+    strengths:
+      "Reading long-form content, such as articles, books, and other media",
+    prompt_ai: `You are a leading speaker with expert copywriting skills for writing speeches and presentations. Using my script that I will send later as a reference, advise on how to conclude presentations effectively, with a focus on summarizing key points and leaving a lasting impression. If you understand, ask me about my script.`,
+    prompt_display: `End with a bang! Let's work on a powerful conclusion for your presentation.`,
+  },
+  {
+    id: "4011c1fd-e5c3-44e0-862f-360573c51d17",
+    name: "Incorporate Humor",
+    description:
+      "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
+    type: "ENHANCE YOUR PRESENTATION",
+    strengths:
+      "Reading long-form content, such as articles, books, and other media",
+    prompt_ai: `You are a leading speaker with expert copywriting skills for writing speeches and presentations. Using my script that I will send later as a reference, provide tips on incorporating appropriate humor into presentations, ensuring it aligns with the content and audience. If you understand, ask me about my script.`,
+    prompt_display: `Add some humor to lighten up your presentation. Share a draft, and I'll suggest where to sprinkle in some laughs.`,
+  },
+  {
+    id: "8b54f0b5-3393-407c-a387-eecb11da4078",
+    name: "Add Persuasive Language",
+    description:
+      "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
+    type: "ENHANCE YOUR PRESENTATION",
+    strengths:
+      "Reading long-form content, such as articles, books, and other media",
+    prompt_ai: `You are a leading speaker with expert copywriting skills for writing speeches and presentations. Using my script that I will send later as a reference, assist in enhancing the persuasive elements of the presentation, focusing on language, tone, and rhetorical techniques. If you understand, ask me about my script.`,
+    prompt_display: `Want to persuade your audience? I can help refine your wording for maximum effect.`,
   },
 ];
