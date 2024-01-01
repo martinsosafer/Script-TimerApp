@@ -33,10 +33,11 @@ export const metadata: Metadata = {
 
 export default function Layout(props: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="theme-blue h-full">
+    <html lang="en" className="h-full">
       <body
         className={[
           "font-sans",
+          "theme-blue",
           "h-screen bg-background",
           fontSans.variable,
         ].join(" ")}

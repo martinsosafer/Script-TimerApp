@@ -67,7 +67,7 @@ export function TRPCReactProvider(props: {
             autoBoot
             apiBase="https://api-iam.intercom.io"
           >
-            <ThemeProvider attribute="class" defaultTheme="dark">
+            <ThemeProvider attribute="class" defaultTheme="system">
               <TooltipProvider>
                 <PlayerProvider>{props.children}</PlayerProvider>
               </TooltipProvider>
