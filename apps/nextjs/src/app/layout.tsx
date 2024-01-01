@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 
 export default function Layout(props: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="h-full">
+    <html lang="en" className="theme-blue h-full">
       <body
         className={[
           "font-sans",
