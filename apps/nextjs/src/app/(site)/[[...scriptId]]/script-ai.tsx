@@ -188,11 +188,21 @@ export function ScriptAI({}) {
                   </TabsTrigger>
                 </TabsList>
               </div>
-              <ModelSelector
+              {/* <ModelSelector
                 types={types}
                 models={models}
                 onModelSelect={setSelectedModel}
-              />
+              /> */}
+              <div className="py-2">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="similarity">Choose Your Voice Actor</Label>
+                </div>
+                <ScrollArea className="h-[300px] px-1">
+                  <div className="space-y-1 p-2">
+                    <VoiceLibrary onModelSelect={setSelectedModel} />
+                  </div>
+                </ScrollArea>
+              </div>
               <SimilaritySelector
                 value={similarity}
                 onValueChange={setSimilarity}
@@ -224,7 +234,7 @@ export function ScriptAI({}) {
                   "Create"
                 )}
               </Button>
-              <div className="py-2">
+              {/* <div className="py-2">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="similarity">Preview Voices</Label>
                 </div>
@@ -233,7 +243,7 @@ export function ScriptAI({}) {
                     <VoiceLibrary />
                   </div>
                 </ScrollArea>
-              </div>
+              </div> */}
             </div>
             <div className="md:order-1">
               <TabsContent value="complete" className="mt-0 border-0 p-0">

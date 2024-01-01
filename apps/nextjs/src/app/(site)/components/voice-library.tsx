@@ -2,15 +2,29 @@
 
 import * as React from "react";
 
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@voiceai/ui/@/components/ui/avatar";
 import { Button } from "@voiceai/ui/@/components/ui/button";
 import { PlayIcon } from "@voiceai/ui/@/icons/icons";
+import { cn } from "@voiceai/ui/@/lib/utils";
 
 import { api } from "~/utils/api";
 
-export function VoiceLibrary() {
+interface ModelSelectorProps {
+  onModelSelect: React.Dispatch<React.SetStateAction<null>>;
+}
+
+export function VoiceLibrary({ onModelSelect, ...props }: ModelSelectorProps) {
   const { data: voices } = api.voice.list.useQuery({ name: "" });
 
   const [audio, setAudio] = React.useState<HTMLAudioElement | null>(null);
+
+  const [selectedVoiceId, setSelectedVoiceId] = React.useState<string | null>(
+    null,
+  );
 
   React.useEffect(() => {
     setAudio(new Audio()); // only call client
@@ -24,22 +38,76 @@ export function VoiceLibrary() {
 
   return (
     <div className="space-y-8">
-      {voices?.map((voice, i) => (
+      {/* {voices?.map((voice, i) => (
+        <>
         <Button
           key={`${voice.id}`}
           variant="ghost"
           type="button"
           className="w-full justify-start font-normal"
           onClick={() =>
-            // @ts-expect-error jsonb types are hard
             playAudio((voice?.metadata?.preview_url as string) ?? "")
           }
         >
           <PlayIcon className="mr-2 h-4 w-4" />
-          {/* @ts-expect-error jsonb types are hard */}
           {voice.name} ({voice?.metadata?.labels?.gender ?? "unknown"})
         </Button>
-      ))}
+        </>
+      ))} */}
+
+      <div className="space-y-4">
+        <div className="grid gap-6">
+          {voices?.map((voice, i) => (
+            <span
+              key={`${voice.id}`}
+              className={cn(
+                "flex items-center justify-between space-x-4 p-2",
+                voice.id === selectedVoiceId
+                  ? "rounded-md border-2 border-primary"
+                  : "",
+              )}
+              onClick={() => {
+                setSelectedVoiceId(voice.id);
+                // @ts-expect-error dunno why its not typing
+                onModelSelect(voice);
+              }}
+            >
+              <div className="flex items-center space-x-4">
+                <Avatar>
+                  <AvatarImage
+                    src={
+                      voice?.picture
+                        ? `${voice?.picture}?&w=128&h=128&dpr=2&q=80`
+                        : undefined
+                    }
+                    alt="Image"
+                    // className="h-12 w-12"
+                  />
+                  <AvatarFallback>ST</AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="text-sm font-medium leading-none">
+                    {voice?.name} ({/* @ts-expect-error jsonb types are hard */}
+                    {voice?.metadata?.labels?.gender ?? "unknown"})
+                  </p>
+                  <Button
+                    size="sm"
+                    type="button"
+                    onClick={() =>
+                      playAudio(
+                        // @ts-expect-error jsonb types are hard
+                        (voice?.metadata?.preview_url as string) ?? "",
+                      )
+                    }
+                  >
+                    <PlayIcon className=" h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </span>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
