@@ -168,7 +168,7 @@ export function ScriptAI({}) {
                 <HoverCard openDelay={200}>
                   <HoverCardTrigger asChild>
                     <span className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                      Create a
+                      Grammar & Spell Check
                     </span>
                   </HoverCardTrigger>
                   <HoverCardContent className="w-[320px] text-sm" side="left">
