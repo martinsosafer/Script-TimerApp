@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { CopyIcon } from "@radix-ui/react-icons";
 import { useCompletion } from "ai/react";
 
+import { Badge } from "@voiceai/ui/@/components/ui/badge";
 import { Button } from "@voiceai/ui/@/components/ui/button";
 import {
   HoverCard,
@@ -247,6 +248,8 @@ export function ScriptAI({}) {
             </div>
             <div className="md:order-1">
               <TabsContent value="complete" className="mt-0 border-0 p-0">
+                <Badge>Your script is {script.length} characters long.</Badge>
+
                 <div className="flex h-full flex-col space-y-4">
                   <Textarea
                     value={script}
