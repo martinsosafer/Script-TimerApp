@@ -4,6 +4,18 @@ import { and, asc, eq, ilike, like, schema } from "@voiceai/db";
 
 import { createTRPCRouter, protectedProcedure, TRPCError } from "../trpc";
 
+function addWatermark(message: string) {
+  const watermark = "created by script timer";
+
+  // Prepend the watermark to the message
+  const prependedMessage = `${watermark} - ${message}`;
+
+  // Append the watermark to the message
+  const appendedMessage = `${prependedMessage} - ${watermark}`;
+
+  return appendedMessage;
+}
+
 export const voiceRouter = createTRPCRouter({
   list: protectedProcedure
     .input(
@@ -46,24 +58,29 @@ export const voiceRouter = createTRPCRouter({
 
       const isFreePlanGated =
         input.message &&
-        input.message?.length > 250 &&
+        input.message?.length > 1200 &&
         subscription?.status !== "ACTIVE";
 
       if (isFreePlanGated) {
         throw new TRPCError({
           code: "FORBIDDEN",
-          message: "Subscribe to a plan to generate more than 250 characters.",
+          message: "Subscribe to a plan to generate more than 1200 characters.",
         });
       }
 
       const voice = await ctx.db.query.voices.findFirst({
         where: eq(schema.voices.id, input.voice_id),
       });
+      let message = input.message;
+
+      if (subscription?.status !== "ACTIVE") {
+        message = addWatermark(message);
+      }
 
       if (voice?.type === "11LABS") {
         const payload = {
           model_id: "eleven_multilingual_v2",
-          text: input.message,
+          text: message,
           voice_settings: {
             similarity_boost: input.similarity,
             stability: input.stability,

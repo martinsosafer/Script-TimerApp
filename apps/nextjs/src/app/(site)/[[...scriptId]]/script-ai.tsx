@@ -102,7 +102,7 @@ export function ScriptAI({}) {
       if (error?.data?.code === "FORBIDDEN") {
         toast({
           title: "Upgrade your plan",
-          description: "The base plan only supports up to 250 characters",
+          description: "The base plan only supports up to 1200 characters",
           action: (
             <ToastAction altText="subscribe">
               <Link href="/settings/billing">Subscribe</Link>
