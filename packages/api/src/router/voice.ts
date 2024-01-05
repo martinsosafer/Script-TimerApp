@@ -90,6 +90,7 @@ export const voiceRouter = createTRPCRouter({
               // use_speaker_boost: true,
             },
           };
+          console.log("CALLING");
           const options = {
             method: "POST",
             headers: {
@@ -105,6 +106,7 @@ export const voiceRouter = createTRPCRouter({
             `https://api.elevenlabs.io/v1/text-to-speech/${voice.external_id}`,
             options,
           );
+          console.log("DONE");
 
           console.log(
             "RESPONSE",
