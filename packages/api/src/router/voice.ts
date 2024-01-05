@@ -106,46 +106,57 @@ export const voiceRouter = createTRPCRouter({
             `https://api.elevenlabs.io/v1/text-to-speech/${voice.external_id}`,
             options,
           );
-          console.log("DONE");
 
-          console.log(
-            "RESPONSE",
-            response.status,
-            response.statusText,
-            // response.json(),
-            response.text(),
-          );
+          if (!response.ok) {
+            const responseData = await response.text(); // Convert the response to text for debugging
+            throw new Error(
+              `HTTP error! Status: ${response.status}, Response: ${responseData}`,
+            );
+          }
 
-          const audioBase64 = Buffer.from(
-            await response.arrayBuffer(),
-          ).toString("base64");
-          const credits = await ctx.db
-            .select({ credits: schema.credits.credits })
-            .from(schema.credits)
-            .where(eq(schema.credits.userId, ctx.session.user.id));
+          // If the response was successful, handle it based on its content type
+          const contentType = response.headers.get("Content-Type");
+          if (contentType && contentType.includes("audio/mpeg")) {
+            // Handle audio content if needed
 
-          // TODO: check if user has enough credits
+            const audioBase64 = Buffer.from(
+              await response.arrayBuffer(),
+            ).toString("base64");
+            const credits = await ctx.db
+              .select({ credits: schema.credits.credits })
+              .from(schema.credits)
+              .where(eq(schema.credits.userId, ctx.session.user.id));
 
-          const generationId = await ctx.db
-            .insert(schema.generations)
-            .values({
+            // TODO: check if user has enough credits
+
+            const generationId = await ctx.db
+              .insert(schema.generations)
+              .values({
+                userId: ctx.session.user.id,
+                type: "11LABS",
+                prompt: input.message,
+                response: audioBase64,
+                metadata: payload,
+              })
+              .returning({ generationId: schema.generations.id })
+              .then((res) => res?.[0]?.generationId);
+            if (!generationId) throw new Error("Error creating voice");
+            await ctx.db.insert(schema.credits).values({
               userId: ctx.session.user.id,
+              generationId: generationId,
               type: "11LABS",
-              prompt: input.message,
-              response: audioBase64,
-              metadata: payload,
-            })
-            .returning({ generationId: schema.generations.id })
-            .then((res) => res?.[0]?.generationId);
-          if (!generationId) throw new Error("Error creating voice");
-          await ctx.db.insert(schema.credits).values({
-            userId: ctx.session.user.id,
-            generationId: generationId,
-            type: "11LABS",
-            credits: input.message.length,
-          });
+              credits: input.message.length,
+            });
 
-          return { audio: audioBase64 };
+            return { audio: audioBase64 };
+            // Do something with audioData if necessary
+          } else {
+            // If the response is JSON, parse it
+            const responseData = await response.json();
+            // Do something with responseData if necessary
+            console.log(responseData); // Log the parsed data for debugging
+          }
+          console.log("DONE");
         }
       } catch (e) {
         console.log("There was an error", e);
