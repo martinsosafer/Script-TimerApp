@@ -106,6 +106,14 @@ export const voiceRouter = createTRPCRouter({
             options,
           );
 
+          console.log(
+            "RESPONSE",
+            response.status,
+            response.statusText,
+            // response.json(),
+            response.text(),
+          );
+
           const audioBase64 = Buffer.from(
             await response.arrayBuffer(),
           ).toString("base64");
