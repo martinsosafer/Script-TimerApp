@@ -3,7 +3,7 @@ import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { appRouter, createTRPCContext } from "@voiceai/api";
 import { auth } from "@voiceai/auth";
 
-export const maxDuration = 100;
+export const maxDuration = 300;
 
 // export const runtime = "edge";
 
