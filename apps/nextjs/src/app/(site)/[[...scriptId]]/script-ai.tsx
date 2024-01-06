@@ -13,7 +13,11 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@voiceai/ui/@/components/ui/hover-card";
-import { IconCheck, Icons } from "@voiceai/ui/@/components/ui/icons";
+import {
+  IconCheck,
+  IconRefresh,
+  Icons,
+} from "@voiceai/ui/@/components/ui/icons";
 import { Label } from "@voiceai/ui/@/components/ui/label";
 import { ScrollArea } from "@voiceai/ui/@/components/ui/scroll-area";
 import { Separator } from "@voiceai/ui/@/components/ui/separator";
@@ -72,15 +76,20 @@ export function ScriptAI({}) {
   const { complete } = useCompletion({
     api: "/api/completion",
   });
+  const [allowRevision, setAllowRevision] = React.useState(script.length > 0);
   const checkAndPublish = React.useCallback(
     async (c: string) => {
       const completion = await complete(c);
       if (!completion) throw new Error("Failed to check typos");
       setLoading(false);
       setRevisedScript(completion);
+      setAllowRevision(false);
     },
     [complete],
   );
+  React.useEffect(() => {
+    setAllowRevision(script.length > 0 && script !== revisedScript);
+  }, [script, revisedScript]);
 
   // Generate audio voice
   const [audio, setAudio] = React.useState("");
@@ -280,23 +289,42 @@ export function ScriptAI({}) {
                           onDragStart={handleDragStart}
                           className="h-full min-h-[300px] lg:min-h-[700px] xl:min-h-[700px]"
                         />
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Button
-                              type="button"
-                              variant="ghost"
-                              size="sm"
-                              className="absolute right-0 top-0 mr-2 mt-2 px-3"
-                              onClick={onCopy}
-                            >
-                              {isCopied ? <IconCheck /> : <CopyIcon />}
-                              <span className="sr-only">Copy message</span>
-                            </Button>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            Click to copy, or drag and drop.
-                          </TooltipContent>
-                        </Tooltip>
+                        <div className="flex flex-col">
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                className="absolute right-0 top-8 mr-2 mt-2 px-3"
+                                disabled={!allowRevision || loading}
+                                onClick={() => {
+                                  setLoading(true);
+                                  checkAndPublish(script);
+                                }}
+                              >
+                                <IconRefresh />
+                                <span className="sr-only">Revise</span>
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>Revise script</TooltipContent>
+                          </Tooltip>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                className="absolute right-0 top-0 mr-2 mt-2 px-3"
+                                onClick={onCopy}
+                              >
+                                {isCopied ? <IconCheck /> : <CopyIcon />}
+                                <span className="sr-only">Copy message</span>
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              Click to copy, or drag and drop.
+                            </TooltipContent>
+                          </Tooltip>
+                        </div>
                       </div>
                     ) : (
                       <div className="flex cursor-pointer flex-col items-center justify-evenly rounded-md border bg-muted p-1 text-center">
