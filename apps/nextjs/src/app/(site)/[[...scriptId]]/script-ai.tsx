@@ -32,6 +32,7 @@ import {
 } from "@voiceai/ui/@/components/ui/tooltip";
 import { useCopyToClipboard } from "@voiceai/ui/@/hooks/use-copy-to-clipboard";
 
+import { calculateLength } from "~/lib/calculate-length";
 import { api } from "~/utils/api";
 import { useDragAndDrop } from "~/utils/helpers";
 import { ModelSelector } from "../components/model-selector";
@@ -248,8 +249,8 @@ export function ScriptAI({}) {
             </div>
             <div className="md:order-1">
               <TabsContent value="complete" className="mt-0 border-0 p-0">
-                <Badge>Your script is {script.length} characters long.</Badge>
-
+                {/* <Badge>Your script is {script.length} characters long.</Badge> */}
+                <Badge>{calculateLength(script)}</Badge>
                 <div className="flex h-full flex-col space-y-4">
                   <Textarea
                     value={script}
