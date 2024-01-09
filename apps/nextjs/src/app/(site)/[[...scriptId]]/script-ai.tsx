@@ -77,20 +77,15 @@ export function ScriptAI({}) {
   const { complete } = useCompletion({
     api: "/api/completion",
   });
-  const [allowRevision, setAllowRevision] = React.useState(script.length > 0);
   const checkAndPublish = React.useCallback(
     async (c: string) => {
       const completion = await complete(c);
       if (!completion) throw new Error("Failed to check typos");
       setLoading(false);
       setRevisedScript(completion);
-      setAllowRevision(false);
     },
     [complete],
   );
-  React.useEffect(() => {
-    setAllowRevision(script.length > 0 && script !== revisedScript);
-  }, [script, revisedScript]);
 
   // Generate audio voice
   const [audio, setAudio] = React.useState("");
