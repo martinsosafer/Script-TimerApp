@@ -295,7 +295,11 @@ export function ScriptAI({}) {
                               <Button
                                 variant="ghost"
                                 className="absolute right-0 top-8 mr-2 mt-2 px-3"
-                                disabled={!allowRevision || loading}
+                                disabled={
+                                  loading ||
+                                  script.trim() === "" ||
+                                  script === revisedScript
+                                }
                                 onClick={() => {
                                   setLoading(true);
                                   checkAndPublish(script);
