@@ -9,11 +9,12 @@ export const historyRouter = createTRPCRouter({
     return await ctx.db
       .select({
         credit_id: schema.credits.id,
+        history_id: schema.generations.id,
         type: schema.credits.type,
         credits: schema.credits.credits,
         created_at: schema.credits.created_at,
         prompt: schema.generations.prompt,
-        file: schema.generations.response,
+        // file: schema.generations.response,
       })
       .from(schema.credits)
       .fullJoin(
@@ -24,4 +25,25 @@ export const historyRouter = createTRPCRouter({
       .orderBy(desc(schema.credits.created_at))
       .limit(100);
   }),
+  download: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().min(1).max(100),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.db
+        .select({
+          id: schema.generations.id,
+          file: schema.generations.response,
+        })
+        .from(schema.generations)
+        .where(
+          and(
+            eq(schema.generations.userId, ctx.session.user.id),
+            eq(schema.generations.id, input.id),
+          ),
+        )
+        .then((res) => res?.[0] ?? null);
+    }),
 });
