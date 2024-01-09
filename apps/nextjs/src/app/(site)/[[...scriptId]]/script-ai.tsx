@@ -336,6 +336,9 @@ export function ScriptAI({}) {
                         <span>Click below to revise your script.</span>
                         <Button
                           className="border-2 border-dashed"
+                          disabled={
+                            script.trim() === "" || script === revisedScript
+                          }
                           onClick={() => {
                             setLoading(true);
                             checkAndPublish(script);
