@@ -27,8 +27,16 @@ export function EmptyScreen({
           .
         </p>
         {/* <p className="leading-normal text-muted-foreground">
-          What do you want to make today?
-        </p> */}
+          Want to learn more?{" "} */}
+        <a
+          target="_blank"
+          href="https://script-timer.com/blogs/"
+          rel="noreferrer"
+          className="cursor-pointer underline"
+        >
+          Learn about using AI models
+        </a>
+        {/* </p> */}
         <div className="mt-4 flex flex-col items-start space-y-2">
           <ChatPromptSelector
             onPromptSelect={(prompt) => {
