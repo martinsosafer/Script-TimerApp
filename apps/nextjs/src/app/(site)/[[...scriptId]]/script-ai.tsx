@@ -13,7 +13,11 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@voiceai/ui/@/components/ui/hover-card";
-import { IconCheck, Icons } from "@voiceai/ui/@/components/ui/icons";
+import {
+  IconCheck,
+  IconRefresh,
+  Icons,
+} from "@voiceai/ui/@/components/ui/icons";
 import { Label } from "@voiceai/ui/@/components/ui/label";
 import { ScrollArea } from "@voiceai/ui/@/components/ui/scroll-area";
 import { Separator } from "@voiceai/ui/@/components/ui/separator";
@@ -281,29 +285,55 @@ export function ScriptAI({}) {
                           onDragStart={handleDragStart}
                           className="h-full min-h-[300px] lg:min-h-[700px] xl:min-h-[700px]"
                         />
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Button
-                              type="button"
-                              variant="ghost"
-                              size="sm"
-                              className="absolute right-0 top-0 mr-2 mt-2 px-3"
-                              onClick={onCopy}
-                            >
-                              {isCopied ? <IconCheck /> : <CopyIcon />}
-                              <span className="sr-only">Copy message</span>
-                            </Button>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            Click to copy, or drag and drop.
-                          </TooltipContent>
-                        </Tooltip>
+                        <div className="flex flex-col">
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                className="absolute right-0 top-8 mr-2 mt-2 px-3"
+                                disabled={
+                                  loading ||
+                                  script.trim() === "" ||
+                                  script === revisedScript
+                                }
+                                onClick={() => {
+                                  setLoading(true);
+                                  checkAndPublish(script);
+                                }}
+                              >
+                                <IconRefresh />
+                                <span className="sr-only">Revise</span>
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>Revise script</TooltipContent>
+                          </Tooltip>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                className="absolute right-0 top-0 mr-2 mt-2 px-3"
+                                onClick={onCopy}
+                              >
+                                {isCopied ? <IconCheck /> : <CopyIcon />}
+                                <span className="sr-only">Copy message</span>
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              Click to copy, or drag and drop.
+                            </TooltipContent>
+                          </Tooltip>
+                        </div>
                       </div>
                     ) : (
                       <div className="flex cursor-pointer flex-col items-center justify-evenly rounded-md border bg-muted p-1 text-center">
                         <span>Click below to revise your script.</span>
                         <Button
                           className="border-2 border-dashed"
+                          disabled={
+                            script.trim() === "" || script === revisedScript
+                          }
                           onClick={() => {
                             setLoading(true);
                             checkAndPublish(script);
