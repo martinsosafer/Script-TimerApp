@@ -164,7 +164,7 @@ export function ScriptAI({}) {
       <Tabs defaultValue="complete" className="flex-1">
         <div className="container h-full py-6">
           <div className="grid h-full items-stretch gap-6 md:grid-cols-[1fr_200px]">
-            <div className="hidden flex-col space-y-4 sm:flex md:order-2">
+            <div className=" flex flex-col space-y-4 md:order-2">
               <div className="grid gap-2">
                 <HoverCard openDelay={200}>
                   <HoverCardTrigger asChild>
