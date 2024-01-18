@@ -25,7 +25,7 @@ export default async function SignIn() {
                   Log In to Script Timer
                 </h1>
                 <p className="text-sm text-muted-foreground">
-                  Your voice matters, lets get started
+                  Your voice matters, let&apos;s get started
                 </p>
               </div>
               <div className={cn("grid gap-6")}>
@@ -146,11 +146,11 @@ export default async function SignIn() {
             </div>
           </div>
           <div className="relative h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
-            <Image
+            {/* <Image
               className="h-md absolute bottom-0 right-0 z-20 hidden w-full rounded-lg object-cover md:block"
               src={coverImg}
               alt="Picture of the author"
-            />
+            /> */}
             {/* <div className="absolute inset-0 z-20 flex-1 rounded-lg lg:block"> */}
 
             {/* </div> */}
@@ -162,7 +162,7 @@ export default async function SignIn() {
               />
             </div> */}
             <div className="absolute inset-0 bg-zinc-900" />
-            {/* <div className="relative z-20 flex items-center text-lg font-medium">
+            <div className="relative z-20 flex items-center text-lg font-medium">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -180,13 +180,14 @@ export default async function SignIn() {
             <div className="relative z-20">
               <blockquote className="space-y-2">
                 <p className="text-lg">
-                  &ldquo;Script Timer and the Ai has transformed the way we
-                  create, test, and deliver our best content. And, it saves us
-                  hours AND expense every week. Game-changer!&rdquo;
+                  &ldquo;Script Timer Ai has been a revelation for my
+                  scriptwriting and production process, making it an essential
+                  tool for any speaker or creator looking to deliver impactful
+                  messages with confidence and ease.&rdquo;
                 </p>
                 <footer className="text-sm">Sofia Davis</footer>
               </blockquote>
-            </div> */}
+            </div>
           </div>
         </div>
       </>
