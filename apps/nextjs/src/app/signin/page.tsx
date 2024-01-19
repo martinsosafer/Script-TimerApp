@@ -146,11 +146,11 @@ export default async function SignIn() {
             </div>
           </div>
           <div className="relative h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
-            {/* <Image
+            <Image
               className="h-md absolute bottom-0 right-0 z-20 hidden w-full rounded-lg object-cover md:block"
               src={coverImg}
               alt="Picture of the author"
-            /> */}
+            />
             {/* <div className="absolute inset-0 z-20 flex-1 rounded-lg lg:block"> */}
 
             {/* </div> */}
@@ -178,7 +178,7 @@ export default async function SignIn() {
               Script Timer
             </div>
             <div className="relative z-20">
-              <blockquote className="space-y-2">
+              <blockquote className="space-y-2 rounded-md bg-black p-4">
                 <p className="text-lg">
                   &ldquo;Script Timer Ai has been a revelation for my
                   scriptwriting and production process, making it an essential
