@@ -28,7 +28,7 @@ export default function LibraryPage() {
                 <TabsTrigger value="voices" className="relative">
                   Voices
                 </TabsTrigger>
-                <TabsTrigger value="generate">Generate</TabsTrigger>
+                {/* <TabsTrigger value="generate">Generate</TabsTrigger> */}
               </TabsList>
             </div>
             <TabsContent
