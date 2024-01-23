@@ -8,7 +8,7 @@ import { prompts } from "~/app/(site)/data/prompts";
 
 // import { db } from "@voiceai/db";
 
-export const runtime = "edge";
+// export const runtime = "edge";
 
 /**
  * This handler initializes and calls an OpenAI Functions agent.

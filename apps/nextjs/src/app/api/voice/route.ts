@@ -2,7 +2,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { StreamingTextResponse } from "ai";
 
-export const runtime = "edge";
+// export const runtime = "edge";
 
 // async function* getIterableStream(body) {
 //   const reader = body.getReader();

@@ -11,7 +11,7 @@ import { cn } from "@voiceai/ui/@/lib/utils";
 import coverImg from "../../../public/login_photo.png";
 import { LoginWithEmailForm } from "./signin-button";
 
-export const runtime = "edge";
+// export const runtime = "edge";
 
 export default async function SignIn() {
   return (

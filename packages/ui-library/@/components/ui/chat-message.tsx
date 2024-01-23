@@ -1,6 +1,7 @@
 // Inspired by Chatbot-UI and modified to fit the needs of this project
 // @see https://github.com/mckaywrigley/chatbot-ui/blob/main/components/Chat/ChatMessage.tsx
 
+import Link from "next/link";
 import type { Message } from "ai";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
@@ -37,7 +38,26 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
           remarkPlugins={[remarkGfm, remarkMath]}
           components={{
             p({ children }) {
-              return <p className="mb-2 last:mb-0">{children}</p>;
+              return (
+                <p className="mb-2 last:mb-0">
+                  {children}
+                  {message.role === "assistant" && (
+                    <>
+                      <br />
+                      <span className="mt-8  text-xs text-muted-foreground">
+                        If you like this script, CLICK COPY, then paste it in
+                        the{" "}
+                        <Link href="/">
+                          <span className="cursor-pointer underline">
+                            TEXT to SPEECH
+                          </span>
+                        </Link>{" "}
+                        page and choose your favorite voice actor.
+                      </span>
+                    </>
+                  )}
+                </p>
+              );
             },
             code(props) {
               const { children, className, node, ...rest } = props;
