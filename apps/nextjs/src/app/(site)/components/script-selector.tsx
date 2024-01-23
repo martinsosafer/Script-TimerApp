@@ -55,7 +55,7 @@ export function ScriptSelector({ ...props }: ScriptSelectorProps) {
           <CommandInput placeholder="Search scripts..." />
           <CommandEmpty>No scripts found.</CommandEmpty>
           <CommandGroup className="pt-0">
-            <CommandItem onSelect={() => router.push("/")}>
+            <CommandItem onSelect={() => router.push("/texttospeech")}>
               Create New
             </CommandItem>
           </CommandGroup>
@@ -64,7 +64,7 @@ export function ScriptSelector({ ...props }: ScriptSelectorProps) {
               <CommandItem
                 key={script.id}
                 onSelect={() => {
-                  router.push(`/${script.id}`, { scroll: false });
+                  router.push(`/texttospeech/${script.id}`, { scroll: false });
                   setOpen(false);
                 }}
               >

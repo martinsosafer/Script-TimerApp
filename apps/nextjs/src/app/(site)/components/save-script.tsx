@@ -48,7 +48,7 @@ export function SaveScript({ script = "" }: SaveScriptProps) {
       onSuccess(data) {
         setLoading(false);
         setOpen(false);
-        router.push(`/${data?.id}`, { scroll: false });
+        router.push(`/texttospeech/${data?.id}`, { scroll: false });
       },
       onError(error) {
         setLoading(false);

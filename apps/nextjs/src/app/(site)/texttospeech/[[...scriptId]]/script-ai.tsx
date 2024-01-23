@@ -39,16 +39,16 @@ import { useCopyToClipboard } from "@voiceai/ui/@/hooks/use-copy-to-clipboard";
 import { calculateLength } from "~/lib/calculate-length";
 import { api } from "~/utils/api";
 import { useDragAndDrop } from "~/utils/helpers";
-import { ModelSelector } from "../components/model-selector";
-import { SaveScript } from "../components/save-script";
-import { ScriptSelector } from "../components/script-selector";
-import { Share } from "../components/share";
-import { SimilaritySelector } from "../components/similarity-selector";
-import { StabilitySelector } from "../components/stability-selector";
-import { ToggleAudio } from "../components/toggle-audio";
-import { ToggleLibrary } from "../components/toggle-voice-library";
-import { VoiceLibrary } from "../components/voice-library";
-import { models, types } from "../data/models";
+import { ModelSelector } from "../../components/model-selector";
+import { SaveScript } from "../../components/save-script";
+import { ScriptSelector } from "../../components/script-selector";
+import { Share } from "../../components/share";
+import { SimilaritySelector } from "../../components/similarity-selector";
+import { StabilitySelector } from "../../components/stability-selector";
+import { ToggleAudio } from "../../components/toggle-audio";
+import { ToggleLibrary } from "../../components/toggle-voice-library";
+import { VoiceLibrary } from "../../components/voice-library";
+import { models, types } from "../../data/models";
 
 export function ScriptAI({}) {
   const [open, setOpen] = React.useState(false);

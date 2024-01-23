@@ -28,7 +28,11 @@ export function Menu({ signOut }: { signOut: () => Promise<null> }) {
       <MenubarMenu>
         <MenubarTrigger className="font-bold">Script Timer</MenubarTrigger>
         <MenubarContent>
-          <MenubarItem>About Script Timer</MenubarItem>
+          <MenubarItem asChild>
+            <Link href={`/`} className="flex items-center">
+              About Script Timer
+            </Link>
+          </MenubarItem>
           <MenubarSeparator />
           <MenubarItem>
             Preferences... <MenubarShortcut>⌘,</MenubarShortcut>
@@ -172,7 +176,7 @@ export function Menu({ signOut }: { signOut: () => Promise<null> }) {
         <MenubarTrigger>Services</MenubarTrigger>
         <MenubarContent>
           <MenubarItem asChild>
-            <Link href={`/`} className="flex items-center">
+            <Link href={`/texttospeech`} className="flex items-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -243,10 +247,14 @@ export function Menu({ signOut }: { signOut: () => Promise<null> }) {
         <MenubarContent>
           <MenubarItem asChild>
             {/* <Link href={`/`} className="flex items-center"> */}
-            <>
+            <a
+              href="https://script-timer.com/blogs/"
+              target="_blank"
+              rel="noreferrer"
+            >
               Prompt Resources
               {/* </Link> */}
-            </>
+            </a>
           </MenubarItem>
         </MenubarContent>
       </MenubarMenu>
