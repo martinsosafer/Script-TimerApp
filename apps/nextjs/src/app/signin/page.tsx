@@ -147,7 +147,7 @@ export default async function SignIn() {
           </div>
           <div className="relative h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
             <Image
-              className="h-md absolute bottom-0 right-0 z-20 hidden w-full rounded-lg object-cover md:block"
+              className="h-md absolute bottom-0 right-0 z-20 hidden w-full rounded-lg object-cover lg:block"
               src={coverImg}
               alt="Picture of the author"
             />
