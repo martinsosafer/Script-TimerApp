@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { generateRandomString } from "~/utils/helpers";
 import { Chat } from "../components/chat/chat";
 
 export const metadata: Metadata = {
@@ -7,10 +8,11 @@ export const metadata: Metadata = {
   description: "Example music app using the components.",
 };
 
-export default function ChatPage() {
+export default function indexPage() {
+  const id = generateRandomString();
   return (
     <div className="w-full">
-      <Chat />
+      <Chat id={id} />
     </div>
   );
 }

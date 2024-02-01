@@ -32,12 +32,14 @@ export interface ChatProps extends React.ComponentProps<"div"> {
 }
 
 export function Chat({ id, initialMessages, className }: ChatProps) {
+  const router = useRouter();
+  const path = usePathname();
   const [previewToken, setPreviewToken] = useLocalStorage<string | null>(
     "ai-token",
     null,
   );
-  const [previewTokenDialog, setPreviewTokenDialog] = useState(IS_PREVIEW);
   const [prompt, setPrompt] = useState<Prompt | null>(null);
+  const [previewTokenDialog, setPreviewTokenDialog] = useState(IS_PREVIEW);
   console.log("PROMPT", prompt);
   const [previewTokenInput, setPreviewTokenInput] = useState(
     previewToken ?? "",
@@ -60,12 +62,12 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
           });
         }
       },
-      //   onFinish() {
-      //     if (!path.includes("chat")) {
-      //       router.push(`/chat/${id}`, { scroll: false });
-      //       router.refresh();
-      //     }
-      //   },
+      onFinish() {
+        if (!path.includes("chat")) {
+          router.push(`/chat/${id}`, { scroll: false });
+          router.refresh();
+        }
+      },
     });
 
   return (

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { signOut } from "@voiceai/auth";
+import { auth, signOut } from "@voiceai/auth";
 
 import { Menu } from "./components/menu";
 
@@ -13,6 +13,7 @@ import { Toaster } from "@voiceai/ui/@/components/ui/toaster";
 import { IdentifyAnalytics } from "../analytics";
 import { TRPCReactProvider } from "../providers";
 import { Sidebar } from "./components/sidebar";
+import SidebarDesktop from "./components/sidebar-desktop";
 import { playlists } from "./data/playlists";
 
 /**

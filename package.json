@@ -22,8 +22,8 @@
     "typecheck": "turbo typecheck"
   },
   "devDependencies": {
-    "@voiceai/prettier-config": "workspace:^0.1.0",
     "@turbo/gen": "^1.10.16",
+    "@voiceai/prettier-config": "workspace:^0.1.0",
     "prettier": "^3.0.3",
     "turbo": "^1.10.16",
     "typescript": "^5.2.2"
@@ -33,5 +33,8 @@
       "@auth/core": "0.18.0"
     }
   },
-  "prettier": "@voiceai/prettier-config"
+  "prettier": "@voiceai/prettier-config",
+  "dependencies": {
+    "@vercel/kv": "^1.0.1"
+  }
 }
