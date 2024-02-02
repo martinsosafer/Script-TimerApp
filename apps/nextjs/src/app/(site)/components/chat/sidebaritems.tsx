@@ -1,37 +1,41 @@
 "use client";
 
 import React from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
-import { IconMessage } from "@voiceai/ui/@/components/ui/icons";
-
+import { removeChat, shareChat } from "~/app/actions/chatactions";
 import { Chat } from "~/lib/types";
-
-interface Message {
-  id: number;
-  text: string;
-}
+import { SidebarActions } from "../sidebar-actions";
+import { SidebarItem } from "../sidebar-item";
 
 interface SidebarItemsProps {
-  messages: Message[];
-  userId?: string;
+  chats?: Chat[];
 }
 
-export function SidebarItems({ messages }: SidebarItemsProps) {
+export function SidebarItems({ chats }: SidebarItemsProps) {
+  if (!chats?.length) return null;
   return (
-    <>
-      {messages.map((message) => (
-        <div
-          key={message.id}
-          className="mt-2 flex items-center  overflow-hidden bg-secondary  transition duration-300 ease-in-out hover:bg-slate-500"
-        >
-          <div className="mt-1 h-6 w-6 flex-shrink-0">
-            <IconMessage />
-          </div>
-          <div className="h-6 w-full flex-shrink-0 rounded-md  text-left">
-            {message.text}
-          </div>
-        </div>
-      ))}
-    </>
+    <AnimatePresence>
+      {chats.map(
+        (chat, index) =>
+          chat && (
+            <motion.div
+              key={chat?.id}
+              exit={{
+                opacity: 0,
+                height: 0,
+              }}
+            >
+              <SidebarItem index={index} chat={chat}>
+                <SidebarActions
+                  chat={chat}
+                  removeChat={removeChat}
+                  shareChat={shareChat}
+                />
+              </SidebarItem>
+            </motion.div>
+          ),
+      )}
+    </AnimatePresence>
   );
 }

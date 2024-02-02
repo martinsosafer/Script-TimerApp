@@ -74,11 +74,8 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
       },
 
       onFinish() {
-        console.log("finish called");
-        console.log("finish called");
         console.log("path:", path);
         if (!path.includes("chat/")) {
-          console.log("heyyy thereee");
           router.push(`/chat/${id}`, { scroll: false });
           router.refresh();
         }

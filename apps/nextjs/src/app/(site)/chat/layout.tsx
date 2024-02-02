@@ -1,4 +1,4 @@
-import SideBarDesktop from "../components/sidebar-desktop";
+import { LeftMenu } from "../components/chat/leftmenuchat";
 
 interface ChatLayoutProps {
   children: React.ReactNode;
@@ -6,11 +6,14 @@ interface ChatLayoutProps {
 
 export default async function ChatLayout({ children }: ChatLayoutProps) {
   return (
-    <div className="relative flex h-[calc(100vh_-_theme(spacing.16))] overflow-hidden">
-      {/* <SideBarDesktop /> */}
-      <div className="animate-in group w-full overflow-auto pl-0 duration-300 ease-in-out peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]">
-        {children}
+    <div className="relative">
+      {/* Menú a la izquierda */}
+      <div className="absolute left-0 top-0 z-10 h-screen overflow-hidden">
+        <LeftMenu />
       </div>
+
+      {/* Contenido principal (chat) */}
+      <div className="relative z-0">{children}</div>
     </div>
   );
 }
