@@ -33,8 +33,5 @@
       "@auth/core": "0.18.0"
     }
   },
-  "prettier": "@voiceai/prettier-config",
-  "dependencies": {
-    "@vercel/kv": "^1.0.1"
-  }
+  "prettier": "@voiceai/prettier-config"
 }
