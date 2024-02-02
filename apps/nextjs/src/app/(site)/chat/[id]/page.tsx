@@ -27,6 +27,7 @@ export async function generateMetadata({
 }
 
 export default async function ChatPage({ params }: ChatPageProps) {
+  console.log("Chat ID:", params.id);
   const session = await auth();
 
   if (!session?.user) {

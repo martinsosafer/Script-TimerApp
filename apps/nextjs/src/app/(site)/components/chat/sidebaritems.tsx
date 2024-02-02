@@ -1,6 +1,10 @@
+"use client";
+
 import React from "react";
 
 import { IconMessage } from "@voiceai/ui/@/components/ui/icons";
+
+import { Chat } from "~/lib/types";
 
 interface Message {
   id: number;
@@ -12,8 +16,7 @@ interface SidebarItemsProps {
   userId?: string;
 }
 
-export function SidebarItems({ messages, userId }: SidebarItemsProps) {
-  console.log("USERiddddd", userId);
+export function SidebarItems({ messages }: SidebarItemsProps) {
   return (
     <>
       {messages.map((message) => (

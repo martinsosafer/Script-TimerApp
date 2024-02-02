@@ -4,9 +4,9 @@ import OpenAI from "openai";
 
 import { auth } from "@voiceai/auth";
 
-import { generateRandomString } from "~/utils/helpers";
+import { nanoid } from "~/utils/helpers";
 
-export const runtime = "edge";
+// export const runtime = "edge";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -35,29 +35,33 @@ export async function POST(req: Request) {
 
   const stream = OpenAIStream(res, {
     async onCompletion(completion) {
-      const title = json.messages[0].content.substring(0, 100);
-      const id = json.id ?? generateRandomString();
-      const createdAt = Date.now();
-      const path = `/chat/${id}`;
-      const payload = {
-        id,
-        title,
-        userId,
-        createdAt,
-        path,
-        messages: [
-          ...messages,
-          {
-            content: completion,
-            role: "assistant",
-          },
-        ],
-      };
-      await kv.hmset(`chat:${id}`, payload);
-      await kv.zadd(`user:chat:${userId}`, {
-        score: createdAt,
-        member: `chat:${id}`,
-      });
+      try {
+        const title = json.messages[0].content.substring(0, 100);
+        const id = json.id ?? nanoid();
+        const createdAt = Date.now();
+        const path = `/chat/${id}`;
+        const payload = {
+          id,
+          title,
+          userId,
+          createdAt,
+          path,
+          messages: [
+            ...messages,
+            {
+              content: completion,
+              role: "assistant",
+            },
+          ],
+        };
+        await kv.hmset(`chat:${id}`, payload);
+        await kv.zadd(`user:chat:${userId}`, {
+          score: createdAt,
+          member: `chat:${id}`,
+        });
+      } catch (error) {
+        console.error("Error processing completion:", error);
+      }
     },
   });
 

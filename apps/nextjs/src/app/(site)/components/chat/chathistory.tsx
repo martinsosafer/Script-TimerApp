@@ -8,16 +8,11 @@ import { cn } from "@voiceai/ui/@/lib/utils";
 
 import { SidebarList } from "./sidebarlist";
 
-interface Message {
-  id: number;
-  text: string;
-}
 interface ChatHistoryProps {
   userId?: string;
-  messages: Message[];
 }
 
-export function ChatHistory({ messages, userId }: ChatHistoryProps) {
+export function ChatHistory({ userId }: ChatHistoryProps) {
   return (
     <div className="flex h-full flex-col">
       <div className="my-4 px-2">
@@ -45,7 +40,7 @@ export function ChatHistory({ messages, userId }: ChatHistoryProps) {
         }
       >
         {/* @ts-ignore */}
-        <SidebarList messages={messages} userId={userId} />
+        <SidebarList userId={userId} />
         {/* <SidebarList userId={userId} /> */}
       </React.Suspense>
     </div>

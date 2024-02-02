@@ -1,4 +1,5 @@
 import type { DragEvent } from "react";
+import { customAlphabet } from "nanoid";
 
 // helpers.ts
 
@@ -13,6 +14,10 @@ export const generateRandomString = (length = 6): string => {
 
   return result;
 };
+export const nanoid = customAlphabet(
+  "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
+  7,
+); // 7-character random string
 
 export const useDragAndDrop = (
   revisedScript: string,

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { generateRandomString } from "~/utils/helpers";
+import { nanoid } from "~/utils/helpers";
 import { Chat } from "../components/chat/chat";
 
 export const metadata: Metadata = {
@@ -9,7 +9,8 @@ export const metadata: Metadata = {
 };
 
 export default function indexPage() {
-  const id = generateRandomString();
+  const id = nanoid();
+
   return (
     <div className="w-full">
       <Chat id={id} />

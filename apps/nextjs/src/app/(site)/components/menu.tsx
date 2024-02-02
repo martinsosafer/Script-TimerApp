@@ -20,47 +20,33 @@ import {
   MenubarTrigger,
 } from "@voiceai/ui/@/components/ui/menubar";
 
-import { SidebarProvider } from "~/app/hooks/useSideBar";
-import { TRPCReactProvider } from "~/app/providers";
-import SidebarDesktop from "./sidebar-desktop";
-
-interface MenuProps {
-  
-}
+interface MenuProps {}
 // export function Menu({ signOut }: { signOut: () => Promise<null> });
 export function Menu({ signOut }: { signOut: () => Promise<null> }) {
   const { theme, setTheme } = useTheme();
 
   return (
-    <SidebarProvider>
-      <Menubar className="sticky top-0 z-50 h-12 rounded-none border-b border-none bg-primary px-2 text-destructive-foreground lg:px-4">
-        <MenubarMenu>
-          <MenubarTrigger>
-            <TRPCReactProvider>
-              <SidebarDesktop />
-            </TRPCReactProvider>
-          </MenubarTrigger>
-        </MenubarMenu>
-        <MenubarMenu>
-          <MenubarTrigger className="font-bold">Script Timer</MenubarTrigger>
-          <MenubarContent>
-            <MenubarItem>About Script Timer</MenubarItem>
-            <MenubarSeparator />
-            <MenubarItem>
-              Preferences... <MenubarShortcut>⌘,</MenubarShortcut>
-            </MenubarItem>
-            <MenubarSeparator />
-            {/* <MenubarShortcut /> */}
-            <MenubarItem
-              onClick={async () => {
-                await signOut();
-              }}
-            >
-              Log out
-            </MenubarItem>
-          </MenubarContent>
-        </MenubarMenu>
-        {/* <MenubarMenu>
+    <Menubar className="sticky top-0 z-50 h-12 rounded-none border-b border-none bg-primary px-2 text-destructive-foreground lg:px-4">
+      <MenubarMenu>
+        <MenubarTrigger className="font-bold">Script Timer</MenubarTrigger>
+        <MenubarContent>
+          <MenubarItem>About Script Timer</MenubarItem>
+          <MenubarSeparator />
+          <MenubarItem>
+            Preferences... <MenubarShortcut>⌘,</MenubarShortcut>
+          </MenubarItem>
+          <MenubarSeparator />
+          {/* <MenubarShortcut /> */}
+          <MenubarItem
+            onClick={async () => {
+              await signOut();
+            }}
+          >
+            Log out
+          </MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+      {/* <MenubarMenu>
         <MenubarTrigger className="relative">File</MenubarTrigger>
         <MenubarContent>
           <MenubarSub>
@@ -119,7 +105,7 @@ export function Menu({ signOut }: { signOut: () => Promise<null> }) {
           </MenubarItem>
         </MenubarContent>
       </MenubarMenu> */}
-        {/* <MenubarMenu>
+      {/* <MenubarMenu>
         <MenubarTrigger>Edit</MenubarTrigger>
         <MenubarContent>
           <MenubarItem disabled>
@@ -184,105 +170,105 @@ export function Menu({ signOut }: { signOut: () => Promise<null> }) {
           </MenubarItem>
         </MenubarContent>
       </MenubarMenu> */}
-        <MenubarMenu>
-          <MenubarTrigger>Services</MenubarTrigger>
-          <MenubarContent>
-            <MenubarItem asChild>
-              <Link href={`/`} className="flex items-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="mr-2 h-4 w-4"
-                >
-                  <circle cx="12" cy="12" r="10" />
-                  <polygon points="10 8 16 12 10 16 10 8" />
-                </svg>
-                Text2Speech
-              </Link>
-            </MenubarItem>
-            <MenubarItem asChild>
-              <Link href={`/library`} className="flex items-center">
-                <Icons.SoundLibrary className="mr-2 h-4 w-4 " />
-                Voice Actor Library
-              </Link>
-            </MenubarItem>
-            <MenubarItem asChild>
-              <Link href={`/history`} className="flex items-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="mr-2 h-4 w-4"
-                >
-                  <path d="m16 6 4 14" />
-                  <path d="M12 6v14" />
-                  <path d="M8 8v12" />
-                  <path d="M4 4v16" />
-                </svg>
-                Voice Activity Log
-              </Link>
-            </MenubarItem>
-            <MenubarSeparator />
-            <MenubarItem asChild>
-              <Link href={`/chat`} className="flex items-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="mr-2 h-4 w-4"
-                >
-                  <rect width="7" height="7" x="3" y="3" rx="1" />
-                  <rect width="7" height="7" x="14" y="3" rx="1" />
-                  <rect width="7" height="7" x="14" y="14" rx="1" />
-                  <rect width="7" height="7" x="3" y="14" rx="1" />
-                </svg>
-                Script Coach
-              </Link>
-            </MenubarItem>
-          </MenubarContent>
-        </MenubarMenu>
-        <MenubarMenu>
-          <MenubarTrigger>Learn</MenubarTrigger>
-          <MenubarContent>
-            <MenubarItem asChild>
-              {/* <Link href={`/`} className="flex items-center"> */}
-              <>
-                Prompt Resources
-                {/* </Link> */}
-              </>
-            </MenubarItem>
-          </MenubarContent>
-        </MenubarMenu>
-        <MenubarMenu>
-          <MenubarTrigger>Theme</MenubarTrigger>
-          <MenubarContent>
-            <MenubarLabel inset>Switch Theme</MenubarLabel>
-            <MenubarSeparator />
-            <MenubarRadioGroup
-              value={theme}
-              onValueChange={(value: string) => {
-                setTheme(value);
-              }}
-            >
-              <MenubarRadioItem value="dark">Dark</MenubarRadioItem>
-              <MenubarRadioItem value="light">Light</MenubarRadioItem>
-            </MenubarRadioGroup>
-          </MenubarContent>
-        </MenubarMenu>
-        {/* <MenubarMenu>
+      <MenubarMenu>
+        <MenubarTrigger>Services</MenubarTrigger>
+        <MenubarContent>
+          <MenubarItem asChild>
+            <Link href={`/`} className="flex items-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="mr-2 h-4 w-4"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <polygon points="10 8 16 12 10 16 10 8" />
+              </svg>
+              Text2Speech
+            </Link>
+          </MenubarItem>
+          <MenubarItem asChild>
+            <Link href={`/library`} className="flex items-center">
+              <Icons.SoundLibrary className="mr-2 h-4 w-4 " />
+              Voice Actor Library
+            </Link>
+          </MenubarItem>
+          <MenubarItem asChild>
+            <Link href={`/history`} className="flex items-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="mr-2 h-4 w-4"
+              >
+                <path d="m16 6 4 14" />
+                <path d="M12 6v14" />
+                <path d="M8 8v12" />
+                <path d="M4 4v16" />
+              </svg>
+              Voice Activity Log
+            </Link>
+          </MenubarItem>
+          <MenubarSeparator />
+          <MenubarItem asChild>
+            <Link href={`/chat`} className="flex items-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="mr-2 h-4 w-4"
+              >
+                <rect width="7" height="7" x="3" y="3" rx="1" />
+                <rect width="7" height="7" x="14" y="3" rx="1" />
+                <rect width="7" height="7" x="14" y="14" rx="1" />
+                <rect width="7" height="7" x="3" y="14" rx="1" />
+              </svg>
+              Script Coach
+            </Link>
+          </MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+      <MenubarMenu>
+        <MenubarTrigger>Learn</MenubarTrigger>
+        <MenubarContent>
+          <MenubarItem asChild>
+            {/* <Link href={`/`} className="flex items-center"> */}
+            <>
+              Prompt Resources
+              {/* </Link> */}
+            </>
+          </MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+      <MenubarMenu>
+        <MenubarTrigger>Theme</MenubarTrigger>
+        <MenubarContent>
+          <MenubarLabel inset>Switch Theme</MenubarLabel>
+          <MenubarSeparator />
+          <MenubarRadioGroup
+            value={theme}
+            onValueChange={(value: string) => {
+              setTheme(value);
+            }}
+          >
+            <MenubarRadioItem value="dark">Dark</MenubarRadioItem>
+            <MenubarRadioItem value="light">Light</MenubarRadioItem>
+          </MenubarRadioGroup>
+        </MenubarContent>
+      </MenubarMenu>
+      {/* <MenubarMenu>
         <MenubarTrigger className="hidden md:block">Account</MenubarTrigger>
         <MenubarContent forceMount>
           <MenubarLabel inset>Switch Voice</MenubarLabel>
@@ -298,7 +284,6 @@ export function Menu({ signOut }: { signOut: () => Promise<null> }) {
           <MenubarItem inset>Add Account...</MenubarItem>
         </MenubarContent>
       </MenubarMenu> */}
-      </Menubar>
-    </SidebarProvider>
+    </Menubar>
   );
 }
