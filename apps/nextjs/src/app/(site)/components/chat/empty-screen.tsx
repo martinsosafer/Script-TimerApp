@@ -17,7 +17,7 @@ export function EmptyScreen({
       <div className="rounded-lg border bg-background p-8">
         <h1 className="mb-2 text-lg font-semibold">I am your Script Coach</h1>
         <p className="mb-2 leading-normal text-muted-foreground">
-          an Ai <span className="line-through">SUPERHERO</span>,
+          an Ai <span className="line-through">superhero</span>,
           &lsquo;model&lsquo; designed to help you. I am specially made for
           presentations, speeches, videos, and can do much, much more.
           {/* <ExternalLink href="https://nextjs.org">Next.js</ExternalLink> and{' '}

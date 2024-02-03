@@ -20,6 +20,8 @@ import {
   MenubarTrigger,
 } from "@voiceai/ui/@/components/ui/menubar";
 
+interface MenuProps {}
+// export function Menu({ signOut }: { signOut: () => Promise<null> });
 export function Menu({ signOut }: { signOut: () => Promise<null> }) {
   const { theme, setTheme } = useTheme();
 

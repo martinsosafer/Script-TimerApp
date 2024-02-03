@@ -109,7 +109,7 @@ export function ChatPromptSelector({
             </HoverCardContent> */}
             <Command loop>
               <CommandList className="h-[var(--cmdk-list-height)] max-h-[400px]">
-                <CommandInput placeholder="Search Prompts..." />
+                <CommandInput placeholder="Try a magic prompt:" />
                 <CommandEmpty>No Prompts found.</CommandEmpty>
                 <HoverCardTrigger />
                 {types.map((type) => (
@@ -169,7 +169,7 @@ function ModelItem({ prompt, isSelected, onSelect, onPeek }: PromptItemProps) {
       key={prompt.id}
       onSelect={onSelect}
       ref={ref}
-      className="aria-selected:bg-primary aria-selected:text-primary-foreground"
+      className="aria-selected:bg-white aria-selected:text-secondary"
     >
       {prompt.name}
       <CheckIcon

@@ -64,7 +64,9 @@ export function ScriptSelector({ ...props }: ScriptSelectorProps) {
               <CommandItem
                 key={script.id}
                 onSelect={() => {
-                  router.push(`/texttospeech/${script.id}`, { scroll: false });
+                  router.push(`/texttospeech/${script.id}`, {
+                    scroll: false,
+                  });
                   setOpen(false);
                 }}
               >

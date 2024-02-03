@@ -32,19 +32,22 @@ export interface ChatProps extends React.ComponentProps<"div"> {
 }
 
 export function Chat({ id, initialMessages, className }: ChatProps) {
+  const router = useRouter();
+  const path = usePathname();
   const [previewToken, setPreviewToken] = useLocalStorage<string | null>(
     "ai-token",
     null,
   );
-  const [previewTokenDialog, setPreviewTokenDialog] = useState(IS_PREVIEW);
   const [prompt, setPrompt] = useState<Prompt | null>(null);
   console.log("PROMPT", prompt);
+  const [previewTokenDialog, setPreviewTokenDialog] = useState(IS_PREVIEW);
+
   const [previewTokenInput, setPreviewTokenInput] = useState(
     previewToken ?? "",
   );
   const { messages, append, reload, stop, isLoading, input, setInput } =
     useChat({
-      api: "/api/chat",
+      // api: "/api/chat",
       initialMessages,
       id,
       body: {
@@ -52,6 +55,15 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
         previewToken,
         prompt: prompt?.id,
       },
+      onError(error) {
+        console.error("Chat stream error:", error);
+
+        toast({
+          title: "Error",
+          description: "An error occurred while processing the chat.",
+        });
+      },
+
       onResponse(response) {
         if (response.status === 401) {
           toast({
@@ -60,12 +72,19 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
           });
         }
       },
-      //   onFinish() {
-      //     if (!path.includes("chat")) {
-      //       router.push(`/chat/${id}`, { scroll: false });
-      //       router.refresh();
-      //     }
-      //   },
+
+      onFinish() {
+        console.log("path:", path);
+        if (!path.includes("chat/")) {
+          router.push(`/chat/${id}`, { scroll: false });
+          router.refresh();
+        }
+      },
+      // onFinish() {
+      //   if (!path.includes("chat")) {
+      //     window.history.pushState({}, "", `/chat/${id}`);
+      //   }
+      // },
     });
 
   return (

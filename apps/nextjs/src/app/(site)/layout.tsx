@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { signOut } from "@voiceai/auth";
+import { auth, signOut } from "@voiceai/auth";
 
 import { Menu } from "./components/menu";
 
