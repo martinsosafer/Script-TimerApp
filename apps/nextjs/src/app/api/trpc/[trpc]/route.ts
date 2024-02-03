@@ -5,7 +5,7 @@ import { auth } from "@voiceai/auth";
 
 export const maxDuration = 300;
 
-// export const runtime = "edge";
+export const runtime = "edge";
 
 /**
  * Configure basic CORS headers

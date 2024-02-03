@@ -6,7 +6,7 @@ import { auth } from "@voiceai/auth";
 
 import { nanoid } from "~/utils/helpers";
 
-// export const runtime = "edge";
+export const runtime = "edge";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
