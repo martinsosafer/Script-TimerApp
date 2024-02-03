@@ -12,8 +12,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@trpc/client": "next",
-    "@trpc/server": "next",
+    "@trpc/client": "11.0.0-next-beta.228",
+    "@trpc/server": "11.0.0-next-beta.228",
     "@voiceai/auth": "workspace:^0.1.0",
     "@voiceai/db": "workspace:^0.1.0",
     "@voiceai/pay": "workspace:^0.1.0",

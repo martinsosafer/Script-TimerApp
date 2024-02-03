@@ -36,7 +36,6 @@ export function ScriptSelector({ ...props }: ScriptSelectorProps) {
 
   const { data: scripts = [] } = api.script.list.useQuery();
 
-  console.log("in scripts", scripts);
   return (
     <Popover open={open} onOpenChange={setOpen} {...props}>
       <PopoverTrigger asChild>
@@ -61,28 +60,27 @@ export function ScriptSelector({ ...props }: ScriptSelectorProps) {
             </CommandItem>
           </CommandGroup>
           <CommandGroup heading="Examples">
-            {scripts.length &&
-              scripts.map((script) => (
-                <CommandItem
-                  key={script.id}
-                  onSelect={() => {
-                    router.push(`/texttospeech/${script.id}`, {
-                      scroll: false,
-                    });
-                    setOpen(false);
-                  }}
-                >
-                  {script.name}
-                  <CheckIcon
-                    className={cn(
-                      "ml-auto h-4 w-4",
-                      scriptDetails?.id === script.id
-                        ? "opacity-100"
-                        : "opacity-0",
-                    )}
-                  />
-                </CommandItem>
-              ))}
+            {scripts.map((script) => (
+              <CommandItem
+                key={script.id}
+                onSelect={() => {
+                  router.push(`/texttospeech/${script.id}`, {
+                    scroll: false,
+                  });
+                  setOpen(false);
+                }}
+              >
+                {script.name}
+                <CheckIcon
+                  className={cn(
+                    "ml-auto h-4 w-4",
+                    scriptDetails?.id === script.id
+                      ? "opacity-100"
+                      : "opacity-0",
+                  )}
+                />
+              </CommandItem>
+            ))}
           </CommandGroup>
           <CommandGroup className="pt-0">
             <CommandItem onSelect={() => router.push("/examples")}>
