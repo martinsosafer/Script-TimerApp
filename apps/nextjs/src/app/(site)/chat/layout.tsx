@@ -1,19 +1,28 @@
+import { auth } from "@voiceai/auth";
+
 import { LeftMenu } from "../components/chat/leftmenuchat";
+import { LeftMobile } from "../components/chat/leftmobile";
 
 interface ChatLayoutProps {
   children: React.ReactNode;
 }
 
 export default async function ChatLayout({ children }: ChatLayoutProps) {
-  return (
-    <div className="relative">
-      {/* Menú a la izquierda */}
-      <div className="absolute left-0 top-0 z-10 h-screen overflow-hidden">
-        <LeftMenu />
-      </div>
+  const session = await auth();
 
-      {/* Contenido principal (chat) */}
-      <div className="relative z-0">{children}</div>
+  if (!session?.user?.id) {
+    return null;
+  }
+  return (
+    <div className="relative flex h-screen overflow-hidden ">
+      <LeftMenu userId={session.user.id} />
+
+      <div className="animate-in group w-full overflow-auto pl-0 duration-300 ease-in-out peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]">
+        <div className=" mb-6 ml-6 mt-2">
+          <LeftMobile userId={session.user.id} />
+        </div>
+        {children}
+      </div>
     </div>
   );
 }

@@ -10,7 +10,7 @@ import { ChatWindow } from "../_components/ai/chat/chat-window";
 import GrammarEditor from "../_components/grammar-editor";
 import SpeechEditor from "../_components/speech-editor";
 
-export const runtime = "edge";
+// export const runtime = "edge";
 
 export default async function HomePage() {
   const session = await auth();
