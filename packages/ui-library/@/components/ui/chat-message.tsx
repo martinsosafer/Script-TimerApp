@@ -44,7 +44,7 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
                   {message.role === "assistant" && (
                     <>
                       <br />
-                      <span className="mt-8  text-xs text-muted-foreground">
+                      {/* <span className="mt-8  text-xs text-muted-foreground">
                         If you like this script, CLICK COPY, then paste it in
                         the{" "}
                         <Link href="/">
@@ -53,7 +53,7 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
                           </span>
                         </Link>{" "}
                         page and choose your favorite voice actor.
-                      </span>
+                      </span> */}
                     </>
                   )}
                 </p>

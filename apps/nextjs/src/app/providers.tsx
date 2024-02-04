@@ -13,6 +13,7 @@ import { TooltipProvider } from "@voiceai/ui";
 
 import { env } from "~/env.mjs";
 import { api } from "~/utils/api";
+import { SidebarProvider } from "./hooks/useSideBar";
 import { PlayerProvider } from "./providers/player-context";
 
 const getBaseUrl = () => {
@@ -68,9 +69,11 @@ export function TRPCReactProvider(props: {
             apiBase="https://api-iam.intercom.io"
           >
             <ThemeProvider attribute="class" defaultTheme="system">
-              <TooltipProvider>
-                <PlayerProvider>{props.children}</PlayerProvider>
-              </TooltipProvider>
+              <SidebarProvider>
+                <TooltipProvider>
+                  <PlayerProvider>{props.children}</PlayerProvider>
+                </TooltipProvider>
+              </SidebarProvider>
             </ThemeProvider>
           </IntercomProvider>
         </ReactQueryStreamedHydration>

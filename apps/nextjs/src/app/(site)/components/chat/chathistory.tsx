@@ -14,8 +14,9 @@ interface ChatHistoryProps {
 
 export function ChatHistory({ userId }: ChatHistoryProps) {
   return (
-    <div className="flex h-full flex-col">
-      <div className="my-4 px-2">
+    <div className="flex h-screen flex-col">
+      <div className="my-4 mt-12 px-2">
+        <h2 className="mb-4 text-xl font-bold">Chat History</h2>
         <Link
           href="/chat"
           className={cn(
