@@ -1,6 +1,8 @@
 // Inspired by Chatbot-UI and modified to fit the needs of this project
 // @see https://github.com/mckaywrigley/chatbot-ui/blob/main/components/Chat/ChatMessage.tsx
+"use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import type { Message } from "ai";
 import remarkGfm from "remark-gfm";
@@ -17,6 +19,7 @@ export interface ChatMessageProps {
 }
 
 export function ChatMessage({ message, ...props }: ChatMessageProps) {
+  const [isFirstMessage, setIsFirstMessage] = useState(true);
   return (
     <div
       className={cn("group relative mb-4 flex items-start md:-ml-12")}
@@ -41,19 +44,21 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
               return (
                 <p className="mb-2 last:mb-0">
                   {children}
-                  {message.role === "assistant" && (
+                  {message.role === "assistant" && isFirstMessage && (
                     <>
                       <br />
-                      {/* <span className="mt-8  text-xs text-muted-foreground">
+                      <span className="mt-8  text-xs text-muted-foreground">
                         If you like this script, CLICK COPY, then paste it in
                         the{" "}
-                        <Link href="/">
+                        <Link href="/texttospeech">
                           <span className="cursor-pointer underline">
                             TEXT to SPEECH
                           </span>
                         </Link>{" "}
                         page and choose your favorite voice actor.
-                      </span> */}
+                      </span>
+                      {setIsFirstMessage(false)}{" "}
+                      {/* Update isFirstMessage to false */}
                     </>
                   )}
                 </p>
