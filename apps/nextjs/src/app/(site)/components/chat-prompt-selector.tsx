@@ -169,7 +169,7 @@ function ModelItem({ prompt, isSelected, onSelect, onPeek }: PromptItemProps) {
       key={prompt.id}
       onSelect={onSelect}
       ref={ref}
-      className="aria-selected:bg-white aria-selected:text-secondary"
+      className="aria-selected:bg-background aria-selected:text-primary aria-selected:dark:bg-white aria-selected:dark:text-primary-foreground"
     >
       {prompt.name}
       <CheckIcon

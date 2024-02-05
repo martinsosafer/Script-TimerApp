@@ -859,7 +859,8 @@
 @media (min-width: 768px) {
   .ProseMirror {
     height: 300px;
-    padding: 10px 6px; /* Slightly larger padding for medium screens */
+    padding: 10px 6px;
+    /* Slightly larger padding for medium screens */
   }
 }
 
@@ -867,7 +868,8 @@
 @media (min-width: 1027px) {
   .ProseMirror {
     height: 400px;
-    padding: 10px 8px; /* Original padding for large screens */
+    padding: 10px 8px;
+    /* Original padding for large screens */
   }
 }
 

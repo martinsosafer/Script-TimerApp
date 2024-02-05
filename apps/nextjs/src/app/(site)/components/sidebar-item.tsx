@@ -59,15 +59,16 @@ export function SidebarItem({ index, chat, children }: SidebarItemProps) {
             <TooltipContent>This is a shared chat.</TooltipContent>
           </Tooltip>
         ) : (
-          <IconMessage className="mr-2 mt-1" />
+          <IconMessage className="mr-2 mt-1 text-secondary dark:text-foreground" />
         )}
       </div>
       <Link
         href={chat.path}
         className={cn(
           buttonVariants({ variant: "ghost" }),
-          "group w-full px-8 transition-colors hover:bg-secondary",
-          isActive && "bg-primary pr-16 font-semibold dark:bg-zinc-800",
+          "group w-full px-8 text-secondary transition-colors hover:bg-secondary hover:text-foreground dark:text-foreground",
+          isActive &&
+            "bg-primary pr-16 font-semibold text-secondary dark:bg-zinc-800 dark:text-foreground",
         )}
       >
         <div
