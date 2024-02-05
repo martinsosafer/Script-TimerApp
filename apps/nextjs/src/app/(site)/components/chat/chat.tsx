@@ -48,7 +48,14 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
   const { messages, append, reload, stop, isLoading, input, setInput } =
     useChat({
       // api: "/api/chat",
-      initialMessages,
+      initialMessages: [
+        {
+          id: "1",
+          role: "assistant",
+          content:
+            "I'd be happy to help you generate multiple headlines known to grab attention. Let's start in the following categories: Actionable (How To...), Analytical (Here's a breakdown), Aspirational (Yes, yes you can...), and Anthropological (Here's why). Please fill in the blanks: I am going to give you a Topic: ",
+        },
+      ],
       id,
       body: {
         id,
