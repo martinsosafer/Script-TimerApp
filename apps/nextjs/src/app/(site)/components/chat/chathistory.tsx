@@ -16,12 +16,14 @@ export function ChatHistory({ userId }: ChatHistoryProps) {
   return (
     <div className="flex h-screen flex-col">
       <div className="my-4 mt-12 px-2">
-        <h2 className="mb-4 text-xl font-bold">Chat History</h2>
+        <h2 className="mb-4 text-xl font-bold text-primary-foreground dark:text-secondary-foreground">
+          Chat History
+        </h2>
         <Link
           href="/chat"
           className={cn(
             buttonVariants({ variant: "outline" }),
-            "h-10 w-full justify-start bg-primary px-4 shadow-none transition-colors hover:bg-zinc-200/40 dark:bg-zinc-900 dark:hover:bg-zinc-300/10",
+            "h-10 w-full justify-start bg-primary px-4 text-primary-foreground shadow-none transition-colors hover:bg-zinc-200/40 hover:text-accent dark:bg-zinc-900 dark:text-secondary-foreground dark:hover:bg-zinc-300/10",
           )}
         >
           <IconPlus className="-translate-x-2 stroke-2" />

@@ -38,7 +38,7 @@ export function ClearHistory({
       <AlertDialogTrigger asChild>
         <Button
           variant="outline"
-          className="hover:bg-red-600"
+          className="text-primary-foreground hover:bg-red-600 dark:border-foreground dark:text-foreground"
           disabled={!isEnabled || isPending}
         >
           {isPending && <IconSpinner className="mr-2" />}

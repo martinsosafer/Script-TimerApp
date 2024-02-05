@@ -19,9 +19,7 @@ export function SidebarMobile({ children }: SidebarMobileProps) {
     <Sheet>
       <SheetTrigger asChild className=" ml-8 gap-1">
         <Button variant="outline" className="size-9 -ml-2 flex p-0 lg:hidden">
-          <h3 className="light:text-secondary dark:text-primary">
-            Chat history
-          </h3>
+          <h3 className=" dark:text-primary">Chat history</h3>
           <IconSidebar className="size-6 " />
           <span className="sr-only">Toggle Sidebar</span>
         </Button>
