@@ -50,7 +50,7 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
                         <span className="mt-8  text-xs text-muted-foreground">
                           If you like this script, CLICK COPY, then paste it in
                           the{" "}
-                          <Link href="/texttospeech">
+                          <Link href="/texttospeech" target="_blank">
                             <span className="cursor-pointer underline">
                               TEXT to SPEECH
                             </span>
