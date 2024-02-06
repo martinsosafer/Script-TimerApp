@@ -51,7 +51,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
       initialMessages: prompt
         ? [
             {
-              id: "",
+              id: "initial_prompt",
               role: "assistant",
               content: prompt.prompt_display,
             },
@@ -82,7 +82,6 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
       },
 
       onFinish() {
-        console.log("mesagesssss", messages);
         console.log("path:", path);
         if (!path.includes("chat/")) {
           router.push(`/chat/${id}`, { scroll: false });
