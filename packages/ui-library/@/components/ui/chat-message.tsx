@@ -19,7 +19,7 @@ export interface ChatMessageProps {
 }
 
 export function ChatMessage({ message, ...props }: ChatMessageProps) {
-  const [isFirstMessage, setIsFirstMessage] = useState(true);
+  console.log("Message:", message);
   return (
     <div
       className={cn("group relative mb-4 flex items-start md:-ml-12")}
@@ -44,7 +44,7 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
               return (
                 <p className="mb-2 last:mb-0">
                   {children}
-                  {message.role === "assistant" && isFirstMessage && (
+                  {message.role === "assistant" && !message.id && (
                     <>
                       <br />
                       <span className="mt-8  text-xs text-muted-foreground">
@@ -57,8 +57,6 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
                         </Link>{" "}
                         page and choose your favorite voice actor.
                       </span>
-                      {setIsFirstMessage(false)}{" "}
-                      {/* Update isFirstMessage to false */}
                     </>
                   )}
                 </p>
