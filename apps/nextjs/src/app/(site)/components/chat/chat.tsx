@@ -48,7 +48,15 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
   const { messages, append, reload, stop, isLoading, input, setInput } =
     useChat({
       // api: "/api/chat",
-      initialMessages,
+      initialMessages: prompt
+        ? [
+            {
+              id: "initial_prompt",
+              role: "assistant",
+              content: prompt.prompt_display,
+            },
+          ]
+        : [],
       id,
       body: {
         id,

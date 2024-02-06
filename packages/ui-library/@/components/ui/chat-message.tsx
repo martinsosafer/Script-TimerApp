@@ -1,6 +1,8 @@
 // Inspired by Chatbot-UI and modified to fit the needs of this project
 // @see https://github.com/mckaywrigley/chatbot-ui/blob/main/components/Chat/ChatMessage.tsx
+"use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import type { Message } from "ai";
 import remarkGfm from "remark-gfm";
@@ -41,21 +43,22 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
               return (
                 <p className="mb-2 last:mb-0">
                   {children}
-                  {message.role === "assistant" && (
-                    <>
-                      <br />
-                      {/* <span className="mt-8  text-xs text-muted-foreground">
-                        If you like this script, CLICK COPY, then paste it in
-                        the{" "}
-                        <Link href="/">
-                          <span className="cursor-pointer underline">
-                            TEXT to SPEECH
-                          </span>
-                        </Link>{" "}
-                        page and choose your favorite voice actor.
-                      </span> */}
-                    </>
-                  )}
+                  {message.role === "assistant" &&
+                    message.id === "initial_prompt" && (
+                      <>
+                        <br />
+                        <span className="mt-8  text-xs text-muted-foreground">
+                          If you like this script, CLICK COPY, then paste it in
+                          the{" "}
+                          <Link href="/texttospeech">
+                            <span className="cursor-pointer underline">
+                              TEXT to SPEECH
+                            </span>
+                          </Link>{" "}
+                          page and choose your favorite voice actor.
+                        </span>
+                      </>
+                    )}
                 </p>
               );
             },

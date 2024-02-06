@@ -7,7 +7,7 @@ import { ChatPromptAccordion } from "../chat-prompt-accordion";
 import { ChatPromptSelector } from "../chat-prompt-selector";
 
 export function EmptyScreen({
-  setInput,
+  // setInput,
   setPrompt,
 }: Pick<UseChatHelpers, "setInput"> & {
   setPrompt: React.Dispatch<React.SetStateAction<Prompt | null>>;
@@ -40,8 +40,7 @@ export function EmptyScreen({
         <div className="mt-4 flex flex-col items-start space-y-2">
           <ChatPromptSelector
             onPromptSelect={(prompt) => {
-              // @ts-expect-error dunno why cant type this
-              setInput(prompt?.prompt_display ?? "");
+              // setInput(prompt?.prompt_display ?? "");
               // @ts-expect-error dunno why cant type this
               setPrompt(prompt);
             }}
