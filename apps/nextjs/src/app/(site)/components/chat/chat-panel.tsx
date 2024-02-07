@@ -7,6 +7,7 @@ import { Button } from "@voiceai/ui/@/components/ui/button";
 // import { ChatShareDialog } from "@/components/chat-share-dialog";
 // import { FooterText } from "@/components/footer";
 import {
+  IconCopy,
   IconRefresh,
   IconShare,
   IconStop,
@@ -50,7 +51,11 @@ export function ChatPanel({
         <div>
           <br />
           <span className="mt-8  text-xs text-muted-foreground">
-            Any time you want to hear a response, click COPY and{" "}
+            Any time you want to hear a response, click COPY{" "}
+            <span className="inline-block">
+              <IconCopy />
+            </span>{" "}
+            and{" "}
             <Link href="/texttospeech" target="_blank">
               <span className="cursor-pointer underline">TEXT to SPEECH</span>
             </Link>{" "}
