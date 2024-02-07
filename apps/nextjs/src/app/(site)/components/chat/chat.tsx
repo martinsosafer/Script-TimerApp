@@ -56,7 +56,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
               content: prompt.prompt_display,
             },
           ]
-        : [],
+        : initialMessages,
       id,
       body: {
         id,
