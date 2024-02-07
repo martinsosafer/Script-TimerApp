@@ -43,7 +43,7 @@ export default async function ChatPage({ params }: ChatPageProps) {
   if (chat?.userId !== session?.user?.id) {
     notFound();
   }
-
+  console.log("Initial Messages:", chat.messages);
   return (
     <div className="w-full">
       <Chat id={chat.id} initialMessages={chat.messages} />
