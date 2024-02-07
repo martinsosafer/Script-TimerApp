@@ -1,4 +1,5 @@
 import * as React from "react";
+import Link from "next/link";
 import type { UseChatHelpers } from "ai/react";
 
 // import { shareChat } from '@/app/actions'
@@ -6,6 +7,7 @@ import { Button } from "@voiceai/ui/@/components/ui/button";
 // import { ChatShareDialog } from "@/components/chat-share-dialog";
 // import { FooterText } from "@/components/footer";
 import {
+  IconCopy,
   IconRefresh,
   IconShare,
   IconStop,
@@ -45,7 +47,21 @@ export function ChatPanel({
   return (
     <div className="animate-in fixed inset-x-0 bottom-0 w-full bg-gradient-to-b from-muted/30 from-0% to-muted/30 to-50% duration-300 ease-in-out dark:from-background/10 dark:from-10% dark:to-background/80 peer-[[data-state=open]]:group-[]:lg:pl-[250px] peer-[[data-state=open]]:group-[]:xl:pl-[300px]">
       <ButtonScrollToBottom />
-      <div className="mx-auto sm:max-w-2xl sm:px-4">
+      <div className="mx-auto text-center sm:max-w-2xl sm:px-4">
+        <div>
+          <br />
+          <span className="mt-8  text-xs text-muted-foreground">
+            Any time you want to hear a response, click COPY{" "}
+            <span className="inline-block">
+              <IconCopy />
+            </span>{" "}
+            and{" "}
+            <Link href="/texttospeech" target="_blank">
+              <span className="cursor-pointer underline">TEXT to SPEECH</span>
+            </Link>{" "}
+            for a voice actor.
+          </span>
+        </div>
         <div className="flex h-12 items-center justify-center">
           {isLoading ? (
             <Button
