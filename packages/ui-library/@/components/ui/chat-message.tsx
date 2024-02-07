@@ -40,27 +40,7 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
           remarkPlugins={[remarkGfm, remarkMath]}
           components={{
             p({ children }) {
-              return (
-                <p className="mb-2 last:mb-0">
-                  {children}
-                  {message.role === "assistant" &&
-                    message.id === "initial_prompt" && (
-                      <>
-                        <br />
-                        <span className="mt-8  text-xs text-muted-foreground">
-                          If you like this script, CLICK COPY, then paste it in
-                          the{" "}
-                          <Link href="/texttospeech" target="_blank">
-                            <span className="cursor-pointer underline">
-                              TEXT to SPEECH
-                            </span>
-                          </Link>{" "}
-                          page and choose your favorite voice actor.
-                        </span>
-                      </>
-                    )}
-                </p>
-              );
+              return <p className="mb-2 last:mb-0">{children}</p>;
             },
             code(props) {
               const { children, className, node, ...rest } = props;
@@ -86,4 +66,16 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
       </div>
     </div>
   );
-}
+} // <>
+//   <br />
+//   <span className="mt-8  text-xs text-muted-foreground">
+//     If you like this script, CLICK COPY, then paste it in
+//     the{" "}
+//     <Link href="/texttospeech" target="_blank">
+//       <span className="cursor-pointer underline">
+//         TEXT to SPEECH
+//       </span>
+//     </Link>{" "}
+//     page and choose your favorite voice actor.
+//   </span>
+// </>
