@@ -66,16 +66,4 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
       </div>
     </div>
   );
-} // <>
-//   <br />
-//   <span className="mt-8  text-xs text-muted-foreground">
-//     If you like this script, CLICK COPY, then paste it in
-//     the{" "}
-//     <Link href="/texttospeech" target="_blank">
-//       <span className="cursor-pointer underline">
-//         TEXT to SPEECH
-//       </span>
-//     </Link>{" "}
-//     page and choose your favorite voice actor.
-//   </span>
-// </>
+}
