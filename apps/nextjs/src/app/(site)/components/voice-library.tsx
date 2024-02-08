@@ -72,8 +72,8 @@ export function VoiceLibrary({ onModelSelect, ...props }: ModelSelectorProps) {
                 onModelSelect(voice);
               }}
             >
-              <div className="flex items-center space-x-4">
-                <Avatar>
+              <div className="flex items-center space-x-6">
+                <Avatar className="h-16 w-16">
                   <AvatarImage
                     src={
                       voice?.picture
@@ -81,17 +81,20 @@ export function VoiceLibrary({ onModelSelect, ...props }: ModelSelectorProps) {
                         : undefined
                     }
                     alt="Image"
-                    // className="h-12 w-12"
+                    className="h-full w-full object-cover"
                   />
                   <AvatarFallback>ST</AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="text-sm font-medium leading-none">
-                    {voice?.name} ({/* @ts-expect-error jsonb types are hard */}
+                  <p className=" mb-2 text-sm font-medium leading-none">
+                    {voice?.name}
+                  </p>{" "}
+                  <p className="mb-2 text-sm font-medium leading-none">
+                    {/* @ts-expect-error jsonb types are hard */}(
                     {voice?.metadata?.labels?.gender ?? "unknown"})
                   </p>
                   <Button
-                    size="sm"
+                    size="xs"
                     type="button"
                     onClick={() =>
                       playAudio(
