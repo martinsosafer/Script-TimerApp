@@ -1,7 +1,8 @@
 import type { Message } from "ai";
 
-import { ChatMessage } from "@voiceai/ui/@/components/ui/chat-message";
 import { Separator } from "@voiceai/ui/@/components/ui/separator";
+
+import { ChatMessage } from "./chatmessages";
 
 export interface ChatList {
   messages: Message[];
