@@ -9,6 +9,8 @@ import {
   IconCheck,
   IconCopy,
   IconPlay,
+  Icons,
+  IconStop,
 } from "@voiceai/ui/@/components/ui/icons";
 import { toast, ToastAction } from "@voiceai/ui/@/components/ui/toast";
 import { useCopyToClipboard } from "@voiceai/ui/@/hooks/use-copy-to-clipboard";
@@ -36,22 +38,23 @@ export function ChatMessageActions({
   };
   const handleSetSelectedModel = (model: any) => {
     setSelectedModel(model);
-    console.log("Selected model:", model); // Adding console.log to see if setSelectedModel works
+    console.log("Selected model:", model);
   };
+
   // Generate audio voice
   const [audio, setAudio] = React.useState("");
   const [loading, setLoading] = React.useState(false);
-  const toggleAudioRef = React.useRef<React.Ref<HTMLButtonElement>>(null);
+  const [isPlaying, setIsPlaying] = React.useState(false);
+  const audioRef = React.useRef<HTMLAudioElement>(null);
   const { mutateAsync: generateVoice, error } = api.voice.create.useMutation({
     onSuccess(data) {
       const dataURI = `data:audio/mpeg;base64,${data?.audio}`;
       setAudio(dataURI);
-
       setLoading(false);
-      console.log("clicking");
-      if (toggleAudioRef?.current) {
-        // @ts-expect-error weird typing with ref
-        toggleAudioRef.current?.click();
+
+      if (audioRef.current) {
+        audioRef.current.src = dataURI;
+        audioRef.current.addEventListener("loadeddata", playAudio);
       }
     },
     onError(error) {
@@ -74,6 +77,26 @@ export function ChatMessageActions({
       }
     },
   });
+
+  console.log("Data for audio generation:", {
+    voice_id: selectedModel,
+    message: message.content,
+  });
+  const playAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+
+  const stopAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      setIsPlaying(false);
+    }
+  };
+
   return (
     <div
       className={cn(
@@ -93,24 +116,38 @@ export function ChatMessageActions({
       <Button
         variant="ghost"
         size="icon"
-        disabled={!selectedModel || !message.content}
+        disabled={!selectedModel || !message.content || loading}
         onClick={async () => {
           setLoading(true);
           try {
             await generateVoice({
-              // @ts-expect-error need to type this in the state
-              voice_id: selectedModel?.id,
+              voice_id: selectedModel,
               message: message.content,
-              stability: stability?.[0],
-              similarity: similarity?.[0],
             });
-            setLoading(false);
-          } catch {}
+          } catch (error) {
+            console.error("Error generating voice:", error);
+          }
         }}
       >
-        <IconPlay />
+        {loading ? (
+          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+        ) : (
+          <IconPlay />
+        )}
+        <audio
+          src={audio}
+          className="col-span-2 col-start-2 mx-auto w-full"
+          ref={audioRef}
+          onEnded={() => setLoading(false)} // Handle loading state when audio ends
+        />
         <span className="sr-only">Play sound</span>
       </Button>
+      {audio && !loading && (
+        <Button variant="ghost" size="icon" onClick={stopAudio}>
+          <IconStop />
+          <span className="sr-only">Stop sound</span>
+        </Button>
+      )}
       <ActorsDropdown
         voices={voices}
         setSelectedModel={handleSetSelectedModel}
