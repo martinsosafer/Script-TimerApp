@@ -72,7 +72,7 @@ export function ChatPromptSelector({
             aria-label="Select a prompt"
             className="w-full justify-between"
           >
-            {selectedPrompt ? selectedPrompt.name : "Select a prompt..."}
+            {selectedPrompt ? selectedPrompt.name : "Try a 'magic prompt'"}
             <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -109,7 +109,7 @@ export function ChatPromptSelector({
             </HoverCardContent> */}
             <Command loop>
               <CommandList className="h-[var(--cmdk-list-height)] max-h-[400px]">
-                <CommandInput placeholder="Try a magic prompt:" />
+                <CommandInput placeholder="What you want to do?" />
                 <CommandEmpty>No Prompts found.</CommandEmpty>
                 <HoverCardTrigger />
                 {types.map((type) => (
