@@ -38,7 +38,7 @@ export function ChatMessageActions({
   };
   const handleSetSelectedModel = (model: any) => {
     setSelectedModel(model);
-    console.log("Selected model:", model);
+    // console.log("Selected model:", model);
   };
 
   // Generate audio voice
@@ -78,10 +78,10 @@ export function ChatMessageActions({
     },
   });
 
-  console.log("Data for audio generation:", {
-    voice_id: selectedModel,
-    message: message.content,
-  });
+  // console.log("Data for audio generation:", {
+  //   voice_id: selectedModel,
+  //   message: message.content,
+  // });
   const playAudio = () => {
     if (audioRef.current) {
       audioRef.current.play();
