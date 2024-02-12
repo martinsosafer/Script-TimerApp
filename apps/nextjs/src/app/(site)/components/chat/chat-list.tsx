@@ -1,7 +1,8 @@
 import type { Message } from "ai";
 
-import { ChatMessage } from "@voiceai/ui/@/components/ui/chat-message";
 import { Separator } from "@voiceai/ui/@/components/ui/separator";
+
+import { ChatMessage } from "./chatmessages";
 
 export interface ChatList {
   messages: Message[];
@@ -13,7 +14,7 @@ export function ChatList({ messages }: ChatList) {
   }
 
   return (
-    <div className="relative mx-auto max-w-2xl px-4">
+    <div className="relative mx-auto max-w-2xl px-4 ">
       {messages.map((message, index) => (
         <div key={index}>
           <ChatMessage message={message} />

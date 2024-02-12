@@ -2,17 +2,16 @@
 // @see https://github.com/mckaywrigley/chatbot-ui/blob/main/components/Chat/ChatMessage.tsx
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
 import type { Message } from "ai";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 
-import { cn } from "../../lib/utils";
-import { ChatMessageActions } from "./chat-message-actions";
-import { CodeBlock } from "./codeblock";
-import { IconOpenAI, IconUser } from "./icons";
-import { MemoizedReactMarkdown } from "./markdown";
+import { CodeBlock } from "@voiceai/ui/@/components/ui/codeblock";
+import { IconOpenAI, IconUser } from "@voiceai/ui/@/components/ui/icons";
+import { MemoizedReactMarkdown } from "@voiceai/ui/@/components/ui/markdown";
+import { cn } from "@voiceai/ui/@/lib/utils";
+
+import { ChatMessageActions } from "./chatmessageactions";
 
 export interface ChatMessageProps {
   message: Message;

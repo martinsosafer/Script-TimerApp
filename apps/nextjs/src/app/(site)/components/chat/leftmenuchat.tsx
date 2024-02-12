@@ -13,7 +13,3 @@ export function LeftMenu({ userId }: LeftMenuProps) {
     </Leftbar>
   );
 }
-
-{
-  /* <div className="h-screen w-[250px] bg-gradient-to-b from-blue-700 via-blue-800 to-gray-900 p-4 text-white"></div> */
-}

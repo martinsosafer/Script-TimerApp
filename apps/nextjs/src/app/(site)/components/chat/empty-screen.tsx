@@ -15,27 +15,32 @@ export function EmptyScreen({
   return (
     <div className="mx-auto max-w-2xl px-4">
       <div className="rounded-lg border bg-background p-8">
-        <h1 className="mb-2 text-lg font-semibold">I am your Script Coach</h1>
+        <h1 className="mb-2 text-lg font-semibold">I help you write scripts</h1>
         <p className="mb-2 leading-normal text-muted-foreground">
-          an Ai <span className="line-through">superhero</span>,
-          &lsquo;model&lsquo; designed to help you. I am specially made for
-          presentations, speeches, videos, and can do much, much more.
+          Videos, presentations, speeches, and so much more!
           {/* <ExternalLink href="https://nextjs.org">Next.js</ExternalLink> and{' '}
           <ExternalLink href="https://vercel.com/storage/kv">
             Vercel KV
           </ExternalLink> */}
-          .
         </p>
         {/* <p className="leading-normal text-muted-foreground">
           Want to learn more?{" "} */}
-        <a
-          target="_blank"
-          href="https://script-timer.com/blogs/"
-          rel="noreferrer"
-          className="cursor-pointer underline"
-        >
-          Learn about using AI models
-        </a>
+        <p>Here, you can:</p>
+        <ul>
+          <li>Use our 'magic prompts' that are set up for you below</li>
+          <li>Go to the chat box below, and start with your own</li>
+          <li>
+            <a
+              target="_blank"
+              href="https://script-timer.com/blogs/"
+              rel="noreferrer"
+              className="cursor-pointer underline"
+            >
+              Learn about using AI models here
+            </a>
+          </li>
+        </ul>
+
         {/* </p> */}
         <div className="mt-4 flex flex-col items-start space-y-2">
           <ChatPromptSelector

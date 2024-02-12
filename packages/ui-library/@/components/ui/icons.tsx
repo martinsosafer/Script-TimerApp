@@ -692,6 +692,19 @@ function IconExternalLink({
     </svg>
   );
 }
+function IconPlay({ className, ...props }: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 512 512"
+      fill="currentColor"
+      className={cn("h-4 w-4", className)}
+      {...props}
+    >
+      <path d="M64 448l384-192L64 64v384z" />
+    </svg>
+  );
+}
 
 function IconChevronUpDown({
   className,
@@ -738,4 +751,5 @@ export {
   IconUsers,
   IconExternalLink,
   IconChevronUpDown,
+  IconPlay,
 };
