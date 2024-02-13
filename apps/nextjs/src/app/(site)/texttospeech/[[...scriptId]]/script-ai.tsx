@@ -177,7 +177,7 @@ export function ScriptAI({}) {
                     </span>
                   </HoverCardTrigger>
                   <HoverCardContent className="w-[320px] text-sm" side="left">
-                    Choose the interface that best suits your task. You can
+                    Choose z the interface that best suits your task. You can
                     provide: a simple prompt to complete, starting and ending
                     text to insert a completion within, or some text with
                     instructions to edit it.
