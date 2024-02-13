@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import type { Message } from "ai";
 
-import { Button } from "@voiceai/ui";
+import { Button, Tooltip, TooltipContent, TooltipTrigger } from "@voiceai/ui";
 import {
   IconCheck,
   IconCopy,
@@ -109,39 +109,59 @@ export function ChatMessageActions({
       )}
       {...props}
     >
-      <Button variant="ghost" size="icon" onClick={onCopy}>
-        {isCopied ? <IconCheck /> : <IconCopy />}
-        <span className="sr-only">Copy message</span>
-      </Button>
-      <Button
-        variant="ghost"
-        size="icon"
-        disabled={!selectedModel || !message.content || loading}
-        onClick={async () => {
-          setLoading(true);
-          try {
-            await generateVoice({
-              voice_id: selectedModel,
-              message: message.content,
-            });
-          } catch (error) {
-            console.error("Error generating voice:", error);
-          }
-        }}
-      >
-        {loading ? (
-          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-        ) : (
-          <IconPlay />
-        )}
-        <audio
-          src={audio}
-          className="col-span-2 col-start-2 mx-auto w-full"
-          ref={audioRef}
-          onEnded={() => setLoading(false)} // Handle loading state when audio ends
-        />
-        <span className="sr-only">Play sound</span>
-      </Button>
+      <Tooltip>
+        <TooltipTrigger>
+          <Button variant="ghost" size="icon" onClick={onCopy}>
+            {isCopied ? <IconCheck /> : <IconCopy />}
+            <span className="sr-only">Copy message</span>
+          </Button>
+          <TooltipContent>Copy this message</TooltipContent>
+        </TooltipTrigger>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger>
+          <Button
+            variant="ghost"
+            size="icon"
+            disabled={!selectedModel || !message.content || loading}
+            onClick={async () => {
+              setLoading(true);
+              toast({
+                description:
+                  "Recording script,please keep in mind that longer scripts take longer to generate.",
+              });
+              try {
+                await generateVoice({
+                  voice_id: selectedModel.id,
+                  message: message.content,
+                });
+              } catch (error) {
+                toast({
+                  description:
+                    "Error:Keep in mind base plan only allows 1500 words scripts",
+                });
+                console.error("Error generating voice:", error);
+              }
+            }}
+          >
+            {loading ? (
+              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <IconPlay />
+            )}
+            <audio
+              src={audio}
+              className="col-span-2 col-start-2 mx-auto w-full"
+              ref={audioRef}
+              onEnded={() => setLoading(false)} // Handle loading state when audio ends
+            />
+            <span className="sr-only">Play sound</span>
+          </Button>
+          <TooltipContent>
+            Play script, first you have to select a voice model!
+          </TooltipContent>
+        </TooltipTrigger>
+      </Tooltip>
       {audio && !loading && (
         <Button variant="ghost" size="icon" onClick={stopAudio}>
           <IconStop />
@@ -151,6 +171,7 @@ export function ChatMessageActions({
       <ActorsDropdown
         voices={voices}
         setSelectedModel={handleSetSelectedModel}
+        selectedModel={selectedModel}
       />
     </div>
   );
