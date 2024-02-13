@@ -167,8 +167,8 @@ export function ScriptAI({}) {
 
       <Tabs defaultValue="complete" className="flex-1">
         <div className="container h-full py-6">
-          <div className="grid h-full items-stretch gap-6 md:grid-cols-[1fr_200px]">
-            <div className=" flex flex-col space-y-4 md:order-2">
+          <div className="grid h-full items-stretch gap-6 md:grid-cols-[200px_1fr]">
+            <div className=" flex flex-col space-y-4 md:order-1">
               <div className="grid gap-2">
                 <HoverCard openDelay={200}>
                   <HoverCardTrigger asChild>
@@ -251,7 +251,7 @@ export function ScriptAI({}) {
                 </ScrollArea>
               </div> */}
             </div>
-            <div className="md:order-1">
+            <div className="md:order-2">
               <TabsContent value="complete" className="mt-0 border-0 p-0">
                 {/* <Badge>Your script is {script.length} characters long.</Badge> */}
                 <Badge>{calculateLength(script)}</Badge>
