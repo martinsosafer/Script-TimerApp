@@ -27,7 +27,7 @@ export function ActorsDropdown({
   const toggleMobileDropdown = () => {
     setIsMobileOpen(!isMobileOpen);
   };
-  console.log("Selected Model:", selectedModel);
+  
   return (
     <div>
       <Tooltip>
