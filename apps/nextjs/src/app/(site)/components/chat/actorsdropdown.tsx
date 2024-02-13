@@ -55,7 +55,7 @@ export function ActorsDropdown({
             voices={voices}
             setSelectedModel={setSelectedModel}
           />
-          <TooltipContent>Choose your voice model</TooltipContent>
+          <TooltipContent>Choose voice model</TooltipContent>
         </TooltipTrigger>
       </Tooltip>
     </div>
