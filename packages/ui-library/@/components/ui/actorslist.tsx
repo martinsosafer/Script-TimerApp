@@ -13,8 +13,8 @@ export function ActorsList({
   voices,
   setSelectedModel,
 }: ActorsListProps) {
-  const handleActorSelection = (voiceId: string) => {
-    setSelectedModel(voiceId);
+  const handleActorSelection = (voice: any) => {
+    setSelectedModel(voice);
 
     toggleDropdown();
   };
@@ -32,7 +32,7 @@ export function ActorsList({
               <li key={index}>
                 <button
                   className="flex w-full items-center px-4 py-2 text-left hover:bg-primary hover:text-white dark:hover:bg-gray-600 dark:hover:text-white"
-                  onClick={() => handleActorSelection(voice.id)}
+                  onClick={() => handleActorSelection(voice)}
                 >
                   <img
                     className="me-2 h-6 w-6 rounded-full"
