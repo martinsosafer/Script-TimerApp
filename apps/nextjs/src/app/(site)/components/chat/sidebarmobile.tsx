@@ -41,7 +41,7 @@ export function SidebarMobile({ children }: SidebarMobileProps) {
           </Leftbar>
         </SheetContent>
       </Sheet>
-      <div className="mr-4">
+      <div className="mr-4 md:hidden lg:hidden">
         <Link
           href="/chat"
           className={cn(
@@ -49,7 +49,7 @@ export function SidebarMobile({ children }: SidebarMobileProps) {
             "mr-6 h-8  w-full justify-center bg-primary text-primary-foreground  shadow-none transition-colors hover:bg-primary-foreground hover:text-primary dark:bg-zinc-900 dark:text-secondary-foreground dark:hover:bg-white dark:hover:text-primary-foreground",
           )}
         >
-          <IconPlus className="-translate-x-2 stroke-2" />
+          <IconPlus className="-translate-x-2 stroke-2 " />
           New Chat
         </Link>
       </div>
