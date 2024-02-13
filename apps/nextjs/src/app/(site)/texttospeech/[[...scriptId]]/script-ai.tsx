@@ -19,7 +19,7 @@ import {
   Icons,
 } from "@voiceai/ui/@/components/ui/icons";
 import { Label } from "@voiceai/ui/@/components/ui/label";
-import { ScrollArea } from "@voiceai/ui/@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@voiceai/ui/@/components/ui/scroll-area";
 import { Separator } from "@voiceai/ui/@/components/ui/separator";
 import {
   Tabs,
@@ -37,6 +37,7 @@ import {
 import { useCopyToClipboard } from "@voiceai/ui/@/hooks/use-copy-to-clipboard";
 
 import { calculateLength } from "~/lib/calculate-length";
+import { calculateLengthtTime } from "~/lib/calculate-length-time";
 import { api } from "~/utils/api";
 import { useDragAndDrop } from "~/utils/helpers";
 import { ModelSelector } from "../../components/model-selector";
@@ -135,7 +136,7 @@ export function ScriptAI({}) {
     if (isCopied) return;
     copyToClipboard(revisedScript);
   };
-
+  const { wordCount, minutes, formattedSeconds } = calculateLengthtTime(script);
   return (
     <div className=" h-full flex-col md:flex">
       <div className="container flex flex-col items-start justify-between space-y-2 py-4 sm:flex-row sm:items-center sm:space-y-0 md:h-16">
@@ -167,14 +168,32 @@ export function ScriptAI({}) {
 
       <Tabs defaultValue="complete" className="flex-1">
         <div className="container h-full py-6">
-          <div className="grid h-full items-stretch gap-6 md:grid-cols-[1fr_200px]">
-            <div className=" flex flex-col space-y-4 md:order-2">
+          <div className="grid h-full items-stretch gap-6 md:grid-cols-[200px_1fr]">
+            <div className=" flex flex-col space-y-4 md:order-1">
               <div className="grid gap-2">
                 <HoverCard openDelay={200}>
                   <HoverCardTrigger asChild>
-                    <span className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                      Grammar & Spell Check
-                    </span>
+                    <div className="bg-secondary py-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                      <span className="flex-1 text-center">Grammar</span>
+                      <span className="ml-8">&</span>
+                      <span className="ml-6">Spell Check</span>
+                      <TabsList className="grid grid-cols-2">
+                        <TabsTrigger
+                          value="complete"
+                          className="flex items-center justify-center"
+                        >
+                          <span className="sr-only">Complete</span>
+                          <Icons.complete className="h-5 w-5" />
+                        </TabsTrigger>
+                        <TabsTrigger
+                          value="insert"
+                          className="flex items-center justify-center"
+                        >
+                          <span className="sr-only">Insert</span>
+                          <Icons.insert className="h-5 w-5" />
+                        </TabsTrigger>
+                      </TabsList>
+                    </div>
                   </HoverCardTrigger>
                   <HoverCardContent className="w-[320px] text-sm" side="left">
                     Choose the interface that best suits your task. You can
@@ -183,16 +202,6 @@ export function ScriptAI({}) {
                     instructions to edit it.
                   </HoverCardContent>
                 </HoverCard>
-                <TabsList className="grid grid-cols-2">
-                  <TabsTrigger value="complete">
-                    <span className="sr-only">Complete</span>
-                    <Icons.complete className="h-5 w-5" />
-                  </TabsTrigger>
-                  <TabsTrigger value="insert">
-                    <span className="sr-only">Insert</span>
-                    <Icons.insert className="h-5 w-5" />
-                  </TabsTrigger>
-                </TabsList>
               </div>
               {/* <ModelSelector
                 types={types}
@@ -203,10 +212,11 @@ export function ScriptAI({}) {
                 <div className="flex items-center justify-between">
                   <Label htmlFor="similarity">Choose Your Voice Actor</Label>
                 </div>
-                <ScrollArea className="h-[300px] px-1">
+                <ScrollArea className="h-[300px] px-1" type="always">
                   <div className="space-y-1 p-2">
                     <VoiceLibrary onModelSelect={setSelectedModel} />
                   </div>
+                  <ScrollBar className="scrollbar-thumb-rounded-full scrollbar-thumb-red-500 bg-primary" />
                 </ScrollArea>
               </div>
               <SimilaritySelector
@@ -250,8 +260,18 @@ export function ScriptAI({}) {
                   </div>
                 </ScrollArea>
               </div> */}
+              <div>
+                {" "}
+                <ul>
+                  <li>{wordCount} words</li>
+                  <li>Estimated Time</li>
+                  <li>
+                    {minutes} minutes {formattedSeconds} seconds{" "}
+                  </li>
+                </ul>
+              </div>
             </div>
-            <div className="md:order-1">
+            <div className="md:order-2">
               <TabsContent value="complete" className="mt-0 border-0 p-0">
                 {/* <Badge>Your script is {script.length} characters long.</Badge> */}
                 <Badge>{calculateLength(script)}</Badge>
