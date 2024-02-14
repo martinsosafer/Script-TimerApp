@@ -144,7 +144,7 @@ export function ScriptAI({}) {
   const { wordCount, minutes, formattedSeconds } = calculateLengthtTime(script);
   return (
     <div className=" h-full flex-col md:flex">
-      <div className="container flex flex-col items-start justify-between space-y-1 py-2 sm:flex-row sm:items-center sm:space-y-0 md:h-16">
+      <div className="container flex flex-col items-start justify-between  sm:flex-row sm:items-center sm:space-y-0 md:h-14">
         <h2 className="mr-2  flex-shrink-0 text-xl font-bold">
           Listen to your script
         </h2>
@@ -180,7 +180,7 @@ export function ScriptAI({}) {
               <div className="grid ">
                 <HoverCard openDelay={200}>
                   <HoverCardTrigger asChild>
-                    <div className="py-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                    <div className="py-1 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                       <span className="mb-2  flex-1 text-center underline">
                         Check grammar and spelling
                       </span>
@@ -207,7 +207,7 @@ export function ScriptAI({}) {
                     Choose the interface that best suits your task. You can
                     provide: a simple prompt to complete, starting and ending
                     text to insert a completion within, or some text with
-                    instructions to edit it.
+                    instructions to edit it
                   </HoverCardContent>
                 </HoverCard>
               </div>
