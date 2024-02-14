@@ -27,9 +27,10 @@ export function EmptyScreen({
           Want to learn more?{" "} */}
         <p>Here, you can:</p>
         <ul>
-          <li>Use our 'magic prompts' that are set up for you below</li>
-          <li>Go to the chat box below, and start with your own</li>
+          <li>1.Use our 'magic prompts' that are set up for you below</li>
+          <li>2.Go to the chat box below, and start with your own</li>
           <li>
+            3.
             <a
               target="_blank"
               href="https://script-timer.com/blogs/"

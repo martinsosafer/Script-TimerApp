@@ -9,6 +9,11 @@ import { useCompletion } from "ai/react";
 import { Badge } from "@voiceai/ui/@/components/ui/badge";
 import { Button } from "@voiceai/ui/@/components/ui/button";
 import {
+  Card,
+  CardContent,
+  CardDescription,
+} from "@voiceai/ui/@/components/ui/card";
+import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
@@ -139,8 +144,10 @@ export function ScriptAI({}) {
   const { wordCount, minutes, formattedSeconds } = calculateLengthtTime(script);
   return (
     <div className=" h-full flex-col md:flex">
-      <div className="container flex flex-col items-start justify-between space-y-2 py-4 sm:flex-row sm:items-center sm:space-y-0 md:h-16">
-        <h2 className="mr-2 text-lg font-semibold">Text2Speech</h2>
+      <div className="container flex flex-col items-start justify-between space-y-1 py-2 sm:flex-row sm:items-center sm:space-y-0 md:h-16">
+        <h2 className="mr-2  flex-shrink-0 text-xl font-bold">
+          Listen to your script
+        </h2>
         <div className="ml-auto flex w-full space-x-2 sm:justify-end">
           <ScriptSelector />
           <SaveScript script={script} />
@@ -167,17 +174,18 @@ export function ScriptAI({}) {
       <Separator />
 
       <Tabs defaultValue="complete" className="flex-1">
-        <div className="container h-full py-6">
+        <div className="container mb-4 h-full ">
           <div className="grid h-full items-stretch gap-6 md:grid-cols-[200px_1fr]">
             <div className=" flex flex-col space-y-4 md:order-1">
-              <div className="grid gap-2">
+              <div className="grid ">
                 <HoverCard openDelay={200}>
                   <HoverCardTrigger asChild>
-                    <div className="bg-secondary py-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                      <span className="flex-1 text-center">Grammar</span>
-                      <span className="ml-8">&</span>
-                      <span className="ml-6">Spell Check</span>
-                      <TabsList className="grid grid-cols-2">
+                    <div className="py-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                      <span className="mb-2  flex-1 text-center underline">
+                        Check grammar and spelling
+                      </span>
+
+                      <TabsList className=" mt-3 grid grid-cols-2">
                         <TabsTrigger
                           value="complete"
                           className="flex items-center justify-center"
@@ -208,11 +216,11 @@ export function ScriptAI({}) {
                 models={models}
                 onModelSelect={setSelectedModel}
               /> */}
-              <div className="py-2">
-                <div className="flex items-center justify-between">
+              <div>
+                <div className="flex items-center justify-between underline">
                   <Label htmlFor="similarity">Choose Your Voice Actor</Label>
                 </div>
-                <ScrollArea className="h-[300px] px-1" type="always">
+                <ScrollArea className="mt-3 h-[300px] px-1" type="always">
                   <div className="space-y-1 p-2">
                     <VoiceLibrary onModelSelect={setSelectedModel} />
                   </div>
@@ -260,28 +268,35 @@ export function ScriptAI({}) {
                   </div>
                 </ScrollArea>
               </div> */}
-              <div>
-                {" "}
-                <ul>
-                  <li>{wordCount} words</li>
-                  <li>Estimated Time</li>
-                  <li>
-                    {minutes} minutes {formattedSeconds} seconds{" "}
-                  </li>
-                </ul>
-              </div>
             </div>
             <div className="md:order-2">
               <TabsContent value="complete" className="mt-0 border-0 p-0">
                 {/* <Badge>Your script is {script.length} characters long.</Badge> */}
-                <Badge>{calculateLength(script)}</Badge>
-                <div className="flex h-full flex-col space-y-4">
+
+                <div className="flex h-3/6 flex-col ">
                   <Textarea
                     value={script}
                     onChange={(e) => setScript(e.target.value)}
                     placeholder={`Write your script here, choose your voice model from the right dropdown and generate to hear your voice. Like your script? Save it by clicking the "Save" button on the top right. Listen and download after generating by toggling the voice player using the upmost top-right button.`}
-                    className="min-h-[400px] flex-1 p-4 md:min-h-[700px] lg:min-h-[700px]"
+                    className="h-3/5 min-h-[250px] flex-1 p-4 md:min-h-[500px] lg:min-h-[570px]"
                   />
+                  <div className="flex items-center justify-end ">
+                    <Badge>
+                      Script is&nbsp;
+                      <span className="font-semibold text-secondary-foreground">
+                        {wordCount}
+                      </span>
+                      &nbsp;words. Estimated wait time is&nbsp;
+                      <span className="font-semibold text-secondary-foreground">
+                        {minutes}
+                      </span>
+                      &nbsp;minutes and&nbsp;
+                      <span className="font-semibold text-secondary-foreground">
+                        {formattedSeconds}
+                      </span>
+                      &nbsp;seconds
+                    </Badge>
+                  </div>
                 </div>
               </TabsContent>
               <TabsContent value="insert" className="mt-0 border-0 p-0">
