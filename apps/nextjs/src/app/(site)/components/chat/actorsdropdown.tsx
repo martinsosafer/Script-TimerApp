@@ -27,12 +27,11 @@ export function ActorsDropdown({
   const toggleMobileDropdown = () => {
     setIsMobileOpen(!isMobileOpen);
   };
-  
+
   return (
     <div>
       <Tooltip>
         <TooltipTrigger>
-          <TooltipContent>Choose your voice model</TooltipContent>
           <Button variant="ghost" size="icon" onClick={toggleDropdown}>
             {selectedModel ? (
               <img
