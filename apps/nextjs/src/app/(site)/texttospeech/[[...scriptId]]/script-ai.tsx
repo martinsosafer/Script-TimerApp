@@ -9,6 +9,11 @@ import { useCompletion } from "ai/react";
 import { Badge } from "@voiceai/ui/@/components/ui/badge";
 import { Button } from "@voiceai/ui/@/components/ui/button";
 import {
+  Card,
+  CardContent,
+  CardDescription,
+} from "@voiceai/ui/@/components/ui/card";
+import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
@@ -19,7 +24,7 @@ import {
   Icons,
 } from "@voiceai/ui/@/components/ui/icons";
 import { Label } from "@voiceai/ui/@/components/ui/label";
-import { ScrollArea } from "@voiceai/ui/@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@voiceai/ui/@/components/ui/scroll-area";
 import { Separator } from "@voiceai/ui/@/components/ui/separator";
 import {
   Tabs,
@@ -37,6 +42,7 @@ import {
 import { useCopyToClipboard } from "@voiceai/ui/@/hooks/use-copy-to-clipboard";
 
 import { calculateLength } from "~/lib/calculate-length";
+import { calculateLengthtTime } from "~/lib/calculate-length-time";
 import { api } from "~/utils/api";
 import { useDragAndDrop } from "~/utils/helpers";
 import { ModelSelector } from "../../components/model-selector";
@@ -135,11 +141,13 @@ export function ScriptAI({}) {
     if (isCopied) return;
     copyToClipboard(revisedScript);
   };
-
+  const { wordCount, minutes, formattedSeconds } = calculateLengthtTime(script);
   return (
     <div className=" h-full flex-col md:flex">
-      <div className="container flex flex-col items-start justify-between space-y-2 py-4 sm:flex-row sm:items-center sm:space-y-0 md:h-16">
-        <h2 className="mr-2 text-lg font-semibold">Text2Speech</h2>
+      <div className="container flex flex-col items-start justify-between  sm:flex-row sm:items-center sm:space-y-0 md:h-14">
+        <h2 className="mr-2  flex-shrink-0 text-xl font-bold">
+          Listen to your script
+        </h2>
         <div className="ml-auto flex w-full space-x-2 sm:justify-end">
           <ScriptSelector />
           <SaveScript script={script} />
@@ -166,47 +174,57 @@ export function ScriptAI({}) {
       <Separator />
 
       <Tabs defaultValue="complete" className="flex-1">
-        <div className="container h-full py-6">
-          <div className="grid h-full items-stretch gap-6 md:grid-cols-[1fr_200px]">
-            <div className=" flex flex-col space-y-4 md:order-2">
-              <div className="grid gap-2">
+        <div className="container mb-4 h-full ">
+          <div className="grid h-full items-stretch gap-6 md:grid-cols-[200px_1fr]">
+            <div className=" flex flex-col space-y-4 md:order-1">
+              <div className="grid ">
                 <HoverCard openDelay={200}>
                   <HoverCardTrigger asChild>
-                    <span className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                      Grammar & Spell Check
-                    </span>
+                    <div className="py-1 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                      <span className="mb-2  flex-1 text-center underline">
+                        Check grammar and spelling
+                      </span>
+
+                      <TabsList className=" mt-3 grid grid-cols-2">
+                        <TabsTrigger
+                          value="complete"
+                          className="flex items-center justify-center"
+                        >
+                          <span className="sr-only">Complete</span>
+                          <Icons.complete className="h-5 w-5" />
+                        </TabsTrigger>
+                        <TabsTrigger
+                          value="insert"
+                          className="flex items-center justify-center"
+                        >
+                          <span className="sr-only">Insert</span>
+                          <Icons.insert className="h-5 w-5" />
+                        </TabsTrigger>
+                      </TabsList>
+                    </div>
                   </HoverCardTrigger>
                   <HoverCardContent className="w-[320px] text-sm" side="left">
                     Choose the interface that best suits your task. You can
                     provide: a simple prompt to complete, starting and ending
                     text to insert a completion within, or some text with
-                    instructions to edit it.
+                    instructions to edit it
                   </HoverCardContent>
                 </HoverCard>
-                <TabsList className="grid grid-cols-2">
-                  <TabsTrigger value="complete">
-                    <span className="sr-only">Complete</span>
-                    <Icons.complete className="h-5 w-5" />
-                  </TabsTrigger>
-                  <TabsTrigger value="insert">
-                    <span className="sr-only">Insert</span>
-                    <Icons.insert className="h-5 w-5" />
-                  </TabsTrigger>
-                </TabsList>
               </div>
               {/* <ModelSelector
                 types={types}
                 models={models}
                 onModelSelect={setSelectedModel}
               /> */}
-              <div className="py-2">
-                <div className="flex items-center justify-between">
+              <div>
+                <div className="flex items-center justify-between underline">
                   <Label htmlFor="similarity">Choose Your Voice Actor</Label>
                 </div>
-                <ScrollArea className="h-[300px] px-1">
+                <ScrollArea className="mt-3 h-[300px] px-1" type="always">
                   <div className="space-y-1 p-2">
                     <VoiceLibrary onModelSelect={setSelectedModel} />
                   </div>
+                  <ScrollBar className="scrollbar-thumb-rounded-full scrollbar-thumb-red-500 bg-primary" />
                 </ScrollArea>
               </div>
               <SimilaritySelector
@@ -251,17 +269,34 @@ export function ScriptAI({}) {
                 </ScrollArea>
               </div> */}
             </div>
-            <div className="md:order-1">
+            <div className="md:order-2">
               <TabsContent value="complete" className="mt-0 border-0 p-0">
                 {/* <Badge>Your script is {script.length} characters long.</Badge> */}
-                <Badge>{calculateLength(script)}</Badge>
-                <div className="flex h-full flex-col space-y-4">
+
+                <div className="flex h-3/6 flex-col ">
                   <Textarea
                     value={script}
                     onChange={(e) => setScript(e.target.value)}
                     placeholder={`Write your script here, choose your voice model from the right dropdown and generate to hear your voice. Like your script? Save it by clicking the "Save" button on the top right. Listen and download after generating by toggling the voice player using the upmost top-right button.`}
-                    className="min-h-[400px] flex-1 p-4 md:min-h-[700px] lg:min-h-[700px]"
+                    className="h-3/5 min-h-[250px] flex-1 p-4 md:min-h-[500px] lg:min-h-[570px]"
                   />
+                  <div className="flex items-center justify-end ">
+                    <Badge>
+                      Script is&nbsp;
+                      <span className="font-semibold text-secondary-foreground">
+                        {wordCount}
+                      </span>
+                      &nbsp;words. Estimated wait time is&nbsp;
+                      <span className="font-semibold text-secondary-foreground">
+                        {minutes}
+                      </span>
+                      &nbsp;minutes and&nbsp;
+                      <span className="font-semibold text-secondary-foreground">
+                        {formattedSeconds}
+                      </span>
+                      &nbsp;seconds
+                    </Badge>
+                  </div>
                 </div>
               </TabsContent>
               <TabsContent value="insert" className="mt-0 border-0 p-0">

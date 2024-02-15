@@ -41,7 +41,7 @@ export function SidebarMobile({ children }: SidebarMobileProps) {
           </Leftbar>
         </SheetContent>
       </Sheet>
-      <div className="mr-4">
+      <div className="mr-4 md:hidden lg:hidden">
         <Link
           href="/chat"
           className={cn(
