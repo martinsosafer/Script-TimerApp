@@ -19,6 +19,9 @@
     --secondary: 60 4.8% 95.9%;
     --secondary-foreground: 24 9.8% 10%;
 
+    --tertiary: 24.6 95% 53.1%;
+    --tertiary-foreground: 60 9.1% 97.8%;
+
     --muted: 60 4.8% 95.9%;
     --muted-foreground: 25 5.3% 44.7%;
 
@@ -51,6 +54,9 @@
     --secondary: 12 6.5% 15.1%;
     --secondary-foreground: 60 9.1% 97.8%;
 
+    --tertiary: 24.6 95% 53.1%;
+    --tertiary-foreground: 60 9.1% 97.8%;
+
     --muted: 12 6.5% 15.1%;
     --muted-foreground: 24 5.4% 63.9%;
 
@@ -70,6 +76,7 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }

@@ -82,9 +82,9 @@ export function SaveScript({ script = "" }: SaveScriptProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="secondary">
-          <HeartIcon className="mx-2 h-4 w-4" />
-          Save
+        <Button variant="secondary" className="bg-cyan-100">
+          <HeartIcon className="mx-2 h-4 w-4 text-red-400" />
+          <h3 className="text-primary">Save</h3>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[475px]">

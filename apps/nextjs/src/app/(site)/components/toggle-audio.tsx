@@ -25,7 +25,11 @@ export const ToggleAudio = React.forwardRef(
       <div className="grid gap-2">
         <Sheet>
           <SheetTrigger asChild ref={ref as React.Ref<HTMLButtonElement>}>
-            <Button type="button" size="sm" className="px-3">
+            <Button
+              type="button"
+              size="sm"
+              className="bg-tertiary px-3 font-bold hover:text-tertiary"
+            >
               <MagicWandIcon />
               <SpeakerLoudIcon />
               <span className="sr-only">Player</span>

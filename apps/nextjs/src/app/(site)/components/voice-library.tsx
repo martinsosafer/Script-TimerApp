@@ -8,7 +8,8 @@ import {
   AvatarImage,
 } from "@voiceai/ui/@/components/ui/avatar";
 import { Button } from "@voiceai/ui/@/components/ui/button";
-import { PlayIcon } from "@voiceai/ui/@/icons/icons";
+import { IconStop } from "@voiceai/ui/@/components/ui/icons";
+import { CheckIcon, PlayIcon } from "@voiceai/ui/@/icons/icons";
 import { cn } from "@voiceai/ui/@/lib/utils";
 
 import { api } from "~/utils/api";
@@ -21,7 +22,7 @@ export function VoiceLibrary({ onModelSelect, ...props }: ModelSelectorProps) {
   const { data: voices } = api.voice.list.useQuery({ name: "" });
 
   const [audio, setAudio] = React.useState<HTMLAudioElement | null>(null);
-
+  const [isPlaying, setIsPlaying] = React.useState<Record<string, boolean>>({});
   const [selectedVoiceId, setSelectedVoiceId] = React.useState<string | null>(
     null,
   );
@@ -30,12 +31,21 @@ export function VoiceLibrary({ onModelSelect, ...props }: ModelSelectorProps) {
     setAudio(new Audio()); // only call client
   }, []);
 
-  const playAudio = (audioSrc: string) => {
+  const playAudio = (audioSrc: string, voiceId: string) => {
     if (!audio) return;
     audio.src = audioSrc;
     audio.play();
+    setIsPlaying((prevState) => ({ ...prevState, [voiceId]: true }));
+    audio.addEventListener("ended", () => {
+      setIsPlaying((prevState) => ({ ...prevState, [voiceId]: false }));
+    });
   };
-
+  const stopAudio = (voiceId: string) => {
+    if (!audio) return;
+    audio.pause();
+    audio.currentTime = 0;
+    setIsPlaying((prevState) => ({ ...prevState, [voiceId]: false }));
+  };
   return (
     <div className="space-y-8">
       {/* {voices?.map((voice, i) => (
@@ -96,14 +106,25 @@ export function VoiceLibrary({ onModelSelect, ...props }: ModelSelectorProps) {
                   <Button
                     size="xs"
                     type="button"
-                    onClick={() =>
-                      playAudio(
-                        // @ts-expect-error jsonb types are hard
-                        (voice?.metadata?.preview_url as string) ?? "",
-                      )
-                    }
+                    onClick={() => {
+                      if (isPlaying[voice.id]) {
+                        stopAudio(voice.id);
+                      } else {
+                        playAudio(
+                          (voice?.metadata?.preview_url as string) ?? "",
+                          voice.id,
+                        );
+                      }
+                    }}
                   >
-                    <PlayIcon className=" h-4 w-4" />
+                    {isPlaying[voice.id] ? (
+                      <IconStop className="h-4 w-4 text-tertiary" />
+                    ) : (
+                      <PlayIcon className="h-4 w-4" />
+                    )}
+                    {selectedVoiceId === voice.id && (
+                      <CheckIcon className="ml-2 h-4 w-4 text-tertiary" />
+                    )}
                   </Button>
                 </div>
               </div>

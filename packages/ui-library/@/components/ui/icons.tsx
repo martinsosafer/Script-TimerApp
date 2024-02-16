@@ -529,7 +529,61 @@ function IconStop({ className, ...props }: React.ComponentProps<"svg">) {
     </svg>
   );
 }
-
+function PencilIcon({ className, ...props }: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      id="Pencil_24"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      className={className}
+      {...props}
+    >
+      <rect width="24" height="24" stroke="none" fill="none" />
+      <g transform="matrix(1.05 0 0 1.05 12 12)">
+        <path
+          style={{
+            fill: "currentColor",
+          }}
+          transform="translate(-12.5, -11.5)"
+          d="M 18.414062 2 C 18.158188 2 17.902031 2.0974687 17.707031 2.2929688 L 16 4 L 20 8 L 21.707031 6.2929688 C 22.098031 5.9019687 22.098031 5.2689063 21.707031 4.8789062 L 19.121094 2.2929688 C 18.925594 2.0974687 18.669937 2 18.414062 2 z M 14.5 5.5 L 5 15 C 5 15 6.005 15.005 6.5 15.5 C 6.995 15.995 6.984375 16.984375 6.984375 16.984375 C 6.984375 16.984375 8.004 17.004 8.5 17.5 C 8.996 17.996 9 19 9 19 L 18.5 9.5 L 14.5 5.5 z M 3.6699219 17 L 3 21 L 7 20.330078 L 3.6699219 17 z"
+          strokeLinecap="round"
+        />
+      </g>
+    </svg>
+  );
+}
+function CorrectDocumentIcon({
+  className,
+  ...props
+}: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      id="Correct_Document_24"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      className={className}
+      {...props}
+    >
+      <rect width="24" height="24" stroke="none" fill="none" opacity="0" />
+      <g transform="matrix(0.91 0 0 0.91 12 12)">
+        <path
+          style={{
+            fill: "currentColor",
+          }}
+          transform="translate(-14, -13)"
+          d="M 6 2 C 4.9057453 2 4 2.9057453 4 4 L 4 20 C 4 21.094255 4.9057453 22 6 22 L 11 22 L 11 20 L 6 20 L 6 4 L 13 4 L 13 9 L 18 9 L 18 11 L 20 11 L 20 8 L 14 2 L 6 2 z M 18 13 L 18 16 L 16.5 16 C 15.130937 16 14 17.130937 14 18.5 L 14 21 C 14 21.56503 13.56503 22 13 22 L 13 24 L 21 24 C 22.64497 24 24 22.64497 24 21 L 24 18.5 C 24 17.130937 22.869063 16 21.5 16 L 20 16 L 20 13 L 18 13 z M 16 20 L 22 20 L 22 21 C 22 21.56503 21.56503 22 21 22 L 15.583984 22 C 15.721014 21.657986 16 21.388348 16 21 L 16 20 z"
+          strokeLinecap="round"
+        />
+      </g>
+    </svg>
+  );
+}
 function IconSidebar({ className, ...props }: React.ComponentProps<"svg">) {
   return (
     <svg
@@ -544,6 +598,23 @@ function IconSidebar({ className, ...props }: React.ComponentProps<"svg">) {
   );
 }
 
+function ShareIcon({ className, ...props }: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cn("h-4 w-4", className)}
+      {...props}
+    >
+      <path d="M20 9L12 2 12 10M12 2L12 22M12 22L4 15L12 22Z" />
+    </svg>
+  );
+}
 function IconMoon({ className, ...props }: React.ComponentProps<"svg">) {
   return (
     <svg
@@ -648,7 +719,7 @@ function IconEdit({ className, ...props }: React.ComponentProps<"svg">) {
   );
 }
 
-function IconShare({ className, ...props }: React.ComponentProps<"svg">) {
+function IconArrowShare({ className, ...props }: React.ComponentProps<"svg">) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -747,9 +818,11 @@ export {
   IconCheck,
   IconDownload,
   IconClose,
-  IconShare,
+  IconArrowShare,
   IconUsers,
   IconExternalLink,
   IconChevronUpDown,
   IconPlay,
+  PencilIcon,
+  CorrectDocumentIcon,
 };

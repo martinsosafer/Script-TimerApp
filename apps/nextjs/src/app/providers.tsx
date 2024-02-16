@@ -70,7 +70,7 @@ export function TRPCReactProvider(props: {
           >
             <ThemeProvider
               attribute="class"
-              defaultTheme="system"
+              defaultTheme="blue"
               enableSystem
               {...props}
             >
