@@ -331,7 +331,7 @@ export function ScriptAI({}) {
                         onDrop={handleDrop}
                         onDragOver={handleDragOver}
                         placeholder="Your script here..."
-                        className=" min-h-[50vh] md:min-h-[60vh] lg:min-h-[70vh] xl:min-h-[80vh]"
+                        className=" min-h-[50vh] md:min-h-[55vh] lg:min-h-[70vh] xl:min-h-[80vh]"
                       />
                       <div className="flex items-center justify-end ">
                         <Badge className="flex items-center">
