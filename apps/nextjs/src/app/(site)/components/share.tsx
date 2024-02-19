@@ -32,7 +32,10 @@ export function Share() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="secondary">
+        <Button
+          variant="secondary"
+          className="bg-slate-500 px-4 py-2  hover:bg-slate-300 hover:text-primary-foreground"
+        >
           <IconArrowShare />
           Share
         </Button>

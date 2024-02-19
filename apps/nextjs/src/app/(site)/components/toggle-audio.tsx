@@ -28,7 +28,7 @@ export const ToggleAudio = React.forwardRef(
             <Button
               type="button"
               size="sm"
-              className="bg-tertiary px-3 font-bold hover:text-tertiary"
+              className="bg-primary px-3 font-bold hover:text-tertiary"
             >
               <MagicWandIcon />
               <SpeakerLoudIcon />

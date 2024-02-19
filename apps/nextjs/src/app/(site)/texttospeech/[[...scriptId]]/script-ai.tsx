@@ -187,20 +187,20 @@ export function ScriptAI({}) {
                         Check grammar and spelling
                       </span>
 
-                      <TabsList className=" mt-2 grid grid-cols-2">
+                      <TabsList className=" mt-2 grid grid-cols-2 bg-slate-300">
                         <TabsTrigger
                           value="complete"
-                          className=" flex items-center justify-center data-[state=active]:bg-tertiary"
+                          className=" flex items-center justify-center data-[state=active]:bg-primary"
                         >
                           <span className="sr-only">Complete</span>
-                          <PencilIcon className="h-5 w-5 text-primary" />
+                          <PencilIcon className="h-5 w-5 text-primary-foreground" />
                         </TabsTrigger>
                         <TabsTrigger
                           value="insert"
-                          className="flex items-center justify-center  data-[state=active]:bg-tertiary"
+                          className="flex items-center justify-center  data-[state=active]:bg-primary"
                         >
                           <span className="sr-only">Insert</span>
-                          <CorrectDocumentIcon className="h-5 w-5 text-primary " />
+                          <CorrectDocumentIcon className="h-5 w-5 text-primary-foreground " />
                         </TabsTrigger>
                       </TabsList>
                     </div>
@@ -333,7 +333,7 @@ export function ScriptAI({}) {
                         placeholder="Your script here..."
                         className=" min-h-[50vh] md:min-h-[60vh] lg:min-h-[70vh] xl:min-h-[80vh]"
                       />
-                      <div className="flex items-center justify-center ">
+                      <div className="flex items-center justify-end ">
                         <Badge className="flex items-center">
                           <span className="inline">
                             Script is&nbsp;
@@ -362,7 +362,7 @@ export function ScriptAI({}) {
                           onDragStart={handleDragStart}
                           className="min-h-[50vh] md:min-h-[60vh] lg:min-h-[70vh] xl:min-h-[80vh]"
                         />
-                        <div className="flex items-center justify-center ">
+                        <div className="flex items-center justify-end ">
                           <Badge className="flex items-center">
                             <span className="inline">
                               Script is&nbsp;
