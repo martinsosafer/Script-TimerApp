@@ -1,8 +1,29 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
+
+import { Button } from "@voiceai/ui";
+import {
+  IconAudioLines,
+  IconBot,
+  IconBrainCircuit,
+  IconBrainCog,
+  IconFileHeart,
+  IconFileStack,
+  IconFileType,
+  IconGraduationCap,
+  IconHandshake,
+  IconHistory,
+  IconLibraryBig,
+  IconLightbulb,
+  IconMic2,
+  IconMoon,
+  IconPencilLine,
+  IconSun,
+  IconWallet,
+} from "@voiceai/ui/@/components/ui/icons";
 
 export default function newnavbar({
   signOut,
@@ -10,11 +31,12 @@ export default function newnavbar({
   signOut: () => Promise<null>;
 }) {
   const { theme, setTheme } = useTheme();
-  const handleThemeChange = (newTheme) => {
-    setTheme(newTheme);
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light");
   };
+
   return (
-    <header className=" sticky top-0 z-50 mx-auto flex h-12 items-center justify-between bg-gradient-to-r from-blue-500 to-blue-200 px-2 ">
+    <header className=" sticky top-0 z-50 mx-auto flex h-16 items-center justify-between bg-primary">
       <Link
         href={`/`}
         className="ml-4 text-xl font-bold text-primary-foreground"
@@ -24,38 +46,41 @@ export default function newnavbar({
 
       <nav>
         <ul className="flex items-center justify-center font-semibold">
-          <li className="hover:text-bold group relative px-3 py-2 text-primary-foreground hover:text-orange-500">
-            <button className="cursor-default font-semibold  ">Services</button>
+          <li className=" group relative items-center px-3 py-2  text-primary-foreground">
+            <div className="flex flex-col items-center">
+              <IconFileType className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
+              <IconAudioLines className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
+            </div>
+            <button className="relative z-10 flex cursor-default items-center justify-center font-semibold">
+              <span className="relative z-10">Text to Voice</span>
+            </button>
+            <div className="absolute inset-x-0 bottom-0  mb-2 h-0.5 origin-left scale-x-0 transform bg-primary-foreground transition-transform duration-300 group-hover:scale-x-100"></div>
             <div className="invisible absolute -left-48 top-0 z-50 min-w-[560px] translate-y-0 transform opacity-0 transition duration-500 ease-in-out group-hover:visible group-hover:translate-y-5 group-hover:transform group-hover:opacity-100">
-              <div className="relative top-6 w-full rounded-xl   bg-slate-100 p-6 shadow-xl">
-                <div className="absolute top-0 z-0 h-10 w-10 translate-x-0 rotate-45 transform rounded-sm bg-slate-100 transition-transform duration-500 ease-in-out group-hover:translate-x-[12rem]"></div>
+              <div className="relative top-6 w-full rounded-xl   bg-slate-100 p-6 shadow-xl dark:bg-primary-foreground ">
+                <div className="absolute top-0 z-0 h-10 w-10 translate-x-0 rotate-45 transform rounded-sm bg-slate-100 transition-transform duration-500 ease-in-out group-hover:translate-x-[16rem] dark:bg-primary-foreground "></div>
 
                 <div className="relative z-10">
                   <div className="grid grid-cols-2 gap-6">
                     <div>
-                      <p className="text-[13px] font-medium uppercase tracking-wider text-gray-500">
-                        Mind helpers
+                      <p className="text-[13px] font-medium uppercase tracking-wider text-gray-500  ">
+                        Voice Tools
                       </p>
                       <ul className="mt-3 text-[15px]">
-                        <li>
+                        <li className="flex items-center">
                           <Link
                             href={`/texttospeech`}
-                            className="-mx-2 block rounded-lg p-2 font-semibold text-gray-800 transition duration-300 ease-in-out hover:bg-gradient-to-br hover:from-indigo-200 hover:via-blue-200 hover:to-orange-200 hover:text-indigo-600"
+                            className="-mx-2 block rounded-lg p-2 font-semibold text-gray-800 transition duration-300 ease-in-out hover:bg-gradient-to-br hover:from-indigo-200 hover:via-blue-200 hover:to-orange-200 hover:text-indigo-600 dark:text-secondary-foreground dark:hover:bg-gradient-to-br dark:hover:from-gray-800 dark:hover:via-gray-700 dark:hover:to-gray-600 dark:hover:text-indigo-600"
                           >
-                            Text2Speech
+                            <div className="flex items-center ">
+                              {" "}
+                              {/* Envuelve el icono y el texto en un div flex */}
+                              <span>
+                                <IconMic2 />
+                              </span>
+                              <span className="ml-1 ">Text to voice</span>
+                            </div>
                             <p className="font-normal text-gray-500">
-                              you give us text , we give you voice
-                            </p>
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            href={`/chat`}
-                            className="-mx-2 block rounded-lg p-2 font-semibold text-gray-800 transition duration-300 ease-in-out hover:bg-gradient-to-br hover:from-indigo-200 hover:via-blue-200 hover:to-orange-200 hover:text-indigo-600"
-                          >
-                            Script Coach
-                            <p className="font-normal text-gray-500">
-                              Our AI will help you sharpen ideas
+                              Add text, listen to the best grammar & voices
                             </p>
                           </Link>
                         </li>
@@ -69,24 +94,38 @@ export default function newnavbar({
                         <li>
                           <Link
                             href={`/library`}
-                            className="-mx-2 block rounded-lg p-2 font-semibold text-gray-800 transition duration-300 ease-in-out hover:bg-gradient-to-br hover:from-indigo-200 hover:via-blue-200 hover:to-orange-200 hover:text-indigo-600"
+                            className="-mx-2 block rounded-lg p-2 font-semibold text-gray-800 transition duration-300 ease-in-out hover:bg-gradient-to-br hover:from-indigo-200 hover:via-blue-200 hover:to-orange-200 hover:text-indigo-600 dark:text-secondary-foreground dark:hover:bg-gradient-to-br dark:hover:from-gray-800 dark:hover:via-gray-700 dark:hover:to-gray-600 dark:hover:text-indigo-600"
                           >
-                            Voice Actor Library
+                            <div className="flex items-center">
+                              {" "}
+                              {/* Envuelve el icono y el texto en un div flex */}
+                              <span>
+                                <IconLibraryBig />
+                              </span>
+                              <span className="ml-1">Voice Library</span>
+                            </div>
                             <p className="font-normal text-gray-500">
-                              over 30 voices to choose
+                              Dozens of voices to review & choose
                             </p>
                           </Link>
                         </li>
                         <li>
-                          <a
+                          <Link
                             href={`/history`}
-                            className="-mx-2 block rounded-lg p-2 font-semibold text-gray-800 transition duration-300 ease-in-out hover:bg-gradient-to-br hover:from-indigo-200 hover:via-blue-200 hover:to-orange-200 hover:text-indigo-600"
+                            className="-mx-2 block rounded-lg p-2 font-semibold text-gray-800 transition duration-300 ease-in-out hover:bg-gradient-to-br hover:from-indigo-200 hover:via-blue-200 hover:to-orange-200 hover:text-indigo-600 dark:text-secondary-foreground dark:hover:bg-gradient-to-br dark:hover:from-gray-800 dark:hover:via-gray-700 dark:hover:to-gray-600 dark:hover:text-indigo-600"
                           >
-                            Voice Activity Log
+                            <div className="flex items-center ">
+                              {" "}
+                              {/* Envuelve el icono y el texto en un div flex */}
+                              <span>
+                                <IconHistory />
+                              </span>
+                              <span className="ml-1">Voice History</span>
+                            </div>
                             <p className="font-normal text-gray-500">
-                              Your voice history here
+                              Voice log, download, & share
                             </p>
-                          </a>
+                          </Link>
                         </li>
                       </ul>
                     </div>
@@ -95,7 +134,77 @@ export default function newnavbar({
               </div>
             </div>
           </li>
-          <li className="group relative px-3 py-2 text-primary-foreground hover:text-orange-500">
+          <li className=" group relative px-3 py-2 text-primary-foreground">
+            <div className="flex flex-col items-center">
+              <IconBrainCog className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
+              <IconPencilLine className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
+            </div>
+            <button className="relative z-10 cursor-default font-semibold ">
+              Script Writing
+            </button>
+            <div className="absolute inset-x-0 bottom-0  mb-2 h-0.5 origin-left scale-x-0 transform bg-primary-foreground transition-transform duration-300 group-hover:scale-x-100"></div>
+            <div className="invisible absolute -left-48 top-0 z-50 min-w-[560px] translate-y-0 transform opacity-0 transition duration-500 ease-in-out group-hover:visible group-hover:translate-y-5 group-hover:transform group-hover:opacity-100 ">
+              <div className="relative top-6 w-full rounded-xl   bg-slate-100 p-6 shadow-xl dark:bg-primary-foreground">
+                <div className="absolute top-0 z-0 h-10 w-10 translate-x-0 rotate-45 transform rounded-sm bg-slate-100 transition-transform duration-500 ease-in-out group-hover:translate-x-[16rem] dark:bg-primary-foreground"></div>
+
+                <div className="relative z-10">
+                  <div className="grid grid-cols-2 gap-6">
+                    <div>
+                      <p className="text-[13px] font-medium uppercase tracking-wider text-gray-500">
+                        AI Tools
+                      </p>
+                      <ul className="mt-3 text-[15px]">
+                        <li>
+                          <Link
+                            href={`/chat`}
+                            className="-mx-2 block rounded-lg p-2 font-semibold text-gray-800 transition duration-300 ease-in-out hover:bg-gradient-to-br hover:from-indigo-200 hover:via-blue-200 hover:to-orange-200 hover:text-indigo-600 dark:text-secondary-foreground dark:hover:bg-gradient-to-br dark:hover:from-gray-800 dark:hover:via-gray-700 dark:hover:to-gray-600 dark:hover:text-indigo-600"
+                          >
+                            <div className="flex items-center ">
+                              {" "}
+                              {/* Envuelve el icono y el texto en un div flex */}
+                              <span>
+                                <IconBot />
+                              </span>
+                              <span className="ml-1">Script Coach</span>
+                            </div>
+                            <p className="font-normal text-gray-500">
+                              Sharpen and create scripts
+                            </p>
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                    <div>
+                      <p className="text-[13px] font-medium uppercase tracking-wider text-gray-500">
+                        Script Repository
+                      </p>
+                      <ul className="mt-3 text-[15px]">
+                        <li>
+                          <Link
+                            href={`/chat`}
+                            className="-mx-2 block rounded-lg p-2 font-semibold text-gray-800 transition duration-300 ease-in-out hover:bg-gradient-to-br hover:from-indigo-200 hover:via-blue-200 hover:to-orange-200 hover:text-indigo-600 dark:text-secondary-foreground dark:hover:bg-gradient-to-br dark:hover:from-gray-800 dark:hover:via-gray-700 dark:hover:to-gray-600 dark:hover:text-indigo-600"
+                          >
+                            <div className="flex items-center ">
+                              {" "}
+                              {/* Envuelve el icono y el texto en un div flex */}
+                              <span>
+                                <IconFileStack />
+                              </span>
+                              <span className="ml-1">Script History</span>
+                            </div>
+                            <p className="font-normal text-gray-500">
+                              Your writing history
+                            </p>
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+          {/* <li className="group relative px-3 py-2 text-primary-foreground ">
             <button className="cursor-default font-semibold ">Learn</button>
             <div className="invisible absolute -left-2 top-0 z-50 min-w-[260px] translate-y-0 transform opacity-0 transition duration-500 ease-in-out group-hover:visible group-hover:translate-y-5 group-hover:transform group-hover:opacity-100">
               <div className="relative top-6 w-full rounded-xl bg-slate-100 p-6 shadow-xl">
@@ -151,92 +260,82 @@ export default function newnavbar({
                 </div>
               </div>
             </div>
-          </li>
-          <li className="group relative px-3 py-2 text-primary-foreground hover:text-orange-500">
-            <button className="cursor-default font-semibold ">About</button>
-            <div className="invisible absolute -left-48 top-0 z-50 min-w-[560px] translate-y-0 transform opacity-0 transition duration-500 ease-in-out group-hover:visible group-hover:translate-y-5 group-hover:transform group-hover:opacity-100">
-              <div className="relative top-6 w-full rounded-xl bg-slate-100 p-6 shadow-xl">
-                <div className="absolute top-0 z-0 h-10 w-10 translate-x-0 rotate-45 transform rounded-sm bg-slate-100 transition-transform duration-500 ease-in-out group-hover:translate-x-[12.65rem]"></div>
+          </li> */}
+          <li className="group relative px-3 py-2 text-primary-foreground ">
+            <div className="flex flex-col items-center">
+              <IconGraduationCap className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
+              <IconLightbulb className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
+            </div>
+            <button className="cursor-default font-semibold ">Learn</button>
+            <div className="absolute inset-x-0 bottom-0  mb-2 h-0.5 origin-left scale-x-0 transform bg-primary-foreground transition-transform duration-300 group-hover:scale-x-100"></div>
+            <div className="invisible absolute -left-48 top-0 z-50 min-w-[560px] translate-y-0 transform opacity-0 transition duration-500 ease-in-out group-hover:visible group-hover:translate-y-5 group-hover:transform group-hover:opacity-100 ">
+              <div className="relative top-6 w-full rounded-xl bg-slate-100 p-6 shadow-xl dark:bg-primary-foreground">
+                <div className="absolute top-0 z-0 h-10 w-10 translate-x-0 rotate-45 transform rounded-sm bg-slate-100 transition-transform duration-500 ease-in-out group-hover:translate-x-[12.65rem] dark:bg-primary-foreground"></div>
 
                 <div className="relative z-10">
-                  <a
-                    href="/"
-                    className="-mx-2 block rounded-lg p-2 font-semibold text-gray-800 transition duration-300 ease-in-out hover:bg-gradient-to-br hover:from-indigo-200 hover:via-blue-200 hover:to-orange-200 hover:text-indigo-600"
+                  <Link
+                    href="https://script-timer.com/blogs/"
+                    target="_blank"
+                    className="-mx-2 block rounded-lg p-2 font-semibold text-gray-800 transition duration-300 ease-in-out hover:bg-gradient-to-br hover:from-indigo-200 hover:via-blue-200 hover:to-orange-200 hover:text-indigo-600 dark:text-secondary-foreground dark:hover:bg-gradient-to-br dark:hover:from-gray-800 dark:hover:via-gray-700 dark:hover:to-gray-600 dark:hover:text-indigo-600"
                   >
-                    Blog
+                    <div className="flex items-center ">
+                      {" "}
+                      {/* Envuelve el icono y el texto en un div flex */}
+                      <span>
+                        <IconFileHeart />
+                      </span>
+                      <span className="ml-1">Blog</span>
+                    </div>
                     <p className="font-normal text-gray-500">
                       Keep up with the latest news about Script Timer
                     </p>
-                  </a>
-                  <div className="mt-6 grid grid-cols-2 gap-6">
+                  </Link>
+                  <div className="mt-2 grid grid-cols-1 gap-6">
                     <div>
-                      <p className="text-[13px] font-medium uppercase tracking-wider text-gray-500">
-                        Get started
+                      <p className="text-[13px] font-medium uppercase tracking-wider text-gray-500 dark:text-secondary-foreground">
+                        Learning Links
                       </p>
-                      <ul className="mt-3 text-[15px]">
+                      <ul className="mt-1 text-[15px]">
                         <li>
-                          <a
-                            href="/"
+                          <Link
+                            href="https://script-timer.com/chatgpt-prompts/chatgpt-cheatsheet-guide-to-efficiency-without-the-burnout-2/"
+                            target="_blank"
                             className="block py-1 font-normal text-gray-500 hover:text-gray-800"
                           >
-                            Libraries and SDKs
-                          </a>
+                            Easy Prompt Guide
+                          </Link>
                         </li>
                         <li>
-                          <a
-                            href="/"
+                          <Link
+                            href="https://script-timer.com/chatgpt-prompts/chatgpt-prompting-guide-from-openai/"
+                            target="_blank"
                             className="block py-1 font-normal text-gray-500 hover:text-gray-800"
                           >
-                            Plugins
-                          </a>
+                            Open AI Guide
+                          </Link>
                         </li>
-
                         <li>
-                          <a
-                            href="/"
+                          <Link
+                            href="https://script-timer.com/script-writing/how-long-will-my-script-take-to-read/"
+                            target="_blank"
                             className="block py-1 font-normal text-gray-500 hover:text-gray-800"
                           >
-                            Tutorials
-                          </a>
+                            Script Timing Foundations
+                          </Link>
                         </li>
-                      </ul>
-                    </div>
-                    <div>
-                      <p className="text-[13px] font-medium uppercase tracking-wider text-gray-500">
-                        Guides
-                      </p>
-                      <ul className="mt-3 text-[15px]">
                         <li>
-                          <a
-                            href="/"
+                          <Link
+                            href="https://script-timer.com/lcs-masterclass/"
+                            target="_blank"
                             className="block py-1 font-normal text-gray-500 hover:text-gray-800"
                           >
-                            Link to important blog article 1
-                          </a>
+                            Video Creator MasterClass
+                          </Link>
                         </li>
                         <li>
-                          <a
-                            href="/"
-                            className="block py-1 font-normal text-gray-500 hover:text-gray-800"
-                          >
-                            Link to important blog article 2
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="/"
-                            className="block py-1 font-normal text-gray-600 hover:text-gray-800"
-                          >
-                            Link to important blog article 3
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="/"
-                            className="block py-1 font-normal text-gray-600 hover:text-gray-800"
-                          >
-                            Link to important blog article 4
-                          </a>
+                          <h3 className="block py-1 font-normal text-gray-400">
+                            Video Guides (coming soon)
+                          </h3>
                         </li>
                       </ul>
                     </div>
@@ -245,43 +344,34 @@ export default function newnavbar({
               </div>
             </div>
           </li>
-          <li className="group relative px-3 py-2 text-primary-foreground hover:text-orange-500">
-            <button className="cursor-default font-semibold ">Theme</button>
-            <div className="invisible absolute -left-2 top-0 z-50 min-w-[200px] translate-y-0 transform opacity-0 transition duration-500 ease-in-out group-hover:visible group-hover:translate-y-5 group-hover:transform group-hover:opacity-100">
-              <div className="relative top-6 w-full rounded-xl bg-slate-100 p-6 shadow-xl">
-                <div className="absolute top-0 z-0 h-10 w-10 -translate-x-4 rotate-45 transform rounded-sm bg-slate-100 transition-transform duration-500 ease-in-out group-hover:translate-x-3"></div>
-                <div className="relative z-10">
-                  <ul className="text-[15px]">
-                    <li>
-                      <button
-                        className="block py-1 font-normal text-gray-600 hover:text-gray-800"
-                        onClick={() => handleThemeChange("light")}
-                      >
-                        Light
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        className="block py-1 font-normal text-gray-600 hover:text-gray-800"
-                        onClick={() => handleThemeChange("dark")}
-                      >
-                        Dark
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-              </div>
+
+          <li className="group relative px-3 py-2 text-primary-foreground hover:cursor-pointer ">
+            <div className="flex flex-col items-center">
+              <IconWallet className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
+              <IconHandshake className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
             </div>
-          </li>
-          <li className="group relative px-3 py-2 text-primary-foreground hover:text-orange-500">
-            <a href="#" className="cursor-default font-semibold ">
-              Pricing
-            </a>
+            <Link
+              href="https://script-timer.com/voice123-pricing/"
+              target="_blank"
+              className="cursor-pointer font-semibold "
+            >
+              Plans
+            </Link>
           </li>
         </ul>
       </nav>
       <nav>
-        <ul>
+        <ul className="flex">
+          <li>
+            <Button variant="ghost" size="lg" onClick={toggleTheme}>
+              {!theme ? null : theme === "dark" ? (
+                <IconMoon className="transition-all" />
+              ) : (
+                <IconSun className="transition-all" />
+              )}
+              <span className="sr-only">Toggle theme</span>
+            </Button>
+          </li>
           <li>
             <button
               className="group flex items-center rounded-full bg-blue-500 bg-opacity-10 px-3 py-2 font-semibold"

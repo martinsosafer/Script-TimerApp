@@ -300,7 +300,7 @@ export function ScriptAI({}) {
                     1.Add your script here 
                     2.Choose the voice actor you like
                     3.You can quickly check spelling and grammar`}
-                    className="h-3/5 min-h-[250px] flex-1 p-4 md:min-h-[500px] lg:min-h-[500px]"
+                    className="h-3/5 min-h-[250px] flex-1 p-4 md:min-h-[470px] lg:min-h-[470px]"
                   />
                   <div className="flex items-center justify-end ">
                     <Badge>
@@ -360,7 +360,7 @@ export function ScriptAI({}) {
                           onChange={(e) => setRevisedScript(e.target.value)}
                           draggable="true"
                           onDragStart={handleDragStart}
-                          className="min-h-[50vh] md:min-h-[60vh] lg:min-h-[70vh] xl:min-h-[80vh]"
+                          className="min-h-[50vh] md:min-h-[55vh] lg:min-h-[70vh] xl:min-h-[80vh]"
                         />
                         <div className="flex items-center justify-end ">
                           <Badge className="flex items-center">
