@@ -2,10 +2,12 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { AnimatePresence, motion } from "framer-motion";
 import { useTheme } from "next-themes";
 
 import { Button } from "@voiceai/ui";
 import {
+  IconArrowDown,
   IconAudioLines,
   IconBot,
   IconBrainCircuit,
@@ -25,6 +27,8 @@ import {
   IconWallet,
 } from "@voiceai/ui/@/components/ui/icons";
 
+import MobileNavBar from "./mobile-navbar";
+
 export default function newnavbar({
   signOut,
 }: {
@@ -35,21 +39,26 @@ export default function newnavbar({
     setTheme(theme === "light" ? "dark" : "light");
   };
 
+  const [open, setOpen] = useState(false);
+  const toggleMenu = () => {
+    setOpen((prevOpen) => !prevOpen);
+  };
+
   return (
     <header className=" sticky top-0 z-50 mx-auto flex h-16 items-center justify-between bg-primary">
       <Link
         href={`/`}
-        className="ml-4 text-xl font-bold text-primary-foreground"
+        className="ml-4 text-2xl font-bold text-primary-foreground"
       >
         Script Timer
       </Link>
 
-      <nav>
+      <nav className="mt-4 hidden md:block lg:block xl:block">
         <ul className="flex items-center justify-center font-semibold">
           <li className=" group relative items-center px-3 py-2  text-primary-foreground">
             <div className="flex flex-col items-center">
-              <IconFileType className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
-              <IconAudioLines className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
+              <IconAudioLines className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
+              <IconFileType className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
             </div>
             <button className="relative z-10 flex cursor-default items-center justify-center font-semibold">
               <span className="relative z-10">Text to Voice</span>
@@ -136,8 +145,8 @@ export default function newnavbar({
           </li>
           <li className=" group relative px-3 py-2 text-primary-foreground">
             <div className="flex flex-col items-center">
-              <IconBrainCog className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
-              <IconPencilLine className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
+              <IconPencilLine className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
+              <IconBrainCog className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
             </div>
             <button className="relative z-10 cursor-default font-semibold ">
               Script Writing
@@ -263,8 +272,8 @@ export default function newnavbar({
           </li> */}
           <li className="group relative px-3 py-2 text-primary-foreground ">
             <div className="flex flex-col items-center">
-              <IconGraduationCap className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
-              <IconLightbulb className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
+              <IconLightbulb className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
+              <IconGraduationCap className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
             </div>
             <button className="cursor-default font-semibold ">Learn</button>
             <div className="absolute inset-x-0 bottom-0  mb-2 h-0.5 origin-left scale-x-0 transform bg-primary-foreground transition-transform duration-300 group-hover:scale-x-100"></div>
@@ -279,8 +288,6 @@ export default function newnavbar({
                     className="-mx-2 block rounded-lg p-2 font-semibold text-gray-800 transition duration-300 ease-in-out hover:bg-gradient-to-br hover:from-indigo-200 hover:via-blue-200 hover:to-orange-200 hover:text-indigo-600 dark:text-secondary-foreground dark:hover:bg-gradient-to-br dark:hover:from-gray-800 dark:hover:via-gray-700 dark:hover:to-gray-600 dark:hover:text-indigo-600"
                   >
                     <div className="flex items-center ">
-                      {" "}
-                      {/* Envuelve el icono y el texto en un div flex */}
                       <span>
                         <IconFileHeart />
                       </span>
@@ -345,13 +352,13 @@ export default function newnavbar({
             </div>
           </li>
 
-          <li className="group relative px-3 py-2 text-primary-foreground hover:cursor-pointer ">
+          <li className="group relative px-3 py-2 text-primary-foreground hover:cursor-default ">
             <div className="flex flex-col items-center">
-              <IconWallet className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
-              <IconHandshake className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
+              <IconHandshake className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
+              <IconWallet className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
             </div>
             <Link
-              href="https://script-timer.com/voice123-pricing/"
+              href="https://script-timer.com/pricing/"
               target="_blank"
               className="cursor-pointer font-semibold "
             >
@@ -360,12 +367,26 @@ export default function newnavbar({
           </li>
         </ul>
       </nav>
+      <nav className=" ml-6 sm:block md:hidden lg:hidden xl:hidden">
+        <button
+          className="inline-flex items-center rounded border-b-4 border-blue-700 bg-blue-500 px-4 py-2 font-bold text-white hover:border-blue-500 hover:bg-blue-400"
+          onClick={toggleMenu}
+        >
+          <IconArrowDown />
+          <span>Menu</span>
+        </button>
+      </nav>
       <nav>
         <ul className="flex">
           <li>
-            <Button variant="ghost" size="lg" onClick={toggleTheme}>
+            <Button
+              variant="ghost"
+              size="lg"
+              onClick={toggleTheme}
+              className=""
+            >
               {!theme ? null : theme === "dark" ? (
-                <IconMoon className="transition-all" />
+                <IconMoon className="transition-all " />
               ) : (
                 <IconSun className="transition-all" />
               )}
@@ -374,7 +395,7 @@ export default function newnavbar({
           </li>
           <li>
             <button
-              className="group flex items-center rounded-full bg-blue-500 bg-opacity-10 px-3 py-2 font-semibold"
+              className="group flex items-center rounded-full border-b-4  border-blue-700 bg-blue-300 bg-opacity-10 px-3  py-2 font-semibold"
               onClick={async () => {
                 await signOut();
               }}
@@ -403,6 +424,9 @@ export default function newnavbar({
           </li>
         </ul>
       </nav>
+      <AnimatePresence>
+        {open && <MobileNavBar toggle={toggleMenu} />}
+      </AnimatePresence>
     </header>
   );
 }
