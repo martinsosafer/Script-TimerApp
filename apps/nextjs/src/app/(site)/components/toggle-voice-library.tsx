@@ -24,7 +24,11 @@ export const ToggleLibrary = React.forwardRef(({}: ToggleAudioProps, ref) => {
     <div className="grid gap-2">
       <Sheet>
         <SheetTrigger asChild ref={ref as React.Ref<HTMLButtonElement>}>
-          <Button type="button" size="sm" className="px-3">
+          <Button
+            type="button"
+            size="sm"
+            className="bg-primary px-3 font-bold hover:text-tertiary"
+          >
             <Icons.SoundLibrary className="mr-2 h-4 w-4 " />
             Library
             <span className="sr-only">Library</span>

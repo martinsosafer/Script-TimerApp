@@ -4,7 +4,7 @@ import { useParams } from "next/navigation";
 import { CopyIcon } from "@radix-ui/react-icons";
 
 import { Button } from "@voiceai/ui/@/components/ui/button";
-import { IconCheck } from "@voiceai/ui/@/components/ui/icons";
+import { IconArrowShare, IconCheck } from "@voiceai/ui/@/components/ui/icons";
 import { Input } from "@voiceai/ui/@/components/ui/input";
 import { Label } from "@voiceai/ui/@/components/ui/label";
 import {
@@ -32,7 +32,13 @@ export function Share() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="secondary">Share</Button>
+        <Button
+          variant="secondary"
+          className=" rounded-full bg-blue-300 px-4   py-2  hover:bg-blue-500  hover:text-primary-foreground"
+        >
+          <IconArrowShare />
+          Share
+        </Button>
       </PopoverTrigger>
       <PopoverContent align="end" className="w-[520px]">
         <div className="flex flex-col space-y-2 text-center sm:text-left">
