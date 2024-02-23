@@ -199,7 +199,7 @@ export default function MobileNavBar({ toggle }) {
               className=" mt-2 text-secondary-foreground"
             >
               <Link
-                href="https://script-timer.com/pricing/"
+                href="https://script-timer.com/voice123-pricing/"
                 target="_blank"
                 onClick={toggle}
               >

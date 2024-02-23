@@ -30,6 +30,10 @@ export default {
           DEFAULT: "hsl(var(--tertiary))",
           foreground: "hsl(var(--tertiary-foreground))",
         },
+        secondarybutton: {
+          DEFAULT: "hsl(var(--secondarybutton))",
+          foreground: "hsl(var(--secondarybutton-foreground))",
+        },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",

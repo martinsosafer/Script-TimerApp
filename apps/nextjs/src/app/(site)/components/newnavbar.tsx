@@ -48,7 +48,7 @@ export default function newnavbar({
     <header className=" sticky top-0 z-50 mx-auto flex h-16 items-center justify-between bg-primary">
       <Link
         href={`/`}
-        className="ml-4 text-2xl font-bold text-primary-foreground"
+        className="ml-8 text-2xl font-bold text-primary-foreground"
       >
         Script Timer
       </Link>
@@ -358,7 +358,7 @@ export default function newnavbar({
               <IconWallet className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
             </div>
             <Link
-              href="https://script-timer.com/pricing/"
+              href="https://script-timer.com/voice123-pricing/"
               target="_blank"
               className="cursor-pointer font-semibold "
             >

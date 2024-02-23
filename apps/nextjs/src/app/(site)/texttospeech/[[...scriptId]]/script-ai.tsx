@@ -47,6 +47,7 @@ import { calculateLength } from "~/lib/calculate-length";
 import { calculateLengthtTime } from "~/lib/calculate-length-time";
 import { api } from "~/utils/api";
 import { useDragAndDrop } from "~/utils/helpers";
+import { HistoryButton } from "../../components/history-button";
 import { ModelSelector } from "../../components/model-selector";
 import { SaveScript } from "../../components/save-script";
 import { ScriptSelector } from "../../components/script-selector";
@@ -145,8 +146,8 @@ export function ScriptAI({}) {
   };
   const { wordCount, minutes, formattedSeconds } = calculateLengthtTime(script);
   return (
-    <div className=" h-full flex-col md:flex">
-      <div className="md:min-h-14 lg:min-h-14 container  flex flex-col items-start justify-between sm:flex-row sm:items-center sm:space-y-0">
+    <div className=" h-screen flex-col  md:flex">
+      <div className="md:min-h-20 lg:min-h-20 container  mb-5  mt-5 flex flex-col items-start justify-between sm:flex-row sm:items-center sm:space-y-0">
         <h2 className="mr-2 flex-shrink-0 bg-gradient-to-r from-black to-blue-500 bg-clip-text text-xl font-bold text-transparent dark:bg-gradient-to-r dark:from-white dark:to-blue-500">
           Listen to your script
         </h2>
@@ -154,10 +155,9 @@ export function ScriptAI({}) {
           <ScriptSelector />
           <SaveScript script={script} />
 
-          <div className="flex">
-            {/* <CodeViewer /> */}
-            <Share />
-          </div>
+          {/* <CodeViewer /> */}
+          <Share />
+          <HistoryButton />
           <Tooltip>
             <TooltipTrigger>
               <ToggleLibrary />
@@ -183,11 +183,11 @@ export function ScriptAI({}) {
                 <HoverCard openDelay={200}>
                   <HoverCardTrigger asChild>
                     <div className="py-1 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                      <span className="mb-1  flex-1 text-center underline">
+                      <span className="mb-2 flex-1 text-center underline">
                         Check grammar and spelling
                       </span>
 
-                      <TabsList className=" mt-2 grid grid-cols-2 bg-slate-300">
+                      <TabsList className=" mt-3 grid grid-cols-2 bg-slate-300">
                         <TabsTrigger
                           value="complete"
                           className=" flex items-center justify-center data-[state=active]:bg-primary"
@@ -206,10 +206,7 @@ export function ScriptAI({}) {
                     </div>
                   </HoverCardTrigger>
                   <HoverCardContent className="w-[320px] text-sm" side="left">
-                    Choose the interface that best suits your task. You can
-                    provide: a simple prompt to complete, starting and ending
-                    text to insert a completion within, or some text with
-                    instructions to edit it
+                    Click to open grammar, spelling and script suggestions.
                   </HoverCardContent>
                 </HoverCard>
               </div>
@@ -238,7 +235,7 @@ export function ScriptAI({}) {
                 value={stability}
                 onValueChange={setStability}
               />
-              <Button
+              {/* <Button
                 className=" bg-tertiary font-semibold  "
                 disabled={!selectedModel || !script}
                 onClick={async () => {
@@ -260,23 +257,8 @@ export function ScriptAI({}) {
                 ) : (
                   "Create"
                 )}
-              </Button>
-              <Badge className="bg-primary md:hidden lg:hidden xl:hidden">
-                <ul>
-                  <li>
-                    <strong>Script is</strong>
-                    <span className="ml-2 font-semibold text-tertiary dark:text-tertiary">
-                      {wordCount} words.
-                    </span>
-                  </li>
-                  <li>
-                    <strong>Estimated wait time is</strong>
-                    <span className="ml-2 font-semibold  text-tertiary dark:text-tertiary">
-                      {minutes} minutes and {formattedSeconds} seconds.
-                    </span>
-                  </li>
-                </ul>
-              </Badge>
+              </Button> */}
+
               {/* <div className="py-2">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="similarity">Preview Voices</Label>
@@ -300,15 +282,15 @@ export function ScriptAI({}) {
                     1.Add your script here 
                     2.Choose the voice actor you like
                     3.You can quickly check spelling and grammar`}
-                    className="h-3/5 min-h-[250px] flex-1 p-4 md:min-h-[470px] lg:min-h-[470px]"
+                    className="h-3/5 min-h-[250px] flex-1 p-4 md:min-h-[400px] lg:min-h-[350px]"
                   />
-                  <div className="flex items-center justify-end ">
-                    <Badge>
+                  <div className="flex flex-col items-center justify-center  ">
+                    <Badge className="h-12  w-[450px] items-center justify-center ">
                       Script is&nbsp;
                       <span className="font-semibold text-tertiary dark:text-tertiary">
                         {wordCount}
                       </span>
-                      &nbsp;words. Estimated wait time is&nbsp;
+                      &nbsp;words. Estimated time is&nbsp;
                       <span className="font-semibold text-tertiary  dark:text-tertiary">
                         {minutes}
                       </span>
@@ -318,6 +300,29 @@ export function ScriptAI({}) {
                       </span>
                       &nbsp;seconds
                     </Badge>
+                    <Button
+                      className="mb-16 mt-2 h-12 w-[450px] bg-tertiary p-3  font-semibold "
+                      disabled={!selectedModel || !script}
+                      onClick={async () => {
+                        setLoading(true);
+                        try {
+                          await generateVoice({
+                            // @ts-expect-error need to type this in the state
+                            voice_id: selectedModel?.id,
+                            message: script,
+                            stability: stability?.[0],
+                            similarity: similarity?.[0],
+                          });
+                          setLoading(false);
+                        } catch {}
+                      }}
+                    >
+                      {loading ? (
+                        <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                      ) : (
+                        "Create"
+                      )}
+                    </Button>
                   </div>
                 </div>
               </TabsContent>
@@ -340,7 +345,7 @@ export function ScriptAI({}) {
                             <span className="font-semibold text-tertiary dark:text-tertiary">
                               {wordCount}
                             </span>
-                            &nbsp;words. Estimated wait &nbsp;
+                            &nbsp;words. Estimated time &nbsp;
                             <span className="font-semibold text-tertiary  dark:text-tertiary">
                               {minutes}
                             </span>
@@ -369,7 +374,7 @@ export function ScriptAI({}) {
                               <span className="font-semibold text-tertiary dark:text-tertiary">
                                 {wordCount}
                               </span>
-                              &nbsp;words. Estimated wait &nbsp;
+                              &nbsp;words. Estimated time &nbsp;
                               <span className="font-semibold text-tertiary  dark:text-tertiary">
                                 {minutes}
                               </span>
