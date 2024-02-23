@@ -47,6 +47,7 @@ import { calculateLength } from "~/lib/calculate-length";
 import { calculateLengthtTime } from "~/lib/calculate-length-time";
 import { api } from "~/utils/api";
 import { useDragAndDrop } from "~/utils/helpers";
+import { HistoryButton } from "../../components/history-button";
 import { ModelSelector } from "../../components/model-selector";
 import { SaveScript } from "../../components/save-script";
 import { ScriptSelector } from "../../components/script-selector";
@@ -156,7 +157,7 @@ export function ScriptAI({}) {
 
           {/* <CodeViewer /> */}
           <Share />
-
+          <HistoryButton />
           <Tooltip>
             <TooltipTrigger>
               <ToggleLibrary />
@@ -182,11 +183,11 @@ export function ScriptAI({}) {
                 <HoverCard openDelay={200}>
                   <HoverCardTrigger asChild>
                     <div className="py-1 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                      <span className="mb-1  flex-1 text-center underline">
+                      <span className="mb-2 flex-1 text-center underline">
                         Check grammar and spelling
                       </span>
 
-                      <TabsList className=" mt-2 grid grid-cols-2 bg-slate-300">
+                      <TabsList className=" mt-3 grid grid-cols-2 bg-slate-300">
                         <TabsTrigger
                           value="complete"
                           className=" flex items-center justify-center data-[state=active]:bg-primary"
@@ -205,10 +206,7 @@ export function ScriptAI({}) {
                     </div>
                   </HoverCardTrigger>
                   <HoverCardContent className="w-[320px] text-sm" side="left">
-                    Choose the interface that best suits your task. You can
-                    provide: a simple prompt to complete, starting and ending
-                    text to insert a completion within, or some text with
-                    instructions to edit it
+                    Click to open grammar, spelling and script suggestions.
                   </HoverCardContent>
                 </HoverCard>
               </div>
