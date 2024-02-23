@@ -145,7 +145,7 @@ export function ScriptAI({}) {
   };
   const { wordCount, minutes, formattedSeconds } = calculateLengthtTime(script);
   return (
-    <div className=" h-full flex-col  md:flex">
+    <div className=" h-screen flex-col  md:flex">
       <div className="md:min-h-20 lg:min-h-20 container  mb-5  mt-5 flex flex-col items-start justify-between sm:flex-row sm:items-center sm:space-y-0">
         <h2 className="mr-2 flex-shrink-0 bg-gradient-to-r from-black to-blue-500 bg-clip-text text-xl font-bold text-transparent dark:bg-gradient-to-r dark:from-white dark:to-blue-500">
           Listen to your script
@@ -260,22 +260,7 @@ export function ScriptAI({}) {
                   "Create"
                 )}
               </Button> */}
-              <Badge className="bg-primary md:hidden lg:hidden xl:hidden">
-                <ul>
-                  <li>
-                    <strong>Script is</strong>
-                    <span className="ml-2 font-semibold text-tertiary dark:text-tertiary">
-                      {wordCount} words.
-                    </span>
-                  </li>
-                  <li>
-                    <strong>Estimated wait time is</strong>
-                    <span className="ml-2 font-semibold  text-tertiary dark:text-tertiary">
-                      {minutes} minutes and {formattedSeconds} seconds.
-                    </span>
-                  </li>
-                </ul>
-              </Badge>
+
               {/* <div className="py-2">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="similarity">Preview Voices</Label>
@@ -301,8 +286,8 @@ export function ScriptAI({}) {
                     3.You can quickly check spelling and grammar`}
                     className="h-3/5 min-h-[250px] flex-1 p-4 md:min-h-[400px] lg:min-h-[350px]"
                   />
-                  <div className="flex flex-col items-center justify-center ">
-                    <Badge className="p-3">
+                  <div className="flex flex-col items-center justify-center  ">
+                    <Badge className="h-12  w-[450px] items-center justify-center ">
                       Script is&nbsp;
                       <span className="font-semibold text-tertiary dark:text-tertiary">
                         {wordCount}
@@ -318,7 +303,7 @@ export function ScriptAI({}) {
                       &nbsp;seconds
                     </Badge>
                     <Button
-                      className="mt-2 w-[360px] bg-tertiary p-3  font-semibold "
+                      className="mb-16 mt-2 h-12 w-[450px] bg-tertiary p-3  font-semibold "
                       disabled={!selectedModel || !script}
                       onClick={async () => {
                         setLoading(true);
@@ -362,7 +347,7 @@ export function ScriptAI({}) {
                             <span className="font-semibold text-tertiary dark:text-tertiary">
                               {wordCount}
                             </span>
-                            &nbsp;words. Estimated wait &nbsp;
+                            &nbsp;words. Estimated time &nbsp;
                             <span className="font-semibold text-tertiary  dark:text-tertiary">
                               {minutes}
                             </span>
@@ -391,7 +376,7 @@ export function ScriptAI({}) {
                               <span className="font-semibold text-tertiary dark:text-tertiary">
                                 {wordCount}
                               </span>
-                              &nbsp;words. Estimated wait &nbsp;
+                              &nbsp;words. Estimated time &nbsp;
                               <span className="font-semibold text-tertiary  dark:text-tertiary">
                                 {minutes}
                               </span>

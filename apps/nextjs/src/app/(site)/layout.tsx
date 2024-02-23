@@ -54,7 +54,7 @@ export default function Layout(props: { children: React.ReactNode }) {
           {/* <Menu signOut={signOutServer} /> */}
           <div className="grid ">
             {/* <Sidebar playlists={playlists} className="hidden lg:block" /> */}
-            <div className="col-span-4 h-screen overflow-auto">
+            <div className="col-span-4 h-screen  overflow-auto">
               {props.children}
             </div>
           </div>
