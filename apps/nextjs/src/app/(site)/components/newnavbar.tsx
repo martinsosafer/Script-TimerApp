@@ -48,7 +48,7 @@ export default function newnavbar({
     <header className=" sticky top-0 z-50 mx-auto flex h-16 items-center justify-between bg-primary">
       <Link
         href={`/`}
-        className="ml-4 text-2xl font-bold text-primary-foreground"
+        className="ml-8 text-2xl font-bold text-primary-foreground"
       >
         Script Timer
       </Link>

@@ -145,8 +145,8 @@ export function ScriptAI({}) {
   };
   const { wordCount, minutes, formattedSeconds } = calculateLengthtTime(script);
   return (
-    <div className=" h-full flex-col md:flex">
-      <div className="md:min-h-14 lg:min-h-14 container  flex flex-col items-start justify-between sm:flex-row sm:items-center sm:space-y-0">
+    <div className=" h-full flex-col  md:flex">
+      <div className="md:min-h-20 lg:min-h-20 container  mb-5  mt-5 flex flex-col items-start justify-between sm:flex-row sm:items-center sm:space-y-0">
         <h2 className="mr-2 flex-shrink-0 bg-gradient-to-r from-black to-blue-500 bg-clip-text text-xl font-bold text-transparent dark:bg-gradient-to-r dark:from-white dark:to-blue-500">
           Listen to your script
         </h2>
@@ -154,10 +154,9 @@ export function ScriptAI({}) {
           <ScriptSelector />
           <SaveScript script={script} />
 
-          <div className="flex">
-            {/* <CodeViewer /> */}
-            <Share />
-          </div>
+          {/* <CodeViewer /> */}
+          <Share />
+
           <Tooltip>
             <TooltipTrigger>
               <ToggleLibrary />
@@ -238,7 +237,7 @@ export function ScriptAI({}) {
                 value={stability}
                 onValueChange={setStability}
               />
-              <Button
+              {/* <Button
                 className=" bg-tertiary font-semibold  "
                 disabled={!selectedModel || !script}
                 onClick={async () => {
@@ -260,7 +259,7 @@ export function ScriptAI({}) {
                 ) : (
                   "Create"
                 )}
-              </Button>
+              </Button> */}
               <Badge className="bg-primary md:hidden lg:hidden xl:hidden">
                 <ul>
                   <li>
@@ -300,15 +299,15 @@ export function ScriptAI({}) {
                     1.Add your script here 
                     2.Choose the voice actor you like
                     3.You can quickly check spelling and grammar`}
-                    className="h-3/5 min-h-[250px] flex-1 p-4 md:min-h-[470px] lg:min-h-[470px]"
+                    className="h-3/5 min-h-[250px] flex-1 p-4 md:min-h-[400px] lg:min-h-[350px]"
                   />
-                  <div className="flex items-center justify-end ">
-                    <Badge>
+                  <div className="flex flex-col items-center justify-center ">
+                    <Badge className="p-3">
                       Script is&nbsp;
                       <span className="font-semibold text-tertiary dark:text-tertiary">
                         {wordCount}
                       </span>
-                      &nbsp;words. Estimated wait time is&nbsp;
+                      &nbsp;words. Estimated time is&nbsp;
                       <span className="font-semibold text-tertiary  dark:text-tertiary">
                         {minutes}
                       </span>
@@ -318,6 +317,29 @@ export function ScriptAI({}) {
                       </span>
                       &nbsp;seconds
                     </Badge>
+                    <Button
+                      className="mt-2 w-[360px] bg-tertiary p-3  font-semibold "
+                      disabled={!selectedModel || !script}
+                      onClick={async () => {
+                        setLoading(true);
+                        try {
+                          await generateVoice({
+                            // @ts-expect-error need to type this in the state
+                            voice_id: selectedModel?.id,
+                            message: script,
+                            stability: stability?.[0],
+                            similarity: similarity?.[0],
+                          });
+                          setLoading(false);
+                        } catch {}
+                      }}
+                    >
+                      {loading ? (
+                        <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                      ) : (
+                        "Create"
+                      )}
+                    </Button>
                   </div>
                 </div>
               </TabsContent>

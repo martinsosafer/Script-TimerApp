@@ -16,7 +16,7 @@ export function ChatHistory({ userId }: ChatHistoryProps) {
   return (
     <div className="flex h-screen flex-col">
       <div className="my-4 mt-12 px-2">
-        <h2 className="mb-4 text-xl font-bold text-primary-foreground dark:text-secondary-foreground">
+        <h2 className="mb-4 mt-4 text-xl font-bold text-primary-foreground dark:text-secondary-foreground">
           Chat History
         </h2>
         <Link

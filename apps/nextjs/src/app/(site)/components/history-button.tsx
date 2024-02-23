@@ -16,7 +16,7 @@ import { useCopyToClipboard } from "@voiceai/ui/@/hooks/use-copy-to-clipboard";
 
 import { api } from "~/utils/api";
 
-export function Share() {
+export function HistoryButton() {
   const { scriptId } = useParams();
   const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 });
 
