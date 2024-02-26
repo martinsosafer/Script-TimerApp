@@ -34,7 +34,8 @@ export function Share() {
       <PopoverTrigger asChild>
         <Button
           variant="secondary"
-          className=" bg-secondarybutton px-3 hover:bg-blue-500  hover:text-primary-foreground"
+          size="sm"
+          className="bg-secondarybutton px-3 font-bold text-primary-foreground hover:bg-blue-500 hover:text-secondary-foreground"
         >
           <IconArrowShare className="mr-2 h-4 w-4" />
           Share

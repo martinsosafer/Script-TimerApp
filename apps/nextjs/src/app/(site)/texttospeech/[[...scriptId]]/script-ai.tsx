@@ -151,13 +151,27 @@ export function ScriptAI({}) {
         <h2 className="mr-2 flex-shrink-0 bg-gradient-to-r from-black to-blue-500 bg-clip-text text-xl font-bold text-transparent dark:bg-gradient-to-r dark:from-white dark:to-blue-500">
           Listen to your script
         </h2>
-        <div className="ml-auto flex w-full space-x-2 sm:justify-end">
+        <div className="ml-auto flex w-full space-x-2 sm:justify-end ">
           <ScriptSelector />
           <SaveScript script={script} />
 
           {/* <CodeViewer /> */}
-          <Share />
-          <HistoryButton />
+
+          <Tooltip>
+            <TooltipTrigger>
+              <Share />
+            </TooltipTrigger>
+            <TooltipContent>
+              {" "}
+              Share with friends after saving the script
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger>
+              <HistoryButton />
+            </TooltipTrigger>
+            <TooltipContent>Click to open your voice history</TooltipContent>
+          </Tooltip>
           <Tooltip>
             <TooltipTrigger>
               <ToggleLibrary />
@@ -282,7 +296,7 @@ export function ScriptAI({}) {
                     1.Add your script here 
                     2.Choose the voice actor you like
                     3.You can quickly check spelling and grammar`}
-                    className="h-3/5 min-h-[250px] flex-1 p-4 md:min-h-[400px] lg:min-h-[350px]"
+                    className="h-3/5 min-h-[250px] flex-1 p-4 md:min-h-[400px] lg:min-h-[440px] xl:min-h-[440px]"
                   />
                   <div className="flex flex-col items-center justify-center  ">
                     <Badge className="h-12  w-[450px] items-center justify-center ">
@@ -336,7 +350,7 @@ export function ScriptAI({}) {
                         onDrop={handleDrop}
                         onDragOver={handleDragOver}
                         placeholder="Your script here..."
-                        className=" min-h-[50vh] md:min-h-[55vh] lg:min-h-[70vh] xl:min-h-[80vh]"
+                        className=" min-h-[50vh] md:min-h-[55vh] lg:min-h-[70vh] xl:min-h-[70vh]"
                       />
                       <div className="flex items-center justify-end ">
                         <Badge className="flex items-center">
@@ -365,7 +379,7 @@ export function ScriptAI({}) {
                           onChange={(e) => setRevisedScript(e.target.value)}
                           draggable="true"
                           onDragStart={handleDragStart}
-                          className="min-h-[50vh] md:min-h-[55vh] lg:min-h-[70vh] xl:min-h-[80vh]"
+                          className="min-h-[50vh] md:min-h-[55vh] lg:min-h-[70vh] xl:min-h-[70vh]"
                         />
                         <div className="flex items-center justify-end ">
                           <Badge className="flex items-center">

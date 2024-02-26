@@ -684,7 +684,9 @@
   --tertiary: 24.6 95% 53.1%;
   --tertiary-foreground: 60 9.1% 97.8%;
 
-  --secondarybutton: 210 65% 80%;
+  --secondarybutton: 187.89999999999998,
+    85.7%,
+    53.3%;
   --secondarybutton-foreground: 222.2 47.4% 11.2%;
 
   --accent: 210 40% 96.1%;
