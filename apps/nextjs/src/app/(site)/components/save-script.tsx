@@ -80,7 +80,7 @@ export function SaveScript({ script = "" }: SaveScriptProps) {
       },
     });
   return (
-    <div className="grid gap-2">
+    <div className="mt-0.5">
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button
