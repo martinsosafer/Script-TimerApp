@@ -13,7 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@voiceai/ui/@/components/ui/dialog";
-import { Icons } from "@voiceai/ui/@/components/ui/icons";
+import { EditIcon, Icons, IconTrash } from "@voiceai/ui/@/components/ui/icons";
 import { Input } from "@voiceai/ui/@/components/ui/input";
 import { Label } from "@voiceai/ui/@/components/ui/label";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
@@ -28,6 +28,7 @@ export function SaveScript({ script = "" }: SaveScriptProps) {
   const router = useRouter();
 
   const [open, setOpen] = React.useState(false);
+  const [openDelete, setOpenDelete] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [name, setName] = React.useState("");
   const { scriptId } = useParams();
@@ -46,8 +47,10 @@ export function SaveScript({ script = "" }: SaveScriptProps) {
   const { mutateAsync: createScript, error: errorCreatingScript } =
     api.script.create.useMutation({
       onSuccess(data) {
+        setName(name);
         setLoading(false);
         setOpen(false);
+
         router.push(`/texttospeech/${data?.id}`, { scroll: false });
       },
       onError(error) {
@@ -55,7 +58,7 @@ export function SaveScript({ script = "" }: SaveScriptProps) {
 
         toast({
           title: "Something went wrong",
-          description: "Please try again later",
+          description: "Please verify you have a script or try again later",
         });
       },
     });
@@ -79,6 +82,80 @@ export function SaveScript({ script = "" }: SaveScriptProps) {
         });
       },
     });
+
+  const { mutateAsync: deleteScript } = api.script.delete.useMutation({
+    onSuccess() {
+      toast({
+        title: "Script deleted",
+        description: "Your script has been deleted",
+      });
+
+      router.push("/texttospeech");
+    },
+    onError(error) {
+      toast({
+        title: "Something went wrong",
+        description: "Please try again later",
+      });
+    },
+  });
+  const DeleteButton = () => {
+    return (
+      <Dialog open={openDelete} onOpenChange={setOpenDelete}>
+        <DialogTrigger asChild>
+          <Button
+            variant="secondary"
+            size="sm"
+            className="ml-1 rounded-xl bg-red-600 px-3 font-bold text-primary-foreground hover:bg-red-800 hover:text-secondary-foreground"
+          >
+            <IconTrash className="mr-2 h-4 w-4" />
+            Delete
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[475px]">
+          <DialogHeader>
+            <DialogTitle className="text-red-600">Delete script</DialogTitle>
+            <DialogDescription>
+              'This will delete your script'
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2">
+              <Label htmlFor="name" id="name">
+                Name
+              </Label>
+              <Input
+                id="name"
+                autoFocus
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+            {/* <div className="grid gap-2">
+            <Label htmlFor="description">Description</Label>
+            <Input id="description" />
+          </div> */}
+          </div>
+          <DialogFooter>
+            <Button
+              disabled={name.length === 0}
+              onClick={() => {
+                deleteScript({ id: scriptDetails.id });
+              }}
+              className="gap-1 bg-red-600"
+            >
+              <IconTrash />
+              {loading ? (
+                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <>Delete</>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    );
+  };
   return (
     <div className="mt-0.5">
       <Dialog open={open} onOpenChange={setOpen}>
@@ -88,8 +165,12 @@ export function SaveScript({ script = "" }: SaveScriptProps) {
             size="sm"
             className="rounded-xl  bg-sky-400 px-3 font-bold text-primary-foreground hover:bg-blue-600 hover:text-secondary-foreground"
           >
-            <HeartIcon className="mr-2 h-4 w-4 " />
-            <h3>Save</h3>
+            {scriptDetails ? (
+              <EditIcon className="mr-2 h-4 w-4" />
+            ) : (
+              <HeartIcon className="mr-2 h-4 w-4" />
+            )}
+            <h3>{scriptDetails ? "Update" : "Save"}</h3>
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[475px]">
@@ -150,6 +231,7 @@ export function SaveScript({ script = "" }: SaveScriptProps) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      {scriptDetails && <DeleteButton />}
     </div>
   );
 }
