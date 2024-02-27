@@ -86,9 +86,9 @@ export function SaveScript({ script = "" }: SaveScriptProps) {
           <Button
             variant="secondary"
             size="sm"
-            className="bg-secondarybutton px-3 font-bold text-primary-foreground hover:bg-blue-500 hover:text-secondary-foreground"
+            className="rounded-xl  bg-sky-400 px-3 font-bold text-primary-foreground hover:bg-blue-600 hover:text-secondary-foreground"
           >
-            <HeartIcon className="mr-2 h-4 w-4 text-red-500" />
+            <HeartIcon className="mr-2 h-4 w-4 " />
             <h3>Save</h3>
           </Button>
         </DialogTrigger>

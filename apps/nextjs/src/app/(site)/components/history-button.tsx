@@ -42,7 +42,7 @@ export function HistoryButton() {
             <Button
               variant="secondary"
               size="sm"
-              className="bg-secondarybutton px-3 font-bold text-primary-foreground hover:bg-blue-500 hover:text-secondary-foreground"
+              className=" rounded-xl bg-sky-600 px-3 font-bold text-primary-foreground hover:bg-blue-600 hover:text-secondary-foreground"
             >
               <IconHistory className="mr-2 h-3 w-3" />
               History
