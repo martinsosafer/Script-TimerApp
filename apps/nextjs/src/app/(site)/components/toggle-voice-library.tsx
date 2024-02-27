@@ -27,7 +27,7 @@ export const ToggleLibrary = React.forwardRef(({}: ToggleAudioProps, ref) => {
           <Button
             type="button"
             size="sm"
-            className="bg-primary px-3 font-bold hover:text-tertiary"
+            className="rounded-xl bg-primary px-3 font-bold hover:text-tertiary"
           >
             <Icons.SoundLibrary className="mr-2 h-4 w-4 " />
             Library

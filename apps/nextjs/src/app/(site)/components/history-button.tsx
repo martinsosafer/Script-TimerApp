@@ -35,18 +35,21 @@ export function HistoryButton() {
     { enabled: Boolean(scriptId?.[0]) },
   );
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Link href="/history" target="_blank">
-          <Button
-            variant="secondary"
-            className=" bg-secondarybutton px-3 hover:bg-blue-500  hover:text-primary-foreground"
-          >
-            <IconHistory className="mr-2 h-4 w-4" />
-            History
-          </Button>
-        </Link>
-      </PopoverTrigger>
-    </Popover>
+    <div className="grid gap-2">
+      <Popover>
+        <PopoverTrigger asChild>
+          <Link href="/history" target="_blank">
+            <Button
+              variant="secondary"
+              size="sm"
+              className=" rounded-xl bg-sky-600 px-3 font-bold text-primary-foreground hover:bg-blue-600 hover:text-secondary-foreground"
+            >
+              <IconHistory className="mr-2 h-3 w-3" />
+              History
+            </Button>
+          </Link>
+        </PopoverTrigger>
+      </Popover>
+    </div>
   );
 }
