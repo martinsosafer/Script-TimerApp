@@ -152,7 +152,7 @@ export function ScriptAI({}) {
           Listen to your script
         </h2>
         <div className="ml-auto flex w-full space-x-2 sm:justify-end ">
-          <ScriptSelector />
+          <ScriptSelector script={script} />
           <SaveScript script={script} />
 
           {/* <CodeViewer /> */}
@@ -198,7 +198,7 @@ export function ScriptAI({}) {
                   <HoverCardTrigger asChild>
                     <div className="py-1 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                       <span className="mb-2 flex-1 text-center underline">
-                        Check grammar and spelling
+                        Check Grammar and Spelling
                       </span>
 
                       <TabsList className=" mt-3 grid grid-cols-2 bg-slate-300">

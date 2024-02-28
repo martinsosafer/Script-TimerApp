@@ -28,7 +28,7 @@ export function SaveScript({ script = "" }: SaveScriptProps) {
   const router = useRouter();
 
   const [open, setOpen] = React.useState(false);
-  const [openDelete, setOpenDelete] = React.useState(false);
+
   const [loading, setLoading] = React.useState(false);
   const [name, setName] = React.useState("");
   const { scriptId } = useParams();
@@ -83,79 +83,6 @@ export function SaveScript({ script = "" }: SaveScriptProps) {
       },
     });
 
-  const { mutateAsync: deleteScript } = api.script.delete.useMutation({
-    onSuccess() {
-      toast({
-        title: "Script deleted",
-        description: "Your script has been deleted",
-      });
-
-      router.push("/texttospeech");
-    },
-    onError(error) {
-      toast({
-        title: "Something went wrong",
-        description: "Please try again later",
-      });
-    },
-  });
-  const DeleteButton = () => {
-    return (
-      <Dialog open={openDelete} onOpenChange={setOpenDelete}>
-        <DialogTrigger asChild>
-          <Button
-            variant="secondary"
-            size="sm"
-            className="ml-1 rounded-xl bg-red-600 px-3 font-bold text-primary-foreground hover:bg-red-800 hover:text-secondary-foreground"
-          >
-            <IconTrash className="mr-2 h-4 w-4" />
-            Delete
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[475px]">
-          <DialogHeader>
-            <DialogTitle className="text-red-600">Delete script</DialogTitle>
-            <DialogDescription>
-              'This will delete your script'
-            </DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="name" id="name">
-                Name
-              </Label>
-              <Input
-                id="name"
-                autoFocus
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
-            {/* <div className="grid gap-2">
-            <Label htmlFor="description">Description</Label>
-            <Input id="description" />
-          </div> */}
-          </div>
-          <DialogFooter>
-            <Button
-              disabled={name.length === 0}
-              onClick={() => {
-                deleteScript({ id: scriptDetails.id });
-              }}
-              className="gap-1 bg-red-600"
-            >
-              <IconTrash />
-              {loading ? (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                <>Delete</>
-              )}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    );
-  };
   return (
     <div className="mt-0.5">
       <Dialog open={open} onOpenChange={setOpen}>
@@ -170,14 +97,12 @@ export function SaveScript({ script = "" }: SaveScriptProps) {
             ) : (
               <HeartIcon className="mr-2 h-4 w-4" />
             )}
-            <h3>{scriptDetails ? "Update" : "Save"}</h3>
+            <h3>{scriptDetails ? "Save" : "Save"}</h3>
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[475px]">
           <DialogHeader>
-            <DialogTitle>
-              {scriptDetails ? "Update" : "Save"} script
-            </DialogTitle>
+            <DialogTitle>{scriptDetails ? "Save" : "Save"} script</DialogTitle>
             <DialogDescription>
               {scriptDetails
                 ? `This will update the current script.`
@@ -231,7 +156,7 @@ export function SaveScript({ script = "" }: SaveScriptProps) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      {scriptDetails && <DeleteButton />}
+      {/* {scriptDetails && <DeleteButton />} */}
     </div>
   );
 }
