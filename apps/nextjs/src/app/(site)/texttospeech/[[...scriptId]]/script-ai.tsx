@@ -21,6 +21,7 @@ import {
 import {
   CorrectDocumentIcon,
   IconCheck,
+  IconPlus,
   IconRefresh,
   Icons,
   PencilIcon,
@@ -151,6 +152,19 @@ export function ScriptAI({}) {
         <h2 className="mr-2 flex-shrink-0 bg-gradient-to-r from-black to-blue-500 bg-clip-text text-xl font-bold text-transparent dark:bg-gradient-to-r dark:from-white dark:to-blue-500">
           Listen to your script
         </h2>
+        <div className="ml-7">
+          <Link href="/texttospeech">
+            <Button
+              type="button"
+              size="sm"
+              className="rounded-xl bg-primary px-3 font-bold "
+            >
+              <IconPlus className="mr-2 h-4 w-4 " />
+              New Script
+              <span className="sr-only">Library</span>
+            </Button>
+          </Link>
+        </div>
         <div className="ml-auto flex w-full space-x-2 sm:justify-end ">
           <ScriptSelector script={script} />
           <SaveScript script={script} />
