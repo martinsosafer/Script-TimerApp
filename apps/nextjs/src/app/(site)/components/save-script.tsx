@@ -13,7 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@voiceai/ui/@/components/ui/dialog";
-import { Icons } from "@voiceai/ui/@/components/ui/icons";
+import { EditIcon, Icons, IconTrash } from "@voiceai/ui/@/components/ui/icons";
 import { Input } from "@voiceai/ui/@/components/ui/input";
 import { Label } from "@voiceai/ui/@/components/ui/label";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
@@ -28,6 +28,7 @@ export function SaveScript({ script = "" }: SaveScriptProps) {
   const router = useRouter();
 
   const [open, setOpen] = React.useState(false);
+
   const [loading, setLoading] = React.useState(false);
   const [name, setName] = React.useState("");
   const { scriptId } = useParams();
@@ -46,8 +47,10 @@ export function SaveScript({ script = "" }: SaveScriptProps) {
   const { mutateAsync: createScript, error: errorCreatingScript } =
     api.script.create.useMutation({
       onSuccess(data) {
+        setName(name);
         setLoading(false);
         setOpen(false);
+
         router.push(`/texttospeech/${data?.id}`, { scroll: false });
       },
       onError(error) {
@@ -55,7 +58,7 @@ export function SaveScript({ script = "" }: SaveScriptProps) {
 
         toast({
           title: "Something went wrong",
-          description: "Please try again later",
+          description: "Please verify you have a script or try again later",
         });
       },
     });
@@ -79,6 +82,7 @@ export function SaveScript({ script = "" }: SaveScriptProps) {
         });
       },
     });
+
   return (
     <div className="mt-0.5">
       <Dialog open={open} onOpenChange={setOpen}>
@@ -88,15 +92,17 @@ export function SaveScript({ script = "" }: SaveScriptProps) {
             size="sm"
             className="rounded-xl  bg-sky-400 px-3 font-bold text-primary-foreground hover:bg-blue-600 hover:text-secondary-foreground"
           >
-            <HeartIcon className="mr-2 h-4 w-4 " />
-            <h3>Save</h3>
+            {scriptDetails ? (
+              <EditIcon className="mr-2 h-4 w-4" />
+            ) : (
+              <HeartIcon className="mr-2 h-4 w-4" />
+            )}
+            <h3>{scriptDetails ? "Save" : "Save"}</h3>
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[475px]">
           <DialogHeader>
-            <DialogTitle>
-              {scriptDetails ? "Update" : "Save"} script
-            </DialogTitle>
+            <DialogTitle>{scriptDetails ? "Save" : "Save"} script</DialogTitle>
             <DialogDescription>
               {scriptDetails
                 ? `This will update the current script.`
@@ -150,6 +156,7 @@ export function SaveScript({ script = "" }: SaveScriptProps) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      {/* {scriptDetails && <DeleteButton />} */}
     </div>
   );
 }

@@ -84,4 +84,30 @@ export const scriptRouter = createTRPCRouter({
         .returning()
         .then((res) => res?.[0]);
     }),
+  delete: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().min(5),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const deletedScript = await ctx.db
+        .delete(schema.scripts)
+        .where(
+          and(
+            eq(schema.scripts.userId, ctx.session.user.id),
+            eq(schema.scripts.id, input.id),
+          ),
+        )
+        .returning()
+        .then((res) => res?.[0]);
+
+      if (deletedScript) {
+        return { success: true };
+      } else {
+        throw new Error(
+          "Script not found or you don't have permission to delete it",
+        );
+      }
+    }),
 });

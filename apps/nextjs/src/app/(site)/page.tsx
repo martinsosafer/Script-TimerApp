@@ -13,7 +13,7 @@ export default function LandingPage() {
     <>
       <section className="w-full py-6 md:py-12 lg:py-12 xl:py-12">
         <div className="container px-4 md:px-6">
-          <div className="flex flex-col items-center space-y-4 text-center">
+          <div className="mb-5 mt-2  flex  flex-col items-center space-y-4 text-center">
             <div className="space-y-2">
               <h1 className="text-3xl font-bold tracking-tighter text-primary sm:text-5xl xl:text-6xl/none">
                 Welcome!
@@ -32,7 +32,7 @@ export default function LandingPage() {
               />
             </AspectRatio>
 
-            <div className="flex flex-col space-x-4 space-y-4 md:flex-row">
+            <div className="mb-5 flex flex-col space-x-4 space-y-4 md:flex-row">
               <p className="my-auto font-bold text-primary">Skip to:</p>
               <a
                 target="_blank"
