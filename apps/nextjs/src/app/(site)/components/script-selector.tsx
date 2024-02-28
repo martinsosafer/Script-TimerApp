@@ -41,11 +41,15 @@ interface ScriptSelectorProps extends PopoverProps {
   script: string;
   onSaveScript: (script: string) => void;
 }
-const DeleteButton = ({ scriptDetails }) => {
+const DeleteButton = ({ scriptId }) => {
   const router = useRouter();
   const [openDelete, setOpenDelete] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
-  const [name, setName] = React.useState(scriptDetails?.name || "");
+  const [name, setName] = React.useState("");
+  const { data: scriptDetails } = api.script.get.useQuery(
+    { id: scriptId },
+    { enabled: Boolean(scriptId) },
+  );
   const { mutateAsync: deleteScript } = api.script.delete.useMutation({
     onSuccess() {
       toast({
@@ -62,7 +66,11 @@ const DeleteButton = ({ scriptDetails }) => {
       });
     },
   });
-
+  React.useEffect(() => {
+    if (scriptDetails) {
+      setName(scriptDetails.name);
+    }
+  }, [scriptDetails]);
   return (
     <>
       <Button
@@ -98,7 +106,7 @@ const DeleteButton = ({ scriptDetails }) => {
             <Button
               disabled={name.length === 0}
               onClick={() => {
-                deleteScript({ id: scriptDetails.id });
+                deleteScript({ id: scriptId });
               }}
               className="gap-1 bg-red-600"
             >
@@ -171,7 +179,7 @@ export function ScriptSelector({ ...props }: ScriptSelectorProps) {
                       : "opacity-0",
                   )}
                 />
-                <DeleteButton scriptDetails={scriptDetails} />
+                <DeleteButton scriptId={script.id} />
               </CommandItem>
             ))}
           </CommandGroup>
