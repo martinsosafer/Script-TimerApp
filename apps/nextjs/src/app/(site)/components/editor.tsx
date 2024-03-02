@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import ArrowUTurnLeftIcon from "@heroicons/react/24/outline/ArrowUturnLeftIcon";
 import ArrowUTurnRightIcon from "@heroicons/react/24/outline/ArrowUturnRightIcon";
 import ClipboardIcon from "@heroicons/react/24/outline/ClipboardIcon";
@@ -23,28 +24,34 @@ import type { Editor } from "@tiptap/react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import classNames from "classnames";
 
-import { Button } from "./button";
-import { Textarea } from "./textarea";
+import { Button } from "@voiceai/ui";
 
-interface SimpleEditorProps {
+import { api } from "~/utils/api";
+
+interface TextEditorProps {
   className?: string;
-  content?: string;
+
   onChange: (content: string) => void;
   updatedContent?: string;
   scriptLoaded: boolean;
   script: string;
 }
 
-function SimpleEditor({
-  content,
+function TextEditor({
   onChange,
   className,
   updatedContent,
   scriptLoaded,
   script,
-}: SimpleEditorProps) {
+}: TextEditorProps) {
   const [charCount, setCharCount] = useState(0);
   const [showCharCount, setShowCharCount] = useState(false);
+  const { scriptId } = useParams();
+  const { data: scriptDetails } = api.script.get.useQuery(
+    { id: scriptId?.[0] ?? "" },
+    { enabled: Boolean(scriptId?.[0]) },
+  );
+  const editorKey = scriptId?.[0] ?? "default";
 
   const editor = useEditor({
     extensions: [
@@ -60,28 +67,27 @@ function SimpleEditor({
       Placeholder.configure({
         emptyEditorClass: "is-editor-empty",
         placeholder: scriptLoaded
-          ? "" // If script is loaded, show empty placeholder
+          ? ""
           : "1. Add your script here\n2. Choose the voice actor you like\n3. You can quickly check spelling and grammar",
       }),
     ],
-    content: script,
     onUpdate: ({ editor }) => {
       onChange(editor.getText()); // Call the handleEditorChange function
-      setCharCount(editor.storage.characterCount.characters());
+      setCharCount(editor.getCharacterCount());
     },
   })!;
 
   useEffect(() => {
-    if (editor && updatedContent?.length) {
-      editor.commands.setContent(updatedContent);
+    if (scriptDetails && editor) {
+      editor.commands.setContent(scriptDetails.script);
     }
-  }, [updatedContent]);
+  }, [scriptDetails, editor]);
 
   useEffect(() => {
-    if (editor) {
-      setCharCount(editor.storage.characterCount.characters());
+    if (editor && updatedContent) {
+      editor.commands.setContent(updatedContent);
     }
-  }, [editor]);
+  }, [updatedContent, editor]);
 
   const toggleCharCountDisplay = useCallback(() => {
     setShowCharCount(!showCharCount);
@@ -186,8 +192,9 @@ function SimpleEditor({
       </div>
       <div className="relative flex-shrink">
         <EditorContent
+          key={editorKey}
           editor={editor}
-          className="h-full max-h-[500px] min-h-[250px] overflow-auto p-2 sm:h-4/6 md:h-5/6"
+          className="h-full max-h-[500px] min-h-[250px] overflow-auto border-primary p-2 sm:h-4/6 md:h-5/6"
         />
         {showCharCount && (
           <div className="absolute bottom-0 right-0 mb-2 mr-3 text-sm text-gray-600">
@@ -199,4 +206,4 @@ function SimpleEditor({
   );
 }
 
-export { SimpleEditor };
+export { TextEditor };

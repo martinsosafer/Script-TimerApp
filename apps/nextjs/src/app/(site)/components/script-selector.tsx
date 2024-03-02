@@ -165,6 +165,7 @@ export function ScriptSelector({ ...props }: ScriptSelectorProps) {
                     router.push(`/texttospeech/${script.id}`, {
                       scroll: false,
                     });
+
                     setOpen(false);
                   }}
                 >

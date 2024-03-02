@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { CopyIcon } from "@radix-ui/react-icons";
 import { useCompletion } from "ai/react";
 
+import { SimpleEditor } from "@voiceai/ui";
 import { Badge } from "@voiceai/ui/@/components/ui/badge";
 import { Button } from "@voiceai/ui/@/components/ui/button";
 import {
@@ -48,6 +49,7 @@ import { calculateLength } from "~/lib/calculate-length";
 import { calculateLengthtTime } from "~/lib/calculate-length-time";
 import { api } from "~/utils/api";
 import { useDragAndDrop } from "~/utils/helpers";
+import { TextEditor } from "../../components/editor";
 import { HistoryButton } from "../../components/history-button";
 import { ModelSelector } from "../../components/model-selector";
 import { SaveScript } from "../../components/save-script";
@@ -82,6 +84,10 @@ export function ScriptAI({}) {
     }
   }, [scriptDetails]);
 
+  //handle change for editor so it sets changes to the text area
+  const handleEditorChange = (content) => {
+    setScript(content); // Update the script state with the content from the editor
+  };
   // Revise script grammar/spelling with AI
   const [revisedScript, setRevisedScript] = React.useState("");
   const { complete } = useCompletion({
@@ -146,6 +152,7 @@ export function ScriptAI({}) {
     copyToClipboard(revisedScript);
   };
   const { wordCount, minutes, formattedSeconds } = calculateLengthtTime(script);
+
   return (
     <div className=" h-screen flex-col  md:flex">
       <div className="md:min-h-20 lg:min-h-20 container  mb-5  mt-5 flex flex-col items-start justify-between sm:flex-row sm:items-center sm:space-y-0">
@@ -303,7 +310,8 @@ export function ScriptAI({}) {
                 {/* <Badge>Your script is {script.length} characters long.</Badge> */}
 
                 <div className="flex h-3/6 flex-col ">
-                  <Textarea
+                  <TextEditor onChange={handleEditorChange} script={script} />
+                  {/* <Textarea
                     value={script}
                     onChange={(e) => setScript(e.target.value)}
                     placeholder={`
@@ -311,7 +319,8 @@ export function ScriptAI({}) {
                     2.Choose the voice actor you like
                     3.You can quickly check spelling and grammar`}
                     className="h-3/5 min-h-[250px] flex-1 p-4 md:min-h-[400px] lg:min-h-[440px] xl:min-h-[440px]"
-                  />
+                  /> */}
+
                   <div className="flex flex-col items-center justify-center  ">
                     <Badge className="h-12  w-[450px] items-center justify-center ">
                       Script is&nbsp;
