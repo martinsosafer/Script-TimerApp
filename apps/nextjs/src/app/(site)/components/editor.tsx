@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import ArrowUTurnLeftIcon from "@heroicons/react/24/outline/ArrowUturnLeftIcon";
 import ArrowUTurnRightIcon from "@heroicons/react/24/outline/ArrowUturnRightIcon";
 import ClipboardIcon from "@heroicons/react/24/outline/ClipboardIcon";
@@ -10,10 +11,13 @@ import {
   UnderlineIcon,
 } from "@radix-ui/react-icons";
 import Bold from "@tiptap/extension-bold";
+import BulletList from "@tiptap/extension-bullet-list";
 import CharacterCount from "@tiptap/extension-character-count";
 import Document from "@tiptap/extension-document";
+import Heading from "@tiptap/extension-heading";
 import History from "@tiptap/extension-history";
 import Italic from "@tiptap/extension-italic";
+import ListItem from "@tiptap/extension-list-item";
 import Paragraph from "@tiptap/extension-paragraph";
 import Placeholder from "@tiptap/extension-placeholder";
 import Text from "@tiptap/extension-text";
@@ -23,28 +27,34 @@ import type { Editor } from "@tiptap/react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import classNames from "classnames";
 
-import { Button } from "./button";
-import { Textarea } from "./textarea";
+import { Button } from "@voiceai/ui";
 
-interface SimpleEditorProps {
+import { api } from "~/utils/api";
+
+interface TextEditorProps {
   className?: string;
-  content?: string;
+
   onChange: (content: string) => void;
   updatedContent?: string;
   scriptLoaded: boolean;
   script: string;
 }
 
-function SimpleEditor({
-  content,
+function TextEditor({
   onChange,
   className,
   updatedContent,
   scriptLoaded,
   script,
-}: SimpleEditorProps) {
+}: TextEditorProps) {
   const [charCount, setCharCount] = useState(0);
   const [showCharCount, setShowCharCount] = useState(false);
+  const { scriptId } = useParams();
+  const { data: scriptDetails } = api.script.get.useQuery(
+    { id: scriptId?.[0] ?? "" },
+    { enabled: Boolean(scriptId?.[0]) },
+  );
+  const editorKey = scriptId?.[0] ?? "default";
 
   const editor = useEditor({
     extensions: [
@@ -56,32 +66,37 @@ function SimpleEditor({
       Underline,
       Italic,
       Typography,
+      BulletList,
+      ListItem,
+      Heading.configure({
+        levels: [1, 2, 3, 4],
+      }),
       CharacterCount.configure({}),
       Placeholder.configure({
         emptyEditorClass: "is-editor-empty",
         placeholder: scriptLoaded
-          ? "" // If script is loaded, show empty placeholder
+          ? ""
           : "1. Add your script here\n2. Choose the voice actor you like\n3. You can quickly check spelling and grammar",
       }),
     ],
-    content: script,
     onUpdate: ({ editor }) => {
-      onChange(editor.getText()); // Call the handleEditorChange function
-      setCharCount(editor.storage.characterCount.characters());
+      onChange(editor.getText()); //so it only gets the string for creating a script
+      onChange(editor.getHTML()); // so it also get the styles when loading a chat
+      setCharCount(editor.getCharacterCount());
     },
   })!;
 
   useEffect(() => {
-    if (editor && updatedContent?.length) {
-      editor.commands.setContent(updatedContent);
+    if (scriptDetails && editor) {
+      editor.commands.setContent(scriptDetails.script);
     }
-  }, [updatedContent]);
+  }, [scriptDetails, editor]);
 
   useEffect(() => {
-    if (editor) {
-      setCharCount(editor.storage.characterCount.characters());
+    if (editor && updatedContent) {
+      editor.commands.setContent(updatedContent);
     }
-  }, [editor]);
+  }, [updatedContent, editor]);
 
   const toggleCharCountDisplay = useCallback(() => {
     setShowCharCount(!showCharCount);
@@ -109,6 +124,22 @@ function SimpleEditor({
     editor.chain().focus().toggleItalic().run();
   }, [editor]);
 
+  const toggleBulletList = useCallback(() => {
+    editor.chain().focus().toggleBulletList().run();
+  }, [editor]);
+  const toggleHeading1 = useCallback(() => {
+    editor.chain().focus().toggleHeading({ level: 1 }).run();
+  }, [editor]);
+  const toggleHeading2 = useCallback(() => {
+    editor.chain().focus().toggleHeading({ level: 2 }).run();
+  }, [editor]);
+  const toggleHeading3 = useCallback(() => {
+    editor.chain().focus().toggleHeading({ level: 3 }).run();
+  }, [editor]);
+  const toggleHeading4 = useCallback(() => {
+    editor.chain().focus().toggleHeading({ level: 4 }).run();
+  }, [editor]);
+
   if (!editor) {
     return null;
   }
@@ -120,8 +151,45 @@ function SimpleEditor({
         className,
       )}
     >
-      <div className="flex flex-col items-center justify-center gap-2 pt-3 md:flex-row lg:justify-start">
+      <div className="ml-1 flex flex-col items-center justify-center gap-2 pt-3 md:flex-row  lg:justify-start">
         <div className="flex gap-1">
+          .
+          {/* <Button
+            variant="ghost"
+            className={classNames("border border-slate-500", {
+              "is-active": editor.isActive("heading", { level: 1 }),
+            })}
+            onClick={toggleHeading1}
+          >
+            H1
+          </Button>
+          <Button
+            variant="ghost"
+            className={classNames("border border-slate-500", {
+              "is-active": editor.isActive("heading", { level: 2 }),
+            })}
+            onClick={toggleHeading2}
+          >
+            H2
+          </Button>
+          <Button
+            variant="ghost"
+            className={classNames("border border-slate-500", {
+              "is-active": editor.isActive("heading", { level: 3 }),
+            })}
+            onClick={toggleHeading3}
+          >
+            H3
+          </Button>
+          <Button
+            variant="ghost"
+            className={classNames("border border-slate-500", {
+              "is-active": editor.isActive("heading", { level: 4 }),
+            })}
+            onClick={toggleHeading4}
+          >
+            H4
+          </Button> */}
           <Button
             variant="ghost"
             className={classNames("border border-slate-500", {
@@ -154,7 +222,7 @@ function SimpleEditor({
             className="border border-slate-500"
             onClick={toggleCharCountDisplay}
           >
-            Word count
+            Characters count
           </Button>
         </div>
         <div className="flex gap-1">
@@ -182,12 +250,22 @@ function SimpleEditor({
           >
             <ClipboardIcon className="h-5 w-5" />
           </Button>
+          {/* <Button
+            variant="ghost"
+            className={classNames("border border-slate-500", {
+              "is-active": editor.isActive("bulletList"),
+            })}
+            onClick={toggleBulletList}
+          >
+            List ITem
+          </Button> */}
         </div>
       </div>
       <div className="relative flex-shrink">
         <EditorContent
+          key={editorKey}
           editor={editor}
-          className="h-full max-h-[500px] min-h-[250px] overflow-auto p-2 sm:h-4/6 md:h-5/6"
+          className="h-full max-h-[500px] min-h-[250px] overflow-auto border-primary p-2 sm:h-4/6 md:h-5/6"
         />
         {showCharCount && (
           <div className="absolute bottom-0 right-0 mb-2 mr-3 text-sm text-gray-600">
@@ -199,4 +277,4 @@ function SimpleEditor({
   );
 }
 
-export { SimpleEditor };
+export { TextEditor };

@@ -58,6 +58,7 @@ const DeleteButton = ({ scriptId }) => {
       });
 
       router.push("/texttospeech");
+      router.refresh();
     },
     onError(error) {
       toast({
@@ -165,6 +166,7 @@ export function ScriptSelector({ ...props }: ScriptSelectorProps) {
                     router.push(`/texttospeech/${script.id}`, {
                       scroll: false,
                     });
+
                     setOpen(false);
                   }}
                 >
