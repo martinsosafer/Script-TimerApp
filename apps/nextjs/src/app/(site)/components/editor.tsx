@@ -154,7 +154,7 @@ function TextEditor({
       <div className="ml-1 flex flex-col items-center justify-center gap-2 pt-3 md:flex-row  lg:justify-start">
         <div className="flex gap-1">
           .
-          <Button
+          {/* <Button
             variant="ghost"
             className={classNames("border border-slate-500", {
               "is-active": editor.isActive("heading", { level: 1 }),
@@ -189,7 +189,7 @@ function TextEditor({
             onClick={toggleHeading4}
           >
             H4
-          </Button>
+          </Button> */}
           <Button
             variant="ghost"
             className={classNames("border border-slate-500", {
@@ -250,7 +250,7 @@ function TextEditor({
           >
             <ClipboardIcon className="h-5 w-5" />
           </Button>
-          <Button
+          {/* <Button
             variant="ghost"
             className={classNames("border border-slate-500", {
               "is-active": editor.isActive("bulletList"),
@@ -258,7 +258,7 @@ function TextEditor({
             onClick={toggleBulletList}
           >
             List ITem
-          </Button>
+          </Button> */}
         </div>
       </div>
       <div className="relative flex-shrink">
