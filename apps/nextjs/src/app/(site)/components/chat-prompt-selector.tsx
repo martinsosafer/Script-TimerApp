@@ -113,7 +113,7 @@ export function ChatPromptSelector({
                 <CommandEmpty>No Prompts found.</CommandEmpty>
                 <HoverCardTrigger />
                 {types.map((type) => (
-                  <>
+                  <div key={type}>
                     <CommandGroup key={type} heading={type}>
                       {prompts
                         .filter((prompt) => prompt.type === type)
@@ -133,7 +133,7 @@ export function ChatPromptSelector({
                         ))}
                     </CommandGroup>
                     <CommandSeparator />
-                  </>
+                  </div>
                 ))}
               </CommandList>
             </Command>

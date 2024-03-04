@@ -39,7 +39,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
     null,
   );
   const [prompt, setPrompt] = useState<Prompt | null>(null);
-  console.log("PROMPT", prompt);
+  // console.log("PROMPT", prompt);
   const [previewTokenDialog, setPreviewTokenDialog] = useState(IS_PREVIEW);
 
   const [previewTokenInput, setPreviewTokenInput] = useState(
@@ -94,7 +94,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
       //   }
       // },
     });
-
+  console.log("messages:", messages);
   return (
     <>
       <div className={cn("pb-[200px] pt-4 md:pt-10", className)}>
