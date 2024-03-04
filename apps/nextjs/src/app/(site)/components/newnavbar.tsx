@@ -57,8 +57,10 @@ export default function newnavbar({
         <ul className="flex items-center justify-center font-semibold">
           <li className=" group relative items-center px-3 py-2  text-primary-foreground">
             <div className="flex flex-col items-center">
-              <IconAudioLines className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
-              <IconFileType className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
+              <Link href={`/texttospeech`}>
+                <IconAudioLines className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
+                <IconFileType className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
+              </Link>
             </div>
             <button className="relative z-10 flex cursor-default items-center justify-center font-semibold">
               <span className="relative z-10">Text to Voice</span>
@@ -145,8 +147,10 @@ export default function newnavbar({
           </li>
           <li className=" group relative px-3 py-2 text-primary-foreground">
             <div className="flex flex-col items-center">
-              <IconPencilLine className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
-              <IconBrainCog className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
+              <Link href={`/chat`}>
+                <IconPencilLine className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
+                <IconBrainCog className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
+              </Link>
             </div>
             <button className="relative z-10 cursor-default font-semibold ">
               Script Writing
@@ -183,7 +187,7 @@ export default function newnavbar({
                         </li>
                       </ul>
                     </div>
-                    <div>
+                    {/* <div>
                       <p className="text-[13px] font-medium uppercase tracking-wider text-gray-500">
                         Script Repository
                       </p>
@@ -196,7 +200,7 @@ export default function newnavbar({
                             <div className="flex items-center ">
                               {" "}
                               {/* Envuelve el icono y el texto en un div flex */}
-                              <span>
+                    {/* <span>
                                 <IconFileStack />
                               </span>
                               <span className="ml-1">Script History</span>
@@ -207,7 +211,7 @@ export default function newnavbar({
                           </Link>
                         </li>
                       </ul>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
@@ -354,8 +358,13 @@ export default function newnavbar({
 
           <li className="group relative px-3 py-2 text-primary-foreground hover:cursor-default ">
             <div className="flex flex-col items-center">
-              <IconHandshake className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
-              <IconWallet className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
+              <Link
+                href="https://script-timer.com/voice123-pricing/"
+                target="_blank"
+              >
+                <IconHandshake className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
+                <IconWallet className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
+              </Link>
             </div>
             <Link
               href="https://script-timer.com/voice123-pricing/"
