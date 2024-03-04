@@ -11,10 +11,13 @@ import {
   UnderlineIcon,
 } from "@radix-ui/react-icons";
 import Bold from "@tiptap/extension-bold";
+import BulletList from "@tiptap/extension-bullet-list";
 import CharacterCount from "@tiptap/extension-character-count";
 import Document from "@tiptap/extension-document";
+import Heading from "@tiptap/extension-heading";
 import History from "@tiptap/extension-history";
 import Italic from "@tiptap/extension-italic";
+import ListItem from "@tiptap/extension-list-item";
 import Paragraph from "@tiptap/extension-paragraph";
 import Placeholder from "@tiptap/extension-placeholder";
 import Text from "@tiptap/extension-text";
@@ -63,6 +66,11 @@ function TextEditor({
       Underline,
       Italic,
       Typography,
+      BulletList,
+      ListItem,
+      Heading.configure({
+        levels: [1, 2, 3, 4],
+      }),
       CharacterCount.configure({}),
       Placeholder.configure({
         emptyEditorClass: "is-editor-empty",
@@ -72,7 +80,8 @@ function TextEditor({
       }),
     ],
     onUpdate: ({ editor }) => {
-      onChange(editor.getText()); // Call the handleEditorChange function
+      onChange(editor.getText()); //so it only gets the string for creating a script
+      onChange(editor.getHTML()); // so it also get the styles when loading a chat
       setCharCount(editor.getCharacterCount());
     },
   })!;
@@ -115,6 +124,22 @@ function TextEditor({
     editor.chain().focus().toggleItalic().run();
   }, [editor]);
 
+  const toggleBulletList = useCallback(() => {
+    editor.chain().focus().toggleBulletList().run();
+  }, [editor]);
+  const toggleHeading1 = useCallback(() => {
+    editor.chain().focus().toggleHeading({ level: 1 }).run();
+  }, [editor]);
+  const toggleHeading2 = useCallback(() => {
+    editor.chain().focus().toggleHeading({ level: 2 }).run();
+  }, [editor]);
+  const toggleHeading3 = useCallback(() => {
+    editor.chain().focus().toggleHeading({ level: 3 }).run();
+  }, [editor]);
+  const toggleHeading4 = useCallback(() => {
+    editor.chain().focus().toggleHeading({ level: 4 }).run();
+  }, [editor]);
+
   if (!editor) {
     return null;
   }
@@ -126,8 +151,45 @@ function TextEditor({
         className,
       )}
     >
-      <div className="flex flex-col items-center justify-center gap-2 pt-3 md:flex-row lg:justify-start">
+      <div className="ml-1 flex flex-col items-center justify-center gap-2 pt-3 md:flex-row  lg:justify-start">
         <div className="flex gap-1">
+          .
+          <Button
+            variant="ghost"
+            className={classNames("border border-slate-500", {
+              "is-active": editor.isActive("heading", { level: 1 }),
+            })}
+            onClick={toggleHeading1}
+          >
+            H1
+          </Button>
+          <Button
+            variant="ghost"
+            className={classNames("border border-slate-500", {
+              "is-active": editor.isActive("heading", { level: 2 }),
+            })}
+            onClick={toggleHeading2}
+          >
+            H2
+          </Button>
+          <Button
+            variant="ghost"
+            className={classNames("border border-slate-500", {
+              "is-active": editor.isActive("heading", { level: 3 }),
+            })}
+            onClick={toggleHeading3}
+          >
+            H3
+          </Button>
+          <Button
+            variant="ghost"
+            className={classNames("border border-slate-500", {
+              "is-active": editor.isActive("heading", { level: 4 }),
+            })}
+            onClick={toggleHeading4}
+          >
+            H4
+          </Button>
           <Button
             variant="ghost"
             className={classNames("border border-slate-500", {
@@ -160,7 +222,7 @@ function TextEditor({
             className="border border-slate-500"
             onClick={toggleCharCountDisplay}
           >
-            Word count
+            Characters count
           </Button>
         </div>
         <div className="flex gap-1">
@@ -187,6 +249,15 @@ function TextEditor({
             onClick={copyToClipboard}
           >
             <ClipboardIcon className="h-5 w-5" />
+          </Button>
+          <Button
+            variant="ghost"
+            className={classNames("border border-slate-500", {
+              "is-active": editor.isActive("bulletList"),
+            })}
+            onClick={toggleBulletList}
+          >
+            List ITem
           </Button>
         </div>
       </div>
