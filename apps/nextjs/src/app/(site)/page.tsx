@@ -3,6 +3,8 @@ import Link from "next/link";
 
 import { AspectRatio } from "@voiceai/ui/@/components/ui/aspect-ratio";
 
+import Dashboard from "../_components/dashboard";
+
 export const metadata: Metadata = {
   title: "Script Timer",
   description: "Welcome to Script Timer",
@@ -57,6 +59,7 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
+        <Dashboard />
       </section>
     </>
   );
