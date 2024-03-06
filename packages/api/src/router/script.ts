@@ -7,6 +7,7 @@ import { createTRPCRouter, protectedProcedure } from "../trpc";
 export const scriptRouter = createTRPCRouter({
   list: protectedProcedure.query(async ({ ctx }) => {
     return await ctx.db
+
       .select({
         id: schema.scripts.id,
         name: schema.scripts.name,

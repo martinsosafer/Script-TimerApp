@@ -3,52 +3,28 @@
 import React, { useState } from "react";
 
 interface UserData {
-  id: number;
   name: string;
   email: string;
-  subscription: string;
-  userId: string;
 }
 
-const mockData: UserData[] = [
-  {
-    id: 1,
-    name: "John Doe",
-    email: "john@example.com",
-    subscription: "free",
-    userId: "ABC123",
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    email: "jane@example.com",
-    subscription: "standard",
-    userId: "DEF456",
-  },
-  {
-    id: 3,
-    name: "Bob Johnson",
-    email: "bob@example.com",
-    subscription: "premium",
-    userId: "GHI789",
-  },
-  // Add more mock data as needed
-];
+interface DashboardProps {
+  userList: UserData[];
+}
 
-const Dashboard: React.FC = () => {
+const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [filteredData, setFilteredData] = useState<UserData[]>(mockData);
+  const [filteredData, setFilteredData] = useState<UserData[]>(userList);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setSearchTerm(e.target.value);
-    const filtered = mockData.filter((user) =>
+    const filtered = userList.filter((user) =>
       user.email.toLowerCase().includes(e.target.value.toLowerCase()),
     );
     setFilteredData(filtered);
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto mb-12 p-4">
       <h1 className="mb-4 text-2xl font-bold">User Dashboard</h1>
       <div className="mb-4">
         <input
@@ -70,29 +46,17 @@ const Dashboard: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredData.map((user) => (
-            <tr key={user.id} className="border-b border-gray-300">
+          {filteredData.map((user, index) => (
+            <tr key={index} className="border-b border-gray-300">
               <td className="px-4 py-2">{user.name}</td>
               <td className="px-4 py-2">{user.email}</td>
-              <td className="px-4 py-2">{user.userId}</td>
+              <td className="px-4 py-2">{index}</td>
               <td className="px-4 py-2">Plan Name</td>
               <td className="px-4 py-2">
                 <select className="rounded-lg border border-gray-300 px-2 py-1">
-                  <option value="free" selected={user.subscription === "free"}>
-                    Free
-                  </option>
-                  <option
-                    value="standard"
-                    selected={user.subscription === "standard"}
-                  >
-                    Standard
-                  </option>
-                  <option
-                    value="premium"
-                    selected={user.subscription === "premium"}
-                  >
-                    Premium
-                  </option>
+                  <option value="free">Free</option>
+                  <option value="standard">Standard</option>
+                  <option value="premium">Premium</option>
                 </select>
               </td>
             </tr>
