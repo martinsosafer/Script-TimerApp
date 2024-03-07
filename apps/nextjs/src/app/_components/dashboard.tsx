@@ -1,10 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
+import { api } from "~/utils/api";
 
 interface UserData {
   name: string;
   email: string;
+  id: string;
+  subscription: string;
 }
 
 interface DashboardProps {
@@ -14,14 +18,72 @@ interface DashboardProps {
 const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [filteredData, setFilteredData] = useState<UserData[]>(userList);
+  const { mutateAsync: giveSubscription } =
+    api.user.giveSubscription.useMutation({
+      onSuccess(data) {
+        console.log("Subscription given successfully:", data);
+      },
+      onError(error) {
+        console.error("Error giving subscription:", error);
+      },
+    });
+  const { mutateAsync: cancelSubscription } =
+    api.user.cancelSubscription.useMutation({
+      onSuccess(data) {
+        console.log("Subscription cancelled successfully:", data);
+      },
+      onError(error) {
+        console.error("Error cancelling subscription:", error);
+      },
+    });
+  const { mutateAsync: updateSubscription } =
+    api.user.updateSubscription.useMutation({
+      onSuccess(data) {
+        console.log("Subscription updated successfully:", data);
+      },
+      onError(error) {
+        console.error("Error updating subscription:", error);
+      },
+    });
+
+  const handleGiveSubscription = async (userId: string) => {
+    try {
+      await giveSubscription({ userId });
+    } catch (error) {
+      console.error("Error giving subscription:", error);
+    }
+  };
+
+  const handleCancelSubscription = async (userId: string) => {
+    try {
+      await cancelSubscription({ userId });
+    } catch (error) {
+      console.error("Error cancelling subscription:", error);
+    }
+  };
+
+  const handleUpdateSubscription = async (userId: string, status: string) => {
+    try {
+      await updateSubscription({ userId, status });
+    } catch (error) {
+      console.error("Error updating subscription:", error);
+    }
+  };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setSearchTerm(e.target.value);
-    const filtered = userList.filter((user) =>
-      user.email.toLowerCase().includes(e.target.value.toLowerCase()),
+  };
+
+  useEffect(() => {
+    const filtered = userList.filter(
+      (user) =>
+        user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (user.name &&
+          user.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        user.id.toLowerCase().includes(searchTerm.toLowerCase()),
     );
     setFilteredData(filtered);
-  };
+  }, [searchTerm, userList]);
 
   return (
     <div className="container mx-auto mb-12 p-4">
@@ -38,25 +100,39 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
       <table className="w-full">
         <thead>
           <tr className="bg-gray-200">
+            <th className="px-4 py-2">order</th>
             <th className="px-4 py-2">Name</th>
             <th className="px-4 py-2">Email</th>
-            <th className="px-4 py-2">User ID</th>
-            <th className="px-4 py-2">Plan</th>
+            <th className="px-4 py-2">ID</th>
             <th className="px-4 py-2">Subscription</th>
           </tr>
         </thead>
         <tbody>
           {filteredData.map((user, index) => (
             <tr key={index} className="border-b border-gray-300">
-              <td className="px-4 py-2">{user.name}</td>
-              <td className="px-4 py-2">{user.email}</td>
               <td className="px-4 py-2">{index}</td>
-              <td className="px-4 py-2">Plan Name</td>
+              <td className="px-4 py-2">{user.name || "-"}</td>
+              <td className="px-4 py-2">{user.email}</td>
+              <td className="px-4 py-2">{user.id}</td>
               <td className="px-4 py-2">
-                <select className="rounded-lg border border-gray-300 px-2 py-1">
-                  <option value="free">Free</option>
-                  <option value="standard">Standard</option>
-                  <option value="premium">Premium</option>
+                <select
+                  value={user.subscription}
+                  onChange={(e) => {
+                    const selectedStatus = e.target.value;
+                    if (selectedStatus === "ACTIVE") {
+                      handleGiveSubscription(user.id);
+                    } else if (selectedStatus === "CANCELLED") {
+                      handleCancelSubscription(user.id);
+                    } else if (selectedStatus === "UPDATE_ACTIVE") {
+                      handleUpdateSubscription(user.id, "ACTIVE");
+                    }
+                  }}
+                  className="mr-2 rounded-lg border border-gray-300 px-2 py-1"
+                >
+                  <option value="">Select</option>
+                  <option value="ACTIVE">Active</option>
+                  <option value="CANCELLED">Cancel</option>
+                  <option value="UPDATE_ACTIVE">Update Active</option>
                 </select>
               </td>
             </tr>
