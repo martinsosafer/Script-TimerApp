@@ -28,6 +28,7 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import classNames from "classnames";
 
 import { Button } from "@voiceai/ui";
+import { IconCopy } from "@voiceai/ui/@/components/ui/icons";
 
 import { api } from "~/utils/api";
 
@@ -151,7 +152,7 @@ function TextEditor({
         className,
       )}
     >
-      <div className="ml-1 flex flex-col items-center justify-center gap-2 pt-3 md:flex-row  lg:justify-start">
+      <div className="ml-1 flex flex-col items-center justify-center gap-2  md:flex-row  lg:justify-start">
         <div className="flex gap-1">
           .
           {/* <Button
@@ -222,7 +223,7 @@ function TextEditor({
             className="border border-slate-500"
             onClick={toggleCharCountDisplay}
           >
-            Characters count
+            Character count
           </Button>
         </div>
         <div className="flex gap-1">
@@ -248,7 +249,7 @@ function TextEditor({
             disabled={charCount === 0}
             onClick={copyToClipboard}
           >
-            <ClipboardIcon className="h-5 w-5" />
+            <IconCopy className="h-5 w-5" />
           </Button>
           {/* <Button
             variant="ghost"

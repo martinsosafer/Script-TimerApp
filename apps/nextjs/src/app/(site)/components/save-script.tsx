@@ -40,7 +40,9 @@ export function SaveScript({ script = "" }: SaveScriptProps) {
 
   React.useEffect(() => {
     if (scriptDetails) {
-      setName(scriptDetails.name);
+      // Truncate the name if it exceeds the character limit
+      const truncatedName = scriptDetails.name.slice(0, 20);
+      setName(truncatedName);
     }
   }, [scriptDetails]);
 
@@ -118,6 +120,7 @@ export function SaveScript({ script = "" }: SaveScriptProps) {
                 id="name"
                 autoFocus
                 value={name}
+                maxLength={20}
                 onChange={(e) => setName(e.target.value)}
               />
             </div>

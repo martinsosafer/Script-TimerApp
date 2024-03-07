@@ -46,7 +46,10 @@ import {
 import { useCopyToClipboard } from "@voiceai/ui/@/hooks/use-copy-to-clipboard";
 
 import { calculateLength } from "~/lib/calculate-length";
-import { calculateLengthtTime } from "~/lib/calculate-length-time";
+import {
+  calculateLengthTime,
+  calculateLengthtTime,
+} from "~/lib/calculate-length-time";
 import { api } from "~/utils/api";
 import { useDragAndDrop } from "~/utils/helpers";
 import { TextEditor } from "../../components/editor";
@@ -151,7 +154,8 @@ export function ScriptAI({}) {
     if (isCopied) return;
     copyToClipboard(revisedScript);
   };
-  const { wordCount, minutes, formattedSeconds } = calculateLengthtTime(script);
+  const { wordCount, minutes, formattedSeconds, speed } =
+    calculateLengthTime(script);
 
   return (
     <div className=" h-screen flex-col  md:flex">
@@ -214,44 +218,13 @@ export function ScriptAI({}) {
         <div className="container mb-4 h-full ">
           <div className="grid h-full items-stretch gap-6 md:grid-cols-[200px_1fr]">
             <div className=" flex flex-col space-y-4 md:order-1">
-              <div className="grid ">
-                <HoverCard openDelay={200}>
-                  <HoverCardTrigger asChild>
-                    <div className="py-1 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                      <span className="mb-2 flex-1 text-center underline">
-                        Check Grammar and Spelling
-                      </span>
-
-                      <TabsList className=" mt-3 grid grid-cols-2 bg-slate-300">
-                        <TabsTrigger
-                          value="complete"
-                          className=" flex items-center justify-center data-[state=active]:bg-primary"
-                        >
-                          <span className="sr-only">Complete</span>
-                          <PencilIcon className="h-5 w-5 text-primary-foreground" />
-                        </TabsTrigger>
-                        <TabsTrigger
-                          value="insert"
-                          className="flex items-center justify-center  data-[state=active]:bg-primary"
-                        >
-                          <span className="sr-only">Insert</span>
-                          <CorrectDocumentIcon className="h-5 w-5 text-primary-foreground " />
-                        </TabsTrigger>
-                      </TabsList>
-                    </div>
-                  </HoverCardTrigger>
-                  <HoverCardContent className="w-[320px] text-sm" side="left">
-                    Click to open grammar, spelling and script suggestions.
-                  </HoverCardContent>
-                </HoverCard>
-              </div>
               {/* <ModelSelector
                 types={types}
                 models={models}
                 onModelSelect={setSelectedModel}
               /> */}
               <div>
-                <div className="flex items-center justify-between underline">
+                <div className="mt-4 flex items-center justify-between underline">
                   <Label htmlFor="similarity">Choose Your Voice Actor</Label>
                 </div>
                 <ScrollArea className="mt-2 h-[270px] px-1" type="always">
@@ -304,6 +277,37 @@ export function ScriptAI({}) {
                   </div>
                 </ScrollArea>
               </div> */}
+              <div className="grid ">
+                <HoverCard openDelay={200}>
+                  <HoverCardTrigger asChild>
+                    <div className="py-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                      <span className="mb-2 flex-1 text-center underline">
+                        Check Grammar and Spelling
+                      </span>
+
+                      <TabsList className=" mt-3 grid grid-cols-2 bg-slate-300">
+                        <TabsTrigger
+                          value="complete"
+                          className=" flex items-center justify-center data-[state=active]:bg-primary"
+                        >
+                          <span className="sr-only">Complete</span>
+                          <PencilIcon className="h-5 w-5 text-primary-foreground" />
+                        </TabsTrigger>
+                        <TabsTrigger
+                          value="insert"
+                          className="flex items-center justify-center  data-[state=active]:bg-primary"
+                        >
+                          <span className="sr-only">Insert</span>
+                          <CorrectDocumentIcon className="h-5 w-5 text-primary-foreground " />
+                        </TabsTrigger>
+                      </TabsList>
+                    </div>
+                  </HoverCardTrigger>
+                  <HoverCardContent className="w-[320px] text-sm" side="left">
+                    Click to open grammar, spelling and script suggestions.
+                  </HoverCardContent>
+                </HoverCard>
+              </div>
             </div>
             <div className="md:order-2">
               <TabsContent value="complete" className="mt-0 border-0 p-0">
@@ -323,7 +327,10 @@ export function ScriptAI({}) {
 
                   <div className="flex flex-col items-center justify-center  ">
                     <Badge className="h-12  w-[450px] items-center justify-center ">
-                      Script is&nbsp;
+                      <span className="font-semibold text-tertiary dark:text-tertiary">
+                        {speed}
+                      </span>{" "}
+                      &nbsp; Script is&nbsp;
                       <span className="font-semibold text-tertiary dark:text-tertiary">
                         {wordCount}
                       </span>
