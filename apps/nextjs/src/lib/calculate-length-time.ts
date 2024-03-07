@@ -12,17 +12,26 @@ function countWords(inputString = "") {
   return filteredWordsArray.length;
 }
 
-export const calculateLengthtTime = (input: string) => {
+export const calculateLengthTime = (input: string) => {
   const wordCount = countWords(input);
+
+  let speed;
+  if (wordCount >= 3) {
+    speed = "SLOW";
+  } else if (wordCount >= 2.5) {
+    speed = "MEDIUM";
+  } else {
+    speed = "FAST";
+  }
 
   const seconds = wordCount / 2;
 
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
-  console.log("MINUTSE", input.length, wordCount, minutes, remainingSeconds);
+
   // Padding zero if remaining seconds is less than 10
   const formattedSeconds =
     remainingSeconds < 10 ? "0" + remainingSeconds : remainingSeconds;
 
-  return { wordCount, minutes, formattedSeconds };
+  return { wordCount, speed, minutes, formattedSeconds };
 };
