@@ -163,21 +163,31 @@ export function ScriptAI({}) {
           Listen to your script
         </h2>
         <div className="ml-7">
-          <Link href="/texttospeech">
-            <Button
-              type="button"
-              size="sm"
-              className="rounded-xl bg-primary px-3 font-bold "
-            >
-              <IconPlus className="mr-2 h-4 w-4 " />
-              New Script
-              <span className="sr-only">Library</span>
-            </Button>
-          </Link>
+          <Tooltip>
+            <TooltipTrigger>
+              <Link href="/texttospeech">
+                <Button
+                  type="button"
+                  size="sm"
+                  className="rounded-xl bg-primary px-3 font-bold "
+                >
+                  <IconPlus className="mr-2 h-4 w-4 " />
+                  New Script
+                  <span className="sr-only">Library</span>
+                </Button>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent>Start a new fresh story</TooltipContent>
+          </Tooltip>
         </div>
         <div className="ml-auto flex w-full space-x-2 sm:justify-end ">
           <ScriptSelector script={script} />
-          <SaveScript script={script} />
+          <Tooltip>
+            <TooltipTrigger>
+              <SaveScript script={script} />
+            </TooltipTrigger>
+            <TooltipContent>Save a favorite script for later</TooltipContent>
+          </Tooltip>
 
           {/* <CodeViewer /> */}
 
@@ -187,26 +197,26 @@ export function ScriptAI({}) {
             </TooltipTrigger>
             <TooltipContent>
               {" "}
-              Share with friends after saving the script
+              Share your work and get feedback via a quick link{" "}
             </TooltipContent>
           </Tooltip>
           <Tooltip>
             <TooltipTrigger>
               <HistoryButton />
             </TooltipTrigger>
-            <TooltipContent>Click to open your voice history</TooltipContent>
+            <TooltipContent>Your full voice over history </TooltipContent>
           </Tooltip>
           <Tooltip>
             <TooltipTrigger>
               <ToggleLibrary />
             </TooltipTrigger>
-            <TooltipContent>Click to open your voice library</TooltipContent>
+            <TooltipContent>Voice actor library</TooltipContent>
           </Tooltip>
           <Tooltip>
             <TooltipTrigger>
               <ToggleAudio ref={toggleAudioRef} audio={audio} />
             </TooltipTrigger>
-            <TooltipContent>Click to open your voice player</TooltipContent>
+            <TooltipContent> Open the voice player</TooltipContent>
           </Tooltip>
           {/* <PresetActions /> */}
         </div>
@@ -340,29 +350,38 @@ export function ScriptAI({}) {
                       </span>
                       &nbsp;seconds
                     </Badge>
-                    <Button
-                      className="mb-16 mt-2 h-12 w-[450px] bg-tertiary p-3  font-semibold "
-                      disabled={!selectedModel || !script}
-                      onClick={async () => {
-                        setLoading(true);
-                        try {
-                          await generateVoice({
-                            // @ts-expect-error need to type this in the state
-                            voice_id: selectedModel?.id,
-                            message: script,
-                            stability: stability?.[0],
-                            similarity: similarity?.[0],
-                          });
-                          setLoading(false);
-                        } catch {}
-                      }}
-                    >
-                      {loading ? (
-                        <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                      ) : (
-                        "Create"
-                      )}
-                    </Button>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <Button
+                          className="mb-16 mt-2 h-12 w-[450px] bg-tertiary p-3  font-semibold "
+                          disabled={!selectedModel || !script}
+                          onClick={async () => {
+                            setLoading(true);
+                            try {
+                              await generateVoice({
+                                // @ts-expect-error need to type this in the state
+                                voice_id: selectedModel?.id,
+                                message: script,
+                                stability: stability?.[0],
+                                similarity: similarity?.[0],
+                              });
+                              setLoading(false);
+                            } catch {}
+                          }}
+                        >
+                          {loading ? (
+                            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                          ) : (
+                            "Create"
+                          )}
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent side="right">
+                        {" "}
+                        Press create after your script is above and your voice
+                        actor is chosen
+                      </TooltipContent>
+                    </Tooltip>
                   </div>
                 </div>
               </TabsContent>
