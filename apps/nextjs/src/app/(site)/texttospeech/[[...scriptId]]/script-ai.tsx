@@ -154,8 +154,7 @@ export function ScriptAI({}) {
     if (isCopied) return;
     copyToClipboard(revisedScript);
   };
-  const { wordCount, minutes, formattedSeconds, speed } =
-    calculateLengthTime(script);
+  const { wordCount, minutes, formattedSeconds } = calculateLengthTime(script);
 
   return (
     <div className=" h-screen flex-col  md:flex">
@@ -327,10 +326,7 @@ export function ScriptAI({}) {
 
                   <div className="flex flex-col items-center justify-center  ">
                     <Badge className="h-12  w-[450px] items-center justify-center ">
-                      <span className="font-semibold text-tertiary dark:text-tertiary">
-                        {speed}
-                      </span>{" "}
-                      &nbsp; Script is&nbsp;
+                      Script is&nbsp;
                       <span className="font-semibold text-tertiary dark:text-tertiary">
                         {wordCount}
                       </span>
