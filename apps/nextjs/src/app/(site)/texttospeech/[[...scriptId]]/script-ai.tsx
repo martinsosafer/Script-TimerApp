@@ -469,7 +469,7 @@ export function ScriptAI({}) {
                       </div>
                     ) : (
                       <div className="flex cursor-pointer flex-col items-center justify-evenly rounded-md border bg-muted p-1 text-center">
-                        <span>Click below to revise your script.</span>
+                        <span>Grammar and spell check your script</span>
                         <Button
                           className="border-2 border-dashed"
                           disabled={
@@ -480,7 +480,7 @@ export function ScriptAI({}) {
                             checkAndPublish(script);
                           }}
                         >
-                          Revise Script
+                          Grammar and Spelling
                         </Button>
                       </div>
                     )}
