@@ -8,6 +8,7 @@ interface UserData {
   name: string;
   email: string;
   id: string;
+  created_at: string;
   subscription: string;
 }
 
@@ -84,14 +85,20 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
     );
     setFilteredData(filtered);
   }, [searchTerm, userList]);
-
+  const daysSinceCreated = (createdAt: string): number => {
+    const createdAtDate = new Date(createdAt);
+    const currentDate = new Date();
+    const differenceInTime = currentDate.getTime() - createdAtDate.getTime();
+    const differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24));
+    return differenceInDays;
+  };
   return (
     <div className="container mx-auto mb-12 p-4">
       <h1 className="mb-4 text-2xl font-bold">User Dashboard</h1>
       <div className="mb-4">
         <input
           type="text"
-          placeholder="Search by email"
+          placeholder="Search by email, name or id"
           value={searchTerm}
           onChange={handleSearch}
           className="w-full rounded-lg border border-gray-300 px-4 py-2"
@@ -100,10 +107,12 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
       <table className="w-full">
         <thead>
           <tr className="bg-gray-200">
-            <th className="px-4 py-2">order</th>
+            <th className="px-4 py-2">N°</th>
             <th className="px-4 py-2">Name</th>
             <th className="px-4 py-2">Email</th>
             <th className="px-4 py-2">ID</th>
+            <th className="px-4 py-2">Create on</th>
+            <th className="px-4 py-2">Days since creation</th>
             <th className="px-4 py-2">Subscription</th>
           </tr>
         </thead>
@@ -114,6 +123,8 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
               <td className="px-4 py-2">{user.name || "-"}</td>
               <td className="px-4 py-2">{user.email}</td>
               <td className="px-4 py-2">{user.id}</td>
+              <td className="px-4 py-2">{user.created_at.toLocaleString()}</td>
+              <td className="px-4 py-2">{daysSinceCreated(user.created_at)}</td>
               <td className="px-4 py-2">
                 <select
                   value={user.subscription}

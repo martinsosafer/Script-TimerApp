@@ -6,13 +6,39 @@ import { createTRPCRouter, protectedProcedure, TRPCError } from "../trpc";
 
 export const userRouter = createTRPCRouter({
   list: protectedProcedure.query(async ({ ctx }) => {
-    return await ctx.db
-      .select({
-        name: schema.users.name,
-        email: schema.users.email,
-        id: schema.users.id,
-      })
-      .from(schema.users);
+    try {
+      const thirtyDaysAgo = subDays(new Date(), 30);
+
+      const usersWithCharacterCountLast30Days = await ctx.db
+        .select({
+          id: schema.users.id,
+          name: schema.users.name,
+          email: schema.users.email,
+          created_at: schema.users.created_at,
+          characterCountLast30Days: raw(
+            "COALESCE(SUM(LENGTH(script)), 0) AS character_count_last_30_days",
+          ),
+        })
+        .from(schema.users)
+        .leftJoin(schema.scripts, function () {
+          this.on(
+            eq(schema.users.id, schema.scripts.userId),
+            and(
+              schema.scripts.created_at.gte(thirtyDaysAgo),
+              schema.scripts.created_at.lt(new Date()),
+            ),
+          );
+        })
+        .groupBy("id");
+
+      return usersWithCharacterCountLast30Days;
+    } catch (error) {
+      console.error("Error retrieving users with character count:", error);
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Error retrieving users with character count",
+      });
+    }
   }),
   giveSubscription: protectedProcedure
     .input(
