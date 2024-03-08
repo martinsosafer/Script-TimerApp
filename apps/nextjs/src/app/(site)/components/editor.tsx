@@ -80,6 +80,15 @@ function TextEditor({
           : "1. Add your script here\n2. Choose the voice actor you like\n3. You can quickly check spelling and grammar",
       }),
     ],
+    editorProps: {
+      attributes: {
+        class:
+          "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none overflow-hidden break-words  ml-2",
+      },
+      transformPastedText(text) {
+        return text.toUpperCase();
+      },
+    },
     onUpdate: ({ editor }) => {
       onChange(editor.getText()); //so it only gets the string for creating a script
       onChange(editor.getHTML()); // so it also get the styles when loading a chat
@@ -125,21 +134,21 @@ function TextEditor({
     editor.chain().focus().toggleItalic().run();
   }, [editor]);
 
-  const toggleBulletList = useCallback(() => {
-    editor.chain().focus().toggleBulletList().run();
-  }, [editor]);
-  const toggleHeading1 = useCallback(() => {
-    editor.chain().focus().toggleHeading({ level: 1 }).run();
-  }, [editor]);
-  const toggleHeading2 = useCallback(() => {
-    editor.chain().focus().toggleHeading({ level: 2 }).run();
-  }, [editor]);
-  const toggleHeading3 = useCallback(() => {
-    editor.chain().focus().toggleHeading({ level: 3 }).run();
-  }, [editor]);
-  const toggleHeading4 = useCallback(() => {
-    editor.chain().focus().toggleHeading({ level: 4 }).run();
-  }, [editor]);
+  // const toggleBulletList = useCallback(() => {
+  //   editor.chain().focus().toggleBulletList().run();
+  // }, [editor]);
+  // const toggleHeading1 = useCallback(() => {
+  //   editor.chain().focus().toggleHeading({ level: 1 }).run();
+  // }, [editor]);
+  // const toggleHeading2 = useCallback(() => {
+  //   editor.chain().focus().toggleHeading({ level: 2 }).run();
+  // }, [editor]);
+  // const toggleHeading3 = useCallback(() => {
+  //   editor.chain().focus().toggleHeading({ level: 3 }).run();
+  // }, [editor]);
+  // const toggleHeading4 = useCallback(() => {
+  //   editor.chain().focus().toggleHeading({ level: 4 }).run();
+  // }, [editor]);
 
   if (!editor) {
     return null;
@@ -262,11 +271,11 @@ function TextEditor({
           </Button> */}
         </div>
       </div>
-      <div className="relative flex-shrink">
+      <div className="relative flex-shrink overflow-x-auto overflow-y-auto">
         <EditorContent
           key={editorKey}
           editor={editor}
-          className="h-full max-h-[500px] min-h-[250px] overflow-auto border-primary p-2 sm:h-4/6 md:h-5/6"
+          style={{ wordWrap: "break-word" }}
         />
         {showCharCount && (
           <div className="absolute bottom-0 right-0 mb-2 mr-3 text-sm text-gray-600">
