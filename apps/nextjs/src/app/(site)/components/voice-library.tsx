@@ -24,7 +24,7 @@ export function VoiceLibrary({ onModelSelect, ...props }: ModelSelectorProps) {
   const [audio, setAudio] = React.useState<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = React.useState<Record<string, boolean>>({});
   const [selectedVoiceId, setSelectedVoiceId] = React.useState<string | null>(
-    null,
+    "ff8ba26c-1491-4142-9385-dfda979696e8",
   );
 
   React.useEffect(() => {
@@ -46,6 +46,7 @@ export function VoiceLibrary({ onModelSelect, ...props }: ModelSelectorProps) {
     audio.currentTime = 0;
     setIsPlaying((prevState) => ({ ...prevState, [voiceId]: false }));
   };
+  console.log("voicessss", voices);
   return (
     <div className="space-y-8">
       {/* {voices?.map((voice, i) => (

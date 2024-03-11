@@ -83,7 +83,7 @@ function TextEditor({
     editorProps: {
       attributes: {
         class:
-          "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none overflow-hidden break-words  ml-2",
+          "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none overflow-hidden overflow-y-auto break-words  ml-2",
       },
       transformPastedText(text) {
         return text.toUpperCase();
