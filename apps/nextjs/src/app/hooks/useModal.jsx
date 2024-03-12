@@ -18,7 +18,7 @@ const useModal = () => {
     setShowModal(false);
     // localStorage.setItem('modalClosedToday', true);
   };
-
+  //this is a new comment
   return {
     showModal,
     closeModal,
