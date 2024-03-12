@@ -12,6 +12,7 @@ import { Toaster } from "@voiceai/ui/@/components/ui/toaster";
 
 import { IdentifyAnalytics } from "../analytics";
 import { TRPCReactProvider } from "../providers";
+import Modal from "./components/modal";
 import Newnavbar from "./components/newnavbar";
 import { Sidebar } from "./components/sidebar";
 import { playlists } from "./data/playlists";
@@ -57,6 +58,7 @@ export default function Layout(props: { children: React.ReactNode }) {
             <div className="col-span-4 h-screen  overflow-auto">
               {props.children}
             </div>
+            <Modal />
           </div>
           <Toaster />
           <IdentifyAnalytics />

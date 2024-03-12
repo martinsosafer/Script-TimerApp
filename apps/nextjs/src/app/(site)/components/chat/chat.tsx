@@ -20,7 +20,9 @@ import { toast } from "@voiceai/ui/@/components/ui/toast";
 import { useLocalStorage } from "@voiceai/ui/@/hooks/use-local-storage";
 import { cn } from "@voiceai/ui/@/lib/utils";
 
+import useModal from "~/app/hooks/useModal";
 import type { Prompt, PromptType } from "../../data/prompts";
+import Modal from "../modal";
 import { ChatList } from "./chat-list";
 import { ChatPanel } from "./chat-panel";
 import { EmptyScreen } from "./empty-screen";
@@ -45,6 +47,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
   const [previewTokenInput, setPreviewTokenInput] = useState(
     previewToken ?? "",
   );
+  const { showModal, closeModal } = useModal();
   const { messages, append, reload, stop, isLoading, input, setInput } =
     useChat({
       // api: "/api/chat",
@@ -153,6 +156,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      <Modal isOpen={showModal} onClose={closeModal} />
     </>
   );
 }
