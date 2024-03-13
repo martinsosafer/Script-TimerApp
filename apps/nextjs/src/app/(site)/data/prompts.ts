@@ -112,7 +112,7 @@ export const prompts: Prompt<PromptType>[] = [
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `Please create 5 questions that will be used as a quiz at the end of this short story. I will give you the short story, and you will create the questions and 4 possible answers in multiple choice format. The questions will test whether the audience was listening and can answer correctly based on the information shared. Please space in between each of your replies, and number your questions '1', '2', '3', '4', '5'. Be sure to include both the question and answers, as well as the correct answer on a separate line. All will be based on the text I share. You will get a $20 tip if you do well. The speech is:`,
-    prompt_display: `I'd be happy to help you create 5 questions and enumerate them. Please send over the script you'd like me to work on.`,
+    prompt_display: `I'd be happy to help you create 5 questions with multiple choice format with their current answers and enumerate them. Please send over the script you'd like me to work on.`,
   },
   {
     id: "defbd3f2-0649-4973-a609-d7de18b08687",

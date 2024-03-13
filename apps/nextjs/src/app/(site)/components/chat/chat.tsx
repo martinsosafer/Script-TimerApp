@@ -156,7 +156,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      <Modal isOpen={showModal} onClose={closeModal} />
+      {/* <Modal isOpen={showModal} onClose={closeModal} /> */}
     </>
   );
 }
