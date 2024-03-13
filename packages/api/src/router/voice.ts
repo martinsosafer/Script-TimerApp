@@ -46,6 +46,7 @@ export const voiceRouter = createTRPCRouter({
     .input(
       z.object({
         voice_id: z.string().min(1),
+        actor: z.string().min(1), // Add voice_actor field
         message: z.string().min(1).trim(),
         similarity: z.number().min(0).max(1).default(0.8),
         stability: z.number().min(0).max(1).default(0.5),
@@ -89,6 +90,7 @@ export const voiceRouter = createTRPCRouter({
               // style: 0.5,
               // use_speaker_boost: true,
             },
+            actor: input.actor,
           };
           console.log("CALLING");
           const options = {
@@ -137,6 +139,7 @@ export const voiceRouter = createTRPCRouter({
                 prompt: input.message,
                 response: audioBase64,
                 metadata: payload,
+                actor: input.actor,
               })
               .returning({ generationId: schema.generations.id })
               .then((res) => res?.[0]?.generationId);
