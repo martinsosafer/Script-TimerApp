@@ -45,6 +45,7 @@ import {
 } from "@voiceai/ui/@/components/ui/tooltip";
 import { useCopyToClipboard } from "@voiceai/ui/@/hooks/use-copy-to-clipboard";
 
+import useModal from "~/app/hooks/useModal";
 import { calculateLength } from "~/lib/calculate-length";
 import {
   calculateLengthTime,
@@ -54,6 +55,7 @@ import { api } from "~/utils/api";
 import { useDragAndDrop } from "~/utils/helpers";
 import { TextEditor } from "../../components/editor";
 import { HistoryButton } from "../../components/history-button";
+import Modal from "../../components/modal";
 import { ModelSelector } from "../../components/model-selector";
 import { SaveScript } from "../../components/save-script";
 import { ScriptSelector } from "../../components/script-selector";
@@ -75,7 +77,7 @@ export function ScriptAI({}) {
   const [stability, setStability] = React.useState([0.5]);
   // If script is selected from URL path parameter, load in state from db
   const { scriptId } = useParams();
-
+  const { showModal, closeModal } = useModal();
   const { data: scriptDetails } = api.script.get.useQuery(
     { id: scriptId?.[0] ?? "" },
     { enabled: Boolean(scriptId?.[0]) },
@@ -512,6 +514,7 @@ export function ScriptAI({}) {
         </div>
       </Tabs>
       {/* )} */}
+      {/* <Modal isOpen={showModal} onClose={closeModal} /> */}
     </div>
   );
 }
