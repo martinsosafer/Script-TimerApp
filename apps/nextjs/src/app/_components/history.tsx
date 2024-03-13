@@ -55,9 +55,9 @@ export const History = ({ ...rest }) => {
       <TableCaption>A list of your history.</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead>Prompt</TableHead>
-          <TableHead>Credits Used</TableHead>
-          <TableHead>Time</TableHead>
+          <TableHead>Script</TableHead>
+          <TableHead>Characters used</TableHead>
+          <TableHead>Date</TableHead>
           <TableHead>Download</TableHead>
         </TableRow>
       </TableHeader>

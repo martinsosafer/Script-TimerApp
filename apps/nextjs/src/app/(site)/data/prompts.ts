@@ -105,14 +105,14 @@ export const prompts: Prompt<PromptType>[] = [
   },
   {
     id: "4e7d193c-ae11-44fd-b082-b077d0184ae3",
-    name: "Interactive Q&A Sessions",
+    name: "Create 5 questions based on the content",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
     type: "IMPROVE YOUR SPEECH",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
-    prompt_ai: `You are a leading speaker with expert copywriting skills for writing speeches and presentations. Using my script that I will send later as a reference, How can I effectively manage and engage with the audience during Q&A sessions? If you understand, ask me about my script.`,
-    prompt_display: `I'd be happy to help improve your Q&A Interactions. Please send over the script you'd like me to work on.`,
+    prompt_ai: `Please create 5 questions that will be used as a quiz at the end of this short story. I will give you the short story, and you will create the questions and 4 possible answers in multiple choice format. The questions will test whether the audience was listening and can answer correctly based on the information shared. Please space in between each of your replies, and number your questions '1', '2', '3', '4', '5'. Be sure to include both the question and answers, as well as the correct answer on a separate line. All will be based on the text I share. You will get a $20 tip if you do well. The speech is:`,
+    prompt_display: `I'd be happy to help you create 5 questions with multiple choice format with their current answers and enumerate them,I also will give you the correct answer.I will space questions. Please send over the script you'd like me to work on.`,
   },
   {
     id: "defbd3f2-0649-4973-a609-d7de18b08687",
