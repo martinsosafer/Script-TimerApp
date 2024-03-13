@@ -56,7 +56,7 @@ export default function HeroSection() {
           </div>
         </div>
       </div>
-      <Modal isOpen={showModal} onClose={closeModal} />
+      {/* <Modal isOpen={showModal} onClose={closeModal} /> */}
     </section>
   );
 }
