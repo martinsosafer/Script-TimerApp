@@ -3,7 +3,7 @@
 import * as React from "react";
 import ArrowDownOnSquareIcon from "@heroicons/react/24/outline/ArrowDownOnSquareIcon";
 
-import { Icons } from "@voiceai/ui/@/components/ui/icons";
+import { IconCopy, Icons } from "@voiceai/ui/@/components/ui/icons";
 import {
   Table,
   TableBody,
@@ -20,6 +20,24 @@ import { api } from "~/utils/api";
 export const History = ({ ...rest }) => {
   const [loading, setLoading] = React.useState(false);
   const { data, isLoading } = api.history.list.useQuery();
+
+  const copyTextToClipboard = (text) => {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        toast({
+          title: "Text copied",
+
+          duration: 2000,
+        });
+      })
+      .catch((error) => {
+        toast({
+          title: "Error",
+          description: "Failed to copy text to clipboard",
+        });
+      });
+  };
 
   const { mutateAsync: downloadGeneration, error } =
     api.history.download.useMutation({
@@ -50,6 +68,8 @@ export const History = ({ ...rest }) => {
         });
       },
     });
+
+  console.log("Data from backend:", data);
   return (
     <Table>
       <TableCaption>A list of your history.</TableCaption>
@@ -58,6 +78,8 @@ export const History = ({ ...rest }) => {
           <TableHead>Script</TableHead>
           <TableHead>Characters used</TableHead>
           <TableHead>Date</TableHead>
+          <TableHead>Actor</TableHead>
+          <TableHead>Copy</TableHead>
           <TableHead>Download</TableHead>
         </TableRow>
       </TableHeader>
@@ -68,6 +90,15 @@ export const History = ({ ...rest }) => {
               <TableCell>{history.prompt}</TableCell>
               <TableCell>{history.credits}</TableCell>
               <TableCell>{history.created_at!.toDateString()}</TableCell>
+              <TableCell>{history.metadata.voice_actor}</TableCell>
+              <TableCell>
+                <button
+                  type="button"
+                  onClick={() => copyTextToClipboard(history.prompt)}
+                >
+                  <IconCopy width={30} className="stroke-black" />
+                </button>
+              </TableCell>
               <TableCell>
                 <button
                   type="button"
