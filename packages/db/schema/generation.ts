@@ -26,6 +26,7 @@ export const generations = pgTable("generation", {
   prompt: text("prompt").notNull(),
   response: text("response").notNull(),
   metadata: jsonb("metadata"),
+
   created_at: timestamp("created_at").notNull().defaultNow(),
   updated_at: timestamp("updated_at").notNull().defaultNow(),
 });

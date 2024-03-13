@@ -14,6 +14,7 @@ export const historyRouter = createTRPCRouter({
         credits: schema.credits.credits,
         created_at: schema.credits.created_at,
         prompt: schema.generations.prompt,
+        metadata: schema.generations.metadata,
         // file: schema.generations.response,
       })
       .from(schema.credits)

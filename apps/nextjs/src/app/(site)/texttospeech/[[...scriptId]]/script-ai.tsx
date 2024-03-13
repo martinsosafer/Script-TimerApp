@@ -363,6 +363,7 @@ export function ScriptAI({}) {
                               await generateVoice({
                                 // @ts-expect-error need to type this in the state
                                 voice_id: selectedModel?.id,
+                                voice_actor: selectedModel?.name,
                                 message: script,
                                 stability: stability?.[0],
                                 similarity: similarity?.[0],

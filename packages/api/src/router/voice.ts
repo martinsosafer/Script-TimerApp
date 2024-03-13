@@ -46,6 +46,7 @@ export const voiceRouter = createTRPCRouter({
     .input(
       z.object({
         voice_id: z.string().min(1),
+        voice_actor: z.string().min(1), // Add voice_actor field
         message: z.string().min(1).trim(),
         similarity: z.number().min(0).max(1).default(0.8),
         stability: z.number().min(0).max(1).default(0.5),
@@ -83,6 +84,7 @@ export const voiceRouter = createTRPCRouter({
           const payload = {
             model_id: "eleven_multilingual_v2",
             text: message,
+            voice_actor: input.voice_actor,
             voice_settings: {
               similarity_boost: input.similarity,
               stability: input.stability,
