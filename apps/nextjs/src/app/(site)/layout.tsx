@@ -58,7 +58,6 @@ export default function Layout(props: { children: React.ReactNode }) {
             <div className="col-span-4 h-screen  overflow-auto">
               {props.children}
             </div>
-            <Modal />
           </div>
           <Toaster />
           <IdentifyAnalytics />
