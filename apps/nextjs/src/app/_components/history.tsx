@@ -75,14 +75,11 @@ export const History = ({ ...rest }) => {
       <TableCaption>A list of your history.</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead>Script</TableHead>
+          <TableHead>Scripts</TableHead>
           <TableHead>Characters used</TableHead>
           <TableHead>Date</TableHead>
-<<<<<<< HEAD
           <TableHead>Actor</TableHead>
           <TableHead>Copy</TableHead>
-=======
->>>>>>> b08810661fc25d39506072ba54996f2813879b1d
           <TableHead>Download</TableHead>
         </TableRow>
       </TableHeader>
@@ -93,7 +90,11 @@ export const History = ({ ...rest }) => {
               <TableCell>{history.prompt}</TableCell>
               <TableCell>{history.credits}</TableCell>
               <TableCell>{history.created_at!.toDateString()}</TableCell>
-              <TableCell>{history.metadata.voice_actor}</TableCell>
+
+              <TableCell>
+                {/* @ts-ignore */}
+                {history.metadata.voice_actor ?? ""}
+              </TableCell>
               <TableCell>
                 <button
                   type="button"
