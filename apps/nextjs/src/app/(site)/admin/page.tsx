@@ -15,7 +15,7 @@ export default function AdminPage() {
   if (isError) {
     return <div>Error fetching data</div>;
   }
-  console.log("USERS", userList);
+
   return (
     <div className=" mt-9">
       <Dashboard userList={userList} />

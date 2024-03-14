@@ -132,7 +132,9 @@ export function ChatMessageActions({
               });
               try {
                 await generateVoice({
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                   voice_id: selectedModel.id,
+                  voice_actor: selectedModel?.name,
                   message: message.content,
                 });
               } catch (error) {
