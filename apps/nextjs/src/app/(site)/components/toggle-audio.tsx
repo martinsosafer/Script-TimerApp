@@ -15,12 +15,19 @@ import {
 } from "@voiceai/ui/@/components/ui/sheet";
 import { MagicWandIcon, SpeakerLoudIcon } from "@voiceai/ui/@/icons/icons";
 
+import { api } from "~/utils/api";
+
 interface ToggleAudioProps {
   audio: string;
 }
 // export function ToggleAudio({ audio, ref }: ToggleAudioProps) {
 export const ToggleAudio = React.forwardRef(
   ({ audio }: ToggleAudioProps, ref) => {
+    const { data: subscriptionData } =
+      api.subscription.mySubscription.useQuery();
+    const isSubscriptionActive =
+      subscriptionData && subscriptionData.status === "ACTIVE";
+
     return (
       <div className="grid gap-2">
         <Sheet>
@@ -48,6 +55,7 @@ export const ToggleAudio = React.forwardRef(
                   <audio
                     controls
                     src={audio}
+                    controlsList={isSubscriptionActive ? "" : "nodownload"}
                     className="col-span-2 col-start-2 mx-auto w-full"
                   />
                 ) : (

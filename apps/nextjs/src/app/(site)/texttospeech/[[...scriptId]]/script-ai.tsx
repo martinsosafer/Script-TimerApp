@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { CopyIcon } from "@radix-ui/react-icons";
 import { useCompletion } from "ai/react";
 
+import { auth } from "@voiceai/auth";
 import { SimpleEditor } from "@voiceai/ui";
 import { Badge } from "@voiceai/ui/@/components/ui/badge";
 import { Button } from "@voiceai/ui/@/components/ui/button";

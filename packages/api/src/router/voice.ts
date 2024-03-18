@@ -35,11 +35,20 @@ export const voiceRouter = createTRPCRouter({
             ),
           );
       }
+      const subscription = await ctx.db.query.subscriptions.findFirst({
+        where: eq(schema.subscriptions.userId, ctx.session.user.id),
+      });
 
+      let maxVoices = 5; // Maximum number of voices for free users
+      if (subscription?.status === "ACTIVE") {
+        // If user has an active subscription, set maximum voices to a higher value
+        maxVoices = Number.MAX_SAFE_INTEGER; // Set to a very large number
+      }
       return await ctx.db
         .select()
         .from(schema.voices)
         .where(eq(schema.voices.active, true))
+        .limit(maxVoices)
         .orderBy(asc(schema.voices.rank));
     }),
   create: protectedProcedure
@@ -67,7 +76,7 @@ export const voiceRouter = createTRPCRouter({
           throw new TRPCError({
             code: "FORBIDDEN",
             message:
-              "Subscribe to a plan to generate more than 1200 characters.",
+              "Subscribe to a plan to generate more than 300 characters.",
           });
         }
 
