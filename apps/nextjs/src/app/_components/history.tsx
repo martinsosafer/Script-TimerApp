@@ -26,21 +26,17 @@ import { api } from "~/utils/api";
 import { ActorsDropdown } from "../(site)/components/chat/actorsdropdown";
 
 export const History = ({ ...rest }) => {
-  const [playLoading, setPlayLoading] = React.useState(false);
-  const [downloadLoading, setDownloadLoading] = React.useState(false);
-
+  const [loadingPlay, setLoadingPlay] = React.useState(false);
+  const [loadingDownload, setLoadingDownload] = React.useState(false);
   const { data, isLoading } = api.history.list.useQuery();
   const [selectedAudio, setSelectedAudio] = React.useState(null);
-  const [selectedActors, setSelectedActors] = React.useState({});
+  const [selectedModel, setSelectedModel] = React.useState(null);
   const { data: voices } = api.voice.list.useQuery({ name: "" });
 
-  const handleSetSelectedModel = (model, creditId) => {
-    setSelectedActors((prevSelectedActors) => ({
-      ...prevSelectedActors,
-      [creditId]: model,
-    }));
+  const handleSetSelectedModel = (model: any) => {
+    setSelectedModel(model);
+    // console.log("Selected model:", model);
   };
-
   // Generate audio voice
   const [audio, setAudio] = React.useState("");
 
@@ -50,7 +46,7 @@ export const History = ({ ...rest }) => {
     onSuccess(data) {
       const dataURI = `data:audio/mpeg;base64,${data?.audio}`;
       setAudio(dataURI);
-      setPlayLoading(false);
+      setLoadingPlay(false);
 
       if (audioRef.current) {
         audioRef.current.src = dataURI;
@@ -58,7 +54,7 @@ export const History = ({ ...rest }) => {
       }
     },
     onError(error) {
-      setPlayLoading(false);
+      setLoadingPlay(false);
       if (error?.data?.code === "FORBIDDEN") {
         toast({
           title: "Upgrade your plan",
@@ -99,7 +95,7 @@ export const History = ({ ...rest }) => {
   //dowload history script
   const { mutateAsync: downloadGeneration } = api.history.download.useMutation({
     onSuccess(data) {
-      setDownloadLoading(false);
+      setLoadingDownload(false);
 
       if (!data) {
         toast({
@@ -116,7 +112,7 @@ export const History = ({ ...rest }) => {
       document.body.removeChild(a);
     },
     onError(error) {
-      setDownloadLoading(false);
+      setLoadingDownload(false);
 
       toast({
         title: "Something went wrong",
@@ -142,6 +138,7 @@ export const History = ({ ...rest }) => {
         });
       });
   };
+
   return (
     <Table>
       <TableCaption>A list of your history.</TableCaption>
@@ -178,28 +175,28 @@ export const History = ({ ...rest }) => {
                 </button>
               </TableCell>
               <TableCell>
-                <ActorsDropdown
-                  voices={voices}
-                  setSelectedModel={(model) =>
-                    handleSetSelectedModel(model, history.credit_id)
-                  }
-                  // Use the selected actor for the specific row
-                  selectedModel={selectedActors[history.credit_id]}
-                />
+                <button type="button">
+                  <ActorsDropdown
+                    voices={voices}
+                    setSelectedModel={handleSetSelectedModel}
+                    selectedModel={selectedModel}
+                  />
+                </button>
               </TableCell>
               <TableCell>
                 <Button
                   variant="ghost"
                   size="icon"
-                  disabled={!selectedActors || !history.prompt || playLoading}
+                  disabled={!selectedModel || !history.prompt || isLoading}
                   onClick={async () => {
-                    setPlayLoading(true);
+                    setLoadingPlay(true);
                     toast({
                       description:
-                        "Recording script, please keep in mind that longer scripts take longer to generate.",
+                        "Recording script,please keep in mind that longer scripts take longer to generate.",
                     });
                     try {
                       await generateVoice({
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                         voice_id: selectedModel.id,
                         voice_actor: selectedModel?.name,
                         message: history.prompt,
@@ -207,15 +204,13 @@ export const History = ({ ...rest }) => {
                     } catch (error) {
                       toast({
                         description:
-                          "Error: Keep in mind base plan only allows 1500 words scripts",
+                          "Error:Keep in mind base plan only allows 1500 words scripts",
                       });
                       console.error("Error generating voice:", error);
-                    } finally {
-                      setPlayLoading(false);
                     }
                   }}
                 >
-                  {playLoading ? (
+                  {loadingPlay ? (
                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                   ) : (
                     <IconPlay />
@@ -224,12 +219,12 @@ export const History = ({ ...rest }) => {
                     src={audio}
                     className="col-span-2 col-start-2 mx-auto w-full"
                     ref={audioRef}
-                    onEnded={() => setPlayLoading(false)} // Handle loading state when audio ends
+                    onEnded={() => setLoadingPlay(false)} // Handle loading state when audio ends
                   />
                   <span className="sr-only">Play sound</span>
                 </Button>
 
-                {audio && !playLoading && (
+                {audio && !loadingPlay && (
                   <Button variant="ghost" size="icon" onClick={stopAudio}>
                     <IconStop />
                     <span className="sr-only">Stop sound</span>
@@ -241,7 +236,7 @@ export const History = ({ ...rest }) => {
                   type="button"
                   onClick={async () => {
                     try {
-                      setDownloadLoading(true);
+                      setLoadingDownload(true);
                       console.log(
                         "Downloading history ID:",
                         history.history_id,
@@ -260,7 +255,7 @@ export const History = ({ ...rest }) => {
                   //   document.body.removeChild(a);
                   // }}
                 >
-                  {downloadLoading ? (
+                  {loadingDownload ? (
                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                   ) : (
                     <ArrowDownOnSquareIcon
