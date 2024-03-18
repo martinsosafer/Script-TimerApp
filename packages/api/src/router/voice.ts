@@ -69,7 +69,7 @@ export const voiceRouter = createTRPCRouter({
 
         const isFreePlanGated =
           input.message &&
-          input.message?.length > 1200 &&
+          input.message?.length > 300 &&
           subscription?.status !== "ACTIVE";
 
         if (isFreePlanGated) {
