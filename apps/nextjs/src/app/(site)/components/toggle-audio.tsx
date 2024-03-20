@@ -19,15 +19,11 @@ import { api } from "~/utils/api";
 
 interface ToggleAudioProps {
   audio: string;
+  isSubscriptionActive?: boolean;
 }
 // export function ToggleAudio({ audio, ref }: ToggleAudioProps) {
 export const ToggleAudio = React.forwardRef(
-  ({ audio }: ToggleAudioProps, ref) => {
-    const { data: subscriptionData } =
-      api.subscription.mySubscription.useQuery();
-    const isSubscriptionActive =
-      subscriptionData && subscriptionData.status === "ACTIVE";
-
+  ({ audio, isSubscriptionActive }: ToggleAudioProps, ref) => {
     return (
       <div className="grid gap-2">
         <Sheet>

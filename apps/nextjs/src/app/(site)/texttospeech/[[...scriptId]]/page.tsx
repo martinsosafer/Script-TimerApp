@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default async function ScriptPage() {
   const session = await auth();
-  console.log("sessiooon", session);
+
   return (
     <>
       <ScriptAI />

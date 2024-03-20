@@ -46,6 +46,7 @@ import {
 } from "@voiceai/ui/@/components/ui/tooltip";
 import { useCopyToClipboard } from "@voiceai/ui/@/hooks/use-copy-to-clipboard";
 
+import useDailyModal from "~/app/hooks/useDailyModal";
 import useModal from "~/app/hooks/useModal";
 import { calculateLength } from "~/lib/calculate-length";
 import {
@@ -55,6 +56,7 @@ import {
 import { api } from "~/utils/api";
 import { useDragAndDrop } from "~/utils/helpers";
 import { TextEditor } from "../../components/editor";
+import FreeModal from "../../components/free-modal";
 import { HistoryButton } from "../../components/history-button";
 import Modal from "../../components/modal";
 import { ModelSelector } from "../../components/model-selector";
@@ -70,7 +72,10 @@ import { models, types } from "../../data/models";
 
 export function ScriptAI({}) {
   const [open, setOpen] = React.useState(false);
-
+  //Get subscription info
+  const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
+  const isSubscriptionActive =
+    subscriptionData && subscriptionData.status === "ACTIVE";
   // Script AI parameters
   const [script, setScript] = React.useState("");
   const [selectedModel, setSelectedModel] = React.useState(null);
@@ -78,7 +83,11 @@ export function ScriptAI({}) {
   const [stability, setStability] = React.useState([0.5]);
   // If script is selected from URL path parameter, load in state from db
   const { scriptId } = useParams();
+  //modal logic
   const { showModal, closeModal } = useModal();
+  const { showDailyModal, closeDailyModal } = useDailyModal();
+
+  //scriptdetials
   const { data: scriptDetails } = api.script.get.useQuery(
     { id: scriptId?.[0] ?? "" },
     { enabled: Boolean(scriptId?.[0]) },
@@ -217,7 +226,11 @@ export function ScriptAI({}) {
           </Tooltip>
           <Tooltip>
             <TooltipTrigger>
-              <ToggleAudio ref={toggleAudioRef} audio={audio} />
+              <ToggleAudio
+                ref={toggleAudioRef}
+                audio={audio}
+                isSubscriptionActive={isSubscriptionActive}
+              />
             </TooltipTrigger>
             <TooltipContent> Open the voice player</TooltipContent>
           </Tooltip>
@@ -353,39 +366,38 @@ export function ScriptAI({}) {
                       </span>
                       &nbsp;seconds
                     </Badge>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <Button
-                          className="mb-16 mt-2 h-12 w-[450px] bg-tertiary p-3  font-semibold "
-                          disabled={!selectedModel || !script}
-                          onClick={async () => {
-                            setLoading(true);
-                            try {
-                              await generateVoice({
-                                // @ts-expect-error need to type this in the state
-                                voice_id: selectedModel?.id,
-                                voice_actor: selectedModel?.name,
-                                message: script,
-                                stability: stability?.[0],
-                                similarity: similarity?.[0],
-                              });
-                              setLoading(false);
-                            } catch {}
-                          }}
-                        >
-                          {loading ? (
-                            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                          ) : (
-                            "Create"
-                          )}
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent side="right">
-                        {" "}
+                    <HoverCard openDelay={200}>
+                      <HoverCardTrigger asChild></HoverCardTrigger>
+                      <Button
+                        className="mb-16 mt-2 h-12 w-[450px] bg-tertiary p-3  font-semibold "
+                        disabled={!selectedModel || !script}
+                        onClick={async () => {
+                          setLoading(true);
+                          try {
+                            await generateVoice({
+                              // @ts-expect-error need to type this in the state
+                              voice_id: selectedModel?.id,
+                              voice_actor: selectedModel?.name,
+                              message: script,
+                              stability: stability?.[0],
+                              similarity: similarity?.[0],
+                            });
+                            setLoading(false);
+                          } catch {}
+                        }}
+                      >
+                        {loading ? (
+                          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                        ) : (
+                          "Create"
+                        )}
+                      </Button>
+                      <HoverCardTrigger />
+                      <HoverCardContent>
                         Press create after your script is above and your voice
                         actor is chosen
-                      </TooltipContent>
-                    </Tooltip>
+                      </HoverCardContent>
+                    </HoverCard>
                   </div>
                 </div>
               </TabsContent>
@@ -515,7 +527,10 @@ export function ScriptAI({}) {
         </div>
       </Tabs>
       {/* )} */}
-      {/* <Modal isOpen={showModal} onClose={closeModal} /> */}
+      {showModal && <Modal onClose={closeModal} />}
+      {showDailyModal && !isSubscriptionActive && (
+        <FreeModal onClose={closeDailyModal} />
+      )}
     </div>
   );
 }

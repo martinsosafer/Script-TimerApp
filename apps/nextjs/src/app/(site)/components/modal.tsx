@@ -12,9 +12,7 @@ import {
 
 import modalpicture from "../../../../public/modalimage.svg";
 
-function Modal({ isOpen, onClose }) {
-  if (!isOpen) return null;
-
+function Modal({ onClose }) {
   return (
     <dialog className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center overflow-auto bg-black bg-opacity-50 backdrop-blur">
       <div className="container mx-auto flex flex-col rounded-xl bg-white p-6 md:p-10 lg:p-16">
