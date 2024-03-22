@@ -514,7 +514,7 @@ export function ScriptAI({}) {
         </div>
       </Tabs>
       {/* )} */}
-      <Modal isOpen={showModal} onClose={closeModal} />
+      {/* <Modal isOpen={showModal} onClose={closeModal} /> */}
     </div>
   );
 }
