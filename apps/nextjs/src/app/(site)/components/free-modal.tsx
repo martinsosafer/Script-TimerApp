@@ -1,4 +1,18 @@
 import React from "react";
+import Image from "next/image";
+import Link from "next/link";
+
+import {
+  IconAudioWaveform,
+  IconBookPlus,
+  IconBotMessageSquare,
+  IconDownload,
+  IconMic2,
+  IconSave,
+  IconScanText,
+} from "@voiceai/ui/@/components/ui/icons";
+
+import reminder from "../../../../public/freereminder.png";
 
 function FreeModal({ onClose }) {
   // If the user is not a free user, don't render anything
@@ -8,31 +22,71 @@ function FreeModal({ onClose }) {
   };
 
   return (
-    <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50 py-10">
+    <div className="fixed left-0 top-0 mt-8 flex h-full w-full items-center justify-center bg-black bg-opacity-50 ">
       <div className="max-h-full w-full max-w-xl overflow-y-auto bg-white sm:rounded-2xl">
         <div className="w-full">
-          <div className="m-8 mx-auto my-20 max-w-[400px]">
-            <div className="mb-8">
-              <h1 className="mb-4 text-3xl font-extrabold">
+          <div className="m-8 mx-auto my-2 flex max-w-[600px] flex-col items-center px-4">
+            <div className="mb-2">
+              <h1 className="mb-4 text-3xl font-extrabold ">
                 You are missing out !
               </h1>
-              <p className="text-gray-600">
-                Get the most out of script timer by .......
-              </p>
+              <div className="ml-5">
+                <Image
+                  src={reminder}
+                  width={200}
+                  height={200}
+                  alt="Picture of the author"
+                />
+              </div>
             </div>
-            <div className="space-y-4">
-              <button
-                className="w-full rounded-full bg-tertiary p-3 font-semibold text-primary-foreground"
-                onClick={() => handleSkipForNow()}
-              >
-                Upgrade Plan
-              </button>
-              <button
-                className="w-full rounded-full border bg-white p-3 font-semibold"
-                onClick={() => handleSkipForNow()} // Close the modal when clicked
-              >
-                Skip for now
-              </button>
+            <div className="mt-2 ">
+              <div className="mt-2 ">
+                <ul className="pl-6">
+                  <li>
+                    {" "}
+                    <IconAudioWaveform className="mr-2 inline-block h-6 w-6 font-extrabold text-primary" />{" "}
+                    Dozens of voices to choose from
+                  </li>
+                  <li>
+                    <IconSave className="mr-3 inline-block h-6 w-6 font-extrabold text-primary" />
+                    Save your voice files - licensed to you
+                  </li>
+                  <li>
+                    {" "}
+                    <IconScanText className="mr-3 inline-block h-6 w-6 font-extrabold text-primary" />
+                    Translate your scripts & voices to other languages
+                  </li>
+                  <li>
+                    <IconBotMessageSquare className="mr-2 inline-block h-6 w-6 font-extrabold text-primary" />{" "}
+                    Full access to the Magic AI to speed script writing, speech
+                    creation, presentation ideas, even coding
+                  </li>
+                  <li>
+                    <IconBookPlus className="mr-2 inline-block h-6 w-6 font-extrabold text-primary" />{" "}
+                    Improve your skills in writing, public speaking, producing
+                    videos
+                  </li>
+                </ul>
+              </div>
+              <div className=" mt-8">
+                <Link
+                  href="https://script-timer.com/voice123-promo-pricing/"
+                  target="_blank"
+                >
+                  <button
+                    className="w-full rounded-full bg-tertiary p-3 font-semibold text-primary-foreground"
+                    onClick={() => handleSkipForNow()}
+                  >
+                    Upgrade Plan
+                  </button>
+                </Link>
+                <button
+                  className="w-full rounded-full border bg-white p-3 font-semibold"
+                  onClick={() => handleSkipForNow()} // Close the modal when clicked
+                >
+                  Skip for now
+                </button>
+              </div>
             </div>
           </div>
         </div>

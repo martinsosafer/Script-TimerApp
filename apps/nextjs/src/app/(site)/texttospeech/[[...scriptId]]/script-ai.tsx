@@ -367,33 +367,38 @@ export function ScriptAI({}) {
                       &nbsp;seconds
                     </Badge>
                     <HoverCard openDelay={200}>
-                      <HoverCardTrigger asChild></HoverCardTrigger>
-                      <Button
-                        className="mb-16 mt-2 h-12 w-[450px] bg-tertiary p-3  font-semibold "
-                        disabled={!selectedModel || !script}
-                        onClick={async () => {
-                          setLoading(true);
-                          try {
-                            await generateVoice({
-                              // @ts-expect-error need to type this in the state
-                              voice_id: selectedModel?.id,
-                              voice_actor: selectedModel?.name,
-                              message: script,
-                              stability: stability?.[0],
-                              similarity: similarity?.[0],
-                            });
-                            setLoading(false);
-                          } catch {}
-                        }}
+                      <HoverCardTrigger asChild>
+                        <div>
+                          <Button
+                            className="mb-16 mt-2 h-12 w-[450px] bg-tertiary p-3  font-semibold "
+                            disabled={!selectedModel || !script}
+                            onClick={async () => {
+                              setLoading(true);
+                              try {
+                                await generateVoice({
+                                  // @ts-expect-error need to type this in the state
+                                  voice_id: selectedModel?.id,
+                                  voice_actor: selectedModel?.name,
+                                  message: script,
+                                  stability: stability?.[0],
+                                  similarity: similarity?.[0],
+                                });
+                                setLoading(false);
+                              } catch {}
+                            }}
+                          >
+                            {loading ? (
+                              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                            ) : (
+                              "Create"
+                            )}
+                          </Button>
+                        </div>
+                      </HoverCardTrigger>
+                      <HoverCardContent
+                        className="w-[320px] text-sm"
+                        side="right"
                       >
-                        {loading ? (
-                          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                        ) : (
-                          "Create"
-                        )}
-                      </Button>
-                      <HoverCardTrigger />
-                      <HoverCardContent>
                         Press create after your script is above and your voice
                         actor is chosen
                       </HoverCardContent>

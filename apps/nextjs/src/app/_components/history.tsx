@@ -32,7 +32,10 @@ export const History = ({ ...rest }) => {
   const [selectedAudio, setSelectedAudio] = React.useState(null);
   const [selectedModel, setSelectedModel] = React.useState(null);
   const { data: voices } = api.voice.list.useQuery({ name: "" });
-
+  //Get subscription info
+  const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
+  const isSubscriptionActive =
+    subscriptionData && subscriptionData.status === "ACTIVE";
   const handleSetSelectedModel = (model: any) => {
     setSelectedModel(model);
     // console.log("Selected model:", model);
@@ -232,8 +235,10 @@ export const History = ({ ...rest }) => {
                 )}
               </TableCell>
               <TableCell>
-                <button
-                  type="button"
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  disabled={!isSubscriptionActive}
                   onClick={async () => {
                     try {
                       setLoadingDownload(true);
@@ -263,7 +268,7 @@ export const History = ({ ...rest }) => {
                       className="stroke-black"
                     />
                   )}
-                </button>
+                </Button>
               </TableCell>
             </TableRow>
           ))}
