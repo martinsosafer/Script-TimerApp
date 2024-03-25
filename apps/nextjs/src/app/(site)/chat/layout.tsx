@@ -1,5 +1,7 @@
 import { auth } from "@voiceai/auth";
 
+import { api } from "~/utils/api";
+import ChatModal from "../components/chat/chatmodal";
 import { LeftMenu } from "../components/chat/leftmenuchat";
 import { LeftMobile } from "../components/chat/leftmobile";
 
@@ -13,6 +15,8 @@ export default async function ChatLayout({ children }: ChatLayoutProps) {
   if (!session?.user?.id) {
     return null;
   }
+  //Get subscription info
+
   return (
     <div className="relative flex h-screen overflow-hidden ">
       <LeftMenu userId={session.user.id} />

@@ -12,14 +12,10 @@ import {
   IconScanText,
 } from "@voiceai/ui/@/components/ui/icons";
 
-import reminder from "../../../../public/freereminder.png";
+import reminder from "../../../../../public/freereminder.png";
 
-function FreeModal({ onClose }) {
+function ChatModal() {
   // If the user is not a free user, don't render anything
-
-  const handleSkipForNow = () => {
-    onClose();
-  };
 
   return (
     <div className="fixed left-0 top-0 mt-8 flex h-full w-full items-center justify-center bg-black bg-opacity-50 ">
@@ -28,7 +24,7 @@ function FreeModal({ onClose }) {
           <div className="m-8 mx-auto my-2 flex max-w-[600px] flex-col items-center px-4">
             <div className="mb-2">
               <h1 className="mb-4 text-3xl font-extrabold ">
-                You are missing out !
+                This is a members area!
               </h1>
               <div className="ml-5">
                 <Image
@@ -73,19 +69,15 @@ function FreeModal({ onClose }) {
                   href="https://script-timer.com/voice123-promo-pricing/"
                   target="_blank"
                 >
-                  <button
-                    className="w-full rounded-full bg-tertiary p-3 font-semibold text-primary-foreground"
-                    onClick={() => handleSkipForNow()}
-                  >
+                  <button className="w-full rounded-full bg-tertiary p-3 font-semibold text-primary-foreground">
                     Upgrade Plan
                   </button>
                 </Link>
-                <button
-                  className="w-full rounded-full border border-black bg-white p-3 font-semibold"
-                  onClick={() => handleSkipForNow()} // Close the modal when clicked
-                >
-                  Skip for now
-                </button>
+                <Link href="/" target="_blank">
+                  <button className="w-full rounded-full border  border-black bg-white p-3 font-semibold">
+                    Go back
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -95,4 +87,4 @@ function FreeModal({ onClose }) {
   );
 }
 
-export default FreeModal;
+export default ChatModal;
