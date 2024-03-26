@@ -46,7 +46,14 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
         console.error("Error updating subscription:", error);
       },
     });
-
+  const { mutateAsync: giveFreeTrial } = api.user.giveFreeTrial.useMutation({
+    onSuccess(data) {
+      console.log("Free trial given successfully:", data);
+    },
+    onError(error) {
+      console.error("Error giving free trial:", error);
+    },
+  });
   const handleGiveSubscription = async (userId: string) => {
     try {
       await giveSubscription({ userId });
@@ -71,6 +78,13 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
     }
   };
 
+  const handleGiveFreeTrial = async (userId: string) => {
+    try {
+      await giveFreeTrial({ userId });
+    } catch (error) {
+      console.error("Error giving free trial:", error);
+    }
+  };
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setSearchTerm(e.target.value);
   };
@@ -136,6 +150,8 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
                       handleCancelSubscription(user.id);
                     } else if (selectedStatus === "UPDATE_ACTIVE") {
                       handleUpdateSubscription(user.id, "ACTIVE");
+                    } else if (selectedStatus === "FREE_TRIAL") {
+                      handleGiveFreeTrial(user.id, "FREE_TRIAL");
                     }
                   }}
                   className="mr-2 rounded-lg border border-gray-300 px-2 py-1"
@@ -144,6 +160,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
                   <option value="ACTIVE">Active</option>
                   <option value="CANCELLED">Cancel</option>
                   <option value="UPDATE_ACTIVE">Update Active</option>
+                  <option value="FREE_TRIAL">Free Trial</option>
                 </select>
               </td>
             </tr>

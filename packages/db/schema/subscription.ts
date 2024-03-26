@@ -15,6 +15,7 @@ export const plan = pgEnum("plan", ["STARTER", "CUSTOM"]);
 export const status = pgEnum("status", [
   "INACTIVE",
   "ACTIVE",
+  "FREE_TRIAL",
   "PAUSED",
   "CANCELLED",
 ]);

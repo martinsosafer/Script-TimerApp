@@ -74,8 +74,11 @@ export function ScriptAI({}) {
   const [open, setOpen] = React.useState(false);
   //Get subscription info
   const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
+  console.log("subscriptiondataa", subscriptionData);
   const isSubscriptionActive =
     subscriptionData && subscriptionData.status === "ACTIVE";
+  const isFreeTrial =
+    subscriptionData && subscriptionData.status === "FREE_TRIAL";
   // Script AI parameters
   const [script, setScript] = React.useState("");
   const [selectedModel, setSelectedModel] = React.useState(null);

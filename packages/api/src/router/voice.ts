@@ -40,7 +40,10 @@ export const voiceRouter = createTRPCRouter({
       });
 
       let maxVoices = 5; // Maximum number of voices for free users
-      if (subscription?.status === "ACTIVE") {
+      if (
+        subscription?.status === "ACTIVE" ||
+        subscription?.status === "FREE_TRIAL"
+      ) {
         // If user has an active subscription, set maximum voices to a higher value
         maxVoices = Number.MAX_SAFE_INTEGER; // Set to a very large number
       }
@@ -70,7 +73,8 @@ export const voiceRouter = createTRPCRouter({
         const isFreePlanGated =
           input.message &&
           input.message?.length > 300 &&
-          subscription?.status !== "ACTIVE";
+          subscription?.status !== "ACTIVE" &&
+          subscription?.status !== "FREE_TRIAL";
 
         if (isFreePlanGated) {
           throw new TRPCError({
