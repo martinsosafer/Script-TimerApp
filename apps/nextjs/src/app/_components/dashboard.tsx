@@ -10,6 +10,7 @@ interface UserData {
   id: string;
   created_at: string;
   subscription: string;
+  status: string;
 }
 
 interface DashboardProps {
@@ -127,7 +128,8 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
             <th className="px-4 py-2">ID</th>
             <th className="px-4 py-2">Create on</th>
             <th className="px-4 py-2">Days since creation</th>
-            <th className="px-4 py-2">Subscription</th>
+            <th className="px-4 py-2">Current Plan</th>
+            <th className="px-4 py-2">Give Plan</th>
           </tr>
         </thead>
         <tbody>
@@ -137,8 +139,11 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
               <td className="px-4 py-2">{user.name || "-"}</td>
               <td className="px-4 py-2">{user.email}</td>
               <td className="px-4 py-2">{user.id}</td>
-              <td className="px-4 py-2">{user.created_at.toLocaleString()}</td>
+              <td className="px-4 py-2">
+                {new Date(user.created_at).toLocaleDateString()}
+              </td>
               <td className="px-4 py-2">{daysSinceCreated(user.created_at)}</td>
+              <td className="px-4 py-2">{user.status}</td>
               <td className="px-4 py-2">
                 <select
                   value={user.subscription}

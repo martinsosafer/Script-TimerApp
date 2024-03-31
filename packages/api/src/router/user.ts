@@ -12,9 +12,14 @@ export const userRouter = createTRPCRouter({
         email: schema.users.email,
         id: schema.users.id,
         created_at: schema.users.created_at,
+        status: schema.subscriptions.status,
       })
-      .from(schema.users);
+      .from(schema.users)
+      .leftJoin(schema.subscriptions, (on) =>
+        eq(schema.users.id, schema.subscriptions.userId),
+      );
   }),
+
   giveSubscription: protectedProcedure
     .input(
       z.object({
