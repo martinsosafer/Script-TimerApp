@@ -53,7 +53,8 @@ export default function newnavbar({
   const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
   const isSubscriptionActive =
     subscriptionData &&
-    (subscriptionData.status === "ACTIVE" ||
+    (subscriptionData.status === "STUDENT" ||
+      subscriptionData.status === "CREATOR" ||
       subscriptionData.status === "FREE_TRIAL");
   return (
     <header className=" sticky top-0 z-50 mx-auto flex h-16 items-center justify-between bg-primary">

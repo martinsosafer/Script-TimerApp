@@ -11,6 +11,7 @@ interface UserData {
   created_at: string;
   subscription: string;
   status: string;
+  total_credits: number;
 }
 
 interface DashboardProps {
@@ -38,15 +39,22 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
         console.error("Error cancelling subscription:", error);
       },
     });
-  const { mutateAsync: updateSubscription } =
-    api.user.updateSubscription.useMutation({
-      onSuccess(data) {
-        console.log("Subscription updated successfully:", data);
-      },
-      onError(error) {
-        console.error("Error updating subscription:", error);
-      },
-    });
+  const { mutateAsync: updateStudent } = api.user.updateStudent.useMutation({
+    onSuccess(data) {
+      console.log("Subscription updated successfully:", data);
+    },
+    onError(error) {
+      console.error("Error updating subscription:", error);
+    },
+  });
+  const { mutateAsync: updateCreator } = api.user.updateCreator.useMutation({
+    onSuccess(data) {
+      console.log("Subscription updated successfully:", data);
+    },
+    onError(error) {
+      console.error("Error updating subscription:", error);
+    },
+  });
   const { mutateAsync: giveFreeTrial } = api.user.giveFreeTrial.useMutation({
     onSuccess(data) {
       console.log("Free trial given successfully:", data);
@@ -71,9 +79,23 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
     }
   };
 
-  const handleUpdateSubscription = async (userId: string, status: string) => {
+  // const handleUpdateSubscription = async (userId: string, status: string) => {
+  //   try {
+  //     await updateSubscription({ userId, status });
+  //   } catch (error) {
+  //     console.error("Error updating subscription:", error);
+  //   }
+  // };
+  const handleStudent = async (userId: string, status: string) => {
     try {
-      await updateSubscription({ userId, status });
+      await updateStudent({ userId, status });
+    } catch (error) {
+      console.error("Error updating subscription:", error);
+    }
+  };
+  const handleCreator = async (userId: string, status: string) => {
+    try {
+      await updateCreator({ userId, status });
     } catch (error) {
       console.error("Error updating subscription:", error);
     }
@@ -128,6 +150,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
             <th className="px-4 py-2">ID</th>
             <th className="px-4 py-2">Create on</th>
             <th className="px-4 py-2">Days since creation</th>
+            <th className="px-4 py-2">Total Credits</th>
             <th className="px-4 py-2">Current Plan</th>
             <th className="px-4 py-2">Give Plan</th>
           </tr>
@@ -143,6 +166,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
                 {new Date(user.created_at).toLocaleDateString()}
               </td>
               <td className="px-4 py-2">{daysSinceCreated(user.created_at)}</td>
+              <td className="px-4 py-2">{user.total_credits}</td>
               <td className="px-4 py-2">{user.status}</td>
               <td className="px-4 py-2">
                 <select
@@ -153,8 +177,10 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
                       handleGiveSubscription(user.id);
                     } else if (selectedStatus === "CANCELLED") {
                       handleCancelSubscription(user.id);
-                    } else if (selectedStatus === "UPDATE_ACTIVE") {
-                      handleUpdateSubscription(user.id, "ACTIVE");
+                    } else if (selectedStatus === "STUDENT") {
+                      handleStudent(user.id, "STUDENT");
+                    } else if (selectedStatus === "CREATOR") {
+                      handleCreator(user.id, "CREATOR");
                     } else if (selectedStatus === "FREE_TRIAL") {
                       handleGiveFreeTrial(user.id, "FREE_TRIAL");
                     }
@@ -164,7 +190,8 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
                   <option value="">Select</option>
                   <option value="ACTIVE">Active</option>
                   <option value="CANCELLED">Cancel</option>
-                  <option value="UPDATE_ACTIVE">Update Active</option>
+                  <option value="STUDENT">Student</option>
+                  <option value="CREATOR">Creator</option>
                   <option value="FREE_TRIAL">Free Trial</option>
                 </select>
               </td>

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { and, asc, eq, ilike, like, schema } from "@voiceai/db";
+import { and, asc, eq, ilike, like, schema, sql } from "@voiceai/db";
 
 import { createTRPCRouter, protectedProcedure, TRPCError } from "../trpc";
 
@@ -13,10 +13,21 @@ export const userRouter = createTRPCRouter({
         id: schema.users.id,
         created_at: schema.users.created_at,
         status: schema.subscriptions.status,
+        total_credits: sql`COALESCE(SUM(${schema.credits.credits}), 0)`,
       })
       .from(schema.users)
       .leftJoin(schema.subscriptions, (on) =>
         eq(schema.users.id, schema.subscriptions.userId),
+      )
+      .leftJoin(schema.credits, (on) =>
+        eq(schema.users.id, schema.credits.userId),
+      )
+      .groupBy(
+        schema.users.id,
+        schema.users.name,
+        schema.users.email,
+        schema.users.created_at,
+        schema.subscriptions.status,
       );
   }),
 
@@ -70,7 +81,7 @@ export const userRouter = createTRPCRouter({
         });
       }
     }),
-  updateSubscription: protectedProcedure
+  updateStudent: protectedProcedure
     .input(
       z.object({
         userId: z.string().min(5),
@@ -80,7 +91,30 @@ export const userRouter = createTRPCRouter({
       try {
         await ctx.db
           .update(schema.subscriptions)
-          .set({ status: "ACTIVE" })
+          .set({ status: "STUDENT" })
+          .where(eq(schema.subscriptions.userId, input.userId))
+          .execute();
+
+        return { success: true };
+      } catch (error) {
+        console.error("Error updating subscription:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Error updating subscription",
+        });
+      }
+    }),
+  updateCreator: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string().min(5),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await ctx.db
+          .update(schema.subscriptions)
+          .set({ status: "CREATOR" })
           .where(eq(schema.subscriptions.userId, input.userId))
           .execute();
 

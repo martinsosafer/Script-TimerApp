@@ -41,7 +41,8 @@ export const voiceRouter = createTRPCRouter({
 
       let maxVoices = 5; // Maximum number of voices for free users
       if (
-        subscription?.status === "ACTIVE" ||
+        subscription?.status === "STUDENT" ||
+        subscription?.status === "CREATOR" ||
         subscription?.status === "FREE_TRIAL"
       ) {
         // If user has an active subscription, set maximum voices to a higher value
@@ -70,17 +71,21 @@ export const voiceRouter = createTRPCRouter({
           where: eq(schema.subscriptions.userId, ctx.session.user.id),
         });
 
-        const isFreePlanGated =
-          input.message &&
-          input.message?.length > 300 &&
-          subscription?.status !== "ACTIVE" &&
-          subscription?.status !== "FREE_TRIAL";
+        let maxMessageLength = 300; // Default maximum message length for free users
 
-        if (isFreePlanGated) {
+        if (
+          subscription?.status === "FREE_TRIAL" ||
+          subscription?.status === "STUDENT"
+        ) {
+          maxMessageLength = 2000;
+        } else if (subscription?.status === "CREATOR") {
+          maxMessageLength = 5000;
+        }
+
+        if (input.message.length > maxMessageLength) {
           throw new TRPCError({
             code: "FORBIDDEN",
-            message:
-              "Subscribe to a plan to generate more than 300 characters.",
+            message: `Maximum message length exceeded. Max length: ${maxMessageLength} characters.`,
           });
         }
 
