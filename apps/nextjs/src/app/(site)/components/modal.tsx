@@ -27,7 +27,7 @@ function Modal({ isOpen, onClose }) {
                 alt="logo"
               />
               <h4 className="ml-2 text-sm font-bold uppercase tracking-widest text-primary">
-                Starting in 3 days
+                Start Now
               </h4>
             </div>
             <h1 className="text-dark-grey-900 mb-8 text-3xl font-extrabold leading-tight md:text-4xl lg:text-6xl">
@@ -62,7 +62,7 @@ function Modal({ isOpen, onClose }) {
                 onClick={onClose}
               >
                 <IconArrowRight className="mr-2" />
-                Stay free with limited access
+                Start free trial
               </Button>
             </div>
           </div>

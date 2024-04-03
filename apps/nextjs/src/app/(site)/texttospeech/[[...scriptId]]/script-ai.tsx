@@ -49,10 +49,7 @@ import { useCopyToClipboard } from "@voiceai/ui/@/hooks/use-copy-to-clipboard";
 import useDailyModal from "~/app/hooks/useDailyModal";
 import useModal from "~/app/hooks/useModal";
 import { calculateLength } from "~/lib/calculate-length";
-import {
-  calculateLengthTime,
-  calculateLengthtTime,
-} from "~/lib/calculate-length-time";
+import { calculateLengthTime } from "~/lib/calculate-length-time";
 import { api } from "~/utils/api";
 import { useDragAndDrop } from "~/utils/helpers";
 import { TextEditor } from "../../components/editor";
@@ -76,9 +73,11 @@ export function ScriptAI({}) {
   const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
   console.log("subscriptiondataa", subscriptionData);
   const isSubscriptionActive =
-    subscriptionData && subscriptionData.status === "ACTIVE";
-  const isFreeTrial =
-    subscriptionData && subscriptionData.status === "FREE_TRIAL";
+    subscriptionData &&
+    (subscriptionData.status === "CREATOR" ||
+      subscriptionData.status === "STUDENT" ||
+      subscriptionData.status === "FREE_TRIAL");
+
   // Script AI parameters
   const [script, setScript] = React.useState("");
   const [selectedModel, setSelectedModel] = React.useState(null);
@@ -87,7 +86,14 @@ export function ScriptAI({}) {
   // If script is selected from URL path parameter, load in state from db
   const { scriptId } = useParams();
   //modal logic
-  const { showModal, closeModal } = useModal();
+  const { showModal, openModal, closeModal } = useModal();
+
+  React.useEffect(() => {
+    if (!isSubscriptionActive) {
+      openModal(); // Open the modal if subscription is not active
+    }
+  }, [isSubscriptionActive]);
+
   const { showDailyModal, closeDailyModal } = useDailyModal();
 
   //scriptdetials
@@ -535,7 +541,9 @@ export function ScriptAI({}) {
         </div>
       </Tabs>
       {/* )} */}
-      {showModal && <Modal onClose={closeModal} />}
+      {(!isSubscriptionActive || showModal) && (
+        <Modal isOpen={showModal} onClose={closeModal} />
+      )}
       {showDailyModal && !isSubscriptionActive && (
         <FreeModal onClose={closeDailyModal} />
       )}

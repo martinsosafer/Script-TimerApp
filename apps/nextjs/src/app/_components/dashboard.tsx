@@ -12,6 +12,7 @@ interface UserData {
   subscription: string;
   status: string;
   total_credits: number;
+  updated_at: string;
 }
 
 interface DashboardProps {
@@ -21,6 +22,7 @@ interface DashboardProps {
 const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [filteredData, setFilteredData] = useState<UserData[]>(userList);
+
   const { mutateAsync: giveSubscription } =
     api.user.giveSubscription.useMutation({
       onSuccess(data) {
@@ -129,6 +131,13 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
     const differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24));
     return differenceInDays;
   };
+  const daysWithCurrentPlan = (updated_at: string): number => {
+    const updatedAtDate = new Date(updated_at);
+    const currentDate = new Date();
+    const differenceInTime = currentDate.getTime() - updatedAtDate.getTime();
+    const differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24));
+    return differenceInDays;
+  };
   return (
     <div className="container mx-auto mb-12 p-4">
       <h1 className="mb-4 text-2xl font-bold">User Dashboard</h1>
@@ -152,6 +161,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
             <th className="px-4 py-2">Days since creation</th>
             <th className="px-4 py-2">Total Credits</th>
             <th className="px-4 py-2">Current Plan</th>
+            <th className="px-4 py-2">Days with this plan</th>
             <th className="px-4 py-2">Give Plan</th>
           </tr>
         </thead>
@@ -168,6 +178,9 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
               <td className="px-4 py-2">{daysSinceCreated(user.created_at)}</td>
               <td className="px-4 py-2">{user.total_credits}</td>
               <td className="px-4 py-2">{user.status}</td>
+              <td className="px-4 py-2">
+                {daysWithCurrentPlan(user.updated_at)}
+              </td>
               <td className="px-4 py-2">
                 <select
                   value={user.subscription}
@@ -188,7 +201,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
                   className="mr-2 rounded-lg border border-gray-300 px-2 py-1"
                 >
                   <option value="">Select</option>
-                  <option value="ACTIVE">Active</option>
+                  <option value="ACTIVE">Activate</option>
                   <option value="CANCELLED">Cancel</option>
                   <option value="STUDENT">Student</option>
                   <option value="CREATOR">Creator</option>

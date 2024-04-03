@@ -1,13 +1,11 @@
-// useModal.js
 import { useEffect, useState } from "react";
 
-const useModal = () => {
-  const [showModal, setShowModal] = useState(false);
+const useModal = (initialShow = false) => {
+  const [showModal, setShowModal] = useState(initialShow);
 
-  useEffect(() => {
-    // Your logic to determine when to show the modal
+  const openModal = () => {
     setShowModal(true);
-  }, []);
+  };
 
   const closeModal = () => {
     setShowModal(false);
@@ -15,6 +13,7 @@ const useModal = () => {
 
   return {
     showModal,
+    openModal,
     closeModal,
   };
 };

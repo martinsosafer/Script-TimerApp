@@ -12,6 +12,7 @@ export const userRouter = createTRPCRouter({
         email: schema.users.email,
         id: schema.users.id,
         created_at: schema.users.created_at,
+        updated_at: schema.subscriptions.updated_at,
         status: schema.subscriptions.status,
         total_credits: sql`COALESCE(SUM(${schema.credits.credits}), 0)`,
       })
@@ -28,6 +29,7 @@ export const userRouter = createTRPCRouter({
         schema.users.email,
         schema.users.created_at,
         schema.subscriptions.status,
+        schema.subscriptions.updated_at,
       );
   }),
 
@@ -68,7 +70,7 @@ export const userRouter = createTRPCRouter({
       try {
         await ctx.db
           .update(schema.subscriptions)
-          .set({ status: "CANCELLED" })
+          .set({ status: "CANCELLED", created_at: sql`NOW()` })
           .where(eq(schema.subscriptions.userId, input.userId))
           .execute();
 
@@ -91,7 +93,7 @@ export const userRouter = createTRPCRouter({
       try {
         await ctx.db
           .update(schema.subscriptions)
-          .set({ status: "STUDENT" })
+          .set({ status: "STUDENT", created_at: sql`NOW()` })
           .where(eq(schema.subscriptions.userId, input.userId))
           .execute();
 
@@ -114,7 +116,8 @@ export const userRouter = createTRPCRouter({
       try {
         await ctx.db
           .update(schema.subscriptions)
-          .set({ status: "CREATOR" })
+          .set({ status: "CREATOR", created_at: sql`NOW()` })
+
           .where(eq(schema.subscriptions.userId, input.userId))
           .execute();
 
@@ -137,7 +140,7 @@ export const userRouter = createTRPCRouter({
       try {
         await ctx.db
           .update(schema.subscriptions)
-          .set({ status: "FREE_TRIAL" })
+          .set({ status: "FREE_TRIAL", created_at: sql`NOW()` })
           .where(eq(schema.subscriptions.userId, input.userId))
           .execute();
 

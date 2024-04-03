@@ -1,14 +1,32 @@
 "use client";
 
+import React from "react";
 import Link from "next/link";
 
 import { AspectRatio } from "@voiceai/ui/@/components/ui/aspect-ratio";
 
 import useModal from "~/app/hooks/useModal";
+import { api } from "~/utils/api";
 import Modal from "./modal";
 
 export default function HeroSection() {
-  const { showModal, closeModal } = useModal();
+  const { showModal, closeModal, openModal } = useModal();
+
+  const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
+  console.log("subscriptiondataa", subscriptionData);
+  const isSubscriptionActive =
+    subscriptionData &&
+    (subscriptionData.status === "CREATOR" ||
+      subscriptionData.status === "STUDENT" ||
+      subscriptionData.status === "FREE_TRIAL");
+  //modal logic
+
+  React.useEffect(() => {
+    if (!isSubscriptionActive) {
+      openModal(); // Open the modal if subscription is not active
+    }
+  }, [isSubscriptionActive]);
+
   return (
     <section className="w-full py-6 md:py-12 lg:py-12 xl:py-12">
       <div className="container px-4 md:px-6">
@@ -56,7 +74,9 @@ export default function HeroSection() {
           </div>
         </div>
       </div>
-      {/* <Modal isOpen={showModal} onClose={closeModal} /> */}
+      {(!isSubscriptionActive || showModal) && (
+        <Modal isOpen={showModal} onClose={closeModal} />
+      )}
     </section>
   );
 }

@@ -103,7 +103,8 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
   const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
   const isSubscriptionActive =
     subscriptionData &&
-    (subscriptionData.status === "ACTIVE" ||
+    (subscriptionData.status === "STUDENT" ||
+      subscriptionData.status === "CREATOR" ||
       subscriptionData.status === "FREE_TRIAL");
   // Check if the user is a free user
   const isFreeUser = !isSubscriptionActive;
