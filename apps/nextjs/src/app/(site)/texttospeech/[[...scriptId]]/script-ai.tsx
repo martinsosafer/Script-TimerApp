@@ -71,12 +71,11 @@ export function ScriptAI({}) {
   const [open, setOpen] = React.useState(false);
   //Get subscription info
   const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
-  console.log("subscriptiondataa", subscriptionData);
+
   const isSubscriptionActive =
     subscriptionData &&
     (subscriptionData.status === "CREATOR" ||
-      subscriptionData.status === "STUDENT" ||
-      subscriptionData.status === "FREE_TRIAL");
+      subscriptionData.status === "STUDENT");
 
   // Script AI parameters
   const [script, setScript] = React.useState("");
@@ -86,13 +85,6 @@ export function ScriptAI({}) {
   // If script is selected from URL path parameter, load in state from db
   const { scriptId } = useParams();
   //modal logic
-  const { showModal, openModal, closeModal } = useModal();
-
-  React.useEffect(() => {
-    if (!isSubscriptionActive) {
-      openModal(); // Open the modal if subscription is not active
-    }
-  }, [isSubscriptionActive]);
 
   const { showDailyModal, closeDailyModal } = useDailyModal();
 
@@ -541,9 +533,9 @@ export function ScriptAI({}) {
         </div>
       </Tabs>
       {/* )} */}
-      {(!isSubscriptionActive || showModal) && (
+      {/* {(!isSubscriptionActive || showModal) && (
         <Modal isOpen={showModal} onClose={closeModal} />
-      )}
+      )} */}
       {showDailyModal && !isSubscriptionActive && (
         <FreeModal onClose={closeDailyModal} />
       )}

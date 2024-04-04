@@ -188,7 +188,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
                     const selectedStatus = e.target.value;
                     if (selectedStatus === "ACTIVE") {
                       handleGiveSubscription(user.id);
-                    } else if (selectedStatus === "CANCELLED") {
+                    } else if (selectedStatus === "FREE") {
                       handleCancelSubscription(user.id);
                     } else if (selectedStatus === "STUDENT") {
                       handleStudent(user.id, "STUDENT");
@@ -202,7 +202,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
                 >
                   <option value="">Select</option>
                   <option value="ACTIVE">Activate</option>
-                  <option value="CANCELLED">Cancel</option>
+                  <option value="FREE">Free</option>
                   <option value="STUDENT">Student</option>
                   <option value="CREATOR">Creator</option>
                   <option value="FREE_TRIAL">Free Trial</option>

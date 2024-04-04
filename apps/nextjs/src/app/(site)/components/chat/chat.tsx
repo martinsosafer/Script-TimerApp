@@ -50,7 +50,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
   const [previewTokenInput, setPreviewTokenInput] = useState(
     previewToken ?? "",
   );
-  const { showModal, closeModal } = useModal();
+
   const { messages, append, reload, stop, isLoading, input, setInput } =
     useChat({
       // api: "/api/chat",

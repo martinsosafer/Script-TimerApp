@@ -22,7 +22,7 @@ function FreeModal({ onClose }) {
   };
 
   return (
-    <div className="fixed left-0 top-0 mt-8 flex h-full w-full items-center justify-center bg-black bg-opacity-50 ">
+    <div className="fixed left-0 top-0 z-50  flex h-full w-full items-center justify-center bg-black  bg-opacity-50 backdrop-blur ">
       <div className="max-h-full w-full max-w-xl overflow-y-auto bg-white sm:rounded-2xl">
         <div className="w-full">
           <div className="m-8 mx-auto my-2 flex max-w-[600px] flex-col items-center px-4">

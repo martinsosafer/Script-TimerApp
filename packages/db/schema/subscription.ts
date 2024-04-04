@@ -19,7 +19,7 @@ export const status = pgEnum("status", [
   "CREATOR",
   "FREE_TRIAL",
   "PAUSED",
-  "CANCELLED",
+  "FREE",
 ]);
 
 export const subscriptions = pgTable("subscription", {

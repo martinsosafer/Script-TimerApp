@@ -10,23 +10,43 @@ import { api } from "~/utils/api";
 import Modal from "./modal";
 
 export default function HeroSection() {
-  const { showModal, closeModal, openModal } = useModal();
+  const { data: session } = api.auth.getSession.useQuery();
 
   const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
-  console.log("subscriptiondataa", subscriptionData);
+
   const isSubscriptionActive =
     subscriptionData &&
     (subscriptionData.status === "CREATOR" ||
       subscriptionData.status === "STUDENT" ||
+      subscriptionData.status === "FREE" ||
       subscriptionData.status === "FREE_TRIAL");
-  //modal logic
-
-  React.useEffect(() => {
-    if (!isSubscriptionActive) {
-      openModal(); // Open the modal if subscription is not active
+  const { closeModal, showModal } = useModal(isSubscriptionActive);
+  const { mutateAsync: initialFreeTrial } =
+    api.user.initialFreeTrial.useMutation({
+      onSuccess(data) {
+        console.log("Free trial initiated successfully:", data);
+      },
+      onError(error) {
+        console.error("Error initiating free trial:", error);
+      },
+    });
+  const handleInitialFreeTrial = async () => {
+    try {
+      let userId;
+      if (session?.user.id) {
+        // If session contains userId, use it
+        userId = session.user.id;
+      } else {
+        // If userId is not available in session, handle it accordingly
+        // For example, you might prompt the user to login or provide a message
+        console.error("User ID not found in session data");
+        return;
+      }
+      await initialFreeTrial({ userId });
+    } catch (error) {
+      console.error("Error initiating free trial:", error);
     }
-  }, [isSubscriptionActive]);
-
+  };
   return (
     <section className="w-full py-6 md:py-12 lg:py-12 xl:py-12">
       <div className="container px-4 md:px-6">
@@ -74,8 +94,11 @@ export default function HeroSection() {
           </div>
         </div>
       </div>
-      {(!isSubscriptionActive || showModal) && (
-        <Modal isOpen={showModal} onClose={closeModal} />
+      {showModal && !isSubscriptionActive && (
+        <Modal
+          onClose={closeModal}
+          handleInitialFreeTrial={handleInitialFreeTrial}
+        />
       )}
     </section>
   );

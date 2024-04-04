@@ -12,9 +12,11 @@ import {
 
 import modalpicture from "../../../../public/modalimage.svg";
 
-function Modal({ isOpen, onClose }) {
-  if (!isOpen) return null;
-
+function Modal({ onClose, handleInitialFreeTrial }) {
+  const startFreeTrialAndCloseModal = async () => {
+    await handleInitialFreeTrial();
+    onClose();
+  };
   return (
     <dialog className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center overflow-auto bg-black bg-opacity-50 backdrop-blur">
       <div className="container mx-auto flex flex-col rounded-xl bg-white p-6 md:p-10 lg:p-16">
@@ -59,7 +61,7 @@ function Modal({ isOpen, onClose }) {
                 className="flex items-center rounded-2xl border border-black bg-secondary px-7 py-4 text-xs font-medium text-secondary-foreground hover:bg-secondary md:text-sm"
                 type="button"
                 size="sm"
-                onClick={onClose}
+                onClick={startFreeTrialAndCloseModal}
               >
                 <IconArrowRight className="mr-2" />
                 Start free trial
