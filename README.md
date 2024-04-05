@@ -233,4 +233,4 @@ A [blog post](https://jumr.dev/blog/t3-turbo) where I wrote how to migrate a T3 
 
 start : pnpm dev --filter @voiceai/nextjs
 
-postgres://gg:r01wXyomuehH@ep-tight-mode-a5iyx3lt-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require
+.

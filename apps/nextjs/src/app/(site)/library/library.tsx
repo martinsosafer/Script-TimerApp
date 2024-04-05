@@ -9,7 +9,7 @@ import { api } from "~/utils/api";
 import { VoiceArtwork } from "../components/voice-artwork";
 
 export function Library() {
-  const { data: voices = [] } = api.voice.list.useQuery({ name: "" });
+  const { data: voices = [] } = api.voice.listAllVoices.useQuery({ name: "" });
 
   const [audio, setAudio] = React.useState<HTMLAudioElement | null>(null);
 

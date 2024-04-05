@@ -17,6 +17,12 @@ function addWatermark(message: string) {
 }
 
 export const voiceRouter = createTRPCRouter({
+  listAllVoices: protectedProcedure.query(async ({ ctx }) => {
+    return await ctx.db
+      .select()
+      .from(schema.voices)
+      .orderBy(asc(schema.voices.rank));
+  }),
   list: protectedProcedure
     .input(
       z.object({
