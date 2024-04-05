@@ -7,6 +7,11 @@ import { useTheme } from "next-themes";
 
 import { Button } from "@voiceai/ui";
 import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@voiceai/ui/@/components/ui/hover-card";
+import {
   IconArrowDown,
   IconAudioLines,
   IconBot,
@@ -27,6 +32,7 @@ import {
   IconWallet,
 } from "@voiceai/ui/@/components/ui/icons";
 
+import { api } from "~/utils/api";
 import MobileNavBar from "./mobile-navbar";
 
 export default function newnavbar({
@@ -43,7 +49,13 @@ export default function newnavbar({
   const toggleMenu = () => {
     setOpen((prevOpen) => !prevOpen);
   };
-
+  //Get subscription info
+  const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
+  const isSubscriptionActive =
+    subscriptionData &&
+    (subscriptionData.status === "STUDENT" ||
+      subscriptionData.status === "CREATOR" ||
+      subscriptionData.status === "FREE_TRIAL");
   return (
     <header className=" sticky top-0 z-50 mx-auto flex h-16 items-center justify-between bg-primary">
       <Link
@@ -145,17 +157,23 @@ export default function newnavbar({
               </div>
             </div>
           </li>
-          <li className=" group relative px-3 py-2 text-primary-foreground">
-            <div className="flex flex-col items-center">
-              <Link href={`/chat`}>
-                <IconPencilLine className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
-                <IconBrainCog className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
-              </Link>
-            </div>
-            <button className="relative z-10 cursor-default font-semibold ">
-              <Link href={`/chat`}>Script Writing</Link>
-            </button>
-            {/* <div className="absolute inset-x-0 bottom-0  mb-2 h-0.5 origin-left scale-x-0 transform bg-primary-foreground transition-transform duration-300 group-hover:scale-x-100"></div>
+          <HoverCard>
+            <HoverCardTrigger asChild>
+              <div>
+                <li
+                  className={`group relative px-3 py-2 text-primary-foreground ${!isSubscriptionActive && "pointer-events-none opacity-50"}`}
+                >
+                  <div className="flex flex-col items-center">
+                    <Link href={`/chat`}>
+                      <IconPencilLine className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
+                      <IconBrainCog className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
+                    </Link>
+                  </div>
+                  <button className="relative z-10 cursor-default font-semibold ">
+                    <Link href={`/chat`}>Script Writing</Link>
+                  </button>
+
+                  {/* <div className="absolute inset-x-0 bottom-0  mb-2 h-0.5 origin-left scale-x-0 transform bg-primary-foreground transition-transform duration-300 group-hover:scale-x-100"></div>
             <div className="invisible absolute -left-48 top-0 z-50 min-w-[560px] translate-y-0 transform opacity-0 transition duration-500 ease-in-out group-hover:visible group-hover:translate-y-5 group-hover:transform group-hover:opacity-100 ">
               <div className="relative top-6 w-full rounded-xl   bg-slate-100 p-6 shadow-xl dark:bg-primary-foreground">
                 <div className="absolute top-0 z-0 h-10 w-10 translate-x-0 rotate-45 transform rounded-sm bg-slate-100 transition-transform duration-500 ease-in-out group-hover:translate-x-[16rem] dark:bg-primary-foreground"></div>
@@ -168,13 +186,13 @@ export default function newnavbar({
                       </p>
                       <ul className="mt-3 text-[15px]">
                         <li>
-                          <Link
+                        <Link
                             href={`/chat`}
                             className="-mx-2 block rounded-lg p-2 font-semibold text-gray-800 transition duration-300 ease-in-out hover:bg-gradient-to-br hover:from-indigo-200 hover:via-blue-200 hover:to-orange-200 hover:text-indigo-600 dark:text-secondary-foreground dark:hover:bg-gradient-to-br dark:hover:from-gray-800 dark:hover:via-gray-700 dark:hover:to-gray-600 dark:hover:text-indigo-600"
                           >
                             <div className="flex items-center ">
                               <span>
-                                <IconBot />
+                              <IconBot />
                               </span>
                               <span className="ml-1">Script Coach</span>
                             </div>
@@ -186,7 +204,7 @@ export default function newnavbar({
                       </ul>
                     </div>
                     <div>
-                      <p className="text-[13px] font-medium uppercase tracking-wider text-gray-500">
+                    <p className="text-[13px] font-medium uppercase tracking-wider text-gray-500">
                         Script Repository
                       </p>
                       <ul className="mt-3 text-[15px]">
@@ -207,13 +225,21 @@ export default function newnavbar({
                             </p>
                           </Link>
                         </li>
-                      </ul>
+                        </ul>
                     </div>
                   </div>
                 </div>
               </div>
             </div> */}
-          </li>
+                </li>
+              </div>
+            </HoverCardTrigger>
+            {!isSubscriptionActive && (
+              <HoverCardContent>
+                <p>This section is only available for paying users.</p>
+              </HoverCardContent>
+            )}
+          </HoverCard>
           {/* <li className="group relative px-3 py-2 text-primary-foreground ">
             <button className="cursor-default font-semibold ">Learn</button>
             <div className="invisible absolute -left-2 top-0 z-50 min-w-[260px] translate-y-0 transform opacity-0 transition duration-500 ease-in-out group-hover:visible group-hover:translate-y-5 group-hover:transform group-hover:opacity-100">

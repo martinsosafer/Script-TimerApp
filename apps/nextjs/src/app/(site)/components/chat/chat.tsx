@@ -21,10 +21,12 @@ import { useLocalStorage } from "@voiceai/ui/@/hooks/use-local-storage";
 import { cn } from "@voiceai/ui/@/lib/utils";
 
 import useModal from "~/app/hooks/useModal";
+import { api } from "~/utils/api";
 import type { Prompt, PromptType } from "../../data/prompts";
 import Modal from "../modal";
 import { ChatList } from "./chat-list";
 import { ChatPanel } from "./chat-panel";
+import ChatModal from "./chatmodal";
 import { EmptyScreen } from "./empty-screen";
 
 const IS_PREVIEW = process.env.VERCEL_ENV === "preview";
@@ -36,6 +38,7 @@ export interface ChatProps extends React.ComponentProps<"div"> {
 export function Chat({ id, initialMessages, className }: ChatProps) {
   const router = useRouter();
   const path = usePathname();
+
   const [previewToken, setPreviewToken] = useLocalStorage<string | null>(
     "ai-token",
     null,
@@ -47,7 +50,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
   const [previewTokenInput, setPreviewTokenInput] = useState(
     previewToken ?? "",
   );
-  const { showModal, closeModal } = useModal();
+
   const { messages, append, reload, stop, isLoading, input, setInput } =
     useChat({
       // api: "/api/chat",
@@ -97,7 +100,19 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
       //   }
       // },
     });
-  console.log("messages:", messages);
+  const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
+  const isSubscriptionActive =
+    subscriptionData &&
+    (subscriptionData.status === "STUDENT" ||
+      subscriptionData.status === "CREATOR" ||
+      subscriptionData.status === "FREE_TRIAL");
+  // Check if the user is a free user
+  const isFreeUser = !isSubscriptionActive;
+
+  // Render ChatModal if the user is a free user
+  if (isFreeUser) {
+    return <ChatModal />;
+  }
   return (
     <>
       <div className={cn("pb-[200px] pt-4 md:pt-10", className)}>

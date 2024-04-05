@@ -1,9 +1,16 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import ArrowDownOnSquareIcon from "@heroicons/react/24/outline/ArrowDownOnSquareIcon";
 
-import { IconCopy, Icons } from "@voiceai/ui/@/components/ui/icons";
+import { Button } from "@voiceai/ui";
+import {
+  IconCopy,
+  IconPlay,
+  Icons,
+  IconStop,
+} from "@voiceai/ui/@/components/ui/icons";
 import {
   Table,
   TableBody,
@@ -13,15 +20,111 @@ import {
   TableHeader,
   TableRow,
 } from "@voiceai/ui/@/components/ui/table";
-import { toast } from "@voiceai/ui/@/components/ui/toast";
+import { toast, ToastAction } from "@voiceai/ui/@/components/ui/toast";
 
 import { api } from "~/utils/api";
+import { ActorsDropdown } from "../(site)/components/chat/actorsdropdown";
 
 export const History = ({ ...rest }) => {
-  const [loading, setLoading] = React.useState(false);
+  const [loadingPlay, setLoadingPlay] = React.useState(false);
+  const [loadingDownload, setLoadingDownload] = React.useState(false);
   const { data, isLoading } = api.history.list.useQuery();
+  const [selectedAudio, setSelectedAudio] = React.useState(null);
+  const [selectedModel, setSelectedModel] = React.useState(null);
+  const { data: voices } = api.voice.list.useQuery({ name: "" });
+  //Get subscription info
+  const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
+  const isSubscriptionActive =
+    subscriptionData && subscriptionData.status === "ACTIVE";
+  const handleSetSelectedModel = (model: any) => {
+    setSelectedModel(model);
+    // console.log("Selected model:", model);
+  };
+  // Generate audio voice
+  const [audio, setAudio] = React.useState("");
 
-  const copyTextToClipboard = (text) => {
+  const [isPlaying, setIsPlaying] = React.useState(false);
+  const audioRef = React.useRef<HTMLAudioElement>(null);
+  const { mutateAsync: generateVoice, error } = api.voice.create.useMutation({
+    onSuccess(data) {
+      const dataURI = `data:audio/mpeg;base64,${data?.audio}`;
+      setAudio(dataURI);
+      setLoadingPlay(false);
+
+      if (audioRef.current) {
+        audioRef.current.src = dataURI;
+        audioRef.current.addEventListener("loadeddata", playAudio);
+      }
+    },
+    onError(error) {
+      setLoadingPlay(false);
+      if (error?.data?.code === "FORBIDDEN") {
+        toast({
+          title: "Upgrade your plan",
+          description: "The base plan only supports up to 1200 characters",
+          action: (
+            <ToastAction altText="subscribe">
+              <Link href="/settings/billing">Subscribe</Link>
+            </ToastAction>
+          ),
+        });
+      } else {
+        toast({
+          title: "Something went wrong",
+          description: "Please try again later",
+        });
+      }
+    },
+  });
+
+  // console.log("Data for audio generation:", {
+  //   voice_id: selectedModel,
+  //   message: message.content,
+  // });
+  const playAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+
+  const stopAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      setIsPlaying(false);
+    }
+  };
+  //dowload history script
+  const { mutateAsync: downloadGeneration } = api.history.download.useMutation({
+    onSuccess(data) {
+      setLoadingDownload(false);
+
+      if (!data) {
+        toast({
+          title: "Something went wrong",
+          description: "Please try again later",
+        });
+        return;
+      }
+      const a = document.createElement("a");
+      a.href = `data:audio/mpeg;base64,${data.file}` ?? "";
+      a.download = "voice.mp3";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    },
+    onError(error) {
+      setLoadingDownload(false);
+
+      toast({
+        title: "Something went wrong",
+        description: "Please try again later",
+      });
+    },
+  });
+  //copy text from clipboard
+  const copyTextToClipboard = (text: string | null) => {
     navigator.clipboard
       .writeText(text)
       .then(() => {
@@ -39,37 +142,6 @@ export const History = ({ ...rest }) => {
       });
   };
 
-  const { mutateAsync: downloadGeneration, error } =
-    api.history.download.useMutation({
-      onSuccess(data) {
-        setLoading(false);
-
-        console.log("in data here", data);
-        if (!data) {
-          toast({
-            title: "Something went wrong",
-            description: "Please try again later",
-          });
-          return;
-        }
-        const a = document.createElement("a");
-        a.href = `data:audio/mpeg;base64,${data.file}` ?? "";
-        a.download = "voice.mp3";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      },
-      onError(error) {
-        setLoading(false);
-
-        toast({
-          title: "Something went wrong",
-          description: "Please try again later",
-        });
-      },
-    });
-
-  console.log("Data from backend:", data);
   return (
     <Table>
       <TableCaption>A list of your history.</TableCaption>
@@ -80,6 +152,8 @@ export const History = ({ ...rest }) => {
           <TableHead>Date</TableHead>
           <TableHead>Actor</TableHead>
           <TableHead>Copy</TableHead>
+          <TableHead>Change Actor</TableHead>
+          <TableHead>Play</TableHead>
           <TableHead>Download</TableHead>
         </TableRow>
       </TableHeader>
@@ -104,12 +178,74 @@ export const History = ({ ...rest }) => {
                 </button>
               </TableCell>
               <TableCell>
-                <button
-                  type="button"
+                <button type="button">
+                  <ActorsDropdown
+                    voices={voices}
+                    setSelectedModel={handleSetSelectedModel}
+                    selectedModel={selectedModel}
+                  />
+                </button>
+              </TableCell>
+              <TableCell>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  disabled={!selectedModel || !history.prompt || isLoading}
+                  onClick={async () => {
+                    setLoadingPlay(true);
+                    toast({
+                      description:
+                        "Recording script,please keep in mind that longer scripts take longer to generate.",
+                    });
+                    try {
+                      await generateVoice({
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                        voice_id: selectedModel.id,
+                        voice_actor: selectedModel?.name,
+                        message: history.prompt,
+                      });
+                    } catch (error) {
+                      toast({
+                        description:
+                          "Error:Keep in mind base plan only allows 1500 words scripts",
+                      });
+                      console.error("Error generating voice:", error);
+                    }
+                  }}
+                >
+                  {loadingPlay ? (
+                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    <IconPlay />
+                  )}
+                  <audio
+                    src={audio}
+                    className="col-span-2 col-start-2 mx-auto w-full"
+                    ref={audioRef}
+                    onEnded={() => setLoadingPlay(false)} // Handle loading state when audio ends
+                  />
+                  <span className="sr-only">Play sound</span>
+                </Button>
+
+                {audio && !loadingPlay && (
+                  <Button variant="ghost" size="icon" onClick={stopAudio}>
+                    <IconStop />
+                    <span className="sr-only">Stop sound</span>
+                  </Button>
+                )}
+              </TableCell>
+              <TableCell>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  disabled={!isSubscriptionActive}
                   onClick={async () => {
                     try {
-                      setLoading(true);
-
+                      setLoadingDownload(true);
+                      console.log(
+                        "Downloading history ID:",
+                        history.history_id,
+                      );
                       await downloadGeneration({
                         id: history.history_id ?? "",
                       });
@@ -124,7 +260,7 @@ export const History = ({ ...rest }) => {
                   //   document.body.removeChild(a);
                   // }}
                 >
-                  {loading ? (
+                  {loadingDownload ? (
                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                   ) : (
                     <ArrowDownOnSquareIcon
@@ -132,7 +268,7 @@ export const History = ({ ...rest }) => {
                       className="stroke-black"
                     />
                   )}
-                </button>
+                </Button>
               </TableCell>
             </TableRow>
           ))}

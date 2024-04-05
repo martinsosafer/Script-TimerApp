@@ -15,8 +15,11 @@ export const plan = pgEnum("plan", ["STARTER", "CUSTOM"]);
 export const status = pgEnum("status", [
   "INACTIVE",
   "ACTIVE",
+  "STUDENT",
+  "CREATOR",
+  "FREE_TRIAL",
   "PAUSED",
-  "CANCELLED",
+  "FREE",
 ]);
 
 export const subscriptions = pgTable("subscription", {

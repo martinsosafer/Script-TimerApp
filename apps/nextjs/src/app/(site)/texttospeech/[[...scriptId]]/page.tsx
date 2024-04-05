@@ -1,6 +1,8 @@
 import * as React from "react";
 import type { Metadata } from "next";
 
+import { auth } from "@voiceai/auth";
+
 import { ScriptAI } from "./script-ai";
 
 export const metadata: Metadata = {
@@ -8,7 +10,9 @@ export const metadata: Metadata = {
   description: "AI helping you find your voice.",
 };
 
-export default function ScriptPage() {
+export default async function ScriptPage() {
+  const session = await auth();
+
   return (
     <>
       <ScriptAI />
