@@ -35,7 +35,9 @@ export const History = ({ ...rest }) => {
   //Get subscription info
   const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
   const isSubscriptionActive =
-    subscriptionData && subscriptionData.status === "ACTIVE";
+    subscriptionData &&
+    (subscriptionData.status === "CREATOR" ||
+      subscriptionData.status === "STUDENT");
   const handleSetSelectedModel = (model: any) => {
     setSelectedModel(model);
     // console.log("Selected model:", model);
