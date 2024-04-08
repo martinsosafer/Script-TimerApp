@@ -1,5 +1,5 @@
 export const types = [
-  "GRAB ATTENTION WITH HEADLINES & OPENINGS",
+  "GRAB ATTENTION WITH HEADLINES ,QUESTIONS & OPENINGS",
   "IMPROVE YOUR SPEECH",
   "ENHANCE YOUR PRESENTATION",
   "BOOST YOUR VIDEO SCRIPT",
@@ -23,7 +23,7 @@ export const prompts: Prompt<PromptType>[] = [
     id: "464a47c3-7ab5-44d7-b669-f9cb5a9e8465",
     name: "Generate Four Attention Grabbing Headlines",
     description: "Great strong voice",
-    type: "GRAB ATTENTION WITH HEADLINES & OPENINGS",
+    type: "GRAB ATTENTION WITH HEADLINES ,QUESTIONS & OPENINGS",
     prompt_display: `I'd be happy to help you generate multiple  headlines known to grab attention.  Let's start in the following categories: Actionable (How To...), Analytical (Here's a breakdown), Aspirational (Yes, you can...), and Anthropological (Here's why)... Please fill in the blanks:  I am going to give you a Topic,  “____” For an audience  “____” and an outcome that this audience desires  “___”`,
     prompt_ai: `I am going to train you to become an Endless Idea Generation Machine.  Here's how it works: there are 4 types of ideas we can generate.  The 4 primary types of ideas are:  - Actionable - Analytical - Aspirational - Anthropological  Then there are sub-topics within each of these buckets:  Actionable (here's how)  - Tips - Tools - Hacks - Advice - Resources - Frameworks - Ultimate Guides - Curation (the best books/podcasts/threads)  Analytical (here's a breakdown)  - Trends - Numbers - Reasons - Examples - Teardowns - Swipe files  Aspirational (yes, you can)  - Lessons - Mistakes - Reflections - Personal stories - Stories of growth - Underrated traits - Advice to past self  Anthropological (here’s why)  - Fears - Failures - Struggles - Paradoxes - Observations - Comparisons - Why others are wrong - Why you’ve been misled  I am going to give you A Topic, an audience, and an outcome that audience desires  and you are going to generate 1 idea (written in the form of a headline) for each of these sub-topics above—organized the same way I have here`,
     strengths:
@@ -33,7 +33,7 @@ export const prompts: Prompt<PromptType>[] = [
     id: "c305f976-8e38-42b1-9fb7-d21b2e34f0da",
     name: "Create a Title for My Script",
     description: "Shayle is an english soft woman",
-    type: "GRAB ATTENTION WITH HEADLINES & OPENINGS",
+    type: "GRAB ATTENTION WITH HEADLINES ,QUESTIONS & OPENINGS",
     strengths: "Soothing, comforting, and kind",
     prompt_display: `I'd be happy to help you write great titles for your speech. Please send over the script you'd like me to work on.`,
     prompt_ai: `You are a leading speaker with expert copywriting skills for writing speeches and presentations. Using my script that I will send later as a reference, please analyze it and suggest impactful and memorable titles for my speech that will surely grab my audience's attention. Use industry-specific technical terms to show experience and expertise. Use powerful writing techniques such as weaving a story, providing examples, and relating topics to more common business practices to reinforce ideas and provide a solid learning experience and add links to your references when needed.  If you understand, ask me about my script.`,
@@ -42,7 +42,7 @@ export const prompts: Prompt<PromptType>[] = [
     id: "ac0797b0-7e31-43b6-a494-da7e2ab43445",
     name: "Craft My Introduction",
     description: "Young voice suitable for children's stories",
-    type: "GRAB ATTENTION WITH HEADLINES & OPENINGS",
+    type: "GRAB ATTENTION WITH HEADLINES ,QUESTIONS & OPENINGS",
     strengths: "Playful, youthful, and energetic",
     prompt_ai:
       "You are a leading speaker with expert copywriting skills for writing speeches and presentations. Using my script that I will send later as a reference, guide users on creating engaging introductions for their presentations, using rhetorical questions, surprising facts, or compelling stories. Emphasize the importance of hooking the audience from the start. If you understand, ask me about my script.",

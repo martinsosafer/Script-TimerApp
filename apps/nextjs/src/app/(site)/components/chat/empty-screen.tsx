@@ -1,16 +1,21 @@
 import * as React from "react";
 import type { UseChatHelpers } from "ai/react";
 
+import { FreePrompts, freeprompts, freetypes } from "../../data/freePrompts";
 import { prompts, types } from "../../data/prompts";
 import type { Prompt } from "../../data/prompts";
 import { ChatPromptAccordion } from "../chat-prompt-accordion";
 import { ChatPromptSelector } from "../chat-prompt-selector";
 
+// Import either Prompt or FreePrompt based on the user's status
+
 export function EmptyScreen({
   // setInput,
+  isFreeTrialUser,
   setPrompt,
 }: Pick<UseChatHelpers, "setInput"> & {
-  setPrompt: React.Dispatch<React.SetStateAction<Prompt | null>>;
+  setPrompt: React.Dispatch<React.SetStateAction<Prompt<string> | null>>;
+  isFreeTrialUser: boolean;
 }) {
   return (
     <div className="mx-auto max-w-2xl px-4">
@@ -44,15 +49,24 @@ export function EmptyScreen({
 
         {/* </p> */}
         <div className="mt-4 flex flex-col items-start space-y-2">
-          <ChatPromptSelector
-            onPromptSelect={(prompt) => {
-              // setInput(prompt?.prompt_display ?? "");
-              // @ts-expect-error dunno why cant type this
-              setPrompt(prompt);
-            }}
-            types={types}
-            prompts={prompts}
-          />
+          {/* Render different prompts based on user's plan */}
+          {isFreeTrialUser ? (
+            <ChatPromptSelector
+              onPromptSelect={(prompt) => {
+                setPrompt(prompt);
+              }}
+              types={freetypes}
+              prompts={freeprompts} // Use free prompts for FREE_TRIAL users
+            />
+          ) : (
+            <ChatPromptSelector
+              onPromptSelect={(prompt) => {
+                setPrompt(prompt);
+              }}
+              types={types}
+              prompts={prompts} // Use regular prompts for other users
+            />
+          )}
           {/* {exampleMessages.map((message, index) => (
             <Button
               key={index}

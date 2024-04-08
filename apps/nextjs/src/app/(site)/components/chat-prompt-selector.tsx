@@ -112,29 +112,29 @@ export function ChatPromptSelector({
                 <CommandInput placeholder="What you want to do?" />
                 <CommandEmpty>No Prompts found.</CommandEmpty>
                 <HoverCardTrigger />
-                {types.map((type) => (
-                  <div key={type}>
-                    <CommandGroup key={type} heading={type}>
-                      {prompts
-                        .filter((prompt) => prompt.type === type)
-                        .map((prompt) => (
-                          <ModelItem
-                            key={prompt.id}
-                            prompt={prompt}
-                            isSelected={selectedPrompt?.id === prompt.id}
-                            onPeek={(prompt) => setPeekedPrompt(prompt)}
-                            onSelect={() => {
-                              // @ts-expect-error dunno why cant type this
-                              onPromptSelect(prompt);
-                              setSelectedPrompt(prompt);
-                              setOpen(false);
-                            }}
-                          />
-                        ))}
-                    </CommandGroup>
-                    <CommandSeparator />
-                  </div>
-                ))}
+                {types &&
+                  types.map((type) => (
+                    <div key={type}>
+                      <CommandGroup key={type} heading={type}>
+                        {prompts
+                          .filter((prompt) => prompt.type === type)
+                          .map((prompt) => (
+                            <ModelItem
+                              key={prompt.id}
+                              prompt={prompt}
+                              isSelected={selectedPrompt?.id === prompt.id}
+                              onPeek={(prompt) => setPeekedPrompt(prompt)}
+                              onSelect={() => {
+                                onPromptSelect(prompt);
+                                setSelectedPrompt(prompt);
+                                setOpen(false);
+                              }}
+                            />
+                          ))}
+                      </CommandGroup>
+                      <CommandSeparator />
+                    </div>
+                  ))}
               </CommandList>
             </Command>
           </HoverCard>
