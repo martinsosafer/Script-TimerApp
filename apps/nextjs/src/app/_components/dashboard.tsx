@@ -21,7 +21,9 @@ interface DashboardProps {
 
 const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [minCredits, setMinCredits] = useState<number>(0);
   const [filteredData, setFilteredData] = useState<UserData[]>(userList);
+  const [selectedPlan, setSelectedPlan] = useState<string>("");
 
   const { mutateAsync: giveSubscription } =
     api.user.giveSubscription.useMutation({
@@ -122,8 +124,32 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
           user.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
         user.id.toLowerCase().includes(searchTerm.toLowerCase()),
     );
-    setFilteredData(filtered);
-  }, [searchTerm, userList]);
+    if (selectedPlan) {
+      setFilteredData(filtered.filter((user) => user.status === selectedPlan));
+    } else {
+      setFilteredData(filtered);
+    }
+  }, [searchTerm, userList, selectedPlan]);
+
+  const handlePlanChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+    setSelectedPlan(e.target.value);
+  };
+
+  const handleMinCreditsChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
+    setMinCredits(parseInt(e.target.value, 10));
+  };
+
+  useEffect(() => {
+    if (minCredits > 0) {
+      setFilteredData(
+        userList.filter((user) => user.total_credits >= minCredits),
+      );
+    } else {
+      setFilteredData(userList);
+    }
+  }, [minCredits, userList]);
   const daysSinceCreated = (createdAt: string): number => {
     const createdAtDate = new Date(createdAt);
     const currentDate = new Date();
@@ -141,14 +167,38 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
   return (
     <div className="container mx-auto mb-12 p-4">
       <h1 className="mb-4 text-2xl font-bold">User Dashboard</h1>
-      <div className="mb-4">
-        <input
-          type="text"
-          placeholder="Search by email, name or id"
-          value={searchTerm}
-          onChange={handleSearch}
-          className="w-full rounded-lg border border-gray-300 px-4 py-2"
-        />
+      <div className="mb-4 flex flex-wrap">
+        <div className="mb-4 flex w-full flex-wrap md:mb-0 md:w-1/2">
+          <input
+            type="text"
+            placeholder="Search by email, name or id"
+            value={searchTerm}
+            onChange={handleSearch}
+            className="w-full rounded-lg border border-gray-300 px-4 py-2"
+          />
+        </div>
+        <div className="mb-4 flex w-full flex-wrap md:mb-0 md:w-1/4">
+          <select
+            value={selectedPlan}
+            onChange={handlePlanChange}
+            className="mr-2 w-full rounded-lg border border-gray-300 px-2 py-1"
+          >
+            <option value="">All Plans</option>
+            <option value="FREE">Free</option>
+            <option value="FREE_TRIAL">Free Trial</option>
+            <option value="STUDENT">Student</option>
+            <option value="CREATOR">Creator</option>
+          </select>
+        </div>
+        <div className="mb-4 flex w-full flex-wrap md:mb-0 md:w-1/4">
+          <input
+            type="number"
+            placeholder={minCredits > 0 ? "" : "Min Credits"}
+            value={minCredits}
+            onChange={handleMinCreditsChange}
+            className="w-full rounded-lg border border-gray-300 px-4 py-2"
+          />
+        </div>
       </div>
       <table className="w-full">
         <thead>
