@@ -76,10 +76,11 @@ export const voiceRouter = createTRPCRouter({
         });
         let message = input.message;
 
-        if (subscription?.status !== "ACTIVE") {
+        if (
+          !["FREE_TRIAL", "STUDENT", "CREATOR"].includes(subscription?.status)
+        ) {
           message = addWatermark(message);
         }
-
         if (voice?.type === "11LABS") {
           const payload = {
             model_id: "eleven_multilingual_v2",
