@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { and, asc, eq, ilike, like, schema } from "@voiceai/db";
+import { and, asc, eq, ilike, like, schema, sql } from "@voiceai/db";
 
 import { createTRPCRouter, protectedProcedure, TRPCError } from "../trpc";
 
@@ -12,9 +12,27 @@ export const userRouter = createTRPCRouter({
         email: schema.users.email,
         id: schema.users.id,
         created_at: schema.users.created_at,
+        updated_at: schema.subscriptions.updated_at,
+        status: schema.subscriptions.status,
+        total_credits: sql`COALESCE(SUM(${schema.credits.credits}), 0)`,
       })
-      .from(schema.users);
+      .from(schema.users)
+      .leftJoin(schema.subscriptions, (on) =>
+        eq(schema.users.id, schema.subscriptions.userId),
+      )
+      .leftJoin(schema.credits, (on) =>
+        eq(schema.users.id, schema.credits.userId),
+      )
+      .groupBy(
+        schema.users.id,
+        schema.users.name,
+        schema.users.email,
+        schema.users.created_at,
+        schema.subscriptions.status,
+        schema.subscriptions.updated_at,
+      );
   }),
+
   giveSubscription: protectedProcedure
     .input(
       z.object({
@@ -29,7 +47,34 @@ export const userRouter = createTRPCRouter({
           .values({
             userId: input.userId,
             plan: "STARTER",
-            status: "ACTIVE",
+            status: "FREE",
+          })
+          .execute();
+
+        return { success: true };
+      } catch (error) {
+        console.error("Error giving subscription:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Error giving subscription",
+        });
+      }
+    }),
+  initialFreeTrial: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string().min(5), // User ID to whom subscription is given
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        // Insert into subscriptions table with plan "STARTER" and status "ACTIVE"
+        await ctx.db
+          .insert(schema.subscriptions)
+          .values({
+            userId: input.userId,
+            plan: "STARTER",
+            status: "FREE_TRIAL",
           })
           .execute();
 
@@ -52,7 +97,7 @@ export const userRouter = createTRPCRouter({
       try {
         await ctx.db
           .update(schema.subscriptions)
-          .set({ status: "CANCELLED" })
+          .set({ status: "FREE", updated_at: sql`NOW()` })
           .where(eq(schema.subscriptions.userId, input.userId))
           .execute();
 
@@ -65,7 +110,7 @@ export const userRouter = createTRPCRouter({
         });
       }
     }),
-  updateSubscription: protectedProcedure
+  updateStudent: protectedProcedure
     .input(
       z.object({
         userId: z.string().min(5),
@@ -75,7 +120,7 @@ export const userRouter = createTRPCRouter({
       try {
         await ctx.db
           .update(schema.subscriptions)
-          .set({ status: "ACTIVE" })
+          .set({ status: "STUDENT", updated_at: sql`NOW()` })
           .where(eq(schema.subscriptions.userId, input.userId))
           .execute();
 
@@ -85,6 +130,53 @@ export const userRouter = createTRPCRouter({
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "Error updating subscription",
+        });
+      }
+    }),
+  updateCreator: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string().min(5),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await ctx.db
+          .update(schema.subscriptions)
+          .set({ status: "CREATOR", updated_at: sql`NOW()` })
+
+          .where(eq(schema.subscriptions.userId, input.userId))
+          .execute();
+
+        return { success: true };
+      } catch (error) {
+        console.error("Error updating subscription:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Error updating subscription",
+        });
+      }
+    }),
+  giveFreeTrial: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string().min(5), // User ID to whom free trial is given
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await ctx.db
+          .update(schema.subscriptions)
+          .set({ status: "FREE_TRIAL", updated_at: sql`NOW()` })
+          .where(eq(schema.subscriptions.userId, input.userId))
+          .execute();
+
+        return { success: true };
+      } catch (error) {
+        console.error("Error giving free trial:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Error giving free trial",
         });
       }
     }),

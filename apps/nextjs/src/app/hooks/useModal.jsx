@@ -1,24 +1,16 @@
 import { useEffect, useState } from "react";
 
-const useModal = () => {
-  const [showModal, setShowModal] = useState(false);
+const useModal = (isSubscriptionActive) => {
+  const [showModal, setModal] = useState(!isSubscriptionActive); // Show modal if not subscribed
 
   useEffect(() => {
-    // const modalClosedToday = localStorage.getItem('modalClosedToday');
-    // const today = new Date().toDateString();
-    // const lastModalDate = localStorage.getItem('lastModalDate');
-
-    // if (!modalClosedToday || lastModalDate !== today) {
-    setShowModal(true);
-    // localStorage.setItem('lastModalDate', today);
-    // }
-  }, []);
+    setModal(!isSubscriptionActive); // Update modal visibility when subscription status changes
+  }, [isSubscriptionActive]);
 
   const closeModal = () => {
-    setShowModal(false);
-    // localStorage.setItem('modalClosedToday', true);
+    setModal(false);
   };
-  //this is a new comment
+
   return {
     showModal,
     closeModal,

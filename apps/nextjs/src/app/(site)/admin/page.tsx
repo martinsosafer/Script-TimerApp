@@ -7,7 +7,7 @@ import { api } from "~/utils/api";
 
 export default function AdminPage() {
   const { data: userList, isLoading, isError } = api.user.list.useQuery();
-
+  console.log("userList", userList);
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -15,7 +15,7 @@ export default function AdminPage() {
   if (isError) {
     return <div>Error fetching data</div>;
   }
-  console.log("USERS", userList);
+
   return (
     <div className=" mt-9">
       <Dashboard userList={userList} />

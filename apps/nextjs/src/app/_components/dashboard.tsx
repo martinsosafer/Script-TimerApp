@@ -10,6 +10,9 @@ interface UserData {
   id: string;
   created_at: string;
   subscription: string;
+  status: string;
+  total_credits: number;
+  updated_at: string;
 }
 
 interface DashboardProps {
@@ -19,6 +22,7 @@ interface DashboardProps {
 const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [filteredData, setFilteredData] = useState<UserData[]>(userList);
+
   const { mutateAsync: giveSubscription } =
     api.user.giveSubscription.useMutation({
       onSuccess(data) {
@@ -37,16 +41,30 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
         console.error("Error cancelling subscription:", error);
       },
     });
-  const { mutateAsync: updateSubscription } =
-    api.user.updateSubscription.useMutation({
-      onSuccess(data) {
-        console.log("Subscription updated successfully:", data);
-      },
-      onError(error) {
-        console.error("Error updating subscription:", error);
-      },
-    });
-
+  const { mutateAsync: updateStudent } = api.user.updateStudent.useMutation({
+    onSuccess(data) {
+      console.log("Subscription updated successfully:", data);
+    },
+    onError(error) {
+      console.error("Error updating subscription:", error);
+    },
+  });
+  const { mutateAsync: updateCreator } = api.user.updateCreator.useMutation({
+    onSuccess(data) {
+      console.log("Subscription updated successfully:", data);
+    },
+    onError(error) {
+      console.error("Error updating subscription:", error);
+    },
+  });
+  const { mutateAsync: giveFreeTrial } = api.user.giveFreeTrial.useMutation({
+    onSuccess(data) {
+      console.log("Free trial given successfully:", data);
+    },
+    onError(error) {
+      console.error("Error giving free trial:", error);
+    },
+  });
   const handleGiveSubscription = async (userId: string) => {
     try {
       await giveSubscription({ userId });
@@ -63,14 +81,35 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
     }
   };
 
-  const handleUpdateSubscription = async (userId: string, status: string) => {
+  // const handleUpdateSubscription = async (userId: string, status: string) => {
+  //   try {
+  //     await updateSubscription({ userId, status });
+  //   } catch (error) {
+  //     console.error("Error updating subscription:", error);
+  //   }
+  // };
+  const handleStudent = async (userId: string, status: string) => {
     try {
-      await updateSubscription({ userId, status });
+      await updateStudent({ userId, status });
+    } catch (error) {
+      console.error("Error updating subscription:", error);
+    }
+  };
+  const handleCreator = async (userId: string, status: string) => {
+    try {
+      await updateCreator({ userId, status });
     } catch (error) {
       console.error("Error updating subscription:", error);
     }
   };
 
+  const handleGiveFreeTrial = async (userId: string) => {
+    try {
+      await giveFreeTrial({ userId });
+    } catch (error) {
+      console.error("Error giving free trial:", error);
+    }
+  };
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setSearchTerm(e.target.value);
   };
@@ -89,6 +128,13 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
     const createdAtDate = new Date(createdAt);
     const currentDate = new Date();
     const differenceInTime = currentDate.getTime() - createdAtDate.getTime();
+    const differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24));
+    return differenceInDays;
+  };
+  const daysWithCurrentPlan = (updated_at: string): number => {
+    const updatedAtDate = new Date(updated_at);
+    const currentDate = new Date();
+    const differenceInTime = currentDate.getTime() - updatedAtDate.getTime();
     const differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24));
     return differenceInDays;
   };
@@ -113,7 +159,10 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
             <th className="px-4 py-2">ID</th>
             <th className="px-4 py-2">Create on</th>
             <th className="px-4 py-2">Days since creation</th>
-            <th className="px-4 py-2">Subscription</th>
+            <th className="px-4 py-2">Total Credits</th>
+            <th className="px-4 py-2">Current Plan</th>
+            <th className="px-4 py-2">Days with this plan</th>
+            <th className="px-4 py-2">Give Plan</th>
           </tr>
         </thead>
         <tbody>
@@ -123,8 +172,15 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
               <td className="px-4 py-2">{user.name || "-"}</td>
               <td className="px-4 py-2">{user.email}</td>
               <td className="px-4 py-2">{user.id}</td>
-              <td className="px-4 py-2">{user.created_at.toLocaleString()}</td>
+              <td className="px-4 py-2">
+                {new Date(user.created_at).toLocaleDateString()}
+              </td>
               <td className="px-4 py-2">{daysSinceCreated(user.created_at)}</td>
+              <td className="px-4 py-2">{user.total_credits}</td>
+              <td className="px-4 py-2">{user.status}</td>
+              <td className="px-4 py-2">
+                {daysWithCurrentPlan(user.updated_at)}
+              </td>
               <td className="px-4 py-2">
                 <select
                   value={user.subscription}
@@ -132,18 +188,24 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
                     const selectedStatus = e.target.value;
                     if (selectedStatus === "ACTIVE") {
                       handleGiveSubscription(user.id);
-                    } else if (selectedStatus === "CANCELLED") {
+                    } else if (selectedStatus === "FREE") {
                       handleCancelSubscription(user.id);
-                    } else if (selectedStatus === "UPDATE_ACTIVE") {
-                      handleUpdateSubscription(user.id, "ACTIVE");
+                    } else if (selectedStatus === "STUDENT") {
+                      handleStudent(user.id, "STUDENT");
+                    } else if (selectedStatus === "CREATOR") {
+                      handleCreator(user.id, "CREATOR");
+                    } else if (selectedStatus === "FREE_TRIAL") {
+                      handleGiveFreeTrial(user.id, "FREE_TRIAL");
                     }
                   }}
                   className="mr-2 rounded-lg border border-gray-300 px-2 py-1"
                 >
                   <option value="">Select</option>
-                  <option value="ACTIVE">Active</option>
-                  <option value="CANCELLED">Cancel</option>
-                  <option value="UPDATE_ACTIVE">Update Active</option>
+                  <option value="ACTIVE">Activate</option>
+                  <option value="FREE">Free</option>
+                  <option value="STUDENT">Student</option>
+                  <option value="CREATOR">Creator</option>
+                  <option value="FREE_TRIAL">Free Trial</option>
                 </select>
               </td>
             </tr>

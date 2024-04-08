@@ -17,6 +17,12 @@ function addWatermark(message: string) {
 }
 
 export const voiceRouter = createTRPCRouter({
+  listAllVoices: protectedProcedure.query(async ({ ctx }) => {
+    return await ctx.db
+      .select()
+      .from(schema.voices)
+      .orderBy(asc(schema.voices.rank));
+  }),
   list: protectedProcedure
     .input(
       z.object({
@@ -35,11 +41,24 @@ export const voiceRouter = createTRPCRouter({
             ),
           );
       }
+      const subscription = await ctx.db.query.subscriptions.findFirst({
+        where: eq(schema.subscriptions.userId, ctx.session.user.id),
+      });
 
+      let maxVoices = 5; // Maximum number of voices for free users
+      if (
+        subscription?.status === "STUDENT" ||
+        subscription?.status === "CREATOR" ||
+        subscription?.status === "FREE_TRIAL"
+      ) {
+        // If user has an active subscription, set maximum voices to a higher value
+        maxVoices = Number.MAX_SAFE_INTEGER; // Set to a very large number
+      }
       return await ctx.db
         .select()
         .from(schema.voices)
         .where(eq(schema.voices.active, true))
+        .limit(maxVoices)
         .orderBy(asc(schema.voices.rank));
     }),
   create: protectedProcedure
@@ -58,16 +77,21 @@ export const voiceRouter = createTRPCRouter({
           where: eq(schema.subscriptions.userId, ctx.session.user.id),
         });
 
-        const isFreePlanGated =
-          input.message &&
-          input.message?.length > 1200 &&
-          subscription?.status !== "ACTIVE";
+        let maxMessageLength = 300; // Default maximum message length for free users
 
-        if (isFreePlanGated) {
+        if (
+          subscription?.status === "FREE_TRIAL" ||
+          subscription?.status === "STUDENT"
+        ) {
+          maxMessageLength = 2000;
+        } else if (subscription?.status === "CREATOR") {
+          maxMessageLength = 5000;
+        }
+
+        if (input.message.length > maxMessageLength) {
           throw new TRPCError({
             code: "FORBIDDEN",
-            message:
-              "Subscribe to a plan to generate more than 1200 characters.",
+            message: `Maximum message length exceeded. Max length: ${maxMessageLength} characters.`,
           });
         }
 
