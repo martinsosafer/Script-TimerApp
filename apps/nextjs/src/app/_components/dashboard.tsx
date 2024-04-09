@@ -21,7 +21,8 @@ interface DashboardProps {
 
 const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [minCredits, setMinCredits] = useState<number>(0);
+  const [minCredits, setMinCredits] = useState<number | "">("");
+  const [minDaysWithPlan, setMinDaysWithPlan] = useState<number | "">("");
   const [filteredData, setFilteredData] = useState<UserData[]>(userList);
   const [selectedPlan, setSelectedPlan] = useState<string>("");
 
@@ -150,6 +151,25 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
       setFilteredData(userList);
     }
   }, [minCredits, userList]);
+
+  const handleMinDaysWithPlanChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
+    setMinDaysWithPlan(parseInt(e.target.value, 10));
+  };
+
+  useEffect(() => {
+    if (minDaysWithPlan > 0) {
+      setFilteredData(
+        userList.filter(
+          (user) => daysWithCurrentPlan(user.updated_at) >= minDaysWithPlan,
+        ),
+      );
+    } else {
+      setFilteredData(userList);
+    }
+  }, [minDaysWithPlan, userList]);
+
   const daysSinceCreated = (createdAt: string): number => {
     const createdAtDate = new Date(createdAt);
     const currentDate = new Date();
@@ -193,9 +213,18 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
         <div className="mb-4 flex w-full flex-wrap md:mb-0 md:w-1/4">
           <input
             type="number"
-            placeholder={minCredits > 0 ? "" : "Min Credits"}
+            placeholder="Min Credits"
             value={minCredits}
             onChange={handleMinCreditsChange}
+            className="w-full rounded-lg border border-gray-300 px-4 py-2"
+          />
+        </div>
+        <div className="mb-4 flex w-full flex-wrap md:mb-0 md:w-1/4">
+          <input
+            type="number"
+            placeholder="Min Days with Current Plan"
+            value={minDaysWithPlan}
+            onChange={handleMinDaysWithPlanChange}
             className="w-full rounded-lg border border-gray-300 px-4 py-2"
           />
         </div>
