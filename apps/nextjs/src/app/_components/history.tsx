@@ -26,11 +26,13 @@ import { api } from "~/utils/api";
 import { ActorsDropdown } from "../(site)/components/chat/actorsdropdown";
 
 export const History = ({ ...rest }) => {
-  const [loadingPlay, setLoadingPlay] = React.useState(false);
-  const [loadingDownload, setLoadingDownload] = React.useState(false);
+  const [loadingPlay, setLoadingPlay] = React.useState({});
+  const [loadingDownload, setLoadingDownload] = React.useState({});
   const { data, isLoading } = api.history.list.useQuery();
-  const [selectedAudio, setSelectedAudio] = React.useState(null);
-  const [selectedModel, setSelectedModel] = React.useState(null);
+  const [selectedAudio, setSelectedAudio] = React.useState({});
+  const [selectedModel, setSelectedModel] = React.useState({});
+  const [openDropdownIndex, setOpenDropdownIndex] = React.useState(-1);
+
   const { data: voices } = api.voice.list.useQuery({ name: "" });
   //Get subscription info
   const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
@@ -38,10 +40,11 @@ export const History = ({ ...rest }) => {
     subscriptionData &&
     (subscriptionData.status === "CREATOR" ||
       subscriptionData.status === "STUDENT");
-  const handleSetSelectedModel = (model: any) => {
-    setSelectedModel(model);
-    // console.log("Selected model:", model);
+
+  const handleSetSelectedModel = (model, index) => {
+    setSelectedModel((prevState) => ({ ...prevState, [index]: model }));
   };
+
   // Generate audio voice
   const [audio, setAudio] = React.useState("");
 
@@ -79,10 +82,6 @@ export const History = ({ ...rest }) => {
     },
   });
 
-  // console.log("Data for audio generation:", {
-  //   voice_id: selectedModel,
-  //   message: message.content,
-  // });
   const playAudio = () => {
     if (audioRef.current) {
       audioRef.current.play();
@@ -97,7 +96,7 @@ export const History = ({ ...rest }) => {
       setIsPlaying(false);
     }
   };
-  //dowload history script
+
   const { mutateAsync: downloadGeneration } = api.history.download.useMutation({
     onSuccess(data) {
       setLoadingDownload(false);
@@ -125,14 +124,13 @@ export const History = ({ ...rest }) => {
       });
     },
   });
-  //copy text from clipboard
+
   const copyTextToClipboard = (text: string | null) => {
     navigator.clipboard
       .writeText(text)
       .then(() => {
         toast({
           title: "Text copied",
-
           duration: 2000,
         });
       })
@@ -143,6 +141,15 @@ export const History = ({ ...rest }) => {
         });
       });
   };
+
+  const toggleDropdown = (index: number) => {
+    setOpenDropdownIndex((prevIndex) => (prevIndex === index ? -1 : index));
+  };
+
+  // useEffect to close dropdown when selectedModel changes
+  React.useEffect(() => {
+    setOpenDropdownIndex(-1);
+  }, [selectedModel]);
 
   return (
     <Table>
@@ -161,7 +168,7 @@ export const History = ({ ...rest }) => {
       </TableHeader>
       <TableBody>
         {!isLoading &&
-          data?.map((history) => (
+          data?.map((history, index) => (
             <TableRow key={history.credit_id}>
               <TableCell>{history.prompt}</TableCell>
               <TableCell>{history.credits}</TableCell>
@@ -183,8 +190,12 @@ export const History = ({ ...rest }) => {
                 <button type="button">
                   <ActorsDropdown
                     voices={voices}
-                    setSelectedModel={handleSetSelectedModel}
-                    selectedModel={selectedModel}
+                    setSelectedModel={(model) =>
+                      handleSetSelectedModel(model, index)
+                    }
+                    selectedModel={selectedModel[index]}
+                    isOpen={openDropdownIndex === index}
+                    toggleDropdown={() => toggleDropdown(index)}
                   />
                 </button>
               </TableCell>
@@ -192,9 +203,16 @@ export const History = ({ ...rest }) => {
                 <Button
                   variant="ghost"
                   size="icon"
-                  disabled={!selectedModel || !history.prompt || isLoading}
+                  disabled={
+                    !selectedModel[index] ||
+                    !history.prompt ||
+                    loadingPlay[index]
+                  }
                   onClick={async () => {
-                    setLoadingPlay(true);
+                    setLoadingPlay((prevState) => ({
+                      ...prevState,
+                      [index]: true,
+                    }));
                     toast({
                       description:
                         "Recording script,please keep in mind that longer scripts take longer to generate.",
@@ -202,8 +220,8 @@ export const History = ({ ...rest }) => {
                     try {
                       await generateVoice({
                         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                        voice_id: selectedModel.id,
-                        voice_actor: selectedModel?.name,
+                        voice_id: selectedModel[index].id,
+                        voice_actor: selectedModel[index]?.name,
                         message: history.prompt,
                       });
                     } catch (error) {
@@ -215,7 +233,7 @@ export const History = ({ ...rest }) => {
                     }
                   }}
                 >
-                  {loadingPlay ? (
+                  {loadingPlay[index] ? (
                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                   ) : (
                     <IconPlay />
@@ -224,12 +242,17 @@ export const History = ({ ...rest }) => {
                     src={audio}
                     className="col-span-2 col-start-2 mx-auto w-full"
                     ref={audioRef}
-                    onEnded={() => setLoadingPlay(false)} // Handle loading state when audio ends
+                    onEnded={() =>
+                      setLoadingPlay((prevState) => ({
+                        ...prevState,
+                        [index]: false,
+                      }))
+                    } // Handle loading state when audio ends
                   />
                   <span className="sr-only">Play sound</span>
                 </Button>
 
-                {audio && !loadingPlay && (
+                {audio && !loadingPlay[index] && (
                   <Button variant="ghost" size="icon" onClick={stopAudio}>
                     <IconStop />
                     <span className="sr-only">Stop sound</span>
@@ -240,29 +263,40 @@ export const History = ({ ...rest }) => {
                 <Button
                   variant="ghost"
                   size="icon"
-                  disabled={!isSubscriptionActive}
+                  disabled={!isSubscriptionActive || loadingDownload[index]}
                   onClick={async () => {
+                    setLoadingDownload((prevState) => ({
+                      ...prevState,
+                      [index]: true,
+                    }));
                     try {
-                      setLoadingDownload(true);
                       console.log(
                         "Downloading history ID:",
                         history.history_id,
                       );
-                      await downloadGeneration({
+                      const data = await downloadGeneration({
                         id: history.history_id ?? "",
                       });
-                    } catch {}
+                      if (!data) {
+                        toast({
+                          title: "Something went wrong",
+                          description: "Please try again later",
+                        });
+                      }
+                    } catch (error) {
+                      toast({
+                        title: "Something went wrong",
+                        description: "Please try again later",
+                      });
+                    } finally {
+                      setLoadingDownload((prevState) => ({
+                        ...prevState,
+                        [index]: false,
+                      }));
+                    }
                   }}
-                  // onClick={() => {
-                  //   const a = document.createElement("a");
-                  //   a.href = `data:audio/mpeg;base64,${history.file}` ?? "";
-                  //   a.download = "voice.mp3";
-                  //   document.body.appendChild(a);
-                  //   a.click();
-                  //   document.body.removeChild(a);
-                  // }}
                 >
-                  {loadingDownload ? (
+                  {loadingDownload[index] ? (
                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                   ) : (
                     <ArrowDownOnSquareIcon

@@ -23,7 +23,7 @@ function ChatModal() {
         <div className="w-full">
           <div className="m-8 mx-auto my-2 flex max-w-[600px] flex-col items-center px-4">
             <div className="mb-2">
-              <h1 className="mb-4 text-3xl font-extrabold ">
+              <h1 className="mb-4 text-3xl font-extrabold dark:text-primary-foreground ">
                 This is a members area!
               </h1>
               <div className="ml-5">
@@ -38,26 +38,26 @@ function ChatModal() {
             <div className="mt-2 ">
               <div className="mt-2 ">
                 <ul className="pl-6">
-                  <li>
+                  <li className="dark:text-primary-foreground">
                     {" "}
                     <IconAudioWaveform className="mr-2 inline-block h-6 w-6 font-extrabold text-primary" />{" "}
                     Dozens of voices to choose from
                   </li>
-                  <li>
+                  <li className="dark:text-primary-foreground">
                     <IconSave className="mr-3 inline-block h-6 w-6 font-extrabold text-primary" />
                     Save your voice files - licensed to you
                   </li>
-                  <li>
+                  <li className="dark:text-primary-foreground">
                     {" "}
                     <IconScanText className="mr-3 inline-block h-6 w-6 font-extrabold text-primary" />
                     Translate your scripts & voices to other languages
                   </li>
-                  <li>
+                  <li className="dark:text-primary-foreground">
                     <IconBotMessageSquare className="mr-2 inline-block h-6 w-6 font-extrabold text-primary" />{" "}
                     Full access to the Magic AI to speed script writing, speech
                     creation, presentation ideas, even coding
                   </li>
-                  <li>
+                  <li className="dark:text-primary-foreground">
                     <IconBookPlus className="mr-2 inline-block h-6 w-6 font-extrabold text-primary" />{" "}
                     Improve your skills in writing, public speaking, producing
                     videos
@@ -74,7 +74,7 @@ function ChatModal() {
                   </button>
                 </Link>
                 <Link href="/" target="_blank">
-                  <button className="w-full rounded-full border  border-black bg-white p-3 font-semibold">
+                  <button className="w-full rounded-full border  border-black bg-white p-3 font-semibold dark:text-primary-foreground">
                     Go back
                   </button>
                 </Link>
