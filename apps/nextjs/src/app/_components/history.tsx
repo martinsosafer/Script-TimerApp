@@ -28,11 +28,11 @@ import { ActorsDropdown } from "../(site)/components/chat/actorsdropdown";
 export const History = ({ ...rest }) => {
   const [loadingPlay, setLoadingPlay] = React.useState({});
   const [loadingDownload, setLoadingDownload] = React.useState({});
-  const { data, isLoading } = api.history.list.useQuery();
   const [selectedAudio, setSelectedAudio] = React.useState({});
   const [selectedModel, setSelectedModel] = React.useState({});
   const [openDropdownIndex, setOpenDropdownIndex] = React.useState(-1);
 
+  const { data, isLoading,refetch } = api.history.list.useQuery();
   const { data: voices } = api.voice.list.useQuery({ name: "" });
   //Get subscription info
   const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
