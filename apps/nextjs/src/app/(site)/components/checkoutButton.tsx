@@ -3,29 +3,31 @@
 import React from "react";
 
 interface CheckoutButtonProps {
-  priceId: string;
+  productId: string; // Changed from priceId to productId to match the product ID
 }
 
-function CheckoutButton({ priceId }: CheckoutButtonProps) {
+function CheckoutButton({ productId }: CheckoutButtonProps) {
   return (
     <button
-      className="rounded bg-sky-500 px-4 py-2 text-white"
+      className="mt-8 block  bg-orange-400 px-6 py-4 text-center text-lg font-semibold leading-4 text-black shadow-md transition duration-300 ease-in-out hover:bg-tertiary"
+      style={{ borderRadius: "1rem" }}
       onClick={async () => {
         const res = await fetch("/api/checkout", {
           method: "POST",
           body: JSON.stringify({
-            priceId,
+            productId,
           }),
           headers: {
             "Content-Type": "application/json",
           },
         });
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const data = await res.json();
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         window.location.href = data.url;
       }}
     >
-      buy
+      Get started
     </button>
   );
 }

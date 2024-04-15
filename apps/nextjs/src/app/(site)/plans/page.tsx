@@ -2,14 +2,14 @@ import React from "react";
 import type { Metadata } from "next";
 import { Stripe } from "stripe";
 
-import CheckoutButton from "../components/checkoutButton";
+import PriceCard from "~/app/_components/priceCards";
 
 export const metadata: Metadata = {
   title: "Plans",
   description: "List of all our current pay plans",
 };
 
-async function loadPrices() {
+async function loadProducts() {
   const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 
   if (!stripeSecretKey) {
@@ -17,37 +17,37 @@ async function loadPrices() {
   }
 
   const stripe = new Stripe(stripeSecretKey);
-  const prices = await stripe.prices.list();
-  const sortedPrices = prices.data.sort(
-    (a, b) => a.unit_amount - b.unit_amount,
+  const products = await stripe.products.list();
+  const studentPlans = products.data.filter(
+    (product) => product.name === "Student Plan",
   );
-  return sortedPrices;
+  const creatorPlans = products.data.filter(
+    (product) => product.name === "Creator Plan",
+  );
+
+  // Concatenate student and creator plans
+  const sortedProducts = studentPlans.concat(creatorPlans);
+
+  return sortedProducts;
 }
 
 async function PlansPage() {
-  const prices = await loadPrices();
+  const products = await loadProducts();
 
   return (
-    <div className="flex h-screen items-center justify-center">
-      <div>
-        <header>
-          <h1 className="my-5 text-center">PLANS</h1>
-        </header>
-        <div className="flex gap-x-2">
-          {prices.map((price) => (
-            <div key={price.id} className="mb-2 bg-slate-300 p-7">
-              <h3>{price.nickname}</h3>
-              {price.unit_amount != null && (
-                <h2 className="text-3xl font-bold">
-                  {price.unit_amount / 100}$
-                </h2>
-              )}
-              <CheckoutButton priceId={price.id} />
-            </div>
-          ))}
-        </div>
+    <>
+      <div className="mx-auto max-w-7xl bg-white px-4 pt-10 text-center sm:px-6 lg:px-8">
+        <h2 className="  text-8xl font-extrabold text-primary sm:text-5xl sm:leading-tight sm:tracking-tight">
+          <span className="block">START NOW WITH</span>
+          <span className="block">SCRIPT COACHING & VOICEOVERS</span>
+        </h2>
+        <p className="mx-auto mt-4 max-w-3xl text-lg font-bold text-secondary-foreground ">
+          Choose an affordable plan that's packed with the best features for
+          engaging your audience, creating scripts, and more.
+        </p>
       </div>
-    </div>
+      <PriceCard products={products} />
+    </>
   );
 }
 
