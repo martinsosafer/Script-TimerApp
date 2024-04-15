@@ -1,7 +1,7 @@
 import * as React from "react";
 import type { UseChatHelpers } from "ai/react";
 
-import { FreePrompts, freeprompts, freetypes } from "../../data/freePrompts";
+import { freeprompts, types as freePromptsTypes } from "../../data/freePrompts";
 import { prompts, types } from "../../data/prompts";
 import type { Prompt } from "../../data/prompts";
 import { ChatPromptAccordion } from "../chat-prompt-accordion";
@@ -55,7 +55,7 @@ export function EmptyScreen({
               onPromptSelect={(prompt) => {
                 setPrompt(prompt);
               }}
-              types={freetypes}
+              types={freePromptsTypes}
               prompts={freeprompts} // Use free prompts for FREE_TRIAL users
             />
           ) : (
