@@ -363,7 +363,7 @@ export function ScriptAI({}) {
                     className="h-3/5 min-h-[250px] flex-1 p-4 md:min-h-[400px] lg:min-h-[440px] xl:min-h-[440px]"
                   /> */}
 
-                  <div className="flex flex-col items-center justify-center">
+                  <div className=" mb-14 flex flex-col items-center justify-center">
                     <Badge className="h-12 w-[570px] items-center justify-center border-4 border-primary bg-blue-400 text-lg">
                       Script is&nbsp;
                       <span className="font-bold text-tertiary dark:text-tertiary">
