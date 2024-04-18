@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { CopyIcon } from "@radix-ui/react-icons";
 import { useCompletion } from "ai/react";
+import Lottie from "lottie-react";
 
 import { auth } from "@voiceai/auth";
 import { SimpleEditor } from "@voiceai/ui";
@@ -46,12 +47,15 @@ import {
 } from "@voiceai/ui/@/components/ui/tooltip";
 import { useCopyToClipboard } from "@voiceai/ui/@/hooks/use-copy-to-clipboard";
 
+import VoiceCreationModal from "~/app/_components/wait-modal";
 import useDailyModal from "~/app/hooks/useDailyModal";
 import useModal from "~/app/hooks/useModal";
 import { calculateLength } from "~/lib/calculate-length";
 import { calculateLengthTime } from "~/lib/calculate-length-time";
 import { api } from "~/utils/api";
 import { useDragAndDrop } from "~/utils/helpers";
+import voiceCreateAnimation from "../../../../../public/animations/voicecreate.json";
+import voiceGirlAnimation from "../../../../../public/animations/voicegirl.json";
 import { TextEditor } from "../../components/editor";
 import FreeModal from "../../components/free-modal";
 import { HistoryButton } from "../../components/history-button";
@@ -65,7 +69,6 @@ import { StabilitySelector } from "../../components/stability-selector";
 import { ToggleAudio } from "../../components/toggle-audio";
 import { ToggleLibrary } from "../../components/toggle-voice-library";
 import { VoiceLibrary } from "../../components/voice-library";
-import { models, types } from "../../data/models";
 
 export function ScriptAI({}) {
   const [open, setOpen] = React.useState(false);
@@ -82,6 +85,7 @@ export function ScriptAI({}) {
   const [selectedModel, setSelectedModel] = React.useState(null);
   const [similarity, setSimilarity] = React.useState([0.8]);
   const [stability, setStability] = React.useState([0.5]);
+  const [showWaitModal, setWaitModal] = React.useState(false);
   // If script is selected from URL path parameter, load in state from db
   const { scriptId } = useParams();
   //modal logic
@@ -169,6 +173,14 @@ export function ScriptAI({}) {
   };
   const { wordCount, minutes, formattedSeconds } = calculateLengthTime(script);
 
+  //wait modal !
+  const isScriptLongEnough = (script) => {
+    const wordCount = script.replace(/<[^>]+>/g, "").split(/\s+/).length;
+    return wordCount >= 50;
+  };
+  const handleCloseWaitModal = () => {
+    setWaitModal(false);
+  };
   return (
     <div className=" h-screen flex-col  md:flex">
       <div className="md:min-h-20 lg:min-h-20 container  mb-5  mt-5 flex flex-col items-start justify-between sm:flex-row sm:items-center sm:space-y-0">
@@ -351,59 +363,142 @@ export function ScriptAI({}) {
                     className="h-3/5 min-h-[250px] flex-1 p-4 md:min-h-[400px] lg:min-h-[440px] xl:min-h-[440px]"
                   /> */}
 
-                  <div className="flex flex-col items-center justify-center  ">
-                    <Badge className="h-12  w-[450px] items-center justify-center ">
+                  <div className="flex flex-col items-center justify-center">
+                    <Badge className="h-12 w-[570px] items-center justify-center border-4 border-primary bg-blue-400 text-lg">
                       Script is&nbsp;
-                      <span className="font-semibold text-tertiary dark:text-tertiary">
+                      <span className="font-bold text-tertiary dark:text-tertiary">
                         {wordCount}
                       </span>
                       &nbsp;words. Estimated time is&nbsp;
-                      <span className="font-semibold text-tertiary  dark:text-tertiary">
+                      <span className="font-bold text-tertiary dark:text-tertiary">
                         {minutes}
                       </span>
                       &nbsp;minutes and&nbsp;
-                      <span className="font-semibold text-tertiary  dark:text-tertiary">
+                      <span className="font-bold text-tertiary dark:text-tertiary">
                         {formattedSeconds}
                       </span>
                       &nbsp;seconds
                     </Badge>
-                    <HoverCard openDelay={200}>
-                      <HoverCardTrigger asChild>
-                        <div>
-                          <Button
-                            className="mb-16 mt-2 h-12 w-[450px] bg-tertiary p-3  font-semibold "
-                            disabled={!selectedModel || !script}
-                            onClick={async () => {
-                              setLoading(true);
-                              try {
-                                await generateVoice({
-                                  // @ts-expect-error need to type this in the state
-                                  voice_id: selectedModel?.id,
-                                  voice_actor: selectedModel?.name,
-                                  message: script,
-                                  stability: stability?.[0],
-                                  similarity: similarity?.[0],
-                                });
-                                setLoading(false);
-                              } catch {}
-                            }}
-                          >
-                            {loading ? (
-                              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                            ) : (
-                              "Create"
-                            )}
-                          </Button>
-                        </div>
-                      </HoverCardTrigger>
-                      <HoverCardContent
-                        className="w-[320px] text-sm"
-                        side="right"
-                      >
-                        Press create after your script is above and your voice
-                        actor is chosen
-                      </HoverCardContent>
-                    </HoverCard>
+                    <div className=" mt-2 flex w-[570px] justify-between">
+                      <HoverCard openDelay={200}>
+                        <HoverCardTrigger asChild>
+                          <div>
+                            <Button
+                              className="relative flex h-14 w-[180px] items-center justify-between rounded-full border-4 border-tertiary  bg-orange-300 p-3 text-lg font-semibold hover:bg-orange-600"
+                              disabled={!selectedModel || !script}
+                              onClick={async () => {
+                                setLoading(true);
+                                try {
+                                  // Extract the first 10 words from the script
+                                  const firstTenWords = script
+                                    .replace(/<[^>]+>/g, "")
+                                    .split(/\s+/)
+                                    .slice(0, 10)
+                                    .join(" ");
+                                  await generateVoice({
+                                    voice_id: selectedModel?.id,
+                                    voice_actor: selectedModel?.name,
+                                    message: firstTenWords,
+                                    stability: stability?.[0],
+                                    similarity: similarity?.[0],
+                                  });
+                                  setLoading(false);
+                                } catch {}
+                              }}
+                            >
+                              <div className="flex items-center">
+                                <div
+                                  className={`h-14 w-14 ${loading ? "opacity-0" : ""}`}
+                                >
+                                  <Lottie
+                                    animationData={voiceGirlAnimation}
+                                    className="h-full w-full"
+                                  />
+                                </div>
+                                {loading && (
+                                  <div className="absolute inset-0 flex items-center justify-center">
+                                    {" "}
+                                    {/* Center the spinner */}
+                                    <Icons.spinner className="h-4 w-4 animate-spin" />
+                                  </div>
+                                )}
+                              </div>
+                              <span className="relative z-10">
+                                {loading ? "" : "Small Demo"}
+                              </span>
+                            </Button>
+                          </div>
+                        </HoverCardTrigger>
+                        <HoverCardContent
+                          className="w-[320px] text-sm"
+                          side="left"
+                        >
+                          Small demo to test your chosen voice
+                        </HoverCardContent>
+                      </HoverCard>
+                      <HoverCard openDelay={200}>
+                        <HoverCardTrigger asChild>
+                          <div>
+                            <Button
+                              className="relative flex h-14 w-[180px] items-center justify-between rounded-full border-4 border-tertiary  bg-orange-300 p-3 text-lg font-semibold hover:bg-orange-600"
+                              disabled={!selectedModel || !script}
+                              onClick={async () => {
+                                setLoading(true);
+                                setWaitModal(false); // Reset modal state before checking again
+                                if (isScriptLongEnough(script)) {
+                                  setWaitModal(true); // Show modal only if script is long enough
+                                }
+                                try {
+                                  await generateVoice({
+                                    voice_id: selectedModel?.id,
+                                    voice_actor: selectedModel?.name,
+                                    message: script,
+                                    stability: stability?.[0],
+                                    similarity: similarity?.[0],
+                                  });
+                                  setLoading(false);
+                                  setWaitModal(false); // Hide modal when voice generation finishes
+                                } catch {
+                                  setWaitModal(false); // Hide modal on error
+                                }
+                              }}
+                            >
+                              <div className="flex items-center">
+                                <div
+                                  className={`h-14 w-14 ${loading ? "opacity-0" : ""}`}
+                                >
+                                  <Lottie
+                                    animationData={voiceCreateAnimation}
+                                    className="h-full w-full"
+                                  />
+                                </div>
+                                {loading && (
+                                  <div className="absolute inset-0 flex items-center justify-center">
+                                    {" "}
+                                    {/* Center the spinner */}
+                                    <Icons.spinner className="h-4 w-4 animate-spin" />
+                                  </div>
+                                )}
+                              </div>
+                              <span className="relative z-10">
+                                {loading ? "" : "CREATE"}
+                              </span>
+                            </Button>
+                          </div>
+                        </HoverCardTrigger>
+                        <VoiceCreationModal
+                          isVisible={showWaitModal}
+                          onClose={handleCloseWaitModal}
+                        />
+                        <HoverCardContent
+                          className="w-[320px] text-sm"
+                          side="right"
+                        >
+                          Press create after your script is above and your voice
+                          actor is chosen
+                        </HoverCardContent>
+                      </HoverCard>
+                    </div>
                   </div>
                 </div>
               </TabsContent>

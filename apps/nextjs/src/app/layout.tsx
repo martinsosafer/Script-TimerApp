@@ -1,13 +1,19 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Poppins, Roboto } from "next/font/google";
 
 import { PageAnalytics } from "./analytics";
 
-const fontSans = Inter({
+const fontPoppins = Poppins({
   subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--font-poppins",
+  weight: ["400", "700"], // Include weights for Poppins (normal and bold)
 });
 
+const fontRoboto = Roboto({
+  subsets: ["latin"],
+  variable: "--font-roboto",
+  weight: ["400", "700"], // Include weights for Roboto (normal and bold)
+});
 /**
  * Since we're passing `headers()` to the `TRPCReactProvider` we need to
  * make the entire app dynamic. You can move the `TRPCReactProvider` further
@@ -36,10 +42,13 @@ export default function Layout(props: { children: React.ReactNode }) {
     <html lang="en" className="h-full">
       <body
         className={[
-          "font-sans",
+          "font-poppins",
+          "font-roboto",
           "theme-blue",
           "h-screen bg-background",
-          fontSans.variable,
+
+          fontPoppins.variable,
+          fontRoboto.variable,
         ].join(" ")}
       >
         {props.children}

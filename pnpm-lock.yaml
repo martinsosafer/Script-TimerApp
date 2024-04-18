@@ -141,6 +141,9 @@ importers:
 
   apps/nextjs:
     dependencies:
+      '@next/font':
+        specifier: ^14.2.1
+        version: 14.2.1(next@14.1.0)
       '@segment/analytics-next':
         specifier: ^1.62.0
         version: 1.63.0
@@ -210,6 +213,9 @@ importers:
       framer-motion:
         specifier: ^11.0.3
         version: 11.0.3(react-dom@18.2.0)(react@18.2.0)
+      lottie-react:
+        specifier: ^2.4.0
+        version: 2.4.0(react-dom@18.2.0)(react@18.2.0)
       next:
         specifier: ^14.0.1
         version: 14.1.0(react-dom@18.2.0)(react@18.2.0)
@@ -3299,6 +3305,14 @@ packages:
     resolution: {integrity: sha512-x4FavbNEeXx/baD/zC/SdrvkjSby8nBn8KcCREqk6UuwvwoAPZmaV8TFCAuo/cpovBRTIY67mHhe86MQQm/68Q==}
     dependencies:
       glob: 10.3.10
+    dev: false
+
+  /@next/font@14.2.1(next@14.1.0):
+    resolution: {integrity: sha512-Ycpo+xb8cGUHhoXaz1+ODE2b278ZoeB5BbPzoHRPpQcm7zwBc/vdBanEQIbCzWIbCmnSWc60g17moJWeWAtfNw==}
+    peerDependencies:
+      next: '*'
+    dependencies:
+      next: 14.1.0(react-dom@18.2.0)(react@18.2.0)
     dev: false
 
   /@next/swc-darwin-arm64@14.1.0:
@@ -12078,6 +12092,21 @@ packages:
     hasBin: true
     dependencies:
       js-tokens: 4.0.0
+
+  /lottie-react@2.4.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-pDJGj+AQlnlyHvOHFK7vLdsDcvbuqvwPZdMlJ360wrzGFurXeKPr8SiRCjLf3LrNYKANQtSsh5dz9UYQHuqx4w==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      lottie-web: 5.12.2
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /lottie-web@5.12.2:
+    resolution: {integrity: sha512-uvhvYPC8kGPjXT3MyKMrL3JitEAmDMp30lVkuq/590Mw9ok6pWcFCwXJveo0t5uqYw1UREQHofD+jVpdjBv8wg==}
+    dev: false
 
   /lower-case-first@1.0.2:
     resolution: {integrity: sha512-UuxaYakO7XeONbKrZf5FEgkantPf5DUqDayzP5VXZrtRPdH86s4kN47I8B3TW10S4QKiE3ziHNf3kRN//okHjA==}
