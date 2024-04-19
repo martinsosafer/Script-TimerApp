@@ -1,14 +1,16 @@
-"use client"
+"use client";
+
 import React from "react";
+import Confetti from "react-confetti";
 
 import { AspectRatio } from "@voiceai/ui/@/components/ui/aspect-ratio";
 
 import SlideCards from "../components/slide-cards";
 import ThanksCard from "../components/thanksCard";
-import Confetti from "react-confetti"
+
 function SuccessPage() {
   return (
-     <div className="flex min-h-screen flex-col items-center justify-center space-y-4 text-center mb-20">
+    <div className="mb-20 flex min-h-screen flex-col items-center justify-center space-y-4 text-center">
       <Confetti
         width={window.innerWidth}
         height={window.innerHeight}
@@ -28,7 +30,9 @@ function SuccessPage() {
           title="Script-Timer Ai_ On boarding video (Short version) (1)"
         />
       </AspectRatio>
-      <h2 className="text-5xl font-bold text-primary mb-8 tracking-wider">Welcome to Our Site!</h2>
+      <h2 className="mb-8 text-5xl font-bold tracking-wider text-primary">
+        Welcome to Our Site!
+      </h2>
       <SlideCards />
     </div>
   );
