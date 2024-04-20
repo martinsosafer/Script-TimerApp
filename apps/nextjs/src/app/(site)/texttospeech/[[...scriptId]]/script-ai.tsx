@@ -265,7 +265,10 @@ export function ScriptAI({}) {
                 <div className="mt-4 flex items-center justify-between underline">
                   <Label htmlFor="similarity">Choose Your Voice Actor</Label>
                 </div>
-                <ScrollArea className="mt-2 h-[270px] px-1" type="always">
+                <ScrollArea
+                  className="mt-4 h-72 w-48 rounded-md border"
+                  type="always"
+                >
                   <div className="space-y-1 p-2">
                     <VoiceLibrary onModelSelect={setSelectedModel} />
                   </div>
@@ -323,17 +326,17 @@ export function ScriptAI({}) {
                         Check Grammar and Spelling
                       </span>
 
-                      <TabsList className=" mt-3 grid grid-cols-2 bg-slate-300">
+                      <TabsList className=" mb-10 mt-3 grid grid-cols-2  bg-slate-300">
                         <TabsTrigger
                           value="complete"
-                          className=" flex items-center justify-center data-[state=active]:bg-primary"
+                          className=" flex items-center justify-center  rounded-full data-[state=active]:bg-primary"
                         >
                           <span className="sr-only">Complete</span>
                           <PencilIcon className="h-5 w-5 text-primary-foreground" />
                         </TabsTrigger>
                         <TabsTrigger
                           value="insert"
-                          className="flex items-center justify-center  data-[state=active]:bg-primary"
+                          className="flex items-center justify-center  rounded-full  data-[state=active]:bg-primary"
                         >
                           <span className="sr-only">Insert</span>
                           <CorrectDocumentIcon className="h-5 w-5 text-primary-foreground " />
@@ -364,7 +367,7 @@ export function ScriptAI({}) {
                   /> */}
 
                   <div className=" mb-14 flex flex-col items-center justify-center">
-                    <Badge className="h-12 w-[570px] items-center justify-center border-4 border-primary bg-blue-400 text-lg">
+                    <Badge className="h-12 w-[570px] items-center justify-center border-4 border-primary bg-blue-500 text-lg hover:to-blue-200">
                       Script is&nbsp;
                       <span className="font-bold text-tertiary dark:text-tertiary">
                         {wordCount}
@@ -384,7 +387,7 @@ export function ScriptAI({}) {
                         <HoverCardTrigger asChild>
                           <div>
                             <Button
-                              className="relative flex h-14 w-[180px] items-center justify-between rounded-full border-4 border-tertiary  bg-orange-300 p-3 text-lg font-semibold hover:bg-orange-600"
+                              className="relative flex h-14 w-[180px] items-center justify-between rounded-full border-4 border-tertiary  bg-orange-500 p-3 text-lg font-semibold hover:bg-orange-300"
                               disabled={!selectedModel || !script}
                               onClick={async () => {
                                 setLoading(true);
@@ -440,7 +443,7 @@ export function ScriptAI({}) {
                         <HoverCardTrigger asChild>
                           <div>
                             <Button
-                              className="relative flex h-14 w-[180px] items-center justify-between rounded-full border-4 border-tertiary  bg-orange-300 p-3 text-lg font-semibold hover:bg-orange-600"
+                              className="relative flex h-14 w-[180px] items-center justify-between rounded-full border-4 border-tertiary  bg-orange-500 p-3 text-lg font-semibold hover:bg-orange-300"
                               disabled={!selectedModel || !script}
                               onClick={async () => {
                                 setLoading(true);
