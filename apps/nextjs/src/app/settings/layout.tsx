@@ -13,11 +13,6 @@ import { headers } from "next/headers";
 
 import { TRPCReactProvider } from "../providers";
 
-const fontSans = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
-
 /**
  * Since we're passing `headers()` to the `TRPCReactProvider` we need to
  * make the entire app dynamic. You can move the `TRPCReactProvider` further

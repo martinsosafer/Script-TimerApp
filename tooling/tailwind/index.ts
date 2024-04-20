@@ -1,9 +1,18 @@
 import type { Config } from "tailwindcss";
 
+
+
+
+
 export default {
   darkMode: ["class"],
   content: [],
   theme: {
+    fontFamily: {
+      sans: ["Inter", "ui-sans-serif", "system-ui"],
+      poppins: ["Poppins", "ui-sans-serif", "system-ui"],
+      roboto: ["Roboto", "ui-sans-serif", "system-ui"],
+    },
     container: {
       center: true,
       padding: "2rem",

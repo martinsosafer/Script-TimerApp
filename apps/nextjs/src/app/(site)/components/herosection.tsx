@@ -52,7 +52,7 @@ export default function HeroSection() {
       <div className="container px-4 md:px-6">
         <div className="mb-5 mt-2  flex  flex-col items-center space-y-4 text-center">
           <div className="space-y-2">
-            <h1 className="text-3xl font-bold tracking-tighter text-primary sm:text-5xl xl:text-6xl/none">
+            <h1 className=" font-roboto text-3xl font-bold tracking-tighter text-primary sm:text-5xl xl:text-6xl/none">
               Welcome!
             </h1>
             <p className="max-w-[600px] text-primary dark:text-gray-400 md:text-xl">

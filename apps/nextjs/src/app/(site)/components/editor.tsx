@@ -157,7 +157,7 @@ function TextEditor({
   return (
     <div
       className={classNames(
-        "flex flex-col rounded-md bg-white py-4 pt-4 text-stone-900",
+        "flex flex-col rounded-md bg-white  py-2 text-stone-900",
         className,
       )}
     >
@@ -202,7 +202,7 @@ function TextEditor({
           </Button> */}
           <Button
             variant="ghost"
-            className={classNames("border border-slate-500", {
+            className={classNames("rounded-full border border-slate-500", {
               "is-active": editor.isActive("bold"),
             })}
             onClick={toggleBold}
@@ -211,7 +211,7 @@ function TextEditor({
           </Button>
           <Button
             variant="ghost"
-            className={classNames("border border-slate-500", {
+            className={classNames(" rounded-full border border-slate-500", {
               "is-active": editor.isActive("underline"),
             })}
             onClick={toggleUnderline}
@@ -220,7 +220,7 @@ function TextEditor({
           </Button>
           <Button
             variant="ghost"
-            className={classNames("border border-slate-500", {
+            className={classNames(" rounded-full border border-slate-500", {
               "is-active": editor.isActive("italic"),
             })}
             onClick={toggleItalic}
@@ -229,7 +229,7 @@ function TextEditor({
           </Button>
           <Button
             variant="ghost"
-            className="border border-slate-500"
+            className="rounded-full border border-slate-500"
             onClick={toggleCharCountDisplay}
           >
             Character count
@@ -238,7 +238,7 @@ function TextEditor({
         <div className="flex gap-1">
           <Button
             variant="ghost"
-            className="border border-slate-500"
+            className="rounded-full border border-slate-500"
             onClick={() => editor.chain().focus().undo().run()}
             disabled={!editor.can().undo()}
           >
@@ -246,7 +246,7 @@ function TextEditor({
           </Button>
           <Button
             variant="ghost"
-            className="border border-slate-500"
+            className="rounded-full border border-slate-500"
             onClick={() => editor.chain().focus().redo().run()}
             disabled={!editor.can().redo()}
           >
@@ -254,7 +254,7 @@ function TextEditor({
           </Button>
           <Button
             variant="ghost"
-            className="border border-slate-500"
+            className="rounded-full border border-slate-500"
             disabled={charCount === 0}
             onClick={copyToClipboard}
           >
