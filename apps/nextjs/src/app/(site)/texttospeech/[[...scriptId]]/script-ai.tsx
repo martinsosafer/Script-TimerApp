@@ -129,14 +129,22 @@ export function ScriptAI({}) {
   const toggleAudioRef = React.useRef<React.Ref<HTMLButtonElement>>(null);
   const { mutateAsync: generateVoice, error } = api.voice.create.useMutation({
     onSuccess(data) {
-      const dataURI = `data:audio/mpeg;base64,${data?.audio}`;
-      setAudio(dataURI);
-      setOpen(true);
-      setLoading(false);
-      console.log("clicking");
-      if (toggleAudioRef?.current) {
-        // @ts-expect-error weird typing with ref
-        toggleAudioRef.current?.click();
+      if (data?.audio) {
+        const dataURI = `data:audio/mpeg;base64,${data.audio}`;
+        setAudio(dataURI);
+
+        setLoading(false);
+        console.log("clicking");
+        if (toggleAudioRef?.current && !error) {
+          toggleAudioRef.current?.click();
+        }
+      } else {
+        // Handle the case where data or audio is missing
+        setLoading(false);
+        toast({
+          title: "Something went wrong",
+          description: "Please try again later",
+        });
       }
     },
     onError(error) {
@@ -144,7 +152,7 @@ export function ScriptAI({}) {
       if (error?.data?.code === "FORBIDDEN") {
         toast({
           title: "Upgrade your plan",
-          description: "The base plan only supports up to 1200 characters",
+          description: "Free plan only supports up to 300 characters",
           action: (
             <ToastAction altText="subscribe">
               <Link href="/settings/billing">Subscribe</Link>
