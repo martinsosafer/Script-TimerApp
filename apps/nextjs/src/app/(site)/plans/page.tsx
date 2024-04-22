@@ -17,18 +17,34 @@ async function loadProducts() {
   }
 
   const stripe = new Stripe(stripeSecretKey);
-  const products = await stripe.products.list();
-  const studentPlans = products.data.filter(
-    (product) => product.name === "Student Plan",
-  );
-  const creatorPlans = products.data.filter(
-    (product) => product.name === "Creator Plan",
-  );
+  const stripeProducts = await stripe.products.list();
 
-  // Concatenate student and creator plans
-  const sortedProducts = studentPlans.concat(creatorPlans);
+  // Transform Stripe products into the structure expected by PriceCard
+  const products = stripeProducts.data.map((stripeProduct) => {
+    // Log metadata for each product
 
-  return sortedProducts;
+    return {
+      id: stripeProduct.id,
+      name: stripeProduct.name,
+      description: stripeProduct.description || "",
+      metadata: {
+        carddescription: stripeProduct.metadata.carddescription || "",
+        mostpopular: stripeProduct.metadata.mostpopular || "",
+        price: stripeProduct.metadata.price
+          ? parseFloat(stripeProduct.metadata.price)
+          : 0,
+        notincluded1: stripeProduct.metadata.notincluded1 || "",
+        notincluded2: stripeProduct.metadata.notincluded2 || "",
+        notincluded3: stripeProduct.metadata.notincluded3 || "",
+        notincluded4: stripeProduct.metadata.notincluded4 || "",
+      },
+      marketing_features: stripeProduct.features.map((feature) => ({
+        name: feature.name,
+      })),
+    };
+  });
+
+  return products;
 }
 
 async function PlansPage() {
