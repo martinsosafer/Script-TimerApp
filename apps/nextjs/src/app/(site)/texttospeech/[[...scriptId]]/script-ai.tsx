@@ -132,7 +132,7 @@ export function ScriptAI({}) {
       if (data?.audio) {
         const dataURI = `data:audio/mpeg;base64,${data.audio}`;
         setAudio(dataURI);
-        console.log("DATAAA", data);
+        // console.log("DATAAA", data);
         setLoading(false);
         console.log("clicking");
         if (toggleAudioRef?.current && !error) {
@@ -192,7 +192,7 @@ export function ScriptAI({}) {
   return (
     <div className=" h-screen flex-col  md:flex">
       <div className="md:min-h-20 lg:min-h-20 container  mb-5  mt-5 flex flex-col items-start justify-between sm:flex-row sm:items-center sm:space-y-0">
-        <h2 className="mr-2 flex-shrink-0 bg-gradient-to-r from-black to-blue-500 bg-clip-text text-xl font-bold text-transparent dark:bg-gradient-to-r dark:from-white dark:to-blue-500">
+        <h2 className="mr-2 flex-shrink-0 bg-gradient-to-r from-black to-blue-500 bg-clip-text font-poppins text-xl font-bold text-transparent dark:bg-gradient-to-r dark:from-white dark:to-blue-500">
           Listen to your script
         </h2>
         <div className="ml-7">
@@ -270,7 +270,7 @@ export function ScriptAI({}) {
                 onModelSelect={setSelectedModel}
               /> */}
               <div>
-                <div className="mt-4 flex items-center justify-between underline">
+                <div className="mt-4 flex items-center justify-between font-poppins underline">
                   <Label htmlFor="similarity">Choose Your Voice Actor</Label>
                 </div>
                 <ScrollArea
@@ -330,7 +330,7 @@ export function ScriptAI({}) {
                 <HoverCard openDelay={200}>
                   <HoverCardTrigger asChild>
                     <div className="py-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                      <span className="mb-2 flex-1 text-center underline">
+                      <span className="mb-2 flex-1 text-center font-poppins underline">
                         Check Grammar and Spelling
                       </span>
 

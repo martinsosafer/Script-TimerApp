@@ -3,15 +3,16 @@ import { Poppins, Roboto } from "next/font/google";
 
 import { PageAnalytics } from "./analytics";
 
-const fontPoppins = Poppins({
+const poppins = Poppins({
   subsets: ["latin"],
-  variable: "--font-poppins",
+  style: "normal",
+  variable: "--poppins",
   weight: ["400", "700"], // Include weights for Poppins (normal and bold)
 });
 
-const fontRoboto = Roboto({
+const roboto = Roboto({
   subsets: ["latin"],
-  variable: "--font-roboto",
+  variable: "--roboto",
   weight: ["400", "700"], // Include weights for Roboto (normal and bold)
 });
 /**
@@ -46,9 +47,8 @@ export default function Layout(props: { children: React.ReactNode }) {
           "font-roboto",
           "theme-blue",
           "h-screen bg-background",
-
-          fontPoppins.variable,
-          fontRoboto.variable,
+          poppins.variable,
+          roboto.variable,
         ].join(" ")}
       >
         {props.children}

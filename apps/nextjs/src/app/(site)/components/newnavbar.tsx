@@ -60,7 +60,7 @@ export default function newnavbar({
     <header className=" sticky top-0 z-50 mx-auto flex h-16 items-center justify-between bg-primary">
       <Link
         href={`/`}
-        className="ml-8 text-2xl font-bold text-primary-foreground"
+        className="ml-8 font-poppins text-2xl font-bold text-primary-foreground"
       >
         Script Timer
       </Link>
@@ -75,7 +75,7 @@ export default function newnavbar({
               </Link>
             </div>
             <button className="relative z-10 flex cursor-default items-center justify-center font-semibold">
-              <span className="relative z-10">Text to Voice</span>
+              <span className="relative z-10 font-poppins">Text to Voice</span>
             </button>
             <div className="absolute inset-x-0 bottom-0  mb-2 h-0.5 origin-left scale-x-0 transform bg-primary-foreground transition-transform duration-300 group-hover:scale-x-100"></div>
             <div className="invisible absolute -left-48 top-0 z-50 min-w-[560px] translate-y-0 transform opacity-0 transition duration-500 ease-in-out group-hover:visible group-hover:translate-y-5 group-hover:transform group-hover:opacity-100">
@@ -169,7 +169,7 @@ export default function newnavbar({
                       <IconBrainCog className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
                     </Link>
                   </div>
-                  <button className="relative z-10 cursor-default font-semibold ">
+                  <button className="relative z-10 cursor-default font-poppins font-semibold ">
                     <Link href={`/chat`}>Script Writing</Link>
                   </button>
 
@@ -302,7 +302,9 @@ export default function newnavbar({
               <IconLightbulb className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
               <IconGraduationCap className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
             </div>
-            <button className="cursor-default font-semibold ">Learn</button>
+            <button className="cursor-default font-poppins font-semibold ">
+              Learn
+            </button>
             <div className="absolute inset-x-0 bottom-0  mb-2 h-0.5 origin-left scale-x-0 transform bg-primary-foreground transition-transform duration-300 group-hover:scale-x-100"></div>
             <div className="invisible absolute -left-48 top-0 z-50 min-w-[560px] translate-y-0 transform opacity-0 transition duration-500 ease-in-out group-hover:visible group-hover:translate-y-5 group-hover:transform group-hover:opacity-100 ">
               <div className="relative top-6 w-full rounded-xl bg-slate-100 p-6 shadow-xl dark:bg-primary-foreground">
@@ -392,7 +394,7 @@ export default function newnavbar({
             <Link
               href="https://script-timer.com/voice123-pricing/"
               target="_blank"
-              className="cursor-pointer font-semibold "
+              className="cursor-pointer font-poppins font-semibold "
             >
               Plans
             </Link>
@@ -432,7 +434,7 @@ export default function newnavbar({
                 await signOut();
               }}
             >
-              <span className="mr-2">Sign out</span>
+              <span className="mr-2 font-poppins">Sign out</span>
               <svg
                 className="stroke-current"
                 width="10"
