@@ -132,7 +132,7 @@ export function ScriptAI({}) {
       if (data?.audio) {
         const dataURI = `data:audio/mpeg;base64,${data.audio}`;
         setAudio(dataURI);
-
+        console.log("DATAAA", data);
         setLoading(false);
         console.log("clicking");
         if (toggleAudioRef?.current && !error) {
