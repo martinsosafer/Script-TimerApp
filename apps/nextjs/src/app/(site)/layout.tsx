@@ -48,13 +48,15 @@ export default function Layout(props: { children: React.ReactNode }) {
 
   return (
     <>
-      <div className="h-screen  bg-background">
+      <div className="h-screen  overflow-hidden bg-background">
         <TRPCReactProvider headers={headers()}>
           <Newnavbar signOut={signOutServer} />
           {/* <Menu signOut={signOutServer} /> */}
           <div className="grid ">
             {/* <Sidebar playlists={playlists} className="hidden lg:block" /> */}
-            <div className="col-span-4 h-screen  ">{props.children}</div>
+            <div className="col-span-4 h-screen overflow-auto ">
+              {props.children}
+            </div>
           </div>
           <Toaster />
           <IdentifyAnalytics />

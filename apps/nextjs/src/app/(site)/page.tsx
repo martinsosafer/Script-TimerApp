@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
-import { CounterData } from "./components/herosection/CounterData";
+import { CounterData } from "./components/herosection/CounterData/CounterData";
 import HeroSection from "./components/herosection/HeroBlock/herosection";
-import { MotionTransition } from "./components/herosection/MotionTransition/MotionTransition";
+import { ServiceSection } from "./components/herosection/ServicesSection";
 
 export const metadata: Metadata = {
   title: "Script Timer",
@@ -14,6 +14,7 @@ export default function LandingPage() {
     <div className="h-full py-6 md:py-12 lg:py-12 xl:py-12">
       <HeroSection />
       <CounterData />
+      <ServiceSection />
     </div>
   );
 }

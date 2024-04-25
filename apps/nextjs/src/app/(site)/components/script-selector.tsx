@@ -46,7 +46,7 @@ const DeleteButton = ({ scriptId }) => {
   const [openDelete, setOpenDelete] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [name, setName] = React.useState("");
-  const { data: scriptDetails } = api.script.get.useQuery(
+  const { data: scriptDetails, refetch } = api.script.get.useQuery(
     { id: scriptId },
     { enabled: Boolean(scriptId) },
   );
@@ -58,8 +58,8 @@ const DeleteButton = ({ scriptId }) => {
       });
 
       router.push("/texttospeech");
-      router.refresh();
     },
+
     onError(error) {
       toast({
         title: "Something went wrong",
@@ -108,6 +108,7 @@ const DeleteButton = ({ scriptId }) => {
               disabled={name.length === 0}
               onClick={() => {
                 deleteScript({ id: scriptId });
+                refetch();
               }}
               className="gap-1 bg-red-600"
             >

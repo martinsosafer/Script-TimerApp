@@ -14,11 +14,8 @@ import {
 import {
   IconArrowDown,
   IconAudioLines,
-  IconBot,
-  IconBrainCircuit,
   IconBrainCog,
   IconFileHeart,
-  IconFileStack,
   IconFileType,
   IconGraduationCap,
   IconHandshake,
