@@ -1,1 +1,1 @@
-export * from "./servicessection";
+export * from "./ServicesSection";

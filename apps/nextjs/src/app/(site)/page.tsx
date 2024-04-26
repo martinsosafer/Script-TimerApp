@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 
+import AboutMe from "./components/herosection/AboutMe/AboutMe";
 import { CounterData } from "./components/herosection/CounterData/CounterData";
-import HeroSection from "./components/herosection/HeroBlock/herosection";
+import GoSections from "./components/herosection/GoSections/GoSections";
+import HeroSection from "./components/herosection/HeroBlock/HeroSection";
 import { ServiceSection } from "./components/herosection/ServicesSection";
+import { Testimonials } from "./components/herosection/Testimonials";
 
 export const metadata: Metadata = {
   title: "Script Timer",
@@ -15,6 +18,9 @@ export default function LandingPage() {
       <HeroSection />
       <CounterData />
       <ServiceSection />
+      <GoSections />
+      <Testimonials />
+      {/* <AboutMe /> */}
     </div>
   );
 }

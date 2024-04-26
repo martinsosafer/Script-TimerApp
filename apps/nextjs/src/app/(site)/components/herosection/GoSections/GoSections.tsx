@@ -1,0 +1,20 @@
+import React from "react";
+
+import { RevealText } from "~/app/animations/RevealText";
+import SlideCards from "../../slide-cards";
+
+export default function GoSections() {
+  return (
+    <div className="relative flex h-full flex-col items-center justify-center px-10 py-20 md:py-20">
+      <div className="max-3xl  mx-auto block text-center">
+        <RevealText>
+          <h2 className="text-center text-5xl font-semibold">
+            <span className="block  text-primary">Explore and be creative</span>
+            Lorem ipsum traolie arividerci tersartcek aserzasla
+          </h2>
+        </RevealText>
+      </div>
+      <SlideCards />
+    </div>
+  );
+}
