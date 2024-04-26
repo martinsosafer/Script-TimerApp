@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 
-import AboutMe from "./components/herosection/AboutMe/AboutMe";
 import { CounterData } from "./components/herosection/CounterData/CounterData";
 import GoSections from "./components/herosection/GoSections/GoSections";
 import HeroSection from "./components/herosection/HeroBlock/HeroSection";
