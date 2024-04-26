@@ -10,7 +10,7 @@ import useModal from "~/app/hooks/useModal";
 import { api } from "~/utils/api";
 import Modal from "../../modal";
 import PrimaryButton from "../../primary-button";
-import { MotionTransition } from "../MotionTransition";
+import MotionTransition from "../MotionTransition/MotionTransition";
 
 export default function HeroSection() {
   const { data: session } = api.auth.getSession.useQuery();

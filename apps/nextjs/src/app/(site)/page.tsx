@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 import { CounterData } from "./components/herosection/CounterData/CounterData";
 import GoSections from "./components/herosection/GoSections/GoSections";
 import HeroSection from "./components/herosection/HeroBlock/HeroSection";
-import { ServiceSection } from "./components/herosection/ServicesSection";
-import { Testimonials } from "./components/herosection/Testimonials";
+import ServiceSection from "./components/herosection/ServicesSection/ServicesSection";
+import Testimonials from "./components/herosection/Testimonials/Testimonials";
 
 export const metadata: Metadata = {
   title: "Script Timer",

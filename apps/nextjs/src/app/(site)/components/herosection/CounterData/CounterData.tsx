@@ -3,7 +3,7 @@
 import React from "react";
 import CountUp from "react-countup";
 
-import { MotionTransition } from "../MotionTransition";
+import MotionTransition from "../MotionTransition/MotionTransition";
 import { counterNumbers } from "./counterNumbers";
 
 export function CounterData() {

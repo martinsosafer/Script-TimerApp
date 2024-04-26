@@ -3,7 +3,7 @@ import React from "react";
 import { RevealText } from "~/app/animations/RevealText";
 import Slide from "./slide";
 
-export function Testimonials() {
+export default function Testimonials() {
   return (
     <div className="relative p-8 md:py-20">
       <div className="mx-auto my-6 grid max-w-5xl gap-8 md:grid-cols-2">

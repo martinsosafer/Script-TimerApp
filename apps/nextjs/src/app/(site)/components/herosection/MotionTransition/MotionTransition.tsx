@@ -10,7 +10,7 @@ interface MotionTransitionProps {
   className?: string;
 }
 
-export function MotionTransition(props: MotionTransitionProps) {
+export default function MotionTransition(props: MotionTransitionProps) {
   const { children, className } = props;
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false });
