@@ -85,10 +85,15 @@ export default function HeroSection() {
           </div>
 
           <MotionTransition className=" ml-12 flex items-center  justify-center">
-            <AspectRatio ratio={16 / 10}>
+            <AspectRatio
+              ratio={16 / 9}
+              style={{
+                maxWidth: "600px",
+              }}
+            >
               <iframe
                 src="https://player.vimeo.com/video/904618003?h=e72a50f24d&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                className="flex h-full w-full items-center justify-center"
+                className="flex h-full w-full items-center justify-center border-4 border-primary"
                 allow="autoplay; fullscreen; picture-in-picture"
                 title="Script-Timer Ai_ On boarding video (Short version) (1)"
               />
