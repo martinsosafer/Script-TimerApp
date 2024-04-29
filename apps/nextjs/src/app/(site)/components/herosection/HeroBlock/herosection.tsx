@@ -57,34 +57,38 @@ export default function HeroSection() {
           Welcome
         </h1>
       </MotionTransition>
-      <div className=" relative p-4  md:py-10">
+      <div className=" relative">
         <div className="mx-auto grid max-w-5xl md:grid-cols-2">
           <div>
             <RevealText>
-              <h1 className="font-poppins text-5xl font-semibold ">
-                Improve your speech with
+              <h1 className="font-poppins text-3xl  font-semibold  sm:text-5xl xl:text-6xl/none ">
+                Improve your script, voice-over and learn to be a pro with
                 <span className="block text-primary">Script Timer</span>
-                and be creative
               </h1>
             </RevealText>
             <RevealText>
-              <p className=" mt-2 max-w-md">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi
-                veniam architecto, pariatur vel sed ea molestias, laborum
-                officia, sint eius dicta corrupti delectus enim dolorem?
-                Exercitationem laudantium molestias quis perspiciatis!
+              <p className="  max-w-md">
+                Script-Timer, the new AI writing coach and classes, were created
+                to save you hundreds of hours and thousands of dollars, so you
+                can create world-class scripts instantly.
               </p>
             </RevealText>
             <RevealText>
-              <div className="mt-2">
+              <div className="flex justify-center  gap-3">
                 <PrimaryButton>
-                  <Link href="">Start Now</Link>
+                  <Link href="/text2speech">Text to Speech</Link>
+                </PrimaryButton>
+                <PrimaryButton>
+                  <Link href="/chat">Ai ScriptWritting</Link>
+                </PrimaryButton>
+                <PrimaryButton>
+                  <Link href="">MasterClasses</Link>
                 </PrimaryButton>
               </div>
             </RevealText>
           </div>
 
-          <MotionTransition className=" ml-12 flex items-center  justify-center">
+          <MotionTransition className=" mt-4 flex  items-center justify-center">
             <AspectRatio
               ratio={16 / 9}
               style={{

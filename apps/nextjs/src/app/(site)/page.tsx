@@ -14,13 +14,12 @@ export const metadata: Metadata = {
 
 export default function LandingPage() {
   return (
-    <div className="h-full py-6  md:py-12 lg:py-12 xl:py-12 ">
+    <>
       <HeroSection />
       <CounterData />
       <ServiceSection />
       <GoSections />
       <Testimonials />
-      <Footer />
-    </div>
+    </>
   );
 }
