@@ -9,8 +9,9 @@ export default function GoSections() {
       <div className="max-3xl  mx-auto block text-center ">
         <RevealText>
           <h2 className="text-center text-5xl font-semibold">
-            <span className="block  text-primary">Explore and be creative</span>
-            Lorem ipsum traolie arividerci tersartcek aserzasla
+            <span className="block  text-primary">
+              Explore and be your best
+            </span>
           </h2>
         </RevealText>
       </div>

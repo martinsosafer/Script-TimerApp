@@ -7,8 +7,8 @@ import { footerData, footerSocialNetworks } from "./FooterData";
 
 export default function Footer() {
   return (
-    <div className="mx-auto  mt-24  w-full   bg-gradient-to-b from-blue-600 via-blue-400 to-blue-600 md:-mt-40">
-      <div className="mx-20 justify-between md:flex">
+    <div className="   w-full   bg-primary ">
+      <div className="mx-20 mt-4 justify-between md:flex">
         <div>
           <h2 className="font-poppins text-2xl font-bold text-primary-foreground">
             SCRIPT TIMER
@@ -21,7 +21,7 @@ export default function Footer() {
         </div>
         {footerData.map(({ id, title, links }) => (
           <div key={id}>
-            <h4 className="mt-8 font-poppins text-lg text-primary-foreground md:mt-0">
+            <h4 className="mt-8 font-poppins   font-semibold text-primary-foreground md:mt-0">
               <RevealText>{title}</RevealText>
             </h4>
             {links.map(({ id, name, link }) => (

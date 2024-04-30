@@ -54,7 +54,7 @@ export default function newnavbar({
       subscriptionData.status === "CREATOR" ||
       subscriptionData.status === "FREE_TRIAL");
   return (
-    <header className=" sticky top-0 z-50 mx-auto flex h-16 items-center justify-between bg-primary">
+    <header className=" sticky top-0 z-50 flex h-16 w-full items-center justify-between bg-primary">
       <Link
         href={`/`}
         className="ml-8 font-poppins text-2xl font-bold text-primary-foreground"

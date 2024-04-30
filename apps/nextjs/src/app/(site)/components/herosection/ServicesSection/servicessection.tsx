@@ -33,15 +33,25 @@ export default function ServiceSection() {
             <h2 className="font-poppins text-5xl font-semibold">
               <span className="block text-primary">You have an idea</span>
               we help you <br />
-              make it real
+              bring it to life
             </h2>
           </RevealText>
           <RevealText>
             <p className="mt-10 max-w-md">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ut
-              distinctio corrupti nihil! Autem commodi fuga rem esse placeat
-              quos explicabo aliquid sapiente iure eaque architecto, tempora
-              mollitia reiciendis veritatis. Tenetur?
+              Even for the most most gifted writters, squeezing a lot of of
+              information into a short amount of time is extremly hard work
+            </p>
+          </RevealText>
+          <RevealText>
+            <p className=" max-w-md">
+              The script is critical to your most effective whiteboard video,
+              explainer video,speech or feature film
+            </p>
+          </RevealText>
+          <RevealText>
+            <p className=" max-w-md">
+              If you need help or advice on the script or storyboard,please just
+              ask.
             </p>
           </RevealText>
         </div>

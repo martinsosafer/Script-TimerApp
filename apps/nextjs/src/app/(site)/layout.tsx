@@ -49,7 +49,7 @@ export default function Layout(props: { children: React.ReactNode }) {
 
   return (
     <>
-      <div className="h-screen   bg-background">
+      <div className="flex min-h-screen flex-col justify-between bg-background">
         <TRPCReactProvider headers={headers()}>
           <Newnavbar signOut={signOutServer} />
           {/* <Menu signOut={signOutServer} /> */}

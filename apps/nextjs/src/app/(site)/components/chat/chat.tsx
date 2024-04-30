@@ -109,7 +109,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
   // Check if the user is a free user
   const isFreeUser = !isSubscriptionActive;
   //check if the user on FREE_TRIAL
-  const isFreeTrialUser = subscriptionData?.status === "FREE_TRIAL"
+  const isFreeTrialUser = subscriptionData?.status === "FREE_TRIAL";
   // Render ChatModal if the user is a free user
   if (isFreeUser) {
     return <ChatModal />;
@@ -123,7 +123,11 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
             <ChatScrollAnchor trackVisibility={isLoading} />
           </>
         ) : (
-            <EmptyScreen setInput={setInput} setPrompt={setPrompt} isFreeTrialUser={isFreeTrialUser} />
+          <EmptyScreen
+            setInput={setInput}
+            setPrompt={setPrompt}
+            isFreeTrialUser={isFreeTrialUser}
+          />
         )}
       </div>
       <ChatPanel
