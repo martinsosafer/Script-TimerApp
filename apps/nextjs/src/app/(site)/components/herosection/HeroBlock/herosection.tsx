@@ -53,15 +53,15 @@ export default function HeroSection() {
   return (
     <div>
       <MotionTransition>
-        <h1 className="mt-5 text-center font-poppins text-3xl font-bold tracking-tighter text-primary sm:text-5xl xl:text-6xl/none">
+        <h1 className="text-center font-poppins text-3xl font-bold tracking-tighter text-primary sm:text-5xl xl:text-6xl/none">
           Welcome
         </h1>
       </MotionTransition>
       <div className=" relative">
         <div className="mx-auto grid max-w-5xl md:grid-cols-2">
-          <div>
+          <div className="mt-4 ">
             <RevealText>
-              <h1 className="font-poppins text-3xl  font-semibold  sm:text-5xl xl:text-6xl/none ">
+              <h1 className="font-poppins text-5xl  font-semibold  sm:text-3xl xl:text-5xl/none ">
                 Improve your script, voice-over and learn to be a pro with
                 <span className="block text-primary">Script Timer</span>
               </h1>
@@ -88,7 +88,7 @@ export default function HeroSection() {
             </RevealText>
           </div>
 
-          <MotionTransition className=" mt-4 flex  items-center justify-center">
+          <MotionTransition className=" ml-6 mt-6  flex items-center justify-center">
             <AspectRatio
               ratio={16 / 9}
               style={{
