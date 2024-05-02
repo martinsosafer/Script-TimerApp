@@ -1,17 +1,41 @@
 "use client";
 
-import React from "react";
-import Confetti from "react-confetti";
+import React, { useContext, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+
+// import Confetti from "react-confetti";
 
 import { AspectRatio } from "@voiceai/ui/@/components/ui/aspect-ratio";
 
+import { useSharedState } from "~/app/context/State";
 import SlideCards from "../components/slide-cards";
 import ThanksCard from "../components/thanksCard";
 
+interface Props {
+  id: string;
+}
+
+async function stripeSession({ id }: Props) {
+  try {
+    const stripesession = await fetch("/api/getStripeSession");
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const response = await stripesession.json();
+    console.log("ReturnStripe", response);
+  } catch (error) {
+    console.log("ERROR", error);
+  }
+}
 function SuccessPage() {
+  // const { sessionId, setSessionId } = useSharedState();
+  const searchParams = useSearchParams();
+  console.log("Router", searchParams.get("sessionid"));
+  const id = searchParams.get("sessionid");
+  useEffect(() => {
+    stripeSession({ id });
+  }, [stripeSession]);
   return (
     <div className="mb-20 flex min-h-screen flex-col items-center justify-center space-y-4 text-center">
-      <Confetti
+      {/* <Confetti
         width={window.innerWidth}
         height={window.innerHeight}
         numberOfPieces={1000}
@@ -20,7 +44,7 @@ function SuccessPage() {
         initialVelocityX={2}
         initialVelocityY={10}
         colors={["#0123e7", "#eb8806"]}
-      />
+      /> */}
       <ThanksCard />
       <AspectRatio ratio={30 / 8}>
         <iframe

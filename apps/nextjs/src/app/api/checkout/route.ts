@@ -27,9 +27,11 @@ export async function POST(request: { json: () => any }) {
         quantity: 1,
       },
     ],
-    success_url: "http://localhost:3000/success",
+
+    success_url:
+      "http://localhost:3000/success?sessionid={CHECKOUT_SESSION_ID}",
     cancel_url: "http://localhost:3000/plans",
   });
 
-  return NextResponse.json({ url: session.url });
+  return NextResponse.json({ session });
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { createContext, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental";
@@ -13,9 +13,11 @@ import { TooltipProvider } from "@voiceai/ui";
 
 import { env } from "~/env.mjs";
 import { api } from "~/utils/api";
+import { ContextWrapper } from "./context/State";
 import { SidebarProvider } from "./hooks/useSideBar";
 import { PlayerProvider } from "./providers/player-context";
 
+export const UserContext = createContext({});
 const getBaseUrl = () => {
   if (typeof window !== "undefined") return ""; // browser should use relative url
   if (env.VERCEL_URL) return env.VERCEL_URL; // SSR should use vercel url
@@ -58,7 +60,7 @@ export function TRPCReactProvider(props: {
       ],
     }),
   );
-
+  const [sessionId, setSessionId] = useState("");
   return (
     <api.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
@@ -76,7 +78,9 @@ export function TRPCReactProvider(props: {
             >
               <SidebarProvider>
                 <TooltipProvider>
-                  <PlayerProvider>{props.children}</PlayerProvider>
+                  <ContextWrapper>
+                    <PlayerProvider>{props.children}</PlayerProvider>
+                  </ContextWrapper>
                 </TooltipProvider>
               </SidebarProvider>
             </ThemeProvider>
