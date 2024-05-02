@@ -28,6 +28,7 @@ export default function Footer() {
               <Link
                 key={id}
                 href={link}
+                target="_blank"
                 className="mt-4 block text-primary-foreground hover:text-white"
               >
                 <RevealText>{name}</RevealText>
@@ -52,6 +53,7 @@ export default function Footer() {
             <Link
               key={id}
               href={link}
+              target="_blank"
               className="text-2xl text-primary-foreground"
             >
               {icon}
