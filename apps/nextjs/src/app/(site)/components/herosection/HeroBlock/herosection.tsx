@@ -58,7 +58,7 @@ export default function HeroSection() {
         </h1>
       </MotionTransition>
       <div className=" relative">
-        <div className="mx-auto grid max-w-5xl md:grid-cols-2">
+        <div className="mx-auto mt-2 grid max-w-5xl md:grid-cols-2">
           <div className="mt-4 ">
             <RevealText>
               <h1 className="font-poppins text-5xl  font-semibold  sm:text-3xl xl:text-5xl/none ">
