@@ -30,7 +30,7 @@ export default function ServiceSection() {
       <div className="mx-auto grid max-w-5xl md:grid-cols-2">
         <div>
           <RevealText>
-            <h2 className="font-poppins text-5xl font-semibold">
+            <h2 className="font-poppins text-5xl font-semibold  leading-snug">
               <span className="block text-primary">You have an idea</span>
               we help you <br />
               bring it to life

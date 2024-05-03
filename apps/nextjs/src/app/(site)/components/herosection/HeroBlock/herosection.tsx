@@ -62,8 +62,8 @@ export default function HeroSection() {
           <div className="mt-4 ">
             <RevealText>
               <h1 className="font-poppins text-3xl  font-semibold  sm:text-3xl xl:text-5xl/none ">
-                Improve your script, voice-over and learn to be a pro with
-                <span className="block text-primary">Script Timer</span>
+                Go From Idea to Amazing Script to High Quality Voice Over in
+                <span className="block text-primary"> 90 secondsr</span>
               </h1>
             </RevealText>
             <RevealText>

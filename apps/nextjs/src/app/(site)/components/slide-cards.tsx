@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 import actorsImg from "../../../../public/actors.jpg";
 import aiwritterImg from "../../../../public/aiwritting.jpg";
@@ -25,7 +26,12 @@ function SlideCards() {
             Speaking, Presenting, Storytelling, Video Production
           </p>
           <button className="inline-flex h-9 items-center justify-center rounded-xl bg-sky-500 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-blue-600 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300">
-            See More
+            <Link
+              href="https://script-timer.com/lcs-masterclass/"
+              target="_blank"
+            >
+              See More
+            </Link>
           </button>
         </div>
       </div>
@@ -46,7 +52,7 @@ function SlideCards() {
             AI voice generates according to your input.
           </p>
           <button className="inline-flex h-9 items-center justify-center rounded-xl bg-sky-500 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-blue-600 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300">
-            See More
+            <Link href="/texttospeech">See More</Link>
           </button>
         </div>
       </div>
@@ -67,7 +73,7 @@ function SlideCards() {
             Assist from our AI to help your creativity
           </p>
           <button className="inline-flex h-9 items-center justify-center rounded-xl bg-sky-500 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-blue-600 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300">
-            See More
+            <Link href="/chat">See More</Link>
           </button>
         </div>
       </div>
