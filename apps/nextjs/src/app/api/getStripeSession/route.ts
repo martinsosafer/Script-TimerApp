@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { Stripe } from "stripe";
 
-export async function Get(request: { json: () => any }) {
+export async function GET(request: { json: () => any }) {
   const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 
   if (!stripeSecretKey) {

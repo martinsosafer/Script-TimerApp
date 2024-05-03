@@ -13,6 +13,7 @@ import ThanksCard from "../components/thanksCard";
 
 interface Props {
   id: string;
+  sessionId: string;
 }
 
 async function stripeSession({ id }: Props) {
@@ -20,19 +21,27 @@ async function stripeSession({ id }: Props) {
     const stripesession = await fetch("/api/getStripeSession");
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const response = await stripesession.json();
-    console.log("ReturnStripe", response);
+    const sessionId = response.session.id;
+    console.log("ReturnStripe", sessionId);
+    return sessionId;
   } catch (error) {
     console.log("ERROR", error);
   }
 }
 function SuccessPage() {
-  // const { sessionId, setSessionId } = useSharedState();
+  const { sessionId, setSessionId } = useSharedState();
   const searchParams = useSearchParams();
-  console.log("Router", searchParams.get("sessionid"));
   const id = searchParams.get("sessionid");
+
   useEffect(() => {
-    stripeSession({ id });
-  }, [stripeSession]);
+    const fetchSession = async () => {
+      const sessionId = await stripeSession({ id });
+      setSessionId(sessionId); // Set the sessionId to your global state
+    };
+    fetchSession();
+  }, [id, setSessionId]);
+
+  console.log("Session ID", sessionId);
   return (
     <div className="mb-20 flex min-h-screen flex-col items-center justify-center space-y-4 text-center">
       {/* <Confetti
