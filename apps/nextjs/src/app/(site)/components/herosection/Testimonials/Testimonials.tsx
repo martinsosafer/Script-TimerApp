@@ -5,7 +5,7 @@ import Slide from "./slide";
 
 export default function Testimonials() {
   return (
-    <div className="relative  mb-10 md:py-20 lg:py-24 xl:py-28">
+    <div className="lg:py-15  relative mb-10 md:py-10 xl:py-20">
       <div className="mx-auto my-6 grid max-w-5xl gap-8 md:grid-cols-2">
         <RevealText>
           <h2 className="mb-5 font-poppins text-5xl font-semibold">

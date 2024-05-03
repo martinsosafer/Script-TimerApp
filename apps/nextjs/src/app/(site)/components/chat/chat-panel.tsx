@@ -45,7 +45,7 @@ export function ChatPanel({
   const [shareDialogOpen, setShareDialogOpen] = React.useState(false);
 
   return (
-    <div className="animate-in relative inset-x-0 bottom-0 w-full bg-transparent duration-300 ease-in-out dark:bg-transparent peer-[[data-state=open]]:group-[]:lg:pl-[250px] peer-[[data-state=open]]:group-[]:xl:pl-[300px]">
+    <div className="mb-4">
       <ButtonScrollToBottom />
       <div className="mx-auto text-center sm:max-w-2xl sm:px-4">
         <div>

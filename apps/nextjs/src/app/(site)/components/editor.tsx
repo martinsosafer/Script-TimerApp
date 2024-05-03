@@ -83,7 +83,7 @@ function TextEditor({
     editorProps: {
       attributes: {
         class:
-          "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none overflow-hidden overflow-y-auto break-words  ml-2",
+          "h-full prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none overflow-hidden overflow-y-auto break-words  border border-black ml-2",
       },
       transformPastedText(text) {
         return text.toUpperCase();
@@ -157,49 +157,12 @@ function TextEditor({
   return (
     <div
       className={classNames(
-        "flex flex-col rounded-md bg-white  py-2 text-stone-900",
+        "flex flex-col rounded-md bg-white py-2 text-stone-900",
         className,
       )}
     >
-      <div className="ml-1 flex flex-col items-center justify-center gap-2  md:flex-row  lg:justify-start">
+      <div className="ml-1 flex flex-col items-center justify-center gap-2 md:flex-row lg:justify-start">
         <div className="flex gap-1">
-          .
-          {/* <Button
-            variant="ghost"
-            className={classNames("border border-slate-500", {
-              "is-active": editor.isActive("heading", { level: 1 }),
-            })}
-            onClick={toggleHeading1}
-          >
-            H1
-          </Button>
-          <Button
-            variant="ghost"
-            className={classNames("border border-slate-500", {
-              "is-active": editor.isActive("heading", { level: 2 }),
-            })}
-            onClick={toggleHeading2}
-          >
-            H2
-          </Button>
-          <Button
-            variant="ghost"
-            className={classNames("border border-slate-500", {
-              "is-active": editor.isActive("heading", { level: 3 }),
-            })}
-            onClick={toggleHeading3}
-          >
-            H3
-          </Button>
-          <Button
-            variant="ghost"
-            className={classNames("border border-slate-500", {
-              "is-active": editor.isActive("heading", { level: 4 }),
-            })}
-            onClick={toggleHeading4}
-          >
-            H4
-          </Button> */}
           <Button
             variant="ghost"
             className={classNames("rounded-full border border-slate-500", {
@@ -211,7 +174,7 @@ function TextEditor({
           </Button>
           <Button
             variant="ghost"
-            className={classNames(" rounded-full border border-slate-500", {
+            className={classNames("rounded-full border border-slate-500", {
               "is-active": editor.isActive("underline"),
             })}
             onClick={toggleUnderline}
@@ -220,7 +183,7 @@ function TextEditor({
           </Button>
           <Button
             variant="ghost"
-            className={classNames(" rounded-full border border-slate-500", {
+            className={classNames("rounded-full border border-slate-500", {
               "is-active": editor.isActive("italic"),
             })}
             onClick={toggleItalic}
@@ -260,21 +223,14 @@ function TextEditor({
           >
             <IconCopy className="h-5 w-5" />
           </Button>
-          {/* <Button
-            variant="ghost"
-            className={classNames("border border-slate-500", {
-              "is-active": editor.isActive("bulletList"),
-            })}
-            onClick={toggleBulletList}
-          >
-            List ITem
-          </Button> */}
         </div>
       </div>
-      <div className="relative flex-shrink overflow-x-auto overflow-y-auto">
+
+      <div className="relative mt-2 h-80 min-h-0 flex-shrink overflow-x-auto overflow-y-auto">
         <EditorContent
           key={editorKey}
           editor={editor}
+          className="h-full" // Ensures the EditorContent fills its container vertically
           style={{ wordWrap: "break-word" }}
         />
         {showCharCount && (

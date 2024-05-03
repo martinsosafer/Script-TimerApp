@@ -26,7 +26,7 @@ const iconComponents = {
 };
 export default function ServiceSection() {
   return (
-    <div className="md:py-15 relative px-6 py-10">
+    <div className="relative px-6 py-6 md:py-10">
       <div className="mx-auto grid max-w-5xl md:grid-cols-2">
         <div>
           <RevealText>
