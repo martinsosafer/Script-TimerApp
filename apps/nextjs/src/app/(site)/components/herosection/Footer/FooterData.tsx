@@ -11,28 +11,18 @@ export const footerData = [
     links: [
       {
         id: 1,
-        name: "Link 1",
-        link: "#",
+        name: "More Tools from Script-Timer",
+        link: "https://script-timer.com/more-tools/",
       },
       {
         id: 2,
-        name: "Link2",
-        link: "#",
+        name: "Personalized Script Review",
+        link: "https://script-timer.com/services/",
       },
       {
         id: 3,
-        name: "Link3",
-        link: "#",
-      },
-      {
-        id: 4,
-        name: "Link4",
-        link: "#",
-      },
-      {
-        id: 5,
-        name: "Link5",
-        link: "#",
+        name: "Pricing",
+        link: "https://script-timer.com/voice123-pricing/",
       },
     ],
   },
@@ -42,28 +32,23 @@ export const footerData = [
     links: [
       {
         id: 1,
-        name: "Blog news 1",
-        link: "#",
+        name: "Blog",
+        link: "https://script-timer.com/blogs/",
       },
       {
         id: 2,
-        name: "Blog news 2",
-        link: "#",
+        name: "Ai prompting Guide",
+        link: "https://script-timer.com/chatgpt-prompts/chatgpt-prompting-guide-from-openai/",
       },
       {
         id: 3,
-        name: "Blog news 3",
-        link: "#",
+        name: "Yes and No,how to improve your script",
+        link: "https://script-timer.com/speech-and-presentation/how-to-improve-your-public-speaking-with-yes-or-no-questions/",
       },
       {
         id: 4,
-        name: "Blog news 1",
-        link: "#",
-      },
-      {
-        id: 5,
-        name: "Newsletter",
-        link: "#",
+        name: "Tone of voice is important, but why?",
+        link: "https://script-timer.com/speech-and-presentation/why-tone-of-voice-makes-or-breaks-your-voice-over/",
       },
     ],
   },
@@ -89,16 +74,16 @@ export const footerSocialNetworks = [
   {
     id: 1,
     icon: <LinkedInIcon />,
-    link: "#",
+    link: "https://www.linkedin.com/in/mauryrogow/",
   },
   {
     id: 2,
     icon: <FacebookIcon />,
-    link: "#",
+    link: "https://www.facebook.com/RipMediaGroup",
   },
   {
     id: 3,
     icon: <TwitterIcon />,
-    link: "#",
+    link: "https://twitter.com/ripmediagroup",
   },
 ];

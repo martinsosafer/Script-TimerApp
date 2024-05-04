@@ -54,7 +54,7 @@ const testimonialsData = [
   },
   {
     id: 5,
-    name: "Lisa Rijurfd",
+    name: "Lisa Johnson",
     work: "MD",
     testimonial:
       "I work in medical communications and I’m truly impressed with your technology’s ability to correctly pronounce  the technical terms",

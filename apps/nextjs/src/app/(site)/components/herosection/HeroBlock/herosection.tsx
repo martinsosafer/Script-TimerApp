@@ -69,8 +69,8 @@ export default function HeroSection() {
             <RevealText>
               <p className="  max-w-md">
                 Script-Timer’s Ai writing, voices, and professionally led
-                classes, were all created to save you hours of work and
-                thousands of dollars. Try them here
+                classes were all created to save you hours of work and thousands
+                of dollars. Try them here:
               </p>
             </RevealText>
             <RevealText>
