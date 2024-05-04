@@ -9,7 +9,7 @@ export const counterNumbers = [
     id: 2,
     startNumber: 0,
     endNumber: 50,
-    text: "Voice Actors",
+    text: "Voices",
   },
   {
     id: 3,

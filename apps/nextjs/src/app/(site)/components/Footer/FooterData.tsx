@@ -22,7 +22,7 @@ export const footerData = [
       {
         id: 3,
         name: "Pricing",
-        link: "https://script-timer.com/services/",
+        link: "https://script-timer.com/voice123-pricing/",
       },
     ],
   },
