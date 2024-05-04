@@ -24,7 +24,7 @@ const testimonialsData = [
     name: "Susan Crandall",
     work: "Senior Director of marketing at LexisNexis",
     testimonial:
-      "LexisNexis was searching for the right agency, something innovative, creative, and cutting edge… RipMedia blew us away.",
+      "LexisNexis was searching for the right agency, something innovative, creative, and cutting edge...",
 
     image: Susan,
   },
@@ -57,14 +57,14 @@ const testimonialsData = [
     name: "Lisa Rijurfd",
     work: "MD",
     testimonial:
-      "I work in medical communications and I’m truly impressed with your technology’s ability to correctly pronounce 99% of the technical terms",
+      "I work in medical communications and I’m truly impressed with your technology’s ability to correctly pronounce  the technical terms",
     image: RandomPerson5,
   },
   {
     id: 6,
     name: "Lorena Rijurfd",
     work: "Exectuve Producer",
-    testimonial: "Script Timer help me tremendously for my job presentation",
+    testimonial: "Script Timer helps me tremendously in my job presentation",
     image: RandomPerson6,
   },
 ];

@@ -62,15 +62,15 @@ export default function HeroSection() {
           <div className="mt-4 ">
             <RevealText>
               <h1 className="font-poppins text-3xl  font-semibold  sm:text-3xl xl:text-5xl/none ">
-                Go From Idea to Amazing Script to High Quality Voice Over in
+                Go From Idea to Script to Quality Voice Over in
                 <span className="block text-primary"> 90 secondsr</span>
               </h1>
             </RevealText>
             <RevealText>
               <p className="  max-w-md">
-                Script-Timer, the new AI writing coach and classes, were created
-                to save you hundreds of hours and thousands of dollars, so you
-                can create world-class scripts instantly.
+                Script-Timer’s Ai writing, voices, and professionally led
+                classes, were all created to save you hours of work and
+                thousands of dollars. Try them here
               </p>
             </RevealText>
             <RevealText>

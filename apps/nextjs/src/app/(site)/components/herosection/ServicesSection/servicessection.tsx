@@ -37,7 +37,7 @@ export default function ServiceSection() {
             </h2>
           </RevealText>
           <RevealText>
-            <p className="mt-10 max-w-md">
+            <p className="mt-8 max-w-md">
               Even for the most most gifted writters, squeezing a lot of of
               information into a short amount of time is extremly hard work
             </p>
