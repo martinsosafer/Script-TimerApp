@@ -190,7 +190,7 @@ export function ScriptAI({}) {
     setWaitModal(false);
   };
   return (
-    <div className=" h-screen flex-col  md:flex">
+    <div className=" h-full flex-col  md:flex">
       <div className="md:min-h-20 lg:min-h-20 container  mb-5  mt-5 flex flex-col items-start justify-between sm:flex-row sm:items-center sm:space-y-0">
         <h2 className="mr-2 flex-shrink-0 bg-gradient-to-r from-black to-blue-500 bg-clip-text font-poppins text-xl font-bold text-transparent dark:bg-gradient-to-r dark:from-white dark:to-blue-500">
           Listen to your script
