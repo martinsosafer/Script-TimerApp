@@ -63,7 +63,7 @@ export default function HeroSection() {
             <RevealText>
               <h1 className="font-poppins text-3xl  font-semibold  sm:text-3xl xl:text-5xl/none ">
                 Go From Idea to Script to Quality Voice Over in
-                <span className="block text-primary"> 90 secondsr</span>
+                <span className="block text-primary"> 90 seconds</span>
               </h1>
             </RevealText>
             <RevealText>

@@ -42,12 +42,12 @@ export const footerData = [
       },
       {
         id: 3,
-        name: "Yes and No improve your script",
+        name: "Yes and No toimprove your script",
         link: "https://script-timer.com/speech-and-presentation/how-to-improve-your-public-speaking-with-yes-or-no-questions/",
       },
       {
         id: 4,
-        name: "Tone of voice is important but why?",
+        name: "Tone of voice is important, but why?",
         link: "https://script-timer.com/speech-and-presentation/why-tone-of-voice-makes-or-breaks-your-voice-over/",
       },
     ],

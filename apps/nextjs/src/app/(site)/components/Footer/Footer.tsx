@@ -15,7 +15,7 @@ export default function Footer() {
           </h2>
           <RevealText>
             <p className=" mt-2 max-w-[250px] from-accent text-lg  text-primary-foreground">
-              A new way of speech
+              Your Voice Matters
             </p>
           </RevealText>
         </div>

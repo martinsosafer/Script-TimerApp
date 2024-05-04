@@ -30,14 +30,14 @@ export default function ServiceSection() {
       <div className="mx-auto grid max-w-5xl md:grid-cols-2">
         <div>
           <RevealText>
-            <h2 className="font-poppins text-5xl font-semibold  leading-snug">
+            <h2 className="font-poppins text-5xl font-semibold   leading-tight">
               <span className="block text-primary">You have an idea</span>
               we help you <br />
               bring it to life
             </h2>
           </RevealText>
           <RevealText>
-            <p className="mt-8 max-w-md">
+            <p className=" mt-4 max-w-md">
               Even for the most most gifted writters, squeezing a lot of of
               information into a short amount of time is extremly hard work
             </p>

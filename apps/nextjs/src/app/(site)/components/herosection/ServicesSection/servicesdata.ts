@@ -9,7 +9,7 @@ export const servicesData = [
     id: 2,
     icon: "IconLibraryBig",
     title: "Voice Library",
-    description: "Choose your voice from over +50 actors",
+    description: "New Voice Overs Weekly",
   },
   {
     id: 3,

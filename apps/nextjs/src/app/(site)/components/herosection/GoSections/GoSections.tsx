@@ -9,7 +9,7 @@ export default function GoSections() {
       <div className="max-3xl  mx-auto block py-6 text-center ">
         <RevealText>
           <h2 className="mb-4 text-center text-5xl font-semibold">
-            <span className="block  text-primary">
+            <span className="block  font-poppins text-primary">
               Explore and be your best
             </span>
           </h2>
