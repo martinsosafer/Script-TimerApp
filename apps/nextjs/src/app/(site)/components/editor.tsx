@@ -157,7 +157,7 @@ function TextEditor({
   return (
     <div
       className={classNames(
-        "flex flex-col rounded-md bg-white py-2 text-stone-900",
+        "flex flex-col rounded-md  bg-gray-100 py-2 text-stone-900",
         className,
       )}
     >

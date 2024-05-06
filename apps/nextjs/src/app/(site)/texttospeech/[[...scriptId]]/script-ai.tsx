@@ -66,6 +66,8 @@ import { ScriptSelector } from "../../components/script-selector";
 import { Share } from "../../components/share";
 import { SimilaritySelector } from "../../components/similarity-selector";
 import { StabilitySelector } from "../../components/stability-selector";
+import IntroParagraph from "../../components/texttospeech/introparagraph/introparagraph";
+import VoiceWidget from "../../components/texttospeech/voicewidget/voicewidget";
 import { ToggleAudio } from "../../components/toggle-audio";
 import { ToggleLibrary } from "../../components/toggle-voice-library";
 import { VoiceLibrary } from "../../components/voice-library";
@@ -74,7 +76,7 @@ export function ScriptAI({}) {
   const [open, setOpen] = React.useState(false);
   //Get subscription info
   const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
-
+  console.log("subscription dataa", subscriptionData);
   const isSubscriptionActive =
     subscriptionData &&
     (subscriptionData.status === "CREATOR" ||
@@ -190,7 +192,16 @@ export function ScriptAI({}) {
     setWaitModal(false);
   };
   return (
-    <div className=" h-full flex-col  md:flex">
+    <div className=" h-full flex-col   md:flex">
+      <div className="mt-4 flex items-center justify-center">
+        <div>
+          <h1 className="text-center font-poppins text-3xl  font-bold  text-secondary-foreground">
+            Text to Speech
+          </h1>
+          <IntroParagraph status={subscriptionData?.status} />
+        </div>
+      </div>
+
       <div className="md:min-h-20 lg:min-h-20 container  mb-5  mt-5 flex flex-col items-start justify-between sm:flex-row sm:items-center sm:space-y-0">
         <h2 className="mr-2 flex-shrink-0 bg-gradient-to-r from-black to-blue-500 bg-clip-text font-poppins text-xl font-bold text-transparent dark:bg-gradient-to-r dark:from-white dark:to-blue-500">
           Listen to your script
@@ -262,7 +273,7 @@ export function ScriptAI({}) {
 
       <Tabs defaultValue="complete" className="flex-1">
         <div className="container mb-4 h-full ">
-          <div className="grid h-full items-stretch gap-6 md:grid-cols-[200px_1fr]">
+          <div className="grid h-full items-stretch gap-6 md:grid-cols-[400px_1fr]">
             <div className=" flex flex-col space-y-4 md:order-1">
               {/* <ModelSelector
                 types={types}
@@ -270,18 +281,7 @@ export function ScriptAI({}) {
                 onModelSelect={setSelectedModel}
               /> */}
               <div>
-                <div className="mt-4 flex items-center justify-between font-poppins underline">
-                  <Label htmlFor="similarity">Choose Your Voice Actor</Label>
-                </div>
-                <ScrollArea
-                  className="mt-4 h-72 w-48 rounded-md border"
-                  type="always"
-                >
-                  <div className="space-y-1 p-2">
-                    <VoiceLibrary onModelSelect={setSelectedModel} />
-                  </div>
-                  <ScrollBar className="scrollbar-thumb-rounded-full scrollbar-thumb-red-500 bg-primary" />
-                </ScrollArea>
+                <VoiceWidget onModelSelect={setSelectedModel} />
               </div>
               {/* <SimilaritySelector
                 value={similarity}
@@ -396,7 +396,6 @@ export function ScriptAI({}) {
                           <div>
                             <Button
                               className="relative flex h-14 w-[180px] items-center justify-between rounded-full border-4 border-tertiary  bg-orange-500 p-3 text-lg font-semibold hover:bg-orange-300"
-                              disabled={!selectedModel || !script}
                               onClick={async () => {
                                 setLoading(true);
                                 try {
@@ -452,7 +451,6 @@ export function ScriptAI({}) {
                           <div>
                             <Button
                               className="relative flex h-14 w-[180px] items-center justify-between rounded-full border-4 border-tertiary  bg-orange-500 p-3 text-lg font-semibold hover:bg-orange-300"
-                              disabled={!selectedModel || !script}
                               onClick={async () => {
                                 setLoading(true);
                                 setWaitModal(false); // Reset modal state before checking again
