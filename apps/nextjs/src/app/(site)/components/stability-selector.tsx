@@ -21,7 +21,7 @@ export function StabilitySelector({
   onValueChange,
 }: StabilitySelectorProps) {
   return (
-    <div className="grid gap-2 ">
+    <div className="mt-1 grid  gap-2">
       <HoverCard openDelay={200}>
         <HoverCardTrigger asChild>
           <div className="grid gap-4">
