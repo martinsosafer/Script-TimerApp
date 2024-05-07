@@ -8,7 +8,7 @@ export const counterNumbers = [
   {
     id: 2,
     startNumber: 0,
-    endNumber: 50,
+    endNumber: 32,
     text: "Voices",
   },
   {
