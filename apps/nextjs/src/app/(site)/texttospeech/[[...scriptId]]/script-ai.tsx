@@ -63,6 +63,7 @@ import Modal from "../../components/modal";
 import { ModelSelector } from "../../components/model-selector";
 import { SaveScript } from "../../components/save-script";
 import { ScriptSelector } from "../../components/script-selector";
+import SecondaryButton from "../../components/secondarybutton";
 import { Share } from "../../components/share";
 import { SimilaritySelector } from "../../components/similarity-selector";
 import { StabilitySelector } from "../../components/stability-selector";
@@ -193,7 +194,7 @@ export function ScriptAI({}) {
     setWaitModal(false);
   };
   return (
-    <div className=" h-full flex-col   md:flex">
+    <div className="  mb-32 h-full   flex-col md:flex">
       <div className="mt-3 flex items-center justify-center">
         <div>
           <h1 className="text-center font-poppins text-3xl  font-bold  text-secondary-foreground">
@@ -212,7 +213,7 @@ export function ScriptAI({}) {
                 models={models}
                 onModelSelect={setSelectedModel}
               /> */}
-              <div className="rounded-lg  bg-gray-100 p-6 shadow-md">
+              <div className="rounded-lg  bg-gray-100 p-6 shadow-md dark:bg-slate-400">
                 <VoiceWidget onModelSelect={setSelectedModel} />
 
                 <StabilitySelector
@@ -223,7 +224,7 @@ export function ScriptAI({}) {
             </div>
             <div className="   md:order-2">
               {/* <Badge>Your script is {script.length} characters long.</Badge> */}
-              <div className="rounded-lg bg-gray-100  p-4 shadow-md">
+              <div className="rounded-lg bg-gray-100  p-4 shadow-md dark:bg-slate-400">
                 <div className="ml-auto flex w-full space-x-2 sm:justify-end ">
                   <Tooltip>
                     <TooltipTrigger>
@@ -310,8 +311,6 @@ export function ScriptAI({}) {
                     <TextEditor onChange={handleEditorChange} script={script} />
 
                     <div className=" mb-4 flex flex-col items-center justify-center">
-                      <SelectedModelCard selectedModel={selectedModel} />
-
                       <Badge className="h-12 w-[570px] items-center justify-center border-4 border-primary bg-blue-500 text-lg hover:to-blue-200">
                         Script is&nbsp;
                         <span className="font-bold text-tertiary dark:text-tertiary">
@@ -327,12 +326,17 @@ export function ScriptAI({}) {
                         </span>
                         &nbsp;seconds
                       </Badge>
-                      <div className=" mt-2 flex w-[570px] justify-between">
+                      <div className=" mt-3 flex w-[570px] justify-between">
+                        <div style={{ minWidth: "150px" }}>
+                          {" "}
+                          {/* Container with fixed width */}
+                          <SelectedModelCard selectedModel={selectedModel} />
+                        </div>
+
                         <HoverCard openDelay={200}>
                           <HoverCardTrigger asChild>
                             <div>
-                              <Button
-                                className="relative flex h-14 w-[180px] items-center justify-between rounded-full border-4 border-tertiary  bg-orange-500 p-3 text-lg font-semibold hover:bg-orange-300"
+                              <SecondaryButton
                                 onClick={async () => {
                                   setLoading(true);
                                   try {
@@ -354,14 +358,6 @@ export function ScriptAI({}) {
                                 }}
                               >
                                 <div className="flex items-center">
-                                  <div
-                                    className={`h-14 w-14 ${loading ? "opacity-0" : ""}`}
-                                  >
-                                    <Lottie
-                                      animationData={voiceGirlAnimation}
-                                      className="h-full w-full"
-                                    />
-                                  </div>
                                   {loading && (
                                     <div className="absolute inset-0 flex items-center justify-center">
                                       {" "}
@@ -371,9 +367,9 @@ export function ScriptAI({}) {
                                   )}
                                 </div>
                                 <span className="relative z-10">
-                                  {loading ? "" : "Small Demo"}
+                                  {loading ? "" : "Demo"}
                                 </span>
-                              </Button>
+                              </SecondaryButton>
                             </div>
                           </HoverCardTrigger>
                           <HoverCardContent
@@ -383,11 +379,11 @@ export function ScriptAI({}) {
                             Small demo to test your chosen voice
                           </HoverCardContent>
                         </HoverCard>
+
                         <HoverCard openDelay={200}>
                           <HoverCardTrigger asChild>
                             <div>
-                              <Button
-                                className="relative flex h-14 w-[180px] items-center justify-between rounded-full border-4 border-tertiary  bg-orange-500 p-3 text-lg font-semibold hover:bg-orange-300"
+                              <SecondaryButton
                                 onClick={async () => {
                                   setLoading(true);
                                   setWaitModal(false); // Reset modal state before checking again
@@ -410,14 +406,6 @@ export function ScriptAI({}) {
                                 }}
                               >
                                 <div className="flex items-center">
-                                  <div
-                                    className={`h-14 w-14 ${loading ? "opacity-0" : ""}`}
-                                  >
-                                    <Lottie
-                                      animationData={voiceCreateAnimation}
-                                      className="h-full w-full"
-                                    />
-                                  </div>
                                   {loading && (
                                     <div className="absolute inset-0 flex items-center justify-center">
                                       {" "}
@@ -427,9 +415,9 @@ export function ScriptAI({}) {
                                   )}
                                 </div>
                                 <span className="relative z-10">
-                                  {loading ? "" : "CREATE"}
+                                  {loading ? "" : "Create"}
                                 </span>
-                              </Button>
+                              </SecondaryButton>
                             </div>
                           </HoverCardTrigger>
                           <VoiceCreationModal

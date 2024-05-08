@@ -83,7 +83,7 @@ function TextEditor({
     editorProps: {
       attributes: {
         class:
-          "h-full prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none overflow-hidden overflow-y-auto break-words  border border-slate-400 bg-white ",
+          "h-full prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none overflow-hidden overflow-y-auto break-words  border border-slate-400 bg-white dark:border-black ",
       },
       transformPastedText(text) {
         return text.toUpperCase();
@@ -235,11 +235,11 @@ function TextEditor({
         </div>
       </div>
 
-      <div className="relative mt-2 h-80 min-h-0 flex-shrink overflow-x-auto overflow-y-auto">
+      <div className="relative mt-2 h-[408px] min-h-0 flex-shrink overflow-x-auto overflow-y-auto">
         <EditorContent
           key={editorKey}
           editor={editor}
-          className="h-full" // Ensures the EditorContent fills its container vertically
+          className="h-full"
           style={{ wordWrap: "break-word" }}
         />
         {showCharCount && (

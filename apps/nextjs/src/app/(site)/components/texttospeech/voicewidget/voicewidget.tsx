@@ -64,7 +64,7 @@ function VoiceWidget({ onModelSelect }) {
           placeholder="Search..."
           value={searchQuery}
           onChange={handleSearchChange}
-          className="w-full rounded-md border border-gray-300 px-8 py-2 focus:outline-none focus:ring focus:ring-blue-400"
+          className="w-full rounded-md border border-gray-300 px-8 py-2 focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground"
         />
         <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
           <IconSearch className="h-5 w-5 text-gray-400" />
@@ -76,11 +76,11 @@ function VoiceWidget({ onModelSelect }) {
 
       {/* Filter Buttons */}
       <div className="mb-4 space-x-4">
-        <button className="rounded-md border border-gray-300 bg-white px-4 py-2 focus:outline-none focus:ring focus:ring-blue-400">
+        <button className="rounded-md border border-gray-300 bg-white px-4 py-2 focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground">
           Favorite
         </button>
         <button
-          className={`rounded-md border border-gray-300 bg-white px-4 py-2 focus:outline-none focus:ring focus:ring-blue-400 ${
+          className={`rounded-md border border-gray-300 bg-white px-4 py-2 focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground ${
             filter === "MALE" ? "bg-blue-300 text-primary" : ""
           }`}
           onClick={() => handleFilterChange("MALE")}
@@ -88,7 +88,7 @@ function VoiceWidget({ onModelSelect }) {
           Male
         </button>
         <button
-          className={`rounded-md border border-gray-300 bg-white px-4 py-2 focus:outline-none focus:ring focus:ring-blue-400 ${
+          className={`rounded-md border border-gray-300 bg-white px-4 py-2 focus:outline-none focus:ring focus:ring-blue-400  dark:bg-slate-500 dark:text-secondary-foreground${
             filter === "FEMALE" ? "bg-blue-300 text-primary" : ""
           }`}
           onClick={() => handleFilterChange("FEMALE")}
@@ -96,7 +96,7 @@ function VoiceWidget({ onModelSelect }) {
           Female
         </button>
         <button
-          className="rounded-md border border-gray-300 bg-white px-4 py-2 focus:outline-none focus:ring focus:ring-blue-400"
+          className="rounded-md border border-gray-300 bg-white px-4 py-2 focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground"
           onClick={handleShowAll}
         >
           All

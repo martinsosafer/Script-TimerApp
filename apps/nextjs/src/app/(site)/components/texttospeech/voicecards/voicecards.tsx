@@ -54,9 +54,9 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({ voices, onModelSelect }) => {
       {voices?.map((voice) => (
         <div
           key={voice.id}
-          className={`mb-2 cursor-pointer rounded-lg bg-white shadow-sm ${
+          className={`mb-2 cursor-pointer rounded-lg bg-white shadow-sm dark:bg-slate-500 dark:text-secondary-foreground ${
             voice.id === selectedVoiceId
-              ? "border-2 border-primary bg-blue-300"
+              ? "border-2 border-primary bg-blue-300 dark:border-white"
               : ""
           }`}
           onClick={() => {
@@ -75,8 +75,10 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({ voices, onModelSelect }) => {
             </div>
             {/* Name and Gender */}
             <div className="flex-grow">
-              <h2 className="text-sm font-semibold">{voice.name}</h2>
-              <p className="text-xs text-gray-500">
+              <h2 className="text-sm font-semibold dark:text-secondary-foreground">
+                {voice.name}
+              </h2>
+              <p className="text-xs text-gray-500  dark:text-slate-100">
                 {voice.metadata.labels.gender ?? "Unknown"}
               </p>
             </div>

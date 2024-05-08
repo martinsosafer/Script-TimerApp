@@ -47,7 +47,7 @@ function IntroParagraph(props: IntroParagraphProps) {
         plan, <br />
         you are entitled to{" "}
         <span className="font-semibold text-primary"> {scriptText}</span> per
-        scripts and up to{" "}
+        script and up to{" "}
         <span className="font-semibold text-primary">{characterText}</span> each
         month.
       </p>
