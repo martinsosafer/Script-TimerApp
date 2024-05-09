@@ -56,6 +56,8 @@ import { api } from "~/utils/api";
 import { useDragAndDrop } from "~/utils/helpers";
 import voiceCreateAnimation from "../../../../../public/animations/voicecreate.json";
 import voiceGirlAnimation from "../../../../../public/animations/voicegirl.json";
+import SecondaryButton from "../../components/custom-button";
+import CustomButton from "../../components/custom-button";
 import { TextEditor } from "../../components/editor";
 import FreeModal from "../../components/free-modal";
 import { HistoryButton } from "../../components/history-button";
@@ -66,6 +68,9 @@ import { ScriptSelector } from "../../components/script-selector";
 import { Share } from "../../components/share";
 import { SimilaritySelector } from "../../components/similarity-selector";
 import { StabilitySelector } from "../../components/stability-selector";
+import IntroParagraph from "../../components/texttospeech/introparagraph/introparagraph";
+import SelectedModelCard from "../../components/texttospeech/selectedcard/selectedcard";
+import VoiceWidget from "../../components/texttospeech/voicewidget/voicewidget";
 import { ToggleAudio } from "../../components/toggle-audio";
 import { ToggleLibrary } from "../../components/toggle-voice-library";
 import { VoiceLibrary } from "../../components/voice-library";
@@ -74,7 +79,7 @@ export function ScriptAI({}) {
   const [open, setOpen] = React.useState(false);
   //Get subscription info
   const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
-
+  console.log("subscription dataa", subscriptionData);
   const isSubscriptionActive =
     subscriptionData &&
     (subscriptionData.status === "CREATOR" ||
@@ -190,329 +195,254 @@ export function ScriptAI({}) {
     setWaitModal(false);
   };
   return (
-    <div className=" h-full flex-col  md:flex">
-      <div className="md:min-h-20 lg:min-h-20 container  mb-5  mt-5 flex flex-col items-start justify-between sm:flex-row sm:items-center sm:space-y-0">
-        <h2 className="mr-2 flex-shrink-0 bg-gradient-to-r from-black to-blue-500 bg-clip-text font-poppins text-xl font-bold text-transparent dark:bg-gradient-to-r dark:from-white dark:to-blue-500">
-          Listen to your script
-        </h2>
-        <div className="ml-7">
-          <Tooltip>
-            <TooltipTrigger>
-              <Link href="/texttospeech">
-                <Button
-                  type="button"
-                  size="sm"
-                  className="rounded-xl bg-primary px-3 font-bold "
-                >
-                  <IconPlus className="mr-2 h-4 w-4 " />
-                  New Script
-                  <span className="sr-only">Library</span>
-                </Button>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent>Start a new fresh story</TooltipContent>
-          </Tooltip>
-        </div>
-        <div className="ml-auto flex w-full space-x-2 sm:justify-end ">
-          <ScriptSelector script={script} />
-          <Tooltip>
-            <TooltipTrigger>
-              <SaveScript script={script} />
-            </TooltipTrigger>
-            <TooltipContent>Save a favorite script for later</TooltipContent>
-          </Tooltip>
-
-          {/* <CodeViewer /> */}
-
-          <Tooltip>
-            <TooltipTrigger>
-              <Share />
-            </TooltipTrigger>
-            <TooltipContent>
-              {" "}
-              Share your work and get feedback via a quick link{" "}
-            </TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger>
-              <HistoryButton />
-            </TooltipTrigger>
-            <TooltipContent>Your full voice over history </TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger>
-              <ToggleLibrary />
-            </TooltipTrigger>
-            <TooltipContent>Voice actor library</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger>
-              <ToggleAudio
-                ref={toggleAudioRef}
-                audio={audio}
-                isSubscriptionActive={isSubscriptionActive}
-              />
-            </TooltipTrigger>
-            <TooltipContent> Open the voice player</TooltipContent>
-          </Tooltip>
-          {/* <PresetActions /> */}
+    <div className="  mb-32 h-full   flex-col md:flex">
+      <div className="mt-3 flex items-center justify-center">
+        <div>
+          <h1 className="text-center font-poppins text-3xl  font-bold  text-secondary-foreground">
+            Text to Speech
+          </h1>
+          <IntroParagraph status={subscriptionData?.status} />
         </div>
       </div>
-      <Separator />
 
       <Tabs defaultValue="complete" className="flex-1">
         <div className="container mb-4 h-full ">
-          <div className="grid h-full items-stretch gap-6 md:grid-cols-[200px_1fr]">
+          <div className="grid h-full items-stretch gap-6 md:grid-cols-[400px_1fr]">
             <div className=" flex flex-col space-y-4 md:order-1">
               {/* <ModelSelector
                 types={types}
                 models={models}
                 onModelSelect={setSelectedModel}
               /> */}
-              <div>
-                <div className="mt-4 flex items-center justify-between font-poppins underline">
-                  <Label htmlFor="similarity">Choose Your Voice Actor</Label>
-                </div>
-                <ScrollArea
-                  className="mt-4 h-72 w-48 rounded-md border"
-                  type="always"
-                >
-                  <div className="space-y-1 p-2">
-                    <VoiceLibrary onModelSelect={setSelectedModel} />
-                  </div>
-                  <ScrollBar className="scrollbar-thumb-rounded-full scrollbar-thumb-red-500 bg-primary" />
-                </ScrollArea>
-              </div>
-              {/* <SimilaritySelector
-                value={similarity}
-                onValueChange={setSimilarity}
-              /> */}
-              {/* <MaxLengthSelector defaultValue={[256]} /> */}
-              <StabilitySelector
-                value={stability}
-                onValueChange={setStability}
-              />
-              {/* <Button
-                className=" bg-tertiary font-semibold  "
-                disabled={!selectedModel || !script}
-                onClick={async () => {
-                  setLoading(true);
-                  try {
-                    await generateVoice({
-                      // @ts-expect-error need to type this in the state
-                      voice_id: selectedModel?.id,
-                      message: script,
-                      stability: stability?.[0],
-                      similarity: similarity?.[0],
-                    });
-                    setLoading(false);
-                  } catch {}
-                }}
-              >
-                {loading ? (
-                  <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                  "Create"
-                )}
-              </Button> */}
+              <div className="rounded-lg  bg-gray-100 p-6 shadow-md dark:bg-slate-400">
+                <VoiceWidget onModelSelect={setSelectedModel} />
 
-              {/* <div className="py-2">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="similarity">Preview Voices</Label>
-                </div>
-                <ScrollArea className="h-[300px] px-1">
-                  <div className="space-y-1 p-2">
-                    <VoiceLibrary />
-                  </div>
-                </ScrollArea>
-              </div> */}
-              <div className="grid ">
-                <HoverCard openDelay={200}>
-                  <HoverCardTrigger asChild>
-                    <div className="py-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                      <span className="mb-2 flex-1 text-center font-poppins underline">
-                        Check Grammar and Spelling
-                      </span>
-
-                      <TabsList className=" mb-10 mt-3 grid grid-cols-2  bg-slate-300">
-                        <TabsTrigger
-                          value="complete"
-                          className=" flex items-center justify-center  rounded-full data-[state=active]:bg-primary"
-                        >
-                          <span className="sr-only">Complete</span>
-                          <PencilIcon className="h-5 w-5 text-primary-foreground" />
-                        </TabsTrigger>
-                        <TabsTrigger
-                          value="insert"
-                          className="flex items-center justify-center  rounded-full  data-[state=active]:bg-primary"
-                        >
-                          <span className="sr-only">Insert</span>
-                          <CorrectDocumentIcon className="h-5 w-5 text-primary-foreground " />
-                        </TabsTrigger>
-                      </TabsList>
-                    </div>
-                  </HoverCardTrigger>
-                  <HoverCardContent className="w-[320px] text-sm" side="left">
-                    Click to open grammar, spelling and script suggestions.
-                  </HoverCardContent>
-                </HoverCard>
+                <StabilitySelector
+                  value={stability}
+                  onValueChange={setStability}
+                />
               </div>
             </div>
-            <div className="md:order-2">
-              <TabsContent value="complete" className="mt-0 border-0 p-0">
-                {/* <Badge>Your script is {script.length} characters long.</Badge> */}
-
-                <div className="flex h-3/6 flex-col ">
-                  <TextEditor onChange={handleEditorChange} script={script} />
-                  {/* <Textarea
-                    value={script}
-                    onChange={(e) => setScript(e.target.value)}
-                    placeholder={`
-                    1.Add your script here 
-                    2.Choose the voice actor you like
-                    3.You can quickly check spelling and grammar`}
-                    className="h-3/5 min-h-[250px] flex-1 p-4 md:min-h-[400px] lg:min-h-[440px] xl:min-h-[440px]"
-                  /> */}
-
-                  <div className=" mb-14 flex flex-col items-center justify-center">
-                    <Badge className="h-12 w-[570px] items-center justify-center border-4 border-primary bg-blue-500 text-lg hover:to-blue-200">
-                      Script is&nbsp;
-                      <span className="font-bold text-tertiary dark:text-tertiary">
-                        {wordCount}
-                      </span>
-                      &nbsp;words. Estimated time is&nbsp;
-                      <span className="font-bold text-tertiary dark:text-tertiary">
-                        {minutes}
-                      </span>
-                      &nbsp;minutes and&nbsp;
-                      <span className="font-bold text-tertiary dark:text-tertiary">
-                        {formattedSeconds}
-                      </span>
-                      &nbsp;seconds
-                    </Badge>
-                    <div className=" mt-2 flex w-[570px] justify-between">
-                      <HoverCard openDelay={200}>
-                        <HoverCardTrigger asChild>
-                          <div>
-                            <Button
-                              className="relative flex h-14 w-[180px] items-center justify-between rounded-full border-4 border-tertiary  bg-orange-500 p-3 text-lg font-semibold hover:bg-orange-300"
-                              disabled={!selectedModel || !script}
-                              onClick={async () => {
-                                setLoading(true);
-                                try {
-                                  // Extract the first 10 words from the script
-                                  const firstTenWords = script
-                                    .replace(/<[^>]+>/g, "")
-                                    .split(/\s+/)
-                                    .slice(0, 10)
-                                    .join(" ");
-                                  await generateVoice({
-                                    voice_id: selectedModel?.id,
-                                    voice_actor: selectedModel?.name,
-                                    message: firstTenWords,
-                                    stability: stability?.[0],
-                                    similarity: similarity?.[0],
-                                  });
-                                  setLoading(false);
-                                } catch {}
-                              }}
-                            >
-                              <div className="flex items-center">
-                                <div
-                                  className={`h-14 w-14 ${loading ? "opacity-0" : ""}`}
-                                >
-                                  <Lottie
-                                    animationData={voiceGirlAnimation}
-                                    className="h-full w-full"
-                                  />
-                                </div>
-                                {loading && (
-                                  <div className="absolute inset-0 flex items-center justify-center">
-                                    {" "}
-                                    {/* Center the spinner */}
-                                    <Icons.spinner className="h-4 w-4 animate-spin" />
-                                  </div>
-                                )}
-                              </div>
-                              <span className="relative z-10">
-                                {loading ? "" : "Small Demo"}
-                              </span>
-                            </Button>
-                          </div>
-                        </HoverCardTrigger>
-                        <HoverCardContent
-                          className="w-[320px] text-sm"
-                          side="left"
+            <div className="   md:order-2">
+              {/* <Badge>Your script is {script.length} characters long.</Badge> */}
+              <div className="rounded-lg bg-gray-100  p-4 shadow-md dark:bg-slate-400">
+                <div className="ml-auto flex w-full space-x-2 sm:justify-end ">
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Link href="/texttospeech">
+                        <Button
+                          type="button"
+                          size="sm"
+                          className="rounded-xl bg-primary px-2 font-bold "
                         >
-                          Small demo to test your chosen voice
-                        </HoverCardContent>
-                      </HoverCard>
-                      <HoverCard openDelay={200}>
-                        <HoverCardTrigger asChild>
-                          <div>
-                            <Button
-                              className="relative flex h-14 w-[180px] items-center justify-between rounded-full border-4 border-tertiary  bg-orange-500 p-3 text-lg font-semibold hover:bg-orange-300"
-                              disabled={!selectedModel || !script}
-                              onClick={async () => {
-                                setLoading(true);
-                                setWaitModal(false); // Reset modal state before checking again
-                                if (isScriptLongEnough(script)) {
-                                  setWaitModal(true); // Show modal only if script is long enough
-                                }
-                                try {
-                                  await generateVoice({
-                                    voice_id: selectedModel?.id,
-                                    voice_actor: selectedModel?.name,
-                                    message: script,
-                                    stability: stability?.[0],
-                                    similarity: similarity?.[0],
-                                  });
-                                  setLoading(false);
-                                  setWaitModal(false); // Hide modal when voice generation finishes
-                                } catch {
-                                  setWaitModal(false); // Hide modal on error
-                                }
-                              }}
-                            >
-                              <div className="flex items-center">
-                                <div
-                                  className={`h-14 w-14 ${loading ? "opacity-0" : ""}`}
-                                >
-                                  <Lottie
-                                    animationData={voiceCreateAnimation}
-                                    className="h-full w-full"
-                                  />
+                          <IconPlus className="mr-2 h-4 w-4 " />
+                          New Script
+                          <span className="sr-only">Library</span>
+                        </Button>
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent>Start a new fresh story</TooltipContent>
+                  </Tooltip>
+                  <ScriptSelector script={script} />
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <SaveScript script={script} />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      Save a favorite script for later
+                    </TooltipContent>
+                  </Tooltip>
+
+                  {/* <CodeViewer /> */}
+
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <HistoryButton />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      Your full voice over history{" "}
+                    </TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <ToggleLibrary />
+                    </TooltipTrigger>
+                    <TooltipContent>Voice actor library</TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <ToggleAudio
+                        ref={toggleAudioRef}
+                        audio={audio}
+                        isSubscriptionActive={isSubscriptionActive}
+                      />
+                    </TooltipTrigger>
+                    <TooltipContent> Open the voice player</TooltipContent>
+                  </Tooltip>
+                  {/* <PresetActions /> */}
+
+                  <HoverCard openDelay={200}>
+                    <HoverCardTrigger asChild>
+                      <div className=" text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                        <TabsList className=" grid grid-cols-2  bg-slate-300">
+                          <TabsTrigger
+                            value="complete"
+                            className=" flex items-center justify-center  rounded-full data-[state=active]:bg-primary"
+                          >
+                            <span className="sr-only">Complete</span>
+                            <PencilIcon className=" h-4 w-4 text-primary-foreground" />
+                          </TabsTrigger>
+                          <TabsTrigger
+                            value="insert"
+                            className="flex items-center justify-center  rounded-full  data-[state=active]:bg-primary"
+                          >
+                            <span className="sr-only">Insert</span>
+                            <CorrectDocumentIcon className=" h-4 w-4 text-primary-foreground " />
+                          </TabsTrigger>
+                        </TabsList>
+                      </div>
+                    </HoverCardTrigger>
+                    <HoverCardContent className="w-[320px] text-sm" side="left">
+                      Click to open grammar, spelling and script suggestions.
+                    </HoverCardContent>
+                  </HoverCard>
+                </div>
+                <TabsContent value="complete" className="mt-0 border-0 p-0">
+                  <div className="flex h-3/6 flex-col ">
+                    <TextEditor onChange={handleEditorChange} script={script} />
+
+                    <div className=" mb-4 flex flex-col items-center justify-center">
+                      <Badge className="h-12 w-[570px] items-center justify-center border-4 border-primary bg-blue-500 text-lg hover:to-blue-200">
+                        Script is&nbsp;
+                        <span className="font-bold text-tertiary dark:text-tertiary">
+                          {wordCount}
+                        </span>
+                        &nbsp;words. Estimated time is&nbsp;
+                        <span className="font-bold text-tertiary dark:text-tertiary">
+                          {minutes}
+                        </span>
+                        &nbsp;minutes and&nbsp;
+                        <span className="font-bold text-tertiary dark:text-tertiary">
+                          {formattedSeconds}
+                        </span>
+                        &nbsp;seconds
+                      </Badge>
+                      <div className=" mt-3 flex w-[570px] justify-between">
+                        <div style={{ minWidth: "150px" }}>
+                          {" "}
+                          {/* Container with fixed width */}
+                          <SelectedModelCard selectedModel={selectedModel} />
+                        </div>
+
+                        <HoverCard openDelay={200}>
+                          <HoverCardTrigger asChild>
+                            <div>
+                              <CustomButton
+                                type="secondary"
+                                color="orange"
+                                onClick={async () => {
+                                  setLoading(true);
+                                  try {
+                                    // Extract the first 10 words from the script
+                                    const firstTenWords = script
+                                      .replace(/<[^>]+>/g, "")
+                                      .split(/\s+/)
+                                      .slice(0, 10)
+                                      .join(" ");
+                                    await generateVoice({
+                                      voice_id: selectedModel?.id,
+                                      voice_actor: selectedModel?.name,
+                                      message: firstTenWords,
+                                      stability: stability?.[0],
+                                      similarity: similarity?.[0],
+                                    });
+                                    setLoading(false);
+                                  } catch {}
+                                }}
+                              >
+                                <div className="flex items-center">
+                                  {loading && (
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                      {" "}
+                                      {/* Center the spinner */}
+                                      <Icons.spinner className="h-4 w-4 animate-spin" />
+                                    </div>
+                                  )}
                                 </div>
-                                {loading && (
-                                  <div className="absolute inset-0 flex items-center justify-center">
-                                    {" "}
-                                    {/* Center the spinner */}
-                                    <Icons.spinner className="h-4 w-4 animate-spin" />
-                                  </div>
-                                )}
-                              </div>
-                              <span className="relative z-10">
-                                {loading ? "" : "CREATE"}
-                              </span>
-                            </Button>
-                          </div>
-                        </HoverCardTrigger>
-                        <VoiceCreationModal
-                          isVisible={showWaitModal}
-                          onClose={handleCloseWaitModal}
-                        />
-                        <HoverCardContent
-                          className="w-[320px] text-sm"
-                          side="right"
-                        >
-                          Press create after your script is above and your voice
-                          actor is chosen
-                        </HoverCardContent>
-                      </HoverCard>
+                                <span className="relative z-10">
+                                  {loading ? "" : "Demo"}
+                                </span>
+                              </CustomButton>
+                            </div>
+                          </HoverCardTrigger>
+                          <HoverCardContent
+                            className="w-[320px] text-sm"
+                            side="left"
+                          >
+                            Small demo to test your chosen voice
+                          </HoverCardContent>
+                        </HoverCard>
+
+                        <HoverCard openDelay={200}>
+                          <HoverCardTrigger asChild>
+                            <div>
+                              <CustomButton
+                                type="secondary"
+                                color="orange"
+                                onClick={async () => {
+                                  setLoading(true);
+                                  setWaitModal(false); // Reset modal state before checking again
+                                  if (isScriptLongEnough(script)) {
+                                    setWaitModal(true); // Show modal only if script is long enough
+                                  }
+                                  try {
+                                    await generateVoice({
+                                      voice_id: selectedModel?.id,
+                                      voice_actor: selectedModel?.name,
+                                      message: script,
+                                      stability: stability?.[0],
+                                      similarity: similarity?.[0],
+                                    });
+                                    setLoading(false);
+                                    setWaitModal(false); // Hide modal when voice generation finishes
+                                  } catch {
+                                    setWaitModal(false); // Hide modal on error
+                                  }
+                                }}
+                              >
+                                <div className="flex items-center">
+                                  {loading && (
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                      {" "}
+                                      {/* Center the spinner */}
+                                      <Icons.spinner className="h-4 w-4 animate-spin" />
+                                    </div>
+                                  )}
+                                </div>
+                                <span className="relative z-10">
+                                  {loading ? "" : "Create"}
+                                </span>
+                              </CustomButton>
+                            </div>
+                          </HoverCardTrigger>
+                          <VoiceCreationModal
+                            isVisible={showWaitModal}
+                            onClose={handleCloseWaitModal}
+                          />
+                          <HoverCardContent
+                            className="w-[320px] text-sm"
+                            side="right"
+                          >
+                            Press create after your script is above and your
+                            voice actor is chosen
+                          </HoverCardContent>
+                        </HoverCard>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </TabsContent>
+                </TabsContent>
+              </div>
+
               <TabsContent value="insert" className="mt-0 border-0 p-0">
                 <div className="flex flex-col ">
                   <div className="grid  grid-rows-2 gap-6 md:grid-cols-2 lg:grid-cols-2 lg:grid-rows-1">
@@ -526,6 +456,9 @@ export function ScriptAI({}) {
                         className=" min-h-[50vh] md:min-h-[55vh] lg:min-h-[70vh] xl:min-h-[70vh]"
                       />
                       <div className="flex items-center justify-end ">
+                        {selectedModel && (
+                          <SelectedModelCard selectedModel={selectedModel} />
+                        )}
                         <Badge className="flex items-center">
                           <span className="inline">
                             Script is&nbsp;

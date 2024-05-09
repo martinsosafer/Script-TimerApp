@@ -49,7 +49,7 @@ function TextEditor({
   script,
 }: TextEditorProps) {
   const [charCount, setCharCount] = useState(0);
-  const [showCharCount, setShowCharCount] = useState(false);
+  const [showCharCount, setShowCharCount] = useState(true);
   const { scriptId } = useParams();
   const { data: scriptDetails } = api.script.get.useQuery(
     { id: scriptId?.[0] ?? "" },
@@ -83,7 +83,7 @@ function TextEditor({
     editorProps: {
       attributes: {
         class:
-          "h-full prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none overflow-hidden overflow-y-auto break-words  border border-black ml-2",
+          "h-full prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none overflow-hidden overflow-y-auto break-words  border border-slate-400 bg-white dark:border-black ",
       },
       transformPastedText(text) {
         return text.toUpperCase();
@@ -157,7 +157,7 @@ function TextEditor({
   return (
     <div
       className={classNames(
-        "flex flex-col rounded-md bg-white py-2 text-stone-900",
+        "flex flex-col rounded-md   py-2 text-stone-900",
         className,
       )}
     >
@@ -165,43 +165,52 @@ function TextEditor({
         <div className="flex gap-1">
           <Button
             variant="ghost"
-            className={classNames("rounded-full border border-slate-500", {
-              "is-active": editor.isActive("bold"),
-            })}
+            className={classNames(
+              "rounded-full border border-slate-500 bg-white",
+              {
+                "is-active": editor.isActive("bold"),
+              },
+            )}
             onClick={toggleBold}
           >
             <FontBoldIcon className="h-5 w-5" />
           </Button>
           <Button
             variant="ghost"
-            className={classNames("rounded-full border border-slate-500", {
-              "is-active": editor.isActive("underline"),
-            })}
+            className={classNames(
+              "rounded-full border border-slate-500 bg-white",
+              {
+                "is-active": editor.isActive("underline"),
+              },
+            )}
             onClick={toggleUnderline}
           >
             <UnderlineIcon className="h-5 w-5" />
           </Button>
           <Button
             variant="ghost"
-            className={classNames("rounded-full border border-slate-500", {
-              "is-active": editor.isActive("italic"),
-            })}
+            className={classNames(
+              "rounded-full border border-slate-500 bg-white",
+              {
+                "is-active": editor.isActive("italic"),
+              },
+            )}
             onClick={toggleItalic}
           >
             <FontItalicIcon className="h-5 w-5" />
           </Button>
-          <Button
+          {/* <Button
             variant="ghost"
-            className="rounded-full border border-slate-500"
+            className="rounded-full border border-slate-500 bg-white"
             onClick={toggleCharCountDisplay}
           >
             Character count
-          </Button>
+          </Button> */}
         </div>
         <div className="flex gap-1">
           <Button
             variant="ghost"
-            className="rounded-full border border-slate-500"
+            className="rounded-full border border-slate-500 bg-white"
             onClick={() => editor.chain().focus().undo().run()}
             disabled={!editor.can().undo()}
           >
@@ -209,7 +218,7 @@ function TextEditor({
           </Button>
           <Button
             variant="ghost"
-            className="rounded-full border border-slate-500"
+            className="rounded-full border border-slate-500 bg-white"
             onClick={() => editor.chain().focus().redo().run()}
             disabled={!editor.can().redo()}
           >
@@ -217,7 +226,7 @@ function TextEditor({
           </Button>
           <Button
             variant="ghost"
-            className="rounded-full border border-slate-500"
+            className="rounded-full border border-slate-500 bg-white"
             disabled={charCount === 0}
             onClick={copyToClipboard}
           >
@@ -226,11 +235,11 @@ function TextEditor({
         </div>
       </div>
 
-      <div className="relative mt-2 h-80 min-h-0 flex-shrink overflow-x-auto overflow-y-auto">
+      <div className="relative mt-2 h-[408px] min-h-0 flex-shrink overflow-x-auto overflow-y-auto">
         <EditorContent
           key={editorKey}
           editor={editor}
-          className="h-full" // Ensures the EditorContent fills its container vertically
+          className="h-full"
           style={{ wordWrap: "break-word" }}
         />
         {showCharCount && (
