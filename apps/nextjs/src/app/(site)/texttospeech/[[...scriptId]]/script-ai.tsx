@@ -56,6 +56,8 @@ import { api } from "~/utils/api";
 import { useDragAndDrop } from "~/utils/helpers";
 import voiceCreateAnimation from "../../../../../public/animations/voicecreate.json";
 import voiceGirlAnimation from "../../../../../public/animations/voicegirl.json";
+import SecondaryButton from "../../components/custom-button";
+import CustomButton from "../../components/custom-button";
 import { TextEditor } from "../../components/editor";
 import FreeModal from "../../components/free-modal";
 import { HistoryButton } from "../../components/history-button";
@@ -63,7 +65,6 @@ import Modal from "../../components/modal";
 import { ModelSelector } from "../../components/model-selector";
 import { SaveScript } from "../../components/save-script";
 import { ScriptSelector } from "../../components/script-selector";
-import SecondaryButton from "../../components/secondarybutton";
 import { Share } from "../../components/share";
 import { SimilaritySelector } from "../../components/similarity-selector";
 import { StabilitySelector } from "../../components/stability-selector";
@@ -336,7 +337,9 @@ export function ScriptAI({}) {
                         <HoverCard openDelay={200}>
                           <HoverCardTrigger asChild>
                             <div>
-                              <SecondaryButton
+                              <CustomButton
+                                type="secondary"
+                                color="orange"
                                 onClick={async () => {
                                   setLoading(true);
                                   try {
@@ -369,7 +372,7 @@ export function ScriptAI({}) {
                                 <span className="relative z-10">
                                   {loading ? "" : "Demo"}
                                 </span>
-                              </SecondaryButton>
+                              </CustomButton>
                             </div>
                           </HoverCardTrigger>
                           <HoverCardContent
@@ -383,7 +386,9 @@ export function ScriptAI({}) {
                         <HoverCard openDelay={200}>
                           <HoverCardTrigger asChild>
                             <div>
-                              <SecondaryButton
+                              <CustomButton
+                                type="secondary"
+                                color="orange"
                                 onClick={async () => {
                                   setLoading(true);
                                   setWaitModal(false); // Reset modal state before checking again
@@ -417,7 +422,7 @@ export function ScriptAI({}) {
                                 <span className="relative z-10">
                                   {loading ? "" : "Create"}
                                 </span>
-                              </SecondaryButton>
+                              </CustomButton>
                             </div>
                           </HoverCardTrigger>
                           <VoiceCreationModal

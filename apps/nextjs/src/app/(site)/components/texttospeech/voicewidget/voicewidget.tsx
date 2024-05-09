@@ -76,9 +76,9 @@ function VoiceWidget({ onModelSelect }) {
 
       {/* Filter Buttons */}
       <div className="mb-4 space-x-4">
-        <button className="rounded-md border border-gray-300 bg-white px-4 py-2 focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground">
+        {/* <button className="rounded-md border border-gray-300 bg-white px-4 py-2 focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground">
           Favorite
-        </button>
+        </button> */}
         <button
           className={`rounded-md border border-gray-300 bg-white px-4 py-2 focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground ${
             filter === "MALE" ? "bg-blue-300 text-primary" : ""
