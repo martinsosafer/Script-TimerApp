@@ -1,43 +1,40 @@
-import type { MouseEvent, ReactNode } from "react";
 import React from "react";
 
 interface ButtonProps {
-  onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
-  children: ReactNode;
-  color?: string;
-  type?: string;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  children: React.ReactNode;
+  type?: "primary" | "secondary" | "tertiary";
 }
 
 const CustomButton: React.FC<ButtonProps> = ({
   children,
   onClick,
-  color = "orange",
   type = "primary",
 }) => {
-  // Define colors based on the type
-  const colors = {
+  // Define styles based on the type
+  const styles = {
     primary: {
-      background: `bg-${color}-400`,
-      hoverBackground: `hover:bg-${color}-300`,
+      background: "bg-blue-400",
+      hoverBackground: "hover:bg-blue-300",
       text: "text-primary-foreground",
     },
     secondary: {
-      background: `bg-gradient-to-r from-${color}-300 to-${color}-500`,
-      hoverBackground: `hover:from-${color}-200 hover:to-${color}-400`,
+      background: "bg-orange-400",
+      hoverBackground: "hover:bg-orange-300",
       text: "text-primary-foreground",
     },
     tertiary: {
-      background: `bg-${color}-100`,
-      hoverBackground: `hover:bg-${color}-50`,
+      background: "bg-gray-400",
+      hoverBackground: "hover:bg-gray-300",
       text: "text-primary-foreground",
     },
   };
 
-  const colorStyles = colors[type] || colors.primary;
+  const buttonStyles = styles[type] || styles.primary;
 
   return (
     <button
-      className={`relative flex h-10  w-20 items-center justify-between rounded-lg border-2 border-tertiary p-3 font-poppins text-base font-semibold ${colorStyles.background} ${colorStyles.text} ${colorStyles.hoverBackground}`}
+      className={`relative flex h-10 w-20 items-center justify-between rounded-lg border-2 border-tertiary p-3 font-poppins text-base font-semibold ${buttonStyles.background} ${buttonStyles.text} ${buttonStyles.hoverBackground}`}
       onClick={onClick}
     >
       {children}

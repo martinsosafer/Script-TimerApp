@@ -339,7 +339,6 @@ export function ScriptAI({}) {
                             <div>
                               <CustomButton
                                 type="secondary"
-                                color="orange"
                                 onClick={async () => {
                                   setLoading(true);
                                   try {
@@ -388,7 +387,6 @@ export function ScriptAI({}) {
                             <div>
                               <CustomButton
                                 type="secondary"
-                                color="orange"
                                 onClick={async () => {
                                   setLoading(true);
                                   setWaitModal(false); // Reset modal state before checking again
