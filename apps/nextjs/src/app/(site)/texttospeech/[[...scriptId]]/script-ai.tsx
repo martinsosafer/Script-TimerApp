@@ -196,9 +196,9 @@ export function ScriptAI({}) {
   };
   return (
     <div className="  mb-32 h-full   flex-col md:flex">
-      <div className="mt-3 flex items-center justify-center">
+      <div className="mb-6 mt-6 flex items-center justify-center">
         <div>
-          <h1 className="text-center font-poppins text-3xl  font-bold  text-secondary-foreground">
+          <h1 className="mb-3 text-center font-poppins  text-3xl  font-bold text-secondary-foreground">
             Text to Speech
           </h1>
           <IntroParagraph status={subscriptionData?.status} />

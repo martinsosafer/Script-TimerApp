@@ -75,16 +75,16 @@ export default function newnavbar({
               <span className="relative z-10 font-poppins">Text to Voice</span>
             </button>
             <div className="absolute inset-x-0 bottom-0  mb-2 h-0.5 origin-left scale-x-0 transform bg-primary-foreground transition-transform duration-300 group-hover:scale-x-100"></div>
-            <div className="invisible absolute -left-48 top-0 z-50 min-w-[560px] translate-y-0 transform opacity-0 transition duration-500 ease-in-out group-hover:visible group-hover:translate-y-5 group-hover:transform group-hover:opacity-100">
+            <div className="invisible absolute -left-48 top-0 z-50 min-w-[300px] translate-y-0 transform opacity-0 transition duration-500 ease-in-out group-hover:visible group-hover:translate-y-5 group-hover:transform group-hover:opacity-100">
               <div className="relative top-6 w-full rounded-xl   bg-slate-100 p-6 shadow-xl dark:bg-primary-foreground ">
                 <div className="absolute top-0 z-0 h-10 w-10 translate-x-0 rotate-45 transform rounded-sm bg-slate-100 transition-transform duration-500 ease-in-out group-hover:translate-x-[16rem] dark:bg-primary-foreground "></div>
 
                 <div className="relative z-10">
-                  <div className="grid grid-cols-2 gap-6">
+                  <div className="grid  grid-cols-1 gap-6">
                     <div>
-                      <p className="text-[13px] font-medium uppercase tracking-wider text-gray-500  ">
+                      {/* <p className="text-[13px] font-medium uppercase tracking-wider text-gray-500  ">
                         Voice Tools
-                      </p>
+                      </p> */}
                       <ul className="mt-3 text-[15px]">
                         <li className="flex items-center">
                           <Link
@@ -303,7 +303,7 @@ export default function newnavbar({
               Learn
             </button>
             <div className="absolute inset-x-0 bottom-0  mb-2 h-0.5 origin-left scale-x-0 transform bg-primary-foreground transition-transform duration-300 group-hover:scale-x-100"></div>
-            <div className="invisible absolute -left-48 top-0 z-50 min-w-[560px] translate-y-0 transform opacity-0 transition duration-500 ease-in-out group-hover:visible group-hover:translate-y-5 group-hover:transform group-hover:opacity-100 ">
+            <div className="invisible absolute -left-48 top-0 z-50 min-w-[300px] translate-y-0 transform opacity-0 transition duration-500 ease-in-out group-hover:visible group-hover:translate-y-5 group-hover:transform group-hover:opacity-100 ">
               <div className="relative top-6 w-full rounded-xl bg-slate-100 p-6 shadow-xl dark:bg-primary-foreground">
                 <div className="absolute top-0 z-0 h-10 w-10 translate-x-0 rotate-45 transform rounded-sm bg-slate-100 transition-transform duration-500 ease-in-out group-hover:translate-x-[12.65rem] dark:bg-primary-foreground"></div>
 
