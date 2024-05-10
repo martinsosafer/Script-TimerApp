@@ -57,6 +57,8 @@ import { StreamingTextResponse } from "ai";
  *
  * https://js.langchain.com/docs/modules/agents/agent_types/openai_functions_agent
  */
+
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
