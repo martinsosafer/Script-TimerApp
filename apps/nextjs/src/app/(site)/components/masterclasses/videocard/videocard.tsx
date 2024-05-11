@@ -6,7 +6,7 @@ import type { Video } from "../videocards/videocardsdata";
 
 const VideoCard: React.FC<{ video: Video }> = ({ video }) => {
   return (
-    <div className="flex flex-col items-center justify-center rounded-2xl  drop-shadow-lg">
+    <div className="flex flex-col items-center justify-center rounded-2xl  bg-blue-300 drop-shadow-lg">
       <Link
         href={`/masterclasses/${video.id}`}
         className=" group relative flex h-full w-full items-center justify-center"
@@ -22,6 +22,21 @@ const VideoCard: React.FC<{ video: Video }> = ({ video }) => {
           <p className="w-full">{video.title}</p>
         </div>
       </Link>
+      <div className=" mb-3 mt-3 flex w-full items-center justify-between   px-2 font-poppins text-sm font-semibold">
+        <div className=" flex items-center justify-center gap-2 ">
+          <Image
+            src={video.avatarUrl}
+            width={24}
+            height={24}
+            className="rounded-full"
+            alt="Creator Image"
+          />
+          <p>{video.name}</p>
+        </div>
+      </div>
+      <div className="rounded-2xl bg-slate-200 px-4 py-2 text-center">
+        <p className="text-gray-700">{video.description}</p>
+      </div>
     </div>
   );
 };
