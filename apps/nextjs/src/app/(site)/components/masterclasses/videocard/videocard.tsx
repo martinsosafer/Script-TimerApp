@@ -35,6 +35,9 @@ const VideoCard: React.FC<{ video: Video }> = ({ video }) => {
         </div>
       </div>
       <div className="rounded-2xl bg-slate-200 px-4 py-2 text-center">
+        <h3 className="font-poppins font-semibold  text-secondary-foreground">
+          {video.title}
+        </h3>
         <p className="text-gray-700">{video.description}</p>
       </div>
     </div>
