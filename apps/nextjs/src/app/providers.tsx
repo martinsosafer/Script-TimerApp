@@ -13,7 +13,7 @@ import { TooltipProvider } from "@voiceai/ui";
 
 import { env } from "~/env.mjs";
 import { api } from "~/utils/api";
-import { ContextWrapper } from "./context/State";
+import { ContextWrapper } from "./context/state";
 import { SidebarProvider } from "./hooks/useSideBar";
 import { PlayerProvider } from "./providers/player-context";
 
@@ -60,7 +60,7 @@ export function TRPCReactProvider(props: {
       ],
     }),
   );
-  const [sessionId, setSessionId] = useState("");
+
   return (
     <api.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>

@@ -23,17 +23,17 @@ async function loadProducts() {
     return {
       id: stripeProduct.id,
       name: stripeProduct.name,
-      description: stripeProduct.description || "",
+      description: stripeProduct.description ?? "",
       metadata: {
-        carddescription: stripeProduct.metadata.carddescription || "",
-        mostpopular: stripeProduct.metadata.mostpopular || "",
+        carddescription: stripeProduct.metadata.carddescription ?? "",
+        mostpopular: stripeProduct.metadata.mostpopular ?? "",
         price: stripeProduct.metadata.price
           ? parseFloat(stripeProduct.metadata.price)
           : 0,
-        notincluded1: stripeProduct.metadata.notincluded1 || "",
-        notincluded2: stripeProduct.metadata.notincluded2 || "",
-        notincluded3: stripeProduct.metadata.notincluded3 || "",
-        notincluded4: stripeProduct.metadata.notincluded4 || "",
+        notincluded1: stripeProduct.metadata.notincluded1 ?? "",
+        notincluded2: stripeProduct.metadata.notincluded2 ?? "",
+        notincluded3: stripeProduct.metadata.notincluded3 ?? "",
+        notincluded4: stripeProduct.metadata.notincluded4 ?? "",
       },
       marketing_features: stripeProduct.features.map((feature) => ({
         name: feature.name,
@@ -73,8 +73,8 @@ async function PlansPage() {
           </span>
         </h2>
         <p className="mx-auto mt-4 max-w-3xl text-lg  font-medium  text-gray-500 ">
-          Choose an affordable plan that's packed with the best features for
-          engaging your audience, creating scripts, and more.
+          Choose an affordable plan that`&apos;`s packed with the best features
+          for engaging your audience, creating scripts, and more.
         </p>
         <span className="font-bold text-black">
           Save up to 35% on yearly plans!

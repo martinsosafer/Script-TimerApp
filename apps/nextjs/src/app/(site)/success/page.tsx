@@ -1,50 +1,126 @@
 "use client";
 
-import React, { useContext, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-
-// import Confetti from "react-confetti";
+import Confetti from "react-confetti";
 
 import { AspectRatio } from "@voiceai/ui/@/components/ui/aspect-ratio";
 
-import { useSharedState } from "~/app/context/State";
+import { api } from "~/utils/api";
 import SlideCards from "../components/slide-cards";
 import ThanksCard from "../components/thanksCard";
 
-interface Props {
-  id: string;
-  sessionId: string;
+enum Plans {
+  STUDENT = "Student Plan",
+  CREATOR = "Creator Plan",
+  BUSINESS = "Business Plan",
 }
 
-async function stripeSession({ id }: Props) {
+async function stripeSession(sessionId: string) {
   try {
-    const stripesession = await fetch("/api/getStripeSession");
+    const response = await fetch(
+      `/api/getStripeSession?sessionId=${sessionId}`,
+    );
+    if (!response.ok) {
+      throw new Error(`API request failed with status ${response.status}`);
+    }
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const response = await stripesession.json();
-    const sessionId = response.session.id;
-    console.log("ReturnStripe", sessionId);
-    return sessionId;
+    const stripeSession = await response.json();
+    //const sessionId = response.session.id;
+    console.log("ReturnStripe", stripeSession);
+    return stripeSession as { name: string };
   } catch (error) {
-    console.log("ERROR", error);
+    console.error("ERROR", error);
+    return null;
   }
 }
+
 function SuccessPage() {
-  const { sessionId, setSessionId } = useSharedState();
+  const [session, setSession] = useState({});
   const searchParams = useSearchParams();
-  const id = searchParams.get("sessionid");
+  const id = searchParams.get("sessionId");
 
+  const { data: userData, isSuccess } = api.auth.getSession.useQuery();
+
+  const { mutateAsync: updateStudent } = api.user.updateStudent.useMutation({
+    onSuccess(data) {
+      console.log("Subscription updated successfully:", data);
+    },
+    onError(error) {
+      console.error("Error updating subscription:", error);
+    },
+  });
+  const { mutateAsync: updateCreator } = api.user.updateCreator.useMutation({
+    onSuccess(data) {
+      console.log("Subscription updated successfully:", data);
+    },
+    onError(error) {
+      console.error("Error updating subscription:", error);
+    },
+  });
+  const { mutateAsync: updateBusiness } = api.user.updateBusiness.useMutation({
+    onSuccess(data) {
+      console.log("Subscription updated successfully:", data);
+    },
+    onError(error) {
+      console.error("Error updating subscription:", error);
+    },
+  });
+
+  const handleStudent = async (userId: string) => {
+    try {
+      await updateStudent({ userId });
+    } catch (error) {
+      console.error("Error updating subscription:", error);
+    }
+  };
+  const handleCreator = async (userId: string) => {
+    try {
+      await updateCreator({ userId });
+    } catch (error) {
+      console.error("Error updating subscription:", error);
+    }
+  };
+  const handleBusiness = async (userId: string) => {
+    try {
+      await updateBusiness({ userId });
+    } catch (error) {
+      console.error("Error giving subscription:", error);
+    }
+  };
+
+  function handleSubscriptionUdate(name: string, userId: string) {
+    console.log("PLAN and ID", name, userId);
+    if (name === Plans.STUDENT) {
+      handleStudent(userId);
+    }
+    if (name === Plans.CREATOR) {
+      handleCreator(userId);
+    }
+    if (name === Plans.BUSINESS) {
+      handleBusiness(userId);
+    }
+  }
+
+  async function fetchSession(id: string) {
+    try {
+      const result = await stripeSession(id);
+      if (isSuccess && result) {
+        const { name } = result;
+        handleSubscriptionUdate(name, userData?.user.id);
+      }
+      return session;
+    } catch (error) {
+      console.error(error);
+    }
+  }
   useEffect(() => {
-    const fetchSession = async () => {
-      const sessionId = await stripeSession({ id });
-      setSessionId(sessionId); // Set the sessionId to your global state
-    };
-    fetchSession();
-  }, [id, setSessionId]);
+    fetchSession(id);
+  }, [id, setSession, isSuccess]);
 
-  console.log("Session ID", sessionId);
   return (
     <div className="mb-20 flex min-h-screen flex-col items-center justify-center space-y-4 text-center">
-      {/* <Confetti
+      <Confetti
         width={window.innerWidth}
         height={window.innerHeight}
         numberOfPieces={1000}
@@ -53,7 +129,7 @@ function SuccessPage() {
         initialVelocityX={2}
         initialVelocityY={10}
         colors={["#0123e7", "#eb8806"]}
-      /> */}
+      />
       <ThanksCard />
       <AspectRatio ratio={30 / 8}>
         <iframe

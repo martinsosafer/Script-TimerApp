@@ -34,6 +34,7 @@ interface PriceCardProps {
 
 const PriceCard: React.FC<PriceCardProps> = ({ monthlyPlans, yearlyPlans }) => {
   const [showMonthly, setShowMonthly] = React.useState(true);
+  console.log("monthly plans", monthlyPlans);
   return (
     <>
       <div className="mt-4 flex justify-center space-x-4">
@@ -120,14 +121,20 @@ const PriceCard: React.FC<PriceCardProps> = ({ monthlyPlans, yearlyPlans }) => {
                       <li
                         key={index}
                         className={`flex text-sm leading-6 ${
-                          product.metadata[`notincluded${index}`]
+                          product.metadata[
+                            `notincluded${index}` as keyof typeof product.metadata
+                          ]
                             ? "text-red-500"
                             : "hidden"
                         }`}
                       >
                         <IconXCircle className="h-5 w-5 shrink-0 text-red-500" />
                         <span className="ml-3">
-                          {product.metadata[`notincluded${index}`]}
+                          {
+                            product.metadata[
+                              `notincluded${index}` as keyof typeof product.metadata
+                            ]
+                          }
                         </span>
                       </li>
                     ))}
@@ -181,14 +188,20 @@ const PriceCard: React.FC<PriceCardProps> = ({ monthlyPlans, yearlyPlans }) => {
                       <li
                         key={index}
                         className={`flex text-sm leading-6 ${
-                          product.metadata[`notincluded${index}`]
+                          product.metadata[
+                            `notincluded${index}` as keyof typeof product.metadata
+                          ]
                             ? "text-red-500"
                             : "hidden"
                         }`}
                       >
                         <IconXCircle className="h-5 w-5 shrink-0 text-red-500" />
                         <span className="ml-3">
-                          {product.metadata[`notincluded${index}`]}
+                          {
+                            product.metadata[
+                              `notincluded${index}` as keyof typeof product.metadata
+                            ]
+                          }
                         </span>
                       </li>
                     ))}
