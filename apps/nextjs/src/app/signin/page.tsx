@@ -2,10 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { signIn } from "@voiceai/auth";
-import { Button } from "@voiceai/ui/@/components/ui/button";
-import { Icons } from "@voiceai/ui/@/components/ui/icons";
-import { Input } from "@voiceai/ui/@/components/ui/input";
-import { Label } from "@voiceai/ui/@/components/ui/label";
 import { cn } from "@voiceai/ui/@/lib/utils";
 
 import coverImg from "../../../public/login_photo.png";
