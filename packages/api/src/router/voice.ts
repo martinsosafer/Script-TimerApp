@@ -182,6 +182,7 @@ export const voiceRouter = createTRPCRouter({
             const responseData = await response.json();
             // Do something with responseData if necessary
             console.log(responseData); // Log the parsed data for debugging
+            throw new Error("Unexpected response from text-to-speech service");
           }
           console.log("DONE");
         }

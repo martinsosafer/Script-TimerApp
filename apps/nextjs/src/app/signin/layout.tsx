@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Roboto } from "next/font/google";
 
 import "~/styles/globals.css";
 
@@ -7,9 +7,10 @@ import { headers } from "next/headers";
 
 import { TRPCReactProvider } from "../providers";
 
-const fontSans = Inter({
+const fontRoboto = Roboto({
   subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--font-roboto",
+  weight: ["400", "700"],
 });
 
 /**
@@ -38,7 +39,9 @@ export const metadata: Metadata = {
 export default function Layout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" className="h-full">
-      <body className={["font-sans", "h-full", fontSans.variable].join(" ")}>
+      <body
+        className={["font-roboto", "h-full", fontRoboto.variable].join(" ")}
+      >
         <TRPCReactProvider headers={headers()}>
           {props.children}
           {/* {props.children} */}

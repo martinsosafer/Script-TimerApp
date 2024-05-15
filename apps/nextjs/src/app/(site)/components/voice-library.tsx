@@ -72,7 +72,7 @@ export function VoiceLibrary({ onModelSelect, ...props }: ModelSelectorProps) {
             <span
               key={`${voice.id}`}
               className={cn(
-                "flex items-center justify-between space-x-4 p-2",
+                "flex items-center justify-between  p-2",
                 voice.id === selectedVoiceId
                   ? "rounded-md border-2 border-primary"
                   : "",
@@ -105,6 +105,7 @@ export function VoiceLibrary({ onModelSelect, ...props }: ModelSelectorProps) {
                     {voice?.metadata?.labels?.gender ?? "unknown"})
                   </p>
                   <Button
+                    className=" rounded-full"
                     size="xs"
                     type="button"
                     onClick={() => {

@@ -13,11 +13,6 @@ import { headers } from "next/headers";
 
 import { TRPCReactProvider } from "../providers";
 
-const fontSans = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
-
 /**
  * Since we're passing `headers()` to the `TRPCReactProvider` we need to
  * make the entire app dynamic. You can move the `TRPCReactProvider` further
@@ -56,7 +51,7 @@ export default function Layout(props: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="flex h-full flex-col ">
+    <div className="flex  flex-col ">
       <TRPCReactProvider headers={headers()}>
         <TopNavigation signOut={signOutServer} />
         <div className="hidden space-y-6 p-10 pb-16 md:block">

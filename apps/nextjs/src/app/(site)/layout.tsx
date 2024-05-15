@@ -12,7 +12,7 @@ import { Toaster } from "@voiceai/ui/@/components/ui/toaster";
 
 import { IdentifyAnalytics } from "../analytics";
 import { TRPCReactProvider } from "../providers";
-
+import Footer from "./components/Footer/Footer";
 import Newnavbar from "./components/newnavbar";
 import { Sidebar } from "./components/sidebar";
 import { playlists } from "./data/playlists";
@@ -49,17 +49,16 @@ export default function Layout(props: { children: React.ReactNode }) {
 
   return (
     <>
-      <div className="h-screen overflow-hidden bg-background">
+      <div className="flex min-h-screen flex-col justify-between bg-background">
         <TRPCReactProvider headers={headers()}>
           <Newnavbar signOut={signOutServer} />
           {/* <Menu signOut={signOutServer} /> */}
-          <div className="grid ">
+          <div>
             {/* <Sidebar playlists={playlists} className="hidden lg:block" /> */}
-            <div className="col-span-4 h-screen  overflow-auto">
-              {props.children}
-            </div>
+            <div>{props.children}</div>
           </div>
           <Toaster />
+          <Footer />
           <IdentifyAnalytics />
         </TRPCReactProvider>
       </div>

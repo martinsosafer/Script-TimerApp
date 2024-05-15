@@ -14,11 +14,8 @@ import {
 import {
   IconArrowDown,
   IconAudioLines,
-  IconBot,
-  IconBrainCircuit,
   IconBrainCog,
   IconFileHeart,
-  IconFileStack,
   IconFileType,
   IconGraduationCap,
   IconHandshake,
@@ -57,10 +54,10 @@ export default function newnavbar({
       subscriptionData.status === "CREATOR" ||
       subscriptionData.status === "FREE_TRIAL");
   return (
-    <header className=" sticky top-0 z-50 mx-auto flex h-16 items-center justify-between bg-primary">
+    <header className=" sticky top-0 z-50 flex h-16 w-full items-center justify-between bg-primary">
       <Link
         href={`/`}
-        className="ml-8 text-2xl font-bold text-primary-foreground"
+        className="ml-8 font-poppins text-2xl font-bold text-primary-foreground"
       >
         Script Timer
       </Link>
@@ -75,19 +72,19 @@ export default function newnavbar({
               </Link>
             </div>
             <button className="relative z-10 flex cursor-default items-center justify-center font-semibold">
-              <span className="relative z-10">Text to Voice</span>
+              <span className="relative z-10 font-poppins">Text to Voice</span>
             </button>
             <div className="absolute inset-x-0 bottom-0  mb-2 h-0.5 origin-left scale-x-0 transform bg-primary-foreground transition-transform duration-300 group-hover:scale-x-100"></div>
-            <div className="invisible absolute -left-48 top-0 z-50 min-w-[560px] translate-y-0 transform opacity-0 transition duration-500 ease-in-out group-hover:visible group-hover:translate-y-5 group-hover:transform group-hover:opacity-100">
+            <div className="invisible absolute -left-48 top-0 z-50 min-w-[300px] translate-y-0 transform opacity-0 transition duration-500 ease-in-out group-hover:visible group-hover:translate-y-5 group-hover:transform group-hover:opacity-100">
               <div className="relative top-6 w-full rounded-xl   bg-slate-100 p-6 shadow-xl dark:bg-primary-foreground ">
                 <div className="absolute top-0 z-0 h-10 w-10 translate-x-0 rotate-45 transform rounded-sm bg-slate-100 transition-transform duration-500 ease-in-out group-hover:translate-x-[16rem] dark:bg-primary-foreground "></div>
 
                 <div className="relative z-10">
-                  <div className="grid grid-cols-2 gap-6">
+                  <div className="grid  grid-cols-1 gap-6">
                     <div>
-                      <p className="text-[13px] font-medium uppercase tracking-wider text-gray-500  ">
+                      {/* <p className="text-[13px] font-medium uppercase tracking-wider text-gray-500  ">
                         Voice Tools
-                      </p>
+                      </p> */}
                       <ul className="mt-3 text-[15px]">
                         <li className="flex items-center">
                           <Link
@@ -169,7 +166,7 @@ export default function newnavbar({
                       <IconBrainCog className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
                     </Link>
                   </div>
-                  <button className="relative z-10 cursor-default font-semibold ">
+                  <button className="relative z-10 cursor-default font-poppins font-semibold ">
                     <Link href={`/chat`}>Script Writing</Link>
                   </button>
 
@@ -302,9 +299,11 @@ export default function newnavbar({
               <IconLightbulb className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
               <IconGraduationCap className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
             </div>
-            <button className="cursor-default font-semibold ">Learn</button>
+            <button className="cursor-default font-poppins font-semibold ">
+              Learn
+            </button>
             <div className="absolute inset-x-0 bottom-0  mb-2 h-0.5 origin-left scale-x-0 transform bg-primary-foreground transition-transform duration-300 group-hover:scale-x-100"></div>
-            <div className="invisible absolute -left-48 top-0 z-50 min-w-[560px] translate-y-0 transform opacity-0 transition duration-500 ease-in-out group-hover:visible group-hover:translate-y-5 group-hover:transform group-hover:opacity-100 ">
+            <div className="invisible absolute -left-48 top-0 z-50 min-w-[300px] translate-y-0 transform opacity-0 transition duration-500 ease-in-out group-hover:visible group-hover:translate-y-5 group-hover:transform group-hover:opacity-100 ">
               <div className="relative top-6 w-full rounded-xl bg-slate-100 p-6 shadow-xl dark:bg-primary-foreground">
                 <div className="absolute top-0 z-0 h-10 w-10 translate-x-0 rotate-45 transform rounded-sm bg-slate-100 transition-transform duration-500 ease-in-out group-hover:translate-x-[12.65rem] dark:bg-primary-foreground"></div>
 
@@ -389,7 +388,7 @@ export default function newnavbar({
             <Link
               href="/plans"
               target="_blank"
-              className="cursor-pointer font-semibold "
+              className="cursor-pointer font-poppins font-semibold "
             >
               Plans
             </Link>
@@ -429,7 +428,7 @@ export default function newnavbar({
                 await signOut();
               }}
             >
-              <span className="mr-2">Sign out</span>
+              <span className="mr-2 font-poppins">Sign out</span>
               <svg
                 className="stroke-current"
                 width="10"

@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 import actorsImg from "../../../../public/actors.jpg";
 import aiwritterImg from "../../../../public/aiwritting.jpg";
@@ -18,15 +19,19 @@ function SlideCards() {
         </div>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black group-hover:from-black/70 group-hover:via-black/60 group-hover:to-black/70"></div>
         <div className="absolute inset-0 flex translate-y-[60%] flex-col items-center justify-center px-9 text-center transition-all duration-500 group-hover:translate-y-0">
-          <h1 className="font-dmserif text-3xl font-bold text-white">
-            Script Writing
-          </h1>
+          <h3 className="font-dmserif text-2xl font-bold text-white">
+            Masterclasses
+          </h3>
           <p className="mb-3 text-lg italic text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis
-            dolore adipisci placeat.
+            Speaking, Presenting, Storytelling, Video Production
           </p>
           <button className="inline-flex h-9 items-center justify-center rounded-xl bg-sky-500 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-blue-600 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300">
-            See More
+            <Link
+              href="https://script-timer.com/lcs-masterclass/"
+              target="_blank"
+            >
+              See More
+            </Link>
           </button>
         </div>
       </div>
@@ -40,15 +45,14 @@ function SlideCards() {
         </div>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black group-hover:from-black/70 group-hover:via-black/60 group-hover:to-black/70"></div>
         <div className="absolute inset-0 flex translate-y-[60%] flex-col items-center justify-center px-9 text-center transition-all duration-500 group-hover:translate-y-0">
-          <h1 className="font-dmserif text-3xl font-bold text-white">
-            Voice Library
-          </h1>
+          <h3 className="font-dmserif text-2xl font-bold text-white">
+            Text to Speech
+          </h3>
           <p className="mb-3 text-lg italic text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis
-            dolore adipisci placeat.
+            AI voice generation , choose a voice actor and give us a script.
           </p>
           <button className="inline-flex h-9 items-center justify-center rounded-xl bg-sky-500 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-blue-600 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300">
-            See More
+            <Link href="/texttospeech">See More</Link>
           </button>
         </div>
       </div>
@@ -62,15 +66,15 @@ function SlideCards() {
         </div>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black group-hover:from-black/70 group-hover:via-black/60 group-hover:to-black/70"></div>
         <div className="absolute inset-0 flex translate-y-[60%] flex-col items-center justify-center px-9 text-center transition-all duration-500 group-hover:translate-y-0">
-          <h1 className="font-dmserif text-3xl font-bold text-white">
+          <h3 className="font-dmserif text-2xl font-bold text-white">
             Script Coach AI
-          </h1>
+          </h3>
           <p className="mb-3 text-lg italic text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis
-            dolore adipisci placeat.
+            Assist from our AI to help your creativity and provide innovative
+            solutions.
           </p>
           <button className="inline-flex h-9 items-center justify-center rounded-xl bg-sky-500 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-blue-600 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300">
-            See More
+            <Link href="/chat">See More</Link>
           </button>
         </div>
       </div>

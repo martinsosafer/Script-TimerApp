@@ -46,7 +46,7 @@ const DeleteButton = ({ scriptId }) => {
   const [openDelete, setOpenDelete] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [name, setName] = React.useState("");
-  const { data: scriptDetails } = api.script.get.useQuery(
+  const { data: scriptDetails, refetch } = api.script.get.useQuery(
     { id: scriptId },
     { enabled: Boolean(scriptId) },
   );
@@ -58,8 +58,8 @@ const DeleteButton = ({ scriptId }) => {
       });
 
       router.push("/texttospeech");
-      router.refresh();
     },
+
     onError(error) {
       toast({
         title: "Something went wrong",
@@ -108,6 +108,7 @@ const DeleteButton = ({ scriptId }) => {
               disabled={name.length === 0}
               onClick={() => {
                 deleteScript({ id: scriptId });
+                refetch();
               }}
               className="gap-1 bg-red-600"
             >
@@ -145,7 +146,7 @@ export function ScriptSelector({ ...props }: ScriptSelectorProps) {
           role="combobox"
           aria-label="Load a saved script..."
           aria-expanded={open}
-          className="flex-1 justify-between md:max-w-[200px] lg:max-w-[300px]"
+          className="flex-1 justify-between bg-white dark:bg-slate-500 dark:text-secondary-foreground md:max-w-[200px] lg:max-w-[300px]"
         >
           {scriptDetails?.id ? scriptDetails.name : "Use a saved script..."}
           <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />

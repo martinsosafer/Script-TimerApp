@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 
-import HeroSection from "./components/herosection";
+import CounterData from "./components/herosection/CounterData/CounterData";
+import Footer from "./components/herosection/Footer/Footer";
+import GoSections from "./components/herosection/GoSections/GoSections";
+import HeroSection from "./components/herosection/HeroBlock/herosection";
+import ServiceSection from "./components/herosection/ServicesSection/servicessection";
+import Testimonials from "./components/herosection/Testimonials/Testimonials";
 
 export const metadata: Metadata = {
   title: "Script Timer",
@@ -11,6 +16,10 @@ export default function LandingPage() {
   return (
     <>
       <HeroSection />
+      <CounterData />
+      <ServiceSection />
+      <GoSections />
+      <Testimonials />
     </>
   );
 }
