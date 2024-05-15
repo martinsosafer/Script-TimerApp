@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState } from "react";
 
 import { api } from "~/utils/api";
@@ -23,6 +21,7 @@ export default function VoiceForm() {
     type?: "11LABS" | "OTHER";
     active?: boolean;
     metadata?: Record<string, unknown>;
+    rank: number;
   }>({
     external_id: "",
     name: "",
@@ -32,6 +31,7 @@ export default function VoiceForm() {
     type: "OTHER",
     active: true,
     metadata: {},
+    rank: 0,
   });
 
   const handleChange = (
@@ -40,7 +40,27 @@ export default function VoiceForm() {
     >,
   ) => {
     const { name, value, type } = e.target;
-    const newValue = type === "checkbox" ? e.target.checked : value;
+    let newValue = type === "checkbox" ? e.target.checked : value;
+
+    // If the field is 'metadata', parse the JSON string into an object
+    if (name === "metadata") {
+      try {
+        newValue = JSON.parse(newValue);
+      } catch (error) {
+        // Handle parsing error
+        console.error("Error parsing metadata JSON:", error);
+      }
+    } else if (name === "rank") {
+      // Ensure rank is always a number
+      newValue = parseFloat(newValue);
+      // Or if you're certain it should be an integer, use parseInt:
+      // newValue = parseInt(newValue);
+      // If parsing fails, set it to NaN
+      if (isNaN(newValue)) {
+        newValue = 0;
+      }
+    }
+
     setFormData((prevData) => ({
       ...prevData,
       [name]: newValue,
@@ -147,10 +167,23 @@ export default function VoiceForm() {
           id="metadata"
           name="metadata"
           placeholder="Metadata"
-          value={JSON.stringify(formData.metadata)}
+          value={
+            formData.metadata ? JSON.stringify(formData.metadata, null, 2) : ""
+          }
           onChange={handleChange}
           className="input-field"
           rows={5} // Adjust the number of rows as needed
+        />
+      </div>
+      <div className="mb-4">
+        <input
+          type="number"
+          id="rank"
+          name="rank"
+          placeholder="Rank"
+          value={formData.rank}
+          onChange={handleChange}
+          className="input-field"
         />
       </div>
       <button type="submit" className="btn-primary">

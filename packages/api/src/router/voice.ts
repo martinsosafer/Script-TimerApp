@@ -201,6 +201,7 @@ export const voiceRouter = createTRPCRouter({
         type: z.enum(["11LABS", "OTHER"]).optional(),
         active: z.boolean().default(true),
         metadata: z.record(z.unknown()).optional(),
+        rank: z.number().default(0),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -227,6 +228,7 @@ export const voiceRouter = createTRPCRouter({
             type: input.type ?? "OTHER",
             active: input.active ?? true,
             metadata: input.metadata ?? {},
+            rank: input.rank ?? 0,
           })
           .execute();
 
