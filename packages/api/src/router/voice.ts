@@ -190,4 +190,53 @@ export const voiceRouter = createTRPCRouter({
         console.log("There was an error", e);
       }
     }),
+  newVoice: protectedProcedure
+    .input(
+      z.object({
+        external_id: z.string().min(1),
+        name: z.string().min(1),
+        description: z.string().min(1),
+        picture: z.string().optional(),
+        gender: z.enum(["MALE", "FEMALE", "OTHER"]).optional(),
+        type: z.enum(["11LABS", "OTHER"]).optional(),
+        active: z.boolean().default(true),
+        metadata: z.record(z.unknown()).optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const existingVoice = await ctx.db.query.voices.findFirst({
+          where: eq(schema.voices.external_id, input.external_id),
+        });
+
+        if (existingVoice) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Voice with this external ID already exists.",
+          });
+        }
+
+        const newVoice = await ctx.db
+          .insert(schema.voices)
+          .values({
+            external_id: input.external_id,
+            name: input.name,
+            description: input.description,
+            picture: input.picture,
+            gender: input.gender ?? "OTHER",
+            type: input.type ?? "OTHER",
+            active: input.active ?? true,
+            metadata: input.metadata ?? {},
+          })
+          .execute();
+
+        return newVoice;
+      } catch (error) {
+        console.error("Error creating voice:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Error creating voice",
+        });
+      }
+    }),
 });
