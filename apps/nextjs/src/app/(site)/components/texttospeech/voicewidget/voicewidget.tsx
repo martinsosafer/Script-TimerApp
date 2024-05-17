@@ -56,6 +56,49 @@ function VoiceWidget({ onModelSelect }) {
     setFilter(null);
     setCurrentPage(1);
   };
+  const renderPagination = () => {
+    const pageNumbers = [];
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        pageNumbers.push(1, 2, 3, 4, "...", totalPages);
+      } else if (currentPage > totalPages - 3) {
+        pageNumbers.push(
+          1,
+          "...",
+          totalPages - 3,
+          totalPages - 2,
+          totalPages - 1,
+          totalPages,
+        );
+      } else {
+        pageNumbers.push(
+          1,
+          "...",
+          currentPage - 1,
+          currentPage,
+          currentPage + 1,
+          "...",
+          totalPages,
+        );
+      }
+    }
+    return pageNumbers.map((pageNumber, index) => (
+      <button
+        key={index}
+        className={`mx-2 rounded-full px-4 py-2 focus:outline-none ${pageNumber === currentPage ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-700"}`}
+        onClick={() =>
+          typeof pageNumber === "number" && handlePageChange(pageNumber)
+        }
+        disabled={pageNumber === "..."}
+      >
+        {pageNumber}
+      </button>
+    ));
+  };
   return (
     <div>
       <div className="relative">
@@ -106,23 +149,7 @@ function VoiceWidget({ onModelSelect }) {
       <VoiceCards voices={voices} onModelSelect={onModelSelect} />
 
       {/* Pagination controls */}
-      <div className="mt-4 flex justify-center">
-        {Array.from({ length: totalPages }, (_, index) => index + 1).map(
-          (pageNumber) => (
-            <button
-              key={pageNumber}
-              className={`mx-2 rounded-full px-4 py-2 focus:outline-none ${
-                pageNumber === currentPage
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-200 text-gray-700"
-              }`}
-              onClick={() => handlePageChange(pageNumber)}
-            >
-              {pageNumber}
-            </button>
-          ),
-        )}
-      </div>
+      <div className="mt-4 flex justify-center">{renderPagination()}</div>
     </div>
   );
 }
