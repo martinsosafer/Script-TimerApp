@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
           quantity: 1,
         },
       ],
-
+      allow_promotion_codes: true,
       success_url: `${hostURL}/success?sessionId={CHECKOUT_SESSION_ID}`,
       cancel_url: `${hostURL}/plans`,
     });
