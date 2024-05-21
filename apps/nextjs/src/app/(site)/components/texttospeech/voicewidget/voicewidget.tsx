@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 
-import { IconSearch } from "@voiceai/ui/@/components/ui/icons";
+import {
+  IconChevronLeft,
+  IconChevronRight,
+  IconSearch,
+} from "@voiceai/ui/@/components/ui/icons";
 
 import { api } from "~/utils/api";
 import VoiceCards from "../voicecards/voicecards";
 
 function VoiceWidget({ onModelSelect }) {
   const { data: allVoices } = api.voice.list.useQuery({ name: "" });
-  console.log("voices", allVoices);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState(null);
@@ -30,15 +34,18 @@ function VoiceWidget({ onModelSelect }) {
 
   // Calculate total number of pages based on filtered voices
   const totalPages = Math.ceil((filteredVoices?.length || 0) / pageSize);
-  //function to handle search
+
+  // Function to handle search change
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
     setCurrentPage(1); // Reset current page when search query changes
   };
+
   // Function to handle page change
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+
   // Function to handle filter change
   const handleFilterChange = (gender) => {
     setSearchQuery("");
@@ -51,53 +58,67 @@ function VoiceWidget({ onModelSelect }) {
 
     setCurrentPage(1);
   };
+
+  // Function to handle showing all voices
   const handleShowAll = () => {
     setSearchQuery("");
     setFilter(null);
     setCurrentPage(1);
   };
+
+  // Function to render pagination controls
   const renderPagination = () => {
     const pageNumbers = [];
-    if (totalPages <= 5) {
-      for (let i = 1; i <= totalPages; i++) {
-        pageNumbers.push(i);
-      }
-    } else {
-      if (currentPage <= 3) {
-        pageNumbers.push(1, 2, 3, 4, "...", totalPages);
-      } else if (currentPage > totalPages - 3) {
-        pageNumbers.push(
-          1,
-          "...",
-          totalPages - 3,
-          totalPages - 2,
-          totalPages - 1,
-          totalPages,
-        );
-      } else {
-        pageNumbers.push(
-          1,
-          "...",
-          currentPage - 1,
-          currentPage,
-          currentPage + 1,
-          "...",
-          totalPages,
-        );
-      }
+    const maxButtons = 4; // Define the maximum number of buttons to show
+
+    // Calculate the starting page number based on the current page
+    let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+
+    // Adjust the starting page number if it's close to the end
+    if (startPage + maxButtons > totalPages) {
+      startPage = Math.max(1, totalPages - maxButtons + 1);
     }
-    return pageNumbers.map((pageNumber, index) => (
-      <button
-        key={index}
-        className={`mx-2 rounded-full px-4 py-2 focus:outline-none ${pageNumber === currentPage ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-700"}`}
-        onClick={() =>
-          typeof pageNumber === "number" && handlePageChange(pageNumber)
-        }
-        disabled={pageNumber === "..."}
-      >
-        {pageNumber}
-      </button>
-    ));
+
+    // Generate page numbers
+    for (let i = startPage; i < startPage + maxButtons; i++) {
+      pageNumbers.push(i);
+    }
+
+    return (
+      <div className="flex items-center justify-center">
+        <button
+          className="mx-2 rounded-full px-4 py-2 focus:outline-none"
+          onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          <IconChevronLeft className="h-5 w-5" />
+        </button>
+        {pageNumbers.map((pageNumber, index) => (
+          <button
+            key={index}
+            className={`mx-2 rounded-full px-4 py-2 focus:outline-none ${
+              pageNumber === currentPage
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-gray-700"
+            }`}
+            onClick={() =>
+              typeof pageNumber === "number" && handlePageChange(pageNumber)
+            }
+          >
+            {pageNumber}
+          </button>
+        ))}
+        <button
+          className="mx-2 rounded-full px-4 py-2 focus:outline-none"
+          onClick={() =>
+            currentPage < totalPages && handlePageChange(currentPage + 1)
+          }
+          disabled={currentPage === totalPages}
+        >
+          <IconChevronRight className="h-5 w-5" />
+        </button>
+      </div>
+    );
   };
   return (
     <div>
@@ -119,9 +140,6 @@ function VoiceWidget({ onModelSelect }) {
 
       {/* Filter Buttons */}
       <div className="mb-4 space-x-4">
-        {/* <button className="rounded-md border border-gray-300 bg-white px-4 py-2 focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground">
-          Favorite
-        </button> */}
         <button
           className={`rounded-md border border-gray-300 bg-white px-4 py-2 focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground ${
             filter === "MALE" ? "bg-blue-300 text-primary" : ""
@@ -149,7 +167,7 @@ function VoiceWidget({ onModelSelect }) {
       <VoiceCards voices={voices} onModelSelect={onModelSelect} />
 
       {/* Pagination controls */}
-      <div className="mt-4 flex justify-center">{renderPagination()}</div>
+      <div className="mt-4">{renderPagination()}</div>
     </div>
   );
 }

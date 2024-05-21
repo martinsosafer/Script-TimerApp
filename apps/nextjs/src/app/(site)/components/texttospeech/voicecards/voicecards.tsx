@@ -1,8 +1,11 @@
 import React from "react";
 
 import { Button } from "@voiceai/ui";
-import { IconStop } from "@voiceai/ui/@/components/ui/icons";
+import { IconFileHeart, IconStop } from "@voiceai/ui/@/components/ui/icons";
+import { toast } from "@voiceai/ui/@/components/ui/toast";
 import { PlayIcon } from "@voiceai/ui/@/icons/icons";
+
+import { api } from "~/utils/api";
 
 interface Voice {
   id: string;
@@ -21,13 +24,35 @@ interface VoiceCardsProps {
 }
 
 const VoiceCards: React.FC<VoiceCardsProps> = ({ voices, onModelSelect }) => {
+  console.log("Voices", voices);
   const [audio, setAudio] = React.useState<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = React.useState<Record<string, boolean>>({});
 
   const [selectedVoiceId, setSelectedVoiceId] = React.useState<string | null>(
     null,
   );
-
+  const { mutateAsync: favoriteVoice, error } =
+    api.voice.favoriteVoice.useMutation({
+      onSuccess(data) {
+        if (data.success) {
+          toast({
+            title: "Voice favorited",
+            description: "The voice has been added to your favorites",
+          });
+        } else {
+          toast({
+            title: "Something went wrong",
+            description: "Please try again later",
+          });
+        }
+      },
+      onError(error) {
+        toast({
+          title: "Something went wrong",
+          description: "Please try again later",
+        });
+      },
+    });
   React.useEffect(() => {
     setAudio(new Audio()); // only call client
 
@@ -55,6 +80,13 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({ voices, onModelSelect }) => {
     audio.pause();
     audio.currentTime = 0;
     setIsPlaying((prevState) => ({ ...prevState, [voiceId]: false }));
+  };
+  const handleFavorite = async (voice: Voice) => {
+    try {
+      await favoriteVoice({ voice });
+    } catch (error) {
+      console.error("Error adding favorite voice:", error);
+    }
   };
 
   return (
@@ -113,6 +145,15 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({ voices, onModelSelect }) => {
                 <PlayIcon className="h-3 w-3" />
               )}
             </Button>
+            <button
+              className="ml-2 rounded-full p-1"
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent card click event
+                handleFavorite(voice);
+              }}
+            >
+              <IconFileHeart className="h-5 w-5 text-red-500" />
+            </button>
           </div>
         </div>
       ))}

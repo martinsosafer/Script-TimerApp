@@ -241,4 +241,53 @@ export const voiceRouter = createTRPCRouter({
         });
       }
     }),
+  favoriteVoice: protectedProcedure
+    .input(
+      z.object({
+        voice: z.object({
+          external_id: z.string().min(1),
+          name: z.string().min(1),
+          picture: z.string(),
+          metadata: z.object({
+            labels: z.object({
+              gender: z.string(),
+            }),
+          }),
+        }),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { voice } = input;
+      const userId = ctx.session.user.id;
+
+      try {
+        const subscription = await ctx.db.query.subscriptions.findFirst({
+          where: eq(schema.subscriptions.userId, userId),
+        });
+
+        if (!subscription) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Subscription not found for the user",
+          });
+        }
+
+        const currentFavorites = subscription.favorite_voices || [];
+        const updatedFavorites = [...currentFavorites, voice];
+
+        await ctx.db
+          .update(schema.subscriptions)
+          .set({ favorite_voices: updatedFavorites })
+          .where(eq(schema.subscriptions.userId, userId))
+          .execute();
+
+        return { success: true };
+      } catch (error) {
+        console.error("Error adding favorite voice:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Error adding favorite voice",
+        });
+      }
+    }),
 });
