@@ -76,15 +76,25 @@ import { ToggleLibrary } from "../../components/toggle-voice-library";
 import { VoiceLibrary } from "../../components/voice-library";
 
 export function ScriptAI({}) {
-  const [open, setOpen] = React.useState(false);
   //Get subscription info
   const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
-  console.log("subscription dataa", subscriptionData);
+  console.log("subscription data", subscriptionData);
+  const [favoriteVoices, setFavoriteVoices] = React.useState([]);
   const isSubscriptionActive =
     subscriptionData &&
     (subscriptionData.status === "CREATOR" ||
       subscriptionData.status === "STUDENT");
-
+  React.useEffect(() => {
+    if (subscriptionData?.favorite_voices) {
+      setFavoriteVoices(subscriptionData.favorite_voices);
+    }
+  }, [subscriptionData]);
+  const addFavoriteVoice = (newFavoriteVoice) => {
+    setFavoriteVoices((prevFavoriteVoices) => [
+      ...prevFavoriteVoices,
+      newFavoriteVoice,
+    ]);
+  };
   // Script AI parameters
   const [script, setScript] = React.useState("");
   const [selectedModel, setSelectedModel] = React.useState(null);
@@ -215,7 +225,10 @@ export function ScriptAI({}) {
                 onModelSelect={setSelectedModel}
               /> */}
               <div className="rounded-lg  bg-gray-100 p-6 shadow-md dark:bg-slate-400">
-                <VoiceWidget onModelSelect={setSelectedModel} />
+                <VoiceWidget
+                  onModelSelect={setSelectedModel}
+                  favoriteVoices={favoriteVoices}
+                />
 
                 <StabilitySelector
                   value={stability}

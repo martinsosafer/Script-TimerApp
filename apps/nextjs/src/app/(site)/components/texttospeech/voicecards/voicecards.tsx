@@ -1,7 +1,11 @@
 import React from "react";
 
 import { Button } from "@voiceai/ui";
-import { IconFileHeart, IconStop } from "@voiceai/ui/@/components/ui/icons";
+import {
+  IconFileHeart,
+  IconHeartFill,
+  IconStop,
+} from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 import { PlayIcon } from "@voiceai/ui/@/icons/icons";
 
@@ -105,9 +109,9 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({ voices, onModelSelect }) => {
             setSelectedVoiceId(voice.id);
           }}
         >
-          <div className="flex items-center p-2">
+          <div className="flex items-center p-4">
             {/* Profile Image */}
-            <div className="mr-2 h-8 w-8 flex-shrink-0 overflow-hidden rounded-full">
+            <div className="mr-2 h-10 w-10 flex-shrink-0 overflow-hidden rounded-full">
               <img
                 src={voice.picture}
                 alt={voice.name}
@@ -152,7 +156,7 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({ voices, onModelSelect }) => {
                 handleFavorite(voice);
               }}
             >
-              <IconFileHeart className="h-5 w-5 text-red-500" />
+              <IconHeartFill className="h-5 w-5 text-primary" />
             </button>
           </div>
         </div>

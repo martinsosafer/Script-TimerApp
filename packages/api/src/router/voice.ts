@@ -249,6 +249,7 @@ export const voiceRouter = createTRPCRouter({
           name: z.string().min(1),
           picture: z.string(),
           metadata: z.object({
+            preview_url: z.string(),
             labels: z.object({
               gender: z.string(),
             }),
@@ -273,6 +274,19 @@ export const voiceRouter = createTRPCRouter({
         }
 
         const currentFavorites = subscription.favorite_voices || [];
+
+        // Check if the voice is already in the list of favorites
+        const isAlreadyFavorite = currentFavorites.some(
+          (fav) => fav.external_id === voice.external_id,
+        );
+
+        if (isAlreadyFavorite) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Voice is already in favorites",
+          });
+        }
+
         const updatedFavorites = [...currentFavorites, voice];
 
         await ctx.db

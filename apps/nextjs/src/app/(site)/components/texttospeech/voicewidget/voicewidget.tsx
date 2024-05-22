@@ -9,13 +9,15 @@ import {
 import { api } from "~/utils/api";
 import VoiceCards from "../voicecards/voicecards";
 
-function VoiceWidget({ onModelSelect }) {
+function VoiceWidget({ onModelSelect, favoriteVoices }) {
+  console.log("FAVORITE VOICESSS", favoriteVoices);
   const { data: allVoices } = api.voice.list.useQuery({ name: "" });
 
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState(null);
-  const pageSize = 10;
+  const [showFavorites, setShowFavorites] = useState(false);
+  const pageSize = 8;
 
   const filteredVoices = allVoices?.filter((voice) => {
     // Filter by search query
@@ -27,13 +29,27 @@ function VoiceWidget({ onModelSelect }) {
     return matchesSearchQuery && matchesGenderFilter;
   });
 
+  // Filter by favorites if the showFavorites flag is true
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const displayedVoices = showFavorites
+    ? // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      favoriteVoices.filter((favoriteVoice: { external_id: string }) =>
+        filteredVoices.some(
+          (voice) => voice.external_id === favoriteVoice.external_id,
+        ),
+      )
+    : filteredVoices;
+
   // Calculate pagination boundaries for filtered voices
   const startIndex = (currentPage - 1) * pageSize;
-  const endIndex = Math.min(startIndex + pageSize, filteredVoices?.length || 0);
-  const voices = filteredVoices?.slice(startIndex, endIndex);
+  const endIndex = Math.min(
+    startIndex + pageSize,
+    displayedVoices?.length || 0,
+  );
+  const voices = displayedVoices?.slice(startIndex, endIndex);
 
   // Calculate total number of pages based on filtered voices
-  const totalPages = Math.ceil((filteredVoices?.length || 0) / pageSize);
+  const totalPages = Math.ceil((displayedVoices?.length || 0) / pageSize);
 
   // Function to handle search change
   const handleSearchChange = (event) => {
@@ -46,21 +62,32 @@ function VoiceWidget({ onModelSelect }) {
     setCurrentPage(pageNumber);
   };
 
-  // Function to handle filter change
-  const handleFilterChange = (gender) => {
+  const handleMaleFilterChange = () => {
+    setFilter("MALE");
+    setCurrentPage(1);
     setSearchQuery("");
+    setShowFavorites(false);
+  };
 
-    if (filter === gender) {
-      setFilter(null);
-    } else {
-      setFilter(gender);
-    }
+  // Function to handle filter change for FEMALE filter
+  const handleFemaleFilterChange = () => {
+    setFilter("FEMALE");
+    setCurrentPage(1);
+    setSearchQuery("");
+    setShowFavorites(false);
+  };
 
+  // Function to handle showing favorites
+  const handleShowFavorites = () => {
+    setShowFavorites(true);
+    setFilter(null);
+    setSearchQuery("");
     setCurrentPage(1);
   };
 
   // Function to handle showing all voices
   const handleShowAll = () => {
+    setShowFavorites(false);
     setSearchQuery("");
     setFilter(null);
     setCurrentPage(1);
@@ -80,7 +107,11 @@ function VoiceWidget({ onModelSelect }) {
     }
 
     // Generate page numbers
-    for (let i = startPage; i < startPage + maxButtons; i++) {
+    for (
+      let i = startPage;
+      i < startPage + maxButtons && i <= totalPages;
+      i++
+    ) {
       pageNumbers.push(i);
     }
 
@@ -93,17 +124,15 @@ function VoiceWidget({ onModelSelect }) {
         >
           <IconChevronLeft className="h-5 w-5" />
         </button>
-        {pageNumbers.map((pageNumber, index) => (
+        {pageNumbers.map((pageNumber) => (
           <button
-            key={index}
+            key={pageNumber}
             className={`mx-2 rounded-full px-4 py-2 focus:outline-none ${
               pageNumber === currentPage
                 ? "bg-blue-500 text-white"
                 : "bg-gray-200 text-gray-700"
             }`}
-            onClick={() =>
-              typeof pageNumber === "number" && handlePageChange(pageNumber)
-            }
+            onClick={() => handlePageChange(pageNumber)}
           >
             {pageNumber}
           </button>
@@ -120,6 +149,7 @@ function VoiceWidget({ onModelSelect }) {
       </div>
     );
   };
+
   return (
     <div>
       <div className="relative">
@@ -139,32 +169,45 @@ function VoiceWidget({ onModelSelect }) {
       <hr className="my-4 border-gray-300" />
 
       {/* Filter Buttons */}
-      <div className="mb-4 space-x-4">
-        <button
-          className={`rounded-md border border-gray-300 bg-white px-4 py-2 focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground ${
-            filter === "MALE" ? "bg-blue-300 text-primary" : ""
-          }`}
-          onClick={() => handleFilterChange("MALE")}
-        >
-          Male
-        </button>
-        <button
-          className={`rounded-md border border-gray-300 bg-white px-4 py-2 focus:outline-none focus:ring focus:ring-blue-400  dark:bg-slate-500 dark:text-secondary-foreground${
-            filter === "FEMALE" ? "bg-blue-300 text-primary" : ""
-          }`}
-          onClick={() => handleFilterChange("FEMALE")}
-        >
-          Female
-        </button>
+      <div className="mb-4 space-x-2">
         <button
           className="rounded-md border border-gray-300 bg-white px-4 py-2 focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground"
           onClick={handleShowAll}
         >
           All
         </button>
+        <button
+          className={`rounded-md border border-gray-300 bg-white px-2 py-2 focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground ${
+            filter === "MALE" ? "bg-blue-300 text-primary" : ""
+          }`}
+          onClick={handleMaleFilterChange}
+        >
+          Male
+        </button>
+        <button
+          className={`rounded-md border border-gray-300 bg-white px-4 py-2 focus:outline-none focus:ring focus:ring-blue-400  dark:bg-slate-500 dark:text-secondary-foreground ${
+            filter === "FEMALE" ? "bg-blue-300 text-primary" : ""
+          }`}
+          onClick={handleFemaleFilterChange}
+        >
+          Female
+        </button>
+        <button
+          className={`rounded-md border border-gray-300 bg-white px-4 py-2 focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground ${
+            showFavorites ? "bg-blue-300 text-primary" : ""
+          }`}
+          onClick={handleShowFavorites}
+        >
+          Favorites
+        </button>
       </div>
 
-      <VoiceCards voices={voices} onModelSelect={onModelSelect} />
+      <VoiceCards
+        voices={voices}
+        onModelSelect={onModelSelect}
+        favoriteVoices={favoriteVoices}
+        showFavorites={showFavorites}
+      />
 
       {/* Pagination controls */}
       <div className="mt-4">{renderPagination()}</div>
