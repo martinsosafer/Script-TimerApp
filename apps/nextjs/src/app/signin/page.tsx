@@ -2,16 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { signIn } from "@voiceai/auth";
-import { Button } from "@voiceai/ui/@/components/ui/button";
-import { Icons } from "@voiceai/ui/@/components/ui/icons";
-import { Input } from "@voiceai/ui/@/components/ui/input";
-import { Label } from "@voiceai/ui/@/components/ui/label";
 import { cn } from "@voiceai/ui/@/lib/utils";
 
 import coverImg from "../../../public/login_photo.png";
 import { LoginWithEmailForm } from "./signin-button";
-
-// export const runtime = "edge";
 
 export default async function SignIn() {
   return (
@@ -21,7 +15,7 @@ export default async function SignIn() {
           <div className="p-8">
             <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
               <div className="flex flex-col space-y-2 text-center">
-                <h1 className="text-2xl font-semibold tracking-tight">
+                <h1 className="font-poppins text-2xl font-semibold tracking-tight">
                   Log In to Script Timer
                 </h1>
                 <p className="text-sm text-muted-foreground">
@@ -42,50 +36,7 @@ export default async function SignIn() {
                     </span>
                   </div>
                 </div>
-                {/* <form
-                  action={async () => {
-                    "use server";
-                    await signIn("facebook", { redirectTo: "/" });
-                  }}
-                >
-                  <button className="flex w-full items-center justify-center gap-3 rounded-md bg-[#1877F2] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1D9BF0]">
-                    <svg
-                      version="1.1"
-                      className="h-5 w-5"
-                      id="Layer_1"
-                      xmlns="http://www.w3.org/2000/svg"
-                      x="0px"
-                      y="0px"
-                      viewBox="0 0 40 40"
-                    >
-                      <linearGradient
-                        id="SVGID_1_"
-                        gradientUnits="userSpaceOnUse"
-                        x1="-277.375"
-                        y1="406.6018"
-                        x2="-277.375"
-                        y2="407.5726"
-                        gradientTransform="matrix(40 0 0 -39.7778 11115.001 16212.334)"
-                      >
-                        <stop offset="0" />
-                        <stop offset="1" />
-                      </linearGradient>
-                      <path
-                        className="st0 fill-white"
-                        d="M16.7,39.8C7.2,38.1,0,29.9,0,20C0,9,9,0,20,0s20,9,20,20c0,9.9-7.2,18.1-16.7,19.8l-1.1-0.9h-4.4L16.7,39.8z"
-                      />
-                      <path
-                        className="st1 fill-[#1877F2]"
-                        d="M27.8,25.6l0.9-5.6h-5.3v-3.9c0-1.6,0.6-2.8,3-2.8h2.6V8.2c-1.4-0.2-3-0.4-4.4-0.4c-4.6,0-7.8,2.8-7.8,7.8V20
-	h-5v5.6h5v14.1c1.1,0.2,2.2,0.3,3.3,0.3c1.1,0,2.2-0.1,3.3-0.3V25.6H27.8z"
-                      />
-                    </svg>
 
-                    <span className="text-sm font-semibold leading-6">
-                      Facebook
-                    </span>
-                  </button>
-                </form> */}
                 <form
                   action={async () => {
                     "use server";
@@ -145,23 +96,14 @@ export default async function SignIn() {
               </p>
             </div>
           </div>
-          <div className="relative h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
+          <div className="relative h-full flex-col overflow-hidden bg-gradient-to-b from-blue-300 to-blue-700 p-10 text-white dark:border-r lg:flex">
             <Image
-              className="h-md absolute bottom-0 right-0 z-20 hidden w-full rounded-lg object-cover lg:block"
+              className="h-md absolute bottom-0 left-10  right-0 z-20 hidden w-full rounded-lg  border-4 border-primary object-cover lg:block"
               src={coverImg}
               alt="Picture of the author"
             />
-            {/* <div className="absolute inset-0 z-20 flex-1 rounded-lg lg:block"> */}
 
-            {/* </div> */}
-            {/* <div className="relative hidden w-0 flex-1 lg:block">
-              <Image
-                className="absolute inset-0 h-full w-full object-cover"
-                src={coverImg}
-                alt="Picture of the author"
-              />
-            </div> */}
-            <div className="absolute inset-0 bg-zinc-900" />
+            <div className="absolute inset-0 " />
             <div className="relative z-20 flex items-center text-lg font-medium">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -175,10 +117,10 @@ export default async function SignIn() {
               >
                 <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3" />
               </svg>
-              Script Timer
+              <h3 className="font-poppins">Script Timer</h3>
             </div>
             <div className="relative z-20">
-              <blockquote className="space-y-2 rounded-md bg-black p-4">
+              <blockquote className="space-y-2 rounded-md  p-4">
                 <p className="text-lg">
                   &ldquo;Script Timer Ai has been a revelation for my
                   scriptwriting and production process, making it an essential
