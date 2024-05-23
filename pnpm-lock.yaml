@@ -208,7 +208,7 @@ importers:
         specifier: ^2.0.6
         version: 2.0.6
       ai:
-        specifier: ^2.2.37
+        specifier: ^2.2.20
         version: 2.2.37(react@18.2.0)(solid-js@1.8.17)(svelte@4.2.17)(vue@3.4.27)
       clsx:
         specifier: ^2.0.0
@@ -256,7 +256,7 @@ importers:
         specifier: ^10.0.0
         version: 10.0.0(react@18.2.0)
       zod:
-        specifier: ^3.23.8
+        specifier: ^3.22.2
         version: 3.23.8
     devDependencies:
       '@types/node':
