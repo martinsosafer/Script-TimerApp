@@ -30,7 +30,16 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({ voices, onModelSelect }) => {
 
   React.useEffect(() => {
     setAudio(new Audio()); // only call client
-  }, []);
+
+    // Select default voice when the component mounts
+    if (voices && voices.length > 0 && selectedVoiceId === null) {
+      const defaultVoice = voices[0];
+      if (defaultVoice) {
+        onModelSelect(defaultVoice);
+        setSelectedVoiceId(defaultVoice.id);
+      }
+    }
+  }, [voices, selectedVoiceId, onModelSelect]);
 
   const playAudio = (audioSrc: string, voiceId: string) => {
     if (!audio) return;

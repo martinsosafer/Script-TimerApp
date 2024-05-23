@@ -11,7 +11,7 @@ const config = {
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
   images: {
-    domains: ["xsgames.co", "images.unsplash.com"],
+    domains: ["xsgames.co", "images.unsplash.com", "plus.unsplash.com"], 
   },
 };
 
