@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 
 import { nanoid } from "~/utils/helpers";
-import { Chat } from "../components/chat/chat";
-import PromptsSelector from "../components/chat/promptSelector";
+import ChatInteraction from "../components/chat/chat-interaction";
 import WelcomeMessage from "../components/chat/welcome-message";
 
 export const metadata: Metadata = {
   title: "Script Coach",
-  description: "Example music app using the components.",
+  description:
+    "An Ai SUPERHERO, ‘model‘ designed to help you. I am specially made for presentations, speeches, videos, and can do much, much more.",
 };
 
 export default function indexPage() {
@@ -16,8 +16,7 @@ export default function indexPage() {
   return (
     <div className="flex w-[1024px] flex-col items-center">
       <WelcomeMessage />
-      <PromptsSelector />
-      <Chat id={id} />
+      <ChatInteraction id={id} />
     </div>
   );
 }

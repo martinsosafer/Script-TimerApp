@@ -1,5 +1,4 @@
-"use client";
-
+import type { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
 
 import {
@@ -42,12 +41,20 @@ const cards = {
   "IMPROVE SALES": IMPROVE_SALES_PROMPTS,
 };
 
-export default function PromptsSelector() {
+interface PromptsSelectorProps {
+  selectedCard: Prompt | undefined;
+  setSelectedCard: Dispatch<SetStateAction<Prompt | undefined>>;
+}
+
+export default function PromptsSelector({
+  selectedCard,
+  setSelectedCard,
+}: PromptsSelectorProps) {
   const [selectedTab, setSelectedTab] = useState<PromptType>(tabs[1]);
   const [selectedPill, setSelectedPill] = useState<PromptSubType>(
     improveYourSpeechsubtypes[0],
   );
-  const [selectedCard, setSelectedCard] = useState<Prompt | undefined>();
+  //const [selectedCard, setSelectedCard] = useState<Prompt | undefined>();
 
   return (
     <div className="mt-10 flex w-[1024px] flex-col items-center justify-center">
