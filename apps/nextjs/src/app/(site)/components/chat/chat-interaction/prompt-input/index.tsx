@@ -13,13 +13,14 @@ export default function PromptInput({
 }: PromptInputProps) {
   return (
     <div className="flex w-full flex-col items-center">
-      <h4 className="p-2 text-center text-lg font-semibold text-gray-900">
+      {/* <h4 className="p-2 text-center text-lg font-semibold text-gray-900">
         Paste your script below.
-      </h4>
+      </h4> */}
       <div className="mt-4 flex w-full items-center gap-4 rounded-md border border-gray-400 bg-white p-3">
         <textarea
           name=""
           id=""
+          placeholder="Topic, Audience, Goals, Problems solved, or current script.  I will help you improve it."
           className="w-full"
           rows={6}
           value={value}

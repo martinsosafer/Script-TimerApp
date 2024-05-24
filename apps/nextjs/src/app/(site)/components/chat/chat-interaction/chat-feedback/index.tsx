@@ -17,7 +17,7 @@ export default function ChatFeedback({
 }: ChatFeedbackProps) {
   return (
     <div className="mt-14 w-full">
-      <p className="p-2 text-center text-lg font-semibold text-gray-900">
+      <p className="p-2 text-center text-lg font-semibold text-primary">
         I made this for you.
       </p>
       <div className="mt-4 flex gap-3">

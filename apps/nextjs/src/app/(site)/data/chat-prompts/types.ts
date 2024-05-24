@@ -6,7 +6,7 @@ export const types = [
   "IMPROVE SALES",
 ] as const;
 
-export const headlinesAndopeningSubtypes = ["Grabb Attention"] as const;
+export const headlinesAndopeningSubtypes = ["Grab Attention"] as const;
 
 export const improveYourSpeechsubtypes = [
   "Essential Speech Improvements",

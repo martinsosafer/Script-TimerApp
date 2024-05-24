@@ -88,7 +88,7 @@ export default function PromptsSelector({
             );
           })}
         </div>
-        <h4 className="p-6 text-center text-lg font-semibold text-gray-900">
+        <h4 className="p-6 text-center text-lg font-semibold text-primary">
           How can I help you today?
         </h4>
         <div className="flex w-full flex-wrap gap-5">
