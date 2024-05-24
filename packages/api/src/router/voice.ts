@@ -281,26 +281,47 @@ export const voiceRouter = createTRPCRouter({
         );
 
         if (isAlreadyFavorite) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Voice is already in favorites",
-          });
+          // Remove the voice from favorites and set the favorite boolean to null
+          const updatedFavorites = currentFavorites.filter(
+            (fav) => fav.external_id !== voice.external_id,
+          );
+
+          await ctx.db
+            .update(schema.voices)
+            .set({ favorite: null }) // Set the favorite boolean to null
+            .where(eq(schema.voices.external_id, voice.external_id))
+            .execute();
+
+          await ctx.db
+            .update(schema.subscriptions)
+            .set({ favorite_voices: updatedFavorites })
+            .where(eq(schema.subscriptions.userId, userId))
+            .execute();
+
+          return { success: true };
+        } else {
+          // Add the voice to favorites and set the favorite boolean to true
+          const updatedFavorites = [...currentFavorites, voice];
+
+          await ctx.db
+            .update(schema.voices)
+            .set({ favorite: true }) // Set the favorite boolean to true
+            .where(eq(schema.voices.external_id, voice.external_id))
+            .execute();
+
+          await ctx.db
+            .update(schema.subscriptions)
+            .set({ favorite_voices: updatedFavorites })
+            .where(eq(schema.subscriptions.userId, userId))
+            .execute();
+
+          return { success: true };
         }
-
-        const updatedFavorites = [...currentFavorites, voice];
-
-        await ctx.db
-          .update(schema.subscriptions)
-          .set({ favorite_voices: updatedFavorites })
-          .where(eq(schema.subscriptions.userId, userId))
-          .execute();
-
-        return { success: true };
       } catch (error) {
-        console.error("Error adding favorite voice:", error);
+        console.error("Error toggling favorite voice:", error);
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: "Error adding favorite voice",
+          message: "Error toggling favorite voice",
         });
       }
     }),

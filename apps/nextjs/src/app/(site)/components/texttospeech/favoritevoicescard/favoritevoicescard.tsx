@@ -2,7 +2,6 @@ import React from "react";
 
 import { Button } from "@voiceai/ui";
 import {
-  IconFileHeart,
   IconHeart,
   IconHeartFill,
   IconStop,
@@ -12,32 +11,28 @@ import { PlayIcon } from "@voiceai/ui/@/icons/icons";
 
 import { api } from "~/utils/api";
 
-interface Voice {
-  id: string;
+interface FavoriteVoice {
   name: string;
   picture: string;
   metadata: {
     labels: {
       gender: string;
     };
+    preview_url?: string;
   };
-  favorite?: boolean | null;
 }
 
-interface VoiceCardsProps {
-  voices: Voice[];
-  onModelSelect: (voice: Voice) => void;
+interface FavoriteVoiceCardsProps {
+  favoriteVoices: FavoriteVoice[];
+  onModelSelect: (voice: FavoriteVoice) => void;
 }
 
-const VoiceCards: React.FC<VoiceCardsProps> = ({
-  voices,
+const FavoriteVoiceCards: React.FC<FavoriteVoiceCardsProps> = ({
+  favoriteVoices,
   onModelSelect,
-  onFavoriteChange,
 }) => {
-  console.log("Voices", voices);
   const [audio, setAudio] = React.useState<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = React.useState<Record<string, boolean>>({});
-
   const [selectedVoiceId, setSelectedVoiceId] = React.useState<string | null>(
     null,
   );
@@ -47,7 +42,7 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({
         if (data.success) {
           toast({
             title: "Voice favorited",
-            description: "The voice has been added to your favorites",
+            description: "The voice has been removed from your favorite list",
           });
         } else {
           toast({
@@ -63,34 +58,41 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({
         });
       },
     });
+
   React.useEffect(() => {
     setAudio(new Audio()); // only call client
 
     // Select default voice when the component mounts
-    if (voices && voices.length > 0 && selectedVoiceId === null) {
-      const defaultVoice = voices[0];
+    if (
+      favoriteVoices &&
+      favoriteVoices.length > 0 &&
+      selectedVoiceId === null
+    ) {
+      const defaultVoice = favoriteVoices[0];
       if (defaultVoice) {
         onModelSelect(defaultVoice);
-        setSelectedVoiceId(defaultVoice.id);
+        setSelectedVoiceId(defaultVoice.name); // Use name as unique identifier for favorites
       }
     }
-  }, [voices, selectedVoiceId, onModelSelect]);
+  }, [favoriteVoices, selectedVoiceId, onModelSelect]);
 
-  const playAudio = (audioSrc: string, voiceId: string) => {
+  const playAudio = (audioSrc: string, voiceName: string) => {
     if (!audio) return;
     audio.src = audioSrc;
     audio.play();
-    setIsPlaying((prevState) => ({ ...prevState, [voiceId]: true }));
+    setIsPlaying((prevState) => ({ ...prevState, [voiceName]: true }));
     audio.addEventListener("ended", () => {
-      setIsPlaying((prevState) => ({ ...prevState, [voiceId]: false }));
+      setIsPlaying((prevState) => ({ ...prevState, [voiceName]: false }));
     });
   };
-  const stopAudio = (voiceId: string) => {
+
+  const stopAudio = (voiceName: string) => {
     if (!audio) return;
     audio.pause();
     audio.currentTime = 0;
-    setIsPlaying((prevState) => ({ ...prevState, [voiceId]: false }));
+    setIsPlaying((prevState) => ({ ...prevState, [voiceName]: false }));
   };
+
   const handleFavorite = async (voice: Voice) => {
     try {
       const response = await favoriteVoice({ voice });
@@ -103,23 +105,23 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({
       console.error("Error adding favorite voice:", error);
     }
   };
+
   return (
     <div className="grid grid-cols-2 gap-4">
-      {/* Check if voices array is defined before mapping */}
-      {voices?.map((voice) => (
+      {favoriteVoices?.map((voice) => (
         <div
-          key={voice.id}
+          key={voice.name}
           className={`relative mb-2 cursor-pointer rounded-lg bg-white shadow-sm dark:bg-slate-500 dark:text-secondary-foreground ${
-            voice.id === selectedVoiceId
+            voice.name === selectedVoiceId
               ? "border-2 border-primary bg-blue-300 dark:border-white"
               : ""
           }`}
           onClick={() => {
             onModelSelect(voice);
-            setSelectedVoiceId(voice.id);
+            setSelectedVoiceId(voice.name);
           }}
         >
-          {/* Heart icon positioned at the top left */}
+          {/* Full heart icon positioned at the top left */}
           <button
             className="absolute left-0 top-0 rounded-full p-1"
             onClick={(e) => {
@@ -127,13 +129,8 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({
               handleFavorite(voice);
             }}
           >
-            {voice.favorite ? (
-              // Render filled heart icon if the voice is favorite
-              <IconHeartFill className="h-5 w-5 text-primary" />
-            ) : (
-              // Render empty heart icon if the voice is not favorite
-              <IconHeart className="h-5 w-5 text-primary" />
-            )}
+            {" "}
+            <IconHeartFill className="h-5 w-5 text-primary" />
           </button>
 
           <div className="flex items-center p-4">
@@ -150,7 +147,7 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({
               <h2 className="text-sm font-semibold dark:text-secondary-foreground">
                 {voice.name}
               </h2>
-              <p className="text-xs text-gray-500  dark:text-slate-100">
+              <p className="text-xs text-gray-500 dark:text-slate-100">
                 {voice.metadata.labels.gender ?? "Unknown"}
               </p>
             </div>
@@ -160,17 +157,17 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({
               size="xs"
               type="button"
               onClick={() => {
-                if (isPlaying[voice.id]) {
-                  stopAudio(voice.id);
+                if (isPlaying[voice.name]) {
+                  stopAudio(voice.name);
                 } else {
                   playAudio(
                     (voice?.metadata?.preview_url as string) ?? "",
-                    voice.id,
+                    voice.name,
                   );
                 }
               }}
             >
-              {isPlaying[voice.id] ? (
+              {isPlaying[voice.name] ? (
                 <IconStop className="h-3 w-3 text-tertiary" />
               ) : (
                 <PlayIcon className="h-3 w-3" />
@@ -183,4 +180,4 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({
   );
 };
 
-export default VoiceCards;
+export default FavoriteVoiceCards;

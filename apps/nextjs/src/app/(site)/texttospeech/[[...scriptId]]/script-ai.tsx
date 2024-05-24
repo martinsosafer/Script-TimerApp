@@ -89,12 +89,7 @@ export function ScriptAI({}) {
       setFavoriteVoices(subscriptionData.favorite_voices);
     }
   }, [subscriptionData]);
-  const addFavoriteVoice = (newFavoriteVoice) => {
-    setFavoriteVoices((prevFavoriteVoices) => [
-      ...prevFavoriteVoices,
-      newFavoriteVoice,
-    ]);
-  };
+
   // Script AI parameters
   const [script, setScript] = React.useState("");
   const [selectedModel, setSelectedModel] = React.useState(null);
