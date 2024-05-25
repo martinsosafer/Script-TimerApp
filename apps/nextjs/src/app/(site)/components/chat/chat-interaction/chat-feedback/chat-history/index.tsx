@@ -1,10 +1,37 @@
+import { cache, useEffect, useState } from "react";
 import Image from "next/image";
 
 interface ChatHistoryProps {
-  chatHistory: string[];
+  userId: string;
 }
 
-export default function ChatHistory({ chatHistory }: ChatHistoryProps) {
+async function getChatHistory({ userId }: ChatHistoryProps) {
+  try {
+    const response = await fetch("/api/chatHistory", {
+      method: "POST",
+      body: JSON.stringify({ userId }),
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    console.log("DATA", data);
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
+}
+export default function ChatHistory({ userId }: ChatHistoryProps) {
+  const [chatHistory, setChatHistory] = useState<object[]>([]);
+
+  useEffect(() => {
+    const chats = getChatHistory(userId);
+
+    setChatHistory(chats);
+  }, []);
+
+  console.log("CHAT HISTORY", chatHistory);
+
   return (
     <div className="flex w-[30%] flex-col gap-2">
       <div className="flex h-[898px] w-full flex-col justify-between rounded-md border border-gray-400 bg-white p-6">
