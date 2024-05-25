@@ -3,6 +3,7 @@ import Feedback from "./feedback";
 import type { FeedbackProps } from "./feedback";
 
 interface ChatFeedbackProps {
+  userId: string;
   chat: FeedbackProps;
   feedbackInput: string;
   setFeedbackInput: (value: string) => void;
@@ -10,6 +11,7 @@ interface ChatFeedbackProps {
 }
 
 export default function ChatFeedback({
+  userId,
   chat,
   feedbackInput,
   setFeedbackInput,
@@ -21,7 +23,7 @@ export default function ChatFeedback({
         I made this for you.
       </p>
       <div className="mt-4 flex gap-3">
-        <ChatHistory chatHistory={[]} />
+        <ChatHistory userId={userId} />
         <Feedback
           chat={chat}
           feedbackInput={feedbackInput}
