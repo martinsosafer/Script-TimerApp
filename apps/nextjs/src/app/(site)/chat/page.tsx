@@ -13,10 +13,11 @@ export const metadata: Metadata = {
 
 export default async function indexPage() {
   const session = await auth();
+  const userId = session?.user.id ?? ""; // Ensure userId is always a string
   return (
     <div className="flex w-[1024px] flex-col items-center">
       <WelcomeMessage />
-      <ChatInteraction userId={session?.user.userId} />
+      <ChatInteraction userId={userId} />
     </div>
   );
 }

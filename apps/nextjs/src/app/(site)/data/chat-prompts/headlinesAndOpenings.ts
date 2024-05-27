@@ -37,7 +37,7 @@ export const HEADLINES_AND_OPENINGS_PROMPTS: Prompt[] = [
     icon: "/icons/thumbUp.svg",
   },
   {
-    id: "ac0797b0-7e31-43b6-a494-da7e2ab43445",
+    id: "64339e40-da45-42e1-a9f1-c3076a9f9fca",
     name: "Craft 5 Questions to open or close",
     description: "Young voice suitable for children's stories",
     type: "HEADLINES & OPENINGS",

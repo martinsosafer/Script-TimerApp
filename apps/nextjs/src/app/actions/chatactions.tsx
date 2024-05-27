@@ -15,7 +15,7 @@ export async function getChats(userId?: string | null) {
 
   try {
     const pipeline = kv.pipeline();
-    const chats: string[] = await kv.zrange(`user:chat:${userId}`, 0, -1, {
+    const chats: string[] = await kv.zrange(`user:newChat:${userId}`, 0, -1, {
       rev: true,
     });
 
@@ -60,8 +60,8 @@ export async function removeChat({ id, path }: { id: string; path: string }) {
   await kv.del(`chat:${id}`);
   await kv.zrem(`user:chat:${session.user.id}`, `chat:${id}`);
 
-  revalidatePath("/chat");
-  return revalidatePath(path);
+  // revalidatePath("/chat");
+  // return revalidatePath(path);
 }
 
 export async function clearChats() {
@@ -74,7 +74,7 @@ export async function clearChats() {
   }
 
   const chats: string[] = await kv.zrange(
-    `user:chat:${session.user.id}`,
+    `user:newChat:${session.user.id}`,
     0,
     -1,
   );
@@ -85,13 +85,13 @@ export async function clearChats() {
 
   for (const chat of chats) {
     pipeline.del(chat);
-    pipeline.zrem(`user:chat:${session.user.id}`, chat);
+    pipeline.zrem(`user:newChat:${session.user.id}`, chat);
   }
 
   await pipeline.exec();
 
-  revalidatePath("/chat");
-  return redirect("/chat");
+  // revalidatePath("/chat");
+  // return redirect("/chat");
 }
 
 export async function getSharedChat(id: string) {

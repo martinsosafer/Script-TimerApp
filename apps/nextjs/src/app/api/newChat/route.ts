@@ -3,13 +3,17 @@ import OpenAI from "openai";
 
 import { auth } from "@voiceai/auth";
 
+import type {
+  Chat,
+  ChatMessage,
+} from "~/app/(site)/components/chat/chat-interaction/types";
 import { nanoid } from "~/utils/helpers";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-async function main(messages) {
+async function main(messages: ChatMessage[]) {
   const completion = await openai.chat.completions.create({
     messages,
     model: "gpt-3.5-turbo",
@@ -27,21 +31,27 @@ export async function POST(req: Request): Promise<Response> {
         status: 401,
       });
     }
-    const { chatId, chatTitle, messages, prevMessages } = await req.json();
-
-    console.log("REQUEST", prevMessages, messages, chatId, chatTitle);
+    const { chatId, chatTitle, messages, prevMessages } =
+      (await req.json()) as Chat;
 
     const result = await main(messages);
 
+    const mappedResult = [result].map((message) => {
+      return {
+        role: message?.message.role as "user" | "assistant" | "system",
+        content: message?.message.content ?? "",
+      };
+    });
+
     const responseBody = prevMessages
       ? prevMessages.concat([
-          { message: { role: "user", content: messages[1].content } },
-          result,
+          { role: "user", content: messages[1]?.content },
+          result?.message,
         ])
-      : [result];
+      : mappedResult;
 
-    const id = (chatId as number) ?? nanoid();
-    const title = chatTitle as string;
+    const id = chatId ?? nanoid();
+    const title = chatTitle! ?? "New chat";
     const userId = session.user.id;
     const createdAt = Date.now();
 
@@ -53,18 +63,17 @@ export async function POST(req: Request): Promise<Response> {
       messages: responseBody,
     };
 
-    console.log("DB PAYLOAD", dbPayload);
+    await kv.hmset(`newChat:${id}`, dbPayload);
 
-    await kv.hmset(`chat:${id}`, dbPayload);
-    await kv.zadd(`user:chat:${userId}`, {
+    await kv.zadd(`user:newChat:${userId}`, {
       score: createdAt,
-      member: `chat:${id}`,
+      member: `newChat:${id}`,
     });
 
-    return new Response(JSON.stringify(responseBody));
+    return new Response(JSON.stringify(dbPayload));
   } catch (err) {
     console.error(err);
-    return new Response(err.message, {
+    return new Response((err as Error).message as BodyInit | null | undefined, {
       status: 500,
     });
   }

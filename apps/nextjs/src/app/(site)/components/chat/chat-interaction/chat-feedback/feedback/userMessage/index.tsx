@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { IconMessage } from "@voiceai/ui/@/components/ui/icons";
 
 interface STMessageProps {
   messageContent: string[];
@@ -7,17 +7,12 @@ interface STMessageProps {
 export default function UserMessage({ messageContent }: STMessageProps) {
   return (
     <div className="mb-6 flex w-full items-start justify-end gap-4 bg-gray-100 p-4">
-      <div>
+      <div className="mt-1">
         {messageContent.map((item: string, idx: number) => {
           return <p key={`${item}-${idx}`}>{item}</p>;
         })}
       </div>
-      <Image
-        src="/icons/messageicon.svg"
-        width={30}
-        height={30}
-        alt="feedback"
-      />
+      <IconMessage className="h-8 w-8" />
     </div>
   );
 }

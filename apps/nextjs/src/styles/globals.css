@@ -1,4 +1,25 @@
 @tailwind base;
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--secondary) var(--primary);
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 15px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--primary);
+  border-radius: 5px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--secondary);
+  border-radius: 14px;
+  border: 3px solid var(--primary);
+}
 @tailwind components;
 @tailwind utilities;
 
@@ -43,8 +64,6 @@
   html {
     scroll-behavior: smooth;
   }
-
-
 
   .degradedBlue {
     background-clip: text;
@@ -101,9 +120,7 @@
     --tertiary: 24.6 95% 53.1%;
     --tertiary-foreground: 60 9.1% 97.8%;
 
-    --secondarybutton: 187.89999999999998,
-      85.7%,
-      53.3%;
+    --secondarybutton: 187.89999999999998, 85.7%, 53.3%;
     --secondarybutton-foreground: 222.2 47.4% 11.2%;
 
     --accent: 210 40% 96.1%;
@@ -151,8 +168,6 @@
     --ring: 224.3 76.3% 48%;
   }
 
-
-
   /* Default styles for smaller screens */
   .ProseMirror {
     margin-top: 4px;
@@ -160,7 +175,6 @@
     min-height: 250px;
     max-height: 450px;
     border: 1px solid #e8e8e8;
-
   }
 
   /* Styles for medium devices (tablets, 768px and up) */
