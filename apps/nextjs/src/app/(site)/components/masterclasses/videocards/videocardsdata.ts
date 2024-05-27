@@ -3,6 +3,7 @@ export interface Video {
   image: string;
   title: string;
   name: string;
+  videoUrl: string;
   avatarUrl: string;
   description: string;
 }
@@ -16,6 +17,8 @@ const videoCardData: Video[] = [
     name: "John Doe",
     avatarUrl:
       "https://img.freepik.com/free-psd/3d-illustration-human-avatar-profile_23-2150671142.jpg?t=st=1715432996~exp=1715436596~hmac=a02f59aff47060e1c1699c6f63d106e101e4e8297d566e872af14783ce292010&w=740",
+    videoUrl:
+      "https://player.vimeo.com/video/904618003?h=e72a50f24d&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
       "This is a longer description of video 1. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
   },
@@ -27,6 +30,8 @@ const videoCardData: Video[] = [
     name: "Jane Smith",
     avatarUrl:
       "https://img.freepik.com/free-psd/3d-illustration-human-avatar-profile_23-2150671142.jpg?t=st=1715432996~exp=1715436596~hmac=a02f59aff47060e1c1699c6f63d106e101e4e8297d566e872af14783ce292010&w=740",
+    videoUrl:
+      "https://player.vimeo.com/video/904618003?h=e72a50f24d&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
       "This is a longer description of video 2. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
   },
@@ -38,6 +43,8 @@ const videoCardData: Video[] = [
     name: "Alice Johnson",
     avatarUrl:
       "https://img.freepik.com/free-psd/3d-illustration-human-avatar-profile_23-2150671142.jpg?t=st=1715432996~exp=1715436596~hmac=a02f59aff47060e1c1699c6f63d106e101e4e8297d566e872af14783ce292010&w=740",
+    videoUrl:
+      "https://player.vimeo.com/video/904618003?h=e72a50f24d&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
       "This is a longer description of video 3. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
   },
@@ -49,6 +56,8 @@ const videoCardData: Video[] = [
     name: "Bob Williams",
     avatarUrl:
       "https://img.freepik.com/free-psd/3d-illustration-human-avatar-profile_23-2150671142.jpg?t=st=1715432996~exp=1715436596~hmac=a02f59aff47060e1c1699c6f63d106e101e4e8297d566e872af14783ce292010&w=740",
+    videoUrl:
+      "https://player.vimeo.com/video/904618003?h=e72a50f24d&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
       "This is a longer description of video 4. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
   },
@@ -60,6 +69,8 @@ const videoCardData: Video[] = [
     name: "Ella Brown",
     avatarUrl:
       "https://img.freepik.com/free-psd/3d-illustration-human-avatar-profile_23-2150671142.jpg?t=st=1715432996~exp=1715436596~hmac=a02f59aff47060e1c1699c6f63d106e101e4e8297d566e872af14783ce292010&w=740",
+    videoUrl:
+      "https://player.vimeo.com/video/904618003?h=e72a50f24d&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
       "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
   },

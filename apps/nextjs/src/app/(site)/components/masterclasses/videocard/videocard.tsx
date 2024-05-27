@@ -8,7 +8,16 @@ const VideoCard: React.FC<{ video: Video }> = ({ video }) => {
   return (
     <div className="flex flex-col items-center justify-center rounded-2xl  bg-blue-300 drop-shadow-lg">
       <Link
-        href={`/masterclasses/${video.id}`}
+        href={{
+          pathname: `/masterclasses/${video.id}`,
+          query: {
+            title: video.title,
+            name: video.name,
+            videoUrl: video.videoUrl,
+            avatar: video.avatarUrl,
+            description: video.description,
+          },
+        }}
         className=" group relative flex h-full w-full items-center justify-center"
       >
         <Image
