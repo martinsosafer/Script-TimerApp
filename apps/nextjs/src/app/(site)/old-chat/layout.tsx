@@ -1,5 +1,10 @@
 import { auth } from "@voiceai/auth";
 
+import { api } from "~/utils/api";
+import ChatModal from "../components/chat/chatmodal";
+import { LeftMenu } from "../components/chat/leftmenuchat";
+import { LeftMobile } from "../components/chat/leftmobile";
+
 interface ChatLayoutProps {
   children: React.ReactNode;
 }
@@ -13,8 +18,15 @@ export default async function ChatLayout({ children }: ChatLayoutProps) {
   //Get subscription info
 
   return (
-    <div className="relative flex h-full w-full justify-center overflow-hidden bg-[#FAFAFA] py-10">
-      {children}
+    <div className="relative flex h-full overflow-hidden ">
+      <LeftMenu userId={session.user.id} />
+
+      <div className="animate-in group w-full overflow-auto pl-0 duration-300 ease-in-out peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]">
+        <div className=" mb-6 ml-6 mt-2">
+          <LeftMobile userId={session.user.id} />
+        </div>
+        {children}
+      </div>
     </div>
   );
 }
