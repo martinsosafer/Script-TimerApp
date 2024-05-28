@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 
-import CustomButton from "../../custom-button";
+import CategoryButton from "../categorybutton/categorybutton";
 
 interface VideoCategoriesProps {
   onSelectCategory: (category: string) => void;
@@ -11,6 +11,10 @@ interface VideoCategoriesProps {
 const VideoCategories: React.FC<VideoCategoriesProps> = ({
   onSelectCategory,
 }) => {
+  const [selectedCategory, setSelectedCategory] = useState<string>(
+    "Stories That Speed Sales",
+  );
+
   const categories = [
     "Stories That Speed Sales",
     "Lights, Camera, Sales",
@@ -19,16 +23,20 @@ const VideoCategories: React.FC<VideoCategoriesProps> = ({
     "Building Rapport on Virtual Sales Calls",
   ];
 
+  const handleSelectCategory = (category: string) => {
+    setSelectedCategory(category);
+    onSelectCategory(category);
+  };
+
   return (
     <div className="mb-4 flex gap-4">
       {categories.map((category) => (
-        <CustomButton
+        <CategoryButton
           key={category}
-          type="primary"
-          onClick={() => onSelectCategory(category)}
-        >
-          {category}
-        </CustomButton>
+          category={category}
+          isSelected={category === selectedCategory}
+          onSelect={handleSelectCategory}
+        />
       ))}
     </div>
   );

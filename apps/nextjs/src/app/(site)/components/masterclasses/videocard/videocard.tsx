@@ -14,7 +14,7 @@ const VideoCard: React.FC<{ video: Video }> = ({ video }) => {
             title: video.title,
             name: video.name,
             videoUrl: video.videoUrl,
-            avatar: video.avatarUrl,
+            avatarUrl: video.avatarUrl,
             description: video.description,
           },
         }}

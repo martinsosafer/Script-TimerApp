@@ -1,7 +1,5 @@
 "use client";
 
-import { useParams } from "next/navigation";
-
 import Dashboard from "~/app/_components/dashboard";
 import { api } from "~/utils/api";
 
