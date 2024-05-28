@@ -18,6 +18,9 @@ export default async function indexPage() {
     <div className="flex w-[1024px] flex-col items-center">
       <WelcomeMessage />
       <ChatInteraction userId={userId} />
+      <button className="mt-8 text-xl text-[#0066FF] hover:font-semibold">
+        Go to Old Chat Page -{">"}
+      </button>
     </div>
   );
 }
