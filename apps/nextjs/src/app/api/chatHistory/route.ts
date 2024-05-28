@@ -1,4 +1,4 @@
-import { getChats } from "~/app/actions/chatactions";
+import { getChats } from "~/app/actions/newChatActions";
 
 async function loadChats(userId?: string) {
   const chats = await getChats(userId);
@@ -7,7 +7,7 @@ async function loadChats(userId?: string) {
 
 export async function POST(req: Request): Promise<Response> {
   try {
-    const { userId } = await req.json();
+    const { userId } = (await req.json()) as { userId: string };
     const chats = await loadChats(userId);
 
     console.log("HISTORY CHATS: ", chats);

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 import type { Prompt } from "~/app/(site)/data/chat-prompts/types";
-import { clearChats } from "~/app/actions/chatactions";
+import { clearChats } from "~/app/actions/newChatActions";
 import ClearChatHistoryModal from "../../modals/clear-chat-history";
 import ChatFeedback from "./chat-feedback";
 import PromptInput from "./prompt-input";
