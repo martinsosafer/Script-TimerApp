@@ -9,24 +9,15 @@ import ChatFeedback from "./chat-feedback";
 import PromptInput from "./prompt-input";
 import Prompter from "./prompter";
 import PromptsSelector from "./promptSelector";
-import type { ChatMessage, DbPayload } from "./types";
-
-interface ChatHistoryProps {
-  userId: string;
-}
-
-interface SelectedChatHistory {
-  id: string;
-  title: string;
-}
+import type { Chat, ChatMessage } from "./types";
 
 export default function ChatInteraction({ userId }: { userId: string }) {
   const [selectedCard, setSelectedCard] = useState<Prompt | undefined>();
   const [promptInput, setPromptInput] = useState<string>("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [chatHistory, setChatHistory] = useState<object[]>([]);
+  const [chatHistory, setChatHistory] = useState<Chat[]>([]);
   const [selectedChatHistory, setSelectedChatHistory] = useState<
-    SelectedChatHistory | undefined
+    Chat | undefined
   >(undefined);
 
   const [isDeletingHistory, setIsDeletingHistory] = useState<boolean>(false);
@@ -47,7 +38,7 @@ export default function ChatInteraction({ userId }: { userId: string }) {
   }, [selectedCard]);
 
   useEffect(() => {
-    async function getChatHistory({ userId }: ChatHistoryProps) {
+    async function getChatHistory({ userId }: { userId: string }) {
       try {
         const response = await fetch("/api/chatHistory", {
           method: "POST",
@@ -56,7 +47,7 @@ export default function ChatInteraction({ userId }: { userId: string }) {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data = (await response.json()) as ChatMessage[];
+        const data = (await response.json()) as Chat[];
         setChatHistory(data);
         return data;
       } catch (err) {
@@ -69,8 +60,8 @@ export default function ChatInteraction({ userId }: { userId: string }) {
   async function handleSubmit(isFeedback = false) {
     setIsLoading(true);
     const requestBody = {
-      chatId: null,
-      chatTitle: selectedCard?.name,
+      id: null,
+      title: selectedCard?.name,
       prevMessages: null,
       messages: [
         {
@@ -87,8 +78,8 @@ export default function ChatInteraction({ userId }: { userId: string }) {
         body: JSON.stringify(
           isFeedback
             ? {
-                chatId: selectedChatHistory?.id ?? "",
-                chatTitle: selectedChatHistory?.title,
+                id: selectedChatHistory?.id ?? "",
+                title: selectedChatHistory?.title,
                 prevMessages: messages,
                 messages: [
                   assistansResponse,
@@ -101,8 +92,9 @@ export default function ChatInteraction({ userId }: { userId: string }) {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const data = (await response.json()) as DbPayload;
+      const data = (await response.json()) as Chat;
       setMessages(data.messages);
+      setSelectedChatHistory(data);
       setAssistantsResponse(data.messages[data.messages?.length - 1]);
       setIsLoading(false);
     } catch (err) {
@@ -126,12 +118,12 @@ export default function ChatInteraction({ userId }: { userId: string }) {
       <ChatFeedback
         chat={messages}
         chatHistory={chatHistory}
-        setChatHistory={setChatHistory}
         feedbackInput={feedbackInput}
         setFeedbackInput={setFeedbackInput}
         setMessages={setMessages}
         handleSubmit={handleSubmit}
         setIsDeletingHistory={setIsDeletingHistory}
+        setSelectedChatHistory={setSelectedChatHistory}
         loadingMessages={isLoading}
       />
       {isDeletingHistory && (

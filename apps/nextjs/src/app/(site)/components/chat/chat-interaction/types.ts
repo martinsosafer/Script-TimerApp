@@ -4,16 +4,9 @@ export interface ChatMessage {
 }
 
 export interface Chat {
-  chatId: string | null;
-  chatTitle: string | undefined;
-  prevMessages: ChatMessage[] | null;
-  messages: ChatMessage[];
-}
-
-export interface DbPayload {
-  id: string;
-  title: string;
+  id: string | null;
+  title: string | undefined;
   userId: string;
-  createdAt: number;
+  prevMessages: ChatMessage[] | null;
   messages: ChatMessage[];
 }

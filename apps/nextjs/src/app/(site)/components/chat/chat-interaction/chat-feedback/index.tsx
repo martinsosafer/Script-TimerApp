@@ -1,15 +1,16 @@
-import type { ChatMessage } from "../types";
+import type { Chat, ChatMessage } from "../types";
 import ChatHistory from "./chat-history";
 import Feedback from "./feedback";
 
 interface ChatFeedbackProps {
   chat: ChatMessage[];
-  chatHistory: object[];
+  chatHistory: Chat[];
   feedbackInput: string;
   setFeedbackInput: (value: string) => void;
   setMessages: (value: ChatMessage[]) => void;
   handleSubmit: (arg?: boolean) => void;
   setIsDeletingHistory: (arg: boolean) => void;
+  setSelectedChatHistory: (arg: Chat | undefined) => void;
   loadingMessages: boolean;
 }
 
@@ -21,6 +22,7 @@ export default function ChatFeedback({
   setMessages,
   handleSubmit,
   setIsDeletingHistory,
+  setSelectedChatHistory,
   loadingMessages,
 }: ChatFeedbackProps) {
   return (
@@ -33,6 +35,7 @@ export default function ChatFeedback({
           chatHistory={chatHistory}
           setMessages={setMessages}
           onClearChatHistory={() => setIsDeletingHistory(true)}
+          setSelectedChatHistory={setSelectedChatHistory}
         />
         <Feedback
           chat={chat}

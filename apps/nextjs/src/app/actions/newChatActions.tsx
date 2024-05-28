@@ -39,7 +39,7 @@ export async function getChat(id: string, userId: string) {
   return chat;
 }
 
-export async function removeChat({ id, path }: { id: string; path: string }) {
+export async function removeChat({ id }: { id: string; path: string }) {
   const session = await auth();
 
   if (!session) {
