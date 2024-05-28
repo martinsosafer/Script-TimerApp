@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 
 import { auth } from "@voiceai/auth";
 
@@ -14,13 +16,17 @@ export const metadata: Metadata = {
 export default async function indexPage() {
   const session = await auth();
   const userId = session?.user.id ?? ""; // Ensure userId is always a string
+
   return (
     <div className="flex w-[1024px] flex-col items-center">
       <WelcomeMessage />
       <ChatInteraction userId={userId} />
-      <button className="mt-8 text-xl text-[#0066FF] hover:font-semibold">
+      <Link
+        className="mt-8 text-xl text-[#0066FF] hover:font-semibold"
+        href={"/old-chat"}
+      >
         Go to Old Chat Page -{">"}
-      </button>
+      </Link>
     </div>
   );
 }

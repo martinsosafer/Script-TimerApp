@@ -72,7 +72,7 @@ export function ClearHistory({
                   }
 
                   setOpen(false);
-                  router.push("/chat");
+                  router.push("/old-chat");
                   router.refresh();
                 });
               });
