@@ -41,13 +41,24 @@ async function loadProducts() {
     };
   });
 
+  enum Plans {
+    STUDENT = "Student Plan",
+    CREATOR = "Creator Plan",
+    BUSINESS = "Business Plan",
+  }
+  const plans: Plans[] = [Plans.STUDENT, Plans.CREATOR, Plans.BUSINESS];
+
   products.sort((a, b) => a.metadata.price - b.metadata.price);
 
   // Filter products into monthly and yearly plans
   const monthlyPlans = products.filter(
-    (product) => product.metadata.price <= 39,
+    (product) =>
+      product.metadata.price <= 39 && plans.includes(product.name as Plans),
   );
-  const yearlyPlans = products.filter((product) => product.metadata.price > 39);
+  const yearlyPlans = products.filter(
+    (product) =>
+      product.metadata.price > 39 && plans.includes(product.name as Plans),
+  );
 
   const orderedMonthlyPlans = monthlyPlans.sort(
     (a, b) => a.metadata.price - b.metadata.price,
@@ -66,14 +77,14 @@ async function PlansPage() {
   return (
     <>
       <div className="mx-auto max-w-7xl bg-white px-4 pt-10 text-center sm:px-6 lg:px-8">
-        <h2 className="  text-8xl font-extrabold text-primary sm:text-5xl sm:leading-tight sm:tracking-tight">
+        <h2 className="text-8xl font-extrabold text-primary sm:text-5xl sm:leading-tight sm:tracking-tight">
           <span className="block">START NOW WITH</span>
           <span className="block">
             SCRIPT WRITING, VOICEOVERS & MASTERCLASSES
           </span>
         </h2>
         <p className="mx-auto mt-4 max-w-3xl text-lg  font-medium  text-gray-500 ">
-          Choose an affordable plan that`&apos;`s packed with the best features
+          Choose an affordable plan that&apos;s packed with the best features
           for engaging your audience, creating scripts, and more.
         </p>
         <span className="font-bold text-black">

@@ -26,8 +26,6 @@ async function stripeSession(sessionId: string) {
     }
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const stripeSession = await response.json();
-    //const sessionId = response.session.id;
-    console.log("ReturnStripe", stripeSession);
     return stripeSession as { name: string };
   } catch (error) {
     console.error("ERROR", error);

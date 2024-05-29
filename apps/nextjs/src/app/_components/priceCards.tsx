@@ -73,8 +73,8 @@ const PriceCard: React.FC<PriceCardProps> = ({ monthlyPlans, yearlyPlans }) => {
       </div>
       <div className="relative">
         <div className="absolute  inset-0 flex h-full flex-col">
-          <div className="flex-1"></div>
-          <div className="flex-1 bg-sky-500"></div>
+          <div className="flex-1" />
+          <div className="mb-2 flex-1 bg-primary" />
         </div>
         <div className="mx-auto grid max-w-7xl gap-12 px-4 py-20 sm:px-6 lg:grid-cols-3 lg:gap-8 lg:px-8">
           {showMonthly
