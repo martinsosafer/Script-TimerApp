@@ -54,7 +54,7 @@ export async function POST(req: Request) {
           const title = messages[0].content.substring(0, 100);
           const id = body.id ?? nanoid();
           const createdAt = Date.now();
-          const path = `/chat/${id}`;
+          const path = `/old-chat/${id}`;
           const payload = {
             id,
             title,

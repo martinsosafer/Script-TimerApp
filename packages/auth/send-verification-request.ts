@@ -14,38 +14,31 @@ export const sendVerificationRequest = async ({
       html: `
         <html>
 <head>
-  <style>
-    h2,
-    p,
-    a {
-      color: #000; 
+ <style>
+    h2, p, a, li, strong {
+      color: #000;
+      font-size: 16px; /* Adjust the font size as needed */
     }
     h2 {
       color: #333;
     }
-   
-    .identifier {
-      font-size: 14px;
-    }
-   
     p {
-      margin-bottom: 10px; 
+      margin-bottom: 10px;
     }
-   
     li {
-      margin-bottom: 10px; 
+      margin-bottom: 10px;
     }
     ul {
-  color: black;
-}
-      ul li strong {
+      color: black;
+    }
+    ul li strong {
       color: black;
     }
   </style>
 </head>
 <body>
-  <h2>Hi, <span class="identifier">${identifier}</span>,</h2>
-  <p>Glad you're here.</p>
+  <h2>Hello, glad you're here. </h2>
+  
   <p>Script-Timer makes it super easy to turn any idea into a script and give that script a voice.</p>
   <h2>To get started:</h2>
   <ul>

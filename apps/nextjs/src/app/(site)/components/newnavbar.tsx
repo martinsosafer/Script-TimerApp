@@ -167,7 +167,7 @@ export default function newnavbar({
                     </Link>
                   </div>
                   <button className="relative z-10 cursor-default font-poppins font-semibold ">
-                    <Link href={`/chat`}>Script Writing</Link>
+                    <Link href={`/chat`}>Script Coach</Link>
                   </button>
 
                   {/* <div className="absolute inset-x-0 bottom-0  mb-2 h-0.5 origin-left scale-x-0 transform bg-primary-foreground transition-transform duration-300 group-hover:scale-x-100"></div>
