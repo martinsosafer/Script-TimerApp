@@ -31,8 +31,12 @@ export async function POST(req: Request): Promise<Response> {
         status: 401,
       });
     }
-    const { chatId, chatTitle, messages, prevMessages } =
-      (await req.json()) as Chat;
+    const {
+      id: chatId,
+      title: chatTitle,
+      messages,
+      prevMessages,
+    } = (await req.json()) as Chat;
 
     const result = await main(messages);
 

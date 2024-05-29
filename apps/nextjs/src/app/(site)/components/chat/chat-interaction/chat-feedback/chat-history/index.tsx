@@ -1,21 +1,19 @@
 import Image from "next/image";
 
-interface ChatItem {
-  title: string;
-  id: string;
-  messages: object[];
-}
+import type { Chat, ChatMessage } from "../../types";
 
 interface ChatHistoryProps {
-  chatHistory: ChatItem[];
-  setMessages: (value: object[]) => void;
+  chatHistory: Chat[];
+  setMessages: (value: ChatMessage[]) => void;
   onClearChatHistory: () => void;
+  setSelectedChatHistory: (arg: Chat | undefined) => void;
 }
 
 export default function ChatHistory({
   chatHistory,
   setMessages,
   onClearChatHistory,
+  setSelectedChatHistory,
 }: ChatHistoryProps) {
   const noChatHistory = chatHistory?.length === 0;
 
@@ -33,14 +31,17 @@ export default function ChatHistory({
               </p>
             ) : (
               <>
-                {chatHistory.map((item: ChatItem) => {
+                {chatHistory.map((item: Chat) => {
                   return (
                     <div
                       key={`${item.id}`}
                       className="flex cursor-pointer items-start justify-start gap-4 p-2 hover:bg-gray-100"
                       role="button"
                       tabIndex={0}
-                      onClick={() => setMessages(item.messages)}
+                      onClick={() => {
+                        setSelectedChatHistory(item);
+                        setMessages(item.messages);
+                      }}
                       onKeyDown={(e) => {
                         if (e.key === "Enter" || e.key === " ") {
                           setMessages(item.messages);

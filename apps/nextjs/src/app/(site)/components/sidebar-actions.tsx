@@ -109,7 +109,7 @@ export function SidebarActions({
 
                   setDeleteDialogOpen(false);
                   router.refresh();
-                  router.push("/chat");
+                  router.push("/old-chat");
                   toast({
                     title: "Chat deleted",
                   });

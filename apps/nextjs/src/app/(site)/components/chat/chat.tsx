@@ -89,8 +89,8 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
 
       onFinish() {
         console.log("path:", path);
-        if (!path.includes("chat/")) {
-          router.push(`/chat/${id}`, { scroll: false });
+        if (!path.includes("old-chat/")) {
+          router.push(`/old-chat/${id}`, { scroll: false });
           router.refresh();
         }
       },
