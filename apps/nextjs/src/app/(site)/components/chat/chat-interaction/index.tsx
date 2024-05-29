@@ -1,15 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import type { Prompt } from "~/app/(site)/data/chat-prompts/types";
 import { clearChats } from "~/app/actions/newChatActions";
+import { api } from "~/utils/api";
 import ClearChatHistoryModal from "../../modals/clear-chat-history";
+import ChatModal from "../chatmodal";
 import ChatFeedback from "./chat-feedback";
 import PromptInput from "./prompt-input";
 import Prompter from "./prompter";
 import PromptsSelector from "./promptSelector";
 import type { Chat, ChatMessage } from "./types";
+import WelcomeMessage from "./welcome-message/welcome-message";
 
 export default function ChatInteraction({ userId }: { userId: string }) {
   const [selectedCard, setSelectedCard] = useState<Prompt | undefined>();
@@ -20,6 +24,8 @@ export default function ChatInteraction({ userId }: { userId: string }) {
     Chat | undefined
   >(undefined);
 
+  const router = useRouter();
+
   const [isDeletingHistory, setIsDeletingHistory] = useState<boolean>(false);
 
   const [feedbackInput, setFeedbackInput] = useState<string>("");
@@ -29,6 +35,23 @@ export default function ChatInteraction({ userId }: { userId: string }) {
   >(undefined);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const { data: subscriptionData, isLoading: subscriptionLoading } =
+    api.subscription.mySubscription.useQuery();
+
+  console.log("subscriptionData", subscriptionData);
+
+  const isSubscriptionActive =
+    subscriptionData &&
+    (subscriptionData.status === "STUDENT" ||
+      subscriptionData.status === "CREATOR" ||
+      subscriptionData.status === "FREE_TRIAL");
+
+  // useEffect(() => {
+  //   if (!isSubscriptionActive) {
+  //     router.push("/");
+  //   }
+  // }, [subscriptionLoading]);
 
   useEffect(() => {
     setPromptInput("");
@@ -103,39 +126,50 @@ export default function ChatInteraction({ userId }: { userId: string }) {
   }
 
   return (
-    <div className="flex w-full flex-col items-center">
-      <PromptsSelector
-        selectedCard={selectedCard}
-        setSelectedCard={setSelectedCard}
-      />
-      <Prompter uiPrompt={selectedCard?.prompt_display} />
-      <PromptInput
-        value={promptInput}
-        onChange={setPromptInput}
-        onSubmit={() => handleSubmit()}
-        loadingMessages={isLoading}
-      />
-      <ChatFeedback
-        chat={messages}
-        chatHistory={chatHistory}
-        feedbackInput={feedbackInput}
-        setFeedbackInput={setFeedbackInput}
-        setMessages={setMessages}
-        handleSubmit={handleSubmit}
-        setIsDeletingHistory={setIsDeletingHistory}
-        setSelectedChatHistory={setSelectedChatHistory}
-        loadingMessages={isLoading}
-      />
-      {isDeletingHistory && (
-        <ClearChatHistoryModal
-          onClose={() => setIsDeletingHistory(false)}
-          onConfirm={() => {
-            clearChats();
-            setChatHistory([]);
-            setIsDeletingHistory(false);
-          }}
-        />
+    <>
+      {subscriptionLoading && <div className="h-screen w-full"></div>}
+      {!isSubscriptionActive && (
+        <div className="h-screen w-full">
+          <ChatModal />
+        </div>
       )}
-    </div>
+      {!subscriptionLoading && isSubscriptionActive && (
+        <div className="flex w-full flex-col items-center">
+          <WelcomeMessage />
+          <PromptsSelector
+            selectedCard={selectedCard}
+            setSelectedCard={setSelectedCard}
+          />
+          <Prompter uiPrompt={selectedCard?.prompt_display} />
+          <PromptInput
+            value={promptInput}
+            onChange={setPromptInput}
+            onSubmit={() => handleSubmit()}
+            loadingMessages={isLoading}
+          />
+          <ChatFeedback
+            chat={messages}
+            chatHistory={chatHistory}
+            feedbackInput={feedbackInput}
+            setFeedbackInput={setFeedbackInput}
+            setMessages={setMessages}
+            handleSubmit={handleSubmit}
+            setIsDeletingHistory={setIsDeletingHistory}
+            setSelectedChatHistory={setSelectedChatHistory}
+            loadingMessages={isLoading}
+          />
+          {isDeletingHistory && (
+            <ClearChatHistoryModal
+              onClose={() => setIsDeletingHistory(false)}
+              onConfirm={() => {
+                clearChats();
+                setChatHistory([]);
+                setIsDeletingHistory(false);
+              }}
+            />
+          )}
+        </div>
+      )}
+    </>
   );
 }
