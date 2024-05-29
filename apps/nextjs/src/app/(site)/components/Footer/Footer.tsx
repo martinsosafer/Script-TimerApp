@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import Link from "next/link";
 
 import { RevealText } from "~/app/animations/RevealText";
@@ -7,7 +6,7 @@ import { footerData, footerSocialNetworks } from "./FooterData";
 
 export default function Footer() {
   return (
-    <div className="   w-full   bg-primary ">
+    <div className="w-full bg-primary">
       <div className="mx-20 mt-4 justify-between md:flex">
         <div>
           <h2 className="font-poppins text-2xl font-bold text-primary-foreground">

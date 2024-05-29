@@ -380,16 +380,13 @@ export default function newnavbar({
 
           <li className="group relative px-3 py-2 text-primary-foreground hover:cursor-default ">
             <div className="flex flex-col items-center">
-              <Link
-                href="https://script-timer.com/voice123-pricing/"
-                target="_blank"
-              >
+              <Link href="/plans" target="_blank">
                 <IconHandshake className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
                 <IconWallet className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
               </Link>
             </div>
             <Link
-              href="https://script-timer.com/voice123-pricing/"
+              href="/plans"
               target="_blank"
               className="cursor-pointer font-poppins font-semibold "
             >

@@ -1,0 +1,53 @@
+PRODUCTSSS {
+@voiceai/nextjs:dev:   object: 'list',
+@voiceai/nextjs:dev:   data: [
+@voiceai/nextjs:dev:     {
+@voiceai/nextjs:dev:       id: 'prod_PuYktuuvolVdHT',
+@voiceai/nextjs:dev:       object: 'product',
+@voiceai/nextjs:dev:       active: true,
+@voiceai/nextjs:dev:       attributes: [],
+@voiceai/nextjs:dev:       created: 1712926482,
+@voiceai/nextjs:dev:       default_price: 'price_1P4jcsCZk87aoiE2mqZ2vEOo',
+@voiceai/nextjs:dev:       description: 'Creator plan CHECKOUT SMALL DESCRIPTION',
+@voiceai/nextjs:dev:       features: [Array],
+@voiceai/nextjs:dev:       images: [],
+@voiceai/nextjs:dev:       livemode: false,
+@voiceai/nextjs:dev:       marketing_features: [Array],
+@voiceai/nextjs:dev:       metadata: [Object],
+@voiceai/nextjs:dev:       name: 'Creator Plan',
+@voiceai/nextjs:dev:       package_dimensions: null,
+@voiceai/nextjs:dev:       shippable: null,
+@voiceai/nextjs:dev:       statement_descriptor: null,
+@voiceai/nextjs:dev:       tax_code: null,
+@voiceai/nextjs:dev:       type: 'service',
+@voiceai/nextjs:dev:       unit_label: null,
+@voiceai/nextjs:dev:       updated: 1713214931,
+@voiceai/nextjs:dev:       url: null
+@voiceai/nextjs:dev:     },
+@voiceai/nextjs:dev:     {
+@voiceai/nextjs:dev:       id: 'prod_PuYizx68KZigcc',
+@voiceai/nextjs:dev:       object: 'product',
+@voiceai/nextjs:dev:       active: true,
+@voiceai/nextjs:dev:       attributes: [],
+@voiceai/nextjs:dev:       created: 1712926397,
+@voiceai/nextjs:dev:       default_price: 'price_1P4jbVCZk87aoiE21WHrUcIu',
+@voiceai/nextjs:dev:       description: 'student description THAT APPEARS ON CHECKOUT ',
+@voiceai/nextjs:dev:       features: [Array],
+@voiceai/nextjs:dev:       images: [],
+@voiceai/nextjs:dev:       livemode: false,
+@voiceai/nextjs:dev:       marketing_features: [Array],
+@voiceai/nextjs:dev:       metadata: [Object],
+@voiceai/nextjs:dev:       name: 'Student Plan',
+@voiceai/nextjs:dev:       package_dimensions: null,
+@voiceai/nextjs:dev:       shippable: null,
+@voiceai/nextjs:dev:       statement_descriptor: null,
+@voiceai/nextjs:dev:       tax_code: null,
+@voiceai/nextjs:dev:       type: 'service',
+@voiceai/nextjs:dev:       unit_label: null,
+@voiceai/nextjs:dev:       updated: 1713214919,
+@voiceai/nextjs:dev:       url: null
+@voiceai/nextjs:dev:     }
+@voiceai/nextjs:dev:   ],
+@voiceai/nextjs:dev:   has_more: false,
+@voiceai/nextjs:dev:   url: '/v1/products'
+@voiceai/nextjs:dev: }
