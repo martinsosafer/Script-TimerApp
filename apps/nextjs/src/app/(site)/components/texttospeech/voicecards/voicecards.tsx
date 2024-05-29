@@ -2,7 +2,6 @@ import React from "react";
 
 import { Button } from "@voiceai/ui";
 import {
-  IconFileHeart,
   IconHeart,
   IconHeartFill,
   IconStop,
@@ -41,6 +40,7 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({
   const [selectedVoiceId, setSelectedVoiceId] = React.useState<string | null>(
     null,
   );
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const { mutateAsync: favoriteVoice, error } =
     api.voice.favoriteVoice.useMutation({
       onSuccess(data) {
@@ -94,18 +94,16 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({
   const handleFavorite = async (voice: Voice) => {
     try {
       const response = await favoriteVoice({ voice });
-      // Update the favorite status in the voice object based on the response
       if (response.success) {
-        voice.favorite = !voice.favorite; // Toggle the favorite status
+        voice.favorite = !voice.favorite;
+        onFavoriteChange(); // Refresh subscription data in the parent component
       }
-      onFavoriteChange(voice);
     } catch (error) {
       console.error("Error adding favorite voice:", error);
     }
   };
   return (
     <div className="grid grid-cols-2 gap-4">
-      {/* Check if voices array is defined before mapping */}
       {voices?.map((voice) => (
         <div
           key={voice.id}
@@ -119,25 +117,20 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({
             setSelectedVoiceId(voice.id);
           }}
         >
-          {/* Heart icon positioned at the top left */}
           <button
             className="absolute left-0 top-0 rounded-full p-1"
             onClick={(e) => {
-              e.stopPropagation(); // Prevent card click event
+              e.stopPropagation();
               handleFavorite(voice);
             }}
           >
             {voice.favorite ? (
-              // Render filled heart icon if the voice is favorite
               <IconHeartFill className="h-5 w-5 text-primary" />
             ) : (
-              // Render empty heart icon if the voice is not favorite
               <IconHeart className="h-5 w-5 text-primary" />
             )}
           </button>
-
           <div className="flex items-center p-4">
-            {/* Profile Image */}
             <div className="mr-2 h-10 w-10 flex-shrink-0 overflow-hidden rounded-full">
               <img
                 src={voice.picture}
@@ -145,7 +138,6 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({
                 className="h-full w-full object-cover"
               />
             </div>
-            {/* Name and Gender */}
             <div className="flex-grow">
               <h2 className="text-sm font-semibold dark:text-secondary-foreground">
                 {voice.name}
@@ -154,7 +146,6 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({
                 {voice.metadata.labels.gender ?? "Unknown"}
               </p>
             </div>
-            {/* Button */}
             <Button
               className="ml-auto rounded-full"
               size="xs"

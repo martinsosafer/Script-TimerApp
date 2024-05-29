@@ -10,7 +10,11 @@ import { api } from "~/utils/api";
 import FavoriteVoiceCards from "../favoritevoicescard/favoritevoicescard";
 import VoiceCards from "../voicecards/voicecards";
 
-function VoiceWidget({ onModelSelect, favoriteVoices }) {
+function VoiceWidget({
+  onModelSelect,
+  favoriteVoices,
+  refreshSubscriptionData,
+}) {
   console.log("Favorite Voices", favoriteVoices);
   const { data: allVoices } = api.voice.list.useQuery({ name: "" });
 
@@ -217,7 +221,7 @@ function VoiceWidget({ onModelSelect, favoriteVoices }) {
         <VoiceCards
           voices={voices}
           onModelSelect={onModelSelect}
-          onFavoriteCHnage={handleFavoriteChange}
+          onFavoriteChange={refreshSubscriptionData}
         />
       )}
       {/* Pagination controls */}
