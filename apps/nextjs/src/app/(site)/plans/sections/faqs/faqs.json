@@ -1,0 +1,28 @@
+{
+  "faqs": [
+    {
+      "q": "Can I upgrade or downgrade my plan at any time?",
+      "a": "Yes, you can upgrade or downgrade your plan at any time by contacting our support team."
+    },
+    {
+      "q": "What payment methods do you accept?",
+      "a": "We accept all major credit cards, including Visa, Mastercard, American Express, and Discover."
+    },
+    {
+      "q": "How do I know which plan is right for me?",
+      "a": "We recommend selecting the plan that best aligns with your project’s needs and budget. You can also contact our support team for personalized advice."
+    },
+    {
+      "q": "Is there a limit to the number words I can convert with each plan?",
+      "a": "Yes, on the Starter Plan you have 800 words per script, on the Creator plan it is 1,500 words and the Business plan is up to 5,000 words per script.  You can continue a script from submission to submission, for example, and use 100,000 words across 20 scripts on the Business plan."
+    },
+    {
+      "q": "Do you offer a free trial?",
+      "a": "Yes, we offer a one-time free trial."
+    },
+    {
+      "q": "Do you offer any custom plans for enterprise customers?",
+      "a": "Yes, we offer custom plans for enterprise customers that can be tailored to your specific needs and budget. Contact us for more information."
+    }
+  ]
+}

@@ -2,7 +2,8 @@ import React from "react";
 import type { Metadata } from "next";
 import { Stripe } from "stripe";
 
-import PriceCard from "~/app/_components/priceCards";
+import PlansSections from "./sections";
+import type { Product } from "./types";
 
 export const metadata: Metadata = {
   title: "Plans",
@@ -39,7 +40,7 @@ async function loadProducts() {
         name: feature.name,
       })),
     };
-  });
+  }) as Product[];
 
   enum Plans {
     STUDENT = "Student Plan",
@@ -75,24 +76,22 @@ async function PlansPage() {
   const { monthlyPlans, yearlyPlans } = await loadProducts();
 
   return (
-    <>
-      <div className="mx-auto max-w-7xl bg-white px-4 pt-10 text-center sm:px-6 lg:px-8">
-        <h2 className="text-8xl font-extrabold text-primary sm:text-5xl sm:leading-tight sm:tracking-tight">
-          <span className="block">START NOW WITH</span>
-          <span className="block">
-            SCRIPT WRITING, VOICEOVERS & MASTERCLASSES
-          </span>
+    <div className="flex w-full flex-col items-center">
+      <div className="flex w-full flex-col items-center bg-white px-4 pt-10 text-center xl:w-[1024px]">
+        <h2 className="flex flex-col items-center text-3xl font-bold leading-tight tracking-tight text-primary xl:text-4xl xl:font-extrabold">
+          <span>START NOW WITH</span>
+          <span>SCRIPT WRITING, VOICEOVERS & MASTERCLASSES</span>
         </h2>
-        <p className="mx-auto mt-4 max-w-3xl text-lg  font-medium  text-gray-500 ">
+        <p className="mt-4 w-full text-lg font-medium  text-gray-500 xl:w-[600px]">
           Choose an affordable plan that&apos;s packed with the best features
           for engaging your audience, creating scripts, and more.
         </p>
-        <span className="font-bold text-black">
+        <span className="mt-2 font-bold text-black">
           Save up to 35% on yearly plans!
         </span>
       </div>
-      <PriceCard monthlyPlans={monthlyPlans} yearlyPlans={yearlyPlans} />
-    </>
+      <PlansSections monthlyPlans={monthlyPlans} yearlyPlans={yearlyPlans} />
+    </div>
   );
 }
 
