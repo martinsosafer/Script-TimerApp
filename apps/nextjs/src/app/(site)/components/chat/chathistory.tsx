@@ -19,8 +19,8 @@ export function ChatHistory({ userId }: ChatHistoryProps) {
         <h2 className="mb-4 mt-4 text-xl font-bold text-primary-foreground dark:text-secondary-foreground">
           Chat History
         </h2>
-        <Link
-          href="/chat"
+        {/* <Link
+          href="/old-chat"
           className={cn(
             buttonVariants({ variant: "outline" }),
             "h-10 w-full justify-start bg-primary px-4 text-primary-foreground shadow-none transition-colors hover:bg-zinc-200/40 hover:text-accent dark:bg-zinc-900 dark:text-secondary-foreground dark:hover:bg-zinc-300/10",
@@ -28,7 +28,7 @@ export function ChatHistory({ userId }: ChatHistoryProps) {
         >
           <IconPlus className="-translate-x-2 stroke-2" />
           New Chat
-        </Link>
+        </Link> */}
       </div>
       <React.Suspense
         fallback={

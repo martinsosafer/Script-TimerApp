@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 
-import { auth, signOut } from "@voiceai/auth";
-
-import { Menu } from "./components/menu";
+import { signOut } from "@voiceai/auth";
 
 import "~/styles/globals.css";
 
@@ -14,8 +12,6 @@ import { IdentifyAnalytics } from "../analytics";
 import { TRPCReactProvider } from "../providers";
 import Footer from "./components/Footer/Footer";
 import Newnavbar from "./components/newnavbar";
-import { Sidebar } from "./components/sidebar";
-import { playlists } from "./data/playlists";
 
 /**
  * Since we're passing `headers()` to the `TRPCReactProvider` we need to
@@ -49,7 +45,7 @@ export default function Layout(props: { children: React.ReactNode }) {
 
   return (
     <>
-      <div className="flex min-h-screen flex-col justify-between bg-background">
+      <div className="flex min-h-screen w-full flex-col justify-between bg-background">
         <TRPCReactProvider headers={headers()}>
           <Newnavbar signOut={signOutServer} />
           {/* <Menu signOut={signOutServer} /> */}

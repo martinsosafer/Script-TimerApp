@@ -13,6 +13,7 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^0.0.13",
     "@next/font": "^14.2.1",
     "@segment/analytics-next": "^1.62.0",
     "@t3-oss/env-nextjs": "^0.7.1",
@@ -42,6 +43,7 @@
     "next-themes": "^0.2.1",
     "pnpm": "^8.12.0",
     "react": "18.2.0",
+    "react-confetti": "^6.1.0",
     "react-countup": "^6.5.3",
     "react-dom": "18.2.0",
     "react-lottie": "^1.2.4",

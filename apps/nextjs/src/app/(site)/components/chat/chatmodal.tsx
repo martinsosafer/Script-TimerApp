@@ -6,8 +6,6 @@ import {
   IconAudioWaveform,
   IconBookPlus,
   IconBotMessageSquare,
-  IconDownload,
-  IconMic2,
   IconSave,
   IconScanText,
 } from "@voiceai/ui/@/components/ui/icons";
@@ -19,7 +17,7 @@ function ChatModal() {
 
   return (
     <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50 backdrop-blur">
-      <div className="max-h-full w-full max-w-xl overflow-y-auto border border-black bg-white dark:bg-white sm:rounded-2xl">
+      <div className="max-h-full w-full max-w-xl overflow-y-auto border border-black bg-white p-4 dark:bg-white sm:rounded-2xl">
         <div className="flex h-full w-full flex-col">
           <div className="m-8 mx-auto my-2 flex flex-grow flex-col items-center px-4">
             <div className="relative mb-2 h-60 w-full">
@@ -76,8 +74,8 @@ function ChatModal() {
                   Upgrade Plan
                 </button>
               </Link>
-              <Link href="/" target="_blank">
-                <button className="w-full transform rounded-full border-4 border-black bg-white p-3 font-semibold transition-transform duration-300 hover:scale-105 dark:text-primary-foreground">
+              <Link href="/">
+                <button className=" mt-4 w-full transform rounded-full border-4 border-black bg-white p-3 font-semibold transition-transform duration-300 hover:scale-105 dark:text-primary-foreground">
                   Go back
                 </button>
               </Link>

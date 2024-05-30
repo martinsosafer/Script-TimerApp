@@ -16,10 +16,9 @@ const stripePromise = loadStripe(
 );
 
 export default function Stripe() {
-  const { data, isLoading } = api.subscription.session.useQuery();
+  const { data } = api.subscription.session.useQuery();
 
-  const { data: subscriptionData, isLoading: subscriptionIsLoading } =
-    api.subscription.mySubscription.useQuery();
+  const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
 
   console.log("subscription data", subscriptionData);
 
@@ -34,7 +33,7 @@ export default function Stripe() {
             <EmbeddedCheckoutProvider
               stripe={stripePromise}
               // @ts-expect-error will type stripe later
-              options={{ clientSecret: data?.client_secret }}
+              options={{ clientSecret: data?.client_secret as string }}
             >
               <EmbeddedCheckout />
             </EmbeddedCheckoutProvider>

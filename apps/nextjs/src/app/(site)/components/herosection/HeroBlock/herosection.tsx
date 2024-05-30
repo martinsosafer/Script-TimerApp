@@ -79,7 +79,7 @@ export default function HeroSection() {
                   <Link href="/texttospeech">Text to Speech</Link>
                 </PrimaryButton>
                 <PrimaryButton>
-                  <Link href="/chat">Ai ScriptWriting</Link>
+                  <Link href="/chat">Script Coach</Link>
                 </PrimaryButton>
                 <PrimaryButton>
                   <Link

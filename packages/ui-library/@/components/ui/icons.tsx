@@ -1398,7 +1398,7 @@ function IconSearch({ className, ...props }: React.ComponentProps<"svg">) {
     </svg>
   );
 }
-function IconUserRound({ className, ...props }) {
+function IconUserRound({ className, ...props }: React.ComponentProps<"svg">) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -1415,6 +1415,26 @@ function IconUserRound({ className, ...props }) {
     >
       <circle cx="12" cy="8" r="5" />
       <path d="M20 21a8 8 0 0 0-16 0" />
+    </svg>
+  );
+}
+
+function IconCaretDown({ className, ...props }: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      className={cn("h-6 w-6", className)}
+      {...props}
+    >
+      <path d="m18 15-6-6-6 6" />
     </svg>
   );
 }
@@ -1578,8 +1598,12 @@ export {
   FacebookIcon,
   IconSearch,
   IconUserRound,
+<<<<<<< HEAD
   IconChevronRight,
   IconChevronLeft,
   IconHeart,
   IconHeartFill,
+=======
+  IconCaretDown,
+>>>>>>> 573d1262f01eef1831324a4f78f459cbf246d9ee
 };

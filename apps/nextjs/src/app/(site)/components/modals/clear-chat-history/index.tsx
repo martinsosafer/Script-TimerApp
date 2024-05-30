@@ -1,0 +1,46 @@
+import Image from "next/image";
+
+interface ModalProps {
+  onConfirm: () => void;
+  onClose: () => void;
+}
+
+export default function ClearChatHistoryModal({
+  onConfirm,
+  onClose,
+}: ModalProps) {
+  return (
+    <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center overflow-auto bg-black bg-opacity-50 backdrop-blur">
+      <div className="flex w-[600px] flex-col items-center justify-between rounded-lg bg-white p-4">
+        <h2 className="flex w-full items-center gap-2 text-xl font-semibold text-gray-800">
+          {" "}
+          <Image
+            src="/icons/trash.svg"
+            alt="delete history"
+            width={20}
+            height={20}
+          />{" "}
+          Clear Chat History
+        </h2>
+        <p className="w-400 my-6 text-center text-lg text-gray-800">
+          If you click <strong>DELETE CHAT HISTORY</strong> all your chats will
+          be deleted. Are you sure you want to proceed?
+        </p>
+        <div className="flex w-full items-center justify-end gap-4">
+          <button
+            className="rounded-md bg-gray-400 px-4 py-3 hover:bg-gray-300"
+            onClick={onClose}
+          >
+            Cancel
+          </button>
+          <button
+            className="rounded-md bg-red-700 px-4 py-3 text-white hover:bg-red-500"
+            onClick={onConfirm}
+          >
+            DELETE CHAT HISTORY
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
