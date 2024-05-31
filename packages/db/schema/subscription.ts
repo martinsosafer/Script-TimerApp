@@ -23,6 +23,7 @@ export const subscriptions = pgTable("subscription", {
     .unique(),
   plan: plan("plan").notNull(),
   status: status("status").notNull().default("INACTIVE"),
+  favorite_voices: jsonb("favorite_voices").default([]),
   metadata: jsonb("metadata"),
   created_at: timestamp("created_at").notNull().defaultNow(),
   updated_at: timestamp("updated_at").notNull().defaultNow(),

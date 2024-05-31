@@ -1460,7 +1460,10 @@ function TwitterIcon({ className, ...props }: React.ComponentProps<"svg">) {
   );
 }
 
-function IconThumbUp({ className, ...props }: React.ComponentProps<"svg">) {
+function IconChevronRight({
+  className,
+  ...props
+}: React.ComponentProps<"svg">) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -1481,7 +1484,7 @@ function IconThumbUp({ className, ...props }: React.ComponentProps<"svg">) {
   );
 }
 
-function IconFlame({ className, ...props }: React.ComponentProps<"svg">) {
+function IconChevronLeft({ className, ...props }: React.ComponentProps<"svg">) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -1490,17 +1493,17 @@ function IconFlame({ className, ...props }: React.ComponentProps<"svg">) {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      className={cn("h-6 w-6", className)}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
       {...props}
     >
-      <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
+      <path d="m15 18-6-6 6-6" />
     </svg>
   );
 }
-
-function IconLeaf({ className, ...props }: React.ComponentProps<"svg">) {
+function IconHeart({ className, ...props }: React.ComponentProps<"svg">) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -1509,18 +1512,35 @@ function IconLeaf({ className, ...props }: React.ComponentProps<"svg">) {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      className={cn("h-6 w-6", className)}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
       {...props}
     >
-      <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
-      <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
     </svg>
   );
 }
-
+function IconHeartFill({ className, ...props }: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      {...props}
+    >
+      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+    </svg>
+  );
+}
 export {
   IconEdit,
   IconNextChat,
@@ -1581,8 +1601,9 @@ export {
   FacebookIcon,
   IconSearch,
   IconUserRound,
+  IconChevronRight,
+  IconChevronLeft,
+  IconHeart,
+  IconHeartFill,
   IconCaretDown,
-  IconThumbUp,
-  IconFlame,
-  IconLeaf,
 };
