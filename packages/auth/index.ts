@@ -22,6 +22,10 @@ declare module "next-auth" {
   interface Session {
     user: {
       id: string;
+      subscription?: {
+        userId: string;
+        status: string;
+      } | null;
     } & DefaultSession["user"];
   }
 }
@@ -37,7 +41,7 @@ export const {
     signIn: "/signin",
     signOut: "/signout",
     error: "/auth/error",
-    
+
     // verifyRequest: "/auth/verify-request",
     // newUser: "/auth/new-user",
   },

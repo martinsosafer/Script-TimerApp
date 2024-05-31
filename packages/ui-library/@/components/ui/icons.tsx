@@ -1598,12 +1598,9 @@ export {
   FacebookIcon,
   IconSearch,
   IconUserRound,
-<<<<<<< HEAD
   IconChevronRight,
   IconChevronLeft,
   IconHeart,
   IconHeartFill,
-=======
   IconCaretDown,
->>>>>>> 573d1262f01eef1831324a4f78f459cbf246d9ee
 };
