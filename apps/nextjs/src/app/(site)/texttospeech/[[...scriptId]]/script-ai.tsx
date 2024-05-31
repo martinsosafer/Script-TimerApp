@@ -5,17 +5,9 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { CopyIcon } from "@radix-ui/react-icons";
 import { useCompletion } from "ai/react";
-import Lottie from "lottie-react";
 
-import { auth } from "@voiceai/auth";
-import { SimpleEditor } from "@voiceai/ui";
 import { Badge } from "@voiceai/ui/@/components/ui/badge";
 import { Button } from "@voiceai/ui/@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-} from "@voiceai/ui/@/components/ui/card";
 import {
   HoverCard,
   HoverCardContent,
@@ -29,9 +21,6 @@ import {
   Icons,
   PencilIcon,
 } from "@voiceai/ui/@/components/ui/icons";
-import { Label } from "@voiceai/ui/@/components/ui/label";
-import { ScrollArea, ScrollBar } from "@voiceai/ui/@/components/ui/scroll-area";
-import { Separator } from "@voiceai/ui/@/components/ui/separator";
 import {
   Tabs,
   TabsContent,
@@ -49,41 +38,42 @@ import { useCopyToClipboard } from "@voiceai/ui/@/hooks/use-copy-to-clipboard";
 
 import VoiceCreationModal from "~/app/_components/wait-modal";
 import useDailyModal from "~/app/hooks/useDailyModal";
-import useModal from "~/app/hooks/useModal";
-import { calculateLength } from "~/lib/calculate-length";
 import { calculateLengthTime } from "~/lib/calculate-length-time";
 import { api } from "~/utils/api";
 import { useDragAndDrop } from "~/utils/helpers";
-import voiceCreateAnimation from "../../../../../public/animations/voicecreate.json";
-import voiceGirlAnimation from "../../../../../public/animations/voicegirl.json";
-import SecondaryButton from "../../components/custom-button";
 import CustomButton from "../../components/custom-button";
 import { TextEditor } from "../../components/editor";
 import FreeModal from "../../components/free-modal";
 import { HistoryButton } from "../../components/history-button";
-import Modal from "../../components/modal";
-import { ModelSelector } from "../../components/model-selector";
 import { SaveScript } from "../../components/save-script";
 import { ScriptSelector } from "../../components/script-selector";
-import { Share } from "../../components/share";
-import { SimilaritySelector } from "../../components/similarity-selector";
 import { StabilitySelector } from "../../components/stability-selector";
 import IntroParagraph from "../../components/texttospeech/introparagraph/introparagraph";
 import SelectedModelCard from "../../components/texttospeech/selectedcard/selectedcard";
 import VoiceWidget from "../../components/texttospeech/voicewidget/voicewidget";
 import { ToggleAudio } from "../../components/toggle-audio";
 import { ToggleLibrary } from "../../components/toggle-voice-library";
-import { VoiceLibrary } from "../../components/voice-library";
 
 export function ScriptAI({}) {
-  const [open, setOpen] = React.useState(false);
   //Get subscription info
-  const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
-  console.log("subscription dataa", subscriptionData);
+  const { data: subscriptionData, refetch } =
+    api.subscription.mySubscription.useQuery();
+  const [favoriteVoices, setFavoriteVoices] = React.useState([]);
+
   const isSubscriptionActive =
     subscriptionData &&
     (subscriptionData.status === "CREATOR" ||
       subscriptionData.status === "STUDENT");
+
+  React.useEffect(() => {
+    if (subscriptionData?.favorite_voices) {
+      setFavoriteVoices(subscriptionData.favorite_voices);
+    }
+  }, [subscriptionData]);
+
+  const refreshSubscriptionData = () => {
+    refetch();
+  };
 
   // Script AI parameters
   const [script, setScript] = React.useState("");
@@ -215,7 +205,11 @@ export function ScriptAI({}) {
                 onModelSelect={setSelectedModel}
               /> */}
               <div className="rounded-lg  bg-gray-100 p-6 shadow-md dark:bg-slate-400">
-                <VoiceWidget onModelSelect={setSelectedModel} />
+                <VoiceWidget
+                  onModelSelect={setSelectedModel}
+                  favoriteVoices={favoriteVoices}
+                  refreshSubscriptionData={refreshSubscriptionData}
+                />
 
                 <StabilitySelector
                   value={stability}

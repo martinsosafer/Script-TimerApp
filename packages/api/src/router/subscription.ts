@@ -2,7 +2,6 @@ import { z } from "zod";
 
 import { desc, eq, schema } from "@voiceai/db";
 import { checkSession, createCheckoutSession } from "@voiceai/pay";
-import type { Stripe } from "@voiceai/pay";
 
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
@@ -15,6 +14,9 @@ export const subscriptionRouter = createTRPCRouter({
       console.error("Error in subscription", error);
       return [];
     }
+  }),
+  Subscription: protectedProcedure.query(async ({ ctx }) => {
+    return await ctx.subscription; // Use the subscription data from the context
   }),
   mySubscription: protectedProcedure.query(async ({ ctx }) => {
     return await ctx.db.query.subscriptions.findFirst({

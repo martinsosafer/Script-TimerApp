@@ -8,7 +8,7 @@ interface Props {
 }
 export default async function AdminLayout({ children }: Props) {
   const session = await auth();
-
+  
   const allowedIds = [
     "b76a1726-e72e-43ca-b250-840af61dfdfe",
     "59d42d74-5b5a-4b52-aedb-8bcb8f076381",

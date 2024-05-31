@@ -241,4 +241,88 @@ export const voiceRouter = createTRPCRouter({
         });
       }
     }),
+  favoriteVoice: protectedProcedure
+    .input(
+      z.object({
+        voice: z.object({
+          external_id: z.string().min(1),
+          name: z.string().min(1),
+          picture: z.string(),
+          metadata: z.object({
+            preview_url: z.string(),
+            labels: z.object({
+              gender: z.string(),
+            }),
+          }),
+        }),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { voice } = input;
+      const userId = ctx.session.user.id;
+
+      try {
+        const subscription = await ctx.db.query.subscriptions.findFirst({
+          where: eq(schema.subscriptions.userId, userId),
+        });
+
+        if (!subscription) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Subscription not found for the user",
+          });
+        }
+
+        const currentFavorites = subscription.favorite_voices || [];
+
+        // Check if the voice is already in the list of favorites
+        const isAlreadyFavorite = currentFavorites.some(
+          (fav) => fav.external_id === voice.external_id,
+        );
+
+        if (isAlreadyFavorite) {
+          // Remove the voice from favorites and set the favorite boolean to null
+          const updatedFavorites = currentFavorites.filter(
+            (fav) => fav.external_id !== voice.external_id,
+          );
+
+          await ctx.db
+            .update(schema.voices)
+            .set({ favorite: null }) // Set the favorite boolean to null
+            .where(eq(schema.voices.external_id, voice.external_id))
+            .execute();
+
+          await ctx.db
+            .update(schema.subscriptions)
+            .set({ favorite_voices: updatedFavorites })
+            .where(eq(schema.subscriptions.userId, userId))
+            .execute();
+
+          return { success: true };
+        } else {
+          // Add the voice to favorites and set the favorite boolean to true
+          const updatedFavorites = [...currentFavorites, voice];
+
+          await ctx.db
+            .update(schema.voices)
+            .set({ favorite: true }) // Set the favorite boolean to true
+            .where(eq(schema.voices.external_id, voice.external_id))
+            .execute();
+
+          await ctx.db
+            .update(schema.subscriptions)
+            .set({ favorite_voices: updatedFavorites })
+            .where(eq(schema.subscriptions.userId, userId))
+            .execute();
+
+          return { success: true };
+        }
+      } catch (error) {
+        console.error("Error toggling favorite voice:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Error toggling favorite voice",
+        });
+      }
+    }),
 });
