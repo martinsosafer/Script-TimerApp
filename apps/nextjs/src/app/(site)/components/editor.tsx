@@ -46,7 +46,6 @@ function TextEditor({
   className,
   updatedContent,
   scriptLoaded,
-  script,
 }: TextEditorProps) {
   const [charCount, setCharCount] = useState(0);
   const [showCharCount, setShowCharCount] = useState(true);
@@ -133,22 +132,6 @@ function TextEditor({
   const toggleItalic = useCallback(() => {
     editor.chain().focus().toggleItalic().run();
   }, [editor]);
-
-  // const toggleBulletList = useCallback(() => {
-  //   editor.chain().focus().toggleBulletList().run();
-  // }, [editor]);
-  // const toggleHeading1 = useCallback(() => {
-  //   editor.chain().focus().toggleHeading({ level: 1 }).run();
-  // }, [editor]);
-  // const toggleHeading2 = useCallback(() => {
-  //   editor.chain().focus().toggleHeading({ level: 2 }).run();
-  // }, [editor]);
-  // const toggleHeading3 = useCallback(() => {
-  //   editor.chain().focus().toggleHeading({ level: 3 }).run();
-  // }, [editor]);
-  // const toggleHeading4 = useCallback(() => {
-  //   editor.chain().focus().toggleHeading({ level: 4 }).run();
-  // }, [editor]);
 
   if (!editor) {
     return null;
