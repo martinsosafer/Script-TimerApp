@@ -63,15 +63,24 @@ export const {
     },
   ],
   callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-      },
-    }),
-    authorized({ auth }) {
-      return !!auth?.user;
+    session: ({ session, user }) => {
+      const subscription = {
+        userId: user.id,
+        status: "CREATOR", // Example static data, replace this with actual subscription data
+      };
+
+      const updatedSession = {
+        ...session,
+        user: {
+          ...session.user,
+          id: user.id,
+          subscription: subscription,
+        },
+      };
+
+      // Log the updated session object for debugging
+
+      return updatedSession;
     },
   },
 });
