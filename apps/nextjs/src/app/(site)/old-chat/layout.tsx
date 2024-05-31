@@ -1,9 +1,9 @@
 import { auth } from "@voiceai/auth";
 
 import { api } from "~/utils/api";
-import ChatModal from "../components/chat/chatmodal";
-import { LeftMenu } from "../components/chat/leftmenuchat";
-import { LeftMobile } from "../components/chat/leftmobile";
+import ChatModal from "./chat/chatmodal";
+import { LeftMenu } from "./chat/leftmenuchat";
+import { LeftMobile } from "./chat/leftmobile";
 
 interface ChatLayoutProps {
   children: React.ReactNode;

@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 
 import type { Prompt } from "~/app/(site)/data/chat-prompts/types";
 import { clearChats } from "~/app/actions/newChatActions";
 import { api } from "~/utils/api";
-import ClearChatHistoryModal from "../../modals/clear-chat-history";
-import ChatModal from "../chatmodal";
+import ClearChatHistoryModal from "../../components/modals/clear-chat-history";
+import ChatModal from "../../old-chat/chat/chatmodal";
 import ChatFeedback from "./chat-feedback";
+import GoToOldChat from "./go-to-old-chat";
 import PromptInput from "./prompt-input";
 import Prompter from "./prompter";
 import PromptsSelector from "./promptSelector";
@@ -24,8 +24,6 @@ export default function ChatInteraction({ userId }: { userId: string }) {
     Chat | undefined
   >(undefined);
 
-  const router = useRouter();
-
   const [isDeletingHistory, setIsDeletingHistory] = useState<boolean>(false);
 
   const [feedbackInput, setFeedbackInput] = useState<string>("");
@@ -39,19 +37,12 @@ export default function ChatInteraction({ userId }: { userId: string }) {
   const { data: subscriptionData, isLoading: subscriptionLoading } =
     api.subscription.mySubscription.useQuery();
 
-  console.log("subscriptionData", subscriptionData);
-
   const isSubscriptionActive =
     subscriptionData &&
     (subscriptionData.status === "STUDENT" ||
       subscriptionData.status === "CREATOR" ||
+      subscriptionData.status === "BUSINESS" ||
       subscriptionData.status === "FREE_TRIAL");
-
-  // useEffect(() => {
-  //   if (!isSubscriptionActive) {
-  //     router.push("/");
-  //   }
-  // }, [subscriptionLoading]);
 
   useEffect(() => {
     setPromptInput("");
@@ -89,9 +80,8 @@ export default function ChatInteraction({ userId }: { userId: string }) {
       messages: [
         {
           role: "user",
-          content: selectedCard?.prompt_ai ?? "",
+          content: `${selectedCard?.prompt_ai}\n ${promptInput}`,
         },
-        { role: "user", content: promptInput },
       ],
     };
 
@@ -150,6 +140,7 @@ export default function ChatInteraction({ userId }: { userId: string }) {
           <ChatFeedback
             chat={messages}
             chatHistory={chatHistory}
+            setChatHistory={setChatHistory}
             feedbackInput={feedbackInput}
             setFeedbackInput={setFeedbackInput}
             setMessages={setMessages}
@@ -158,6 +149,7 @@ export default function ChatInteraction({ userId }: { userId: string }) {
             setSelectedChatHistory={setSelectedChatHistory}
             loadingMessages={isLoading}
           />
+          <GoToOldChat />
           {isDeletingHistory && (
             <ClearChatHistoryModal
               onClose={() => setIsDeletingHistory(false)}

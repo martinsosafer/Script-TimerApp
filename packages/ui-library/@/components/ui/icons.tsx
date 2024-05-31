@@ -1459,6 +1459,7 @@ function TwitterIcon({ className, ...props }: React.ComponentProps<"svg">) {
     </svg>
   );
 }
+
 function IconChevronRight({
   className,
   ...props
@@ -1481,6 +1482,7 @@ function IconChevronRight({
     </svg>
   );
 }
+
 function IconChevronLeft({ className, ...props }: React.ComponentProps<"svg">) {
   return (
     <svg

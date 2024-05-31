@@ -23,7 +23,7 @@ import {
 import { toast, ToastAction } from "@voiceai/ui/@/components/ui/toast";
 
 import { api } from "~/utils/api";
-import { ActorsDropdown } from "../(site)/components/chat/actorsdropdown";
+import { ActorsDropdown } from "../(site)/old-chat/chat/actorsdropdown";
 
 export const History = ({ ...rest }) => {
   const [loadingPlay, setLoadingPlay] = React.useState({});
@@ -32,7 +32,7 @@ export const History = ({ ...rest }) => {
   const [selectedModel, setSelectedModel] = React.useState({});
   const [openDropdownIndex, setOpenDropdownIndex] = React.useState(-1);
 
-  const { data, isLoading,refetch } = api.history.list.useQuery();
+  const { data, isLoading, refetch } = api.history.list.useQuery();
   const { data: voices } = api.voice.list.useQuery({ name: "" });
   //Get subscription info
   const { data: subscriptionData } = api.subscription.mySubscription.useQuery();

@@ -4,9 +4,9 @@ import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { removeChat, shareChat } from "~/app/actions/chatactions";
-import { Chat } from "~/lib/types";
-import { SidebarActions } from "../sidebar-actions";
-import { SidebarItem } from "../sidebar-item";
+import type { Chat } from "~/lib/types";
+import { SidebarActions } from "../../components/sidebar-actions";
+import { SidebarItem } from "../../components/sidebar-item";
 
 interface SidebarItemsProps {
   chats?: Chat[];

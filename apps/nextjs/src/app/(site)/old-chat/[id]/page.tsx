@@ -4,7 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { auth } from "@voiceai/auth";
 
 import { getChat } from "~/app/actions/chatactions";
-import { Chat } from "../../components/chat/chat";
+import { Chat } from "../chat/chat";
 
 export interface ChatPageProps {
   params: {
