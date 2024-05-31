@@ -12,6 +12,7 @@ interface ChatFeedbackProps {
   setIsDeletingHistory: (arg: boolean) => void;
   setSelectedChatHistory: (arg: Chat | undefined) => void;
   loadingMessages: boolean;
+  setChatHistory: (value: Chat[]) => void;
 }
 
 export default function ChatFeedback({
@@ -24,6 +25,7 @@ export default function ChatFeedback({
   setIsDeletingHistory,
   setSelectedChatHistory,
   loadingMessages,
+  setChatHistory,
 }: ChatFeedbackProps) {
   return (
     <div className="mt-14 w-full">
@@ -33,6 +35,7 @@ export default function ChatFeedback({
       <div className="mt-4 flex gap-3">
         <ChatHistory
           chatHistory={chatHistory}
+          setChatHistory={setChatHistory}
           setMessages={setMessages}
           onClearChatHistory={() => setIsDeletingHistory(true)}
           setSelectedChatHistory={setSelectedChatHistory}

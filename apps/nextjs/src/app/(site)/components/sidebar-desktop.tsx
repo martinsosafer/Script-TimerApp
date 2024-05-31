@@ -1,6 +1,6 @@
 import { auth } from "@voiceai/auth";
 
-import { ChatHistory } from "./chat/chathistory";
+import { ChatHistory } from "../old-chat/chat/chathistory";
 import { Sidebar } from "./sidebar";
 
 export async function SidebarDesktop() {

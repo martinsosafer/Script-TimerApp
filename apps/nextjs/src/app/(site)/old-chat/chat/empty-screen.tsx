@@ -1,11 +1,11 @@
 import * as React from "react";
 import type { UseChatHelpers } from "ai/react";
 
+import { ChatPromptAccordion } from "../../components/chat-prompt-accordion";
+import { ChatPromptSelector } from "../../components/chat-prompt-selector";
 import { freeprompts, types as freePromptsTypes } from "../../data/freePrompts";
 import { prompts, types } from "../../data/prompts";
 import type { Prompt } from "../../data/prompts";
-import { ChatPromptAccordion } from "../chat-prompt-accordion";
-import { ChatPromptSelector } from "../chat-prompt-selector";
 
 // Import either Prompt or FreePrompt based on the user's status
 
