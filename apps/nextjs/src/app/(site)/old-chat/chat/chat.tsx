@@ -22,8 +22,8 @@ import { cn } from "@voiceai/ui/@/lib/utils";
 
 import useModal from "~/app/hooks/useModal";
 import { api } from "~/utils/api";
+import Modal from "../../components/modal";
 import type { Prompt, PromptType } from "../../data/prompts";
-import Modal from "../modal";
 import { ChatList } from "./chat-list";
 import { ChatPanel } from "./chat-panel";
 import ChatModal from "./chatmodal";

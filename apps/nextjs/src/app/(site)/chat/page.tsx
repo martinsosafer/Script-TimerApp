@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import { auth } from "@voiceai/auth";
 
-import ChatInteraction from "../components/chat/chat-interaction";
+import ChatInteraction from "./chat-interaction";
 
 export const metadata: Metadata = {
   title: "Script Coach",

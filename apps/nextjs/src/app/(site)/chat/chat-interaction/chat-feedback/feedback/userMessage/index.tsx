@@ -12,7 +12,9 @@ export default function UserMessage({ messageContent }: STMessageProps) {
           return <p key={`${item}-${idx}`}>{item}</p>;
         })}
       </div>
-      <IconMessage className="h-8 w-8" />
+      <div className="flex h-8 w-8 items-center justify-center">
+        <IconMessage className="h-8 w-8 text-gray-800" />
+      </div>
     </div>
   );
 }

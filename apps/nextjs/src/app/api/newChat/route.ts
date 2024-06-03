@@ -6,7 +6,7 @@ import { auth } from "@voiceai/auth";
 import type {
   Chat,
   ChatMessage,
-} from "~/app/(site)/components/chat/chat-interaction/types";
+} from "~/app/(site)/chat/chat-interaction/types";
 import { nanoid } from "~/utils/helpers";
 
 const openai = new OpenAI({
@@ -16,7 +16,7 @@ const openai = new OpenAI({
 async function main(messages: ChatMessage[]) {
   const completion = await openai.chat.completions.create({
     messages,
-    model: "gpt-3.5-turbo",
+    model: "gpt-4o",
   });
 
   return completion.choices[0];

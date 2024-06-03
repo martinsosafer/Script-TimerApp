@@ -39,8 +39,10 @@ export async function getChat(id: string, userId: string) {
   return chat;
 }
 
-export async function removeChat({ id }: { id: string; path: string }) {
+export async function removeChat({ id }: { id: string | null }) {
   const session = await auth();
+
+  if (!id) return;
 
   if (!session) {
     return {
@@ -48,7 +50,7 @@ export async function removeChat({ id }: { id: string; path: string }) {
     };
   }
 
-  const uid = await kv.hget<string>(`chat:${id}`, "userId");
+  const uid = await kv.hget<string>(`newChat:${id}`, "userId");
 
   if (uid !== session?.user?.id) {
     return {
@@ -56,8 +58,8 @@ export async function removeChat({ id }: { id: string; path: string }) {
     };
   }
 
-  await kv.del(`chat:${id}`);
-  await kv.zrem(`user:chat:${session.user.id}`, `chat:${id}`);
+  await kv.del(`newChat:${id}`);
+  await kv.zrem(`user:newChat:${session.user.id}`, `newChat:${id}`);
 }
 
 export async function clearChats() {
