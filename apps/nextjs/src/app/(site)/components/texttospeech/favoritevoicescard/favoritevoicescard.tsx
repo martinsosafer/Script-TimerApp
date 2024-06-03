@@ -1,7 +1,11 @@
 import React from "react";
 
 import { Button } from "@voiceai/ui";
-import { IconHeartFill, IconStop } from "@voiceai/ui/@/components/ui/icons";
+import {
+  IconHeart,
+  IconHeartFill,
+  IconStop,
+} from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 import { PlayIcon } from "@voiceai/ui/@/icons/icons";
 
@@ -16,48 +20,50 @@ interface FavoriteVoice {
     };
     preview_url?: string;
   };
-  id: string;
 }
 
 interface FavoriteVoiceCardsProps {
   favoriteVoices: FavoriteVoice[];
   onModelSelect: (voice: FavoriteVoice) => void;
-  onFavoriteChange: (updatedFavorites: FavoriteVoice[]) => void;
   refetchVoices: () => void;
+  onFavoriteChange: (updatedFavorites: FavoriteVoice[]) => void;
 }
 
 const FavoriteVoiceCards: React.FC<FavoriteVoiceCardsProps> = ({
   favoriteVoices,
   onModelSelect,
-  onFavoriteChange,
   refetchVoices,
+  onFavoriteChange,
 }) => {
   const [audio, setAudio] = React.useState<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = React.useState<Record<string, boolean>>({});
   const [selectedVoiceId, setSelectedVoiceId] = React.useState<string | null>(
     null,
   );
-  const { mutateAsync: favoriteVoice } = api.voice.favoriteVoice.useMutation({
-    onSuccess(data) {
-      if (data.success) {
-        toast({
-          title: "Voice favorited",
-          description: "The voice has been removed from your favorite list",
-        });
-      } else {
+  console.log("FavoriteVoices", favoriteVoices);
+
+  const { mutateAsync: favoriteVoice, error } =
+    api.voice.favoriteVoice.useMutation({
+      onSuccess(data) {
+        if (data.success) {
+          toast({
+            title: "Voice favorited",
+            description: "The voice has been removed from your favorite list",
+          });
+        } else {
+          toast({
+            title: "Something went wrong",
+            description: "Please try again later",
+          });
+        }
+      },
+      onError(error) {
         toast({
           title: "Something went wrong",
           description: "Please try again later",
         });
-      }
-    },
-    onError() {
-      toast({
-        title: "Something went wrong",
-        description: "Please try again later",
-      });
-    },
-  });
+      },
+    });
 
   React.useEffect(() => {
     setAudio(new Audio()); // only call client
@@ -76,21 +82,20 @@ const FavoriteVoiceCards: React.FC<FavoriteVoiceCardsProps> = ({
     }
   }, [favoriteVoices, selectedVoiceId, onModelSelect]);
 
-  const playAudio = (audioSrc: string, voiceName: string) => {
+  const playAudio = (audioSrc: string, voiceId: string) => {
     if (!audio) return;
     audio.src = audioSrc;
     audio.play();
-    setIsPlaying((prevState) => ({ ...prevState, [voiceName]: true }));
+    setIsPlaying((prevState) => ({ ...prevState, [voiceId]: true }));
     audio.addEventListener("ended", () => {
-      setIsPlaying((prevState) => ({ ...prevState, [voiceName]: false }));
+      setIsPlaying((prevState) => ({ ...prevState, [voiceId]: false }));
     });
   };
-
-  const stopAudio = (voiceName: string) => {
+  const stopAudio = (voiceId: string) => {
     if (!audio) return;
     audio.pause();
     audio.currentTime = 0;
-    setIsPlaying((prevState) => ({ ...prevState, [voiceName]: false }));
+    setIsPlaying((prevState) => ({ ...prevState, [voiceId]: false }));
   };
 
   const handleFavorite = async (voice: FavoriteVoice) => {
@@ -112,15 +117,15 @@ const FavoriteVoiceCards: React.FC<FavoriteVoiceCardsProps> = ({
     <div className="grid grid-cols-2 gap-4">
       {favoriteVoices?.map((voice) => (
         <div
-          key={voice.name}
+          key={voice.id}
           className={`relative mb-2 cursor-pointer rounded-lg bg-white shadow-sm dark:bg-slate-500 dark:text-secondary-foreground ${
-            voice.name === selectedVoiceId
+            voice.id === selectedVoiceId
               ? "border-2 border-primary bg-blue-300 dark:border-white"
               : ""
           }`}
           onClick={() => {
             onModelSelect(voice);
-            setSelectedVoiceId(voice.name);
+            setSelectedVoiceId(voice.id);
           }}
         >
           {/* Full heart icon positioned at the top left */}
@@ -129,7 +134,6 @@ const FavoriteVoiceCards: React.FC<FavoriteVoiceCardsProps> = ({
             onClick={(e) => {
               e.stopPropagation(); // Prevent card click event
               handleFavorite(voice);
-              onFavoriteChange();
               refetchVoices();
             }}
           >
@@ -161,17 +165,17 @@ const FavoriteVoiceCards: React.FC<FavoriteVoiceCardsProps> = ({
               size="xs"
               type="button"
               onClick={() => {
-                if (isPlaying[voice.name]) {
-                  stopAudio(voice.name);
+                if (isPlaying[voice.id]) {
+                  stopAudio(voice.id);
                 } else {
                   playAudio(
                     (voice?.metadata?.preview_url as string) ?? "",
-                    voice.name,
+                    voice.id,
                   );
                 }
               }}
             >
-              {isPlaying[voice.name] ? (
+              {isPlaying[voice.id] ? (
                 <IconStop className="h-3 w-3 text-tertiary" />
               ) : (
                 <PlayIcon className="h-3 w-3" />

@@ -33,7 +33,7 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({
   onModelSelect,
   onFavoriteChange,
 }) => {
-  
+  console.log("Voices", voices);
   const [audio, setAudio] = React.useState<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = React.useState<Record<string, boolean>>({});
 
