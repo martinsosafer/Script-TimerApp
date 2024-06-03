@@ -16,7 +16,7 @@ function VoiceWidget({
   refreshSubscriptionData,
 }) {
   console.log("Favorite Voices", favoriteVoices);
-  const { data: allVoices } = api.voice.list.useQuery({ name: "" });
+  const { data: allVoices, refetch } = api.voice.list.useQuery({ name: "" });
 
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
@@ -102,17 +102,14 @@ function VoiceWidget({
   // Function to render pagination controls
   const renderPagination = () => {
     const pageNumbers = [];
-    const maxButtons = 4; // Define the maximum number of buttons to show
+    const maxButtons = 4;
 
-    // Calculate the starting page number based on the current page
     let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
 
-    // Adjust the starting page number if it's close to the end
     if (startPage + maxButtons > totalPages) {
       startPage = Math.max(1, totalPages - maxButtons + 1);
     }
 
-    // Generate page numbers
     for (
       let i = startPage;
       i < startPage + maxButtons && i <= totalPages;
@@ -215,6 +212,8 @@ function VoiceWidget({
           <FavoriteVoiceCards
             favoriteVoices={favoriteVoices}
             onModelSelect={onModelSelect}
+            onFavoriteChange={refreshSubscriptionData}
+            refetchVoices={refetch}
           />
         </div>
       ) : (

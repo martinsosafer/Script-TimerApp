@@ -1,11 +1,7 @@
 import React from "react";
 
 import { Button } from "@voiceai/ui";
-import {
-  IconHeart,
-  IconHeartFill,
-  IconStop,
-} from "@voiceai/ui/@/components/ui/icons";
+import { IconHeartFill, IconStop } from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 import { PlayIcon } from "@voiceai/ui/@/icons/icons";
 
@@ -20,44 +16,48 @@ interface FavoriteVoice {
     };
     preview_url?: string;
   };
+  id: string;
 }
 
 interface FavoriteVoiceCardsProps {
   favoriteVoices: FavoriteVoice[];
   onModelSelect: (voice: FavoriteVoice) => void;
+  onFavoriteChange: (updatedFavorites: FavoriteVoice[]) => void;
+  refetchVoices: () => void;
 }
 
 const FavoriteVoiceCards: React.FC<FavoriteVoiceCardsProps> = ({
   favoriteVoices,
   onModelSelect,
+  onFavoriteChange,
+  refetchVoices,
 }) => {
   const [audio, setAudio] = React.useState<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = React.useState<Record<string, boolean>>({});
   const [selectedVoiceId, setSelectedVoiceId] = React.useState<string | null>(
     null,
   );
-  const { mutateAsync: favoriteVoice, error } =
-    api.voice.favoriteVoice.useMutation({
-      onSuccess(data) {
-        if (data.success) {
-          toast({
-            title: "Voice favorited",
-            description: "The voice has been removed from your favorite list",
-          });
-        } else {
-          toast({
-            title: "Something went wrong",
-            description: "Please try again later",
-          });
-        }
-      },
-      onError(error) {
+  const { mutateAsync: favoriteVoice } = api.voice.favoriteVoice.useMutation({
+    onSuccess(data) {
+      if (data.success) {
+        toast({
+          title: "Voice favorited",
+          description: "The voice has been removed from your favorite list",
+        });
+      } else {
         toast({
           title: "Something went wrong",
           description: "Please try again later",
         });
-      },
-    });
+      }
+    },
+    onError() {
+      toast({
+        title: "Something went wrong",
+        description: "Please try again later",
+      });
+    },
+  });
 
   React.useEffect(() => {
     setAudio(new Audio()); // only call client
@@ -93,14 +93,16 @@ const FavoriteVoiceCards: React.FC<FavoriteVoiceCardsProps> = ({
     setIsPlaying((prevState) => ({ ...prevState, [voiceName]: false }));
   };
 
-  const handleFavorite = async (voice: Voice) => {
+  const handleFavorite = async (voice: FavoriteVoice) => {
     try {
       const response = await favoriteVoice({ voice });
       // Update the favorite status in the voice object based on the response
       if (response.success) {
-        voice.favorite = !voice.favorite; // Toggle the favorite status
+        const updatedFavorites = favoriteVoices.filter(
+          (v) => v.id !== voice.id,
+        );
+        onFavoriteChange(updatedFavorites);
       }
-      onFavoriteChange(voice);
     } catch (error) {
       console.error("Error adding favorite voice:", error);
     }
@@ -127,6 +129,8 @@ const FavoriteVoiceCards: React.FC<FavoriteVoiceCardsProps> = ({
             onClick={(e) => {
               e.stopPropagation(); // Prevent card click event
               handleFavorite(voice);
+              onFavoriteChange();
+              refetchVoices();
             }}
           >
             {" "}
