@@ -12,6 +12,7 @@ interface ChatHistoryProps {
   onClearChatHistory: () => void;
   setSelectedChatHistory: (arg: Chat | undefined) => void;
   setChatHistory: (value: Chat[]) => void;
+  setAssistantsResponse: (value: ChatMessage | undefined) => void;
 }
 
 export default function ChatHistory({
@@ -20,6 +21,7 @@ export default function ChatHistory({
   onClearChatHistory,
   setSelectedChatHistory,
   setChatHistory,
+  setAssistantsResponse,
 }: ChatHistoryProps) {
   const noChatHistory = chatHistory?.length === 0;
 
@@ -49,6 +51,9 @@ export default function ChatHistory({
                         tabIndex={0}
                         onClick={() => {
                           setSelectedChatHistory(item);
+                          setAssistantsResponse(
+                            item.messages[item.messages.length - 1],
+                          );
                           setMessages(item.messages);
                         }}
                         onKeyDown={(e) => {
