@@ -17,7 +17,7 @@ function VoiceWidget({
 }) {
   console.log("Favorite Voices", favoriteVoices);
   const { data: allVoices, refetch } = api.voice.list.useQuery({ name: "" });
-
+  console.log("Favorite Voices", favoriteVoices);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState(null);
@@ -221,6 +221,7 @@ function VoiceWidget({
           voices={voices}
           onModelSelect={onModelSelect}
           onFavoriteChange={refreshSubscriptionData}
+          favoriteVoices={favoriteVoices}
         />
       )}
       {/* Pagination controls */}
