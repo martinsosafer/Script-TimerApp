@@ -58,6 +58,7 @@ export function ScriptAI({}) {
   //Get subscription info
   const { data: subscriptionData, refetch } =
     api.subscription.mySubscription.useQuery();
+  console.log("SUBSINFO", subscriptionData);
   const [favoriteVoices, setFavoriteVoices] = React.useState([]);
 
   const isSubscriptionActive =
