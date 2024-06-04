@@ -66,7 +66,7 @@ export const {
     session: ({ session, user }) => {
       const subscription = {
         userId: user.id,
-        status: "CREATOR", // Example static data, replace this with actual subscription data
+        status: "FREE", // Example static data, replace this with actual subscription data
       };
 
       const updatedSession = {
@@ -82,5 +82,8 @@ export const {
 
       return updatedSession;
     },
+  },
+  authorized({ auth }) {
+    return !!auth?.user;
   },
 });
