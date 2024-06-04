@@ -82,8 +82,8 @@ export const {
 
       return updatedSession;
     },
-  },
-  authorized({ auth }) {
-    return !!auth?.user;
+    authorized({ auth }) {
+      return !!auth?.user;
+    },
   },
 });
