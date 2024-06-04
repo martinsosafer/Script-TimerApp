@@ -27,8 +27,6 @@ export { TRPCError } from "@trpc/server";
  */
 interface CreateContextOptions {
   session: Session | null;
-  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
-  subscription: unknown | null;
 }
 
 /**
@@ -43,7 +41,7 @@ interface CreateContextOptions {
 const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
     session: opts.session,
-    subscription: opts.subscription,
+
     db,
   };
 };
@@ -84,6 +82,7 @@ export const createTRPCContext = async (opts: {
 
   return createInnerTRPCContext({
     session,
+    //subscription: session?.user.subscription,
   });
 };
 

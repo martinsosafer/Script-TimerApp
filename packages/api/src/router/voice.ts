@@ -245,6 +245,7 @@ export const voiceRouter = createTRPCRouter({
     .input(
       z.object({
         voice: z.object({
+          id: z.string().min(1),
           external_id: z.string().min(1),
           name: z.string().min(1),
           picture: z.string(),
