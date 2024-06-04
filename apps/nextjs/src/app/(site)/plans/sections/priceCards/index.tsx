@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { api } from "~/utils/api";
 import type { PriceCardProps } from "../../types";
 import PriceCard from "./price-card";
 
@@ -10,7 +11,7 @@ const PriceCards: React.FC<PriceCardProps> = ({
   yearlyPlans,
 }) => {
   const [showMonthly, setShowMonthly] = useState(true);
-  console.log("monthly plans", monthlyPlans);
+  const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
 
   return (
     <>
@@ -57,12 +58,20 @@ const PriceCards: React.FC<PriceCardProps> = ({
           {showMonthly
             ? monthlyPlans.map((product) => (
                 // Render monthly plans
-                <PriceCard product={product} key={product.id} />
+                <PriceCard
+                  product={product}
+                  key={product.id}
+                  plan={subscriptionData}
+                />
               ))
             : yearlyPlans.map((product) => (
                 // Render yearly plans
 
-                <PriceCard product={product} key={product.id} />
+                <PriceCard
+                  product={product}
+                  key={product.id}
+                  plan={subscriptionData}
+                />
               ))}
         </div>
       </div>

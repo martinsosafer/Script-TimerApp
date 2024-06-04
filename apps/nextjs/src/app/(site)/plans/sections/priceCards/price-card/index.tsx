@@ -4,21 +4,24 @@ import { CheckIcon } from "@voiceai/ui/@/icons/icons";
 import CheckoutButton from "../check-out-button";
 
 interface Product {
-  product: {
-    id: string;
-    name: string;
-    description: string;
-    metadata: {
-      carddescription: string;
-      mostpopular: string;
-      price: number;
-      notincluded1: string | null;
-      notincluded2: string | null;
-      notincluded3: string | null;
-      notincluded4: string | null;
-    };
-    marketing_features: MarketingFeature[];
+  id: string;
+  name: string;
+  description: string;
+  metadata: {
+    carddescription: string;
+    mostpopular: string;
+    price: number;
+    notincluded1: string | null;
+    notincluded2: string | null;
+    notincluded3: string | null;
+    notincluded4: string | null;
   };
+  marketing_features: MarketingFeature[];
+}
+
+interface PriceCardProps {
+  product: Product;
+  plan: string;
 }
 
 interface MarketingFeature {
@@ -34,7 +37,7 @@ const descriptions: Record<string, string> = {
     "Tailored approach for growing businesses to improve scripts & voiceovers.",
 };
 
-export default function PriceCard({ product }: Product) {
+export default function PriceCard({ product, plan }: PriceCardProps) {
   return (
     <div
       key={product.id}
@@ -92,8 +95,7 @@ export default function PriceCard({ product }: Product) {
           </li>
         ))}
       </ul>
-
-      <CheckoutButton productId={product.id} />
+      <CheckoutButton productId={product.id} hasPlan={true} />
 
       <p className="mt-4 p-2 text-center text-xs text-gray-600">
         {descriptions[product.name]}

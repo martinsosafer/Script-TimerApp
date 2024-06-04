@@ -11,7 +11,7 @@ import { Toaster } from "@voiceai/ui/@/components/ui/toaster";
 import { IdentifyAnalytics } from "../analytics";
 import { TRPCReactProvider } from "../providers";
 import Footer from "./components/Footer/Footer";
-import Newnavbar from "./components/newnavbar";
+import Newnavbar from "./components/navbar";
 
 /**
  * Since we're passing `headers()` to the `TRPCReactProvider` we need to

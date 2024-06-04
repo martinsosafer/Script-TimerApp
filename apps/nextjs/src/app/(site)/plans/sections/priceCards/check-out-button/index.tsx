@@ -4,9 +4,10 @@ import React from "react";
 
 interface CheckoutButtonProps {
   productId: string; // Changed from priceId to productId to match the product ID
+  hasPlan: boolean;
 }
 
-function CheckoutButton({ productId }: CheckoutButtonProps) {
+function CheckoutButton({ productId, hasPlan }: CheckoutButtonProps) {
   return (
     <button
       className="mt-8 block  bg-orange-400 px-6 py-4 text-center text-lg font-semibold leading-4 text-black shadow-md transition duration-300 ease-in-out hover:bg-tertiary"
