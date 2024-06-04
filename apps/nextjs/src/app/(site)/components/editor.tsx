@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import ArrowUTurnLeftIcon from "@heroicons/react/24/outline/ArrowUturnLeftIcon";
 import ArrowUTurnRightIcon from "@heroicons/react/24/outline/ArrowUturnRightIcon";
-import ClipboardIcon from "@heroicons/react/24/outline/ClipboardIcon";
 import {
   FontBoldIcon,
   FontItalicIcon,
@@ -34,7 +33,6 @@ import { api } from "~/utils/api";
 
 interface TextEditorProps {
   className?: string;
-
   onChange: (content: string) => void;
   updatedContent?: string;
   scriptLoaded: boolean;
@@ -46,9 +44,11 @@ function TextEditor({
   className,
   updatedContent,
   scriptLoaded,
+  script,
 }: TextEditorProps) {
   const [charCount, setCharCount] = useState(0);
   const [showCharCount, setShowCharCount] = useState(true);
+  const [localContent, setLocalContent] = useState(script);
   const { scriptId } = useParams();
   const { data: scriptDetails } = api.script.get.useQuery(
     { id: scriptId?.[0] ?? "" },
@@ -57,28 +57,32 @@ function TextEditor({
   const editorKey = scriptId?.[0] ?? "default";
 
   const editor = useEditor({
-    extensions: [
-      Document,
-      History,
-      Paragraph,
-      Text,
-      Bold,
-      Underline,
-      Italic,
-      Typography,
-      BulletList,
-      ListItem,
-      Heading.configure({
-        levels: [1, 2, 3, 4],
-      }),
-      CharacterCount.configure({}),
-      Placeholder.configure({
-        emptyEditorClass: "is-editor-empty",
-        placeholder: scriptLoaded
-          ? ""
-          : "1. Add your script here\n2. Choose the voice actor you like\n3. You can quickly check spelling and grammar",
-      }),
-    ],
+    extensions: useMemo(
+      () => [
+        Document,
+        History,
+        Paragraph,
+        Text,
+        Bold,
+        Underline,
+        Italic,
+        Typography,
+        BulletList,
+        ListItem,
+        Heading.configure({
+          levels: [1, 2, 3, 4],
+        }),
+        CharacterCount.configure({}),
+        Placeholder.configure({
+          emptyEditorClass: "is-editor-empty",
+          placeholder: scriptLoaded
+            ? ""
+            : "1. Add your script here\n2. Choose the voice actor you like\n3. You can quickly check spelling and grammar",
+        }),
+      ],
+      [scriptLoaded],
+    ),
+    content: localContent,
     editorProps: {
       attributes: {
         class:
@@ -88,11 +92,19 @@ function TextEditor({
         return text.toUpperCase();
       },
     },
-    onUpdate: ({ editor }) => {
-      onChange(editor.getText()); //so it only gets the string for creating a script
-      onChange(editor.getHTML()); // so it also get the styles when loading a chat
-      setCharCount(editor.getCharacterCount());
-    },
+    onUpdate: useCallback(
+      ({ editor }) => {
+        const text = editor.getText();
+        setLocalContent(text);
+        setCharCount(text.length);
+
+        // Throttle or debounce onChange calls here
+        const handleUpdate = () => onChange(text);
+        const debounceUpdate = debounce(handleUpdate, 300); // Adjust the debounce delay as needed
+        debounceUpdate();
+      },
+      [onChange],
+    ),
   })!;
 
   useEffect(() => {
@@ -107,20 +119,6 @@ function TextEditor({
     }
   }, [updatedContent, editor]);
 
-  const toggleCharCountDisplay = useCallback(() => {
-    setShowCharCount(!showCharCount);
-  }, [showCharCount]);
-
-  const copyToClipboard = useCallback(() => {
-    if (editor && navigator.clipboard) {
-      const content = editor.getText();
-      navigator.clipboard
-        .writeText(content)
-        .then(() => console.log("Content copied to clipboard"))
-        .catch((err) => console.error("Failed to copy content", err));
-    }
-  }, [editor]);
-
   const toggleBold = useCallback(() => {
     editor.chain().focus().toggleBold().run();
   }, [editor]);
@@ -131,6 +129,16 @@ function TextEditor({
 
   const toggleItalic = useCallback(() => {
     editor.chain().focus().toggleItalic().run();
+  }, [editor]);
+
+  const copyToClipboard = useCallback(() => {
+    if (editor && navigator.clipboard) {
+      const content = editor.getText();
+      navigator.clipboard
+        .writeText(content)
+        .then(() => console.log("Content copied to clipboard"))
+        .catch((err) => console.error("Failed to copy content", err));
+    }
   }, [editor]);
 
   if (!editor) {
@@ -182,13 +190,6 @@ function TextEditor({
           >
             <FontItalicIcon className="h-5 w-5" />
           </Button>
-          {/* <Button
-            variant="ghost"
-            className="rounded-full border border-slate-500 bg-white"
-            onClick={toggleCharCountDisplay}
-          >
-            Character count
-          </Button> */}
         </div>
         <div className="flex gap-1">
           <Button
@@ -225,6 +226,7 @@ function TextEditor({
           className="h-full"
           style={{ wordWrap: "break-word" }}
         />
+
         {showCharCount && (
           <div className="absolute bottom-0 right-0 mb-2 mr-3 text-sm text-gray-600">
             {charCount}
@@ -233,6 +235,15 @@ function TextEditor({
       </div>
     </div>
   );
+}
+
+// Debounce function to limit the rate of onChange calls
+function debounce(func, wait) {
+  let timeout;
+  return function (...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), wait);
+  };
 }
 
 export { TextEditor };
