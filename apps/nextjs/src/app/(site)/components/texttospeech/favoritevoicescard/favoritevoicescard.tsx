@@ -25,17 +25,23 @@ interface FavoriteVoice {
 interface FavoriteVoiceCardsProps {
   favoriteVoices: FavoriteVoice[];
   onModelSelect: (voice: FavoriteVoice) => void;
+  refetchVoices: () => void;
+  onFavoriteChange: (updatedFavorites: FavoriteVoice[]) => void;
 }
 
 const FavoriteVoiceCards: React.FC<FavoriteVoiceCardsProps> = ({
   favoriteVoices,
   onModelSelect,
+  refetchVoices,
+  onFavoriteChange,
 }) => {
   const [audio, setAudio] = React.useState<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = React.useState<Record<string, boolean>>({});
   const [selectedVoiceId, setSelectedVoiceId] = React.useState<string | null>(
     null,
   );
+  console.log("FavoriteVoices", favoriteVoices);
+
   const { mutateAsync: favoriteVoice, error } =
     api.voice.favoriteVoice.useMutation({
       onSuccess(data) {
@@ -76,31 +82,32 @@ const FavoriteVoiceCards: React.FC<FavoriteVoiceCardsProps> = ({
     }
   }, [favoriteVoices, selectedVoiceId, onModelSelect]);
 
-  const playAudio = (audioSrc: string, voiceName: string) => {
+  const playAudio = (audioSrc: string, voiceId: string) => {
     if (!audio) return;
     audio.src = audioSrc;
     audio.play();
-    setIsPlaying((prevState) => ({ ...prevState, [voiceName]: true }));
+    setIsPlaying((prevState) => ({ ...prevState, [voiceId]: true }));
     audio.addEventListener("ended", () => {
-      setIsPlaying((prevState) => ({ ...prevState, [voiceName]: false }));
+      setIsPlaying((prevState) => ({ ...prevState, [voiceId]: false }));
     });
   };
-
-  const stopAudio = (voiceName: string) => {
+  const stopAudio = (voiceId: string) => {
     if (!audio) return;
     audio.pause();
     audio.currentTime = 0;
-    setIsPlaying((prevState) => ({ ...prevState, [voiceName]: false }));
+    setIsPlaying((prevState) => ({ ...prevState, [voiceId]: false }));
   };
 
-  const handleFavorite = async (voice: Voice) => {
+  const handleFavorite = async (voice: FavoriteVoice) => {
     try {
       const response = await favoriteVoice({ voice });
       // Update the favorite status in the voice object based on the response
       if (response.success) {
-        voice.favorite = !voice.favorite; // Toggle the favorite status
+        const updatedFavorites = favoriteVoices.filter(
+          (v) => v.id !== voice.id,
+        );
+        onFavoriteChange(updatedFavorites);
       }
-      onFavoriteChange(voice);
     } catch (error) {
       console.error("Error adding favorite voice:", error);
     }
@@ -110,15 +117,15 @@ const FavoriteVoiceCards: React.FC<FavoriteVoiceCardsProps> = ({
     <div className="grid grid-cols-2 gap-4">
       {favoriteVoices?.map((voice) => (
         <div
-          key={voice.name}
+          key={voice.id}
           className={`relative mb-2 cursor-pointer rounded-lg bg-white shadow-sm dark:bg-slate-500 dark:text-secondary-foreground ${
-            voice.name === selectedVoiceId
+            voice.id === selectedVoiceId
               ? "border-2 border-primary bg-blue-300 dark:border-white"
               : ""
           }`}
           onClick={() => {
             onModelSelect(voice);
-            setSelectedVoiceId(voice.name);
+            setSelectedVoiceId(voice.id);
           }}
         >
           {/* Full heart icon positioned at the top left */}
@@ -127,6 +134,7 @@ const FavoriteVoiceCards: React.FC<FavoriteVoiceCardsProps> = ({
             onClick={(e) => {
               e.stopPropagation(); // Prevent card click event
               handleFavorite(voice);
+              refetchVoices();
             }}
           >
             {" "}
@@ -157,17 +165,17 @@ const FavoriteVoiceCards: React.FC<FavoriteVoiceCardsProps> = ({
               size="xs"
               type="button"
               onClick={() => {
-                if (isPlaying[voice.name]) {
-                  stopAudio(voice.name);
+                if (isPlaying[voice.id]) {
+                  stopAudio(voice.id);
                 } else {
                   playAudio(
                     (voice?.metadata?.preview_url as string) ?? "",
-                    voice.name,
+                    voice.id,
                   );
                 }
               }}
             >
-              {isPlaying[voice.name] ? (
+              {isPlaying[voice.id] ? (
                 <IconStop className="h-3 w-3 text-tertiary" />
               ) : (
                 <PlayIcon className="h-3 w-3" />

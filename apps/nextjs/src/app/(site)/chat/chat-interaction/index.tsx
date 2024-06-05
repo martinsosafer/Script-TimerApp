@@ -108,6 +108,7 @@ export default function ChatInteraction({ userId }: { userId: string }) {
       const data = (await response.json()) as Chat;
       setMessages(data.messages);
       setSelectedChatHistory(data);
+      console.log("DATA", data);
       setAssistantsResponse(data.messages[data.messages?.length - 1]);
       setIsLoading(false);
     } catch (err) {
@@ -148,6 +149,7 @@ export default function ChatInteraction({ userId }: { userId: string }) {
             setIsDeletingHistory={setIsDeletingHistory}
             setSelectedChatHistory={setSelectedChatHistory}
             loadingMessages={isLoading}
+            setAssistantsResponse={setAssistantsResponse}
           />
           <GoToOldChat />
           {isDeletingHistory && (

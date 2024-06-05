@@ -26,21 +26,25 @@ interface Voice {
 interface VoiceCardsProps {
   voices: Voice[];
   onModelSelect: (voice: Voice) => void;
+  onFavoriteChange: () => void;
+  favoriteVoices: Voice[];
 }
 
 const VoiceCards: React.FC<VoiceCardsProps> = ({
   voices,
   onModelSelect,
   onFavoriteChange,
+  favoriteVoices,
 }) => {
   console.log("Voices", voices);
+  console.log("favorite voices", favoriteVoices);
   const [audio, setAudio] = React.useState<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = React.useState<Record<string, boolean>>({});
 
   const [selectedVoiceId, setSelectedVoiceId] = React.useState<string | null>(
     null,
   );
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
   const { mutateAsync: favoriteVoice, error } =
     api.voice.favoriteVoice.useMutation({
       onSuccess(data) {
@@ -63,6 +67,7 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({
         });
       },
     });
+
   React.useEffect(() => {
     setAudio(new Audio()); // only call client
 
@@ -85,12 +90,16 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({
       setIsPlaying((prevState) => ({ ...prevState, [voiceId]: false }));
     });
   };
+
   const stopAudio = (voiceId: string) => {
     if (!audio) return;
     audio.pause();
     audio.currentTime = 0;
     setIsPlaying((prevState) => ({ ...prevState, [voiceId]: false }));
   };
+
+  const isFavorite = (voiceId: string) =>
+    favoriteVoices.some((favoriteVoice) => favoriteVoice.id === voiceId);
   const handleFavorite = async (voice: Voice) => {
     try {
       const response = await favoriteVoice({ voice });
@@ -102,6 +111,7 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({
       console.error("Error adding favorite voice:", error);
     }
   };
+
   return (
     <div className="grid grid-cols-2 gap-4">
       {voices?.map((voice) => (
@@ -124,7 +134,7 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({
               handleFavorite(voice);
             }}
           >
-            {voice.favorite ? (
+            {isFavorite(voice.id) ? (
               <IconHeartFill className="h-5 w-5 text-primary" />
             ) : (
               <IconHeart className="h-5 w-5 text-primary" />
