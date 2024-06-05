@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { IconUserRound, IconWallet } from "@voiceai/ui/@/components/ui/icons";
 
@@ -9,6 +10,7 @@ export default function ProfileNavItem({
   signOut: () => Promise<null>;
   plan: string | undefined;
 }) {
+  const router = useRouter();
   return (
     <div className="group relative">
       <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white">
@@ -62,6 +64,7 @@ export default function ProfileNavItem({
             className="group/signout flex items-center py-2 font-semibold"
             onClick={async () => {
               await signOut();
+              router.push("/");
             }}
           >
             <span className="mr-2 font-poppins group-hover/signout:opacity-60">

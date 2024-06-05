@@ -1,31 +1,13 @@
 import { IconXCircle } from "@voiceai/ui/@/components/ui/icons";
 import { CheckIcon } from "@voiceai/ui/@/icons/icons";
 
+import { hasValidPlan } from "~/app/(site)/siteUtils";
+import type { Product } from "../../../types";
 import CheckoutButton from "../check-out-button";
-
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  metadata: {
-    carddescription: string;
-    mostpopular: string;
-    price: number;
-    notincluded1: string | null;
-    notincluded2: string | null;
-    notincluded3: string | null;
-    notincluded4: string | null;
-  };
-  marketing_features: MarketingFeature[];
-}
 
 interface PriceCardProps {
   product: Product;
   plan: string;
-}
-
-interface MarketingFeature {
-  name: string;
 }
 
 const descriptions: Record<string, string> = {
@@ -95,7 +77,10 @@ export default function PriceCard({ product, plan }: PriceCardProps) {
           </li>
         ))}
       </ul>
-      <CheckoutButton productId={product.id} hasPlan={true} />
+      <CheckoutButton
+        productId={product.id}
+        hasPlan={hasValidPlan(product.name)}
+      />
 
       <p className="mt-4 p-2 text-center text-xs text-gray-600">
         {descriptions[product.name]}

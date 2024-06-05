@@ -48,9 +48,7 @@ export default function Layout(props: { children: React.ReactNode }) {
       <div className="flex min-h-screen w-full flex-col justify-between bg-background">
         <TRPCReactProvider headers={headers()}>
           <Newnavbar signOut={signOutServer} />
-          {/* <Menu signOut={signOutServer} /> */}
           <div>
-            {/* <Sidebar playlists={playlists} className="hidden lg:block" /> */}
             <div>{props.children}</div>
           </div>
           <Toaster />

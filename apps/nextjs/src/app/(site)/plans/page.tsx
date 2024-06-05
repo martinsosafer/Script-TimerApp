@@ -2,6 +2,8 @@ import React from "react";
 import type { Metadata } from "next";
 import { Stripe } from "stripe";
 
+import { auth } from "@voiceai/auth";
+
 import PlansSections from "./sections";
 import type { Product } from "./types";
 
@@ -74,6 +76,7 @@ async function loadProducts() {
 
 async function PlansPage() {
   const { monthlyPlans, yearlyPlans } = await loadProducts();
+  const session = await auth();
 
   return (
     <div className="flex w-full flex-col items-center">
@@ -90,7 +93,11 @@ async function PlansPage() {
           Save up to 35% on yearly plans!
         </span>
       </div>
-      <PlansSections monthlyPlans={monthlyPlans} yearlyPlans={yearlyPlans} />
+      <PlansSections
+        monthlyPlans={monthlyPlans}
+        yearlyPlans={yearlyPlans}
+        currentPlan={session?.user.subscription?.status}
+      />
     </div>
   );
 }

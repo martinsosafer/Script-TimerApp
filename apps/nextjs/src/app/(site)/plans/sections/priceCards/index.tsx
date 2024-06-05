@@ -9,6 +9,7 @@ import PriceCard from "./price-card";
 const PriceCards: React.FC<PriceCardProps> = ({
   monthlyPlans,
   yearlyPlans,
+  currentPlan,
 }) => {
   const [showMonthly, setShowMonthly] = useState(true);
   const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
@@ -62,6 +63,7 @@ const PriceCards: React.FC<PriceCardProps> = ({
                   product={product}
                   key={product.id}
                   plan={subscriptionData}
+                  currentPlan={currentPlan}
                 />
               ))
             : yearlyPlans.map((product) => (
@@ -71,6 +73,7 @@ const PriceCards: React.FC<PriceCardProps> = ({
                   product={product}
                   key={product.id}
                   plan={subscriptionData}
+                  currentPlan={currentPlan}
                 />
               ))}
         </div>

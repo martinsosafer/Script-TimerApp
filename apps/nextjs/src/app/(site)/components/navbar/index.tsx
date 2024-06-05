@@ -18,6 +18,7 @@ import {
 } from "@voiceai/ui/@/components/ui/icons";
 
 import { api } from "~/utils/api";
+import { hasValidPlan } from "../../siteUtils";
 import MobileNavBar from "../mobile-navbar";
 import LearnNavItem from "./learn-nav-item";
 import PlansNavItem from "./plans-nav-item";
@@ -41,12 +42,7 @@ export default function NewNavBar({
   };
   //Get subscription info
   const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
-  const isSubscriptionActive =
-    subscriptionData &&
-    (subscriptionData.status === "STUDENT" ||
-      subscriptionData.status === "CREATOR" ||
-      subscriptionData.status === "BUSINESS" ||
-      subscriptionData.status === "FREE_TRIAL");
+
   return (
     <header className=" sticky top-0 z-50 flex h-16 w-full items-center justify-between bg-primary px-8">
       <Link
@@ -64,12 +60,12 @@ export default function NewNavBar({
           <HoverCard>
             <HoverCardTrigger asChild>
               <li
-                className={`group relative px-3 py-2 text-primary-foreground ${!isSubscriptionActive && "pointer-events-none opacity-50"}`}
+                className={`group relative px-3 py-2 text-primary-foreground ${!hasValidPlan(subscriptionData?.status) && "pointer-events-none opacity-50"}`}
               >
                 <ScriptCoachNavItem />
               </li>
             </HoverCardTrigger>
-            {!isSubscriptionActive && (
+            {!hasValidPlan(subscriptionData?.status) && (
               <HoverCardContent>
                 <p>This section is only available for paying users.</p>
               </HoverCardContent>
