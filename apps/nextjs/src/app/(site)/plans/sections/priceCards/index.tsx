@@ -10,7 +10,6 @@ const PriceCards: React.FC<PriceCardProps> = ({
   yearlyPlans,
 }) => {
   const [showMonthly, setShowMonthly] = useState(true);
-  console.log("monthly plans", monthlyPlans);
 
   return (
     <>
