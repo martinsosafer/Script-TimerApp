@@ -40,7 +40,6 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({
   console.log("favorite voices", favoriteVoices);
   const [audio, setAudio] = React.useState<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = React.useState<Record<string, boolean>>({});
-
   const [selectedVoiceId, setSelectedVoiceId] = React.useState<string | null>(
     null,
   );
@@ -97,9 +96,16 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({
     audio.currentTime = 0;
     setIsPlaying((prevState) => ({ ...prevState, [voiceId]: false }));
   };
-
+  const stopAllAudio = () => {
+    if (audio) {
+      audio.pause();
+      audio.currentTime = 0;
+      setIsPlaying({});
+    }
+  };
   const isFavorite = (voiceId: string) =>
     favoriteVoices.some((favoriteVoice) => favoriteVoice.id === voiceId);
+
   const handleFavorite = async (voice: Voice) => {
     try {
       const response = await favoriteVoice({ voice });
@@ -109,6 +115,20 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({
       }
     } catch (error) {
       console.error("Error adding favorite voice:", error);
+    }
+  };
+
+  const handleVoiceCardClick = (voice: Voice) => {
+    stopAllAudio();
+    if (selectedVoiceId === voice.id) {
+      if (isPlaying[voice.id]) {
+        stopAudio(voice.id);
+      } else {
+        playAudio((voice?.metadata?.preview_url as string) ?? "", voice.id);
+      }
+    } else {
+      onModelSelect(voice);
+      setSelectedVoiceId(voice.id);
     }
   };
 
@@ -122,10 +142,7 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({
               ? "border-2 border-primary bg-blue-300 dark:border-white"
               : ""
           }`}
-          onClick={() => {
-            onModelSelect(voice);
-            setSelectedVoiceId(voice.id);
-          }}
+          onClick={() => handleVoiceCardClick(voice)}
         >
           <button
             className="absolute left-0 top-0 rounded-full p-1"
@@ -156,22 +173,8 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({
                 {voice.metadata.labels.gender ?? "Unknown"}
               </p>
             </div>
-            <Button
-              className="ml-auto rounded-full"
-              size="xs"
-              type="button"
-              onClick={() => {
-                if (isPlaying[voice.id]) {
-                  stopAudio(voice.id);
-                } else {
-                  playAudio(
-                    (voice?.metadata?.preview_url as string) ?? "",
-                    voice.id,
-                  );
-                }
-              }}
-            >
-              {isPlaying[voice.id] ? (
+            <Button className="ml-auto rounded-full" size="xs" type="button">
+              {selectedVoiceId === voice.id && isPlaying[voice.id] ? (
                 <IconStop className="h-3 w-3 text-tertiary" />
               ) : (
                 <PlayIcon className="h-3 w-3" />
