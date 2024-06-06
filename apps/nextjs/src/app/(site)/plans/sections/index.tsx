@@ -1,3 +1,6 @@
+"use client";
+
+import { api } from "~/utils/api";
 import type { PriceCardProps } from "../types";
 import FAQs from "./faqs";
 import PriceCards from "./priceCards";
@@ -5,16 +8,15 @@ import PriceCards from "./priceCards";
 export default function PlansSections({
   monthlyPlans,
   yearlyPlans,
-  currentPlan,
 }: PriceCardProps) {
-  console.log("subscription data", currentPlan);
+  const { data } = api.subscription.mySubscription.useQuery();
 
   return (
     <>
       <PriceCards
         monthlyPlans={monthlyPlans}
         yearlyPlans={yearlyPlans}
-        currentPlan={currentPlan}
+        currentPlan={data?.status}
       />
       <FAQs />
     </>

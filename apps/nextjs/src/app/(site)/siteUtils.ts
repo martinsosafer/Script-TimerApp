@@ -4,5 +4,7 @@ export function hasValidPlan(plan: string | undefined) {
     plan === "CREATOR" ||
     plan === "BUSINESS" ||
     plan === "FREE_TRIAL";
+
+  console.log("function plan", isSubscriptionActive);
   return isSubscriptionActive;
 }

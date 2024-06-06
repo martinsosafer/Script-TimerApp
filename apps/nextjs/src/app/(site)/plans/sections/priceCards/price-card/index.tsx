@@ -1,13 +1,12 @@
 import { IconXCircle } from "@voiceai/ui/@/components/ui/icons";
 import { CheckIcon } from "@voiceai/ui/@/icons/icons";
 
-import { hasValidPlan } from "~/app/(site)/siteUtils";
 import type { Product } from "../../../types";
 import CheckoutButton from "../check-out-button";
 
 interface PriceCardProps {
   product: Product;
-  plan: string;
+  currentPlan: string | undefined;
 }
 
 const descriptions: Record<string, string> = {
@@ -19,7 +18,13 @@ const descriptions: Record<string, string> = {
     "Tailored approach for growing businesses to improve scripts & voiceovers.",
 };
 
-export default function PriceCard({ product, plan }: PriceCardProps) {
+const productNames: Record<string, string> = {
+  "Student Plan": "STUDENT",
+  "Creator Plan": "CREATOR",
+  "Business Plan": "BUSINESS",
+};
+
+export default function PriceCard({ product, currentPlan }: PriceCardProps) {
   return (
     <div
       key={product.id}
@@ -79,7 +84,7 @@ export default function PriceCard({ product, plan }: PriceCardProps) {
       </ul>
       <CheckoutButton
         productId={product.id}
-        hasPlan={hasValidPlan(product.name)}
+        hasPlan={productNames[product.name] === currentPlan}
       />
 
       <p className="mt-4 p-2 text-center text-xs text-gray-600">
