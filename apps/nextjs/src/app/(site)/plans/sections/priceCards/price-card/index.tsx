@@ -35,7 +35,7 @@ export default function PriceCard({ product, currentPlan }: PriceCardProps) {
           {product.name}
         </h3>
         {product.metadata.mostpopular === "True" && (
-          <p className="absolute top-0 -translate-y-1/2 rounded-full bg-tertiary px-3 py-0.5 text-sm font-semibold tracking-wide text-white shadow-md">
+          <p className="absolute top-0 -translate-y-1/2 rounded-full bg-tertiary px-3 py-0.5 text-lg font-semibold tracking-wide text-white shadow-md">
             Most Popular
           </p>
         )}
