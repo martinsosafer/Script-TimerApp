@@ -32,11 +32,16 @@ import {
 import { api } from "~/utils/api";
 import MobileNavBar from "./mobile-navbar";
 
-export default function newnavbar({
-  signOut,
-}: {
+interface Subscription {
+  userId: string;
+  status: string;
+}
+
+interface Props {
   signOut: () => Promise<null>;
-}) {
+  subData: Subscription | null;
+}
+const Newnavbar: React.FC<Props> = ({ signOut, subData }) => {
   const { theme, setTheme } = useTheme();
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
@@ -47,13 +52,12 @@ export default function newnavbar({
     setOpen((prevOpen) => !prevOpen);
   };
   //Get subscription info
-  const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
+
   const isSubscriptionActive =
-    subscriptionData &&
-    (subscriptionData.status === "STUDENT" ||
-      subscriptionData.status === "CREATOR" ||
-      subscriptionData.status === "BUSINESS" ||
-      subscriptionData.status === "FREE_TRIAL");
+    subData &&
+    (subData.status === "STUDENT" ||
+      subData.status === "CREATOR" ||
+      subData.status === "BUSINESS");
   return (
     <header className=" sticky top-0 z-50 flex h-16 w-full items-center justify-between bg-primary">
       <Link
@@ -342,4 +346,5 @@ export default function newnavbar({
       </AnimatePresence>
     </header>
   );
-}
+};
+export default Newnavbar;

@@ -9,6 +9,7 @@ import { headers } from "next/headers";
 import { Toaster } from "@voiceai/ui/@/components/ui/toaster";
 
 import { IdentifyAnalytics } from "../analytics";
+import { getSession } from "../api/subscription/subscription";
 import { TRPCReactProvider } from "../providers";
 import Footer from "./components/Footer/Footer";
 import Newnavbar from "./components/newnavbar";
@@ -36,18 +37,20 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Layout(props: { children: React.ReactNode }) {
+export default async function Layout(props: { children: React.ReactNode }) {
   async function signOutServer() {
     "use server";
     await signOut();
     return null;
   }
+  const session = await getSession();
+  const subData = session?.subscription;
 
   return (
     <>
       <div className="flex min-h-screen w-full flex-col justify-between bg-background">
         <TRPCReactProvider headers={headers()}>
-          <Newnavbar signOut={signOutServer} />
+          <Newnavbar signOut={signOutServer} subData={subData} />
           {/* <Menu signOut={signOutServer} /> */}
           <div>
             {/* <Sidebar playlists={playlists} className="hidden lg:block" /> */}
