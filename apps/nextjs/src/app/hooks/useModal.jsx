@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-const useModal = (isSubscriptionActive) => {
-  const [showModal, setModal] = useState(!isSubscriptionActive); // Show modal if not subscribed
+const useModal = () => {
+  const [showModal, setModal] = useState(false); // Initialize modal state to false
 
-  useEffect(() => {
-    setModal(!isSubscriptionActive); // Update modal visibility when subscription status changes
-  }, [isSubscriptionActive]);
+  const openModal = () => {
+    setModal(true);
+  };
 
   const closeModal = () => {
     setModal(false);
@@ -13,6 +13,7 @@ const useModal = (isSubscriptionActive) => {
 
   return {
     showModal,
+    openModal,
     closeModal,
   };
 };

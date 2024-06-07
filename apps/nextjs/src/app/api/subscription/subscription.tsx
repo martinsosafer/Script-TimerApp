@@ -4,7 +4,7 @@ import { db, eq, schema } from "@voiceai/db";
 // Define the interfaces for the session data
 interface Subscription {
   userId: string;
-  status: string;
+  status: string | null;
 }
 
 interface User {
