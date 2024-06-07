@@ -50,12 +50,8 @@ export default async function Layout(props: { children: React.ReactNode }) {
     <>
       <div className="flex min-h-screen w-full flex-col justify-between bg-background">
         <TRPCReactProvider headers={headers()}>
-<<<<<<< HEAD
           <Newnavbar signOut={signOutServer} subData={subData} />
           {/* <Menu signOut={signOutServer} /> */}
-=======
-          <Newnavbar signOut={signOutServer} />
->>>>>>> ef169d70805637602d7ac71c4562abfd7118327f
           <div>
             <div>{props.children}</div>
           </div>
