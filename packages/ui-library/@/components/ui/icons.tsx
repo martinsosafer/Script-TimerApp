@@ -1439,7 +1439,6 @@ function IconCaretDown({ className, ...props }: React.ComponentProps<"svg">) {
   );
 }
 
-export default IconUserRound;
 function TwitterIcon({ className, ...props }: React.ComponentProps<"svg">) {
   return (
     <svg

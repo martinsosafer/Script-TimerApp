@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 
 import type { PriceCardProps } from "../../types";
@@ -8,18 +6,19 @@ import PriceCard from "./price-card";
 const PriceCards: React.FC<PriceCardProps> = ({
   monthlyPlans,
   yearlyPlans,
+  currentPlan,
 }) => {
   const [showMonthly, setShowMonthly] = useState(true);
 
   return (
     <>
       <div className="mt-8 flex justify-center space-x-4">
-        <div className="rounded-full bg-primary">
+        <div className="flex gap-2 rounded-full border-2 border-gray-500 p-2">
           <button
             className={`${
               showMonthly
-                ? "rounded-full border-4 border-primary bg-blue-500 text-white"
-                : "rounded-full border-4 border-primary bg-gray-200 text-gray-700"
+                ? "rounded-full bg-primary font-bold text-white"
+                : "rounded-full bg-gray-200 text-gray-400"
             } relative overflow-hidden px-4 py-2 transition-colors duration-300`}
             onClick={() => setShowMonthly(true)}
           >
@@ -33,8 +32,8 @@ const PriceCards: React.FC<PriceCardProps> = ({
           <button
             className={`${
               !showMonthly
-                ? "rounded-full border-4 border-primary bg-blue-500 text-white"
-                : "rounded-full border-4 border-primary bg-gray-200 text-gray-700"
+                ? "rounded-full bg-primary font-semibold text-white"
+                : "rounded-full bg-gray-200 text-gray-400"
             } relative overflow-hidden px-4 py-2 transition-colors duration-300`}
             onClick={() => setShowMonthly(false)}
           >
@@ -56,12 +55,20 @@ const PriceCards: React.FC<PriceCardProps> = ({
           {showMonthly
             ? monthlyPlans.map((product) => (
                 // Render monthly plans
-                <PriceCard product={product} key={product.id} />
+                <PriceCard
+                  product={product}
+                  key={product.id}
+                  currentPlan={currentPlan}
+                />
               ))
             : yearlyPlans.map((product) => (
                 // Render yearly plans
 
-                <PriceCard product={product} key={product.id} />
+                <PriceCard
+                  product={product}
+                  key={product.id}
+                  currentPlan={currentPlan}
+                />
               ))}
         </div>
       </div>
