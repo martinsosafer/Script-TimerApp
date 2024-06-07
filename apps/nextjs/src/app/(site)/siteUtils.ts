@@ -1,0 +1,10 @@
+export function hasValidPlan(plan: string | undefined) {
+  const isSubscriptionActive =
+    plan === "STUDENT" ||
+    plan === "CREATOR" ||
+    plan === "BUSINESS" ||
+    plan === "FREE_TRIAL";
+
+  console.log("function plan", isSubscriptionActive);
+  return isSubscriptionActive;
+}

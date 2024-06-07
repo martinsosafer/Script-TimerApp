@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 
 import { nanoid } from "~/utils/helpers";
-// import LeftMenu from "../components/chat/leftmenuchat";
-import { SidebarDesktop } from "../components/sidebar-desktop";
 import { Chat } from "./chat/chat";
 
 export const metadata: Metadata = {

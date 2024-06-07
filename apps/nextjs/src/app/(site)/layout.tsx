@@ -12,7 +12,7 @@ import { IdentifyAnalytics } from "../analytics";
 import { getSession } from "../api/subscription/subscription";
 import { TRPCReactProvider } from "../providers";
 import Footer from "./components/Footer/Footer";
-import Newnavbar from "./components/newnavbar";
+import Newnavbar from "./components/navbar";
 
 /**
  * Since we're passing `headers()` to the `TRPCReactProvider` we need to
@@ -50,10 +50,13 @@ export default async function Layout(props: { children: React.ReactNode }) {
     <>
       <div className="flex min-h-screen w-full flex-col justify-between bg-background">
         <TRPCReactProvider headers={headers()}>
+<<<<<<< HEAD
           <Newnavbar signOut={signOutServer} subData={subData} />
           {/* <Menu signOut={signOutServer} /> */}
+=======
+          <Newnavbar signOut={signOutServer} />
+>>>>>>> ef169d70805637602d7ac71c4562abfd7118327f
           <div>
-            {/* <Sidebar playlists={playlists} className="hidden lg:block" /> */}
             <div>{props.children}</div>
           </div>
           <Toaster />

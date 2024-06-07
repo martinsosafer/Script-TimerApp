@@ -1,6 +1,6 @@
 import React from "react";
 
-import IconUserRound from "@voiceai/ui/@/components/ui/icons";
+import { IconUserRound } from "@voiceai/ui/@/components/ui/icons";
 
 const SelectedModelCard = ({ selectedModel }) => {
   return (
