@@ -56,6 +56,7 @@ import { ToggleLibrary } from "../../components/toggle-voice-library";
 
 export function ScriptAI({}) {
   //Get subscription info
+
   const { data: subscriptionData, refetch } =
     api.subscription.mySubscription.useQuery();
   console.log("SUBSINFO", subscriptionData);
@@ -64,7 +65,8 @@ export function ScriptAI({}) {
   const isSubscriptionActive =
     subscriptionData &&
     (subscriptionData.status === "CREATOR" ||
-      subscriptionData.status === "STUDENT");
+      subscriptionData.status === "STUDENT" ||
+      subscriptionData.status === "BUSINESS");
 
   React.useEffect(() => {
     if (subscriptionData?.favorite_voices) {
@@ -568,9 +570,6 @@ export function ScriptAI({}) {
       {/* {(!isSubscriptionActive || showModal) && (
         <Modal isOpen={showModal} onClose={closeModal} />
       )} */}
-      {showDailyModal && !isSubscriptionActive && (
-        <FreeModal onClose={closeDailyModal} />
-      )}
     </div>
   );
 }

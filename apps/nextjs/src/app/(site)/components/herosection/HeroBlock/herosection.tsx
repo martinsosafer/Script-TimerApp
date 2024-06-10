@@ -8,7 +8,6 @@ import { AspectRatio } from "@voiceai/ui/@/components/ui/aspect-ratio";
 import { RevealText } from "~/app/animations/RevealText";
 import useModal from "~/app/hooks/useModal";
 import { api } from "~/utils/api";
-import Modal from "../../modal";
 import PrimaryButton from "../../primary-button";
 import MotionTransition from "../MotionTransition/MotionTransition";
 
@@ -50,6 +49,7 @@ export default function HeroSection() {
       console.error("Error initiating free trial:", error);
     }
   };
+ 
   return (
     <div>
       <MotionTransition>

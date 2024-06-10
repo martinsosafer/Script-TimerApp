@@ -16,6 +16,7 @@ export const subscriptionRouter = createTRPCRouter({
     }
   }),
   Subscription: protectedProcedure.query(async ({ ctx }) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return await ctx.subscription; // Use the subscription data from the context
   }),
   mySubscription: protectedProcedure.query(async ({ ctx }) => {
