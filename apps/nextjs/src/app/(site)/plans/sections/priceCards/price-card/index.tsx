@@ -1,28 +1,12 @@
 import { IconXCircle } from "@voiceai/ui/@/components/ui/icons";
 import { CheckIcon } from "@voiceai/ui/@/icons/icons";
 
+import type { Product } from "../../../types";
 import CheckoutButton from "../check-out-button";
 
-interface Product {
-  product: {
-    id: string;
-    name: string;
-    description: string;
-    metadata: {
-      carddescription: string;
-      mostpopular: string;
-      price: number;
-      notincluded1: string | null;
-      notincluded2: string | null;
-      notincluded3: string | null;
-      notincluded4: string | null;
-    };
-    marketing_features: MarketingFeature[];
-  };
-}
-
-interface MarketingFeature {
-  name: string;
+interface PriceCardProps {
+  product: Product;
+  currentPlan: string | undefined;
 }
 
 const descriptions: Record<string, string> = {
@@ -34,7 +18,13 @@ const descriptions: Record<string, string> = {
     "Tailored approach for growing businesses to improve scripts & voiceovers.",
 };
 
-export default function PriceCard({ product }: Product) {
+const productNames: Record<string, string> = {
+  "Student Plan": "STUDENT",
+  "Creator Plan": "CREATOR",
+  "Business Plan": "BUSINESS",
+};
+
+export default function PriceCard({ product, currentPlan }: PriceCardProps) {
   return (
     <div
       key={product.id}
@@ -45,7 +35,7 @@ export default function PriceCard({ product }: Product) {
           {product.name}
         </h3>
         {product.metadata.mostpopular === "True" && (
-          <p className="absolute top-0 -translate-y-1/2 rounded-full bg-tertiary px-3 py-0.5 text-sm font-semibold tracking-wide text-white shadow-md">
+          <p className="absolute top-0 -translate-y-1/2 rounded-full bg-tertiary px-3 py-0.5 text-lg font-semibold tracking-wide text-white shadow-md">
             Most Popular
           </p>
         )}
@@ -58,7 +48,6 @@ export default function PriceCard({ product }: Product) {
           <span className="text-4xl font-semibold text-slate-900">
             ${product.metadata.price}
           </span>
-          <span className="text-sm text-slate-500">USD/month</span>
         </div>
       </div>
       <ul className="mt-6 flex-1 space-y-4">
@@ -92,8 +81,10 @@ export default function PriceCard({ product }: Product) {
           </li>
         ))}
       </ul>
-
-      <CheckoutButton productId={product.id} />
+      <CheckoutButton
+        productId={product.id}
+        hasPlan={productNames[product.name] === currentPlan}
+      />
 
       <p className="mt-4 p-2 text-center text-xs text-gray-600">
         {descriptions[product.name]}
