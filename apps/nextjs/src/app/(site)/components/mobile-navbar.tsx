@@ -5,8 +5,7 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 
 import {
-  IconArrowBigDownDash,
-  IconArrowDown,
+
   IconAudioLines,
   IconBot,
   IconFileStack,

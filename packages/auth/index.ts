@@ -22,6 +22,10 @@ declare module "next-auth" {
   interface Session {
     user: {
       id: string;
+      subscription?: {
+        userId: string;
+        status: string;
+      } | null;
     } & DefaultSession["user"];
   }
 }
@@ -37,6 +41,7 @@ export const {
     signIn: "/signin",
     signOut: "/signout",
     error: "/auth/error",
+
     // verifyRequest: "/auth/verify-request",
     // newUser: "/auth/new-user",
   },
@@ -58,13 +63,25 @@ export const {
     },
   ],
   callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-      },
-    }),
+    session: ({ session, user }) => {
+      const subscription = {
+        userId: user.id,
+        status: "FREE", // Example static data, replace this with actual subscription data
+      };
+
+      const updatedSession = {
+        ...session,
+        user: {
+          ...session.user,
+          id: user.id,
+          subscription: subscription,
+        },
+      };
+
+      // Log the updated session object for debugging
+
+      return updatedSession;
+    },
     authorized({ auth }) {
       return !!auth?.user;
     },

@@ -11,6 +11,7 @@ const config = {
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
   images: {
+<<<<<<< HEAD
     domains: [
       "xsgames.co",
       "images.unsplash.com",
@@ -18,6 +19,9 @@ const config = {
       "ucc390943f4f100a05700d6f5fa3.previews.dropboxusercontent.com",
       "media.licdn.com",
     ],
+=======
+    domains: ["xsgames.co", "images.unsplash.com", "plus.unsplash.com"], 
+>>>>>>> 76ca18f9bfdc63c0560263c196621e33818500a9
   },
 };
 

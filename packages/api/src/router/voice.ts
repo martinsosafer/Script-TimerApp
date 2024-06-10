@@ -190,4 +190,140 @@ export const voiceRouter = createTRPCRouter({
         console.log("There was an error", e);
       }
     }),
+  newVoice: protectedProcedure
+    .input(
+      z.object({
+        external_id: z.string().min(1),
+        name: z.string().min(1),
+        description: z.string().min(1),
+        picture: z.string().optional(),
+        gender: z.enum(["MALE", "FEMALE", "OTHER"]).optional(),
+        type: z.enum(["11LABS", "OTHER"]).optional(),
+        active: z.boolean().default(true),
+        metadata: z.record(z.unknown()).optional(),
+        rank: z.number().default(0),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const existingVoice = await ctx.db.query.voices.findFirst({
+          where: eq(schema.voices.external_id, input.external_id),
+        });
+
+        if (existingVoice) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Voice with this external ID already exists.",
+          });
+        }
+
+        const newVoice = await ctx.db
+          .insert(schema.voices)
+          .values({
+            external_id: input.external_id,
+            name: input.name,
+            description: input.description,
+            picture: input.picture,
+            gender: input.gender ?? "OTHER",
+            type: input.type ?? "OTHER",
+            active: input.active ?? true,
+            metadata: input.metadata ?? {},
+            rank: input.rank ?? 0,
+          })
+          .execute();
+
+        return newVoice;
+      } catch (error) {
+        console.error("Error creating voice:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Error creating voice",
+        });
+      }
+    }),
+  favoriteVoice: protectedProcedure
+    .input(
+      z.object({
+        voice: z.object({
+          id: z.string().min(1),
+          external_id: z.string().min(1),
+          name: z.string().min(1),
+          picture: z.string(),
+          metadata: z.object({
+            preview_url: z.string(),
+            labels: z.object({
+              gender: z.string(),
+            }),
+          }),
+        }),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { voice } = input;
+      const userId = ctx.session.user.id;
+
+      try {
+        const subscription = await ctx.db.query.subscriptions.findFirst({
+          where: eq(schema.subscriptions.userId, userId),
+        });
+
+        if (!subscription) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Subscription not found for the user",
+          });
+        }
+
+        const currentFavorites = subscription.favorite_voices || [];
+
+        // Check if the voice is already in the list of favorites
+        const isAlreadyFavorite = currentFavorites.some(
+          (fav) => fav.external_id === voice.external_id,
+        );
+
+        if (isAlreadyFavorite) {
+          // Remove the voice from favorites and set the favorite boolean to null
+          const updatedFavorites = currentFavorites.filter(
+            (fav) => fav.external_id !== voice.external_id,
+          );
+
+          await ctx.db
+            .update(schema.voices)
+            .set({ favorite: null }) // Set the favorite boolean to null
+            .where(eq(schema.voices.external_id, voice.external_id))
+            .execute();
+
+          await ctx.db
+            .update(schema.subscriptions)
+            .set({ favorite_voices: updatedFavorites })
+            .where(eq(schema.subscriptions.userId, userId))
+            .execute();
+
+          return { success: true };
+        } else {
+          // Add the voice to favorites and set the favorite boolean to true
+          const updatedFavorites = [...currentFavorites, voice];
+
+          await ctx.db
+            .update(schema.voices)
+            .set({ favorite: true }) // Set the favorite boolean to true
+            .where(eq(schema.voices.external_id, voice.external_id))
+            .execute();
+
+          await ctx.db
+            .update(schema.subscriptions)
+            .set({ favorite_voices: updatedFavorites })
+            .where(eq(schema.subscriptions.userId, userId))
+            .execute();
+
+          return { success: true };
+        }
+      } catch (error) {
+        console.error("Error toggling favorite voice:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Error toggling favorite voice",
+        });
+      }
+    }),
 });

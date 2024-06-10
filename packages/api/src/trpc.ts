@@ -12,7 +12,7 @@ import { ZodError } from "zod";
 
 import { auth } from "@voiceai/auth";
 import type { Session } from "@voiceai/auth";
-import { db } from "@voiceai/db";
+import { db, eq, schema } from "@voiceai/db";
 
 export { TRPCError } from "@trpc/server";
 
@@ -41,6 +41,7 @@ interface CreateContextOptions {
 const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
     session: opts.session,
+
     db,
   };
 };
@@ -57,10 +58,31 @@ export const createTRPCContext = async (opts: {
   const session = opts.auth ?? (await auth());
   const source = opts.req?.headers.get("x-trpc-source") ?? "unknown";
 
+  if (session) {
+    const subscription = await db.query.subscriptions
+      .findFirst({
+        where: eq(schema.subscriptions.userId, session.user.id),
+      })
+      .then((sub) => {
+        if (sub) {
+          const filteredSubscription = {
+            userId: sub.userId,
+            status: sub.status,
+          };
+          return filteredSubscription;
+        }
+        return null;
+      });
+
+    // Attach subscription to session user object
+    session.user.subscription = subscription;
+  }
+
   console.log(">>> tRPC Request from", source, "by", session?.user);
 
   return createInnerTRPCContext({
     session,
+    //subscription: session?.user.subscription,
   });
 };
 

@@ -1,12 +1,4 @@
-import {
-  integer,
-  jsonb,
-  pgEnum,
-  text,
-  timestamp,
-  unique,
-  uuid,
-} from "drizzle-orm/pg-core";
+import { jsonb, pgEnum, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
 import { pgTable } from "./_table";
 import { users } from "./auth";
@@ -20,6 +12,7 @@ export const status = pgEnum("status", [
   "FREE_TRIAL",
   "PAUSED",
   "FREE",
+  "BUSINESS",
 ]);
 
 export const subscriptions = pgTable("subscription", {
@@ -30,6 +23,7 @@ export const subscriptions = pgTable("subscription", {
     .unique(),
   plan: plan("plan").notNull(),
   status: status("status").notNull().default("INACTIVE"),
+  favorite_voices: jsonb("favorite_voices").default([]),
   metadata: jsonb("metadata"),
   created_at: timestamp("created_at").notNull().defaultNow(),
   updated_at: timestamp("updated_at").notNull().defaultNow(),
