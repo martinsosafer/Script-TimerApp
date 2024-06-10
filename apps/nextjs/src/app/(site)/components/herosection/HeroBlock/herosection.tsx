@@ -76,7 +76,7 @@ export default function HeroSection() {
             <RevealText>
               <div className="flex justify-center  gap-3">
                 <PrimaryButton>
-                  <Link href="/texttospeech">Text to Speech</Link>
+                  <Link href="/texttospeech">Text to Voice</Link>
                 </PrimaryButton>
                 <PrimaryButton>
                   <Link href="/chat">Script Coach</Link>
@@ -86,7 +86,7 @@ export default function HeroSection() {
                     href="https://script-timer.com/lcs-masterclass/"
                     target="_blank"
                   >
-                    MasterClasses
+                    Masterclasses
                   </Link>
                 </PrimaryButton>
               </div>
