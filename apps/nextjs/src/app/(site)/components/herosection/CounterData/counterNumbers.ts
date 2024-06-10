@@ -3,7 +3,7 @@ export const counterNumbers = [
     id: 1,
     startNumber: 5000,
     endNumber: 120000,
-    text: "Happy User",
+    text: "Happy Users",
   },
   {
     id: 2,
