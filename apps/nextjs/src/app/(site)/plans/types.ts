@@ -21,4 +21,5 @@ export interface Product {
 export interface PriceCardProps {
   monthlyPlans: Product[];
   yearlyPlans: Product[];
+  currentPlan?: string | undefined;
 }
