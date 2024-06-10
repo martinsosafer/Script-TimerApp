@@ -1,8 +1,73 @@
+import type { StaticImageData } from "next/image";
+
+import { IdentifyAnalytics } from "~/app/analytics";
+import {
+  AimHigherThan,
+  AskRelatableQuestions,
+  Breakdown,
+  BuildRapportByBeingReal,
+  ContinueTransforming,
+  ControlTheRoom,
+  CourseOverview,
+  CreateImpactInYour,
+  CustomerJourney,
+  DiscoverThePain,
+  ElevatorPitch,
+  Empathy,
+  EngageAndEstablish,
+  EpicCaptureStory,
+  ExecDec,
+  IdentifyYourProspect,
+  Intro,
+  LearnToLove,
+  LeverageBenefits,
+  LeverageDifferent,
+  Listen,
+  LoseYourAgenda,
+  MicroStories,
+  MountainTop,
+  NextSteps,
+  OnTeam,
+  OpeningAStory,
+  PostProductionSecrets,
+  RapportBuildingIs,
+  RelaxMirrorAnd,
+  RetainAndGrow,
+  ScriptTemplates,
+  SelectingTheRight,
+  ShutDownTheDistractions,
+  SpiceUpYourPitch,
+  Story,
+  The5Emotions,
+  The10Commandments,
+  The10Lights,
+  TheArtOfPostProduction,
+  TheCloser,
+  TheCreativeBrief,
+  TheElementsOfA,
+  TheIdeaFactory,
+  TheQuest,
+  TheStuff,
+  TurnObstacleInto,
+  UnicornSales,
+  UpgradeYourPitch,
+  WhatMakesAGreatSpeech,
+  WhatNotToDo,
+  WhatToAvoid,
+  WhyIsBuildingRapportCriticalTo,
+  WhySalesStories,
+  WhyStoryWorks,
+  WIIFM,
+  Wiifm,
+  WintThePerson,
+} from "~/assets/masterclasses";
+
 const MauryPic =
   "https://media.licdn.com/dms/image/D4E03AQEllFdlVv9JvQ/profile-displayphoto-shrink_800_800/0/1710177885632?e=1722470400&v=beta&t=ZytZa0Mnwzlgci64KNB9kux2hUyhB2iek-RsoF_Tc50";
+
 export interface Video {
   id: number;
-  image: string;
+  image: StaticImageData;
   title: string;
   name: string;
   videoUrl: string;
@@ -16,773 +81,701 @@ const videoCardData: Video[] = [
   {
     course: "Stories That Speed Sales",
     id: 1,
-    image:
-      "https://img.freepik.com/free-vector/flat-geometric-fashion-youtube-thumbnail_23-2148900774.jpg?size=626&ext=jpg",
+    image: WhySalesStories,
     title: "Why Sales Stories Are Important",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/948866900?h=833d6245c7&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 1. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "The power of storytelling in sales and how it can help you connect with your customers on an emotional level, build trust, and ultimately close more deals.",
   },
   {
     course: "Stories That Speed Sales",
     id: 2,
-    image:
-      "https://img.freepik.com/free-psd/social-media-promo-template-male-self-care-grooming_23-2150229402.jpg?size=626&ext=jpg&uid=R148334585&ga=GA1.1.373835230.1715357954&semt=ais_user",
+    image: SelectingTheRight,
     title: "Selecting The Right Story",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/948867375?h=eca61f951b&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 2. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Learn how to identify the perfect story to tell for each sales situation, considering your audience and the specific product or service you're selling.",
   },
   {
     course: "Stories That Speed Sales",
     id: 3,
-    image:
-      "https://img.freepik.com/free-vector/wine-party-flat-youtube-channel-cover_23-2149405491.jpg?size=626&ext=jpg&ga=GA1.1.1229927488.1715432513&semt=ais_user",
+    image: The10Commandments,
     title: "The 10 commandments of Great Sales Stories",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/948867513?h=72f5ad7b95&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 3. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Discover the essential principles for crafting compelling sales stories that resonate with your customers.",
   },
   {
     course: "Stories That Speed Sales",
     id: 4,
-    image:
-      "https://img.freepik.com/free-psd/flat-design-creativity-concept-youtube-cover_23-2150248470.jpg?w=740&t=st=1715432600~exp=1715433200~hmac=e53dcba2cd95d0adeacfafe34f5a2bcb014c6c821d3f1dd4e9c5ac379d367ee1",
+    image: The5Emotions,
     title: "The Five Emotions that Drive a Great Story",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/948867728?h=0b971a9362&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 4. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "The five key emotions that can make your sales stories more impactful and persuasive.",
   },
   {
     course: "Stories That Speed Sales",
     id: 5,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: ElevatorPitch,
     title: "Elevator Pitch Story",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/948868342?h=b8e444d957&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Craft a concise and captivating story that effectively communicates the value proposition of your product or service in a short amount of time",
   },
   {
     course: "Stories That Speed Sales",
     id: 6,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: EpicCaptureStory,
     title: "Epic Capture Story",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/948868442?h=1f110e7c1b&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Use storytelling to capture your audience's attention and paint a picture of the problem your product or service solves.",
   },
   {
     course: "Stories That Speed Sales",
     id: 7,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: OpeningAStory,
     title: "Opening a Story With SCIPAB",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/948868843?h=481604f956&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Discover the SCIPAB framework for crafting a powerful opening for your sales stories that grabs your audience's interest from the start.",
   },
   {
     course: "Stories That Speed Sales",
     id: 8,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: UnicornSales,
     title: "Unicorn Sales Story",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/948868933?h=ea450850dd&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Use unexpected stories to differentiate yourself and make your sales pitch more memorable.",
   },
   {
     course: "Stories That Speed Sales",
     id: 9,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: Wiifm,
     title: "WIIFM-demo story",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/948869055?h=15a1af35f8&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Learn how to craft a WIIFM story that effectively demonstrates the value proposition of your product or service to your customer.",
   },
   {
     course: "Stories That Speed Sales",
     id: 10,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: TheCloser,
     title: "The closer story",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/948869144?h=77f926389e&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "This module will equip you with the skills to use storytelling techniques to close the deal and secure the sale.",
   },
   {
     course: "Stories That Speed Sales",
     id: 11,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: RetainAndGrow,
     title: "Retain and Grow-together stories",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/948869213?h=4a802099f1&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Discover how to leverage storytelling to build long-term relationships with your customers and foster ongoing growth.",
   },
   {
     course: "Stories That Speed Sales",
     id: 12,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: NextSteps,
     title: "Next Steps",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/948869335?h=ea6dc238f6&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Put your learnings into action and effectively integrate storytelling into your sales process.",
   },
   //Lights, Camera, Sales
   {
     course: "Lights, Camera, Sales",
     id: 1,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: CourseOverview,
     title: "Course Overview",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/948912357?h=ccb3bb7d60&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "This introductory module will provide a general introduction to the course, outlining the key concepts, topics covered, and overall objectives of this Masterclass.",
   },
   {
     course: "Lights, Camera, Sales",
     id: 2,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: WhyStoryWorks,
     title: "Why Story Works ",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/948917297?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Delve into the power of storytelling in sales and explore why stories are effective tools for capturing attention, building trust, and ultimately driving sales.",
   },
   {
     course: "Lights, Camera, Sales",
     id: 3,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: TheQuest,
     title: "The Quest",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/948918148?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Learn how to properly structure your stories, so they spark interest in your pprospects.",
   },
   {
     course: "Lights, Camera, Sales",
     id: 4,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: CustomerJourney,
     title: "Customer Journey Value Ladder",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/948918591?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Understand your customer's journey and how to position your product or service as the key to overcoming challenges and achieving value at each stage.",
   },
   {
     course: "Lights, Camera, Sales",
     id: 5,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: The10Lights,
     title: "The 10 Commandments",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/948919468?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
-    description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+    description: "Ten core principles for creating effective sales videos.",
   },
   {
     course: "Lights, Camera, Sales",
     id: 6,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: TheStuff,
     title: "The STUFF",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/948920176?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Learn structure, key talking points, unique selling features, and persuasive techniques.",
   },
   {
     course: "Lights, Camera, Sales",
     id: 7,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: TheCreativeBrief,
     title: "The Creative Brief",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/948920603?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Create a clear and concise creative brief that outlines the goals, target audience, messaging, and desired style for your sales video.",
   },
   {
     course: "Lights, Camera, Sales",
     id: 8,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: TheIdeaFactory,
     title: " The Idea Factory",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/948920956?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
-    description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+    description: "Develop a strong sharp story that drives sales.",
   },
   {
     course: "Lights, Camera, Sales",
     id: 9,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: ScriptTemplates,
     title: "Script Templates",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/948921422?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Script templates and frameworks to serve as a foundation for crafting your sales video script.",
   },
   {
     course: "Lights, Camera, Sales",
     id: 10,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: TheArtOfPostProduction,
     title: "The Art Of Post Production",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/948922216?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "This module will delve into the editing process, including techniques and tools to refine your sales video for maximum impact.",
   },
-  {
-    course: "Lights, Camera, Sales",
-    id: 10,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
-    title: "The Art Of Post Production",
-    name: "Maury Rogow",
-    avatarUrl: MauryPic,
-    videoUrl:
-      "https://player.vimeo.com/video/948922636?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
-    description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
-  },
+
   {
     course: "Lights, Camera, Sales",
     id: 11,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: PostProductionSecrets,
     title: " Post Production Secrets",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/948922636?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=584799",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Learn advanced editing tricks and secrets to elevate the production quality of your sales videos.",
   },
   //Demo and Sell: Shortcut to the Finals
   {
     course: "Demo and Sell: Shortcut to the Finals",
     id: 1,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: Intro,
     title: "Intro",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949218099?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Overview of the course and introduction of key concepts for crafting a winning sales presentation.",
   },
   {
     course: "Demo and Sell: Shortcut to the Finals",
     id: 2,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: WhatNotToDo,
     title: "What Not To Do",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949219977?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Learn from common mistakes! This module explores pitfalls to avoid during your sales demo and presentation.",
   },
   {
     course: "Demo and Sell: Shortcut to the Finals",
     id: 3,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: Breakdown,
     title: "Breakdown",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949220808?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Deconstructing complex features of your product or service for clear explanation.",
   },
   {
     course: "Demo and Sell: Shortcut to the Finals",
     id: 4,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: DiscoverThePain,
     title: "Discover the Pain",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949228697?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Effective salespeople understand their customer's challenges. This module will equip you with techniques to identify your customer's pain points and unmet needs.",
   },
   {
     course: "Demo and Sell: Shortcut to the Finals",
     id: 5,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: Empathy,
     title: "Empathy",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949229603?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Connecting with your customer on a human level is key. This module will explore building rapport and demonstrating empathy for their situation.",
   },
   {
     course: "Demo and Sell: Shortcut to the Finals",
     id: 6,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: MountainTop,
     title: "Mountain Top",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949231492?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Painting a vivid picture of the ideal outcome your product or service can help achieve for the customer.",
   },
   {
     course: "Demo and Sell: Shortcut to the Finals",
     id: 7,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: OnTeam,
     title: "On Team",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949232232?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "How to position your company and team as a trusted partner invested in the customer's success.",
   },
   {
     course: "Demo and Sell: Shortcut to the Finals",
     id: 8,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: Story,
     title: "Story",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949233527?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "How to craft narratives into your sales presentation to connect with your audience emotionally.",
   },
   {
     course: "Demo and Sell: Shortcut to the Finals",
     id: 9,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: MicroStories,
     title: "Micro Stories",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949235265?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Not every story needs to be an epic. This module focus on using short, impactful stories or anecdotes to illustrate your points.",
   },
   {
     course: "Demo and Sell: Shortcut to the Finals",
     id: 10,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: ExecDec,
     title: "Exec Dec",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949235962?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Strategies to tailor your presentation to resonate with decision-makers, and close more deals.",
   },
   {
     course: "Demo and Sell: Shortcut to the Finals",
     id: 11,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: Listen,
     title: "Listen",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949236670?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Sales conversations are a two-way street. This module covers the importance of active listening and responding to your customer's questions and concerns.",
   },
   {
     course: "Demo and Sell: Shortcut to the Finals",
     id: 12,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: LeverageBenefits,
     title: "Leverage Benefits",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949237105?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Don't just list features! This module will focus on translating features into clear benefits that address the customer's needs.",
   },
   {
     course: "Demo and Sell: Shortcut to the Finals",
     id: 13,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: NextSteps,
     title: "Next Steps",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949237603?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Next steps to follow to apply the concepts learned in this course in real-life situations.",
   },
   //Delivering a Great Virtual Sales Pitch
   {
     course: "Delivering a Great Virtual Sales Pitch",
     id: 1,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: WhatMakesAGreatSpeech,
     title: "What Makes a Great Sales Pitch",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949264160?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "The key characteristics of a successful virtual sales pitch and differentiate it from traditional in-person presentations.",
   },
   {
     course: "Delivering a Great Virtual Sales Pitch",
     id: 2,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: TheElementsOfA,
     title: "The Elements of a Great Sales Pitch",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949265443?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "This module will break down the essential components of a compelling virtual sales pitch. We'll explore aspects like structure, content, and delivery style.",
   },
   {
     course: "Delivering a Great Virtual Sales Pitch",
     id: 3,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: EngageAndEstablish,
     title: "Engage and Establish to Gain Prospects",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949266361?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "This module will equip you with techniques to capture attention, build rapport, and convert virtual interactions into qualified leads.",
   },
   {
     course: "Delivering a Great Virtual Sales Pitch",
     id: 4,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: IdentifyYourProspect,
     title: "Identify your Prospect's Biggest Pain Point",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949267313?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Understanding your customer's challenges is crucial. This module will equip you with strategies to uncover your prospect's most pressing pain points during a virtual pitch.",
   },
   {
     course: "Delivering a Great Virtual Sales Pitch",
     id: 5,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: CreateImpactInYour,
     title: "Create Impact in Your Sales Pitch",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949267962?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      " Go beyond the ordinary! This module will focus on crafting impactful statements and demonstrations that resonate with your audience in a virtual setting.",
   },
   {
     course: "Delivering a Great Virtual Sales Pitch",
     id: 6,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: AimHigherThan,
     title: "Aim higher than closing the Deal",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949268824?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Explore strategies for building long-term relationships and exceeding customer expectations beyond the initial sale.",
   },
   {
     course: "Delivering a Great Virtual Sales Pitch",
     id: 7,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: UpgradeYourPitch,
     title: "Upgrade your Pitch With Five Key Emotions",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949269709?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "The power of emotions applies virtually too! This module will explore how to integrate specific emotions into your pitch to connect with your audience on a deeper level.",
   },
   {
     course: "Delivering a Great Virtual Sales Pitch",
     id: 8,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: LeverageDifferent,
     title: "Leverage Different Learning Styles",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949270385?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "This module will equip you with strategies to tailor your virtual pitch to accommodate various learning styles and preferences.",
   },
   {
     course: "Delivering a Great Virtual Sales Pitch",
     id: 9,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: SpiceUpYourPitch,
     title: "Spice Up Your Pitch",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949271011?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Avoid monotony! Tips and techniques to inject creativity and keep your virtual pitch engaging throughout.",
   },
   {
     course: "Delivering a Great Virtual Sales Pitch",
     id: 10,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: TurnObstacleInto,
     title: "Turn Obstacles Into Opportunities",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949276679?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Challenges are inevitable. Let's explore strategies for overcoming common hurdles in virtual sales presentations and turning them into opportunities to connect with your audience.",
   },
   {
     course: "Delivering a Great Virtual Sales Pitch",
     id: 11,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: ContinueTransforming,
     title: "Continue Transforming Your Great Pitch",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949277343?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Success is an ongoing journey. This closing module provides resources and strategies for continuous improvement and refinement of your virtual sales pitch.",
   },
   //Building Rapport on Virtual Sales Calls
   {
     course: "Building Rapport on Virtual Sales Calls",
     id: 1,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: WhyIsBuildingRapportCriticalTo,
     title: "Why is Building Rapport Critical To Remote Selling",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949294190?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "This opening module will explore the importance of building rapport in virtual sales calls to successfully close deals.",
   },
   {
     course: "Building Rapport on Virtual Sales Calls",
     id: 2,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: LoseYourAgenda,
     title: "Lose Your Agenda",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949295137?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Don't push the sale, you're there to serve and help your customers. And you need to make that clear.",
   },
   {
     course: "Building Rapport on Virtual Sales Calls",
     id: 3,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: ShutDownTheDistractions,
     title: "Shut Down the Distractions",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949295840?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Creating a focused environment is key. Let's explore strategies for minimizing distractions on both your end and potentially helping the customer do the same, ensuring a productive virtual call.",
   },
   {
     course: "Building Rapport on Virtual Sales Calls",
     id: 4,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: ControlTheRoom,
     title: "Control the Room",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949296635?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Techniques for directing the conversation flow, establishing control over the virtual space without being dominant, and ensuring everyone feels heard.",
   },
   {
     course: "Building Rapport on Virtual Sales Calls",
     id: 5,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: WintThePerson,
     title: "Win the Person, Not the Sale",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949297490?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "The importance of building genuine connections with your customer, and strategies for prioritizing their needs and understanding their perspective.",
   },
   {
     course: "Building Rapport on Virtual Sales Calls",
     id: 6,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: BuildRapportByBeingReal,
     title: "Build Rapport By Being Real",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949298643?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Authenticity is key! Strategies for showcasing your genuine personality and building trust with your customer.",
   },
   {
     course: "Building Rapport on Virtual Sales Calls",
     id: 7,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: RelaxMirrorAnd,
     title: "Relax,Mirror, and Reiterate",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949299760?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "How to create a calm and comfortable virtual environment, subtly mirroring positive customer behaviors, and summarizing key points to reinforce understanding..",
   },
   {
     course: "Building Rapport on Virtual Sales Calls",
     id: 8,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: AskRelatableQuestions,
     title: "Ask Relatable Questions",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949300437?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Effective questioning is crucial. This module will equip you with strategies for crafting questions that resonate with your customer's experiences and encourage deeper conversation.",
   },
   {
     course: "Building Rapport on Virtual Sales Calls",
     id: 9,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: LearnToLove,
     title: "Learn to Love to Question Their Answers",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949301364?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Follow up on customer responses with additional questions to gain a clearer understanding of their needs and motivations.",
   },
   {
     course: "Building Rapport on Virtual Sales Calls",
     id: 10,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: WhatToAvoid,
     title: "What to Avoid",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949302443?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Learn to identify common pitfalls to avoid during virtual sales calls that could hinder rapport building.",
   },
   {
     course: "Building Rapport on Virtual Sales Calls",
     id: 11,
-    image:
-      "https://img.freepik.com/free-vector/lifestyle-blog-banner-template-woman-outfits-collection_53876-118007.jpg?w=740&t=st=1715432629~exp=1715433229~hmac=22bb2510d9a3f2b676db5835be19f191193d6524f45a471c77e5dc3cff30bedb",
+    image: RapportBuildingIs,
     title: "Rapport Building is a Learned Trait",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
       "https://player.vimeo.com/video/949303163?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "This is a longer description of video 5. It provides more details about the content and what viewers can expect to learn or enjoy. Feel free to modify it as needed.",
+      "Remember, building rapport is a skill that can be honed and improved through practice and active learning.",
   },
 ];
 
