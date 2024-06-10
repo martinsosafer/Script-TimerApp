@@ -6,9 +6,9 @@ import Link from "next/link";
 
 import { AspectRatio } from "@voiceai/ui/@/components/ui/aspect-ratio";
 
+import ChatModal from "~/app/(site)/old-chat/chat/chatmodal";
 import { RevealText } from "~/app/animations/RevealText";
 import { api } from "~/utils/api";
-import ChatModal from "../../chat/chatmodal";
 import MotionTransition from "../../herosection/MotionTransition/MotionTransition";
 
 interface VideoData {
@@ -25,17 +25,17 @@ interface VideoComponentProps {
 
 const VideoComponent: React.FC<VideoComponentProps> = ({ data }) => {
   const { title, name, videoUrl, avatarUrl, description } = data;
-  const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
-  const isSubscriptionActive =
-    subscriptionData && subscriptionData.status === "CREATOR";
-  // Check if the user is a free user
-  const isFreeUser = !isSubscriptionActive;
-  //check if the user on FREE_TRIAL
 
-  // Render ChatModal if the user is a free user
-  if (isFreeUser) {
-    return <ChatModal />;
-  }
+  // const isSubscriptionActive =
+  //   subscriptionData && subscriptionData.status === "CREATOR";
+  // // Check if the user is a free user
+  // const isFreeUser = !isSubscriptionActive;
+  // //check if the user on FREE_TRIAL
+
+  // // Render ChatModal if the user is a free user
+  // if (isFreeUser) {
+  //   return <ChatModal />;
+  // }
   return (
     <MotionTransition className="  mb-16 flex items-center justify-center">
       <div className="mx-auto max-w-4xl ">

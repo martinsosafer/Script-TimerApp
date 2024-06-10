@@ -26,6 +26,7 @@ import PlansNavItem from "./plans-nav-item";
 import ProfileNavItem from "./profile-nav-item";
 import ScriptCoachNavItem from "./script-coach-nav-item";
 import TextToVoiceNavItem from "./text-to-voice-nav-item";
+import UpgradeNavItem from "./upgrade-nav-item";
 
 export default function NewNavBar({
   signOut,
@@ -93,7 +94,10 @@ export default function NewNavBar({
         </button>
       </nav>
       <nav>
-        <ul className="flex">
+        <ul className="flex items-center">
+          <li>
+            <UpgradeNavItem />
+          </li>
           <li>
             <Button
               variant="ghost"
