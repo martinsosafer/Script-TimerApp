@@ -48,7 +48,6 @@ export default function PriceCard({ product, currentPlan }: PriceCardProps) {
           <span className="text-4xl font-semibold text-slate-900">
             ${product.metadata.price}
           </span>
-          <span className="text-sm text-slate-500">USD/month</span>
         </div>
       </div>
       <ul className="mt-6 flex-1 space-y-4">
