@@ -173,8 +173,22 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({
                 {voice.metadata.labels.gender ?? "Unknown"}
               </p>
             </div>
-            <Button className="ml-auto rounded-full" size="xs" type="button">
-              {selectedVoiceId === voice.id && isPlaying[voice.id] ? (
+            <Button
+              className="ml-auto rounded-full"
+              size="xs"
+              type="button"
+              onClick={() => {
+                if (isPlaying[voice.id]) {
+                  stopAudio(voice.id);
+                } else {
+                  playAudio(
+                    (voice?.metadata?.preview_url as string) ?? "",
+                    voice.id,
+                  );
+                }
+              }}
+            >
+              {isPlaying[voice.id] ? (
                 <IconStop className="h-3 w-3 text-tertiary" />
               ) : (
                 <PlayIcon className="h-3 w-3" />
