@@ -1,9 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import * as React from "react";
 import type { Metadata } from "next";
 
 import { getSession } from "~/app/api/subscription/subscription";
 import FreeModal from "../../components/free-modal";
+import videoCardData from "../../components/masterclasses/videocards/videocardsdata";
 import VideoPage from "../../components/masterclasses/videopage/videopage";
 
 export const metadata: Metadata = {
@@ -11,13 +11,42 @@ export const metadata: Metadata = {
   description: "Masterclasses and Courses",
 };
 
-export default async function ScriptPage({ searchParams }) {
+interface PageProps {
+  searchParams: {
+    id: string;
+    course: string;
+    title: string;
+    name: string;
+    videoUrl: string;
+    avatarUrl: string;
+    description: string;
+  };
+}
+
+export default async function Page({ searchParams }: PageProps) {
   const session = await getSession();
   const subData = session?.subscription;
 
+  const currentVideoId = parseInt(searchParams.id, 10);
+
+  const currentVideo = videoCardData.find(
+    (video) => video.id === currentVideoId,
+  );
+
+  if (!currentVideo) {
+    return <p>Video not found</p>;
+  }
+
+  const relatedVideos = videoCardData
+    .filter(
+      (video) =>
+        video.course === currentVideo.course && video.id !== currentVideo.id,
+    )
+    .slice(0, 3); // Get only the next 3 related videos
+  console.log("relatedVideos", relatedVideos);
   return (
     <>
-      <VideoPage searchParams={searchParams} />
+      <VideoPage searchParams={currentVideo} relatedVideos={relatedVideos} />
       {/* <FreeModal subData={subData} /> */}
     </>
   );

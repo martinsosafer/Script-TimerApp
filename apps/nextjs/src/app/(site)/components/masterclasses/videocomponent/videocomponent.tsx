@@ -6,24 +6,29 @@ import Link from "next/link";
 
 import { AspectRatio } from "@voiceai/ui/@/components/ui/aspect-ratio";
 
-import ChatModal from "~/app/(site)/old-chat/chat/chatmodal";
 import { RevealText } from "~/app/animations/RevealText";
-import { api } from "~/utils/api";
 import MotionTransition from "../../herosection/MotionTransition/MotionTransition";
 
 interface VideoData {
+  id: number;
+  course: string;
   title: string;
   name: string;
   videoUrl: string;
   avatarUrl: string;
   description: string;
+  image: string;
 }
 
 interface VideoComponentProps {
   data: VideoData;
+  relatedVideos: VideoData[];
 }
 
-const VideoComponent: React.FC<VideoComponentProps> = ({ data }) => {
+const VideoComponent: React.FC<VideoComponentProps> = ({
+  data,
+  relatedVideos,
+}) => {
   const { title, name, videoUrl, avatarUrl, description } = data;
 
   // const isSubscriptionActive =
@@ -72,21 +77,30 @@ const VideoComponent: React.FC<VideoComponentProps> = ({ data }) => {
         <h2 className="mb-2 text-2xl font-bold">Related Videos</h2>
         <section className="mt-4 grid w-full grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
           {/* Render related videos */}
-          {Array.from({ length: 4 }, (_, index) => (
+          {relatedVideos.map((video) => (
             <Link
-              key={index}
-              href="/masterclasses"
-              className=" group relative flex h-full w-full items-center justify-center"
+              key={video.id}
+              href={{
+                pathname: `/masterclasses/${video.id}`,
+                query: {
+                  title: video.title,
+                  name: video.name,
+                  videoUrl: video.videoUrl,
+                  avatarUrl: video.avatarUrl,
+                  description: video.description,
+                },
+              }}
+              className="group relative flex h-full w-full items-center justify-center"
             >
               <Image
-                src="https://img.freepik.com/free-vector/flat-geometric-fashion-youtube-thumbnail_23-2148900774.jpg?size=626&ext=jpg"
+                src={video.image}
                 width={414}
                 height={314}
                 className="h-full w-full rounded-2xl object-cover"
-                alt="VideoImage"
+                alt={video.title}
               />
-              <div className="absolute bottom-0  right-0  flex h-1/3 w-full items-end justify-end gap-2 rounded-b-2xl bg-gradient-to-b from-transparent to-black/50 p-4 text-lg font-semibold text-white">
-                <p className="w-full font-poppins">Video Title</p>
+              <div className="absolute bottom-0 right-0 flex h-1/3 w-full items-end justify-end gap-2 rounded-b-2xl bg-gradient-to-b from-transparent to-black/50 p-4 text-lg font-semibold text-white">
+                <p className="w-full font-poppins">{video.title}</p>
               </div>
             </Link>
           ))}

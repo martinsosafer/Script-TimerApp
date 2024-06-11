@@ -11,6 +11,8 @@ const VideoCard: React.FC<{ video: Video }> = ({ video }) => {
         href={{
           pathname: `/masterclasses/${video.id}`,
           query: {
+            course: video.course,
+            id: video.id,
             title: video.title,
             name: video.name,
             videoUrl: video.videoUrl,
