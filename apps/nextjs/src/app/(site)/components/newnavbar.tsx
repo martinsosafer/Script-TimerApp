@@ -17,12 +17,20 @@ import {
   IconBrainCog,
   IconFileHeart,
   IconFileType,
+<<<<<<< HEAD
+  IconGlasses,
+=======
+>>>>>>> 28949fe17bc2e476f92045cb4b53e0e04af54fa4
   IconGraduationCap,
   IconHandshake,
   IconHistory,
   IconLibraryBig,
   IconLightbulb,
   IconMic2,
+<<<<<<< HEAD
+  IconMonitorPlay,
+=======
+>>>>>>> 28949fe17bc2e476f92045cb4b53e0e04af54fa4
   IconMoon,
   IconPencilLine,
   IconSun,
@@ -32,6 +40,13 @@ import {
 import { api } from "~/utils/api";
 import MobileNavBar from "./mobile-navbar";
 
+<<<<<<< HEAD
+export default function newnavbar({
+  signOut,
+}: {
+  signOut: () => Promise<null>;
+}) {
+=======
 interface Subscription {
   userId: string;
   status: string;
@@ -42,6 +57,7 @@ interface Props {
   subData: Subscription | null;
 }
 const Newnavbar: React.FC<Props> = ({ signOut, subData }) => {
+>>>>>>> 28949fe17bc2e476f92045cb4b53e0e04af54fa4
   const { theme, setTheme } = useTheme();
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
@@ -52,12 +68,21 @@ const Newnavbar: React.FC<Props> = ({ signOut, subData }) => {
     setOpen((prevOpen) => !prevOpen);
   };
   //Get subscription info
+<<<<<<< HEAD
+  const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
+  const isSubscriptionActive =
+    subscriptionData &&
+    (subscriptionData.status === "STUDENT" ||
+      subscriptionData.status === "CREATOR" ||
+      subscriptionData.status === "FREE_TRIAL");
+=======
 
   const isSubscriptionActive =
     subData &&
     (subData.status === "STUDENT" ||
       subData.status === "CREATOR" ||
       subData.status === "BUSINESS");
+>>>>>>> 28949fe17bc2e476f92045cb4b53e0e04af54fa4
   return (
     <header className=" sticky top-0 z-50 flex h-16 w-full items-center justify-between bg-primary">
       <Link
@@ -80,16 +105,28 @@ const Newnavbar: React.FC<Props> = ({ signOut, subData }) => {
               <span className="relative z-10 font-poppins">Text to Voice</span>
             </button>
             <div className="absolute inset-x-0 bottom-0  mb-2 h-0.5 origin-left scale-x-0 transform bg-primary-foreground transition-transform duration-300 group-hover:scale-x-100"></div>
+<<<<<<< HEAD
+            <div className="invisible absolute -left-48 top-0 z-50 min-w-[560px] translate-y-0 transform opacity-0 transition duration-500 ease-in-out group-hover:visible group-hover:translate-y-5 group-hover:transform group-hover:opacity-100">
+=======
             <div className="invisible absolute -left-48 top-0 z-50 min-w-[300px] translate-y-0 transform opacity-0 transition duration-500 ease-in-out group-hover:visible group-hover:translate-y-5 group-hover:transform group-hover:opacity-100">
+>>>>>>> 28949fe17bc2e476f92045cb4b53e0e04af54fa4
               <div className="relative top-6 w-full rounded-xl   bg-slate-100 p-6 shadow-xl dark:bg-primary-foreground ">
                 <div className="absolute top-0 z-0 h-10 w-10 translate-x-0 rotate-45 transform rounded-sm bg-slate-100 transition-transform duration-500 ease-in-out group-hover:translate-x-[16rem] dark:bg-primary-foreground "></div>
 
                 <div className="relative z-10">
+<<<<<<< HEAD
+                  <div className="grid grid-cols-2 gap-6">
+                    <div>
+                      <p className="text-[13px] font-medium uppercase tracking-wider text-gray-500  ">
+                        Voice Tools
+                      </p>
+=======
                   <div className="grid  grid-cols-1 gap-6">
                     <div>
                       {/* <p className="text-[13px] font-medium uppercase tracking-wider text-gray-500  ">
                         Voice Tools
                       </p> */}
+>>>>>>> 28949fe17bc2e476f92045cb4b53e0e04af54fa4
                       <ul className="mt-3 text-[15px]">
                         <li className="flex items-center">
                           <Link
@@ -172,8 +209,72 @@ const Newnavbar: React.FC<Props> = ({ signOut, subData }) => {
                     </Link>
                   </div>
                   <button className="relative z-10 cursor-default font-poppins font-semibold ">
+<<<<<<< HEAD
+                    <Link href={`/chat`}>Script Writing</Link>
+                  </button>
+
+                  {/* <div className="absolute inset-x-0 bottom-0  mb-2 h-0.5 origin-left scale-x-0 transform bg-primary-foreground transition-transform duration-300 group-hover:scale-x-100"></div>
+            <div className="invisible absolute -left-48 top-0 z-50 min-w-[560px] translate-y-0 transform opacity-0 transition duration-500 ease-in-out group-hover:visible group-hover:translate-y-5 group-hover:transform group-hover:opacity-100 ">
+              <div className="relative top-6 w-full rounded-xl   bg-slate-100 p-6 shadow-xl dark:bg-primary-foreground">
+                <div className="absolute top-0 z-0 h-10 w-10 translate-x-0 rotate-45 transform rounded-sm bg-slate-100 transition-transform duration-500 ease-in-out group-hover:translate-x-[16rem] dark:bg-primary-foreground"></div>
+
+                <div className="relative z-10">
+                  <div className="grid grid-cols-2 gap-6">
+                    <div>
+                      <p className="text-[13px] font-medium uppercase tracking-wider text-gray-500">
+                        AI Tools
+                      </p>
+                      <ul className="mt-3 text-[15px]">
+                        <li>
+                        <Link
+                            href={`/chat`}
+                            className="-mx-2 block rounded-lg p-2 font-semibold text-gray-800 transition duration-300 ease-in-out hover:bg-gradient-to-br hover:from-indigo-200 hover:via-blue-200 hover:to-orange-200 hover:text-indigo-600 dark:text-secondary-foreground dark:hover:bg-gradient-to-br dark:hover:from-gray-800 dark:hover:via-gray-700 dark:hover:to-gray-600 dark:hover:text-indigo-600"
+                          >
+                            <div className="flex items-center ">
+                              <span>
+                              <IconBot />
+                              </span>
+                              <span className="ml-1">Script Coach</span>
+                            </div>
+                            <p className="font-normal text-gray-500">
+                              Sharpen and create scripts
+                            </p>
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                    <div>
+                    <p className="text-[13px] font-medium uppercase tracking-wider text-gray-500">
+                        Script Repository
+                      </p>
+                      <ul className="mt-3 text-[15px]">
+                        <li>
+                          <Link
+                            href={`/chat`}
+                            className="-mx-2 block rounded-lg p-2 font-semibold text-gray-800 transition duration-300 ease-in-out hover:bg-gradient-to-br hover:from-indigo-200 hover:via-blue-200 hover:to-orange-200 hover:text-indigo-600 dark:text-secondary-foreground dark:hover:bg-gradient-to-br dark:hover:from-gray-800 dark:hover:via-gray-700 dark:hover:to-gray-600 dark:hover:text-indigo-600"
+                          >
+                            <div className="flex items-center ">
+                              
+                              <span>
+                                <IconFileStack />
+                              </span>
+                              <span className="ml-1">Script History</span>
+                            </div>
+                            <p className="font-normal text-gray-500">
+                              Your writing history
+                            </p>
+                          </Link>
+                        </li>
+                        </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> */}
+=======
                     <Link href={`/chat`}>Script Coach</Link>
                   </button>
+>>>>>>> 28949fe17bc2e476f92045cb4b53e0e04af54fa4
                 </li>
               </div>
             </HoverCardTrigger>
@@ -183,7 +284,67 @@ const Newnavbar: React.FC<Props> = ({ signOut, subData }) => {
               </HoverCardContent>
             )}
           </HoverCard>
+<<<<<<< HEAD
+          {/* <li className="group relative px-3 py-2 text-primary-foreground ">
+            <button className="cursor-default font-semibold ">Learn</button>
+            <div className="invisible absolute -left-2 top-0 z-50 min-w-[260px] translate-y-0 transform opacity-0 transition duration-500 ease-in-out group-hover:visible group-hover:translate-y-5 group-hover:transform group-hover:opacity-100">
+              <div className="relative top-6 w-full rounded-xl bg-slate-100 p-6 shadow-xl">
+                <div className="absolute top-0 z-0 h-10 w-10 -translate-x-4 rotate-45 transform rounded-sm bg-slate-100 transition-transform duration-500 ease-in-out group-hover:translate-x-3"></div>
+                <div className="relative z-10">
+                  <p className="text-[13px] font-medium uppercase tracking-wider text-gray-500">
+                    Helpfull Links
+                  </p>
+                  <ul className="mt-3 text-[15px]">
+                    <li>
+                      <a
+                        href={"https://script-timer.com/blogs/"}
+                        target="_blank"
+                        className="block bg-transparent bg-gradient-to-br from-indigo-400 via-blue-500 to-orange-700 bg-clip-text py-1 font-semibold text-transparent hover:from-blue-600 hover:via-orange-400 hover:to-indigo-600"
+                        rel="noreferrer"
+                      >
+                        Prompt Resources
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href="/"
+                        className="block bg-transparent bg-gradient-to-br from-indigo-400 via-blue-500 to-orange-700 bg-clip-text py-1 font-semibold text-transparent hover:from-blue-600 hover:via-orange-400 hover:to-indigo-600"
+                      >
+                        Streamers
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href="/"
+                        className="block bg-transparent bg-gradient-to-br from-indigo-400 via-blue-500 to-orange-700 bg-clip-text py-1 font-semibold text-transparent hover:from-blue-600 hover:via-orange-400 hover:to-indigo-600"
+                      >
+                        Influence
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href="/"
+                        className="block bg-transparent bg-gradient-to-br from-indigo-400 via-blue-500 to-orange-700 bg-clip-text py-1 font-semibold text-transparent hover:from-blue-600 hover:via-orange-400 hover:to-indigo-600"
+                      >
+                        Programming
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href="/"
+                        className="block bg-transparent bg-gradient-to-br from-indigo-400 via-blue-500 to-orange-700 bg-clip-text py-1 font-semibold text-transparent hover:from-blue-600 hover:via-orange-400 hover:to-indigo-600"
+                      >
+                        Design
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </li> */}
+=======
 
+>>>>>>> 28949fe17bc2e476f92045cb4b53e0e04af54fa4
           <li className="group relative px-3 py-2 text-primary-foreground ">
             <div className="flex flex-col items-center">
               <IconLightbulb className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
@@ -193,7 +354,11 @@ const Newnavbar: React.FC<Props> = ({ signOut, subData }) => {
               Learn
             </button>
             <div className="absolute inset-x-0 bottom-0  mb-2 h-0.5 origin-left scale-x-0 transform bg-primary-foreground transition-transform duration-300 group-hover:scale-x-100"></div>
+<<<<<<< HEAD
+            <div className="invisible absolute -left-48 top-0 z-50 min-w-[560px] translate-y-0 transform opacity-0 transition duration-500 ease-in-out group-hover:visible group-hover:translate-y-5 group-hover:transform group-hover:opacity-100 ">
+=======
             <div className="invisible absolute -left-48 top-0 z-50 min-w-[300px] translate-y-0 transform opacity-0 transition duration-500 ease-in-out group-hover:visible group-hover:translate-y-5 group-hover:transform group-hover:opacity-100 ">
+>>>>>>> 28949fe17bc2e476f92045cb4b53e0e04af54fa4
               <div className="relative top-6 w-full rounded-xl bg-slate-100 p-6 shadow-xl dark:bg-primary-foreground">
                 <div className="absolute top-0 z-0 h-10 w-10 translate-x-0 rotate-45 transform rounded-sm bg-slate-100 transition-transform duration-500 ease-in-out group-hover:translate-x-[12.65rem] dark:bg-primary-foreground"></div>
 
@@ -267,16 +432,45 @@ const Newnavbar: React.FC<Props> = ({ signOut, subData }) => {
               </div>
             </div>
           </li>
+<<<<<<< HEAD
+          <li className="group relative px-3 py-2 text-primary-foreground hover:cursor-default ">
+            <div className="flex flex-col items-center">
+              <Link href="/masterclasses">
+                <IconMonitorPlay className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
+                <IconGlasses className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
+              </Link>
+            </div>
+            <Link
+              href="/masterclasses"
+              className="cursor-pointer font-poppins font-semibold "
+            >
+              Masterclasses
+            </Link>
+          </li>
+          <li className="group relative px-3 py-2 text-primary-foreground hover:cursor-default ">
+            <div className="flex flex-col items-center">
+              <Link
+                href="https://script-timer.com/voice123-pricing/"
+                target="_blank"
+                className="cursor-pointer font-poppins font-semibold "
+              >
+=======
 
           <li className="group relative px-3 py-2 text-primary-foreground hover:cursor-default ">
             <div className="flex flex-col items-center">
               <Link href="/plans">
+>>>>>>> 28949fe17bc2e476f92045cb4b53e0e04af54fa4
                 <IconHandshake className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
                 <IconWallet className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
               </Link>
             </div>
             <Link
+<<<<<<< HEAD
+              href="https://script-timer.com/voice123-pricing/"
+              target="_blank"
+=======
               href="/plans"
+>>>>>>> 28949fe17bc2e476f92045cb4b53e0e04af54fa4
               className="cursor-pointer font-poppins font-semibold "
             >
               Plans
@@ -346,5 +540,9 @@ const Newnavbar: React.FC<Props> = ({ signOut, subData }) => {
       </AnimatePresence>
     </header>
   );
+<<<<<<< HEAD
+}
+=======
 };
 export default Newnavbar;
+>>>>>>> 28949fe17bc2e476f92045cb4b53e0e04af54fa4

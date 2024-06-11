@@ -82,10 +82,7 @@ export default function HeroSection() {
                   <Link href="/chat">Script Coach</Link>
                 </PrimaryButton>
                 <PrimaryButton>
-                  <Link
-                    href="https://script-timer.com/lcs-masterclass/"
-                    target="_blank"
-                  >
+                  <Link href="/masterclasses" target="_blank">
                     MasterClasses
                   </Link>
                 </PrimaryButton>

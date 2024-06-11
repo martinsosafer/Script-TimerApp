@@ -21,6 +21,7 @@ import { api } from "~/utils/api";
 import { hasValidPlan } from "../../siteUtils";
 import MobileNavBar from "../mobile-navbar";
 import LearnNavItem from "./learn-nav-item";
+import MasterclassesNavItem from "./masterclass-nav-item";
 import PlansNavItem from "./plans-nav-item";
 import ProfileNavItem from "./profile-nav-item";
 import ScriptCoachNavItem from "./script-coach-nav-item";
@@ -74,6 +75,9 @@ export default function NewNavBar({
           </HoverCard>
           <li className="group relative px-3 py-2 text-primary-foreground ">
             <LearnNavItem />
+          </li>
+          <li className="group relative px-3 py-2 text-primary-foreground hover:cursor-default ">
+            <MasterclassesNavItem />
           </li>
           <li className="group relative px-3 py-2 text-primary-foreground hover:cursor-default ">
             <PlansNavItem />

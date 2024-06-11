@@ -14,6 +14,7 @@ import {
   IconLibraryBig,
   IconLightbulb,
   IconMic2,
+  IconMonitorPlay,
   IconPencilLine,
   IconXCircle,
 } from "@voiceai/ui/@/components/ui/icons";
@@ -190,6 +191,17 @@ export default function MobileNavBar({ toggle }) {
                 <h2 className="flex items-center text-2xl underline ">
                   <IconLightbulb className="mr-2 mt-2 h-7 w-7 underline" />
                   Blog
+                </h2>
+              </Link>
+            </motion.div>
+            <motion.div
+              variants={mobileLinkVars}
+              className=" mt-2 text-secondary-foreground"
+            >
+              <Link href="/masterclasses" target="_blank" onClick={toggle}>
+                <h2 className="flex items-center text-2xl underline ">
+                  <IconMonitorPlay className="mr-2 mt-2 h-7 w-7 underline" />
+                  Masterclasses
                 </h2>
               </Link>
             </motion.div>
