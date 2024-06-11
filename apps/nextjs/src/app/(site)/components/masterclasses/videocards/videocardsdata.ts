@@ -96,7 +96,7 @@ const videoCardData: Video[] = [
     name: "Maury Rogow",
     avatarUrl: MauryPic,
     videoUrl:
-      "https://player.vimeo.com/video/904618003?h=e72a50f24d&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+      "https://player.vimeo.com/video/948867375?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
       "Learn how to identify the perfect story to tell for each sales situation, considering your audience and the specific product or service you're selling.",
   },
@@ -107,7 +107,8 @@ const videoCardData: Video[] = [
     title: "The 10 commandments of Great Sales Stories",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
-    videoUrl: "https://vimeo.com/948867513/72f5ad7b95?share=copy",
+    videoUrl:
+      "https://player.vimeo.com/video/948867513?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
       "Discover the essential principles for crafting compelling sales stories that resonate with your customers.",
   },
@@ -118,7 +119,8 @@ const videoCardData: Video[] = [
     title: "The Five Emotions that Drive a Great Story",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
-    videoUrl: "https://vimeo.com/948867728/0b971a9362?share=copy",
+    videoUrl:
+      "https://player.vimeo.com/video/948867728?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
       "The five key emotions that can make your sales stories more impactful and persuasive.",
   },
@@ -129,7 +131,8 @@ const videoCardData: Video[] = [
     title: "Elevator Pitch Story",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
-    videoUrl: "https://vimeo.com/948868342/b8e444d957?share=copy",
+    videoUrl:
+      "https://player.vimeo.com/video/948868342?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
       "Craft a concise and captivating story that effectively communicates the value proposition of your product or service in a short amount of time",
   },
