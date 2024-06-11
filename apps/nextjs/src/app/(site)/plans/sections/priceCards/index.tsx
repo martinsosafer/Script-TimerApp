@@ -58,7 +58,7 @@ const PriceCards: React.FC<PriceCardProps> = ({
                 <PriceCard
                   product={product}
                   key={product.id}
-                  currentPlan={currentPlan}
+                  currentPlan={currentPlan as string}
                 />
               ))
             : yearlyPlans.map((product) => (
@@ -67,7 +67,8 @@ const PriceCards: React.FC<PriceCardProps> = ({
                 <PriceCard
                   product={product}
                   key={product.id}
-                  currentPlan={currentPlan}
+                  currentPlan={currentPlan as string}
+                  isYearly
                 />
               ))}
         </div>

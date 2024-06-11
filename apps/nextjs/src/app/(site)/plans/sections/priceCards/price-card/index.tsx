@@ -7,6 +7,7 @@ import CheckoutButton from "../check-out-button";
 interface PriceCardProps {
   product: Product;
   currentPlan: string | undefined;
+  isYearly?: boolean;
 }
 
 const descriptions: Record<string, string> = {
@@ -24,7 +25,11 @@ const productNames: Record<string, string> = {
   "Business Plan": "BUSINESS",
 };
 
-export default function PriceCard({ product, currentPlan }: PriceCardProps) {
+export default function PriceCard({
+  product,
+  currentPlan,
+  isYearly = false,
+}: PriceCardProps) {
   return (
     <div
       key={product.id}
@@ -46,8 +51,16 @@ export default function PriceCard({ product, currentPlan }: PriceCardProps) {
       <div className="-mx-6 mt-4 rounded-lg bg-slate-100 p-6 text-center">
         <div className="flex flex-col items-center justify-center">
           <span className="text-4xl font-semibold text-slate-900">
-            ${product.metadata.price}
+            $
+            {isYearly
+              ? (product.metadata.price / 12).toFixed(2)
+              : product.metadata.price}
           </span>
+          {isYearly && (
+            <span className="mt-1 text-lg text-slate-500">
+              ${product.metadata.price}/yr
+            </span>
+          )}
         </div>
       </div>
       <ul className="mt-6 flex-1 space-y-4">
