@@ -1,6 +1,5 @@
 import type { StaticImageData } from "next/image";
 
-import { IdentifyAnalytics } from "~/app/analytics";
 import {
   AimHigherThan,
   AskRelatableQuestions,
@@ -57,7 +56,6 @@ import {
   WhyIsBuildingRapportCriticalTo,
   WhySalesStories,
   WhyStoryWorks,
-  WIIFM,
   Wiifm,
   WintThePerson,
 } from "~/assets/masterclasses";
