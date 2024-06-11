@@ -43,7 +43,6 @@ import { api } from "~/utils/api";
 import { useDragAndDrop } from "~/utils/helpers";
 import CustomButton from "../../components/custom-button";
 import { TextEditor } from "../../components/editor";
-import FreeModal from "../../components/free-modal";
 import { HistoryButton } from "../../components/history-button";
 import { SaveScript } from "../../components/save-script";
 import { ScriptSelector } from "../../components/script-selector";
@@ -87,8 +86,6 @@ export function ScriptAI({}) {
   // If script is selected from URL path parameter, load in state from db
   const { scriptId } = useParams();
   //modal logic
-
-  const { showDailyModal, closeDailyModal } = useDailyModal();
 
   //scriptdetials
   const { data: scriptDetails } = api.script.get.useQuery(

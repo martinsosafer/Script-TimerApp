@@ -83,7 +83,8 @@ const videoCardData: Video[] = [
     title: "Why Sales Stories Are Important",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
-    videoUrl: "https://vimeo.com/948866900/833d6245c7?share=copy",
+    videoUrl:
+      "https://player.vimeo.com/video/948866900?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
       "The power of storytelling in sales and how it can help you connect with your customers on an emotional level, build trust, and ultimately close more deals.",
   },
@@ -94,7 +95,8 @@ const videoCardData: Video[] = [
     title: "Selecting The Right Story",
     name: "Maury Rogow",
     avatarUrl: MauryPic,
-    videoUrl: "https://vimeo.com/948867375/eca61f951b?share=copy",
+    videoUrl:
+      "https://player.vimeo.com/video/904618003?h=e72a50f24d&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
       "Learn how to identify the perfect story to tell for each sales situation, considering your audience and the specific product or service you're selling.",
   },
