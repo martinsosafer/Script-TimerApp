@@ -22,7 +22,7 @@ export const subscriptions = pgTable("subscription", {
     .references(() => users.id, { onDelete: "cascade" })
     .unique(),
   plan: plan("plan").notNull(),
-  plan_id: text("plan_id").notNull(),
+  plan_id: text("plan_id").notNull().default("initial_plan_id"),
   status: status("status").notNull().default("INACTIVE"),
   favorite_voices: jsonb("favorite_voices").default([]),
   metadata: jsonb("metadata"),

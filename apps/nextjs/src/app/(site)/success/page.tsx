@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import Confetti from "react-confetti";
+
+//import Confetti from "react-confetti";
 
 import { AspectRatio } from "@voiceai/ui/@/components/ui/aspect-ratio";
 
@@ -26,7 +27,7 @@ async function stripeSession(sessionId: string) {
     }
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const stripeSession = await response.json();
-    return stripeSession as { name: string };
+    return stripeSession as { name: string; id: string };
   } catch (error) {
     console.error("ERROR", error);
     return null;
@@ -65,38 +66,42 @@ function SuccessPage() {
     },
   });
 
-  const handleStudent = async (userId: string) => {
+  const handleStudent = async (userId: string, planId: string) => {
     try {
-      await updateStudent({ userId });
+      await updateStudent({ userId, planId });
     } catch (error) {
       console.error("Error updating subscription:", error);
     }
   };
-  const handleCreator = async (userId: string) => {
+  const handleCreator = async (userId: string, planId: string) => {
     try {
-      await updateCreator({ userId });
+      await updateCreator({ userId, planId });
     } catch (error) {
       console.error("Error updating subscription:", error);
     }
   };
-  const handleBusiness = async (userId: string) => {
+  const handleBusiness = async (userId: string, planId: string) => {
     try {
-      await updateBusiness({ userId });
+      await updateBusiness({ userId, planId });
     } catch (error) {
       console.error("Error giving subscription:", error);
     }
   };
 
-  function handleSubscriptionUdate(name: string, userId: string) {
-    console.log("PLAN and ID", name, userId);
+  function handleSubscriptionUdate(
+    name: string,
+    planId: string,
+    userId: string,
+  ) {
+    console.log("PLAN and ID", name, planId, userId);
     if (name === Plans.STUDENT) {
-      handleStudent(userId);
+      handleStudent(userId, planId);
     }
     if (name === Plans.CREATOR) {
-      handleCreator(userId);
+      handleCreator(userId, planId);
     }
     if (name === Plans.BUSINESS) {
-      handleBusiness(userId);
+      handleBusiness(userId, planId);
     }
   }
 
@@ -104,8 +109,8 @@ function SuccessPage() {
     try {
       const result = await stripeSession(id);
       if (isSuccess && result) {
-        const { name } = result;
-        handleSubscriptionUdate(name, userData?.user.id);
+        const { name, id } = result;
+        handleSubscriptionUdate(name, id, userData?.user.id);
       }
       return session;
     } catch (error) {
@@ -118,7 +123,7 @@ function SuccessPage() {
 
   return (
     <div className="mb-20 flex min-h-screen flex-col items-center justify-center space-y-4 text-center">
-      <Confetti
+      {/* <Confetti
         width={window.innerWidth}
         height={window.innerHeight}
         numberOfPieces={1000}
@@ -127,7 +132,7 @@ function SuccessPage() {
         initialVelocityX={2}
         initialVelocityY={10}
         colors={["#0123e7", "#eb8806"]}
-      />
+      /> */}
       <ThanksCard />
       <AspectRatio ratio={30 / 8}>
         <iframe
