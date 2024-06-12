@@ -20,12 +20,14 @@ export default function Page() {
     <section className="flex-start mb-16 flex-col px-5 py-6 lg:px-20">
       <div className="mt-3 flex items-center justify-center">
         <div>
-          <h1 className="text-center font-poppins text-3xl  font-bold  text-primary  mt-8
-          ">
+          <h1
+            className="mt-8 text-center font-poppins  text-3xl  font-bold  text-primary
+          "
+          >
             Why Masterclasses?
           </h1>
           <RevealText>
-            <p className="mb-4 mt-4 text-center text-lg  font-medium text-secondary-foreground mt-10 mb-10">
+            <p className="mb-10 mt-10  text-center text-lg font-medium text-secondary-foreground">
               Preparing the best story connects you emotionally with your
               audience. This helps you be at ease, get the outcomes you desire,
               and inspires your audience. There are specific components in great

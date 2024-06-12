@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import IntroVideo from "../featuredVideo/introvideo";
 import VideoCard from "../videocard/videocard";
@@ -19,12 +19,18 @@ interface VideoCardsProps {
 }
 
 const VideoCards: React.FC<VideoCardsProps> = ({ videos }) => {
+  const [visibleCount, setVisibleCount] = useState(4);
+
   if (videos.length === 0) {
     return <p>No videos available for this category.</p>;
   }
 
   const firstVideo = videos[0];
-  const remainingVideos = videos.slice(1);
+  const remainingVideos = videos.slice(1, visibleCount);
+
+  const loadMoreVideos = () => {
+    setVisibleCount((prevCount) => prevCount + 4);
+  };
 
   return (
     <div>
@@ -35,6 +41,17 @@ const VideoCards: React.FC<VideoCardsProps> = ({ videos }) => {
           <VideoCard key={video.id} video={video} />
         ))}
       </section>
+
+      {visibleCount < videos.length && (
+        <div className="mt-10 flex justify-center">
+          <button
+            onClick={loadMoreVideos}
+            className="rounded-lg bg-blue-500 px-4 py-2 text-white"
+          >
+            Load More
+          </button>
+        </div>
+      )}
     </div>
   );
 };

@@ -42,8 +42,8 @@ export default async function Page({ searchParams }: PageProps) {
       (video) =>
         video.course === currentVideo.course && video.id !== currentVideo.id,
     )
-    .slice(0, 3); // Get only the next 3 related videos
-  console.log("relatedVideos", relatedVideos);
+    .slice(0, 4); // Get only the next 3 related videos
+
   return (
     <>
       <VideoPage searchParams={currentVideo} relatedVideos={relatedVideos} />
