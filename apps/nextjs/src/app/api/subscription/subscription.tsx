@@ -5,7 +5,7 @@ import { db, eq, schema } from "@voiceai/db";
 interface Subscription {
   userId: string;
   status: string | null;
-  productId: string | null;
+  planId: string | null;
 }
 
 interface User {
@@ -37,7 +37,7 @@ export const getSession = async (): Promise<User | null> => {
         const filteredSubscription = {
           userId: sub.userId,
           status: sub.status,
-          productId: sub.plan_id,
+          planId: sub.plan_id,
         };
         return filteredSubscription;
       }

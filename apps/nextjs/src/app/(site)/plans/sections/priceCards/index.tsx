@@ -7,8 +7,11 @@ const PriceCards: React.FC<PriceCardProps> = ({
   monthlyPlans,
   yearlyPlans,
   currentPlan,
+  planData,
 }) => {
   const [showMonthly, setShowMonthly] = useState(true);
+
+  console.log("current plan DATA", planData);
 
   return (
     <>
@@ -58,7 +61,8 @@ const PriceCards: React.FC<PriceCardProps> = ({
                 <PriceCard
                   product={product}
                   key={product.id}
-                  currentPlan={currentPlan as string}
+                  currentPlan={currentPlan}
+                  interval={planData?.recurring.interval}
                 />
               ))
             : yearlyPlans.map((product) => (
@@ -67,7 +71,8 @@ const PriceCards: React.FC<PriceCardProps> = ({
                 <PriceCard
                   product={product}
                   key={product.id}
-                  currentPlan={currentPlan as string}
+                  currentPlan={currentPlan}
+                  interval={planData?.recurring.interval}
                   isYearly
                 />
               ))}

@@ -8,6 +8,7 @@ import PriceCards from "./priceCards";
 export default function PlansSections({
   monthlyPlans,
   yearlyPlans,
+  planData,
 }: PriceCardProps) {
   const { data } = api.subscription.mySubscription.useQuery();
 
@@ -17,6 +18,7 @@ export default function PlansSections({
         monthlyPlans={monthlyPlans}
         yearlyPlans={yearlyPlans}
         currentPlan={data?.status}
+        planData={planData}
       />
       <FAQs />
     </>

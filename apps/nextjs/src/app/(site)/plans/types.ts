@@ -22,4 +22,16 @@ export interface PriceCardProps {
   monthlyPlans: Product[];
   yearlyPlans: Product[];
   currentPlan?: string | undefined;
+  planData?: Plan;
+}
+
+interface Recurring {
+  interval: string | undefined;
+  interval_count: number;
+  trial_period_days: number | null;
+  usage_type: string;
+}
+export interface Plan {
+  id: string;
+  recurring: Recurring;
 }

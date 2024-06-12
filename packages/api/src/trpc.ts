@@ -68,6 +68,7 @@ export const createTRPCContext = async (opts: {
           const filteredSubscription = {
             userId: sub.userId,
             status: sub.status,
+            planId: sub.plan_id,
           };
           return filteredSubscription;
         }
