@@ -9,7 +9,7 @@ import VideoCategories from "../components/masterclasses/videocategories/videoca
 
 export default function Page() {
   const [selectedCategory, setSelectedCategory] = useState<string>(
-    "Stories That Speed Sales",
+    "Stories That Transform Marketing",
   );
 
   const filteredVideos = selectedCategory
@@ -20,11 +20,12 @@ export default function Page() {
     <section className="flex-start mb-16 flex-col px-5 py-6 lg:px-20">
       <div className="mt-3 flex items-center justify-center">
         <div>
-          <h1 className="text-center font-poppins text-3xl  font-bold  text-primary">
+          <h1 className="text-center font-poppins text-3xl  font-bold  text-primary  mt-8
+          ">
             Why Masterclasses?
           </h1>
           <RevealText>
-            <p className="mb-4 mt-4 text-center text-lg  font-medium text-secondary-foreground">
+            <p className="mb-4 mt-4 text-center text-lg  font-medium text-secondary-foreground mt-10 mb-10">
               Preparing the best story connects you emotionally with your
               audience. This helps you be at ease, get the outcomes you desire,
               and inspires your audience. There are specific components in great

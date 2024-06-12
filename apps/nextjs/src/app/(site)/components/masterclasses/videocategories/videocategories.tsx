@@ -16,11 +16,11 @@ const VideoCategories: React.FC<VideoCategoriesProps> = ({
   );
 
   const categories = [
-    "Stories That Speed Sales",
-    "Lights, Camera, Sales",
-    "Demo and Sell: Shortcut to the Finals",
-    "Delivering a Great Virtual Sales Pitch",
-    "Building Rapport on Virtual Sales Calls",
+    "Stories That Transform Marketing",
+    "How to Create Stunning Videos",
+    "Present and Win Your Audience",
+    "Create with Hollywood Movie Storylines",
+    "How to Build Rapport with Your Audience",
   ];
 
   const handleSelectCategory = (category: string) => {
