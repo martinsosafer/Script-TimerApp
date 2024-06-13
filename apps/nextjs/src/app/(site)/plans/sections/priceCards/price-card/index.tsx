@@ -7,6 +7,7 @@ import CheckoutButton from "../check-out-button";
 interface PriceCardProps {
   product: Product;
   currentPlan: string | undefined;
+  interval: string | undefined;
   isYearly?: boolean;
 }
 
@@ -28,8 +29,23 @@ const productNames: Record<string, string> = {
 export default function PriceCard({
   product,
   currentPlan,
+  interval,
   isYearly = false,
 }: PriceCardProps) {
+  console.log("current plan", currentPlan, interval);
+  function hasPlan(
+    interval: string | undefined,
+    currentPlan: string | undefined,
+  ) {
+    if (interval === "year" && isYearly) {
+      return currentPlan === productNames[product.name];
+    }
+    if (interval === "month" && !isYearly) {
+      return currentPlan === productNames[product.name];
+    }
+    return false;
+  }
+
   return (
     <div
       key={product.id}
@@ -96,7 +112,7 @@ export default function PriceCard({
       </ul>
       <CheckoutButton
         productId={product.id}
-        hasPlan={productNames[product.name] === currentPlan}
+        hasPlan={hasPlan(interval, currentPlan)}
       />
 
       <p className="mt-4 p-2 text-center text-xs text-gray-600">
