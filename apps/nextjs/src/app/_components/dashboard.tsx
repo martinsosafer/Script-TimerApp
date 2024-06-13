@@ -60,6 +60,14 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
       console.error("Error updating subscription:", error);
     },
   });
+  const { mutateAsync: updateBusiness } = api.user.updateBusiness.useMutation({
+    onSuccess(data) {
+      console.log("Subscription updated successfully:", data);
+    },
+    onError(error) {
+      console.error("Error updating subscription:", error);
+    },
+  });
   const { mutateAsync: giveFreeTrial } = api.user.giveFreeTrial.useMutation({
     onSuccess(data) {
       console.log("Free trial given successfully:", data);
@@ -101,6 +109,13 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
   const handleCreator = async (userId: string, status: string) => {
     try {
       await updateCreator({ userId, status });
+    } catch (error) {
+      console.error("Error updating subscription:", error);
+    }
+  };
+  const handleBusiness = async (userId: string, status: string) => {
+    try {
+      await updateBusiness({ userId, status });
     } catch (error) {
       console.error("Error updating subscription:", error);
     }
@@ -208,6 +223,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
             <option value="FREE_TRIAL">Free Trial</option>
             <option value="STUDENT">Student</option>
             <option value="CREATOR">Creator</option>
+            <option value="BUSINESS">Business</option>
           </select>
         </div>
         <div className="mb-4 flex w-full flex-wrap md:mb-0 md:w-1/4">
@@ -273,6 +289,8 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
                       handleStudent(user.id, "STUDENT");
                     } else if (selectedStatus === "CREATOR") {
                       handleCreator(user.id, "CREATOR");
+                    } else if (selectedStatus === "BUSINESS") {
+                      handleBusiness(user.id, "BUSINESS");
                     } else if (selectedStatus === "FREE_TRIAL") {
                       handleGiveFreeTrial(user.id, "FREE_TRIAL");
                     }
@@ -284,6 +302,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
                   <option value="FREE">Free</option>
                   <option value="STUDENT">Student</option>
                   <option value="CREATOR">Creator</option>
+                  <option value="BUSINESS">Creator</option>
                   <option value="FREE_TRIAL">Free Trial</option>
                 </select>
               </td>
