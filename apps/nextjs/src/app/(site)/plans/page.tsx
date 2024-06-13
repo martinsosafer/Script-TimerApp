@@ -2,6 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import { Stripe } from "stripe";
 
+import { getSession } from "~/app/api/subscription/subscription";
 import PlansSections from "./sections";
 import type { Product } from "./types";
 
@@ -72,8 +73,36 @@ async function loadProducts() {
   return { monthlyPlans: orderedMonthlyPlans, yearlyPlans: orderedYearlyPlans };
 }
 
+async function getSubscription(planId: string | null | undefined) {
+  const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+
+  if (!stripeSecretKey) {
+    throw new Error("Stripe secret key is not defined.");
+  }
+
+  if (!planId) {
+    return undefined;
+  }
+
+  const stripe = new Stripe(stripeSecretKey);
+
+  const subscription = await stripe.subscriptions.retrieve(planId);
+
+  const subscriptionData = {
+    billing_cycle_anchor: subscription.billing_cycle_anchor,
+    current_period_end: subscription.current_period_end,
+    current_period_start: subscription.current_period_start,
+    days_until_due: subscription.days_until_due,
+    plan: subscription.items.data[0]?.plan,
+  };
+
+  return subscriptionData;
+}
+
 async function PlansPage() {
   const { monthlyPlans, yearlyPlans } = await loadProducts();
+  const session = await getSession();
+  const subscription = await getSubscription(session?.subscription?.planId);
 
   return (
     <div className="flex w-full flex-col items-center">
@@ -90,7 +119,11 @@ async function PlansPage() {
           Save up to 35% on yearly plans!
         </span>
       </div>
-      <PlansSections monthlyPlans={monthlyPlans} yearlyPlans={yearlyPlans} />
+      <PlansSections
+        monthlyPlans={monthlyPlans}
+        yearlyPlans={yearlyPlans}
+        planInterval={subscription?.plan?.interval}
+      />
     </div>
   );
 }

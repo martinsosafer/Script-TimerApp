@@ -5,6 +5,7 @@ import { db, eq, schema } from "@voiceai/db";
 interface Subscription {
   userId: string;
   status: string | null;
+  planId: string | null;
 }
 
 interface User {
@@ -29,7 +30,6 @@ export const getSession = async (): Promise<User | null> => {
 
   const subscription = await db.query.subscriptions
     .findFirst({
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       where: eq(schema.subscriptions.userId, session.user.id),
     })
     .then((sub) => {
@@ -37,6 +37,7 @@ export const getSession = async (): Promise<User | null> => {
         const filteredSubscription = {
           userId: sub.userId,
           status: sub.status,
+          planId: sub.plan_id,
         };
         return filteredSubscription;
       }

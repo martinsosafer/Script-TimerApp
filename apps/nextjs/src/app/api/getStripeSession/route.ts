@@ -21,11 +21,13 @@ export async function GET(req: NextRequest) {
       subscription as string,
     );
 
-    const productId = stripeSubscription.items.data[0]?.plan.product;
+    const planData = stripeSubscription.items.data[0]?.plan;
 
-    const result = await stripe.products.retrieve(productId as string);
+    const result = await stripe.products.retrieve(planData?.product as string);
 
-    return new Response(JSON.stringify(result));
+    return new Response(
+      JSON.stringify({ name: result.name, id: subscription }),
+    );
   } catch (error) {
     console.error(error);
   }

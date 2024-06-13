@@ -14,6 +14,7 @@ export const userRouter = createTRPCRouter({
         created_at: schema.users.created_at,
         updated_at: schema.subscriptions.updated_at,
         status: schema.subscriptions.status,
+        plan_id: schema.subscriptions.plan_id,
         total_credits: sql`COALESCE(SUM(${schema.credits.credits}), 0)`,
       })
       .from(schema.users)
@@ -29,6 +30,7 @@ export const userRouter = createTRPCRouter({
         schema.users.email,
         schema.users.created_at,
         schema.subscriptions.status,
+        schema.subscriptions.plan_id,
         schema.subscriptions.updated_at,
       );
   }),
@@ -115,13 +117,18 @@ export const userRouter = createTRPCRouter({
     .input(
       z.object({
         userId: z.string().min(5),
+        planId: z.string().min(5),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       try {
         await ctx.db
           .update(schema.subscriptions)
-          .set({ status: "STUDENT", updated_at: sql`NOW()` })
+          .set({
+            status: "STUDENT",
+            plan_id: input.planId ?? "initial_plan_id",
+            updated_at: sql`NOW()`,
+          })
           .where(eq(schema.subscriptions.userId, input.userId))
           .execute();
 
@@ -138,13 +145,18 @@ export const userRouter = createTRPCRouter({
     .input(
       z.object({
         userId: z.string().min(5),
+        planId: z.string().min(5),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       try {
         await ctx.db
           .update(schema.subscriptions)
-          .set({ status: "CREATOR", updated_at: sql`NOW()` })
+          .set({
+            status: "CREATOR",
+            plan_id: input.planId ?? "initial_plan_id",
+            updated_at: sql`NOW()`,
+          })
 
           .where(eq(schema.subscriptions.userId, input.userId))
           .execute();
@@ -162,13 +174,18 @@ export const userRouter = createTRPCRouter({
     .input(
       z.object({
         userId: z.string().min(5),
+        planId: z.string().min(5),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       try {
         await ctx.db
           .update(schema.subscriptions)
-          .set({ status: "BUSINESS", updated_at: sql`NOW()` })
+          .set({
+            status: "BUSINESS",
+            plan_id: input.planId ?? "initial_plan_id",
+            updated_at: sql`NOW()`,
+          })
 
           .where(eq(schema.subscriptions.userId, input.userId))
           .execute();

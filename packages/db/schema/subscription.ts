@@ -1,10 +1,7 @@
 import { jsonb, pgEnum, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
-
-
 import { pgTable } from "./_table";
 import { users } from "./auth";
-
 
 export const plan = pgEnum("plan", ["STARTER", "CUSTOM"]);
 export const status = pgEnum("status", [
@@ -25,6 +22,7 @@ export const subscriptions = pgTable("subscription", {
     .references(() => users.id, { onDelete: "cascade" })
     .unique(),
   plan: plan("plan").notNull(),
+  plan_id: text("plan_id").notNull().default("initial_plan_id"),
   status: status("status").notNull().default("INACTIVE"),
   favorite_voices: jsonb("favorite_voices").default([]),
   metadata: jsonb("metadata"),
