@@ -49,7 +49,6 @@ export const userRouter = createTRPCRouter({
           .values({
             userId: input.userId,
             plan: "STARTER",
-
             status: "FREE",
           })
           .execute();
@@ -127,7 +126,7 @@ export const userRouter = createTRPCRouter({
           .update(schema.subscriptions)
           .set({
             status: "STUDENT",
-            plan_id: input.planId,
+            plan_id: input.planId ?? "initial_plan_id",
             updated_at: sql`NOW()`,
           })
           .where(eq(schema.subscriptions.userId, input.userId))
@@ -155,7 +154,7 @@ export const userRouter = createTRPCRouter({
           .update(schema.subscriptions)
           .set({
             status: "CREATOR",
-            plan_id: input.planId,
+            plan_id: input.planId ?? "initial_plan_id",
             updated_at: sql`NOW()`,
           })
 
@@ -184,7 +183,7 @@ export const userRouter = createTRPCRouter({
           .update(schema.subscriptions)
           .set({
             status: "BUSINESS",
-            plan_id: input.planId,
+            plan_id: input.planId ?? "initial_plan_id",
             updated_at: sql`NOW()`,
           })
 

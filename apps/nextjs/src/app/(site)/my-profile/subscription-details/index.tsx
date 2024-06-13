@@ -3,10 +3,30 @@
 import { useRouter } from "next/navigation";
 
 import { api } from "~/utils/api";
+import type { I_Subscription } from "../../plans/types";
 
-export default function SubscriptionDetails() {
+interface SubscriptionDetailsProps {
+  subscription: I_Subscription;
+}
+
+export default function SubscriptionDetails({
+  subscription,
+}: SubscriptionDetailsProps) {
   const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
   const router = useRouter();
+
+  console.log("PLAN", subscription);
+
+  function getBillingDate(date: number) {
+    return new Date(date * 1000).toLocaleDateString();
+  }
+
+  function getBillingAmount(amount: number) {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(amount / 100);
+  }
 
   return (
     <div className="mt-6 flex w-full flex-col">
@@ -30,7 +50,7 @@ export default function SubscriptionDetails() {
             <div className="flex flex-col">
               <span className="px-2 text-xs text-gray-400">Status</span>
               <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
-                Status
+                {subscription?.plan.active ? "Active" : "Inactive"}
               </div>
             </div>
           </div>
@@ -40,7 +60,7 @@ export default function SubscriptionDetails() {
                 Next Billing Date
               </span>
               <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
-                Next Billing Date
+                {getBillingDate(subscription?.current_period_end)}
               </div>
             </div>
             <div className="flex flex-col">
@@ -48,7 +68,7 @@ export default function SubscriptionDetails() {
                 Next Billing Amount
               </span>
               <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
-                Next Billing Amount
+                {getBillingAmount(subscription.plan.amount)}
               </div>
             </div>
           </div>

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
-//import Confetti from "react-confetti";
+// import Confetti from "react-confetti";
 
 import { AspectRatio } from "@voiceai/ui/@/components/ui/aspect-ratio";
 

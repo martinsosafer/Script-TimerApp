@@ -22,16 +22,30 @@ export interface PriceCardProps {
   monthlyPlans: Product[];
   yearlyPlans: Product[];
   currentPlan?: string | undefined;
-  planData?: Plan;
+  planInterval?: string;
 }
 
-interface Recurring {
-  interval: string | undefined;
-  interval_count: number;
-  trial_period_days: number | null;
-  usage_type: string;
-}
+// interface Recurring {
+//   interval: string | undefined;
+//   interval_count: number;
+//   trial_period_days: number | null;
+//   usage_type: string;
+// }
 export interface Plan {
   id: string;
-  recurring: Recurring;
+  interval: string;
+  active: boolean;
+  amount: number;
+}
+
+// interface SubscriptionItem {
+//   data: { plan: Plan[] };
+// }
+
+export interface I_Subscription {
+  billing_cycle_anchor: number;
+  current_period_end: number;
+  current_period_start: number;
+  days_until_due: number | null;
+  plan: Plan;
 }

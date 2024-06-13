@@ -4,7 +4,7 @@ import { Stripe } from "stripe";
 
 import { getSession } from "~/app/api/subscription/subscription";
 import PlansSections from "./sections";
-import type { Plan, Product } from "./types";
+import type { Product } from "./types";
 
 export const metadata: Metadata = {
   title: "Plans",
@@ -73,26 +73,30 @@ async function loadProducts() {
   return { monthlyPlans: orderedMonthlyPlans, yearlyPlans: orderedYearlyPlans };
 }
 
-async function getPlan(planId: string) {
+async function getSubscription(planId: string | null | undefined) {
   const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 
   if (!stripeSecretKey) {
     throw new Error("Stripe secret key is not defined.");
   }
 
+  if (!planId) {
+    return undefined;
+  }
+
   const stripe = new Stripe(stripeSecretKey);
 
-  const plan = (await stripe.prices.retrieve(planId)) as Plan;
+  const subscription = await stripe.subscriptions.retrieve(planId);
 
-  return plan;
+  return subscription;
 }
 
 async function PlansPage() {
   const { monthlyPlans, yearlyPlans } = await loadProducts();
   const session = await getSession();
-  const currentPlan = await getPlan(session?.subscription?.planId);
+  const subscription = await getSubscription(session?.subscription?.planId);
 
-  console.log("current plan", currentPlan);
+  console.log("SUBSCRIPTION", subscription?.items.data);
 
   return (
     <div className="flex w-full flex-col items-center">
@@ -112,7 +116,7 @@ async function PlansPage() {
       <PlansSections
         monthlyPlans={monthlyPlans}
         yearlyPlans={yearlyPlans}
-        planData={currentPlan}
+        planInterval={subscription?.items.data[0]?.plan.interval}
       />
     </div>
   );
