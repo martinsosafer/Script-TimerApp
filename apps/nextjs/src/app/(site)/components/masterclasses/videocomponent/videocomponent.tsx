@@ -110,6 +110,8 @@ const VideoComponent: React.FC<VideoComponentProps> = ({
                 pathname: `/masterclasses/${video.id}`,
                 query: {
                   title: video.title,
+                  id: video.id,
+                  course: video.course,
                   name: video.name,
                   videoUrl: video.videoUrl,
                   avatarUrl: video.avatarUrl,

@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import type { Video } from "../videocards/videocardsdata";
 
+process.env.HOST_URL;
 const VideoCard: React.FC<{ video: Video }> = ({ video }) => {
   return (
     <div className="flex flex-col items-center justify-center rounded-2xl  bg-blue-300 drop-shadow-lg">
