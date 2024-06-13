@@ -480,23 +480,28 @@ export function ScriptAI({}) {
                           className="min-h-[50vh] md:min-h-[55vh] lg:min-h-[70vh] xl:min-h-[70vh]"
                         />
                         <div className="flex items-center justify-end ">
-                          <Badge className="flex items-center">
-                            <span className="inline">
-                              Script is&nbsp;
-                              <span className="font-semibold text-tertiary dark:text-tertiary">
-                                {wordCount}
-                              </span>
-                              &nbsp;words. Estimated time &nbsp;
-                              <span className="font-semibold text-tertiary  dark:text-tertiary">
-                                {minutes}
-                              </span>
-                              &nbsp;minutes and&nbsp;
-                              <span className="font-semibold text-tertiary  dark:text-tertiary">
-                                {formattedSeconds}
-                              </span>
-                              &nbsp;seconds
+                          <h3 className="text-lg  font-medium">
+                            If you want more writing support, go to:{" "}
+                            <Link
+                              href="https://script-timer.com/chat"
+                              target="_blank"
+                              className="text-blue-500 underline hover:text-blue-700"
+                            >
+                              https://script-timer.com/chat
+                            </Link>{" "}
+                            or, our other tools at{" "}
+                            <Link
+                              href="https://script-timer.com/more-tools/"
+                              target="_blank"
+                              className="text-blue-500 underline hover:text-blue-700"
+                            >
+                              https://script-timer.com/more-tools/
+                            </Link>{" "}
+                            or ask an expert writer for help at
+                            <span className="text-blue-500 underline hover:text-blue-700">
+                              info@Ripmediagroup.com
                             </span>
-                          </Badge>
+                          </h3>
                         </div>
                         <div className="flex flex-col">
                           <Tooltip>

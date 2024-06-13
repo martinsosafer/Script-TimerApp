@@ -1,7 +1,12 @@
+;
 // app/api/completion/route.ts
 
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import OpenAI from "openai";
+
+
+
+
 
 // export const runtime = "edge";
 
@@ -15,13 +20,13 @@ export async function POST(req: Request) {
 
   // Request the OpenAI API for the response based on the prompt
   const response = await openai.chat.completions.create({
-    model: "gpt-3.5-turbo",
+    model: "gpt-4o",
     stream: true,
     // a precise prompt is important for the AI to reply with the correct tokens
     messages: [
       {
         role: "user",
-        content: `Given the following speech, detect if it has grammar or typo issues. 
+        content: `Please check my spelling with a USA based dictionary, and make sure all grammar rules apply to this exact passage. Only correct spelling and grammar errors, but do not rewrite the script 
 Respond with a revised copy of the speech only, do not add anything to the speech before or after. Speech content:
 ${prompt}
         
