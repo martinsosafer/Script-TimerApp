@@ -47,5 +47,5 @@ export interface I_Subscription {
   current_period_end: number;
   current_period_start: number;
   days_until_due: number | null;
-  plan: Plan;
+  plan?: Plan;
 }

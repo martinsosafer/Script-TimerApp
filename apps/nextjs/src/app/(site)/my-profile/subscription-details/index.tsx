@@ -15,8 +15,6 @@ export default function SubscriptionDetails({
   const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
   const router = useRouter();
 
-  console.log("PLAN", subscription);
-
   function getBillingDate(date: number) {
     return new Date(date * 1000).toLocaleDateString();
   }
@@ -50,7 +48,7 @@ export default function SubscriptionDetails({
             <div className="flex flex-col">
               <span className="px-2 text-xs text-gray-400">Status</span>
               <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
-                {subscription?.plan.active ? "Active" : "Inactive"}
+                {subscription?.plan?.active ? "Active" : "Inactive"}
               </div>
             </div>
           </div>
@@ -68,7 +66,7 @@ export default function SubscriptionDetails({
                 Next Billing Amount
               </span>
               <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
-                {getBillingAmount(subscription.plan.amount)}
+                {getBillingAmount(subscription?.plan?.amount ?? 0)}
               </div>
             </div>
           </div>

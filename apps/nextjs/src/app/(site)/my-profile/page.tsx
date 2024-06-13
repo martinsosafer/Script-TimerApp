@@ -6,9 +6,10 @@ import {
 } from "@voiceai/ui/@/components/ui/icons";
 
 import { getSession } from "~/app/api/subscription/subscription";
+import type { I_Subscription } from "../plans/types";
 import SubscriptionDetails from "./subscription-details";
 
-async function getPlan(planId: string | null | undefined) {
+async function getSubscription(planId: string | null | undefined) {
   const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 
   if (!stripeSecretKey) {
@@ -28,7 +29,7 @@ async function getPlan(planId: string | null | undefined) {
 
 export default async function MyProfile() {
   const session = await getSession();
-  const subscription = await getPlan(session?.subscription?.planId);
+  const subscription = await getSubscription(session?.subscription?.planId);
 
   return (
     <div className="flex h-full w-full justify-center bg-[#FAFAFA] py-10">
@@ -49,7 +50,7 @@ export default async function MyProfile() {
               <p className="text-md text-gray-600">{session?.email}</p>
             </div>
           </div>
-          <SubscriptionDetails subscription={subscription} />
+          <SubscriptionDetails subscription={subscription as I_Subscription} />
         </div>
       </div>
     </div>

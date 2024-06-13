@@ -88,15 +88,21 @@ async function getSubscription(planId: string | null | undefined) {
 
   const subscription = await stripe.subscriptions.retrieve(planId);
 
-  return subscription;
+  const subscriptionData = {
+    billing_cycle_anchor: subscription.billing_cycle_anchor,
+    current_period_end: subscription.current_period_end,
+    current_period_start: subscription.current_period_start,
+    days_until_due: subscription.days_until_due,
+    plan: subscription.items.data[0]?.plan,
+  };
+
+  return subscriptionData;
 }
 
 async function PlansPage() {
   const { monthlyPlans, yearlyPlans } = await loadProducts();
   const session = await getSession();
   const subscription = await getSubscription(session?.subscription?.planId);
-
-  console.log("SUBSCRIPTION", subscription?.items.data);
 
   return (
     <div className="flex w-full flex-col items-center">
@@ -116,7 +122,7 @@ async function PlansPage() {
       <PlansSections
         monthlyPlans={monthlyPlans}
         yearlyPlans={yearlyPlans}
-        planInterval={subscription?.items.data[0]?.plan.interval}
+        planInterval={subscription?.plan?.interval}
       />
     </div>
   );
