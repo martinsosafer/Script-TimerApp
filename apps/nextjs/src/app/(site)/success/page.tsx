@@ -2,8 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-
-// import Confetti from "react-confetti";
+import Confetti from "react-confetti";
 
 import { AspectRatio } from "@voiceai/ui/@/components/ui/aspect-ratio";
 
@@ -123,7 +122,7 @@ function SuccessPage() {
 
   return (
     <div className="mb-20 flex min-h-screen flex-col items-center justify-center space-y-4 text-center">
-      {/* <Confetti
+      <Confetti
         width={window.innerWidth}
         height={window.innerHeight}
         numberOfPieces={1000}
@@ -132,7 +131,7 @@ function SuccessPage() {
         initialVelocityX={2}
         initialVelocityY={10}
         colors={["#0123e7", "#eb8806"]}
-      /> */}
+      />
       <ThanksCard />
       <AspectRatio ratio={30 / 8}>
         <iframe
