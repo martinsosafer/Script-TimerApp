@@ -32,10 +32,7 @@ export default async function Page({ searchParams }: PageProps) {
   const currentVideo = videoCardData.find(
     (video) => video.id === currentVideoId,
   );
-
-  if (!currentVideo) {
-    return <p>Video not found</p>;
-  }
+  console.log("currentvideo", currentVideo);
 
   const relatedVideos = videoCardData
     .filter(
