@@ -22,7 +22,7 @@ interface VideoData {
   avatarUrl: string;
   description: string;
 }
-interface RelatedVideos {
+interface RelatedVideo {
   id: number;
   course: string;
   title: string;
@@ -34,29 +34,27 @@ interface RelatedVideos {
 }
 interface VideoComponentProps {
   data: VideoData;
-  relatedVideos: RelatedVideos[];
+  relatedVideos: RelatedVideo[];
 }
 
 const VideoComponent: React.FC<VideoComponentProps> = ({
   data,
   relatedVideos,
 }) => {
-  // const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const currentVideo = relatedVideos[currentIndex];
 
-  // const currentVideo = relatedVideos[currentIndex];
-  // const { title, name, videoUrl, avatarUrl, description } = currentVideo;
+  const handlePrev = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    }
+  };
 
-  // const handlePrev = () => {
-  //   if (currentIndex > 0) {
-  //     setCurrentIndex(currentIndex - 1);
-  //   }
-  // };
-
-  // const handleNext = () => {
-  //   if (currentIndex < relatedVideos.length - 1) {
-  //     setCurrentIndex(currentIndex + 1);
-  //   }
-  // };
+  const handleNext = () => {
+    if (currentIndex < relatedVideos.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    }
+  };
 
   return (
     <MotionTransition className="mb-16 flex items-center justify-center">
@@ -67,7 +65,7 @@ const VideoComponent: React.FC<VideoComponentProps> = ({
           </h1>
         </RevealText>
         <div className="relative flex items-center justify-center">
-          {/* <button
+          <button
             onClick={handlePrev}
             className={`absolute left-[-50px] top-1/2 -translate-y-1/2 transform rounded-full bg-primary p-2 shadow-lg ${
               currentIndex === 0 ? "cursor-not-allowed opacity-50" : ""
@@ -75,7 +73,7 @@ const VideoComponent: React.FC<VideoComponentProps> = ({
             disabled={currentIndex === 0}
           >
             <IconChevronLeft />
-          </button> */}
+          </button>
           <AspectRatio ratio={16 / 8}>
             <iframe
               src={data.videoUrl}
@@ -84,7 +82,7 @@ const VideoComponent: React.FC<VideoComponentProps> = ({
               title={data.title}
             />
           </AspectRatio>
-          {/* <button
+          <button
             onClick={handleNext}
             className={`absolute right-[-50px] top-1/2 -translate-y-1/2 transform rounded-full bg-primary p-2 shadow-lg ${
               currentIndex === relatedVideos.length - 1
@@ -94,7 +92,7 @@ const VideoComponent: React.FC<VideoComponentProps> = ({
             disabled={currentIndex === relatedVideos.length - 1}
           >
             <IconChevronRight />
-          </button> */}
+          </button>
         </div>
         <div className="mb-3 mt-6 flex w-full items-center justify-between px-2">
           <div className="flex items-center justify-center gap-2">
