@@ -22,15 +22,24 @@ interface VideoData {
   avatarUrl: string;
   description: string;
 }
-
+interface RelatedVideos {
+  id: number;
+  course: string;
+  title: string;
+  name: string;
+  videoUrl: string;
+  avatarUrl: string;
+  description: string;
+  image: string;
+}
 interface VideoComponentProps {
   data: VideoData;
-  // relatedVideos: VideoData[];
+  relatedVideos: RelatedVideos[];
 }
 
 const VideoComponent: React.FC<VideoComponentProps> = ({
   data,
-  // relatedVideos,
+  relatedVideos,
 }) => {
   // const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -103,7 +112,7 @@ const VideoComponent: React.FC<VideoComponentProps> = ({
           <p className="mb-8 text-gray-600">{data.description}</p>
         </RevealText>
         <h2 className="mb-2 text-2xl font-bold">Related Videos</h2>
-        {/* <section className="mt-4 grid w-full grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+        <section className="mt-4 grid w-full grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
           {relatedVideos.map((video, index) => (
             <Link
               key={video.id}
@@ -128,12 +137,10 @@ const VideoComponent: React.FC<VideoComponentProps> = ({
                 className="h-full w-full rounded-2xl object-cover"
                 alt={video.title}
               />
-              <div className="absolute bottom-0 right-0 flex h-1/3 w-full items-end justify-end gap-2 rounded-b-2xl bg-gradient-to-b from-transparent to-black/50 p-4 text-lg font-semibold text-white">
-                
-              </div>
+              <div className="absolute bottom-0 right-0 flex h-1/3 w-full items-end justify-end gap-2 rounded-b-2xl bg-gradient-to-b from-transparent to-black/50 p-4 text-lg font-semibold text-white"></div>
             </Link>
           ))}
-        </section> */}
+        </section>
       </div>
     </MotionTransition>
   );

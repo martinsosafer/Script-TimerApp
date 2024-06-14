@@ -19,27 +19,46 @@ interface PageProps {
     videoUrl: string;
     avatarUrl: string;
     description: string;
+    imageUrl: string;
   };
+}
+interface RelatedVideo {
+  id: number;
+  course: string;
+  title: string;
+  name: string;
+  videoUrl: string;
+  avatarUrl: string;
+  description: string;
+  image: string;
 }
 
 export default async function Page({ searchParams }: PageProps) {
   const session = await getSession();
   const subData = session?.subscription;
-  console.log("searchParams", searchParams);
+
   const modifiedSearchParams = {
     ...searchParams,
     id: Number(searchParams.id),
   };
-  // const relatedVideos = videoCardData
-  //   .filter(
-  //     (video) =>
-  //       video?.course === currentVideo?.course && video.id !== currentVideo.id,
-  //   )
-  //   .slice(0, 4); //
+  const relatedVideos: RelatedVideo[] = videoCardData
+    .filter(
+      (video) =>
+        video.course === searchParams.course &&
+        video.id !== Number(searchParams.id),
+    )
+    .slice(0, 4)
+    .map((video) => ({
+      ...video,
+      imageUrl: video.avatarUrl,
+    }));
 
   return (
     <>
-      <VideoPage searchParams={modifiedSearchParams} />
+      <VideoPage
+        searchParams={modifiedSearchParams}
+        relatedVideos={relatedVideos}
+      />
       {/* <FreeModal subData={subData} /> */}
     </>
   );
