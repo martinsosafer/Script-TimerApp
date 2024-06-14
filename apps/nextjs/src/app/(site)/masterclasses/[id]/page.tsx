@@ -24,27 +24,49 @@ interface PageProps {
 }
 
 export default async function Page({ searchParams }: PageProps) {
-  const session = await getSession();
-  const subData = session?.subscription;
+  try {
+    const session = await getSession();
+    const subData = session?.subscription;
 
-  const currentVideoId = parseInt(searchParams.id, 10);
+    if (!searchParams.id) {
+      console.error("Missing searchParams.id");
+      return <p>Error: Missing search parameters.</p>;
+    }
 
-  const currentVideo = videoCardData.find(
-    (video) => video.id === currentVideoId,
-  );
-  console.log("currentvideo", currentVideo);
+    const currentVideoId = parseInt(searchParams.id, 10);
 
-  const relatedVideos = videoCardData
-    .filter(
-      (video) =>
-        video?.course === currentVideo?.course && video.id !== currentVideo.id,
-    )
-    .slice(0, 4); //
+    if (isNaN(currentVideoId)) {
+      console.error("Invalid currentVideoId:", searchParams.id);
+      return <p>Error: Invalid video ID.</p>;
+    }
 
-  return (
-    <>
-      <VideoPage searchParams={currentVideo} relatedVideos={relatedVideos} />
-      {/* <FreeModal subData={subData} /> */}
-    </>
-  );
+    const currentVideo = videoCardData.find(
+      (video) => video.id === currentVideoId,
+    );
+
+    if (!currentVideo) {
+      console.error("Current video not found:", currentVideoId);
+      return <p>Error: Video not found.</p>;
+    }
+
+    console.log("currentVideo", currentVideo);
+
+    const relatedVideos = videoCardData
+      .filter(
+        (video) =>
+          video?.course === currentVideo?.course &&
+          video.id !== currentVideo.id,
+      )
+      .slice(0, 4);
+
+    return (
+      <>
+        <VideoPage searchParams={currentVideo} relatedVideos={relatedVideos} />
+        {/* <FreeModal subData={subData} /> */}
+      </>
+    );
+  } catch (error) {
+    console.error("An error occurred:", error);
+    return <p>Error: An unexpected error occurred.</p>;
+  }
 }
