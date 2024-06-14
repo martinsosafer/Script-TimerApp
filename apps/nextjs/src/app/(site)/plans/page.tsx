@@ -80,7 +80,7 @@ async function getSubscription(planId: string | null | undefined) {
     throw new Error("Stripe secret key is not defined.");
   }
 
-  if (!planId) {
+  if (!planId || planId === "initial_plan_id") {
     return undefined;
   }
 

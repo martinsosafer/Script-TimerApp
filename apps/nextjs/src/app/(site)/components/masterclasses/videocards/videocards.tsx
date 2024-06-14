@@ -26,7 +26,7 @@ const VideoCards: React.FC<VideoCardsProps> = ({ videos }) => {
   }
 
   const firstVideo = videos[0];
-  const remainingVideos = videos.slice(1, visibleCount);
+  const remainingVideos = videos.slice(0, visibleCount);
 
   const loadMoreVideos = () => {
     setVisibleCount((prevCount) => prevCount + 4);

@@ -110,10 +110,18 @@ export function ScriptAI({}) {
   });
   const checkAndPublish = React.useCallback(
     async (c: string) => {
-      const completion = await complete(c);
-      if (!completion) throw new Error("Failed to check typos");
-      setLoading(false);
-      setRevisedScript(completion);
+      setLoading(true);
+      try {
+        const completion = await complete(c);
+        if (!completion) throw new Error("Failed to check typos");
+        setRevisedScript(completion);
+      } catch (error) {
+        console.error("Error fetching completion:", error);
+        // Handle error appropriately
+        setRevisedScript("Error processing request");
+      } finally {
+        setLoading(false);
+      }
     },
     [complete],
   );
@@ -497,8 +505,9 @@ export function ScriptAI({}) {
                             >
                               https://script-timer.com/more-tools/
                             </Link>{" "}
-                            or ask an expert writer for help at
+                            or ask an expert writer for help at{" "}
                             <span className="text-blue-500 underline hover:text-blue-700">
+                              {" "}
                               info@Ripmediagroup.com
                             </span>
                           </h3>
