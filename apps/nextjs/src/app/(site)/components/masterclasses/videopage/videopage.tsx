@@ -10,19 +10,18 @@ interface VideoData {
   videoUrl: string;
   avatarUrl: string;
   description: string;
-  image: string;
 }
 
 interface VideoPageProps {
   searchParams: VideoData;
-  relatedVideos: VideoData[];
+  // relatedVideos: VideoData[];
 }
 
 const VideoPage: React.FC<VideoPageProps> = ({
   searchParams,
-  relatedVideos,
+  // relatedVideos,
 }) => {
-  return <VideoComponent data={searchParams} relatedVideos={relatedVideos} />;
+  return <VideoComponent data={searchParams} />;
 };
 
 export default VideoPage;

@@ -21,43 +21,44 @@ interface VideoData {
   videoUrl: string;
   avatarUrl: string;
   description: string;
-  image: string;
 }
 
 interface VideoComponentProps {
   data: VideoData;
-  relatedVideos: VideoData[];
+  // relatedVideos: VideoData[];
 }
 
 const VideoComponent: React.FC<VideoComponentProps> = ({
   data,
-  relatedVideos,
+  // relatedVideos,
 }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  // const [currentIndex, setCurrentIndex] = useState(0);
 
-  const currentVideo = relatedVideos[currentIndex];
-  const { title, name, videoUrl, avatarUrl, description } = currentVideo;
+  // const currentVideo = relatedVideos[currentIndex];
+  // const { title, name, videoUrl, avatarUrl, description } = currentVideo;
 
-  const handlePrev = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
-    }
-  };
+  // const handlePrev = () => {
+  //   if (currentIndex > 0) {
+  //     setCurrentIndex(currentIndex - 1);
+  //   }
+  // };
 
-  const handleNext = () => {
-    if (currentIndex < relatedVideos.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-    }
-  };
+  // const handleNext = () => {
+  //   if (currentIndex < relatedVideos.length - 1) {
+  //     setCurrentIndex(currentIndex + 1);
+  //   }
+  // };
 
   return (
     <MotionTransition className="mb-16 flex items-center justify-center">
       <div className="relative mx-auto max-w-4xl">
         <RevealText>
-          <h1 className="mb-4 mt-4 font-poppins text-3xl font-bold">{title}</h1>
+          <h1 className="mb-4 mt-4 font-poppins text-3xl font-bold">
+            {data.title}
+          </h1>
         </RevealText>
         <div className="relative flex items-center justify-center">
-          <button
+          {/* <button
             onClick={handlePrev}
             className={`absolute left-[-50px] top-1/2 -translate-y-1/2 transform rounded-full bg-primary p-2 shadow-lg ${
               currentIndex === 0 ? "cursor-not-allowed opacity-50" : ""
@@ -65,16 +66,16 @@ const VideoComponent: React.FC<VideoComponentProps> = ({
             disabled={currentIndex === 0}
           >
             <IconChevronLeft />
-          </button>
+          </button> */}
           <AspectRatio ratio={16 / 8}>
             <iframe
-              src={videoUrl}
+              src={data.videoUrl}
               className="h-full w-full"
               allow="autoplay; fullscreen; picture-in-picture"
-              title={title}
+              title={data.title}
             />
           </AspectRatio>
-          <button
+          {/* <button
             onClick={handleNext}
             className={`absolute right-[-50px] top-1/2 -translate-y-1/2 transform rounded-full bg-primary p-2 shadow-lg ${
               currentIndex === relatedVideos.length - 1
@@ -84,25 +85,25 @@ const VideoComponent: React.FC<VideoComponentProps> = ({
             disabled={currentIndex === relatedVideos.length - 1}
           >
             <IconChevronRight />
-          </button>
+          </button> */}
         </div>
         <div className="mb-3 mt-6 flex w-full items-center justify-between px-2">
           <div className="flex items-center justify-center gap-2">
             <Image
-              src={avatarUrl}
+              src={data.avatarUrl}
               width={24}
               height={24}
               className="rounded-full"
               alt="Creator Image"
             />
-            <p className="font-poppins text-lg font-semibold">{name}</p>
+            <p className="font-poppins text-lg font-semibold">{data.name}</p>
           </div>
         </div>
         <RevealText>
-          <p className="mb-8 text-gray-600">{description}</p>
+          <p className="mb-8 text-gray-600">{data.description}</p>
         </RevealText>
         <h2 className="mb-2 text-2xl font-bold">Related Videos</h2>
-        <section className="mt-4 grid w-full grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+        {/* <section className="mt-4 grid w-full grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
           {relatedVideos.map((video, index) => (
             <Link
               key={video.id}
@@ -128,11 +129,11 @@ const VideoComponent: React.FC<VideoComponentProps> = ({
                 alt={video.title}
               />
               <div className="absolute bottom-0 right-0 flex h-1/3 w-full items-end justify-end gap-2 rounded-b-2xl bg-gradient-to-b from-transparent to-black/50 p-4 text-lg font-semibold text-white">
-                {/* <p className="w-full font-poppins">{video.title}</p> */}
+                
               </div>
             </Link>
           ))}
-        </section>
+        </section> */}
       </div>
     </MotionTransition>
   );
