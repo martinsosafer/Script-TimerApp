@@ -26,8 +26,8 @@ const VideoCard: React.FC<{ video: Video }> = ({ video }) => {
       >
         <Image
           src={video.image}
-          width={414}
-          height={314}
+          width={370}
+          height={300}
           className="h-full w-full rounded-2xl object-cover"
           alt="VideoImage"
         />
