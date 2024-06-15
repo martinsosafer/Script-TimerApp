@@ -7,6 +7,7 @@ import {
   HEADLINES_AND_OPENINGS_PROMPTS,
   IMPROVE_SALES_PROMPTS,
   IMPROVE_YOUR_SPEECH_PROMPTS,
+  YOUR_OWN_PROMPT,
 } from "~/app/(site)/data/chat-prompts/";
 import type {
   Prompt,
@@ -105,6 +106,12 @@ export default function PromptsSelector({
                 />
               );
             })}
+          <PromptCard
+            isSelected={selectedCard?.id === YOUR_OWN_PROMPT.id}
+            card={YOUR_OWN_PROMPT}
+            setSelectedCard={setSelectedCard}
+            isAddYourOwn
+          />
         </div>
       </div>
     </div>

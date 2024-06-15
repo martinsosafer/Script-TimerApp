@@ -108,7 +108,6 @@ export default function ChatInteraction({ userId }: { userId: string }) {
       const data = (await response.json()) as Chat;
       setMessages(data.messages);
       setSelectedChatHistory(data);
-      console.log("DATA", data);
       setAssistantsResponse(data.messages[data.messages?.length - 1]);
       setIsLoading(false);
     } catch (err) {
@@ -137,6 +136,7 @@ export default function ChatInteraction({ userId }: { userId: string }) {
             onChange={setPromptInput}
             onSubmit={() => handleSubmit()}
             loadingMessages={isLoading}
+            isEnabled={Boolean(selectedCard)}
           />
           <ChatFeedback
             chat={messages}

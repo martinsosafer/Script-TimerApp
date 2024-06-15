@@ -7,12 +7,14 @@ interface PromptInputProps {
   onChange: (value: string) => void;
   onSubmit: (arg: boolean) => void;
   loadingMessages: boolean;
+  isDisabled: boolean;
 }
 export default function FeedbackInput({
   value,
   onChange,
   onSubmit,
   loadingMessages,
+  isDisabled,
 }: PromptInputProps) {
   return (
     <div className="flex h-[100px] w-full items-center gap-4 rounded-md border border-gray-400 bg-white p-3">
@@ -24,7 +26,8 @@ export default function FeedbackInput({
         onChange={(e) => onChange(e.target.value)}
       />
       <button
-        className="flex h-8 w-8 items-center justify-center rounded-md bg-[#0066FF] p-2"
+        className={`flex h-8 w-8 items-center justify-center rounded-md ${isDisabled ? "bg-gray-300" : "bg-[#0066FF]"} p-2`}
+        disabled={isDisabled}
         onClick={() => {
           onSubmit(true);
           onChange("");
