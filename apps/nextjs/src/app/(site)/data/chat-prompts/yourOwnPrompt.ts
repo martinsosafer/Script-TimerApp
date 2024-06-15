@@ -10,6 +10,6 @@ export const YOUR_OWN_PROMPT: Prompt = {
   strengths:
     "Reading long-form content, such as articles, books, and other media",
   prompt_ai: `I will provide a prompt for you to read.`,
-  prompt_display: `Great! Let's use your own promp.`,
+  prompt_display: `Great! Let's use your own prompt.`,
   icon: "/icons/plus-circle.svg",
 };
