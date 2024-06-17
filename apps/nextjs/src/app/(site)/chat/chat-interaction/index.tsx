@@ -42,6 +42,7 @@ export default function ChatInteraction({ userId }: { userId: string }) {
     (subscriptionData.status === "STUDENT" ||
       subscriptionData.status === "CREATOR" ||
       subscriptionData.status === "BUSINESS" ||
+      subscriptionData.status === "FREE" ||
       subscriptionData.status === "FREE_TRIAL");
 
   useEffect(() => {
