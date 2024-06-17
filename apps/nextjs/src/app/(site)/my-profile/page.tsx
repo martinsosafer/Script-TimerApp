@@ -22,9 +22,14 @@ async function getSubscription(planId: string | null | undefined) {
 
   const stripe = new Stripe(stripeSecretKey);
 
-  const subscription = await stripe.subscriptions.retrieve(planId);
+  try {
+    const subscription = await stripe.subscriptions.retrieve(planId);
 
-  return subscription;
+    return subscription;
+  } catch (e) {
+    console.error(e);
+    return undefined;
+  }
 }
 
 export default async function MyProfile() {
