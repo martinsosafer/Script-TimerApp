@@ -2,7 +2,7 @@ import type { Prompt } from "./types";
 
 export const YOUR_OWN_PROMPT: Prompt = {
   id: "060k7426-9f45-4e46-bt55-fdcdy209811fc",
-  name: "Add your own prompt",
+  name: "Add Your Own Prompt",
   description:
     "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
   type: "IMPROVE YOUR SPEECH",
