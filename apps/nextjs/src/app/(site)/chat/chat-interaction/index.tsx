@@ -106,7 +106,13 @@ export default function ChatInteraction({ userId }: { userId: string }) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = (await response.json()) as Chat;
-      setMessages(data.messages);
+      setMessages(
+        isFeedback
+          ? data.messages
+          : ([{ role: "user", content: promptInput }].concat(
+              data.messages,
+            ) as ChatMessage[]),
+      );
       setSelectedChatHistory(data);
       setAssistantsResponse(data.messages[data.messages?.length - 1]);
       setIsLoading(false);
