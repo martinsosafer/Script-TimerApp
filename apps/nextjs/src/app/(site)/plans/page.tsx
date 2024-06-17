@@ -86,17 +86,22 @@ async function getSubscription(planId: string | null | undefined) {
 
   const stripe = new Stripe(stripeSecretKey);
 
-  const subscription = await stripe.subscriptions.retrieve(planId);
+  try {
+    const subscription = await stripe.subscriptions.retrieve(planId);
 
-  const subscriptionData = {
-    billing_cycle_anchor: subscription.billing_cycle_anchor,
-    current_period_end: subscription.current_period_end,
-    current_period_start: subscription.current_period_start,
-    days_until_due: subscription.days_until_due,
-    plan: subscription.items.data[0]?.plan,
-  };
+    const subscriptionData = {
+      billing_cycle_anchor: subscription.billing_cycle_anchor,
+      current_period_end: subscription.current_period_end,
+      current_period_start: subscription.current_period_start,
+      days_until_due: subscription.days_until_due,
+      plan: subscription.items.data[0]?.plan,
+    };
 
-  return subscriptionData;
+    return subscriptionData;
+  } catch (e) {
+    console.error(e);
+    return undefined;
+  }
 }
 
 async function PlansPage() {
