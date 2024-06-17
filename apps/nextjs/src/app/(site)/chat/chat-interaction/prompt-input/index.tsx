@@ -1,5 +1,10 @@
 import Image from "next/image";
 
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@voiceai/ui/@/components/ui/hover-card";
 import { IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 
 interface PromptInputProps {
@@ -7,6 +12,7 @@ interface PromptInputProps {
   onChange: (value: string) => void;
   onSubmit: () => void;
   loadingMessages: boolean;
+  isEnabled: boolean;
 }
 
 export default function PromptInput({
@@ -14,6 +20,7 @@ export default function PromptInput({
   onChange,
   onSubmit,
   loadingMessages,
+  isEnabled,
 }: PromptInputProps) {
   return (
     <div className="flex w-full flex-col items-center">
@@ -27,21 +34,33 @@ export default function PromptInput({
           value={value}
           onChange={(e) => onChange(e.target.value)}
         />
-        <button
-          className="flex h-8 w-8 items-center justify-center rounded-md bg-[#0066FF] p-2"
-          onClick={() => onSubmit()}
-        >
-          {loadingMessages ? (
-            <IconSpinner className="animate-spin text-white" />
-          ) : (
-            <Image
-              src="/icons/leftArrow.svg"
-              height={20}
-              width={20}
-              alt="send prompt"
-            />
+        <HoverCard>
+          <HoverCardTrigger>
+            <button
+              className={`flex h-8 w-8 items-center justify-center rounded-md ${isEnabled ? "bg-[#0066FF]" : "bg-gray-400"}  p-2`}
+              disabled={!isEnabled}
+              onClick={() => onSubmit()}
+            >
+              {loadingMessages ? (
+                <IconSpinner className="animate-spin text-white" />
+              ) : (
+                <Image
+                  src="/icons/leftArrow.svg"
+                  height={20}
+                  width={20}
+                  alt="send prompt"
+                />
+              )}
+            </button>
+          </HoverCardTrigger>
+          {!isEnabled && (
+            <HoverCardContent>
+              <p className="text-sm text-gray-500">
+                Please, select a prompt above to continue.
+              </p>
+            </HoverCardContent>
           )}
-        </button>
+        </HoverCard>
       </div>
     </div>
   );

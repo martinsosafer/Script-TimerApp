@@ -97,13 +97,7 @@ const FavoriteVoiceCards: React.FC<FavoriteVoiceCardsProps> = ({
     audio.currentTime = 0;
     setIsPlaying((prevState) => ({ ...prevState, [voiceId]: false }));
   };
-  const stopAllAudio = () => {
-    if (audio) {
-      audio.pause();
-      audio.currentTime = 0;
-      setIsPlaying({});
-    }
-  };
+
   const handleFavorite = async (voice: FavoriteVoice) => {
     try {
       const response = await favoriteVoice({ voice });
@@ -118,19 +112,7 @@ const FavoriteVoiceCards: React.FC<FavoriteVoiceCardsProps> = ({
       console.error("Error adding favorite voice:", error);
     }
   };
-  const handleVoiceCardClick = (voice: Voice) => {
-    stopAllAudio();
-    if (selectedVoiceId === voice.id) {
-      if (isPlaying[voice.id]) {
-        stopAudio(voice.id);
-      } else {
-        playAudio((voice?.metadata?.preview_url as string) ?? "", voice.id);
-      }
-    } else {
-      onModelSelect(voice);
-      setSelectedVoiceId(voice.id);
-    }
-  };
+
   return (
     <div className="grid grid-cols-2 gap-4">
       {favoriteVoices?.map((voice) => (
@@ -141,7 +123,10 @@ const FavoriteVoiceCards: React.FC<FavoriteVoiceCardsProps> = ({
               ? "border-2 border-primary bg-blue-300 dark:border-white"
               : ""
           }`}
-          onClick={() => handleVoiceCardClick(voice)}
+          onClick={() => {
+            onModelSelect(voice);
+            setSelectedVoiceId(voice.id);
+          }}
         >
           {/* Full heart icon positioned at the top left */}
           <button

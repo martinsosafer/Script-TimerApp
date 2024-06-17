@@ -50,6 +50,7 @@ export default function Feedback({
         onChange={setFeedbackInput}
         onSubmit={handleSubmit}
         loadingMessages={loadingMessages}
+        isDisabled={chat.length === 0}
       />
     </div>
   );

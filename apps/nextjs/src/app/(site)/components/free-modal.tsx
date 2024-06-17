@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -6,20 +8,31 @@ import {
   IconAudioWaveform,
   IconBookPlus,
   IconBotMessageSquare,
-  IconDownload,
-  IconMic2,
   IconSave,
   IconScanText,
 } from "@voiceai/ui/@/components/ui/icons";
 
 import reminder from "../../../../public/dontmissout.png";
 
-function FreeModal({ onClose }) {
-  // If the user is not a free user, don't render anything
+interface SubData {
+  status: string | null;
+  userId: string;
+}
+function FreeModal({ subData }: { subData: SubData }) {
+  const isSubscriptionActive =
+    subData &&
+    (subData.status === "CREATOR" ||
+      subData.status === "STUDENT" ||
+      subData.status === "BUSINESS");
+  const [modalOpen, setModalOpen] = useState(!isSubscriptionActive);
 
-  const handleSkipForNow = () => {
-    onClose();
+  const closeModal = () => {
+    setModalOpen(false);
   };
+
+  if (!modalOpen) {
+    return null;
+  }
 
   return (
     <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50 backdrop-blur">
@@ -39,7 +52,7 @@ function FreeModal({ onClose }) {
 
             <div className="mt-2">
               {/* Options with icons */}
-              <h2 className=" ml-7 text-left text-xl  font-bold text-primary">
+              <h2 className=" ml-7 text-left text-xl font-bold text-primary">
                 Join us for :
               </h2>
               <ul className="pl-6">
@@ -69,20 +82,17 @@ function FreeModal({ onClose }) {
             </div>
             <div className="mt-8 space-y-4">
               {/* Buttons */}
-              <Link
-                href="https://script-timer.com/voice123-promo-pricing/"
-                target="_blank"
-              >
+              <Link href="/plans" target="_blank">
                 <button
-                  className="w-full transform rounded-full border-4 border-blue-500 bg-gradient-to-r from-blue-500 to-purple-500 p-3 font-semibold text-white transition-transform duration-300 hover:scale-105"
-                  onClick={() => handleSkipForNow()}
+                  className="w-full transform rounded-md border-2 border-blue-500 bg-gradient-to-r from-blue-500 to-purple-500 p-3 font-semibold text-white transition-transform duration-300 hover:scale-105"
+                  onClick={closeModal}
                 >
                   Upgrade Plan
                 </button>
               </Link>
               <button
-                className="w-full transform rounded-full border-4 border-black bg-white p-3 font-semibold transition-transform duration-300 hover:scale-105 dark:text-primary-foreground"
-                onClick={() => handleSkipForNow()} // Close the modal when clicked
+                className="w-full transform rounded-md border-2 border-black bg-white p-3 font-semibold transition-transform duration-300 hover:scale-105 dark:text-primary-foreground"
+                onClick={closeModal} // Close the modal when clicked
               >
                 Skip for now
               </button>

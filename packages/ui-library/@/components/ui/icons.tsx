@@ -1419,7 +1419,7 @@ function IconUserRound({ className, ...props }: React.ComponentProps<"svg">) {
   );
 }
 
-function IconCaretDown({ className, ...props }: React.ComponentProps<"svg">) {
+function IconMonitorPlay({ className, ...props }: React.ComponentProps<"svg">) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -1428,17 +1428,45 @@ function IconCaretDown({ className, ...props }: React.ComponentProps<"svg">) {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      className={cn("h-6 w-6", className)}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
       {...props}
     >
-      <path d="m18 15-6-6-6 6" />
+      <path d="M10 7.75a.75.75 0 0 1 1.142-.638l3.664 2.249a.75.75 0 0 1 0 1.278l-3.664 2.25a.75.75 0 0 1-1.142-.64z" />
+      <path d="M12 17v4" />
+      <path d="M8 21h8" />
+      <rect x="2" y="3" width="20" height="14" rx="2" />
     </svg>
   );
 }
 
+function IconGlasses({ className, ...props }: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      {...props}
+    >
+      <circle cx="6" cy="15" r="4" />
+      <circle cx="18" cy="15" r="4" />
+      <path d="M14 15a2 2 0 0 0-2-2 2 2 0 0 0-2 2" />
+      <path d="M2.5 13 5 7c.7-1.3 1.4-2 3-2" />
+      <path d="M21.5 13 19 7c-.7-1.3-1.5-2-3-2" />
+    </svg>
+  );
+}
+
+export default IconUserRound;
 function TwitterIcon({ className, ...props }: React.ComponentProps<"svg">) {
   return (
     <svg
@@ -1560,6 +1588,27 @@ function IconUpgrades({ className, ...props }: React.ComponentProps<"svg">) {
     </svg>
   );
 }
+
+function IconCaretDown({ className, ...props }: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      className={cn("h-6 w-6", className)}
+      {...props}
+    >
+      <path d="m18 15-6-6-6 6" />
+    </svg>
+  );
+}
+
 export {
   IconEdit,
   IconNextChat,
@@ -1620,10 +1669,13 @@ export {
   FacebookIcon,
   IconSearch,
   IconUserRound,
+  IconMonitorPlay,
+  IconGlasses,
+  ShareIcon,
   IconChevronRight,
   IconChevronLeft,
   IconHeart,
   IconHeartFill,
-  IconCaretDown,
   IconUpgrades,
+  IconCaretDown,
 };

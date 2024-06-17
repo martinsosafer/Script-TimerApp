@@ -8,7 +8,6 @@ import { AspectRatio } from "@voiceai/ui/@/components/ui/aspect-ratio";
 import { RevealText } from "~/app/animations/RevealText";
 import useModal from "~/app/hooks/useModal";
 import { api } from "~/utils/api";
-import Modal from "../../modal";
 import PrimaryButton from "../../primary-button";
 import MotionTransition from "../MotionTransition/MotionTransition";
 
@@ -50,6 +49,7 @@ export default function HeroSection() {
       console.error("Error initiating free trial:", error);
     }
   };
+ 
   return (
     <div>
       <MotionTransition>
@@ -76,17 +76,14 @@ export default function HeroSection() {
             <RevealText>
               <div className="flex justify-center  gap-3">
                 <PrimaryButton>
-                  <Link href="/texttospeech">Text to Voice</Link>
+                  <Link href="/texttospeech">Text to Speech</Link>
                 </PrimaryButton>
                 <PrimaryButton>
                   <Link href="/chat">Script Coach</Link>
                 </PrimaryButton>
                 <PrimaryButton>
-                  <Link
-                    href="https://script-timer.com/lcs-masterclass/"
-                    target="_blank"
-                  >
-                    Masterclasses
+                  <Link href="/masterclasses" target="_blank">
+                    MasterClasses
                   </Link>
                 </PrimaryButton>
               </div>

@@ -43,7 +43,6 @@ import { api } from "~/utils/api";
 import { useDragAndDrop } from "~/utils/helpers";
 import CustomButton from "../../components/custom-button";
 import { TextEditor } from "../../components/editor";
-import FreeModal from "../../components/free-modal";
 import { HistoryButton } from "../../components/history-button";
 import { SaveScript } from "../../components/save-script";
 import { ScriptSelector } from "../../components/script-selector";
@@ -56,6 +55,7 @@ import { ToggleLibrary } from "../../components/toggle-voice-library";
 
 export function ScriptAI({}) {
   //Get subscription info
+
   const { data: subscriptionData, refetch } =
     api.subscription.mySubscription.useQuery();
   console.log("SUBSINFO", subscriptionData);
@@ -89,8 +89,6 @@ export function ScriptAI({}) {
   const { scriptId } = useParams();
   //modal logic
 
-  const { showDailyModal, closeDailyModal } = useDailyModal();
-
   //scriptdetials
   const { data: scriptDetails } = api.script.get.useQuery(
     { id: scriptId?.[0] ?? "" },
@@ -114,10 +112,18 @@ export function ScriptAI({}) {
   });
   const checkAndPublish = React.useCallback(
     async (c: string) => {
-      const completion = await complete(c);
-      if (!completion) throw new Error("Failed to check typos");
-      setLoading(false);
-      setRevisedScript(completion);
+      setLoading(true);
+      try {
+        const completion = await complete(c);
+        if (!completion) throw new Error("Failed to check typos");
+        setRevisedScript(completion);
+      } catch (error) {
+        console.error("Error fetching completion:", error);
+        // Handle error appropriately
+        setRevisedScript("Error processing request");
+      } finally {
+        setLoading(false);
+      }
     },
     [complete],
   );
@@ -484,23 +490,29 @@ export function ScriptAI({}) {
                           className="min-h-[50vh] md:min-h-[55vh] lg:min-h-[70vh] xl:min-h-[70vh]"
                         />
                         <div className="flex items-center justify-end ">
-                          <Badge className="flex items-center">
-                            <span className="inline">
-                              Script is&nbsp;
-                              <span className="font-semibold text-tertiary dark:text-tertiary">
-                                {wordCount}
-                              </span>
-                              &nbsp;words. Estimated time &nbsp;
-                              <span className="font-semibold text-tertiary  dark:text-tertiary">
-                                {minutes}
-                              </span>
-                              &nbsp;minutes and&nbsp;
-                              <span className="font-semibold text-tertiary  dark:text-tertiary">
-                                {formattedSeconds}
-                              </span>
-                              &nbsp;seconds
+                          <h3 className="text-lg  font-medium">
+                            If you want more writing support, go to:{" "}
+                            <Link
+                              href="https://script-timer.com/chat"
+                              target="_blank"
+                              className="text-blue-500 underline hover:text-blue-700"
+                            >
+                              https://script-timer.com/chat
+                            </Link>{" "}
+                            or, our other tools at{" "}
+                            <Link
+                              href="https://script-timer.com/more-tools/"
+                              target="_blank"
+                              className="text-blue-500 underline hover:text-blue-700"
+                            >
+                              https://script-timer.com/more-tools/
+                            </Link>{" "}
+                            or ask an expert writer for help at{" "}
+                            <span className="text-blue-500 underline hover:text-blue-700">
+                              {" "}
+                              info@Ripmediagroup.com
                             </span>
-                          </Badge>
+                          </h3>
                         </div>
                         <div className="flex flex-col">
                           <Tooltip>
@@ -571,9 +583,6 @@ export function ScriptAI({}) {
       {/* {(!isSubscriptionActive || showModal) && (
         <Modal isOpen={showModal} onClose={closeModal} />
       )} */}
-      {showDailyModal && !isSubscriptionActive && (
-        <FreeModal onClose={closeDailyModal} />
-      )}
     </div>
   );
 }
