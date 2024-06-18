@@ -42,6 +42,7 @@ export default function ChatInteraction({ userId }: { userId: string }) {
     (subscriptionData.status === "STUDENT" ||
       subscriptionData.status === "CREATOR" ||
       subscriptionData.status === "BUSINESS" ||
+      subscriptionData.status === "FREE" ||
       subscriptionData.status === "FREE_TRIAL");
 
   useEffect(() => {
@@ -106,9 +107,14 @@ export default function ChatInteraction({ userId }: { userId: string }) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = (await response.json()) as Chat;
-      setMessages(data.messages);
+      setMessages(
+        isFeedback
+          ? data.messages
+          : ([{ role: "user", content: promptInput }].concat(
+              data.messages,
+            ) as ChatMessage[]),
+      );
       setSelectedChatHistory(data);
-      console.log("DATA", data);
       setAssistantsResponse(data.messages[data.messages?.length - 1]);
       setIsLoading(false);
     } catch (err) {
@@ -137,6 +143,7 @@ export default function ChatInteraction({ userId }: { userId: string }) {
             onChange={setPromptInput}
             onSubmit={() => handleSubmit()}
             loadingMessages={isLoading}
+            isEnabled={Boolean(selectedCard)}
           />
           <ChatFeedback
             chat={messages}

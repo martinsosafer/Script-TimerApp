@@ -117,7 +117,7 @@ export const userRouter = createTRPCRouter({
     .input(
       z.object({
         userId: z.string().min(5),
-        planId: z.string().min(5),
+        planId: z.string().min(5).optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -145,7 +145,7 @@ export const userRouter = createTRPCRouter({
     .input(
       z.object({
         userId: z.string().min(5),
-        planId: z.string().min(5),
+        planId: z.string().min(5).optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -174,7 +174,7 @@ export const userRouter = createTRPCRouter({
     .input(
       z.object({
         userId: z.string().min(5),
-        planId: z.string().min(5),
+        planId: z.string().min(5).optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {

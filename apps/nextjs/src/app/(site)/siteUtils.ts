@@ -3,7 +3,8 @@ export function hasValidPlan(plan: string | undefined) {
     plan === "STUDENT" ||
     plan === "CREATOR" ||
     plan === "BUSINESS" ||
-    plan === "FREE_TRIAL";
+    plan === "FREE_TRIAL" ||
+    plan === "FREE";
 
   console.log("function plan", isSubscriptionActive);
   return isSubscriptionActive;
