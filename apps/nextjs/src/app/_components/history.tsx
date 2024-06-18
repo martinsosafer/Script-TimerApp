@@ -164,7 +164,7 @@ export const History = ({ ...rest }) => {
             <TableHead>Characters used</TableHead>
             <TableHead>Date</TableHead>
             <TableHead>Actor</TableHead>
-            <TableHead>Copy</TableHead>
+            <TableHead>Copy Script</TableHead>
             <TableHead>Change Actor</TableHead>
             <TableHead>Play</TableHead>
             <TableHead>Download</TableHead>
