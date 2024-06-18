@@ -79,12 +79,13 @@ export const voiceRouter = createTRPCRouter({
 
         let maxMessageLength = 300; // Default maximum message length for free users
 
-        if (
-          subscription?.status === "FREE_TRIAL" ||
-          subscription?.status === "STUDENT"
-        ) {
+        if (subscription?.status === "FREE_TRIAL") {
+          maxMessageLength = 1600;
+        } else if (subscription?.status === "STUDENT") {
           maxMessageLength = 2000;
         } else if (subscription?.status === "CREATOR") {
+          maxMessageLength = 5000;
+        } else if (subscription?.status === "BUSINESS") {
           maxMessageLength = 5000;
         }
 
@@ -101,7 +102,7 @@ export const voiceRouter = createTRPCRouter({
         let message = input.message;
 
         if (
-          !["FREE_TRIAL", "STUDENT", "CREATOR"].includes(subscription?.status)
+          !["BUSINESS", "STUDENT", "CREATOR"].includes(subscription?.status)
         ) {
           message = addWatermark(message);
         }
