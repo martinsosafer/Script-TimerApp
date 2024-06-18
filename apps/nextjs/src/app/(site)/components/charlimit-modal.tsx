@@ -18,7 +18,7 @@ const CharLimitModal = ({ onClose, subData }) => {
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className="rounded bg-white p-4">
         <h2 className="mb-4 text-lg font-bold">
-          <span className="text-red-500">Warning </span>Character Limit Exceeded
+          <span className="text-red-500">Warning, </span>Character Limit Exceeded
         </h2>
         <p>
           You have exceeded the {planCharacterLimit} character limit for this
