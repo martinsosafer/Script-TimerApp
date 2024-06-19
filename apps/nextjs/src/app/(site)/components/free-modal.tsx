@@ -71,7 +71,7 @@ function FreeModal({ subData }: { subData: SubData }) {
                 </h2>
                 <ul className="list-disc pl-6">
                   <li className="font-poppins text-base font-medium dark:text-primary-foreground">
-                    Use AI custom made for scripts & Voices
+                    Use AI custom made for scripts & voices
                   </li>
                   <li className="font-poppins text-base font-medium dark:text-primary-foreground">
                     Download and save voice overs and scripts
