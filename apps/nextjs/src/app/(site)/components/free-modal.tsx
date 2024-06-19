@@ -43,24 +43,24 @@ function FreeModal({ subData }: { subData: SubData }) {
 
               {/* New Rectangular Rounded Bubble */}
               <div className="primary relative mb-4 mt-4 rounded-full border-2 border-primary px-6 text-center">
-                <div className="absolute left-0 top-1/2 h-8 -translate-y-1/2 transform">
+                <div className="absolute -left-64 top-1/2 -translate-y-1/2 transform">
                   <Image
                     src={microphone}
                     alt="Microphone"
-                    width={500}
-                    height={500}
+                    width={400}
+                    height={400}
                   />
                 </div>
                 <div className="font-poppins text-lg font-medium text-black">
                   <div>Radio Spot * Podcast * Speech</div>
                   <div>Marketing * Video * Content</div>
                 </div>
-                <div className="absolute right-0 top-1/2 h-8 -translate-y-1/2 transform">
+                <div className="rotate-y-180  absolute -right-44 top-1/2 -translate-y-1/2 transform">
                   <Image
-                    src={notebook}
-                    alt="Notebook"
-                    width={500}
-                    height={500}
+                    src={microphone}
+                    alt="microphone"
+                    width={400}
+                    height={400}
                   />
                 </div>
               </div>
