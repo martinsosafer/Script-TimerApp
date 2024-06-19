@@ -4,6 +4,8 @@ import type { Metadata } from "next";
 import { getSession } from "~/app/api/subscription/subscription";
 import videoCardData from "../../components/masterclasses/videocards/videocardsdata";
 import VideoPage from "../../components/masterclasses/videopage/videopage";
+import SubsModal from "../../components/subs-moda";
+import ChatModal from "../../old-chat/chat/chatmodal";
 
 export const metadata: Metadata = {
   title: "Masterclasses",
@@ -34,8 +36,9 @@ interface RelatedVideo {
 }
 
 export default async function Page({ searchParams }: PageProps) {
+  const neededPlan = "Business";
   const session = await getSession();
-  const subData = session?.subscription;
+  const subData = session?.subscription?.status;
 
   const modifiedSearchParams = {
     ...searchParams,
@@ -59,7 +62,9 @@ export default async function Page({ searchParams }: PageProps) {
         searchParams={modifiedSearchParams}
         relatedVideos={relatedVideos}
       />
-      {/* <FreeModal subData={subData} /> */}
+      {subData !== "BUSINESS" && (
+        <SubsModal currentPlan={subData} neededPlan={neededPlan} />
+      )}
     </>
   );
 }
