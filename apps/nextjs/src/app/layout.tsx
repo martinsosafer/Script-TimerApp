@@ -54,8 +54,8 @@ export default function Layout(props: { children: React.ReactNode }) {
       >
         {props.children}
       </body>
-      <GoogleAnalytics gaId="G-HFV2PVVNXR" />
-    
+      <GoogleAnalytics gaId="G-M6HRXE4WV8" />
+
       <PageAnalytics />
     </html>
   );
