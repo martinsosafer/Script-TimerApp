@@ -101,7 +101,7 @@ export const voiceRouter = createTRPCRouter({
         let message = input.message;
 
         if (
-          !["FREE_TRIAL", "STUDENT", "CREATOR"].includes(subscription?.status)
+          !["BUSINESS", "STUDENT", "CREATOR"].includes(subscription?.status)
         ) {
           message = addWatermark(message);
         }
