@@ -1,6 +1,10 @@
 import internal from "stream";
 import React from "react";
 
+
+
+
+
 // Define the type for props
 interface IntroParagraphProps {
   status: string | undefined;
@@ -27,7 +31,7 @@ function IntroParagraph(props: IntroParagraphProps) {
         ? "2,000 words"
         : status === "STUDENT"
           ? "2,000 words"
-          : status === "CREATOR"
+          : status === "CREATOR" || status === "BUSINESS"
             ? "5,000 words"
             : "300 words";
 

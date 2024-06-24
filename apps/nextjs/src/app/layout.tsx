@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins, Roboto } from "next/font/google";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 
 import { PageAnalytics } from "./analytics";
 
@@ -54,6 +54,7 @@ export default function Layout(props: { children: React.ReactNode }) {
       >
         {props.children}
       </body>
+      <GoogleTagManager />
       <GoogleAnalytics gaId="G-HFV2PVVNXR" />
 
       <PageAnalytics />
