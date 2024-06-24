@@ -165,8 +165,8 @@ export const History = ({ ...rest }) => {
             <TableHead>Date</TableHead>
             <TableHead>Actor</TableHead>
             <TableHead>Copy Script</TableHead>
-            <TableHead>Change Actor</TableHead>
-            <TableHead>Play</TableHead>
+            {/* <TableHead>Change Actor</TableHead>
+            <TableHead>Play</TableHead> */}
             <TableHead>Download</TableHead>
           </TableRow>
         </TableHeader>
@@ -187,7 +187,7 @@ export const History = ({ ...rest }) => {
                     <IconCopy width={30} className="stroke-black" />
                   </button>
                 </TableCell>
-                <TableCell>
+                {/* <TableCell>
                   <ActorsDropdown
                     voices={voices}
                     setSelectedModel={(model) =>
@@ -263,7 +263,7 @@ export const History = ({ ...rest }) => {
                       <span className="sr-only">Stop sound</span>
                     </Button>
                   )}
-                </TableCell>
+                </TableCell> */}
                 <TableCell>
                   <HoverCard>
                     <HoverCardTrigger asChild>
