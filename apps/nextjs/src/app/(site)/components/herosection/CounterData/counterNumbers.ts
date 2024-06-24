@@ -13,8 +13,8 @@ export const counterNumbers = [
   },
   {
     id: 3,
-    startNumber: 2000,
-    endNumber: 66000,
+    startNumber: 50000,
+    endNumber: 1200763,
     text: "Scripts Made",
   },
 ];
