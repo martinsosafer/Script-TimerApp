@@ -53,7 +53,7 @@ import VoiceWidget from "../../components/texttospeech/voicewidget/voicewidget";
 import { ToggleAudio } from "../../components/toggle-audio";
 import { ToggleLibrary } from "../../components/toggle-voice-library";
 
-export function ScriptAI({}) {
+export function ScriptAI({ subData }) {
   //Get subscription info
 
   const { data: subscriptionData, refetch } =
@@ -313,7 +313,11 @@ export function ScriptAI({}) {
                 </div>
                 <TabsContent value="complete" className="mt-0 border-0 p-0">
                   <div className="flex h-3/6 flex-col ">
-                    <TextEditor onChange={handleEditorChange} script={script} />
+                    <TextEditor
+                      onChange={handleEditorChange}
+                      script={script}
+                      subData={subData}
+                    />
 
                     <div className=" mb-4 flex flex-col items-center justify-center">
                       <Badge className="h-12 w-[570px] items-center justify-center border-4 border-primary bg-blue-500 text-lg hover:to-blue-200">
@@ -382,7 +386,7 @@ export function ScriptAI({}) {
                             className="w-[320px] text-sm"
                             side="left"
                           >
-                            Small demo to test your chosen voice
+                            Test the first 10 words of the script
                           </HoverCardContent>
                         </HoverCard>
 

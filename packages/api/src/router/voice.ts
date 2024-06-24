@@ -49,6 +49,7 @@ export const voiceRouter = createTRPCRouter({
       if (
         subscription?.status === "STUDENT" ||
         subscription?.status === "CREATOR" ||
+        subscription?.status === "BUSINESS" ||
         subscription?.status === "FREE_TRIAL"
       ) {
         // If user has an active subscription, set maximum voices to a higher value
@@ -84,7 +85,10 @@ export const voiceRouter = createTRPCRouter({
           subscription?.status === "STUDENT"
         ) {
           maxMessageLength = 2000;
-        } else if (subscription?.status === "CREATOR") {
+        } else if (
+          subscription?.status === "CREATOR" ||
+          subscription?.status === "BUSINESS"
+        ) {
           maxMessageLength = 5000;
         }
 
@@ -101,7 +105,7 @@ export const voiceRouter = createTRPCRouter({
         let message = input.message;
 
         if (
-          !["FREE_TRIAL", "STUDENT", "CREATOR"].includes(subscription?.status)
+          !["BUSINESS", "STUDENT", "CREATOR"].includes(subscription?.status)
         ) {
           message = addWatermark(message);
         }
