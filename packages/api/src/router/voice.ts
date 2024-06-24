@@ -49,6 +49,7 @@ export const voiceRouter = createTRPCRouter({
       if (
         subscription?.status === "STUDENT" ||
         subscription?.status === "CREATOR" ||
+        subscription?.status === "BUSINESS" ||
         subscription?.status === "FREE_TRIAL"
       ) {
         // If user has an active subscription, set maximum voices to a higher value
@@ -79,13 +80,15 @@ export const voiceRouter = createTRPCRouter({
 
         let maxMessageLength = 300; // Default maximum message length for free users
 
-        if (subscription?.status === "FREE_TRIAL") {
-          maxMessageLength = 1600;
-        } else if (subscription?.status === "STUDENT") {
+        if (
+          subscription?.status === "FREE_TRIAL" ||
+          subscription?.status === "STUDENT"
+        ) {
           maxMessageLength = 2000;
-        } else if (subscription?.status === "CREATOR") {
-          maxMessageLength = 5000;
-        } else if (subscription?.status === "BUSINESS") {
+        } else if (
+          subscription?.status === "CREATOR" ||
+          subscription?.status === "BUSINESS"
+        ) {
           maxMessageLength = 5000;
         }
 

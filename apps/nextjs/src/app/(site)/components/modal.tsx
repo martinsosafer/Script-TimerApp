@@ -23,9 +23,9 @@ function Modal({ subData, userId }: { subData: SubData; userId: string }) {
     subData &&
     (subData.status === "CREATOR" ||
       subData.status === "STUDENT" ||
-      subData.status === "BUSINESS" ||
-      subData.status === "FREE" ||
-      subData.status === "FREE_TRIAL");
+      subData.status === "BUSINESS");
+    // subData.status === "FREE" ||
+    // subData.status === "FREE_TRIAL")
 
   const [modalOpen, setModalOpen] = useState(!isSubscriptionActive);
 
