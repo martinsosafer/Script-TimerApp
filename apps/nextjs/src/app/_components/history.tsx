@@ -44,7 +44,8 @@ export const History = ({ ...rest }) => {
   const isSubscriptionActive =
     subscriptionData &&
     (subscriptionData.status === "CREATOR" ||
-      subscriptionData.status === "STUDENT");
+      subscriptionData.status === "STUDENT" ||
+    subscriptionData.status==="BUSINESS");
 
   const handleSetSelectedModel = (model, index) => {
     setSelectedModel((prevState) => ({ ...prevState, [index]: model }));
