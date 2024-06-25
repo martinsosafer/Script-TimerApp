@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import { sendGAEvent } from "@next/third-parties/google";
 
 import { AspectRatio } from "@voiceai/ui/@/components/ui/aspect-ratio";
 
@@ -49,7 +50,7 @@ export default function HeroSection() {
       console.error("Error initiating free trial:", error);
     }
   };
- 
+
   return (
     <div>
       <MotionTransition>
@@ -75,7 +76,14 @@ export default function HeroSection() {
             </RevealText>
             <RevealText>
               <div className="flex justify-center  gap-3">
-                <PrimaryButton>
+                <PrimaryButton
+                  onClick={() =>
+                    sendGAEvent({
+                      event: "buttonClicked",
+                      value: "LandingPageTextToVoice",
+                    })
+                  }
+                >
                   <Link href="/texttospeech">Text to Voice</Link>
                 </PrimaryButton>
                 <PrimaryButton>
