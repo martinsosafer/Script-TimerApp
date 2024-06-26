@@ -17,8 +17,9 @@ import reminder from "../../../../public/dontmissout.png";
 interface SubData {
   status: string | null;
   userId: string;
+  planId: string | null;
 }
-function FreeModal({ subData }: { subData: SubData }) {
+function FreeModal({ subData }: { subData: SubData | null | undefined }) {
   const isSubscriptionActive =
     subData &&
     (subData.status === "CREATOR" ||

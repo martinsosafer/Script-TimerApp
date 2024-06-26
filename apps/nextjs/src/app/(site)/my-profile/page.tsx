@@ -1,11 +1,12 @@
+import { redirect } from "next/navigation";
 import { Stripe } from "stripe";
 
+import { auth } from "@voiceai/auth";
 import {
   IconPencilLine,
   IconUserRound,
 } from "@voiceai/ui/@/components/ui/icons";
 
-import { getSession } from "~/app/api/subscription/subscription";
 import type { I_Subscription } from "../plans/types";
 import SubscriptionDetails from "./subscription-details";
 
@@ -16,7 +17,7 @@ async function getSubscription(planId: string | null | undefined) {
     throw new Error("Stripe secret key is not defined.");
   }
 
-  if (!planId) {
+  if (!planId || planId === "initial_plan_id") {
     return undefined;
   }
 
@@ -33,8 +34,14 @@ async function getSubscription(planId: string | null | undefined) {
 }
 
 export default async function MyProfile() {
-  const session = await getSession();
-  const subscription = await getSubscription(session?.subscription?.planId);
+  const session = await auth();
+  const subscription = await getSubscription(
+    session?.user.subscription?.planId,
+  );
+
+  if (!session) {
+    redirect("/");
+  }
 
   return (
     <div className="flex h-full w-full justify-center bg-[#FAFAFA] py-10">
@@ -50,9 +57,9 @@ export default async function MyProfile() {
             </div>
             <div className="p-4">
               <h1 className="text-xl font-semibold text-gray-600">
-                {session?.name}
+                {session?.user.name}
               </h1>
-              <p className="text-md text-gray-600">{session?.email}</p>
+              <p className="text-md text-gray-600">{session?.user.email}</p>
             </div>
           </div>
           <SubscriptionDetails subscription={subscription as I_Subscription} />

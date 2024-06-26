@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 
 import { auth } from "@voiceai/auth";
 
-import { getSession } from "../api/subscription/subscription";
 import CounterData from "./components/herosection/CounterData/CounterData";
 import GoSections from "./components/herosection/GoSections/GoSections";
 import HeroSection from "./components/herosection/HeroBlock/herosection";
@@ -17,10 +16,9 @@ export const metadata: Metadata = {
 
 export default async function LandingPage() {
   const userData = await auth();
-  const userId = userData?.user.id;
+  const userId = userData?.user.id ?? "";
+  const subData = userData?.user?.subscription?.status;
 
-  const session = await getSession();
-  const subData = session?.subscription;
   return (
     <>
       <HeroSection />
@@ -28,7 +26,7 @@ export default async function LandingPage() {
       <ServiceSection />
       <GoSections />
       <Testimonials />
-      <Modal subData={subData} userId={userId} />
+      <Modal status={subData} userId={userId} />
     </>
   );
 }

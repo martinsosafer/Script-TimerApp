@@ -2,7 +2,8 @@ import React from "react";
 import type { Metadata } from "next";
 import { Stripe } from "stripe";
 
-import { getSession } from "~/app/api/subscription/subscription";
+import { auth } from "@voiceai/auth";
+
 import PlansSections from "./sections";
 import type { Product } from "./types";
 
@@ -106,8 +107,11 @@ async function getSubscription(planId: string | null | undefined) {
 
 async function PlansPage() {
   const { monthlyPlans, yearlyPlans } = await loadProducts();
-  const session = await getSession();
-  const subscription = await getSubscription(session?.subscription?.planId);
+  const session = await auth();
+  let subscription;
+  if (session) {
+    subscription = await getSubscription(session?.user.subscription?.planId);
+  }
 
   return (
     <div className="flex w-full flex-col items-center">

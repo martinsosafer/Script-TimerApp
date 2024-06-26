@@ -6,7 +6,8 @@ import { pgTable } from "./_table";
 export const users = pgTable("user", {
   id: text("id").notNull().primaryKey(),
   name: text("name"),
-  email: text("email").notNull(),
+  email: text("email").notNull().unique(),
+  password: text("password"),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   image: text("image"),
   created_at: timestamp("created_at").notNull().defaultNow(),

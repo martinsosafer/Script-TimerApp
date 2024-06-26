@@ -4,6 +4,8 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 
 import { PageAnalytics } from "./analytics";
 
+import "~/styles/globals.css";
+
 const poppins = Poppins({
   subsets: ["latin"],
   style: "normal",
@@ -55,7 +57,7 @@ export default function Layout(props: { children: React.ReactNode }) {
         {props.children}
       </body>
       <GoogleAnalytics gaId="G-HFV2PVVNXR" />
-    
+
       <PageAnalytics />
     </html>
   );
