@@ -22,10 +22,10 @@ import Newnavbar from "./components/navbar";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "VoiceAI",
+  title: "ScriptTimerLandingPage",
   description: "Using AI for Voice",
   openGraph: {
-    title: "VoiceAi",
+    title: "LandingPage",
     description: "Using AI for Voice",
     url: "https://voiceai-tesserakt.vercel.app/",
     siteName: "VoiceAI",

@@ -2,10 +2,10 @@
 
 import React from "react";
 import Link from "next/link";
-import { sendGAEvent } from "@next/third-parties/google";
 
 import { AspectRatio } from "@voiceai/ui/@/components/ui/aspect-ratio";
 
+import { TextToVoiceClick } from "~/app/_components/googleAnalytics/LandingEvents/LandingEvents";
 import { RevealText } from "~/app/animations/RevealText";
 import useModal from "~/app/hooks/useModal";
 import { api } from "~/utils/api";
@@ -76,14 +76,7 @@ export default function HeroSection() {
             </RevealText>
             <RevealText>
               <div className="flex justify-center  gap-3">
-                <PrimaryButton
-                  onClick={() =>
-                    sendGAEvent({
-                      event: "buttonClicked",
-                      value: "LandingPageTextToVoice",
-                    })
-                  }
-                >
+                <PrimaryButton onClick={TextToVoiceClick}>
                   <Link href="/texttospeech">Text to Voice</Link>
                 </PrimaryButton>
                 <PrimaryButton>
