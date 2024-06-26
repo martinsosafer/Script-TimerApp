@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Poppins, Roboto } from "next/font/google";
-import { GoogleAnalytics } from "@next/third-parties/google";
 
 import { PageAnalytics } from "./analytics";
+import GoogleAnalytics from "./GoogleAnalytics";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -42,6 +42,7 @@ export const metadata: Metadata = {
 export default function Layout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" className="h-full">
+      <GoogleAnalytics />
       <body
         className={[
           "font-poppins",
@@ -54,8 +55,7 @@ export default function Layout(props: { children: React.ReactNode }) {
       >
         {props.children}
       </body>
-      <GoogleAnalytics gaId="G-HFV2PVVNXR" />
-    
+
       <PageAnalytics />
     </html>
   );

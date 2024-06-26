@@ -22,9 +22,20 @@ interface DashboardProps {
 const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [minCredits, setMinCredits] = useState<number | "">("");
-  const [minDaysWithPlan, setMinDaysWithPlan] = useState<number | "">("");
+  const [minDaysWithPlanAsc, setMinDaysWithPlanAsc] = useState<number | "">("");
+  const [minDaysWithPlanDesc, setMinDaysWithPlanDesc] = useState<number | "">(
+    "",
+  );
+  const [minDaysSinceCreationAsc, setMinDaysSinceCreationAsc] = useState<
+    number | ""
+  >("");
+  const [minDaysSinceCreationDesc, setMinDaysSinceCreationDesc] = useState<
+    number | ""
+  >("");
   const [filteredData, setFilteredData] = useState<UserData[]>(userList);
   const [selectedPlan, setSelectedPlan] = useState<string>("");
+  const [isAscending, setIsAscending] = useState<boolean>(true);
+  const [isCreationAscending, setIsCreationAscending] = useState<boolean>(true);
 
   const { mutateAsync: giveSubscription } =
     api.user.giveSubscription.useMutation({
@@ -144,10 +155,36 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
     setMinCredits(parseInt(e.target.value, 10) || "");
   };
 
-  const handleMinDaysWithPlanChange = (
+  const handleMinDaysWithPlanAscChange = (
     e: React.ChangeEvent<HTMLInputElement>,
   ): void => {
-    setMinDaysWithPlan(parseInt(e.target.value, 10) || "");
+    setMinDaysWithPlanAsc(parseInt(e.target.value, 10) || "");
+  };
+
+  const handleMinDaysWithPlanDescChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
+    setMinDaysWithPlanDesc(parseInt(e.target.value, 10) || "");
+  };
+
+  const handleMinDaysSinceCreationAscChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
+    setMinDaysSinceCreationAsc(parseInt(e.target.value, 10) || "");
+  };
+
+  const handleMinDaysSinceCreationDescChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
+    setMinDaysSinceCreationDesc(parseInt(e.target.value, 10) || "");
+  };
+
+  const toggleSortOrder = () => {
+    setIsAscending(!isAscending);
+  };
+
+  const toggleCreationSortOrder = () => {
+    setIsCreationAscending(!isCreationAscending);
   };
 
   useEffect(() => {
@@ -167,19 +204,55 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
       filtered = filtered.filter((user) => user.total_credits >= minCredits);
     }
 
-    if (minDaysWithPlan !== "") {
+    if (minDaysWithPlanAsc !== "") {
       filtered = filtered.filter(
-        (user) => daysWithCurrentPlan(user.updated_at) >= minDaysWithPlan,
+        (user) => daysWithCurrentPlan(user.updated_at) >= minDaysWithPlanAsc,
       );
     }
 
-    filtered.sort(
-      (a, b) =>
-        daysWithCurrentPlan(a.updated_at) - daysWithCurrentPlan(b.updated_at),
-    );
+    if (minDaysWithPlanDesc !== "") {
+      filtered = filtered.filter(
+        (user) => daysWithCurrentPlan(user.updated_at) <= minDaysWithPlanDesc,
+      );
+    }
+
+    if (minDaysSinceCreationAsc !== "") {
+      filtered = filtered.filter(
+        (user) => daysSinceCreated(user.created_at) >= minDaysSinceCreationAsc,
+      );
+    }
+
+    if (minDaysSinceCreationDesc !== "") {
+      filtered = filtered.filter(
+        (user) => daysSinceCreated(user.created_at) <= minDaysSinceCreationDesc,
+      );
+    }
+
+    filtered.sort((a, b) => {
+      const comparison =
+        daysWithCurrentPlan(a.updated_at) - daysWithCurrentPlan(b.updated_at);
+      return isAscending ? comparison : -comparison;
+    });
+
+    filtered.sort((a, b) => {
+      const comparison =
+        daysSinceCreated(a.created_at) - daysSinceCreated(b.created_at);
+      return isCreationAscending ? comparison : -comparison;
+    });
 
     setFilteredData(filtered);
-  }, [searchTerm, userList, selectedPlan, minCredits, minDaysWithPlan]);
+  }, [
+    searchTerm,
+    userList,
+    selectedPlan,
+    minCredits,
+    minDaysWithPlanAsc,
+    minDaysWithPlanDesc,
+    minDaysSinceCreationAsc,
+    minDaysSinceCreationDesc,
+    isAscending,
+    isCreationAscending,
+  ]);
 
   const daysSinceCreated = (createdAt: string): number => {
     const createdAtDate = new Date(createdAt);
@@ -214,21 +287,19 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
           <select
             value={selectedPlan}
             onChange={handlePlanChange}
-            className="mr-2 w-full rounded-lg border border-gray-300 px-2 py-1"
+            className="w-full rounded-lg border border-gray-300 px-4 py-2"
           >
             <option value="">All Plans</option>
-            <option value="FREE">Free</option>
-            <option value="FREE_TRIAL">Free Trial</option>
-            <option value="STUDENT">Student</option>
-            <option value="CREATOR">Creator</option>
-            <option value="BUSINESS">Business</option>
+            <option value="student">Student</option>
+            <option value="creator">Creator</option>
+            <option value="business">Business</option>
           </select>
         </div>
         <div className="mb-4 flex w-full flex-wrap md:mb-0 md:w-1/4">
           <input
             type="number"
             placeholder="Min Credits"
-            value={minCredits}
+            value={minCredits === "" ? "" : minCredits}
             onChange={handleMinCreditsChange}
             className="w-full rounded-lg border border-gray-300 px-4 py-2"
           />
@@ -236,45 +307,85 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
         <div className="mb-4 flex w-full flex-wrap md:mb-0 md:w-1/4">
           <input
             type="number"
-            placeholder="Days with current plan"
-            value={minDaysWithPlan}
-            onChange={handleMinDaysWithPlanChange}
+            placeholder="Min Days with Current Plan Asc"
+            value={minDaysWithPlanAsc === "" ? "" : minDaysWithPlanAsc}
+            onChange={handleMinDaysWithPlanAscChange}
+            className="w-full rounded-lg border border-gray-300 px-4 py-2"
+          />
+        </div>
+        <div className="mb-4 flex w-full flex-wrap md:mb-0 md:w-1/4">
+          <input
+            type="number"
+            placeholder="Max Days with Current Plan Desc"
+            value={minDaysWithPlanDesc === "" ? "" : minDaysWithPlanDesc}
+            onChange={handleMinDaysWithPlanDescChange}
+            className="w-full rounded-lg border border-gray-300 px-4 py-2"
+          />
+        </div>
+        <div className="mb-4 flex w-full flex-wrap md:mb-0 md:w-1/4">
+          <input
+            type="number"
+            placeholder="Min Days Since Creation Asc"
+            value={
+              minDaysSinceCreationAsc === "" ? "" : minDaysSinceCreationAsc
+            }
+            onChange={handleMinDaysSinceCreationAscChange}
+            className="w-full rounded-lg border border-gray-300 px-4 py-2"
+          />
+        </div>
+        <div className="mb-4 flex w-full flex-wrap md:mb-0 md:w-1/4">
+          <input
+            type="number"
+            placeholder="Max Days Since Creation Desc"
+            value={
+              minDaysSinceCreationDesc === "" ? "" : minDaysSinceCreationDesc
+            }
+            onChange={handleMinDaysSinceCreationDescChange}
             className="w-full rounded-lg border border-gray-300 px-4 py-2"
           />
         </div>
       </div>
-      <table className="w-full">
+
+      <table className="w-full table-auto border-collapse">
         <thead>
-          <tr className="bg-gray-200">
-            <th className="px-4 py-2">N°</th>
-            <th className="px-4 py-2">Name</th>
-            <th className="px-4 py-2">Email</th>
-            <th className="px-4 py-2">ID</th>
-            <th className="px-4 py-2">Created On</th>
-            <th className="px-4 py-2">Days Since Creation</th>
-            <th className="px-4 py-2">Total Credits</th>
-            <th className="px-4 py-2">Current Plan</th>
-            <th className="px-4 py-2">Days with Current Plan</th>
-            <th className="px-4 py-2">Give Plan</th>
+          <tr>
+            <th className="border px-4 py-2">Name</th>
+            <th className="border px-4 py-2">Email</th>
+            <th className="border px-4 py-2">ID</th>
+            <th className="border px-4 py-2">Create on</th>
+            <th className="border px-4 py-2">Current Plan</th>
+            <th className="border px-4 py-2">Total Credits</th>
+            <th className="border px-4 py-2">
+              <button onClick={toggleSortOrder}>
+                Days with Current Plan {isAscending ? "↑" : "↓"}
+              </button>
+            </th>
+            <th className="border px-4 py-2">
+              <button onClick={toggleCreationSortOrder}>
+                Days Since Creation {isCreationAscending ? "↑" : "↓"}
+              </button>
+            </th>
+            <th className="border px-4 py-2">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {filteredData.map((user, index) => (
-            <tr key={index} className="border-b border-gray-300">
-              <td className="px-4 py-2">{index}</td>
-              <td className="px-4 py-2">{user.name || "-"}</td>
-              <td className="px-4 py-2">{user.email}</td>
-              <td className="px-4 py-2">{user.id}</td>
+          {filteredData.map((user) => (
+            <tr key={user.id}>
+              <td className="border px-4 py-2">{user.name}</td>
+              <td className="border px-4 py-2">{user.email}</td>
+              <td className="border px-4 py-2">{user.id}</td>
               <td className="px-4 py-2">
                 {new Date(user.created_at).toLocaleDateString()}
               </td>
-              <td className="px-4 py-2">{daysSinceCreated(user.created_at)}</td>
-              <td className="px-4 py-2">{user.total_credits}</td>
-              <td className="px-4 py-2">{user.status}</td>
-              <td className="px-4 py-2">
+              <td className="border px-4 py-2">{user.status}</td>
+              <td className="border px-4 py-2">{user.total_credits}</td>
+              <td className="border px-4 py-2">
                 {daysWithCurrentPlan(user.updated_at)}
               </td>
-              <td className="px-4 py-2">
+              <td className="border px-4 py-2">
+                {daysSinceCreated(user.created_at)}
+              </td>
+              <td className="space-y-2 border px-4 py-2">
                 <select
                   value={user.subscription}
                   onChange={(e) => {
@@ -290,7 +401,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
                     } else if (selectedStatus === "BUSINESS") {
                       handleBusiness(user.id, "BUSINESS");
                     } else if (selectedStatus === "FREE_TRIAL") {
-                      handleGiveFreeTrial(user.id);
+                      handleGiveFreeTrial(user.id, "FREE_TRIAL");
                     }
                   }}
                   className="mr-2 rounded-lg border border-gray-300 px-2 py-1"
