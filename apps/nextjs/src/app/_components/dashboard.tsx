@@ -35,6 +35,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
         console.error("Error giving subscription:", error);
       },
     });
+
   const { mutateAsync: cancelSubscription } =
     api.user.cancelSubscription.useMutation({
       onSuccess(data) {
@@ -44,6 +45,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
         console.error("Error cancelling subscription:", error);
       },
     });
+
   const { mutateAsync: updateStudent } = api.user.updateStudent.useMutation({
     onSuccess(data) {
       console.log("Subscription updated successfully:", data);
@@ -52,6 +54,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
       console.error("Error updating subscription:", error);
     },
   });
+
   const { mutateAsync: updateCreator } = api.user.updateCreator.useMutation({
     onSuccess(data) {
       console.log("Subscription updated successfully:", data);
@@ -60,6 +63,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
       console.error("Error updating subscription:", error);
     },
   });
+
   const { mutateAsync: updateBusiness } = api.user.updateBusiness.useMutation({
     onSuccess(data) {
       console.log("Subscription updated successfully:", data);
@@ -68,6 +72,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
       console.error("Error updating subscription:", error);
     },
   });
+
   const { mutateAsync: giveFreeTrial } = api.user.giveFreeTrial.useMutation({
     onSuccess(data) {
       console.log("Free trial given successfully:", data);
@@ -76,6 +81,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
       console.error("Error giving free trial:", error);
     },
   });
+
   const handleGiveSubscription = async (userId: string) => {
     try {
       await giveSubscription({ userId });
@@ -92,13 +98,6 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
     }
   };
 
-  // const handleUpdateSubscription = async (userId: string, status: string) => {
-  //   try {
-  //     await updateSubscription({ userId, status });
-  //   } catch (error) {
-  //     console.error("Error updating subscription:", error);
-  //   }
-  // };
   const handleStudent = async (userId: string, status: string) => {
     try {
       await updateStudent({ userId, status });
@@ -106,6 +105,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
       console.error("Error updating subscription:", error);
     }
   };
+
   const handleCreator = async (userId: string, status: string) => {
     try {
       await updateCreator({ userId, status });
@@ -113,6 +113,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
       console.error("Error updating subscription:", error);
     }
   };
+
   const handleBusiness = async (userId: string, status: string) => {
     try {
       await updateBusiness({ userId, status });
@@ -128,24 +129,10 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
       console.error("Error giving free trial:", error);
     }
   };
+
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setSearchTerm(e.target.value);
   };
-
-  useEffect(() => {
-    const filtered = userList.filter(
-      (user) =>
-        user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (user.name &&
-          user.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        user.id.toLowerCase().includes(searchTerm.toLowerCase()),
-    );
-    if (selectedPlan) {
-      setFilteredData(filtered.filter((user) => user.status === selectedPlan));
-    } else {
-      setFilteredData(filtered);
-    }
-  }, [searchTerm, userList, selectedPlan]);
 
   const handlePlanChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     setSelectedPlan(e.target.value);
@@ -154,36 +141,45 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
   const handleMinCreditsChange = (
     e: React.ChangeEvent<HTMLInputElement>,
   ): void => {
-    setMinCredits(parseInt(e.target.value, 10));
+    setMinCredits(parseInt(e.target.value, 10) || "");
   };
-
-  useEffect(() => {
-    if (minCredits > 0) {
-      setFilteredData(
-        userList.filter((user) => user.total_credits >= minCredits),
-      );
-    } else {
-      setFilteredData(userList);
-    }
-  }, [minCredits, userList]);
 
   const handleMinDaysWithPlanChange = (
     e: React.ChangeEvent<HTMLInputElement>,
   ): void => {
-    setMinDaysWithPlan(parseInt(e.target.value, 10));
+    setMinDaysWithPlan(parseInt(e.target.value, 10) || "");
   };
 
   useEffect(() => {
-    if (minDaysWithPlan > 0) {
-      setFilteredData(
-        userList.filter(
-          (user) => daysWithCurrentPlan(user.updated_at) >= minDaysWithPlan,
-        ),
-      );
-    } else {
-      setFilteredData(userList);
+    let filtered = userList.filter(
+      (user) =>
+        user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (user.name &&
+          user.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        user.id.toLowerCase().includes(searchTerm.toLowerCase()),
+    );
+
+    if (selectedPlan) {
+      filtered = filtered.filter((user) => user.status === selectedPlan);
     }
-  }, [minDaysWithPlan, userList]);
+
+    if (minCredits !== "") {
+      filtered = filtered.filter((user) => user.total_credits >= minCredits);
+    }
+
+    if (minDaysWithPlan !== "") {
+      filtered = filtered.filter(
+        (user) => daysWithCurrentPlan(user.updated_at) >= minDaysWithPlan,
+      );
+    }
+
+    filtered.sort(
+      (a, b) =>
+        daysWithCurrentPlan(a.updated_at) - daysWithCurrentPlan(b.updated_at),
+    );
+
+    setFilteredData(filtered);
+  }, [searchTerm, userList, selectedPlan, minCredits, minDaysWithPlan]);
 
   const daysSinceCreated = (createdAt: string): number => {
     const createdAtDate = new Date(createdAt);
@@ -192,6 +188,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
     const differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24));
     return differenceInDays;
   };
+
   const daysWithCurrentPlan = (updated_at: string): number => {
     const updatedAtDate = new Date(updated_at);
     const currentDate = new Date();
@@ -199,6 +196,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
     const differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24));
     return differenceInDays;
   };
+
   return (
     <div className="container mx-auto mb-12 p-4">
       <h1 className="mb-4 text-2xl font-bold">User Dashboard</h1>
@@ -238,7 +236,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
         <div className="mb-4 flex w-full flex-wrap md:mb-0 md:w-1/4">
           <input
             type="number"
-            placeholder="Min Days with Current Plan"
+            placeholder="Days with current plan"
             value={minDaysWithPlan}
             onChange={handleMinDaysWithPlanChange}
             className="w-full rounded-lg border border-gray-300 px-4 py-2"
@@ -252,11 +250,11 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
             <th className="px-4 py-2">Name</th>
             <th className="px-4 py-2">Email</th>
             <th className="px-4 py-2">ID</th>
-            <th className="px-4 py-2">Create on</th>
-            <th className="px-4 py-2">Days since creation</th>
+            <th className="px-4 py-2">Created On</th>
+            <th className="px-4 py-2">Days Since Creation</th>
             <th className="px-4 py-2">Total Credits</th>
             <th className="px-4 py-2">Current Plan</th>
-            <th className="px-4 py-2">Days with this plan</th>
+            <th className="px-4 py-2">Days with Current Plan</th>
             <th className="px-4 py-2">Give Plan</th>
           </tr>
         </thead>
@@ -292,7 +290,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
                     } else if (selectedStatus === "BUSINESS") {
                       handleBusiness(user.id, "BUSINESS");
                     } else if (selectedStatus === "FREE_TRIAL") {
-                      handleGiveFreeTrial(user.id, "FREE_TRIAL");
+                      handleGiveFreeTrial(user.id);
                     }
                   }}
                   className="mr-2 rounded-lg border border-gray-300 px-2 py-1"

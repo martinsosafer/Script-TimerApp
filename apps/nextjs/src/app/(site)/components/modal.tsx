@@ -21,11 +21,7 @@ interface SubData {
 function Modal({ status, userId }: SubData) {
   const isSubscriptionActive =
     status &&
-    (status === "CREATOR" ||
-      status === "STUDENT" ||
-      status === "BUSINESS" ||
-      status === "FREE" ||
-      status === "FREE_TRIAL");
+    (status === "CREATOR" || status === "STUDENT" || status === "BUSINESS");
 
   const [modalOpen, setModalOpen] = useState(!isSubscriptionActive);
 

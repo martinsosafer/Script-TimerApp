@@ -12,9 +12,9 @@ import microphone from "../../../../public/microphone (1).png";
 interface SubData {
   status: string | null;
   userId: string;
-  planId: string | null;
 }
-function FreeModal({ subData }: { subData: SubData | null | undefined }) {
+
+function InitialModal({ subData }: { subData: SubData }) {
   const isSubscriptionActive =
     subData &&
     (subData.status === "CREATOR" ||
@@ -31,8 +31,8 @@ function FreeModal({ subData }: { subData: SubData | null | undefined }) {
   }
 
   return (
-    <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center  bg-black bg-opacity-50 backdrop-blur">
-      <div className="  rounded-xl bg-primary p-8">
+    <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50 backdrop-blur">
+      <div className="rounded-xl bg-primary p-8">
         <div className="max-h-[100vh] min-h-[80vh] w-full max-w-lg overflow-y-auto overflow-x-hidden rounded-full border-4 border-primary bg-white p-4 dark:bg-white sm:rounded-lg">
           <div className="flex h-full w-full flex-col">
             <div className="m-8 mx-auto my-2 flex flex-grow flex-col items-center px-4">
@@ -55,7 +55,7 @@ function FreeModal({ subData }: { subData: SubData | null | undefined }) {
                   <div>Radio Spot * Podcast * Speech</div>
                   <div>Marketing * Video * Content</div>
                 </div>
-                <div className="rotate-y-180  absolute   -right-64 top-1/2 -translate-y-1/2 transform">
+                <div className="rotate-y-180 absolute -right-64 top-1/2 -translate-y-1/2 transform">
                   <Image
                     src={microphone2side}
                     alt="microphone"
@@ -65,19 +65,24 @@ function FreeModal({ subData }: { subData: SubData | null | undefined }) {
                 </div>
               </div>
 
-              <div className="">
-                <h2 className="mb-2 mt-2 text-center font-poppins text-2xl font-bold text-primary">
-                  Don't Miss Out
+              {/* Wave Separator */}
+              <div className="relative w-full overflow-hidden">
+                <div className="absolute inset-0 h-20 -skew-y-3 bg-primary before:absolute before:-inset-0 before:-skew-y-3 before:bg-white"></div>
+              </div>
+
+              <div className="mt-4">
+                <h2 className="mb-2 text-center font-poppins text-xl font-bold text-primary">
+                  Create your account and transform your work
                 </h2>
                 <ul className="list-disc pl-6">
                   <li className="font-poppins text-base font-medium dark:text-primary-foreground">
-                    Use AI custom made for scripts & voices
+                    Acess magical AI custom made for scripts & voices
                   </li>
                   <li className="font-poppins text-base font-medium dark:text-primary-foreground">
-                    Download and save voice overs and scripts
+                    Download and save licensed files
                   </li>
                   <li className="font-poppins text-base font-medium dark:text-primary-foreground">
-                    Almost 100 voices: English, French, German, Hindi...
+                    International translation
                   </li>
                   <li className="font-poppins text-base font-medium dark:text-primary-foreground">
                     Upgrade your skills with masterclasses on public speaking,
@@ -98,7 +103,7 @@ function FreeModal({ subData }: { subData: SubData | null | undefined }) {
                 </Link>
                 <button
                   className="w-full transform rounded-md border-2 border-black bg-white p-3 font-poppins font-medium transition-transform duration-300 hover:scale-105 dark:text-primary-foreground"
-                  onClick={closeModal} // Close the modal when clicked
+                  onClick={closeModal}
                 >
                   Skip for now
                 </button>
@@ -111,4 +116,4 @@ function FreeModal({ subData }: { subData: SubData | null | undefined }) {
   );
 }
 
-export default FreeModal;
+export default InitialModal;

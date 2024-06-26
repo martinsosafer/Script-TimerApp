@@ -17,7 +17,7 @@ export default async function ScriptPage() {
 
   return (
     <>
-      <ScriptAI />
+      <ScriptAI subData={subData} />
       <FreeModal subData={subData} />
     </>
   );

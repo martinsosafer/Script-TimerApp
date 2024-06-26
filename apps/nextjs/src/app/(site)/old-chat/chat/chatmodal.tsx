@@ -33,7 +33,7 @@ function ChatModal() {
 
             <div className="mt-2">
               {/* Options with icons */}
-              <h2 className=" ml-7 text-left text-xl  font-bold text-red-500">
+              <h2 className=" text-black-500 ml-7 text-left  text-xl font-bold">
                 This is a members area !{" "}
                 <span className="text-xl  font-bold text-primary">
                   Join us for :
@@ -60,7 +60,7 @@ function ChatModal() {
                 <li className="dark:text-primary-foreground">
                   <IconBookPlus className="mr-2 inline-block h-6 w-6 font-extrabold text-primary" />
                   Improve your skills in writing, public speaking, producing
-                  videos
+                  videos with masterclasses
                 </li>
               </ul>
             </div>
