@@ -54,11 +54,11 @@ import { ToggleAudio } from "../../components/toggle-audio";
 import { ToggleLibrary } from "../../components/toggle-voice-library";
 
 export function ScriptAI({ subData }) {
-  //Get subscription info
+  console.log("props subDAta", subData);
 
   const { data: subscriptionData, refetch } =
     api.subscription.mySubscription.useQuery();
-  console.log("SUBSINFO", subscriptionData);
+
   const [favoriteVoices, setFavoriteVoices] = React.useState([]);
 
   const isSubscriptionActive =
@@ -142,16 +142,28 @@ export function ScriptAI({ subData }) {
           toggleAudioRef.current?.click();
         }
       } else {
-        // Handle the case where data or audio is missing
         setLoading(false);
+        // Assuming data contains user's plan information, you can set it as a variable
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const userPlan = subData.status; // Update this line based on your actual data structure
+
+        let errorMessage = "Please try again later";
+        if (userPlan === "FREE") {
+          errorMessage = "Free plan only supports up to 300 characters";
+        } else if (userPlan === "FREE_TRIAL" || userPlan === "STUDENT") {
+          errorMessage = "Your plan only supports up to 2000 characters";
+        } else if (userPlan === "CREATOR" || userPlan === "BUSINESS") {
+          errorMessage = "Your plan only supports up to 5000 characters";
+        }
         toast({
-          title: "Something went wrong",
-          description: "Please try again later",
+          title: "Character Limit",
+          description: errorMessage,
         });
       }
     },
     onError(error) {
       setLoading(false);
+      console.log("error en el onError else", error);
       if (error?.data?.code === "FORBIDDEN") {
         toast({
           title: "Upgrade your plan",
@@ -163,6 +175,7 @@ export function ScriptAI({ subData }) {
           ),
         });
       } else {
+        console.log("error en el tercer Error", error);
         toast({
           title: "Something went wrong",
           description: "Please try again later",

@@ -24,7 +24,7 @@ function IntroParagraph(props: IntroParagraphProps) {
     status === "FREE"
       ? "300 characters"
       : status === "FREE_TRIAL"
-        ? "1600 characters"
+        ? "2000 characters"
         : status === "STUDENT"
           ? "2,000 characters"
           : status === "CREATOR"
