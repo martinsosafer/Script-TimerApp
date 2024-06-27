@@ -65,9 +65,7 @@ export function ScriptAI({ subData }) {
     subscriptionData &&
     (subscriptionData.status === "CREATOR" ||
       subscriptionData.status === "STUDENT" ||
-      subscriptionData.status === "BUSINESS" ||
-      subscriptionData.status === "FREE_TRIAL" ||
-      subscriptionData.status === "FREE");
+      subscriptionData.status === "BUSINESS");
 
   React.useEffect(() => {
     if (subscriptionData?.favorite_voices) {
