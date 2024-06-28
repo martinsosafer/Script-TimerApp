@@ -34,7 +34,9 @@ const VoiceCreationModal: React.FC<VoiceCreationModalProps> = ({
               100 words
             </span>{" "}
             takes 10-20{" "}
-            <span className="inline-block font-bold text-primary">seconds</span>
+            <span className="inline-block font-bold text-primary">
+              seconds{" "}
+            </span>{" "}
             or so...
           </h3>
         </div>

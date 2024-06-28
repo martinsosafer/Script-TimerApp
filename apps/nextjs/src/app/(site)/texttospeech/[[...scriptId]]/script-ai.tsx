@@ -408,9 +408,9 @@ export function ScriptAI({ subData }) {
                                 type="secondary"
                                 onClick={async () => {
                                   setLoading(true);
-                                  setWaitModal(false); // Reset modal state before checking again
+                                  setWaitModal(false);
                                   if (isScriptLongEnough(script)) {
-                                    setWaitModal(true); // Show modal only if script is long enough
+                                    setWaitModal(true);
                                   }
                                   try {
                                     await generateVoice({
