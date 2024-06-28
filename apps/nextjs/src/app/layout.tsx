@@ -24,13 +24,13 @@ const roboto = Roboto({
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "VoiceAI",
+  title: "ScriptTimer",
   description: "Using AI for Voice",
   openGraph: {
-    title: "VoiceAi",
+    title: "ScriptTimer",
     description: "Using AI for Voice",
     url: "https://voiceai-tesserakt.vercel.app/",
-    siteName: "VoiceAI",
+    siteName: "ScriptTimer",
   },
   twitter: {
     card: "summary_large_image",
