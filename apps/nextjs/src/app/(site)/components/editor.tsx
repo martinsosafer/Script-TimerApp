@@ -22,7 +22,6 @@ import Placeholder from "@tiptap/extension-placeholder";
 import Text from "@tiptap/extension-text";
 import Typography from "@tiptap/extension-typography";
 import Underline from "@tiptap/extension-underline";
-import type { Editor } from "@tiptap/react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import classNames from "classnames";
 
@@ -30,6 +29,7 @@ import { Button } from "@voiceai/ui";
 import { IconCopy } from "@voiceai/ui/@/components/ui/icons";
 
 import { api } from "~/utils/api";
+import { CharLimitModal } from "./charlimit-modal";
 
 interface TextEditorProps {
   className?: string;
@@ -37,17 +37,28 @@ interface TextEditorProps {
   updatedContent?: string;
   scriptLoaded: boolean;
   script: string;
+  isSubscriptionActive?: boolean;
 }
-
+const CHAR_LIMITS = {
+  FREE: 300,
+  FREE_TRIAL: 1600,
+  STUDENT: 2000,
+  CREATOR: 5000,
+  BUSINESS: 5000,
+};
 function TextEditor({
   onChange,
   className,
   updatedContent,
   scriptLoaded,
   script,
+  subData,
 }: TextEditorProps) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  console.log("SUBDATA", subData.status);
   const [charCount, setCharCount] = useState(0);
   const [showCharCount, setShowCharCount] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const [localContent, setLocalContent] = useState(script);
   const { scriptId } = useParams();
   const { data: scriptDetails } = api.script.get.useQuery(
@@ -55,7 +66,7 @@ function TextEditor({
     { enabled: Boolean(scriptId?.[0]) },
   );
   const editorKey = scriptId?.[0] ?? "default";
-
+  const charLimit = CHAR_LIMITS[subData.status] || CHAR_LIMITS.FREE;
   const editor = useEditor({
     extensions: useMemo(
       () => [
@@ -86,7 +97,7 @@ function TextEditor({
     editorProps: {
       attributes: {
         class:
-          "h-full prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none overflow-hidden overflow-y-auto break-words  border border-slate-400 bg-white dark:border-black ",
+          "h-full prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none overflow-hidden overflow-y-auto break-words border border-slate-400 bg-white dark:border-black",
       },
       transformPastedText(text) {
         return text.toUpperCase();
@@ -119,6 +130,14 @@ function TextEditor({
     }
   }, [updatedContent, editor]);
 
+  useEffect(() => {
+    if (charCount >= charLimit) {
+      setShowModal(true);
+    } else {
+      setShowModal(false);
+    }
+  }, [charCount, charLimit]);
+
   const toggleBold = useCallback(() => {
     editor.chain().focus().toggleBold().run();
   }, [editor]);
@@ -148,7 +167,7 @@ function TextEditor({
   return (
     <div
       className={classNames(
-        "flex flex-col rounded-md   py-2 text-stone-900",
+        "flex flex-col rounded-md py-2 text-stone-900",
         className,
       )}
     >
@@ -231,6 +250,12 @@ function TextEditor({
           <div className="absolute bottom-0 right-0 mb-2 mr-3 text-sm text-gray-600">
             {charCount}
           </div>
+        )}
+        {showModal && (
+          <CharLimitModal
+            onClose={() => setShowModal(false)}
+            subData={subData.status}
+          />
         )}
       </div>
     </div>

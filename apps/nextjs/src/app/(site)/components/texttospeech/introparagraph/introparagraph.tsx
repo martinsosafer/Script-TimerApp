@@ -22,34 +22,35 @@ function IntroParagraph(props: IntroParagraphProps) {
 
   const scriptText =
     status === "FREE"
-      ? "300 words"
+      ? "300 characters"
       : status === "FREE_TRIAL"
-        ? "2,000 words"
+        ? "2000 characters"
         : status === "STUDENT"
-          ? "2,000 words"
-          : status === "CREATOR" || status === "BUSINESS"
-            ? "5,000 words"
-            : "300 words";
+          ? "2,000 characters"
+          : status === "CREATOR"
+            ? "5,000 characters"
+            : status === "BUSINESS"
+              ? "5,000 characters"
+              : "300 characters";
 
-  const characterText =
-    status === "FREE"
-      ? "2000 characters"
-      : status === "FREE_TRIAL"
-        ? "150,000 characters"
-        : status === "STUDENT"
-          ? "150,000 characters"
-          : "500,000 characters";
+  // const characterText =
+  //   status === "FREE"
+  //     ? "2000 characters"
+  //     : status === "FREE_TRIAL"
+  //       ? "150,000 characters"
+  //       : status === "STUDENT"
+  //         ? "150,000 characters"
+  //         : "300,000 characters";
 
   return (
     <>
       <p className=" font-base  mb-2">
         This is where you choose and create your voice overs. On your current
         plan, <br />
-        you are entitled to{" "}
+        <span className="font-semibold text-primary">{status} </span> you are
+        entitled to{" "}
         <span className="font-semibold text-primary"> {scriptText}</span> per
-        script and up to{" "}
-        <span className="font-semibold text-primary">{characterText}</span> each
-        month.
+        script
       </p>
     </>
   );

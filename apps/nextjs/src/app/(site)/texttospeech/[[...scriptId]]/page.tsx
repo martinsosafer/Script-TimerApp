@@ -2,8 +2,8 @@ import * as React from "react";
 import type { Metadata } from "next";
 
 import { getSession } from "~/app/api/subscription/subscription";
-import { ScriptAI } from "./script-ai";
 import FreeModal from "../../components/free-modal";
+import { ScriptAI } from "./script-ai";
 
 export const metadata: Metadata = {
   title: "Script Timer",
@@ -16,7 +16,7 @@ export default async function ScriptPage() {
 
   return (
     <>
-      <ScriptAI />
+      <ScriptAI subData={subData} />
       <FreeModal subData={subData} />
     </>
   );

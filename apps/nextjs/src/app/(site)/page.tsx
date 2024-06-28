@@ -8,6 +8,7 @@ import GoSections from "./components/herosection/GoSections/GoSections";
 import HeroSection from "./components/herosection/HeroBlock/herosection";
 import ServiceSection from "./components/herosection/ServicesSection/servicessection";
 import Testimonials from "./components/herosection/Testimonials/Testimonials";
+import InitialModal from "./components/initial-modal";
 import Modal from "./components/modal";
 
 export const metadata: Metadata = {
@@ -28,7 +29,8 @@ export default async function LandingPage() {
       <ServiceSection />
       <GoSections />
       <Testimonials />
-      <Modal subData={subData} userId={userId} />
+      {/* <Modal subData={subData} userId={userId} /> */}
+      {/* <InitialModal subData={subData} /> */}
     </>
   );
 }

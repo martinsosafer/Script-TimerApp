@@ -53,21 +53,19 @@ import VoiceWidget from "../../components/texttospeech/voicewidget/voicewidget";
 import { ToggleAudio } from "../../components/toggle-audio";
 import { ToggleLibrary } from "../../components/toggle-voice-library";
 
-export function ScriptAI({}) {
-  //Get subscription info
+export function ScriptAI({ subData }) {
+  console.log("props subDAta", subData);
 
   const { data: subscriptionData, refetch } =
     api.subscription.mySubscription.useQuery();
-  console.log("SUBSINFO", subscriptionData);
+
   const [favoriteVoices, setFavoriteVoices] = React.useState([]);
 
   const isSubscriptionActive =
     subscriptionData &&
     (subscriptionData.status === "CREATOR" ||
       subscriptionData.status === "STUDENT" ||
-      subscriptionData.status === "BUSINESS" ||
-      subscriptionData.status === "FREE_TRIAL" ||
-      subscriptionData.status === "FREE");
+      subscriptionData.status === "BUSINESS");
 
   React.useEffect(() => {
     if (subscriptionData?.favorite_voices) {
@@ -144,16 +142,28 @@ export function ScriptAI({}) {
           toggleAudioRef.current?.click();
         }
       } else {
-        // Handle the case where data or audio is missing
         setLoading(false);
+        // Assuming data contains user's plan information, you can set it as a variable
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const userPlan = subData.status; // Update this line based on your actual data structure
+
+        let errorMessage = "Please try again later";
+        if (userPlan === "FREE") {
+          errorMessage = "Free plan only supports up to 300 characters";
+        } else if (userPlan === "FREE_TRIAL" || userPlan === "STUDENT") {
+          errorMessage = "Your plan only supports up to 2000 characters";
+        } else if (userPlan === "CREATOR" || userPlan === "BUSINESS") {
+          errorMessage = "Your plan only supports up to 5000 characters";
+        }
         toast({
-          title: "Something went wrong",
-          description: "Please try again later",
+          title: "Character Limit",
+          description: errorMessage,
         });
       }
     },
     onError(error) {
       setLoading(false);
+      console.log("error en el onError else", error);
       if (error?.data?.code === "FORBIDDEN") {
         toast({
           title: "Upgrade your plan",
@@ -165,6 +175,7 @@ export function ScriptAI({}) {
           ),
         });
       } else {
+        console.log("error en el tercer Error", error);
         toast({
           title: "Something went wrong",
           description: "Please try again later",
@@ -313,7 +324,11 @@ export function ScriptAI({}) {
                 </div>
                 <TabsContent value="complete" className="mt-0 border-0 p-0">
                   <div className="flex h-3/6 flex-col ">
-                    <TextEditor onChange={handleEditorChange} script={script} />
+                    <TextEditor
+                      onChange={handleEditorChange}
+                      script={script}
+                      subData={subData}
+                    />
 
                     <div className=" mb-4 flex flex-col items-center justify-center">
                       <Badge className="h-12 w-[570px] items-center justify-center border-4 border-primary bg-blue-500 text-lg hover:to-blue-200">
@@ -382,7 +397,7 @@ export function ScriptAI({}) {
                             className="w-[320px] text-sm"
                             side="left"
                           >
-                            Small demo to test your chosen voice
+                            Test the first 10 words of the script
                           </HoverCardContent>
                         </HoverCard>
 
@@ -393,9 +408,9 @@ export function ScriptAI({}) {
                                 type="secondary"
                                 onClick={async () => {
                                   setLoading(true);
-                                  setWaitModal(false); // Reset modal state before checking again
+                                  setWaitModal(false);
                                   if (isScriptLongEnough(script)) {
-                                    setWaitModal(true); // Show modal only if script is long enough
+                                    setWaitModal(true);
                                   }
                                   try {
                                     await generateVoice({

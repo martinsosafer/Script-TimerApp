@@ -22,9 +22,20 @@ interface DashboardProps {
 const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [minCredits, setMinCredits] = useState<number | "">("");
-  const [minDaysWithPlan, setMinDaysWithPlan] = useState<number | "">("");
+  const [minDaysWithPlanAsc, setMinDaysWithPlanAsc] = useState<number | "">("");
+  const [minDaysWithPlanDesc, setMinDaysWithPlanDesc] = useState<number | "">(
+    "",
+  );
+  const [minDaysSinceCreationAsc, setMinDaysSinceCreationAsc] = useState<
+    number | ""
+  >("");
+  const [minDaysSinceCreationDesc, setMinDaysSinceCreationDesc] = useState<
+    number | ""
+  >("");
   const [filteredData, setFilteredData] = useState<UserData[]>(userList);
   const [selectedPlan, setSelectedPlan] = useState<string>("");
+  const [isAscending, setIsAscending] = useState<boolean>(true);
+  const [isCreationAscending, setIsCreationAscending] = useState<boolean>(true);
 
   const { mutateAsync: giveSubscription } =
     api.user.giveSubscription.useMutation({
@@ -35,6 +46,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
         console.error("Error giving subscription:", error);
       },
     });
+
   const { mutateAsync: cancelSubscription } =
     api.user.cancelSubscription.useMutation({
       onSuccess(data) {
@@ -44,6 +56,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
         console.error("Error cancelling subscription:", error);
       },
     });
+
   const { mutateAsync: updateStudent } = api.user.updateStudent.useMutation({
     onSuccess(data) {
       console.log("Subscription updated successfully:", data);
@@ -52,6 +65,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
       console.error("Error updating subscription:", error);
     },
   });
+
   const { mutateAsync: updateCreator } = api.user.updateCreator.useMutation({
     onSuccess(data) {
       console.log("Subscription updated successfully:", data);
@@ -60,6 +74,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
       console.error("Error updating subscription:", error);
     },
   });
+
   const { mutateAsync: updateBusiness } = api.user.updateBusiness.useMutation({
     onSuccess(data) {
       console.log("Subscription updated successfully:", data);
@@ -68,6 +83,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
       console.error("Error updating subscription:", error);
     },
   });
+
   const { mutateAsync: giveFreeTrial } = api.user.giveFreeTrial.useMutation({
     onSuccess(data) {
       console.log("Free trial given successfully:", data);
@@ -76,6 +92,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
       console.error("Error giving free trial:", error);
     },
   });
+
   const handleGiveSubscription = async (userId: string) => {
     try {
       await giveSubscription({ userId });
@@ -92,13 +109,6 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
     }
   };
 
-  // const handleUpdateSubscription = async (userId: string, status: string) => {
-  //   try {
-  //     await updateSubscription({ userId, status });
-  //   } catch (error) {
-  //     console.error("Error updating subscription:", error);
-  //   }
-  // };
   const handleStudent = async (userId: string, status: string) => {
     try {
       await updateStudent({ userId, status });
@@ -106,6 +116,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
       console.error("Error updating subscription:", error);
     }
   };
+
   const handleCreator = async (userId: string, status: string) => {
     try {
       await updateCreator({ userId, status });
@@ -113,6 +124,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
       console.error("Error updating subscription:", error);
     }
   };
+
   const handleBusiness = async (userId: string, status: string) => {
     try {
       await updateBusiness({ userId, status });
@@ -128,24 +140,10 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
       console.error("Error giving free trial:", error);
     }
   };
+
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setSearchTerm(e.target.value);
   };
-
-  useEffect(() => {
-    const filtered = userList.filter(
-      (user) =>
-        user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (user.name &&
-          user.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        user.id.toLowerCase().includes(searchTerm.toLowerCase()),
-    );
-    if (selectedPlan) {
-      setFilteredData(filtered.filter((user) => user.status === selectedPlan));
-    } else {
-      setFilteredData(filtered);
-    }
-  }, [searchTerm, userList, selectedPlan]);
 
   const handlePlanChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     setSelectedPlan(e.target.value);
@@ -154,36 +152,107 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
   const handleMinCreditsChange = (
     e: React.ChangeEvent<HTMLInputElement>,
   ): void => {
-    setMinCredits(parseInt(e.target.value, 10));
+    setMinCredits(parseInt(e.target.value, 10) || "");
   };
 
-  useEffect(() => {
-    if (minCredits > 0) {
-      setFilteredData(
-        userList.filter((user) => user.total_credits >= minCredits),
-      );
-    } else {
-      setFilteredData(userList);
-    }
-  }, [minCredits, userList]);
-
-  const handleMinDaysWithPlanChange = (
+  const handleMinDaysWithPlanAscChange = (
     e: React.ChangeEvent<HTMLInputElement>,
   ): void => {
-    setMinDaysWithPlan(parseInt(e.target.value, 10));
+    setMinDaysWithPlanAsc(parseInt(e.target.value, 10) || "");
+  };
+
+  const handleMinDaysWithPlanDescChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
+    setMinDaysWithPlanDesc(parseInt(e.target.value, 10) || "");
+  };
+
+  const handleMinDaysSinceCreationAscChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
+    setMinDaysSinceCreationAsc(parseInt(e.target.value, 10) || "");
+  };
+
+  const handleMinDaysSinceCreationDescChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
+    setMinDaysSinceCreationDesc(parseInt(e.target.value, 10) || "");
+  };
+
+  const toggleSortOrder = () => {
+    setIsAscending(!isAscending);
+  };
+
+  const toggleCreationSortOrder = () => {
+    setIsCreationAscending(!isCreationAscending);
   };
 
   useEffect(() => {
-    if (minDaysWithPlan > 0) {
-      setFilteredData(
-        userList.filter(
-          (user) => daysWithCurrentPlan(user.updated_at) >= minDaysWithPlan,
-        ),
-      );
-    } else {
-      setFilteredData(userList);
+    let filtered = userList.filter(
+      (user) =>
+        user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (user.name &&
+          user.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        user.id.toLowerCase().includes(searchTerm.toLowerCase()),
+    );
+
+    if (selectedPlan) {
+      filtered = filtered.filter((user) => user.status === selectedPlan);
     }
-  }, [minDaysWithPlan, userList]);
+
+    if (minCredits !== "") {
+      filtered = filtered.filter((user) => user.total_credits >= minCredits);
+    }
+
+    if (minDaysWithPlanAsc !== "") {
+      filtered = filtered.filter(
+        (user) => daysWithCurrentPlan(user.updated_at) >= minDaysWithPlanAsc,
+      );
+    }
+
+    if (minDaysWithPlanDesc !== "") {
+      filtered = filtered.filter(
+        (user) => daysWithCurrentPlan(user.updated_at) <= minDaysWithPlanDesc,
+      );
+    }
+
+    if (minDaysSinceCreationAsc !== "") {
+      filtered = filtered.filter(
+        (user) => daysSinceCreated(user.created_at) >= minDaysSinceCreationAsc,
+      );
+    }
+
+    if (minDaysSinceCreationDesc !== "") {
+      filtered = filtered.filter(
+        (user) => daysSinceCreated(user.created_at) <= minDaysSinceCreationDesc,
+      );
+    }
+
+    filtered.sort((a, b) => {
+      const comparison =
+        daysWithCurrentPlan(a.updated_at) - daysWithCurrentPlan(b.updated_at);
+      return isAscending ? comparison : -comparison;
+    });
+
+    filtered.sort((a, b) => {
+      const comparison =
+        daysSinceCreated(a.created_at) - daysSinceCreated(b.created_at);
+      return isCreationAscending ? comparison : -comparison;
+    });
+
+    setFilteredData(filtered);
+  }, [
+    searchTerm,
+    userList,
+    selectedPlan,
+    minCredits,
+    minDaysWithPlanAsc,
+    minDaysWithPlanDesc,
+    minDaysSinceCreationAsc,
+    minDaysSinceCreationDesc,
+    isAscending,
+    isCreationAscending,
+  ]);
 
   const daysSinceCreated = (createdAt: string): number => {
     const createdAtDate = new Date(createdAt);
@@ -192,6 +261,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
     const differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24));
     return differenceInDays;
   };
+
   const daysWithCurrentPlan = (updated_at: string): number => {
     const updatedAtDate = new Date(updated_at);
     const currentDate = new Date();
@@ -199,6 +269,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
     const differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24));
     return differenceInDays;
   };
+
   return (
     <div className="container mx-auto mb-12 p-4">
       <h1 className="mb-4 text-2xl font-bold">User Dashboard</h1>
@@ -216,21 +287,19 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
           <select
             value={selectedPlan}
             onChange={handlePlanChange}
-            className="mr-2 w-full rounded-lg border border-gray-300 px-2 py-1"
+            className="w-full rounded-lg border border-gray-300 px-4 py-2"
           >
             <option value="">All Plans</option>
-            <option value="FREE">Free</option>
-            <option value="FREE_TRIAL">Free Trial</option>
-            <option value="STUDENT">Student</option>
-            <option value="CREATOR">Creator</option>
-            <option value="BUSINESS">Business</option>
+            <option value="student">Student</option>
+            <option value="creator">Creator</option>
+            <option value="business">Business</option>
           </select>
         </div>
         <div className="mb-4 flex w-full flex-wrap md:mb-0 md:w-1/4">
           <input
             type="number"
             placeholder="Min Credits"
-            value={minCredits}
+            value={minCredits === "" ? "" : minCredits}
             onChange={handleMinCreditsChange}
             className="w-full rounded-lg border border-gray-300 px-4 py-2"
           />
@@ -238,45 +307,85 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
         <div className="mb-4 flex w-full flex-wrap md:mb-0 md:w-1/4">
           <input
             type="number"
-            placeholder="Min Days with Current Plan"
-            value={minDaysWithPlan}
-            onChange={handleMinDaysWithPlanChange}
+            placeholder="Min Days with Current Plan Asc"
+            value={minDaysWithPlanAsc === "" ? "" : minDaysWithPlanAsc}
+            onChange={handleMinDaysWithPlanAscChange}
+            className="w-full rounded-lg border border-gray-300 px-4 py-2"
+          />
+        </div>
+        <div className="mb-4 flex w-full flex-wrap md:mb-0 md:w-1/4">
+          <input
+            type="number"
+            placeholder="Max Days with Current Plan Desc"
+            value={minDaysWithPlanDesc === "" ? "" : minDaysWithPlanDesc}
+            onChange={handleMinDaysWithPlanDescChange}
+            className="w-full rounded-lg border border-gray-300 px-4 py-2"
+          />
+        </div>
+        <div className="mb-4 flex w-full flex-wrap md:mb-0 md:w-1/4">
+          <input
+            type="number"
+            placeholder="Min Days Since Creation Asc"
+            value={
+              minDaysSinceCreationAsc === "" ? "" : minDaysSinceCreationAsc
+            }
+            onChange={handleMinDaysSinceCreationAscChange}
+            className="w-full rounded-lg border border-gray-300 px-4 py-2"
+          />
+        </div>
+        <div className="mb-4 flex w-full flex-wrap md:mb-0 md:w-1/4">
+          <input
+            type="number"
+            placeholder="Max Days Since Creation Desc"
+            value={
+              minDaysSinceCreationDesc === "" ? "" : minDaysSinceCreationDesc
+            }
+            onChange={handleMinDaysSinceCreationDescChange}
             className="w-full rounded-lg border border-gray-300 px-4 py-2"
           />
         </div>
       </div>
-      <table className="w-full">
+
+      <table className="w-full table-auto border-collapse">
         <thead>
-          <tr className="bg-gray-200">
-            <th className="px-4 py-2">N°</th>
-            <th className="px-4 py-2">Name</th>
-            <th className="px-4 py-2">Email</th>
-            <th className="px-4 py-2">ID</th>
-            <th className="px-4 py-2">Create on</th>
-            <th className="px-4 py-2">Days since creation</th>
-            <th className="px-4 py-2">Total Credits</th>
-            <th className="px-4 py-2">Current Plan</th>
-            <th className="px-4 py-2">Days with this plan</th>
-            <th className="px-4 py-2">Give Plan</th>
+          <tr>
+            <th className="border px-4 py-2">Name</th>
+            <th className="border px-4 py-2">Email</th>
+            <th className="border px-4 py-2">ID</th>
+            <th className="border px-4 py-2">Create on</th>
+            <th className="border px-4 py-2">Current Plan</th>
+            <th className="border px-4 py-2">Total Credits</th>
+            <th className="border px-4 py-2">
+              <button onClick={toggleSortOrder}>
+                Days with Current Plan {isAscending ? "↑" : "↓"}
+              </button>
+            </th>
+            <th className="border px-4 py-2">
+              <button onClick={toggleCreationSortOrder}>
+                Days Since Creation {isCreationAscending ? "↑" : "↓"}
+              </button>
+            </th>
+            <th className="border px-4 py-2">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {filteredData.map((user, index) => (
-            <tr key={index} className="border-b border-gray-300">
-              <td className="px-4 py-2">{index}</td>
-              <td className="px-4 py-2">{user.name || "-"}</td>
-              <td className="px-4 py-2">{user.email}</td>
-              <td className="px-4 py-2">{user.id}</td>
+          {filteredData.map((user) => (
+            <tr key={user.id}>
+              <td className="border px-4 py-2">{user.name}</td>
+              <td className="border px-4 py-2">{user.email}</td>
+              <td className="border px-4 py-2">{user.id}</td>
               <td className="px-4 py-2">
                 {new Date(user.created_at).toLocaleDateString()}
               </td>
-              <td className="px-4 py-2">{daysSinceCreated(user.created_at)}</td>
-              <td className="px-4 py-2">{user.total_credits}</td>
-              <td className="px-4 py-2">{user.status}</td>
-              <td className="px-4 py-2">
+              <td className="border px-4 py-2">{user.status}</td>
+              <td className="border px-4 py-2">{user.total_credits}</td>
+              <td className="border px-4 py-2">
                 {daysWithCurrentPlan(user.updated_at)}
               </td>
-              <td className="px-4 py-2">
+              <td className="border px-4 py-2">
+                {daysSinceCreated(user.created_at)}
+              </td>
+              <td className="space-y-2 border px-4 py-2">
                 <select
                   value={user.subscription}
                   onChange={(e) => {

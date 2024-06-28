@@ -21,30 +21,34 @@ const VoiceCreationModal: React.FC<VoiceCreationModalProps> = ({
       }`}
       style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
     >
-      <div className="rounded-lg border-4 border-black bg-white p-6 text-center">
+      <div className="rounded-lg border-4 border-primary bg-white p-6 text-center">
         <div className="mb-6 flex flex-col items-center">
           <Lottie
             animationData={creatingVoiceAnimation}
             className="h-40 w-32"
           />
-          <h2 className="mb-4 text-2xl font-bold">Creating voice...</h2>
+          <h2 className="mb-4 text-2xl font-bold">Creating.</h2>
           <h3 className="mb-4 text-lg">
-            Longer{" "}
-            <span className="inline-block font-bold text-primary">scripts</span>{" "}
-            take longer{" "}
-            <span className="inline-block font-bold text-primary">time</span>!
+            Each{" "}
+            <span className="inline-block font-bold text-primary">
+              100 words
+            </span>{" "}
+            takes 10-20{" "}
+            <span className="inline-block font-bold text-primary">
+              seconds{" "}
+            </span>{" "}
+            or so...
           </h3>
         </div>
         <p className="text-lg">
-          Please wait while we generate the voice, you can close this window
-          now.
+          Your voice over will pop up when we finish, so please…
         </p>
         <div className="mt-4">
           <button
             onClick={onClose}
             className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
           >
-            Go back
+            Exit & Create More Scripts
           </button>
         </div>
       </div>

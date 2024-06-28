@@ -1,7 +1,7 @@
 import GoogleTracking from "../googleTracking";
 
 export const TextToVoiceClick = GoogleTracking({
-  action: "TextToSpeechLandingButton",
+  action: "TextToVoiceLandingButton",
   category: "LandingPage",
   label: "Text to speech landing buton in hero section",
   value: "Click",
