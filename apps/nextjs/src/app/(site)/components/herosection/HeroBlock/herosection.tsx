@@ -5,6 +5,7 @@ import Link from "next/link";
 
 import { AspectRatio } from "@voiceai/ui/@/components/ui/aspect-ratio";
 
+import { TextToVoiceClick } from "~/app/_components/googleAnalytics/LandingEvents/LandingEvents";
 import { RevealText } from "~/app/animations/RevealText";
 import useModal from "~/app/hooks/useModal";
 import { api } from "~/utils/api";
@@ -49,7 +50,7 @@ export default function HeroSection() {
       console.error("Error initiating free trial:", error);
     }
   };
- 
+
   return (
     <div>
       <MotionTransition>
@@ -75,7 +76,7 @@ export default function HeroSection() {
             </RevealText>
             <RevealText>
               <div className="flex justify-center  gap-3">
-                <PrimaryButton>
+                <PrimaryButton onClick={TextToVoiceClick}>
                   <Link href="/texttospeech">Text to Voice</Link>
                 </PrimaryButton>
                 <PrimaryButton>

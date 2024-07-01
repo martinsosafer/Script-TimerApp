@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Poppins, Roboto } from "next/font/google";
-import { GoogleAnalytics } from "@next/third-parties/google";
 
 import { PageAnalytics } from "./analytics";
+import GoogleAnalytics from "./GoogleAnalytics";
 
 import "~/styles/globals.css";
 
@@ -26,13 +26,13 @@ const roboto = Roboto({
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "VoiceAI",
+  title: "ScriptTimer",
   description: "Using AI for Voice",
   openGraph: {
-    title: "VoiceAi",
+    title: "ScriptTimer",
     description: "Using AI for Voice",
     url: "https://voiceai-tesserakt.vercel.app/",
-    siteName: "VoiceAI",
+    siteName: "ScriptTimer",
   },
   twitter: {
     card: "summary_large_image",
@@ -44,6 +44,7 @@ export const metadata: Metadata = {
 export default function Layout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" className="h-full">
+      <GoogleAnalytics />
       <body
         className={[
           "font-poppins",
@@ -56,7 +57,6 @@ export default function Layout(props: { children: React.ReactNode }) {
       >
         {props.children}
       </body>
-      <GoogleAnalytics gaId="G-HFV2PVVNXR" />
 
       <PageAnalytics />
     </html>

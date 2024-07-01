@@ -64,16 +64,14 @@ export function ScriptAI({
 
   const { data: subscriptionData, refetch } =
     api.subscription.mySubscription.useQuery();
-  console.log("SUBSINFO", subscriptionData);
+
   const [favoriteVoices, setFavoriteVoices] = React.useState([]);
 
   const isSubscriptionActive =
     subscriptionData &&
     (subscriptionData.status === "CREATOR" ||
       subscriptionData.status === "STUDENT" ||
-      subscriptionData.status === "BUSINESS" ||
-      subscriptionData.status === "FREE_TRIAL" ||
-      subscriptionData.status === "FREE");
+      subscriptionData.status === "BUSINESS");
 
   React.useEffect(() => {
     if (subscriptionData?.favorite_voices) {
@@ -151,16 +149,28 @@ export function ScriptAI({
           toggleAudioRef.current?.click();
         }
       } else {
-        // Handle the case where data or audio is missing
         setLoading(false);
+        // Assuming data contains user's plan information, you can set it as a variable
+
+        const userPlan = subData.status; // Update this line based on your actual data structure
+
+        let errorMessage = "Please try again later";
+        if (userPlan === "FREE") {
+          errorMessage = "Free plan only supports up to 300 characters";
+        } else if (userPlan === "FREE_TRIAL" || userPlan === "STUDENT") {
+          errorMessage = "Your plan only supports up to 2000 characters";
+        } else if (userPlan === "CREATOR" || userPlan === "BUSINESS") {
+          errorMessage = "Your plan only supports up to 5000 characters";
+        }
         toast({
-          title: "Something went wrong",
-          description: "Please try again later",
+          title: "Character Limit",
+          description: errorMessage,
         });
       }
     },
     onError(error) {
       setLoading(false);
+      console.log("error en el onError else", error);
       if (error?.data?.code === "FORBIDDEN") {
         toast({
           title: "Upgrade your plan",
@@ -172,6 +182,7 @@ export function ScriptAI({
           ),
         });
       } else {
+        console.log("error en el tercer Error", error);
         toast({
           title: "Something went wrong",
           description: "Please try again later",
@@ -337,38 +348,22 @@ export function ScriptAI({
                     <HoverCard openDelay={200}>
                       <HoverCardTrigger asChild>
                         <div className=" text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                          {subData ? (
-                            <TabsList className=" grid grid-cols-2  bg-slate-300">
-                              <TabsTrigger
-                                value="complete"
-                                className=" flex items-center justify-center  rounded-full data-[state=active]:bg-primary"
-                              >
-                                <span className="sr-only">Complete</span>
-                                <PencilIcon className=" h-4 w-4 text-primary-foreground" />
-                              </TabsTrigger>
-                              <TabsTrigger
-                                value="insert"
-                                className="flex items-center justify-center  rounded-full  data-[state=active]:bg-primary"
-                              >
-                                <span className="sr-only">Insert</span>
-                                <CorrectDocumentIcon className=" h-4 w-4 text-primary-foreground " />
-                              </TabsTrigger>
-                            </TabsList>
-                          ) : (
-                            <button
-                              className="flex h-full items-center justify-around rounded-xl bg-slate-300 px-2 font-bold"
-                              onClick={() => setOpenFreeModal(true)}
+                          <TabsList className=" grid grid-cols-2  bg-slate-300">
+                            <TabsTrigger
+                              value="complete"
+                              className=" flex items-center justify-center  rounded-full data-[state=active]:bg-primary"
                             >
-                              <div className=" flex h-6 w-10 items-center justify-center rounded-full bg-primary">
-                                <span className="sr-only">Complete</span>
-                                <PencilIcon className=" h-4 w-4 text-primary-foreground" />
-                              </div>
-                              <div className=" flex  h-6 w-10 items-center justify-center  rounded-full data-[state=active]:bg-primary">
-                                <span className="sr-only">Insert</span>
-                                <CorrectDocumentIcon className=" h-4 w-4 text-primary-foreground" />
-                              </div>
-                            </button>
-                          )}
+                              <span className="sr-only">Complete</span>
+                              <PencilIcon className=" h-4 w-4 text-primary-foreground" />
+                            </TabsTrigger>
+                            <TabsTrigger
+                              value="insert"
+                              className="flex items-center justify-center  rounded-full  data-[state=active]:bg-primary"
+                            >
+                              <span className="sr-only">Insert</span>
+                              <CorrectDocumentIcon className=" h-4 w-4 text-primary-foreground " />
+                            </TabsTrigger>
+                          </TabsList>
                         </div>
                       </HoverCardTrigger>
                       <HoverCardContent
