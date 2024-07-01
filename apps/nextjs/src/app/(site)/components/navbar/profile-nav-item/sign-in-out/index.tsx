@@ -14,6 +14,8 @@ export default function SignInOut({ onSignInOut, label }: Props) {
         await onSignInOut();
         if (label === "Sign in") {
           router.push("/signin");
+        } else {
+          router.push("/");
         }
       }}
     >

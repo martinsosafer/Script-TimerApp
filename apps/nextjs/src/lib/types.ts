@@ -16,3 +16,16 @@ export type ServerActionResult<Result> = Promise<
       error: string;
     }
 >;
+
+export interface SubscriptionData {
+  userId: string;
+  status: string;
+  planId: string | null;
+}
+
+export interface SessionData {
+  name: string;
+  email: string;
+  id: string;
+  subscription: SubscriptionData;
+}

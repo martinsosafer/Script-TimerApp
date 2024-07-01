@@ -63,17 +63,10 @@ export default function NewNavBar({ signOut, signIn, session }: NavBarProps) {
           </li>
           <HoverCard>
             <HoverCardTrigger asChild>
-              <li
-                className={`group relative px-3 py-2 text-primary-foreground ${!hasValidPlan(subscriptionData) && "pointer-events-none opacity-50"}`}
-              >
+              <li className="group relative px-3 py-2 text-primary-foreground">
                 <ScriptCoachNavItem />
               </li>
             </HoverCardTrigger>
-            {!hasValidPlan(subscriptionData) && (
-              <HoverCardContent>
-                <p>This section is only available for paying users.</p>
-              </HoverCardContent>
-            )}
           </HoverCard>
           <li className="group relative px-3 py-2 text-primary-foreground ">
             <LearnNavItem />

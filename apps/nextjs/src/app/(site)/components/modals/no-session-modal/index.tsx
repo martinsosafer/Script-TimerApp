@@ -3,32 +3,44 @@
 import type { Dispatch, SetStateAction } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import microphone2side from "@public/11differentside.png";
+import microphone from "@public/microphone (1).png";
 
 import { IconSquareArrowUpRight } from "@voiceai/ui/@/components/ui/icons";
 
 import type { SubscriptionData } from "~/lib/types";
-import microphone2side from "../../../../public/11differentside.png";
-import microphone from "../../../../public/microphone (1).png";
 
 interface FreeModalProps {
   subData?: SubscriptionData | null | undefined;
   openModal: boolean;
   setOpenModal: Dispatch<SetStateAction<boolean>>;
+  page: "voice" | "chat" | "courses";
 }
-function FreeModal({ setOpenModal, openModal }: FreeModalProps) {
+
+const pageMessage: Record<string, string> = {
+  voice: "Listen To Your Script by Signing In",
+  chat: "Brainstorm and Create Your Scripts by Signing In",
+  courses: "Learn From Experts by Signing In",
+};
+
+export default function NoSessionModal({
+  setOpenModal,
+  openModal,
+  page,
+}: FreeModalProps) {
   if (!openModal) {
     return null;
   }
 
   return (
     <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center  bg-black bg-opacity-50 backdrop-blur">
-      <div className="  rounded-xl bg-primary p-8">
-        <div className="max-h-[100vh] min-h-[80vh] w-full max-w-lg overflow-y-auto overflow-x-hidden rounded-full border-4 border-primary bg-white p-4 dark:bg-white sm:rounded-lg">
+      <div className="rounded-xl bg-primary p-8">
+        <div className="w-full max-w-lg overflow-y-auto overflow-x-hidden rounded-full border-4 border-primary bg-white p-4 dark:bg-white sm:rounded-lg">
           <div className="flex h-full w-full flex-col">
             <div className="m-8 mx-auto my-2 flex flex-grow flex-col items-center px-4">
               {/* Heading */}
-              <h2 className="font-poppins text-2xl font-bold text-primary">
-                Upgrade & Create Today!
+              <h2 className="text-center font-poppins text-2xl font-bold text-primary">
+                {pageMessage[page]}
               </h2>
 
               {/* New Rectangular Rounded Bubble */}
@@ -57,21 +69,20 @@ function FreeModal({ setOpenModal, openModal }: FreeModalProps) {
 
               <div className="">
                 <h2 className="mb-2 mt-2 text-center font-poppins text-2xl font-bold text-primary">
-                  Don't Miss Out
+                  Create your account and transform your work
                 </h2>
                 <ul className="list-disc pl-6">
                   <li className="font-poppins text-base font-medium dark:text-primary-foreground">
-                    Use AI custom made for scripts & voices
+                    Access magical Ai custom made for scripts & voices
                   </li>
                   <li className="font-poppins text-base font-medium dark:text-primary-foreground">
-                    Download and save voice overs and scripts
+                    Download and save licensed files
                   </li>
                   <li className="font-poppins text-base font-medium dark:text-primary-foreground">
-                    Almost 100 voices: English, French, German, Hindi...
+                    International translation
                   </li>
                   <li className="font-poppins text-base font-medium dark:text-primary-foreground">
-                    Upgrade your skills with masterclasses on public speaking,
-                    writing, stories that win
+                    Upgrade your skills with masterclasses
                   </li>
                 </ul>
               </div>
@@ -100,5 +111,3 @@ function FreeModal({ setOpenModal, openModal }: FreeModalProps) {
     </div>
   );
 }
-
-export default FreeModal;

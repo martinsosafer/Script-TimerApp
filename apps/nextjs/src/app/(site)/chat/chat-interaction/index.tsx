@@ -4,9 +4,8 @@ import { useEffect, useState } from "react";
 
 import type { Prompt } from "~/app/(site)/data/chat-prompts/types";
 import { clearChats } from "~/app/actions/newChatActions";
-import { api } from "~/utils/api";
 import ClearChatHistoryModal from "../../components/modals/clear-chat-history";
-import ChatModal from "../../old-chat/chat/chatmodal";
+import NoSessionModal from "../../components/modals/no-session-modal";
 import ChatFeedback from "./chat-feedback";
 import GoToOldChat from "./go-to-old-chat";
 import PromptInput from "./prompt-input";
@@ -15,7 +14,11 @@ import PromptsSelector from "./promptSelector";
 import type { Chat, ChatMessage } from "./types";
 import WelcomeMessage from "./welcome-message/welcome-message";
 
-export default function ChatInteraction({ userId }: { userId: string }) {
+interface ChatProps {
+  userId: string | undefined;
+}
+
+export default function ChatInteraction({ userId }: ChatProps) {
   const [selectedCard, setSelectedCard] = useState<Prompt | undefined>();
   const [promptInput, setPromptInput] = useState<string>("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -23,6 +26,8 @@ export default function ChatInteraction({ userId }: { userId: string }) {
   const [selectedChatHistory, setSelectedChatHistory] = useState<
     Chat | undefined
   >(undefined);
+
+  const [noSessionModalOpen, setNoSessionModalOpen] = useState<boolean>(false);
 
   const [isDeletingHistory, setIsDeletingHistory] = useState<boolean>(false);
 
@@ -33,17 +38,6 @@ export default function ChatInteraction({ userId }: { userId: string }) {
   >(undefined);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const { data: subscriptionData, isLoading: subscriptionLoading } =
-    api.subscription.mySubscription.useQuery();
-
-  const isSubscriptionActive =
-    subscriptionData &&
-    (subscriptionData.status === "STUDENT" ||
-      subscriptionData.status === "CREATOR" ||
-      subscriptionData.status === "BUSINESS" ||
-      subscriptionData.status === "FREE" ||
-      subscriptionData.status === "FREE_TRIAL");
 
   useEffect(() => {
     setPromptInput("");
@@ -69,7 +63,9 @@ export default function ChatInteraction({ userId }: { userId: string }) {
         console.error(err);
       }
     }
-    getChatHistory({ userId });
+    if (userId) {
+      getChatHistory({ userId });
+    }
   }, [userId, isLoading]);
 
   async function handleSubmit(isFeedback = false) {
@@ -123,54 +119,53 @@ export default function ChatInteraction({ userId }: { userId: string }) {
   }
 
   return (
-    <>
-      {subscriptionLoading && <div className="h-screen w-full"></div>}
-      {!isSubscriptionActive && (
-        <div className="h-screen w-full">
-          <ChatModal />
-        </div>
+    <div className="flex w-full flex-col items-center">
+      <WelcomeMessage />
+      <PromptsSelector
+        selectedCard={selectedCard}
+        setSelectedCard={setSelectedCard}
+      />
+      <Prompter uiPrompt={selectedCard?.prompt_display} />
+      <PromptInput
+        value={promptInput}
+        onChange={setPromptInput}
+        onSubmit={() => handleSubmit()}
+        loadingMessages={isLoading}
+        isEnabled={Boolean(selectedCard)}
+        setOpenMopdal={() => setNoSessionModalOpen(true)}
+        userId={userId}
+      />
+      <ChatFeedback
+        chat={messages}
+        chatHistory={chatHistory}
+        setChatHistory={setChatHistory}
+        feedbackInput={feedbackInput}
+        setFeedbackInput={setFeedbackInput}
+        setMessages={setMessages}
+        handleSubmit={handleSubmit}
+        setIsDeletingHistory={setIsDeletingHistory}
+        setSelectedChatHistory={setSelectedChatHistory}
+        loadingMessages={isLoading}
+        setAssistantsResponse={setAssistantsResponse}
+      />
+      <GoToOldChat />
+      {isDeletingHistory && (
+        <ClearChatHistoryModal
+          onClose={() => setIsDeletingHistory(false)}
+          onConfirm={() => {
+            clearChats();
+            setChatHistory([]);
+            setIsDeletingHistory(false);
+          }}
+        />
       )}
-      {!subscriptionLoading && isSubscriptionActive && (
-        <div className="flex w-full flex-col items-center">
-          <WelcomeMessage />
-          <PromptsSelector
-            selectedCard={selectedCard}
-            setSelectedCard={setSelectedCard}
-          />
-          <Prompter uiPrompt={selectedCard?.prompt_display} />
-          <PromptInput
-            value={promptInput}
-            onChange={setPromptInput}
-            onSubmit={() => handleSubmit()}
-            loadingMessages={isLoading}
-            isEnabled={Boolean(selectedCard)}
-          />
-          <ChatFeedback
-            chat={messages}
-            chatHistory={chatHistory}
-            setChatHistory={setChatHistory}
-            feedbackInput={feedbackInput}
-            setFeedbackInput={setFeedbackInput}
-            setMessages={setMessages}
-            handleSubmit={handleSubmit}
-            setIsDeletingHistory={setIsDeletingHistory}
-            setSelectedChatHistory={setSelectedChatHistory}
-            loadingMessages={isLoading}
-            setAssistantsResponse={setAssistantsResponse}
-          />
-          <GoToOldChat />
-          {isDeletingHistory && (
-            <ClearChatHistoryModal
-              onClose={() => setIsDeletingHistory(false)}
-              onConfirm={() => {
-                clearChats();
-                setChatHistory([]);
-                setIsDeletingHistory(false);
-              }}
-            />
-          )}
-        </div>
+      {noSessionModalOpen && (
+        <NoSessionModal
+          openModal={noSessionModalOpen}
+          page="chat"
+          setOpenModal={setNoSessionModalOpen}
+        />
       )}
-    </>
+    </div>
   );
 }

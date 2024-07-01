@@ -6,6 +6,5 @@ export function hasValidPlan(plan: string | undefined) {
     plan === "FREE_TRIAL" ||
     plan === "FREE";
 
-  console.log("function plan", isSubscriptionActive);
   return isSubscriptionActive;
 }

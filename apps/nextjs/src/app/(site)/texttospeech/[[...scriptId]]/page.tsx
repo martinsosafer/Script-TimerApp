@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 
 import { auth } from "@voiceai/auth";
 
-import FreeModal from "../../components/free-modal";
 import { ScriptAI } from "./script-ai";
 
 export const metadata: Metadata = {
@@ -18,7 +17,6 @@ export default async function ScriptPage() {
   return (
     <>
       <ScriptAI subData={subData} />
-      <FreeModal subData={subData} />
     </>
   );
 }

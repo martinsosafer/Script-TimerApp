@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { IconUpgrades } from "@voiceai/ui/@/components/ui/icons";
 
-const CHAR_LIMITS = {
+const CHAR_LIMITS: Record<string, number> = {
   FREE: 300,
   FREE_TRIAL: 1600,
   STUDENT: 2000,
@@ -11,14 +11,20 @@ const CHAR_LIMITS = {
   BUSINESS: 5000,
 };
 
-const CharLimitModal = ({ onClose, subData }) => {
-  const planCharacterLimit = CHAR_LIMITS[subData] || 0;
+interface ModalProps {
+  onClose: () => void;
+  subData: string | undefined;
+}
+
+const CharLimitModal = ({ onClose, subData }: ModalProps) => {
+  const planCharacterLimit = subData ? CHAR_LIMITS[subData] : 0;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className="rounded bg-white p-4">
         <h2 className="mb-4 text-lg font-bold">
-          <span className="text-red-500">Warning, </span>Character Limit Exceeded
+          <span className="text-red-500">Warning, </span>Character Limit
+          Exceeded
         </h2>
         <p>
           You have exceeded the {planCharacterLimit} character limit for this
