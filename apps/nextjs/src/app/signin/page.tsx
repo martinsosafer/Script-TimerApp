@@ -30,7 +30,6 @@ export default async function SignIn() {
           </div>
           <div className={cn("grid gap-6")}>
             <LoginForm />
-            <LoginWithEmailForm />
             <p className="px-8 text-center text-sm text-muted-foreground">
               Don&apos;t have an account?{" "}
               <Link
@@ -40,6 +39,7 @@ export default async function SignIn() {
                 SignUp here
               </Link>{" "}
             </p>
+            <LoginWithEmailForm />
 
             <div className="relative">
               <div className="absolute inset-0 flex items-center">

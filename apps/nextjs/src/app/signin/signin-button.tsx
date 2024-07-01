@@ -18,29 +18,41 @@ export function LoginWithEmailForm() {
   const [state, formAction] = useFormState(createUser, initialState);
 
   return (
-    <form action={formAction}>
-      <div className="grid gap-2">
-        <div className="grid gap-1">
-          <Label className="sr-only" htmlFor="email">
-            Email
-          </Label>
-          <Input
-            id="email"
-            name="email"
-            placeholder="name@example.com"
-            type="email"
-            autoCapitalize="none"
-            autoComplete="email"
-            autoCorrect="off"
-          />
+    <>
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <span className="w-full border-t" />
         </div>
-        <SubmitButton />
-
-        {state?.message && (
-          <p className="text-center text-red-500">{state?.message}</p>
-        )}
+        <div className="relative flex justify-center text-xs uppercase">
+          <span className="bg-background px-2 text-muted-foreground">
+            Login with email
+          </span>
+        </div>
       </div>
-    </form>
+      <form action={formAction}>
+        <div className="grid gap-2">
+          <div className="grid gap-1">
+            <Label className="sr-only" htmlFor="email">
+              Email
+            </Label>
+            <Input
+              id="email"
+              name="email"
+              placeholder="name@example.com"
+              type="email"
+              autoCapitalize="none"
+              autoComplete="email"
+              autoCorrect="off"
+            />
+          </div>
+          <SubmitButton />
+
+          {state?.message && (
+            <p className="text-center text-red-500">{state?.message}</p>
+          )}
+        </div>
+      </form>
+    </>
   );
 }
 
