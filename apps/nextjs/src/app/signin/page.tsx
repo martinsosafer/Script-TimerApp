@@ -7,6 +7,7 @@ import { cn } from "@voiceai/ui/@/lib/utils";
 
 import coverImg from "../../../public/login_photo.png";
 import LoginForm from "./form-login";
+import { LoginWithEmailForm } from "./signin-button";
 
 export default async function SignIn() {
   const session = await auth();
@@ -29,7 +30,7 @@ export default async function SignIn() {
           </div>
           <div className={cn("grid gap-6")}>
             <LoginForm />
-
+            <LoginWithEmailForm />
             <p className="px-8 text-center text-sm text-muted-foreground">
               Don&apos;t have an account?{" "}
               <Link
