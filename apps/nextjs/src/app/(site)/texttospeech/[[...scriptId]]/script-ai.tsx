@@ -195,7 +195,8 @@ export function ScriptAI({ subData }) {
     if (isCopied) return;
     copyToClipboard(revisedScript);
   };
-  const { wordCount, minutes, formattedSeconds } = calculateLengthTime(script);
+  const { wordCount, minutes, formattedSeconds, speedCategory } =
+    calculateLengthTime(script);
 
   //wait modal !
   const isScriptLongEnough = (script) => {
@@ -331,12 +332,15 @@ export function ScriptAI({ subData }) {
                     />
 
                     <div className=" mb-4 flex flex-col items-center justify-center">
-                      <Badge className="h-12 w-[570px] items-center justify-center border-4 border-primary bg-blue-500 text-lg hover:to-blue-200">
-                        Script is&nbsp;
+                      <Badge className="h-12 w-[570px] items-center justify-center border-4 border-primary bg-blue-500 text-sm hover:to-blue-200">
+                        <span className="font-bold text-tertiary dark:text-tertiary">
+                          {speedCategory}
+                        </span>
+                        &nbsp;Great script!&nbsp;
                         <span className="font-bold text-tertiary dark:text-tertiary">
                           {wordCount}
                         </span>
-                        &nbsp;words. Estimated time is&nbsp;
+                        &nbsp;words. That looks to be about&nbsp;
                         <span className="font-bold text-tertiary dark:text-tertiary">
                           {minutes}
                         </span>
@@ -344,7 +348,7 @@ export function ScriptAI({ subData }) {
                         <span className="font-bold text-tertiary dark:text-tertiary">
                           {formattedSeconds}
                         </span>
-                        &nbsp;seconds
+                        &nbsp;seconds.
                       </Badge>
                       <div className=" mt-3 flex w-[570px] justify-between">
                         <div style={{ minWidth: "150px" }}>
@@ -476,22 +480,23 @@ export function ScriptAI({ subData }) {
                         {selectedModel && (
                           <SelectedModelCard selectedModel={selectedModel} />
                         )}
-                        <Badge className="flex items-center">
-                          <span className="inline">
-                            Script is&nbsp;
-                            <span className="font-semibold text-tertiary dark:text-tertiary">
-                              {wordCount}
-                            </span>
-                            &nbsp;words. Estimated time &nbsp;
-                            <span className="font-semibold text-tertiary  dark:text-tertiary">
-                              {minutes}
-                            </span>
-                            &nbsp;minutes and&nbsp;
-                            <span className="font-semibold text-tertiary  dark:text-tertiary">
-                              {formattedSeconds}
-                            </span>
-                            &nbsp;seconds
+                        <Badge className="h-12 w-[570px] items-center justify-center border-4 border-primary bg-blue-500 text-sm hover:to-blue-200">
+                          <span className="font-bold text-tertiary dark:text-tertiary">
+                            {wordCount}
                           </span>
+                          {speedCategory} Script is&nbsp;
+                          <span className="font-bold text-tertiary dark:text-tertiary">
+                            {wordCount}
+                          </span>
+                          &nbsp;words. Estimated time is&nbsp;
+                          <span className="font-bold text-tertiary dark:text-tertiary">
+                            {minutes}
+                          </span>
+                          &nbsp;minutes and&nbsp;
+                          <span className="font-bold text-tertiary dark:text-tertiary">
+                            {formattedSeconds}
+                          </span>
+                          &nbsp;seconds.
                         </Badge>
                       </div>
                     </div>
