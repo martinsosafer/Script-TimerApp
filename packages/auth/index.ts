@@ -11,6 +11,7 @@ import NextAuth from "next-auth";
 import { db, tableCreator } from "@voiceai/db";
 
 import { env } from "./env.mjs";
+import { sendVerificationRequest } from "./send-verification-request";
 
 export type { Session } from "next-auth";
 // Update this whenever adding new providers so that the client can
@@ -85,6 +86,12 @@ export const {
       clientId: env.AUTH_GOOGLE_CLIENT_ID,
       clientSecret: env.AUTH_GOOGLE_CLIENT_SECRET,
     }),
+    {
+      id: "resend",
+      // @ts-expect-error dont know why this is typed wrong from NextAuth
+      type: "email",
+      sendVerificationRequest,
+    },
   ],
   callbacks: {
     async session({ session, user, token }) {
