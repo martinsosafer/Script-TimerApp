@@ -348,22 +348,38 @@ export function ScriptAI({
                     <HoverCard openDelay={200}>
                       <HoverCardTrigger asChild>
                         <div className=" text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                          <TabsList className=" grid grid-cols-2  bg-slate-300">
-                            <TabsTrigger
-                              value="complete"
-                              className=" flex items-center justify-center  rounded-full data-[state=active]:bg-primary"
+                          {subData ? (
+                            <TabsList className=" grid grid-cols-2  bg-slate-300">
+                              <TabsTrigger
+                                value="complete"
+                                className=" flex items-center justify-center  rounded-full data-[state=active]:bg-primary"
+                              >
+                                <span className="sr-only">Complete</span>
+                                <PencilIcon className=" h-4 w-4 text-primary-foreground" />
+                              </TabsTrigger>
+                              <TabsTrigger
+                                value="insert"
+                                className="flex items-center justify-center  rounded-full  data-[state=active]:bg-primary"
+                              >
+                                <span className="sr-only">Insert</span>
+                                <CorrectDocumentIcon className=" h-4 w-4 text-primary-foreground " />
+                              </TabsTrigger>
+                            </TabsList>
+                          ) : (
+                            <button
+                              className="flex h-full items-center justify-around rounded-xl bg-slate-300 px-2 font-bold"
+                              onClick={() => setOpenFreeModal(true)}
                             >
-                              <span className="sr-only">Complete</span>
-                              <PencilIcon className=" h-4 w-4 text-primary-foreground" />
-                            </TabsTrigger>
-                            <TabsTrigger
-                              value="insert"
-                              className="flex items-center justify-center  rounded-full  data-[state=active]:bg-primary"
-                            >
-                              <span className="sr-only">Insert</span>
-                              <CorrectDocumentIcon className=" h-4 w-4 text-primary-foreground " />
-                            </TabsTrigger>
-                          </TabsList>
+                              <div className=" flex h-6 w-10 items-center justify-center rounded-full bg-primary">
+                                <span className="sr-only">Complete</span>
+                                <PencilIcon className=" h-4 w-4 text-primary-foreground" />
+                              </div>
+                              <div className=" flex  h-6 w-10 items-center justify-center  rounded-full data-[state=active]:bg-primary">
+                                <span className="sr-only">Insert</span>
+                                <CorrectDocumentIcon className=" h-4 w-4 text-primary-foreground" />
+                              </div>
+                            </button>
+                          )}
                         </div>
                       </HoverCardTrigger>
                       <HoverCardContent
