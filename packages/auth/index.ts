@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 /* @see https://github.com/nextauthjs/next-auth/pull/8932 */
 
-import { createHash } from "crypto";
 import CredentialsProviders from "@auth/core/providers/credentials";
 import Google from "@auth/core/providers/google";
 import type { DefaultSession } from "@auth/core/types";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
+import bcrypt from "bcryptjs";
 import NextAuth from "next-auth";
 
 import { db, tableCreator } from "@voiceai/db";
@@ -29,17 +29,6 @@ declare module "next-auth" {
       } | null;
     } & DefaultSession["user"];
   }
-}
-
-function compareHashPassword(password: string, hashedPassword: string) {
-  if (hashPassword(password) === hashedPassword) {
-    return { success: true, message: "Password matched" };
-  }
-  return { success: false, message: "Password not matched" };
-}
-
-function hashPassword(password: string) {
-  return createHash("sha256").update(password).digest("hex");
 }
 
 export const {
@@ -66,12 +55,12 @@ export const {
           where: (users, { eq }) => eq(users.email, email),
         });
 
-        const result = compareHashPassword(
+        const isAuthed = await bcrypt.compare(
           password as string,
           user?.password ?? "",
         );
 
-        if (result.success && user) {
+        if (isAuthed && user) {
           return {
             id: user?.id,
             email: user?.email,

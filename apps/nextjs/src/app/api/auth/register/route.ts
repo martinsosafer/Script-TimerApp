@@ -1,4 +1,4 @@
-import { createHash, randomUUID } from "crypto";
+import bcrypt from "bcryptjs";
 
 import { db, schema } from "@voiceai/db";
 
@@ -8,9 +8,13 @@ interface User {
   password: string;
 }
 
-const hashPassword = (password: string) => {
-  return createHash("sha256").update(password).digest("hex");
-};
+function uuid() {
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+    const r = (Math.random() * 16) | 0;
+    const v = c === "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
 
 export async function POST(request: Request) {
   try {
@@ -20,8 +24,8 @@ export async function POST(request: Request) {
       password: userPassword,
     } = (await request.json()) as User;
 
-    const password = hashPassword(userPassword);
-    const id = randomUUID();
+    const password = await bcrypt.hash(userPassword, 10);
+    const id = uuid();
 
     const newUser = await db
       .insert(schema.users)
