@@ -30,11 +30,11 @@ export default function ServiceSection() {
       <div className="mx-auto grid max-w-5xl md:grid-cols-2">
         <div>
           <RevealText>
-            <h2 className="font-poppins text-5xl font-semibold   leading-tight">
+            <h2 className="font-poppins text-4xl font-semibold   leading-tight">
               <span className="block text-primary">You have an project</span>
               Bring it to life with <br />
               custp, AI built <br />
-              for scripts
+              for scripts.
             </h2>
           </RevealText>
           <RevealText>

@@ -43,7 +43,7 @@ function SlideCards() {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black group-hover:from-black/70 group-hover:via-black/60 group-hover:to-black/70"></div>
         <div className="absolute inset-0 flex translate-y-[60%] flex-col items-center justify-center px-9 text-center transition-all duration-500 group-hover:translate-y-0">
           <h3 className="font-dmserif text-2xl font-bold text-white">
-            Text to Speech
+            Text to Voice
           </h3>
           <p className="mb-3 text-lg italic text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
             AI voice generation , choose a voice actor and give us a script.
