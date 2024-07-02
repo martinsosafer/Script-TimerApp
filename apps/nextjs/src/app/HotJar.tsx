@@ -8,7 +8,7 @@ const HotJar = () => {
 
   return (
     <div>
-      <Script id="hotjar-snippet">
+      <Script id="hotjar-script">
         {`
           (function(h,o,t,j,a,r){
               h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
