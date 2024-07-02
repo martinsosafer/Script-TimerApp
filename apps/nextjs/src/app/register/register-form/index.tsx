@@ -54,7 +54,7 @@ export default function RegisterForm() {
         <input
           name="email"
           type="email"
-          placeholder="Eenter your email address"
+          placeholder="Enter your email address"
           className="rounded-md border border-gray-300 px-3 py-2"
           required
         />
@@ -68,7 +68,7 @@ export default function RegisterForm() {
           onChange={(e) => setPassword(e.currentTarget.value)}
           name="password"
           type="password"
-          placeholder="Enter your password"
+          placeholder="Create a password"
           className="rounded-md border border-gray-300 px-3 py-2"
           required
         />
@@ -82,7 +82,7 @@ export default function RegisterForm() {
           onChange={(e) => setConfirmPassword(e.currentTarget.value)}
           name="confirmPassword"
           type="password"
-          placeholder="Plase confirm your password."
+          placeholder="Please confirm your password."
           className="rounded-md border border-gray-300 px-3 py-2"
           required
         />

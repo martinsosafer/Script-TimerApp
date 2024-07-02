@@ -27,7 +27,6 @@ export const voiceRouter = createTRPCRouter({
       .select()
       .from(schema.voices)
       .where(eq(schema.voices.active, true))
-      .limit(5)
       .orderBy(asc(schema.voices.rank));
   }),
   listAllVoices: protectedProcedure.query(async ({ ctx }) => {

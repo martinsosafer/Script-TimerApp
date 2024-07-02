@@ -1,3 +1,5 @@
+import type { Session } from "@voiceai/auth";
+
 export interface MarketingFeature {
   name: string;
 }
@@ -18,29 +20,27 @@ export interface Product {
   marketing_features: MarketingFeature[];
 }
 
-export interface PriceCardProps {
+export interface PriceCardsProps {
   monthlyPlans: Product[];
   yearlyPlans: Product[];
   currentPlan?: string | undefined;
   planInterval?: string;
+  session: Session | null;
 }
 
-// interface Recurring {
-//   interval: string | undefined;
-//   interval_count: number;
-//   trial_period_days: number | null;
-//   usage_type: string;
-// }
+export interface PriceCardProps {
+  product: Product;
+  currentPlan: string | undefined;
+  interval: string | undefined;
+  isYearly?: boolean;
+  session: Session | null;
+}
 export interface Plan {
   id: string;
   interval: string;
   active: boolean;
   amount: number;
 }
-
-// interface SubscriptionItem {
-//   data: { plan: Plan[] };
-// }
 
 export interface I_Subscription {
   billing_cycle_anchor: number;

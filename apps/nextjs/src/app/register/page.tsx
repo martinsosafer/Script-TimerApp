@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { auth } from "@voiceai/auth";
@@ -25,6 +26,15 @@ export default async function Register() {
             </p>
           </div>
           <RegisterForm />
+          <p className="px-8 text-center text-sm text-muted-foreground">
+            Have an account?{" "}
+            <Link
+              href="/signin"
+              className="underline underline-offset-4 hover:text-primary"
+            >
+              SIGN IN HERE
+            </Link>{" "}
+          </p>
         </div>
       </div>
       <div className="relative h-full flex-col overflow-hidden bg-gradient-to-b from-blue-300 to-blue-700 p-10 text-white dark:border-r lg:flex">

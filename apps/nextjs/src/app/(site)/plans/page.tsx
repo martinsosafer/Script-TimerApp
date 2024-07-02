@@ -115,8 +115,8 @@ async function PlansPage() {
 
   return (
     <div className="flex w-full flex-col items-center">
-      <div className="flex w-full flex-col items-center bg-white px-4 pt-10 text-center xl:w-[1024px]">
-        <h2 className="flex flex-col items-center text-3xl font-bold leading-tight tracking-tight text-primary xl:text-4xl xl:font-extrabold">
+      <div className="flex w-full flex-col items-center bg-white px-4 pt-10 text-center xl:w-[800px]">
+        <h2 className="flex flex-col items-center text-3xl font-bold leading-tight tracking-tight text-primary xl:text-3xl xl:font-extrabold">
           <span>START NOW WITH</span>
           <span>SCRIPT WRITING, VOICEOVERS & MASTERCLASSES</span>
         </h2>
@@ -132,6 +132,7 @@ async function PlansPage() {
         monthlyPlans={monthlyPlans}
         yearlyPlans={yearlyPlans}
         planInterval={subscription?.plan?.interval}
+        session={session}
       />
     </div>
   );

@@ -30,17 +30,6 @@ export default async function SignIn() {
           </div>
           <div className={cn("grid gap-6")}>
             <LoginForm />
-            <p className="px-8 text-center text-sm text-muted-foreground">
-              Don&apos;t have an account?{" "}
-              <Link
-                href="/register"
-                className="underline underline-offset-4 hover:text-primary"
-              >
-                SignUp here
-              </Link>{" "}
-            </p>
-            <LoginWithEmailForm />
-
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t" />
@@ -87,6 +76,16 @@ export default async function SignIn() {
                 <span className="text-sm font-semibold leading-6">Google</span>
               </button>
             </form>
+            <p className="px-8 text-center text-sm text-muted-foreground">
+              Don&apos;t have an account?{" "}
+              <Link
+                href="/register"
+                className="underline underline-offset-4 hover:text-primary"
+              >
+                SIGN UP HERE
+              </Link>{" "}
+            </p>
+            <LoginWithEmailForm />
           </div>
           <p className="px-8 text-center text-sm text-muted-foreground">
             By clicking continue, you agree to our{" "}

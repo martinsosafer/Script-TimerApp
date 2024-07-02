@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@voiceai/ui";
 import {
@@ -19,9 +20,13 @@ interface SubData {
 }
 
 function Modal({ status, userId }: SubData) {
+  const router = useRouter();
   const isSubscriptionActive =
     status &&
-    (status === "CREATOR" || status === "STUDENT" || status === "BUSINESS");
+    (status === "CREATOR" ||
+      status === "STUDENT" ||
+      status === "BUSINESS" ||
+      status === "FREE_TRIAL");
 
   const [modalOpen, setModalOpen] = useState(!isSubscriptionActive);
 
@@ -73,6 +78,11 @@ function Modal({ status, userId }: SubData) {
           />
         </div>
         <div className="flex flex-col justify-center text-center md:w-1/2 md:text-left">
+          {!userId && (
+            <h3 className="mb-3 px-4 text-center font-semibold">
+              Please look around and login to create scripts, voices, and learn.
+            </h3>
+          )}
           <div className="mb-4 flex items-center justify-center md:justify-start">
             <img
               className="h-4 md:h-5"
@@ -104,11 +114,16 @@ function Modal({ status, userId }: SubData) {
                 Get Full Access
               </Button>
             </Link>
+
             <Button
               className="flex items-center rounded-2xl border border-black bg-secondary px-7 py-4 text-xs font-medium text-secondary-foreground hover:bg-secondary"
               type="button"
               size="sm"
-              onClick={startFreeTrialAndCloseModal}
+              onClick={
+                userId
+                  ? startFreeTrialAndCloseModal
+                  : () => router.push("/register")
+              }
             >
               <IconArrowRight className="mr-2" />
               Start free trial

@@ -1,5 +1,3 @@
-"use client";
-
 import type { Dispatch, SetStateAction } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -88,7 +86,7 @@ export default function NoSessionModal({
               </div>
               <div className="mt-8 space-y-4">
                 {/* Buttons */}
-                <Link href="/plans">
+                <Link href="/register">
                   <button
                     className="flex w-full transform items-center rounded-lg border-2 border-orange-500 bg-orange-500 p-3 font-poppins font-medium text-white underline transition-transform duration-300 hover:scale-105"
                     onClick={() => setOpenModal(false)}

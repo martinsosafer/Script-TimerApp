@@ -1,17 +1,16 @@
 import { useState } from "react";
 
-import type { PriceCardProps } from "../../types";
+import type { PriceCardsProps } from "../../types";
 import PriceCard from "./price-card";
 
-const PriceCards: React.FC<PriceCardProps> = ({
+const PriceCards: React.FC<PriceCardsProps> = ({
   monthlyPlans,
   yearlyPlans,
   currentPlan,
   planInterval,
+  session,
 }) => {
   const [showMonthly, setShowMonthly] = useState(true);
-
-  console.log("PLAN INTERVAL", planInterval);
 
   return (
     <>
@@ -49,34 +48,31 @@ const PriceCards: React.FC<PriceCardProps> = ({
           </button>
         </div>
       </div>
-      <div className="relative">
-        <div className="absolute inset-0 flex h-full flex-col">
-          <div className="flex-1" />
-          <div className="mb-2 flex-1" />
-        </div>
-        <div className="mx-auto grid max-w-7xl gap-12 px-4 py-20 sm:px-6 lg:grid-cols-3 lg:gap-8 lg:px-8">
-          {showMonthly
-            ? monthlyPlans.map((product) => (
-                // Render monthly plans
-                <PriceCard
-                  product={product}
-                  key={product.id}
-                  currentPlan={currentPlan}
-                  interval={planInterval ?? "no-interval"}
-                />
-              ))
-            : yearlyPlans.map((product) => (
-                // Render yearly plans
 
-                <PriceCard
-                  product={product}
-                  key={product.id}
-                  currentPlan={currentPlan}
-                  interval={planInterval ?? "no-interval"}
-                  isYearly
-                />
-              ))}
-        </div>
+      <div className="flex max-w-6xl flex-col items-start justify-between gap-12 px-4 py-14 sm:px-6 lg:grid-cols-3 lg:flex-row lg:gap-8 lg:px-8">
+        {showMonthly
+          ? monthlyPlans.map((product) => (
+              // Render monthly plans
+              <PriceCard
+                product={product}
+                key={product.id}
+                currentPlan={currentPlan}
+                interval={planInterval ?? "no-interval"}
+                session={session}
+              />
+            ))
+          : yearlyPlans.map((product) => (
+              // Render yearly plans
+
+              <PriceCard
+                product={product}
+                key={product.id}
+                currentPlan={currentPlan}
+                interval={planInterval ?? "no-interval"}
+                session={session}
+                isYearly
+              />
+            ))}
       </div>
     </>
   );

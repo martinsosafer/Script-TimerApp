@@ -218,7 +218,7 @@ export function ScriptAI({
         <div className="mb-6 mt-6 flex items-center justify-center">
           <div>
             <h1 className="mb-3 text-center font-poppins  text-3xl  font-bold text-secondary-foreground">
-              Text to Speech
+              Text to Voice
             </h1>
             <IntroParagraph status={subData?.status} />
           </div>
