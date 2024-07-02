@@ -3,6 +3,7 @@ import { Poppins, Roboto } from "next/font/google";
 
 import { PageAnalytics } from "./analytics";
 import GoogleAnalytics from "./GoogleAnalytics";
+import HotJar from "./HotJar";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -54,6 +55,7 @@ export default function Layout(props: { children: React.ReactNode }) {
         ].join(" ")}
       >
         {props.children}
+        <HotJar />
       </body>
 
       <PageAnalytics />
