@@ -16,13 +16,13 @@ export default function HeroSection() {
           Welcome
         </h1>
       </MotionTransition>
-      <div className="relative">
-        <div className="mx-auto mt-2 grid max-w-5xl items-start gap-8 md:grid-cols-2">
+      <div className="relative px-6 ">
+        <div className=" mx-auto mt-2 grid max-w-5xl items-start  md:grid-cols-2">
           <div className="mt-4">
             <RevealText>
-              <h1 className=" font-poppins text-2xl font-semibold sm:text-2xl xl:text-4xl/none">
-                Idea to Script to Voice in
-                <span className="mt-2 block text-primary"> Seconds</span>
+              <h1 className=" font-poppins text-4xl font-semibold sm:text-4xl xl:text-4xl/none">
+                Idea to Script to Voice
+                <span className="mt-2 block text-primary">in Seconds</span>
               </h1>
             </RevealText>
             <RevealText>
@@ -53,7 +53,7 @@ export default function HeroSection() {
             <div className="w-full">
               <iframe
                 src="https://player.vimeo.com/video/904618003?h=e72a50f24d&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                className="h-[340px] w-[520px]"
+                className="h-[340px] w-[520px] "
                 allow="autoplay; fullscreen; picture-in-picture"
                 title="Script-Timer Ai_ On boarding video (Short version) (1)"
               />
