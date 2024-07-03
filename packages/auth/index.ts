@@ -8,7 +8,7 @@ import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import bcrypt from "bcryptjs";
 import NextAuth from "next-auth";
 
-import { db, tableCreator } from "@voiceai/db";
+import { db, schema, tableCreator } from "@voiceai/db";
 
 import { env } from "./env.mjs";
 import { sendVerificationRequest } from "./send-verification-request";
@@ -89,10 +89,21 @@ export const {
           eq(subscriptions.userId, user?.id ?? token.sub),
       });
 
+      if (!subscriptionStatus) {
+        await db
+          .insert(schema.subscriptions)
+          .values({
+            userId: user?.id ?? token.sub,
+            plan: "STARTER",
+            status: "FREE_TRIAL",
+          })
+          .execute();
+      }
+
       const subscription = {
         userId: user?.id ?? token.sub,
-        status: subscriptionStatus?.status,
-        planId: subscriptionStatus?.plan_id ?? null,
+        status: subscriptionStatus?.status ?? "FREE_TRIAL",
+        planId: subscriptionStatus?.plan_id ?? "initial_plan_id",
       };
 
       const updatedSession = {

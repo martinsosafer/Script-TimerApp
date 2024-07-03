@@ -1,39 +1,18 @@
 "use client";
 
-import { api } from "~/utils/api";
 import { RegisterFormWithGoogle } from "../actions";
 
 export default function GoogleForm() {
-  const { mutateAsync: initialFreeTrial } =
-    api.user.initialFreeTrial.useMutation({
-      onSuccess(data) {
-        console.log("Free trial initiated successfully:", data);
-        // Optionally handle success
-      },
-      onError(error) {
-        console.error("Error initiating free trial:", error);
-      },
-    });
-  //   const handleInitialFreeTrial = async () => {
-  //     try {
-  //       if (userId) {
-  //         await initialFreeTrial({ userId });
-  //       } else {
-  //         console.error("User ID not found in session data");
-  //       }
-  //     } catch (error) {
-  //       console.error("Error initiating free trial:", error);
-  //     }
-  //   };
-
   async function handleSignUp() {
-    const result = await RegisterFormWithGoogle();
-    console.log("SignUp result", result);
+    await RegisterFormWithGoogle();
   }
 
   return (
-    <form action={handleSignUp}>
-      <button className="flex w-full items-center justify-center gap-3 rounded-md bg-[#24292F] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F]">
+    <form
+      action={handleSignUp}
+      className="mx-auto flex w-full max-w-md flex-col space-y-4"
+    >
+      <button className="flex items-center justify-center gap-3 rounded-md bg-[#24292F]  px-3 py-2  text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F]">
         <svg
           className="h-5 w-5"
           xmlns="http://www.w3.org/2000/svg"
