@@ -31,9 +31,9 @@ export default function ServiceSection() {
         <div>
           <RevealText>
             <h2 className="font-poppins text-4xl font-semibold   leading-tight">
-              <span className="block text-primary">You have an project</span>
+              <span className="block text-primary">You have a project</span>
               Bring it to life with <br />
-              custp, AI built <br />
+              custom AI built <br />
               for scripts.
             </h2>
           </RevealText>
