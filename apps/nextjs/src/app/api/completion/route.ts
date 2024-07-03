@@ -22,18 +22,16 @@ export async function POST(req: Request) {
     messages: [
       {
         role: "user",
-        content: `Given the following speech, detect if it has grammar, spelling  or typo issues.
-Respond with a revised copy of the speech only, do not add anything to the speech before or after, Just correct the mistakes!. Speech content:
-${prompt}
-        
+        content: `Given the following text, correct any spelling or grammar errors:
+Text: ${prompt}
 Output:\n`,
       },
     ],
     max_tokens: 4096,
     temperature: 0, // you want absolute certainty for spell check
-    top_p: 1,
-    frequency_penalty: 1,
-    presence_penalty: 1,
+    top_p: 0,
+    frequency_penalty: 0,
+    presence_penalty: 0,
   });
 
   // @ts-expect-error seems to be a bug in openai sdk

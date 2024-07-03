@@ -480,7 +480,7 @@ export function ScriptAI({ subData }) {
                         {selectedModel && (
                           <SelectedModelCard selectedModel={selectedModel} />
                         )}
-                        <Badge className="h-12 w-[570px] items-center justify-center border-4 border-primary bg-blue-500 text-sm hover:to-blue-200">
+                        {/* <Badge className="h-12 w-[570px] items-center justify-center border-4 border-primary bg-blue-500 text-sm hover:to-blue-200">
                           <span className="font-bold text-tertiary dark:text-tertiary">
                             {wordCount}
                           </span>
@@ -497,7 +497,7 @@ export function ScriptAI({ subData }) {
                             {formattedSeconds}
                           </span>
                           &nbsp;seconds.
-                        </Badge>
+                        </Badge> */}
                       </div>
                     </div>
                     {revisedScript.length > 0 ? (
