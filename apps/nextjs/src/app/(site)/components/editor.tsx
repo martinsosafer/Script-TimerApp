@@ -28,6 +28,7 @@ import classNames from "classnames";
 import { Button } from "@voiceai/ui";
 import { IconCopy } from "@voiceai/ui/@/components/ui/icons";
 
+import type { SubscriptionData } from "~/lib/types";
 import { api } from "~/utils/api";
 import { CharLimitModal } from "./charlimit-modal";
 
@@ -38,8 +39,9 @@ interface TextEditorProps {
   scriptLoaded: boolean;
   script: string;
   isSubscriptionActive?: boolean;
+  subData: SubscriptionData | null | undefined;
 }
-const CHAR_LIMITS = {
+const CHAR_LIMITS: Record<string, number> = {
   FREE: 300,
   FREE_TRIAL: 1600,
   STUDENT: 2000,
@@ -54,8 +56,7 @@ function TextEditor({
   script,
   subData,
 }: TextEditorProps) {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  console.log("SUBDATA", subData.status);
+  console.log("SUBDATA", subData?.status);
   const [charCount, setCharCount] = useState(0);
   const [showCharCount, setShowCharCount] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -66,7 +67,7 @@ function TextEditor({
     { enabled: Boolean(scriptId?.[0]) },
   );
   const editorKey = scriptId?.[0] ?? "default";
-  const charLimit = CHAR_LIMITS[subData.status] || CHAR_LIMITS.FREE;
+  const charLimit = (subData ? CHAR_LIMITS[subData.status] : CHAR_LIMITS.FREE)!;
   const editor = useEditor({
     extensions: useMemo(
       () => [
@@ -254,7 +255,7 @@ function TextEditor({
         {showModal && (
           <CharLimitModal
             onClose={() => setShowModal(false)}
-            subData={subData.status}
+            subData={subData?.status}
           />
         )}
       </div>

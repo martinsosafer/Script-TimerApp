@@ -1,7 +1,7 @@
 "use client";
 
 import { api } from "~/utils/api";
-import type { PriceCardProps } from "../types";
+import type { PriceCardsProps } from "../types";
 import FAQs from "./faqs";
 import PriceCards from "./priceCards";
 
@@ -9,7 +9,8 @@ export default function PlansSections({
   monthlyPlans,
   yearlyPlans,
   planInterval,
-}: PriceCardProps) {
+  session,
+}: PriceCardsProps) {
   const { data } = api.subscription.mySubscription.useQuery();
 
   return (
@@ -19,6 +20,7 @@ export default function PlansSections({
         yearlyPlans={yearlyPlans}
         currentPlan={data?.status}
         planInterval={planInterval}
+        session={session}
       />
       <FAQs />
     </>

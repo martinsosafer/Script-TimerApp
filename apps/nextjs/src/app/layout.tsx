@@ -5,6 +5,8 @@ import { PageAnalytics } from "./analytics";
 import GoogleAnalytics from "./GoogleAnalytics";
 import HotJar from "./HotJar";
 
+import "~/styles/globals.css";
+
 const poppins = Poppins({
   subsets: ["latin"],
   style: "normal",

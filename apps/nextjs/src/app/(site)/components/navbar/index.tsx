@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { AnimatePresence } from "framer-motion";
+import type { Session } from "next-auth";
 import { useTheme } from "next-themes";
 
 import { Button } from "@voiceai/ui";
@@ -17,7 +18,6 @@ import {
   IconSun,
 } from "@voiceai/ui/@/components/ui/icons";
 
-import { api } from "~/utils/api";
 import { hasValidPlan } from "../../siteUtils";
 import MobileNavBar from "../mobile-navbar";
 import LearnNavItem from "./learn-nav-item";
@@ -28,11 +28,13 @@ import ScriptCoachNavItem from "./script-coach-nav-item";
 import TextToVoiceNavItem from "./text-to-voice-nav-item";
 import UpgradeNavItem from "./upgrade-nav-item";
 
-export default function NewNavBar({
-  signOut,
-}: {
-  signOut: () => Promise<null>;
-}) {
+export interface NavBarProps {
+  signOut: () => Promise<void>;
+  signIn: () => Promise<void>;
+  session: Session | null;
+}
+
+export default function NewNavBar({ signOut, signIn, session }: NavBarProps) {
   const { theme, setTheme } = useTheme();
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
@@ -43,7 +45,7 @@ export default function NewNavBar({
     setOpen((prevOpen) => !prevOpen);
   };
   //Get subscription info
-  const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
+  const subscriptionData = session?.user.subscription?.status;
 
   return (
     <header className=" sticky top-0 z-50 flex h-16 w-full items-center justify-between bg-primary px-8">
@@ -61,17 +63,10 @@ export default function NewNavBar({
           </li>
           <HoverCard>
             <HoverCardTrigger asChild>
-              <li
-                className={`group relative px-3 py-2 text-primary-foreground ${!hasValidPlan(subscriptionData?.status) && "pointer-events-none opacity-50"}`}
-              >
+              <li className="group relative px-3 py-2 text-primary-foreground">
                 <ScriptCoachNavItem />
               </li>
             </HoverCardTrigger>
-            {!hasValidPlan(subscriptionData?.status) && (
-              <HoverCardContent>
-                <p>This section is only available for paying users.</p>
-              </HoverCardContent>
-            )}
           </HoverCard>
           <li className="group relative px-3 py-2 text-primary-foreground ">
             <LearnNavItem />
@@ -95,9 +90,12 @@ export default function NewNavBar({
       </nav>
       <nav>
         <ul className="flex items-center">
-          <li>
-            <UpgradeNavItem />
-          </li>
+          {session && (
+            <li>
+              <UpgradeNavItem />
+            </li>
+          )}
+
           <li>
             <Button
               variant="ghost"
@@ -114,7 +112,12 @@ export default function NewNavBar({
             </Button>
           </li>
           <li>
-            <ProfileNavItem signOut={signOut} plan={subscriptionData?.status} />
+            <ProfileNavItem
+              signOut={signOut}
+              signIn={signIn}
+              plan={subscriptionData}
+              session={session}
+            />
           </li>
         </ul>
       </nav>

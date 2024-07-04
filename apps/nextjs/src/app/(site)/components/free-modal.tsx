@@ -1,32 +1,22 @@
 "use client";
 
-import React, { useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 import { IconSquareArrowUpRight } from "@voiceai/ui/@/components/ui/icons";
 
+import type { SubscriptionData } from "~/lib/types";
 import microphone2side from "../../../../public/11differentside.png";
 import microphone from "../../../../public/microphone (1).png";
 
-interface SubData {
-  status: string | null;
-  userId: string;
+interface FreeModalProps {
+  subData?: SubscriptionData | null | undefined;
+  openModal: boolean;
+  setOpenModal: Dispatch<SetStateAction<boolean>>;
 }
-
-function FreeModal({ subData }: { subData: SubData }) {
-  const isSubscriptionActive =
-    subData &&
-    (subData.status === "CREATOR" ||
-      subData.status === "STUDENT" ||
-      subData.status === "BUSINESS");
-  const [modalOpen, setModalOpen] = useState(!isSubscriptionActive);
-
-  const closeModal = () => {
-    setModalOpen(false);
-  };
-
-  if (!modalOpen) {
+function FreeModal({ setOpenModal, openModal }: FreeModalProps) {
+  if (!openModal) {
     return null;
   }
 
@@ -87,10 +77,10 @@ function FreeModal({ subData }: { subData: SubData }) {
               </div>
               <div className="mt-8 space-y-4">
                 {/* Buttons */}
-                <Link href="/plans" target="_blank">
+                <Link href="/register">
                   <button
                     className="flex w-full transform items-center rounded-lg border-2 border-orange-500 bg-orange-500 p-3 font-poppins font-medium text-white underline transition-transform duration-300 hover:scale-105"
-                    onClick={closeModal}
+                    onClick={() => setOpenModal(false)}
                   >
                     <IconSquareArrowUpRight className="mr-4 h-6 w-6" />
                     <span>Start your Scripts, Voices and Learning.</span>
@@ -98,7 +88,7 @@ function FreeModal({ subData }: { subData: SubData }) {
                 </Link>
                 <button
                   className="w-full transform rounded-md border-2 border-black bg-white p-3 font-poppins font-medium transition-transform duration-300 hover:scale-105 dark:text-primary-foreground"
-                  onClick={closeModal} // Close the modal when clicked
+                  onClick={() => setOpenModal(false)} // Close the modal when clicked
                 >
                   Skip for now
                 </button>

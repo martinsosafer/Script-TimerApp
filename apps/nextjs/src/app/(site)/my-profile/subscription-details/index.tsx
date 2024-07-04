@@ -49,7 +49,7 @@ export default function SubscriptionDetails({
               <span className="px-2 text-xs text-gray-400">Status</span>
               <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
                 {subscriptionData?.status === ("FREE" || "FREE_TRIAL")
-                  ? "active"
+                  ? "No Subscription"
                   : subscription?.plan?.active
                     ? "Active"
                     : "Inactive"}
@@ -62,7 +62,9 @@ export default function SubscriptionDetails({
                 Next Billing Date
               </span>
               <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
-                {getBillingDate(subscription?.current_period_end) ?? ""}
+                {subscription?.current_period_end
+                  ? getBillingDate(subscription?.current_period_end)
+                  : "No Billing Date"}
               </div>
             </div>
             <div className="flex flex-col">

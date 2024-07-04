@@ -30,3 +30,17 @@ export async function createUser(prevState: any, formData: FormData) {
     redirectTo: "/",
   });
 }
+
+export async function credentialsLogin(formData: FormData) {
+  try {
+    const result = await signIn("credentials", {
+      email: formData.get("email") as string,
+      password: formData.get("password") as string,
+      redirect: false,
+    });
+
+    return result;
+  } catch (error) {
+    throw new Error((error as string) ?? "An error occurred while signing in");
+  }
+}

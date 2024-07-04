@@ -4,24 +4,30 @@ import Link from "next/link";
 
 import type { Video } from "../videocards/videocardsdata";
 
-process.env.HOST_URL;
-const VideoCard: React.FC<{ video: Video }> = ({ video }) => {
+const VideoCard: React.FC<{
+  video: Video;
+  subData: string | undefined;
+}> = ({ video, subData }) => {
   return (
     <div className="flex flex-col items-center justify-center rounded-2xl  bg-blue-300 drop-shadow-lg">
       <Link
-        href={{
-          pathname: `/masterclasses/${video.id}`,
-          query: {
-            course: video.course,
-            id: video.id,
-            title: video.title,
-            name: video.name,
-            image: video.image,
-            videoUrl: video.videoUrl,
-            avatarUrl: video.avatarUrl,
-            description: video.description,
-          },
-        }}
+        href={
+          subData
+            ? {
+                pathname: `/masterclasses/${video.id}`,
+                query: {
+                  course: video.course,
+                  id: video.id,
+                  title: video.title,
+                  name: video.name,
+                  image: video.image,
+                  videoUrl: video.videoUrl,
+                  avatarUrl: video.avatarUrl,
+                  description: video.description,
+                },
+              }
+            : ""
+        }
         className=" group relative flex h-full w-full items-center justify-center"
       >
         <Image
