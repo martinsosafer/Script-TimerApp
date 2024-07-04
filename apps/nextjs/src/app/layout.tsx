@@ -3,6 +3,7 @@ import { Poppins, Roboto } from "next/font/google";
 
 import { PageAnalytics } from "./analytics";
 import GoogleAnalytics from "./GoogleAnalytics";
+import HotJar from "./HotJar";
 
 import "~/styles/globals.css";
 
@@ -56,6 +57,7 @@ export default function Layout(props: { children: React.ReactNode }) {
         ].join(" ")}
       >
         {props.children}
+        <HotJar />
       </body>
 
       <PageAnalytics />
