@@ -39,9 +39,7 @@ import { MagicWandIcon, SpeakerLoudIcon } from "@voiceai/ui/@/icons/icons";
 
 import VoiceCreationModal from "~/app/_components/wait-modal";
 import { calculateLengthTime } from "~/lib/calculate-length-time";
-import type { SubscriptionData } from "~/lib/types";
 import { api } from "~/utils/api";
-import { useDragAndDrop } from "~/utils/helpers";
 import CustomButton from "../../components/custom-button";
 import { TextEditor } from "../../components/editor";
 import { HistoryButton } from "../../components/history-button";
@@ -60,7 +58,7 @@ export function ScriptAI({
 }: {
   subData: SubscriptionData | null | undefined;
 }) {
-  //Get subscription info
+  console.log("props subDAta", subData);
 
   const { data: subscriptionData, refetch } =
     api.subscription.mySubscription.useQuery();
@@ -134,8 +132,8 @@ export function ScriptAI({
 
   // Generate audio voice
   const [audio, setAudio] = React.useState("");
-  const [loading, setLoading] = React.useState(false);
   const [openFreeModal, setOpenFreeModal] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
   const toggleAudioRef = React.useRef<React.Ref<HTMLButtonElement>>(null);
   const { mutateAsync: generateVoice, error } = api.voice.create.useMutation({
     onSuccess(data) {
@@ -151,8 +149,8 @@ export function ScriptAI({
       } else {
         setLoading(false);
         // Assuming data contains user's plan information, you can set it as a variable
-
-        const userPlan = subData.status; // Update this line based on your actual data structure
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const userPlan = subData.status;
 
         let errorMessage = "Please try again later";
         if (userPlan === "FREE") {
@@ -191,18 +189,14 @@ export function ScriptAI({
     },
   });
 
-  // Drag and drop functionality
-  const { handleDragStart, handleDrop, handleDragOver } = useDragAndDrop(
-    revisedScript,
-    setScript,
-  );
   const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 });
 
   const onCopy = () => {
     if (isCopied) return;
     copyToClipboard(revisedScript);
   };
-  const { wordCount, minutes, formattedSeconds } = calculateLengthTime(script);
+  const { wordCount, minutes, formattedSeconds, speedCategory } =
+    calculateLengthTime(script);
 
   //wait modal !
   const isScriptLongEnough = (script) => {
@@ -218,9 +212,9 @@ export function ScriptAI({
         <div className="mb-6 mt-6 flex items-center justify-center">
           <div>
             <h1 className="mb-3 text-center font-poppins  text-3xl  font-bold text-secondary-foreground">
-              Text to Voice
+              Text to Speech
             </h1>
-            <IntroParagraph status={subData?.status} />
+            <IntroParagraph status={subscriptionData?.status} />
           </div>
         </div>
 
@@ -399,12 +393,15 @@ export function ScriptAI({
                       />
 
                       <div className=" mb-4 flex flex-col items-center justify-center">
-                        <Badge className="h-12 w-[570px] items-center justify-center border-4 border-primary bg-blue-500 text-lg hover:to-blue-200">
-                          Script is&nbsp;
+                        <Badge className="h-12 w-[570px] items-center justify-center border-4 border-primary bg-blue-500 text-sm hover:to-blue-200">
+                          <span className="font-bold text-tertiary dark:text-tertiary">
+                            {speedCategory}
+                          </span>
+                          &nbsp;Great script!&nbsp;
                           <span className="font-bold text-tertiary dark:text-tertiary">
                             {wordCount}
                           </span>
-                          &nbsp;words. Estimated time is&nbsp;
+                          &nbsp;words. That looks to be about&nbsp;
                           <span className="font-bold text-tertiary dark:text-tertiary">
                             {minutes}
                           </span>
@@ -412,7 +409,7 @@ export function ScriptAI({
                           <span className="font-bold text-tertiary dark:text-tertiary">
                             {formattedSeconds}
                           </span>
-                          &nbsp;seconds
+                          &nbsp;seconds.
                         </Badge>
                         <div className=" mt-3 flex w-[570px] justify-between">
                           <div style={{ minWidth: "150px" }}>
@@ -543,8 +540,6 @@ export function ScriptAI({
                         <Textarea
                           value={script}
                           onChange={(e) => setScript(e.target.value)}
-                          onDrop={handleDrop}
-                          onDragOver={handleDragOver}
                           placeholder="Your script here..."
                           className=" min-h-[50vh] md:min-h-[55vh] lg:min-h-[70vh] xl:min-h-[70vh]"
                         />
@@ -552,23 +547,6 @@ export function ScriptAI({
                           {selectedModel && (
                             <SelectedModelCard selectedModel={selectedModel} />
                           )}
-                          <Badge className="flex items-center">
-                            <span className="inline">
-                              Script is&nbsp;
-                              <span className="font-semibold text-tertiary dark:text-tertiary">
-                                {wordCount}
-                              </span>
-                              &nbsp;words. Estimated time &nbsp;
-                              <span className="font-semibold text-tertiary  dark:text-tertiary">
-                                {minutes}
-                              </span>
-                              &nbsp;minutes and&nbsp;
-                              <span className="font-semibold text-tertiary  dark:text-tertiary">
-                                {formattedSeconds}
-                              </span>
-                              &nbsp;seconds
-                            </span>
-                          </Badge>
                         </div>
                       </div>
                       {revisedScript.length > 0 ? (
@@ -576,8 +554,6 @@ export function ScriptAI({
                           <Textarea
                             value={revisedScript}
                             onChange={(e) => setRevisedScript(e.target.value)}
-                            draggable="true"
-                            onDragStart={handleDragStart}
                             className="min-h-[50vh] md:min-h-[55vh] lg:min-h-[70vh] xl:min-h-[70vh]"
                           />
                           <div className="flex items-center justify-end ">
@@ -610,7 +586,7 @@ export function ScriptAI({
                               <TooltipTrigger asChild>
                                 <Button
                                   variant="ghost"
-                                  className="absolute right-0 top-8 mr-2 mt-2 px-3"
+                                  className="absolute -right-10 top-8 mr-2 mt-2 px-3"
                                   disabled={
                                     loading ||
                                     script.trim() === "" ||
@@ -621,7 +597,7 @@ export function ScriptAI({
                                     checkAndPublish(script);
                                   }}
                                 >
-                                  <IconRefresh />
+                                  <IconRefresh className="text-blue-500" />
                                   <span className="sr-only">Revise</span>
                                 </Button>
                               </TooltipTrigger>
@@ -633,16 +609,18 @@ export function ScriptAI({
                                   type="button"
                                   variant="ghost"
                                   size="sm"
-                                  className="absolute right-0 top-0 mr-2 mt-2 px-3"
+                                  className="absolute -right-10 top-0 mr-2 mt-2 px-3"
                                   onClick={onCopy}
                                 >
-                                  {isCopied ? <IconCheck /> : <CopyIcon />}
+                                  {isCopied ? (
+                                    <IconCheck className="text-blue-500" />
+                                  ) : (
+                                    <CopyIcon className="text-blue-500" />
+                                  )}
                                   <span className="sr-only">Copy message</span>
                                 </Button>
                               </TooltipTrigger>
-                              <TooltipContent>
-                                Click to copy, or drag and drop.
-                              </TooltipContent>
+                              <TooltipContent>Click to copy.</TooltipContent>
                             </Tooltip>
                           </div>
                         </div>
