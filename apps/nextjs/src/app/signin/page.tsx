@@ -22,7 +22,7 @@ export default async function SignIn() {
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
           <div className="flex flex-col space-y-2 text-center">
             <h1 className="font-poppins text-2xl font-semibold tracking-tight">
-              Log In to Script Timer
+              Please Log In to Script Timer
             </h1>
             <p className="text-sm text-muted-foreground">
               Your voice matters, let&apos;s get started
@@ -30,6 +30,15 @@ export default async function SignIn() {
           </div>
           <div className={cn("grid gap-6")}>
             <LoginForm />
+            <p className="px-8 text-center text-sm text-muted-foreground">
+              Forgot your Password?{" "}
+              <Link
+                href="/reset-password"
+                className="uppercase underline underline-offset-4 hover:text-primary"
+              >
+                Reset it here
+              </Link>{" "}
+            </p>
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t" />

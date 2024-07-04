@@ -92,7 +92,11 @@ export default function RegisterForm() {
         className={`flex items-center justify-center rounded-md py-2 font-semibold text-white ${password !== confirmPassword ? "cursor-not-allowed bg-gray-400" : "cursor-pointer bg-primary"}`}
         disabled={password !== confirmPassword}
       >
-        {loading ? <IconSpinner className="h-6 w-6 animate-spin" /> : "Sign Up"}
+        {loading ? (
+          <IconSpinner className="h-6 w-6 animate-spin" />
+        ) : (
+          "Create your account"
+        )}
       </button>
     </form>
   );

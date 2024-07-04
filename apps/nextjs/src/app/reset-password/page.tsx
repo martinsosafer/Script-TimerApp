@@ -5,10 +5,9 @@ import { redirect } from "next/navigation";
 import { auth } from "@voiceai/auth";
 
 import coverImg from "../../../public/login_photo.png";
-import GoogleForm from "./google-form";
-import RegisterForm from "./register-form";
+import ValidateEmailForm from "./validate-email-form";
 
-export default async function Register() {
+export default async function ResetPassword() {
   const session = await auth();
 
   if (session) {
@@ -20,34 +19,23 @@ export default async function Register() {
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
           <div className="flex flex-col space-y-2 text-center">
             <h1 className="font-poppins text-2xl font-semibold tracking-tight">
-              Create a new Script Timer Account
+              Reset your Password
             </h1>
             <p className="text-sm text-muted-foreground">
-              Your voice matters, let&apos;s get started
+              You will receive a reset password link in your email.
             </p>
           </div>
-          <RegisterForm />
+          <ValidateEmailForm />
 
           <p className="px-8 text-center text-sm text-muted-foreground">
-            Have an account?{" "}
+            Go back to{" "}
             <Link
               href="/signin"
               className="underline underline-offset-4 hover:text-primary"
             >
-              SIGN IN HERE
+              SIGN IN
             </Link>{" "}
           </p>
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">
-                Or sign up with
-              </span>
-            </div>
-          </div>
-          <GoogleForm />
         </div>
       </div>
       <div className="relative h-full flex-col overflow-hidden bg-gradient-to-b from-blue-300 to-blue-700 p-10 text-white dark:border-r lg:flex">
