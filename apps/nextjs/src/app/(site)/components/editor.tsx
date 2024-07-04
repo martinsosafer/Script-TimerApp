@@ -24,6 +24,7 @@ import Typography from "@tiptap/extension-typography";
 import Underline from "@tiptap/extension-underline";
 import { EditorContent, useEditor } from "@tiptap/react";
 import classNames from "classnames";
+import { jsPDF } from "jspdf"; // Import jsPDF
 
 import { Button } from "@voiceai/ui";
 import { IconCopy } from "@voiceai/ui/@/components/ui/icons";
@@ -161,6 +162,20 @@ function TextEditor({
     }
   }, [editor]);
 
+  // Function to handle PDF generation
+  const saveAsPDF = () => {
+    if (editor) {
+      const content = editor.getText();
+      const pdf = new jsPDF("p", "pt", "letter");
+      const margin = { top: 30, right: 30, bottom: 30, left: 30 };
+      pdf.text(content, margin.left, margin.top, {
+        align: "left",
+        maxWidth: 500,
+      });
+      pdf.save("document.pdf");
+    }
+  };
+
   if (!editor) {
     return null;
   }
@@ -235,6 +250,15 @@ function TextEditor({
             onClick={copyToClipboard}
           >
             <IconCopy className="h-5 w-5" />
+          </Button>
+        </div>
+        <div className="flex gap-1">
+          <Button
+            variant="outline"
+            className="rounded-full border border-slate-500 bg-white"
+            onClick={saveAsPDF} // Add the PDF generation button
+          >
+            Save as PDF
           </Button>
         </div>
       </div>
