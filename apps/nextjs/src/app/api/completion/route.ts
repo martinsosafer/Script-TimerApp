@@ -24,7 +24,11 @@ export async function POST(req: Request) {
         role: "user",
         content: `Given the following text, correct any spelling or grammar errors:
 Text: ${prompt}
-Output:\n`,
+Output the corrected text followed by a bullet point list of the errors found:
+
+Corrected Text:
+- Errors:
+`,
       },
     ],
     max_tokens: 4096,
@@ -33,7 +37,11 @@ Output:\n`,
     frequency_penalty: 0,
     presence_penalty: 0,
   });
-
+  //    content: `Given the following text, correct any spelling or grammar errors:
+  // Text: ${prompt}
+  // Output:\n`,
+  //       },
+  //     ],
   // @ts-expect-error seems to be a bug in openai sdk
   const stream = OpenAIStream(response);
 

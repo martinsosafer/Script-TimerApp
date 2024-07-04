@@ -40,7 +40,6 @@ import VoiceCreationModal from "~/app/_components/wait-modal";
 import useDailyModal from "~/app/hooks/useDailyModal";
 import { calculateLengthTime } from "~/lib/calculate-length-time";
 import { api } from "~/utils/api";
-import { useDragAndDrop } from "~/utils/helpers";
 import CustomButton from "../../components/custom-button";
 import { TextEditor } from "../../components/editor";
 import { HistoryButton } from "../../components/history-button";
@@ -184,11 +183,6 @@ export function ScriptAI({ subData }) {
     },
   });
 
-  // Drag and drop functionality
-  const { handleDragStart, handleDrop, handleDragOver } = useDragAndDrop(
-    revisedScript,
-    setScript,
-  );
   const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 });
 
   const onCopy = () => {
@@ -471,8 +465,6 @@ export function ScriptAI({ subData }) {
                       <Textarea
                         value={script}
                         onChange={(e) => setScript(e.target.value)}
-                        onDrop={handleDrop}
-                        onDragOver={handleDragOver}
                         placeholder="Your script here..."
                         className=" min-h-[50vh] md:min-h-[55vh] lg:min-h-[70vh] xl:min-h-[70vh]"
                       />
@@ -480,24 +472,6 @@ export function ScriptAI({ subData }) {
                         {selectedModel && (
                           <SelectedModelCard selectedModel={selectedModel} />
                         )}
-                        {/* <Badge className="h-12 w-[570px] items-center justify-center border-4 border-primary bg-blue-500 text-sm hover:to-blue-200">
-                          <span className="font-bold text-tertiary dark:text-tertiary">
-                            {wordCount}
-                          </span>
-                          {speedCategory} Script is&nbsp;
-                          <span className="font-bold text-tertiary dark:text-tertiary">
-                            {wordCount}
-                          </span>
-                          &nbsp;words. Estimated time is&nbsp;
-                          <span className="font-bold text-tertiary dark:text-tertiary">
-                            {minutes}
-                          </span>
-                          &nbsp;minutes and&nbsp;
-                          <span className="font-bold text-tertiary dark:text-tertiary">
-                            {formattedSeconds}
-                          </span>
-                          &nbsp;seconds.
-                        </Badge> */}
                       </div>
                     </div>
                     {revisedScript.length > 0 ? (
@@ -505,8 +479,6 @@ export function ScriptAI({ subData }) {
                         <Textarea
                           value={revisedScript}
                           onChange={(e) => setRevisedScript(e.target.value)}
-                          draggable="true"
-                          onDragStart={handleDragStart}
                           className="min-h-[50vh] md:min-h-[55vh] lg:min-h-[70vh] xl:min-h-[70vh]"
                         />
                         <div className="flex items-center justify-end ">
@@ -539,7 +511,7 @@ export function ScriptAI({ subData }) {
                             <TooltipTrigger asChild>
                               <Button
                                 variant="ghost"
-                                className="absolute right-0 top-8 mr-2 mt-2 px-3"
+                                className="absolute -right-10 top-8 mr-2 mt-2 px-3"
                                 disabled={
                                   loading ||
                                   script.trim() === "" ||
@@ -550,7 +522,7 @@ export function ScriptAI({ subData }) {
                                   checkAndPublish(script);
                                 }}
                               >
-                                <IconRefresh />
+                                <IconRefresh className="text-blue-500" />
                                 <span className="sr-only">Revise</span>
                               </Button>
                             </TooltipTrigger>
@@ -562,16 +534,18 @@ export function ScriptAI({ subData }) {
                                 type="button"
                                 variant="ghost"
                                 size="sm"
-                                className="absolute right-0 top-0 mr-2 mt-2 px-3"
+                                className="absolute -right-10 top-0 mr-2 mt-2 px-3"
                                 onClick={onCopy}
                               >
-                                {isCopied ? <IconCheck /> : <CopyIcon />}
+                                {isCopied ? (
+                                  <IconCheck className="text-blue-500" />
+                                ) : (
+                                  <CopyIcon className="text-blue-500" />
+                                )}
                                 <span className="sr-only">Copy message</span>
                               </Button>
                             </TooltipTrigger>
-                            <TooltipContent>
-                              Click to copy, or drag and drop.
-                            </TooltipContent>
+                            <TooltipContent>Click to copy.</TooltipContent>
                           </Tooltip>
                         </div>
                       </div>
