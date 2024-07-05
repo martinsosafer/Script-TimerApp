@@ -12,7 +12,7 @@ import {
 import Bold from "@tiptap/extension-bold";
 import BulletList from "@tiptap/extension-bullet-list";
 import CharacterCount from "@tiptap/extension-character-count";
-import Document from "@tiptap/extension-document";
+import { Document as TipTapDocument } from "@tiptap/extension-document";
 import Heading from "@tiptap/extension-heading";
 import History from "@tiptap/extension-history";
 import Italic from "@tiptap/extension-italic";
@@ -24,7 +24,8 @@ import Typography from "@tiptap/extension-typography";
 import Underline from "@tiptap/extension-underline";
 import { EditorContent, useEditor } from "@tiptap/react";
 import classNames from "classnames";
-import { jsPDF } from "jspdf"; // Import jsPDF
+import { Document, Paragraph as DocxParagraph, Packer, TextRun } from "docx"; // Import docx
+import { jsPDF } from "jspdf";
 
 import { Button } from "@voiceai/ui";
 import { IconCopy } from "@voiceai/ui/@/components/ui/icons";
@@ -42,6 +43,7 @@ interface TextEditorProps {
   isSubscriptionActive?: boolean;
   subData: SubscriptionData | null | undefined;
 }
+
 const CHAR_LIMITS: Record<string, number> = {
   FREE: 300,
   FREE_TRIAL: 1600,
@@ -49,6 +51,7 @@ const CHAR_LIMITS: Record<string, number> = {
   CREATOR: 5000,
   BUSINESS: 5000,
 };
+
 function TextEditor({
   onChange,
   className,
@@ -72,7 +75,7 @@ function TextEditor({
   const editor = useEditor({
     extensions: useMemo(
       () => [
-        Document,
+        TipTapDocument,
         History,
         Paragraph,
         Text,
@@ -176,6 +179,62 @@ function TextEditor({
     }
   };
 
+  // Function to handle DOCX generation
+  const saveAsDOCX = async () => {
+    if (editor) {
+      const content = editor.getText();
+      const doc = new Document({
+        sections: [
+          {
+            properties: {},
+            children: [
+              new DocxParagraph({
+                children: [new TextRun(content)],
+              }),
+            ],
+          },
+        ],
+      });
+
+      const blob = await Packer.toBlob(doc);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "document.docx";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+  };
+
+  // Function to handle SRT generation
+  const saveAsSRT = () => {
+    if (editor) {
+      const content = editor.getText();
+      const srtContent = convertToSRT(content);
+      const blob = new Blob([srtContent], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "document.srt";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+  };
+
+  // Function to convert text to SRT format
+  const convertToSRT = (text) => {
+    const lines = text.split("\n");
+    return lines
+      .map((line, index) => {
+        const start =
+          new Date(index * 2000).toISOString().substr(11, 8) + ",000";
+        const end =
+          new Date((index + 1) * 2000).toISOString().substr(11, 8) + ",000";
+        return `${index + 1}\n${start} --> ${end}\n${line}\n`;
+      })
+      .join("\n");
+  };
+
   if (!editor) {
     return null;
   }
@@ -259,6 +318,20 @@ function TextEditor({
             onClick={saveAsPDF} // Add the PDF generation button
           >
             Save as PDF
+          </Button>
+          <Button
+            variant="outline"
+            className="rounded-full border border-slate-500 bg-white"
+            onClick={saveAsDOCX} // Add the DOCX generation button
+          >
+            Save as DOCX
+          </Button>
+          <Button
+            variant="outline"
+            className="rounded-full border border-slate-500 bg-white"
+            onClick={saveAsSRT} // Add the SRT generation button
+          >
+            Save as SRT
           </Button>
         </div>
       </div>
