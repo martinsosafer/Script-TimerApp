@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
+import ArrowDownOnSquareIcon from "@heroicons/react/24/outline/ArrowDownOnSquareIcon";
 import ArrowUTurnLeftIcon from "@heroicons/react/24/outline/ArrowUturnLeftIcon";
 import ArrowUTurnRightIcon from "@heroicons/react/24/outline/ArrowUturnRightIcon";
 import {
@@ -28,7 +29,16 @@ import { Document, Paragraph as DocxParagraph, Packer, TextRun } from "docx"; //
 import { jsPDF } from "jspdf";
 
 import { Button } from "@voiceai/ui";
-import { IconCopy } from "@voiceai/ui/@/components/ui/icons";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@voiceai/ui/@/components/ui/dropdown-menu";
+import { IconArrowDown, IconCopy } from "@voiceai/ui/@/components/ui/icons";
 
 import type { SubscriptionData } from "~/lib/types";
 import { api } from "~/utils/api";
@@ -312,27 +322,38 @@ function TextEditor({
           </Button>
         </div>
         <div className="flex gap-1">
-          <Button
-            variant="outline"
-            className="rounded-full border border-slate-500 bg-white"
-            onClick={saveAsPDF} // Add the PDF generation button
-          >
-            Save as PDF
-          </Button>
-          <Button
-            variant="outline"
-            className="rounded-full border border-slate-500 bg-white"
-            onClick={saveAsDOCX} // Add the DOCX generation button
-          >
-            Save as DOCX
-          </Button>
-          <Button
-            variant="outline"
-            className="rounded-full border border-slate-500 bg-white"
-            onClick={saveAsSRT} // Add the SRT generation button
-          >
-            Save as SRT
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                className="rounded-full border border-slate-500 bg-white"
+              >
+                <ArrowDownOnSquareIcon className="h-5 w-5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-20">
+              <DropdownMenuLabel>Dowload</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem>
+                  <button onClick={saveAsPDF} className="ml-10">
+                    as .PDF
+                  </button>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <button onClick={saveAsDOCX} className="ml-10">
+                    as .DOCX
+                  </button>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <button onClick={saveAsSRT} className="ml-10">
+                    {" "}
+                    as .SRT
+                  </button>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
 
