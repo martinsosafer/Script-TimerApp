@@ -38,7 +38,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@voiceai/ui/@/components/ui/dropdown-menu";
-import { IconArrowDown, IconCopy } from "@voiceai/ui/@/components/ui/icons";
+import { IconCopy } from "@voiceai/ui/@/components/ui/icons";
 
 import type { SubscriptionData } from "~/lib/types";
 import { api } from "~/utils/api";
@@ -335,17 +335,17 @@ function TextEditor({
               <DropdownMenuLabel>Dowload</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem>
+                <DropdownMenuItem className="focus:bg-slate-200">
                   <button onClick={saveAsPDF} className="ml-10">
                     as .PDF
                   </button>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem className="focus:bg-slate-200">
                   <button onClick={saveAsDOCX} className="ml-10">
                     as .DOCX
                   </button>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem className="focus:bg-slate-200">
                   <button onClick={saveAsSRT} className="ml-10">
                     {" "}
                     as .SRT

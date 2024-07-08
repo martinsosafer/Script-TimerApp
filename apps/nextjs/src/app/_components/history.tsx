@@ -3,19 +3,25 @@
 import * as React from "react";
 import Link from "next/link";
 import ArrowDownOnSquareIcon from "@heroicons/react/24/outline/ArrowDownOnSquareIcon";
+import { Document, Paragraph as DocxParagraph, Packer, TextRun } from "docx";
+import jsPDF from "jspdf";
 
 import { Button } from "@voiceai/ui";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@voiceai/ui/@/components/ui/dropdown-menu";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@voiceai/ui/@/components/ui/hover-card";
-import {
-  IconCopy,
-  IconPlay,
-  Icons,
-  IconStop,
-} from "@voiceai/ui/@/components/ui/icons";
+import { IconCopy, Icons } from "@voiceai/ui/@/components/ui/icons";
 import {
   Table,
   TableBody,
@@ -29,77 +35,16 @@ import { toast, ToastAction } from "@voiceai/ui/@/components/ui/toast";
 
 import { api } from "~/utils/api";
 import IntroParagraph from "../(site)/components/texttospeech/introparagraph/introparagraph";
-import { ActorsDropdown } from "../(site)/old-chat/chat/actorsdropdown";
 
 export const History = ({ ...rest }) => {
-  const [loadingPlay, setLoadingPlay] = React.useState({});
   const [loadingDownload, setLoadingDownload] = React.useState({});
-  const [selectedAudio, setSelectedAudio] = React.useState({});
-  const [selectedModel, setSelectedModel] = React.useState({});
-  const [openDropdownIndex, setOpenDropdownIndex] = React.useState(-1);
-
   const { data, isLoading, refetch } = api.history.list.useQuery();
-  const { data: voices } = api.voice.list.useQuery({ name: "" });
   const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
   const isSubscriptionActive =
     subscriptionData &&
     (subscriptionData.status === "CREATOR" ||
       subscriptionData.status === "STUDENT" ||
-    subscriptionData.status==="BUSINESS");
-
-  const handleSetSelectedModel = (model, index) => {
-    setSelectedModel((prevState) => ({ ...prevState, [index]: model }));
-  };
-
-  const [audio, setAudio] = React.useState("");
-  const [isPlaying, setIsPlaying] = React.useState(false);
-  const audioRef = React.useRef<HTMLAudioElement>(null);
-  const { mutateAsync: generateVoice, error } = api.voice.create.useMutation({
-    onSuccess(data) {
-      const dataURI = `data:audio/mpeg;base64,${data?.audio}`;
-      setAudio(dataURI);
-      setLoadingPlay(false);
-
-      if (audioRef.current) {
-        audioRef.current.src = dataURI;
-        audioRef.current.addEventListener("loadeddata", playAudio);
-      }
-    },
-    onError(error) {
-      setLoadingPlay(false);
-      if (error?.data?.code === "FORBIDDEN") {
-        toast({
-          title: "Upgrade your plan",
-          description: "The base plan only supports up to 1200 characters",
-          action: (
-            <ToastAction altText="subscribe">
-              <Link href="/settings/billing">Subscribe</Link>
-            </ToastAction>
-          ),
-        });
-      } else {
-        toast({
-          title: "Something went wrong",
-          description: "Please try again later",
-        });
-      }
-    },
-  });
-
-  const playAudio = () => {
-    if (audioRef.current) {
-      audioRef.current.play();
-      setIsPlaying(true);
-    }
-  };
-
-  const stopAudio = () => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-      setIsPlaying(false);
-    }
-  };
+      subscriptionData.status === "BUSINESS");
 
   const { mutateAsync: downloadGeneration } = api.history.download.useMutation({
     onSuccess(data) {
@@ -146,17 +91,71 @@ export const History = ({ ...rest }) => {
       });
   };
 
+  const saveAsPDF = (content) => {
+    const pdf = new jsPDF("p", "pt", "letter");
+    const margin = { top: 30, right: 30, bottom: 30, left: 30 };
+    pdf.text(content, margin.left, margin.top, {
+      align: "left",
+      maxWidth: 500,
+    });
+    pdf.save("document.pdf");
+  };
+
+  const saveAsDOCX = async (content) => {
+    const doc = new Document({
+      sections: [
+        {
+          properties: {},
+          children: [
+            new DocxParagraph({
+              children: [new TextRun(content)],
+            }),
+          ],
+        },
+      ],
+    });
+
+    const blob = await Packer.toBlob(doc);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "document.docx";
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const saveAsSRT = (content) => {
+    const convertToSRT = (text) => {
+      const lines = text.split("\n");
+      return lines
+        .map((line, index) => {
+          const start = new Date(index * 1000).toISOString().substr(11, 8);
+          const end = new Date((index + 1) * 1000).toISOString().substr(11, 8);
+          return `${index + 1}\n${start},000 --> ${end},000\n${line}\n`;
+        })
+        .join("\n");
+    };
+
+    const srtContent = convertToSRT(content);
+    const blob = new Blob([srtContent], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "document.srt";
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div>
       <div className="mb-6 mt-6 flex items-center justify-center">
         <div>
-          <h1 className="mb-3 text-center font-poppins  text-3xl  font-bold text-secondary-foreground">
+          <h1 className="mb-3 text-center font-poppins text-3xl font-bold text-secondary-foreground">
             History
           </h1>
           <IntroParagraph status={subscriptionData?.status} />
         </div>
       </div>
-
       <Table>
         <TableCaption>A list of your history.</TableCaption>
         <TableHeader>
@@ -166,9 +165,8 @@ export const History = ({ ...rest }) => {
             <TableHead>Date</TableHead>
             <TableHead>Actor</TableHead>
             <TableHead>Copy Script</TableHead>
-            {/* <TableHead>Change Actor</TableHead>
-            <TableHead>Play</TableHead> */}
-            <TableHead>Download</TableHead>
+            <TableHead>Download Document</TableHead>
+            <TableHead>Download Audio</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -188,83 +186,53 @@ export const History = ({ ...rest }) => {
                     <IconCopy width={30} className="stroke-black" />
                   </button>
                 </TableCell>
-                {/* <TableCell>
-                  <ActorsDropdown
-                    voices={voices}
-                    setSelectedModel={(model) =>
-                      handleSetSelectedModel(model, index)
-                    }
-                    selectedModel={selectedModel[index]}
-                  />
-                </TableCell>
+
                 <TableCell>
-                  <HoverCard>
-                    <HoverCardTrigger asChild>
-                      <div>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          disabled={
-                            !selectedModel[index] ||
-                            !history.prompt ||
-                            loadingPlay[index]
-                          }
-                          onClick={async () => {
-                            setLoadingPlay((prevState) => ({
-                              ...prevState,
-                              [index]: true,
-                            }));
-                            toast({
-                              description:
-                                "Recording script, please keep in mind that longer scripts take longer to generate.",
-                            });
-                            try {
-                              await generateVoice({
-                                voice_id: selectedModel[index].id,
-                                voice_actor: selectedModel[index]?.name,
-                                voice_name: selectedModel[index]?.name,
-                                message: history.prompt,
-                              });
-                            } catch (error) {
-                              toast({
-                                description:
-                                  "Error: Keep in mind base plan only allows 1500 words scripts",
-                              });
-                              console.error("Error generating voice:", error);
-                            }
-                          }}
-                        >
-                          {loadingPlay[index] ? (
-                            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                          ) : (
-                            <IconPlay />
-                          )}
-                          <audio
-                            src={audio}
-                            className="col-span-2 col-start-2 mx-auto w-full"
-                            ref={audioRef}
-                            onEnded={() =>
-                              setLoadingPlay((prevState) => ({
-                                ...prevState,
-                                [index]: false,
-                              }))
-                            }
+                  <div className="relative">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                          <ArrowDownOnSquareIcon
+                            width={30}
+                            className="stroke-black"
                           />
-                          <span className="sr-only">Play sound</span>
                         </Button>
-                      </div>
-                    </HoverCardTrigger>
-                    <HoverCardContent className="w-[320px] text-sm" side="left">
-                      Choose a voice actor in order to play your script
-                    </HoverCardContent>
-                  </HoverCard>
-                  {audio && !loadingPlay[index] && (
-                    <Button variant="ghost" size="icon" onClick={stopAudio}>
-                      <IconStop />
-                      <span className="sr-only">Stop sound</span>
-                    </Button>
-                  )}
-                </TableCell> */}
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="w-20">
+                        <DropdownMenuLabel>Dowload</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuGroup>
+                          <DropdownMenuItem className="focus:bg-slate-200">
+                            <button
+                              onClick={() => saveAsPDF(history.prompt)}
+                              className="ml-10"
+                            >
+                              as .PDF
+                            </button>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="focus:bg-slate-200">
+                            <button
+                              onClick={() => saveAsDOCX(history.prompt)}
+                              className="ml-10"
+                            >
+                              as .DOCX
+                            </button>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="focus:bg-slate-200">
+                            <button
+                              onClick={() => saveAsSRT(history.prompt)}
+                              className="ml-10"
+                            >
+                              {" "}
+                              as .SRT
+                            </button>
+                          </DropdownMenuItem>
+                        </DropdownMenuGroup>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </TableCell>
+
                 <TableCell>
                   <HoverCard>
                     <HoverCardTrigger asChild>
