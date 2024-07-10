@@ -4,29 +4,44 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import { useRouter } from "next/navigation";
 
-import { IconSpinner } from "@voiceai/ui/@/components/ui/icons";
+import { IconEye, IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 
 export default function RegisterForm() {
   const router = useRouter();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+
   const [loading, setLoading] = useState(false);
 
   async function handleSignUp(event: FormEvent<HTMLFormElement>) {
     setLoading(true);
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const response = await fetch("/api/auth/register", {
-      method: "POST",
-      body: JSON.stringify({
-        name: formData.get("fullName"),
-        email: formData.get("email"),
-        password: formData.get("password"),
-      }),
-    });
-    if (response.ok) {
-      router.push("/signin");
+    try {
+      const formData = new FormData(event.currentTarget);
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        body: JSON.stringify({
+          name: formData.get("fullName"),
+          email: formData.get("email"),
+          password: formData.get("password"),
+        }),
+      });
+      if (!response.ok) {
+        throw Error(
+          response.statusText.includes("voiceai_user_email_unique")
+            ? "Email already exists"
+            : "An error occurred while signing up. Please try again.",
+        );
+      }
+      if (response.ok) {
+        router.push("/signin");
+      }
+    } catch (error) {
+      alert(error ?? "An error occurred while signing up. Please try again.");
+      console.log("ERROR", error);
     }
     setLoading(false);
   }
@@ -63,29 +78,41 @@ export default function RegisterForm() {
         <label htmlFor="password" className="text-sm font-semibold">
           Password
         </label>
-        <input
-          value={password}
-          onChange={(e) => setPassword(e.currentTarget.value)}
-          name="password"
-          type="password"
-          placeholder="Create a password"
-          className="rounded-md border border-gray-300 px-3 py-2"
-          required
-        />
+        <div className="flex items-center justify-between rounded-md border border-gray-300 px-3 py-2">
+          <input
+            value={password}
+            onChange={(e) => setPassword(e.currentTarget.value)}
+            name="password"
+            type={passwordVisible ? "text" : "password"}
+            placeholder="Create a password"
+            className="w-full outline-none"
+            required
+          />
+          <IconEye
+            className={`${passwordVisible && "text-gray-400"} cursor-pointer`}
+            onClick={() => setPasswordVisible(!passwordVisible)}
+          />
+        </div>
       </div>
       <div className="flex flex-col space-y-2">
         <label htmlFor="password" className="text-sm font-semibold">
           Confirm Password
         </label>
-        <input
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.currentTarget.value)}
-          name="confirmPassword"
-          type="password"
-          placeholder="Please confirm your password."
-          className="rounded-md border border-gray-300 px-3 py-2"
-          required
-        />
+        <div className="flex items-center justify-between rounded-md border border-gray-300 px-3 py-2">
+          <input
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.currentTarget.value)}
+            name="confirmPassword"
+            type={confirmPasswordVisible ? "text" : "password"}
+            placeholder="Please confirm your password."
+            className="w-full outline-none"
+            required
+          />
+          <IconEye
+            className={`${passwordVisible && "text-gray-400"} cursor-pointer`}
+            onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)}
+          />
+        </div>
       </div>
       <button
         type="submit"
