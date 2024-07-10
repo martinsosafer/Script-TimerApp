@@ -232,9 +232,9 @@ function TextEditor({
 
   // Helper function to convert text to SRT format with time code separation
   const convertToSRT = (text) => {
-    const lines = text.split("\n");
-    const wordsPerSecond = 3; // Average words per second
-    let startTime = 0;
+    const totalDuration = 86.5; // Average of 1:23 (83 seconds) and 1:30 (90 seconds)
+    const totalChars = text.length;
+    const timePerChar = totalDuration / totalChars;
 
     const formatTime = (seconds) => {
       const date = new Date(seconds * 1000);
@@ -245,15 +245,33 @@ function TextEditor({
       return `${hours}:${minutes}:${secs},${millis}`;
     };
 
-    return lines
-      .map((line, index) => {
-        const wordCount = line.split(" ").length;
-        const duration = wordCount / wordsPerSecond;
-        const endTime = startTime + duration;
-        const srtEntry = `${index + 1}\n${formatTime(startTime)} --> ${formatTime(endTime)}\n${line}\n`;
-        startTime = endTime;
-        return srtEntry;
-      })
+    let startTime = 0;
+    let currentIndex = 0;
+    const wordsPerSubtitle = 5; // Approximate number of words per subtitle line
+
+    return text
+      .split(" ")
+      .reduce((acc, word, index, array) => {
+        if (index % wordsPerSubtitle === 0 && index !== 0) {
+          const subtitle = array.slice(currentIndex, index).join(" ");
+          const duration = subtitle.length * timePerChar;
+          const endTime = startTime + duration;
+          acc.push(
+            `${acc.length + 1}\n${formatTime(startTime)} --> ${formatTime(endTime)}\n${subtitle}\n`,
+          );
+          startTime = endTime;
+          currentIndex = index;
+        }
+        if (index === array.length - 1) {
+          const subtitle = array.slice(currentIndex).join(" ");
+          const duration = subtitle.length * timePerChar;
+          const endTime = startTime + duration;
+          acc.push(
+            `${acc.length + 1}\n${formatTime(startTime)} --> ${formatTime(endTime)}\n${subtitle}\n`,
+          );
+        }
+        return acc;
+      }, [])
       .join("\n");
   };
 
