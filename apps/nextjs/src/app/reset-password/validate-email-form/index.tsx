@@ -11,6 +11,7 @@ export default function ValidateEmailForm() {
   const [success, setSuccess] = useState(false);
 
   async function handleSendResetMail(event: FormEvent<HTMLFormElement>) {
+    setError(null);
     setLoading(true);
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -40,7 +41,11 @@ export default function ValidateEmailForm() {
         className="rounded-md border border-gray-300 px-3 py-2"
         required
       />
-      {error && <p className="text-sm text-red-800">{error}</p>}
+      {error && (
+        <p className="text-center text-sm font-semibold text-red-800">
+          {error}
+        </p>
+      )}
       {success && (
         <p className="text-center text-sm font-semibold text-primary">
           Email validation successful, please check your email.
