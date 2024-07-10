@@ -30,13 +30,13 @@ export default function RegisterForm() {
         }),
       });
       if (!response.ok) {
-        throw Error("An error occurred while signing up. Please try again.");
+        throw Error("Email already exists");
       }
       if (response.ok) {
         router.push("/signin");
       }
     } catch (error) {
-      alert(error ?? "An error occurred while signing up. Please try again.");
+      alert(error);
       console.log("ERROR", error);
     }
     setLoading(false);
