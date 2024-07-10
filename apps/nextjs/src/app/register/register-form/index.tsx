@@ -30,11 +30,7 @@ export default function RegisterForm() {
         }),
       });
       if (!response.ok) {
-        throw Error(
-          response.statusText.includes("voiceai_user_email_unique")
-            ? "Email already exists"
-            : "An error occurred while signing up. Please try again.",
-        );
+        throw Error("An error occurred while signing up. Please try again.");
       }
       if (response.ok) {
         router.push("/signin");
@@ -109,7 +105,7 @@ export default function RegisterForm() {
             required
           />
           <IconEye
-            className={`${passwordVisible && "text-gray-400"} cursor-pointer`}
+            className={`${confirmPasswordVisible && "text-gray-400"} cursor-pointer`}
             onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)}
           />
         </div>
