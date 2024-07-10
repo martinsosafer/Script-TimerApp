@@ -4,25 +4,24 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { IconSpinner } from "@voiceai/ui/@/components/ui/icons";
+import { IconEye, IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 
 import { credentialsLogin } from "../actions";
 
 export default function LoginForm() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
     setLoading(true);
     try {
       event.preventDefault();
       const formData = new FormData(event.currentTarget);
-      console.log("FORM DATA", formData);
       const result = await credentialsLogin(formData);
       if (!result.error) {
         router.push("/");
         router.refresh();
-        setLoading(false);
       }
     } catch (error) {
       alert(
@@ -30,6 +29,7 @@ export default function LoginForm() {
       );
       console.log("ERROR", error);
     }
+    setLoading(false);
   }
 
   return (
@@ -52,14 +52,23 @@ export default function LoginForm() {
         <label htmlFor="password" className="text-sm font-semibold">
           Password
         </label>
-        <input
-          type="password"
-          name="password"
-          placeholder="enter your password"
-          className="rounded-md border border-gray-300 px-3 py-2"
-        />
+        <div className="flex items-center justify-between rounded-md border border-gray-300 px-3 py-2">
+          <input
+            type={passwordVisible ? "text" : "password"}
+            name="password"
+            placeholder="enter your password"
+            className="w-full outline-none"
+          />
+          <IconEye
+            className={`${passwordVisible && "text-gray-400"} cursor-pointer`}
+            onClick={() => setPasswordVisible(!passwordVisible)}
+          />
+        </div>
       </div>
-      <button className="flex items-center justify-center rounded-md bg-primary py-2 font-semibold text-white">
+      <button
+        type="submit"
+        className="flex items-center justify-center rounded-md bg-primary py-2 font-semibold text-white"
+      >
         {loading ? (
           <IconSpinner className="h-6 w-6 animate-spin" />
         ) : (

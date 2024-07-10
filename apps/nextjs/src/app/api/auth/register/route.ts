@@ -1,3 +1,4 @@
+import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 
 import { db, schema } from "@voiceai/db";
@@ -29,7 +30,7 @@ export async function POST(request: Request) {
 
     const newUser = await db
       .insert(schema.users)
-      .values({ id, name, email, password })
+      .values({ id, name, email: email.toLowerCase(), password })
       .execute();
 
     await db
@@ -43,7 +44,9 @@ export async function POST(request: Request) {
 
     return new Response(JSON.stringify(newUser));
   } catch (error) {
-    console.log("error", error);
-    return new Response(JSON.stringify(error));
+    return NextResponse.json(
+      { error: error as string },
+      { status: 500, statusText: error as string },
+    );
   }
 }
