@@ -2,7 +2,8 @@ import React from "react";
 import type { Metadata } from "next";
 import { Stripe } from "stripe";
 
-import { getSession } from "~/app/api/subscription/subscription";
+import { auth } from "@voiceai/auth";
+
 import PlansSections from "./sections";
 import type { Product } from "./types";
 
@@ -106,14 +107,16 @@ async function getSubscription(planId: string | null | undefined) {
 
 async function PlansPage() {
   const { monthlyPlans, yearlyPlans } = await loadProducts();
-  const session = await getSession();
-  const subscription = await getSubscription(session?.subscription?.planId);
+  const session = await auth();
+  let subscription;
+  if (session) {
+    subscription = await getSubscription(session?.user.subscription?.planId);
+  }
 
   return (
     <div className="flex w-full flex-col items-center">
-      <div className="flex w-full flex-col items-center bg-white px-4 pt-10 text-center xl:w-[1024px]">
-        <h2 className="flex flex-col items-center text-3xl font-bold leading-tight tracking-tight text-primary xl:text-4xl xl:font-extrabold">
-          <span>START NOW WITH</span>
+      <div className="flex w-full flex-col items-center bg-white px-4 pt-10 text-center xl:w-[800px]">
+        <h2 className="text-center text-3xl font-bold leading-tight tracking-tight text-primary xl:text-3xl xl:font-extrabold">
           <span>SCRIPT WRITING, VOICEOVERS & MASTERCLASSES</span>
         </h2>
         <p className="mt-4 w-full text-lg font-medium  text-gray-500 xl:w-[600px]">
@@ -128,6 +131,7 @@ async function PlansPage() {
         monthlyPlans={monthlyPlans}
         yearlyPlans={yearlyPlans}
         planInterval={subscription?.plan?.interval}
+        session={session}
       />
     </div>
   );

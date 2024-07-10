@@ -2,11 +2,9 @@ import * as React from "react";
 import type { Metadata } from "next";
 
 import { getSession } from "~/app/api/subscription/subscription";
-import SubsModal from "../../components/masterclass-modal";
 import MasterClassModal from "../../components/masterclass-modal";
 import videoCardData from "../../components/masterclasses/videocards/videocardsdata";
 import VideoPage from "../../components/masterclasses/videopage/videopage";
-import ChatModal from "../../old-chat/chat/chatmodal";
 
 export const metadata: Metadata = {
   title: "Masterclasses",

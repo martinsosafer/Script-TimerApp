@@ -13,7 +13,7 @@ const schema = z.object({
     .min(1),
 });
 
-export async function createUser(prevState: any, formData: FormData) {
+export async function createUser(formData: FormData) {
   const validatedFields = schema.safeParse({
     email: formData.get("email"),
   });
@@ -29,4 +29,21 @@ export async function createUser(prevState: any, formData: FormData) {
     email: formData.get("email"),
     redirectTo: "/",
   });
+}
+
+export async function credentialsLogin(formData: FormData) {
+  const email = formData.get("email") as string;
+  const parsedEmail = email.toLowerCase();
+
+  try {
+    const result = await signIn("credentials", {
+      email: parsedEmail,
+      password: formData.get("password") as string,
+      redirect: false,
+    });
+
+    return result;
+  } catch (error) {
+    throw new Error((error as string) ?? "An error occurred while signing in");
+  }
 }

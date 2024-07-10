@@ -55,8 +55,6 @@ export default function PromptsSelector({
   const [selectedPill, setSelectedPill] = useState<PromptSubType>(
     improveYourSpeechsubtypes[0],
   );
-  //const [selectedCard, setSelectedCard] = useState<Prompt | undefined>();
-
   return (
     <div className="mt-10 flex w-[1024px] flex-col items-center justify-center">
       <div className="z-10 flex w-full justify-center gap-1">
