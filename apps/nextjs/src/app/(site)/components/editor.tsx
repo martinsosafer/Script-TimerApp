@@ -216,31 +216,43 @@ function TextEditor({
     }
   };
 
-  // Function to handle SRT generation
   const saveAsSRT = () => {
     if (editor) {
       const content = editor.getText();
       const srtContent = convertToSRT(content);
       const blob = new Blob([srtContent], { type: "text/plain" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "document.srt";
-      a.click();
-      URL.revokeObjectURL(url);
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "document.srt";
+      link.click();
+      window.URL.revokeObjectURL(url);
     }
   };
 
-  // Function to convert text to SRT format
+  // Helper function to convert text to SRT format with time code separation
   const convertToSRT = (text) => {
     const lines = text.split("\n");
+    const wordsPerSecond = 3; // Average words per second
+    let startTime = 0;
+
+    const formatTime = (seconds) => {
+      const date = new Date(seconds * 1000);
+      const hours = String(date.getUTCHours()).padStart(2, "0");
+      const minutes = String(date.getUTCMinutes()).padStart(2, "0");
+      const secs = String(date.getUTCSeconds()).padStart(2, "0");
+      const millis = String(date.getUTCMilliseconds()).padStart(3, "0");
+      return `${hours}:${minutes}:${secs},${millis}`;
+    };
+
     return lines
       .map((line, index) => {
-        const start =
-          new Date(index * 2000).toISOString().substr(11, 8) + ",000";
-        const end =
-          new Date((index + 1) * 2000).toISOString().substr(11, 8) + ",000";
-        return `${index + 1}\n${start} --> ${end}\n${line}\n`;
+        const wordCount = line.split(" ").length;
+        const duration = wordCount / wordsPerSecond;
+        const endTime = startTime + duration;
+        const srtEntry = `${index + 1}\n${formatTime(startTime)} --> ${formatTime(endTime)}\n${line}\n`;
+        startTime = endTime;
+        return srtEntry;
       })
       .join("\n");
   };
@@ -332,24 +344,17 @@ function TextEditor({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-20">
-              <DropdownMenuLabel>Dowload</DropdownMenuLabel>
+              <DropdownMenuLabel>Download</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
                 <DropdownMenuItem className="focus:bg-slate-200">
-                  <button onClick={saveAsPDF} className="ml-10">
-                    as .PDF
-                  </button>
+                  <button onClick={saveAsPDF}>as .PDF</button>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="focus:bg-slate-200">
-                  <button onClick={saveAsDOCX} className="ml-10">
-                    as .DOCX
-                  </button>
+                  <button onClick={saveAsDOCX}>as .DOCX</button>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="focus:bg-slate-200">
-                  <button onClick={saveAsSRT} className="ml-10">
-                    {" "}
-                    as .SRT
-                  </button>
+                  <button onClick={saveAsSRT}> as .SRT</button>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
             </DropdownMenuContent>
