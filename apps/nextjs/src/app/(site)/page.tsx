@@ -2,12 +2,7 @@ import type { Metadata } from "next";
 
 import { auth } from "@voiceai/auth";
 
-import CounterData from "./components/herosection/CounterData/CounterData";
-import GoSections from "./components/herosection/GoSections/GoSections";
-import HeroSection from "./components/herosection/HeroBlock/herosection";
-import ServiceSection from "./components/herosection/ServicesSection/servicessection";
-import Testimonials from "./components/herosection/Testimonials/Testimonials";
-import Modal from "./components/modal";
+import Home from "./components/home";
 
 export const metadata: Metadata = {
   title: "Script Timer",
@@ -17,16 +12,6 @@ export const metadata: Metadata = {
 export default async function LandingPage() {
   const userData = await auth();
   const userId = userData?.user.id ?? "";
-  const subData = userData?.user?.subscription?.status;
 
-  return (
-    <>
-      <HeroSection />
-      <CounterData />
-      <ServiceSection />
-      <GoSections />
-      <Testimonials />
-      <Modal status={subData} userId={userId} />
-    </>
-  );
+  return <Home user={userId} />;
 }

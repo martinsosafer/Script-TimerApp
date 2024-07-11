@@ -12,10 +12,11 @@ interface FreeModalProps {
   subData?: SubscriptionData | null | undefined;
   openModal: boolean;
   setOpenModal: Dispatch<SetStateAction<boolean>>;
-  page: "voice" | "chat" | "courses";
+  page: "home" | "voice" | "chat" | "courses";
 }
 
 const pageMessage: Record<string, string> = {
+  home: "Try the full app & create",
   voice: "Listen To Your Script by Signing In",
   chat: "Brainstorm and Create Your Scripts by Signing In",
   courses: "Learn From Experts by Signing In",
@@ -33,7 +34,7 @@ export default function NoSessionModal({
   return (
     <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center  bg-black bg-opacity-50 backdrop-blur">
       <div className="rounded-xl bg-primary p-8">
-        <div className="w-full max-w-lg overflow-y-auto overflow-x-hidden rounded-full border-4 border-primary bg-white p-4 dark:bg-white sm:rounded-lg">
+        <div className="w-full max-w-xl overflow-y-auto overflow-x-hidden rounded-full border-4 border-primary bg-white p-4 dark:bg-white sm:rounded-lg">
           <div className="flex h-full w-full flex-col">
             <div className="m-8 mx-auto my-2 flex flex-grow flex-col items-center px-4">
               {/* Heading */}
@@ -67,39 +68,38 @@ export default function NoSessionModal({
 
               <div className="">
                 <h2 className="mb-2 mt-2 text-center font-poppins text-2xl font-bold text-primary">
-                  Create your account and transform your work
+                  Don&apos;t Miss Out
                 </h2>
                 <ul className="list-disc pl-6">
                   <li className="font-poppins text-base font-medium dark:text-primary-foreground">
-                    Access magical Ai custom made for scripts & voices
+                    Use Ai custom made for scripts & voices
                   </li>
                   <li className="font-poppins text-base font-medium dark:text-primary-foreground">
-                    Download and save licensed files
+                    Download and save voices over and scripts.
                   </li>
                   <li className="font-poppins text-base font-medium dark:text-primary-foreground">
-                    International translation
+                    Almost 100 Voices: English, French, German, Hindi...
                   </li>
                   <li className="font-poppins text-base font-medium dark:text-primary-foreground">
-                    Upgrade your skills with masterclasses
+                    Upgrade your skills with masterclasses on public speaking,
+                    writing, stories that win.
                   </li>
                 </ul>
               </div>
               <div className="mt-8 space-y-4">
                 {/* Buttons */}
-                <Link href="/register">
-                  <button
-                    className="flex w-full transform items-center rounded-lg border-2 border-orange-500 bg-orange-500 p-3 font-poppins font-medium text-white underline transition-transform duration-300 hover:scale-105"
-                    onClick={() => setOpenModal(false)}
-                  >
-                    <IconSquareArrowUpRight className="mr-4 h-6 w-6" />
-                    <span>Start your Scripts, Voices and Learning.</span>
-                  </button>
+                <Link
+                  href="/signin"
+                  className="flex w-full transform items-center rounded-lg border-2 border-orange-500 bg-orange-500 p-3 font-poppins font-medium text-white underline transition-transform duration-300 hover:scale-105"
+                >
+                  <IconSquareArrowUpRight className="mr-4 h-6 w-6" />
+                  <span>Login and Start your Scripts, Voices and Classes.</span>
                 </Link>
                 <button
-                  className="w-full transform rounded-md border-2 border-black bg-white p-3 font-poppins font-medium transition-transform duration-300 hover:scale-105 dark:text-primary-foreground"
+                  className="w-full  bg-white p-3 font-poppins font-bold text-primary underline"
                   onClick={() => setOpenModal(false)} // Close the modal when clicked
                 >
-                  Skip for now
+                  Or continue with a look around
                 </button>
               </div>
             </div>
