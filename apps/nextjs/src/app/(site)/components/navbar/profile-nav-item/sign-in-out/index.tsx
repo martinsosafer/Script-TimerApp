@@ -3,13 +3,18 @@ import { useRouter } from "next/navigation";
 interface Props {
   onSignInOut: () => Promise<void>;
   label: string;
+  color?: "light" | "dark";
 }
 
-export default function SignInOut({ onSignInOut, label }: Props) {
+export default function SignInOut({
+  onSignInOut,
+  label,
+  color = "dark",
+}: Props) {
   const router = useRouter();
   return (
     <button
-      className="group/signout flex items-center py-2 font-semibold"
+      className={`group/signout flex items-center py-2 font-semibold ${color === "light" ? "text-white" : ""}`}
       onClick={async () => {
         await onSignInOut();
         if (label === "Sign in") {

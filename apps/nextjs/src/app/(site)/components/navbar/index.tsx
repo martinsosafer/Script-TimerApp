@@ -24,6 +24,7 @@ import LearnNavItem from "./learn-nav-item";
 import MasterclassesNavItem from "./masterclass-nav-item";
 import PlansNavItem from "./plans-nav-item";
 import ProfileNavItem from "./profile-nav-item";
+import SignInOut from "./profile-nav-item/sign-in-out";
 import ScriptCoachNavItem from "./script-coach-nav-item";
 import TextToVoiceNavItem from "./text-to-voice-nav-item";
 import UpgradeNavItem from "./upgrade-nav-item";
@@ -95,7 +96,11 @@ export default function NewNavBar({ signOut, signIn, session }: NavBarProps) {
               <UpgradeNavItem />
             </li>
           )}
-
+          {!session && (
+            <li>
+              <SignInOut onSignInOut={signIn} label={"Sign in"} color="light" />
+            </li>
+          )}
           <li>
             <Button
               variant="ghost"
