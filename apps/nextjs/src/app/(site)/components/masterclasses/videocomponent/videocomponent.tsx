@@ -40,7 +40,7 @@ const VideoComponent: React.FC<VideoComponentProps> = ({
       <div className="relative mx-auto max-w-4xl">
         <RevealText>
           <h1 className="mb-4 mt-4 font-poppins text-3xl font-bold">
-            {data.title}
+            <span className="text-primary">{data.id}</span>-{data.title}
           </h1>
         </RevealText>
         <div className="relative flex items-center justify-center">
@@ -70,8 +70,11 @@ const VideoComponent: React.FC<VideoComponentProps> = ({
         </RevealText>
         <h2 className="mb-2 text-2xl font-bold">Related Videos</h2>
         <section className="mt-4 grid w-full grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-          {relatedVideos.map((video, index) => (
-            <div key={video.id} className="flex flex-col items-center">
+          {relatedVideos.map((video) => (
+            <div
+              key={video.id}
+              className="flex flex-col items-center justify-center rounded-2xl bg-blue-300 drop-shadow-lg"
+            >
               <Link
                 href={{
                   pathname: `/masterclasses/${video.id}`,
@@ -87,18 +90,25 @@ const VideoComponent: React.FC<VideoComponentProps> = ({
                 }}
                 className="group relative flex h-full w-full flex-col items-center justify-center"
               >
-                <Image
-                  src={video.image}
-                  width={414}
-                  height={314}
-                  className="h-full w-full rounded-2xl object-cover"
-                  alt={video.title}
-                />
-                <div className="mt-2 flex h-12 w-full justify-between">
-                  <p className="flex-shrink-0 text-lg font-semibold">
+                <div className="h-32 w-full">
+                  <Image
+                    src={video.image}
+                    width={370}
+                    height={300}
+                    className="h-full w-full rounded-2xl object-cover"
+                    alt="VideoImage"
+                  />
+                </div>
+                <div className="mb-3 mt-3  flex  w-full items-center justify-between px-2 font-poppins text-sm font-semibold">
+                  <div className="flex items-center justify-center gap-2"></div>
+                </div>
+                <div className="mt-2 flex  w-full flex-col justify-between rounded-md bg-slate-200 text-center">
+                  <p className="text-lg font-semibold text-primary">
                     {video.id}
                   </p>
-                  <p className="ml-2 text-lg">{video.title}</p>
+                  <p className="flex h-12 items-center justify-center text-lg">
+                    {video.title}
+                  </p>
                 </div>
               </Link>
             </div>
