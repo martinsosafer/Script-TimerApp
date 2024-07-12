@@ -1,9 +1,5 @@
 import { NextResponse } from "next/server";
 
-export const config = {
-  runtime: "edge",
-};
-
 export async function POST(req: { json: () => any }) {
   try {
     console.log("Received request:", req);
