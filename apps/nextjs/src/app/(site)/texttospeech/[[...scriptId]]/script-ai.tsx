@@ -37,7 +37,6 @@ import {
 import { useCopyToClipboard } from "@voiceai/ui/@/hooks/use-copy-to-clipboard";
 import { MagicWandIcon, SpeakerLoudIcon } from "@voiceai/ui/@/icons/icons";
 
-import VoiceCreationModal from "~/app/_components/wait-modal";
 import { calculateLengthTime } from "~/lib/calculate-length-time";
 import { api } from "~/utils/api";
 import CustomButton from "../../components/custom-button";
@@ -86,7 +85,7 @@ export function ScriptAI({
   const [selectedModel, setSelectedModel] = React.useState(null);
   const [similarity, setSimilarity] = React.useState([0.8]);
   const [stability, setStability] = React.useState([0.5]);
-  const [showWaitModal, setWaitModal] = React.useState(false);
+
   // If script is selected from URL path parameter, load in state from db
   const { scriptId } = useParams();
   //modal logic
@@ -138,20 +137,25 @@ export function ScriptAI({
   const { mutateAsync: generateVoice, error } = api.voice.create.useMutation({
     onSuccess(data) {
       if (data?.audio) {
-        const dataURI = `data:audio/mpeg;base64,${data.audio}`;
-        setAudio(dataURI);
-        // console.log("DATAAA", data);
+        const audioContext = new (window.AudioContext || window.AudioContext)();
+        const source = audioContext.createBufferSource();
+        const audioBuffer = Uint8Array.from(atob(data.audio), (c) =>
+          c.charCodeAt(0),
+        );
+
+        audioContext.decodeAudioData(audioBuffer.buffer, (buffer) => {
+          source.buffer = buffer;
+          source.connect(audioContext.destination);
+          source.start();
+        });
+
         setLoading(false);
-        console.log("clicking");
         if (toggleAudioRef?.current && !error) {
           toggleAudioRef.current?.click();
         }
       } else {
         setLoading(false);
-        // Assuming data contains user's plan information, you can set it as a variable
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const userPlan = subData.status;
-
         let errorMessage = "Please try again later";
         if (userPlan === "FREE") {
           errorMessage = "Free plan only supports up to 300 characters";
@@ -168,7 +172,6 @@ export function ScriptAI({
     },
     onError(error) {
       setLoading(false);
-      console.log("error en el onError else", error);
       if (error?.data?.code === "FORBIDDEN") {
         toast({
           title: "Upgrade your plan",
@@ -180,7 +183,6 @@ export function ScriptAI({
           ),
         });
       } else {
-        console.log("error en el tercer Error", error);
         toast({
           title: "Something went wrong",
           description: "Please try again later",
@@ -198,14 +200,6 @@ export function ScriptAI({
   const { wordCount, minutes, formattedSeconds, speedCategory } =
     calculateLengthTime(script);
 
-  //wait modal !
-  const isScriptLongEnough = (script) => {
-    const wordCount = script.replace(/<[^>]+>/g, "").split(/\s+/).length;
-    return wordCount >= 50;
-  };
-  const handleCloseWaitModal = () => {
-    setWaitModal(false);
-  };
   return (
     <>
       <div className="  mb-32 h-full   flex-col md:flex">
@@ -480,10 +474,7 @@ export function ScriptAI({
                                       ? () => setOpenFreeModal(true)
                                       : async () => {
                                           setLoading(true);
-                                          setWaitModal(false); // Reset modal state before checking again
-                                          if (isScriptLongEnough(script)) {
-                                            setWaitModal(true); // Show modal only if script is long enough
-                                          }
+
                                           try {
                                             await generateVoice({
                                               voice_id: selectedModel?.id,
@@ -493,9 +484,8 @@ export function ScriptAI({
                                               similarity: similarity?.[0],
                                             });
                                             setLoading(false);
-                                            setWaitModal(false); // Hide modal when voice generation finishes
-                                          } catch {
-                                            setWaitModal(false); // Hide modal on error
+                                          } catch (e) {
+                                            console.log("catcherror", e);
                                           }
                                         }
                                   }
@@ -515,10 +505,7 @@ export function ScriptAI({
                                 </CustomButton>
                               </div>
                             </HoverCardTrigger>
-                            <VoiceCreationModal
-                              isVisible={showWaitModal}
-                              onClose={handleCloseWaitModal}
-                            />
+
                             <HoverCardContent
                               className="w-[320px] text-sm"
                               side="right"
