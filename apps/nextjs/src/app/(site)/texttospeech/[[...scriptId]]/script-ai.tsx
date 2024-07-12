@@ -37,6 +37,7 @@ import {
 import { useCopyToClipboard } from "@voiceai/ui/@/hooks/use-copy-to-clipboard";
 import { MagicWandIcon, SpeakerLoudIcon } from "@voiceai/ui/@/icons/icons";
 
+import VoiceCreationModal from "~/app/_components/wait-modal";
 import { calculateLengthTime } from "~/lib/calculate-length-time";
 import { api } from "~/utils/api";
 import CustomButton from "../../components/custom-button";
@@ -85,7 +86,7 @@ export function ScriptAI({
   const [selectedModel, setSelectedModel] = React.useState(null);
   const [similarity, setSimilarity] = React.useState([0.8]);
   const [stability, setStability] = React.useState([0.5]);
-
+  const [showWaitModal, setWaitModal] = React.useState(false);
   // If script is selected from URL path parameter, load in state from db
   const { scriptId } = useParams();
   //modal logic
@@ -130,33 +131,30 @@ export function ScriptAI({
   );
 
   // Generate audio voice
-  const [audio, setAudio] = React.useState("");
+  const [audio, setAudio] = React.useState<string>("");
   const [openFreeModal, setOpenFreeModal] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
-  const toggleAudioRef = React.useRef<React.Ref<HTMLButtonElement>>(null);
+  const audioRef = React.useRef<HTMLAudioElement>(null); // Ref for audio element
+  const toggleAudioRef = React.useRef<HTMLButtonElement>(null); // Ref for toggle button
+
   const { mutateAsync: generateVoice, error } = api.voice.create.useMutation({
     onSuccess(data) {
       if (data?.audio) {
-        const audioContext = new (window.AudioContext || window.AudioContext)();
-        const source = audioContext.createBufferSource();
-        const audioBuffer = Uint8Array.from(atob(data.audio), (c) =>
-          c.charCodeAt(0),
-        );
-
-        audioContext.decodeAudioData(audioBuffer.buffer, (buffer) => {
-          source.buffer = buffer;
-          source.connect(audioContext.destination);
-          source.start();
-        });
-
+        const dataURI = `data:audio/mpeg;base64,${data.audio}`;
+        setAudio(dataURI);
         setLoading(false);
-        if (toggleAudioRef?.current && !error) {
-          toggleAudioRef.current?.click();
+
+        // Trigger click on toggle button ref
+        if (toggleAudioRef.current && !error) {
+          toggleAudioRef.current.click();
         }
       } else {
         setLoading(false);
+
+        // Handle error scenarios based on user plan
         const userPlan = subData.status;
         let errorMessage = "Please try again later";
+
         if (userPlan === "FREE") {
           errorMessage = "Free plan only supports up to 300 characters";
         } else if (userPlan === "FREE_TRIAL" || userPlan === "STUDENT") {
@@ -164,6 +162,7 @@ export function ScriptAI({
         } else if (userPlan === "CREATOR" || userPlan === "BUSINESS") {
           errorMessage = "Your plan only supports up to 5000 characters";
         }
+
         toast({
           title: "Character Limit",
           description: errorMessage,
@@ -172,6 +171,8 @@ export function ScriptAI({
     },
     onError(error) {
       setLoading(false);
+
+      // Handle specific error cases
       if (error?.data?.code === "FORBIDDEN") {
         toast({
           title: "Upgrade your plan",
@@ -183,6 +184,7 @@ export function ScriptAI({
           ),
         });
       } else {
+        console.log("Error occurred:", error);
         toast({
           title: "Something went wrong",
           description: "Please try again later",
@@ -191,6 +193,50 @@ export function ScriptAI({
     },
   });
 
+  const handleStreaming = async () => {
+    setLoading(true);
+
+    try {
+      const response = await fetch("/api/voice", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          text: script,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error response from API:", errorText);
+        throw new Error("Failed to fetch the text-to-speech stream.");
+      }
+
+      const reader = response.body.getReader();
+      const audioChunks = [];
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        audioChunks.push(value);
+      }
+
+      const audioBlob = new Blob(audioChunks, { type: "audio/mpeg" });
+      const audioUrl = URL.createObjectURL(audioBlob);
+      setAudio(audioUrl);
+      setLoading(false);
+
+      // Play audio using audioRef
+      if (audioRef.current) {
+        audioRef.current.src = audioUrl;
+        audioRef.current.play();
+      }
+    } catch (error) {
+      console.error("Error streaming audio:", error);
+      setLoading(false);
+    }
+  };
   const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 });
 
   const onCopy = () => {
@@ -200,6 +246,14 @@ export function ScriptAI({
   const { wordCount, minutes, formattedSeconds, speedCategory } =
     calculateLengthTime(script);
 
+  //wait modal !
+  const isScriptLongEnough = (script) => {
+    const wordCount = script.replace(/<[^>]+>/g, "").split(/\s+/).length;
+    return wordCount >= 50;
+  };
+  const handleCloseWaitModal = () => {
+    setWaitModal(false);
+  };
   return (
     <>
       <div className="  mb-32 h-full   flex-col md:flex">
@@ -328,6 +382,11 @@ export function ScriptAI({
                             <span className="sr-only">Player</span>
                           </Button>
                         )}
+                        <audio
+                          ref={audioRef}
+                          controls
+                          style={{ display: "none" }}
+                        />
                       </TooltipTrigger>
                       <TooltipContent> Open the voice player</TooltipContent>
                     </Tooltip>
@@ -474,7 +533,10 @@ export function ScriptAI({
                                       ? () => setOpenFreeModal(true)
                                       : async () => {
                                           setLoading(true);
-
+                                          setWaitModal(false); // Reset modal state before checking again
+                                          if (isScriptLongEnough(script)) {
+                                            setWaitModal(true); // Show modal only if script is long enough
+                                          }
                                           try {
                                             await generateVoice({
                                               voice_id: selectedModel?.id,
@@ -484,8 +546,9 @@ export function ScriptAI({
                                               similarity: similarity?.[0],
                                             });
                                             setLoading(false);
-                                          } catch (e) {
-                                            console.log("catcherror", e);
+                                            setWaitModal(false); // Hide modal when voice generation finishes
+                                          } catch {
+                                            setWaitModal(false); // Hide modal on error
                                           }
                                         }
                                   }
@@ -503,9 +566,43 @@ export function ScriptAI({
                                     {loading ? "" : "Create"}
                                   </span>
                                 </CustomButton>
+                                {/* New Streaming Button */}
+                                <CustomButton
+                                  type="secondary"
+                                  onClick={
+                                    !subData
+                                      ? () => setOpenFreeModal(true)
+                                      : async () => {
+                                          setLoading(true);
+
+                                          try {
+                                            await handleStreaming();
+                                            setLoading(false);
+                                          } catch (e) {
+                                            console.log("catcherror", e);
+                                          }
+                                        }
+                                  }
+                                >
+                                  <div className="flex items-center">
+                                    {loading && (
+                                      <div className="absolute inset-0 flex items-center justify-center">
+                                        {" "}
+                                        {/* Center the spinner */}
+                                        <Icons.spinner className="h-4 w-4 animate-spin" />
+                                      </div>
+                                    )}
+                                  </div>
+                                  <span className="relative z-10">
+                                    {loading ? "" : "Streaming"}
+                                  </span>
+                                </CustomButton>
                               </div>
                             </HoverCardTrigger>
-
+                            <VoiceCreationModal
+                              isVisible={showWaitModal}
+                              onClose={handleCloseWaitModal}
+                            />
                             <HoverCardContent
                               className="w-[320px] text-sm"
                               side="right"
