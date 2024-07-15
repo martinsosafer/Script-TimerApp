@@ -24,7 +24,7 @@ export async function POST(request: Request) {
       email,
       password: userPassword,
     } = (await request.json()) as User;
-
+    console.log("PASSWORD:", userPassword);
     const password = await bcrypt.hash(userPassword, 10);
     const id = uuid();
 
@@ -41,7 +41,7 @@ export async function POST(request: Request) {
         status: "FREE_TRIAL",
       })
       .execute();
-
+    console.log("NEWUSER", newUser);
     return new Response(JSON.stringify(newUser));
   } catch (error) {
     return NextResponse.json(

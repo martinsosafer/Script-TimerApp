@@ -1,6 +1,8 @@
 import * as React from "react";
 import type { Metadata } from "next";
 
+import { auth } from "@voiceai/auth";
+
 import { getSession } from "~/app/api/subscription/subscription";
 import MasterClassModal from "../../components/masterclass-modal";
 import videoCardData from "../../components/masterclasses/videocards/videocardsdata";
@@ -35,8 +37,8 @@ interface RelatedVideo {
 }
 
 export default async function Page({ searchParams }: PageProps) {
-  const session = await getSession();
-  const subData = session?.subscription?.status;
+  const userData = await auth();
+  const subData = userData?.user?.subscription?.status;
 
   const modifiedSearchParams = {
     ...searchParams,
@@ -60,7 +62,7 @@ export default async function Page({ searchParams }: PageProps) {
         searchParams={modifiedSearchParams}
         relatedVideos={relatedVideos}
       />
-      <MasterClassModal subData={subData} />
+      <MasterClassModal status={subData} />
     </>
   );
 }

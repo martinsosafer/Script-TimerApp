@@ -48,7 +48,7 @@ export async function POST(request: Request) {
   } catch (error) {
     return NextResponse.json(
       { error: error as string },
-      { status: 500, statusText: error as string },
+      { status: 500, statusText: error as string }, //status 500 del lado del cliente se puede ver
     );
   }
 }

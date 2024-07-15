@@ -10,16 +10,12 @@ import microphone2side from "../../../../public/11differentside.png";
 import microphone from "../../../../public/microphone (1).png";
 
 interface SubData {
-  status: string | null;
+  status: string | undefined;
   userId: string;
 }
 
-function MasterClassModal({ subData }: { subData: SubData }) {
-  const isSubscriptionActive =
-    subData &&
-    (subData.status === "CREATOR" ||
-      subData.status === "STUDENT" ||
-      subData.status === "BUSINESS");
+function MasterClassModal({ status }: SubData) {
+  const isSubscriptionActive = status && status === "BUSINESS";
   const [modalOpen, setModalOpen] = useState(!isSubscriptionActive);
 
   const closeModal = () => {

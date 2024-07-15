@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
+import ArrowDownOnSquareIcon from "@heroicons/react/24/outline/ArrowDownOnSquareIcon";
 import ArrowUTurnLeftIcon from "@heroicons/react/24/outline/ArrowUturnLeftIcon";
 import ArrowUTurnRightIcon from "@heroicons/react/24/outline/ArrowUturnRightIcon";
 import {
@@ -12,7 +13,7 @@ import {
 import Bold from "@tiptap/extension-bold";
 import BulletList from "@tiptap/extension-bullet-list";
 import CharacterCount from "@tiptap/extension-character-count";
-import Document from "@tiptap/extension-document";
+import { Document as TipTapDocument } from "@tiptap/extension-document";
 import Heading from "@tiptap/extension-heading";
 import History from "@tiptap/extension-history";
 import Italic from "@tiptap/extension-italic";
@@ -24,8 +25,19 @@ import Typography from "@tiptap/extension-typography";
 import Underline from "@tiptap/extension-underline";
 import { EditorContent, useEditor } from "@tiptap/react";
 import classNames from "classnames";
+import { Document, Paragraph as DocxParagraph, Packer, TextRun } from "docx"; // Import docx
+import { jsPDF } from "jspdf";
 
 import { Button } from "@voiceai/ui";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@voiceai/ui/@/components/ui/dropdown-menu";
 import { IconCopy } from "@voiceai/ui/@/components/ui/icons";
 
 import type { SubscriptionData } from "~/lib/types";
@@ -41,6 +53,7 @@ interface TextEditorProps {
   isSubscriptionActive?: boolean;
   subData: SubscriptionData | null | undefined;
 }
+
 const CHAR_LIMITS: Record<string, number> = {
   FREE: 300,
   FREE_TRIAL: 1600,
@@ -48,6 +61,7 @@ const CHAR_LIMITS: Record<string, number> = {
   CREATOR: 5000,
   BUSINESS: 5000,
 };
+
 function TextEditor({
   onChange,
   className,
@@ -71,7 +85,7 @@ function TextEditor({
   const editor = useEditor({
     extensions: useMemo(
       () => [
-        Document,
+        TipTapDocument,
         History,
         Paragraph,
         Text,
@@ -161,6 +175,106 @@ function TextEditor({
     }
   }, [editor]);
 
+  // Function to handle PDF generation
+  const saveAsPDF = () => {
+    if (editor) {
+      const content = editor.getText();
+      const pdf = new jsPDF("p", "pt", "letter");
+      const margin = { top: 30, right: 30, bottom: 30, left: 30 };
+      pdf.text(content, margin.left, margin.top, {
+        align: "left",
+        maxWidth: 500,
+      });
+      pdf.save("document.pdf");
+    }
+  };
+
+  // Function to handle DOCX generation
+  const saveAsDOCX = async () => {
+    if (editor) {
+      const content = editor.getText();
+      const doc = new Document({
+        sections: [
+          {
+            properties: {},
+            children: [
+              new DocxParagraph({
+                children: [new TextRun(content)],
+              }),
+            ],
+          },
+        ],
+      });
+
+      const blob = await Packer.toBlob(doc);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "document.docx";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+  };
+
+  const saveAsSRT = () => {
+    if (editor) {
+      const content = editor.getText();
+      const srtContent = convertToSRT(content);
+      const blob = new Blob([srtContent], { type: "text/plain" });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "document.srt";
+      link.click();
+      window.URL.revokeObjectURL(url);
+    }
+  };
+
+  // Helper function to convert text to SRT format with time code separation
+  const convertToSRT = (text) => {
+    const totalDuration = 86.5; // Average of 1:23 (83 seconds) and 1:30 (90 seconds)
+    const totalChars = text.length;
+    const timePerChar = totalDuration / totalChars;
+
+    const formatTime = (seconds) => {
+      const date = new Date(seconds * 1000);
+      const hours = String(date.getUTCHours()).padStart(2, "0");
+      const minutes = String(date.getUTCMinutes()).padStart(2, "0");
+      const secs = String(date.getUTCSeconds()).padStart(2, "0");
+      const millis = String(date.getUTCMilliseconds()).padStart(3, "0");
+      return `${hours}:${minutes}:${secs},${millis}`;
+    };
+
+    let startTime = 0;
+    let currentIndex = 0;
+    const wordsPerSubtitle = 5; // Approximate number of words per subtitle line
+
+    return text
+      .split(" ")
+      .reduce((acc, word, index, array) => {
+        if (index % wordsPerSubtitle === 0 && index !== 0) {
+          const subtitle = array.slice(currentIndex, index).join(" ");
+          const duration = subtitle.length * timePerChar;
+          const endTime = startTime + duration;
+          acc.push(
+            `${acc.length + 1}\n${formatTime(startTime)} --> ${formatTime(endTime)}\n${subtitle}\n`,
+          );
+          startTime = endTime;
+          currentIndex = index;
+        }
+        if (index === array.length - 1) {
+          const subtitle = array.slice(currentIndex).join(" ");
+          const duration = subtitle.length * timePerChar;
+          const endTime = startTime + duration;
+          acc.push(
+            `${acc.length + 1}\n${formatTime(startTime)} --> ${formatTime(endTime)}\n${subtitle}\n`,
+          );
+        }
+        return acc;
+      }, [])
+      .join("\n");
+  };
+
   if (!editor) {
     return null;
   }
@@ -236,6 +350,33 @@ function TextEditor({
           >
             <IconCopy className="h-5 w-5" />
           </Button>
+        </div>
+        <div className="flex gap-1">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                className="rounded-full border border-slate-500 bg-white"
+              >
+                <ArrowDownOnSquareIcon className="h-5 w-5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-20">
+              <DropdownMenuLabel>Download</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem className="focus:bg-slate-200">
+                  <button onClick={saveAsPDF}>as .PDF</button>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="focus:bg-slate-200">
+                  <button onClick={saveAsDOCX}>as .DOCX</button>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="focus:bg-slate-200">
+                  <button onClick={saveAsSRT}> as .SRT</button>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
 
