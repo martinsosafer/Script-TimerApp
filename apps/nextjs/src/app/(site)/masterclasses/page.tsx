@@ -1,46 +1,24 @@
-"use client";
+import * as React from "react";
+import type { Metadata } from "next";
 
-import React, { useState } from "react";
+import { auth } from "@voiceai/auth";
 
-import { RevealText } from "~/app/animations/RevealText";
-import VideoCards from "../components/masterclasses/videocards/videocards";
-import videoCardData from "../components/masterclasses/videocards/videocardsdata";
-import VideoCategories from "../components/masterclasses/videocategories/videocategories";
+import MasterclasessLanding from "./masterclasses-landing";
 
-export default function Page() {
-  const [selectedCategory, setSelectedCategory] = useState<string>(
-    "Stories That Transform Marketing",
-  );
+export const metadata: Metadata = {
+  title: "Masterclasses",
+  description: "Masterclasses and Courses",
+};
 
-  const filteredVideos = selectedCategory
-    ? videoCardData.filter((video) => video.course === selectedCategory)
-    : videoCardData;
+export default async function Page() {
+  const session = await auth();
+  const subData = session?.user.subscription;
+
+  console.log("SESSION DANTAS", subData, session);
 
   return (
-    <section className="flex-start mb-16 flex-col px-5 py-6 lg:px-20">
-      <div className="mt-3 flex items-center justify-center">
-        <div>
-          <h1
-            className="mt-8 text-center font-poppins  text-3xl  font-bold  text-primary
-          "
-          >
-            Why Masterclasses?
-          </h1>
-          <RevealText>
-            <p className="mb-10 mt-10  text-center text-lg font-medium text-secondary-foreground">
-              Preparing the best story connects you emotionally with your
-              audience. This helps you be at ease, get the outcomes you desire,
-              and inspires your audience. There are specific components in great
-              stories. Learn the story frameworks that have transformed careers,
-              created over $100,000,000 in sales, and been seen in films &
-              commercials seen around the world.
-            </p>
-          </RevealText>
-        </div>
-      </div>
-      <VideoCategories onSelectCategory={setSelectedCategory} />
-
-      <VideoCards videos={filteredVideos} />
-    </section>
+    <>
+      <MasterclasessLanding subData={subData} />
+    </>
   );
 }

@@ -23,8 +23,9 @@ import { api } from "~/utils/api";
 
 interface SaveScriptProps {
   script: string;
+  subData: string | undefined;
 }
-export function SaveScript({ script = "" }: SaveScriptProps) {
+export function SaveScript({ script = "", subData }: SaveScriptProps) {
   const router = useRouter();
 
   const [open, setOpen] = React.useState(false);
@@ -87,7 +88,7 @@ export function SaveScript({ script = "" }: SaveScriptProps) {
 
   return (
     <div className="mt-0.5">
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={open} onOpenChange={subData ? setOpen : undefined}>
         <DialogTrigger asChild>
           <Button
             variant="secondary"

@@ -1,8 +1,13 @@
 import { z } from "zod";
 
-import { and, asc, eq, ilike, like, schema } from "@voiceai/db";
+import { and, asc, db, eq, ilike, schema } from "@voiceai/db";
 
-import { createTRPCRouter, protectedProcedure, TRPCError } from "../trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+  TRPCError,
+} from "../trpc";
 
 function addWatermark(message: string) {
   const watermark = "created by script timer";
@@ -17,6 +22,13 @@ function addWatermark(message: string) {
 }
 
 export const voiceRouter = createTRPCRouter({
+  publicVoices: publicProcedure.query(async () => {
+    return await db
+      .select()
+      .from(schema.voices)
+      .where(eq(schema.voices.active, true))
+      .orderBy(asc(schema.voices.rank));
+  }),
   listAllVoices: protectedProcedure.query(async ({ ctx }) => {
     return await ctx.db
       .select()

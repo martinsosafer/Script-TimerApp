@@ -1,101 +1,98 @@
 "use client";
 
-import React, { useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import {
-  IconAudioWaveform,
-  IconBookPlus,
-  IconBotMessageSquare,
-  IconSave,
-  IconScanText,
-} from "@voiceai/ui/@/components/ui/icons";
+import { IconSquareArrowUpRight } from "@voiceai/ui/@/components/ui/icons";
 
-import reminder from "../../../../public/dontmissout.png";
+import type { SubscriptionData } from "~/lib/types";
+import microphone2side from "../../../../public/11differentside.png";
+import microphone from "../../../../public/microphone (1).png";
 
-interface SubData {
-  status: string | null;
-  userId: string;
+interface FreeModalProps {
+  subData?: SubscriptionData | null | undefined;
+  openModal: boolean;
+  setOpenModal: Dispatch<SetStateAction<boolean>>;
 }
-function FreeModal({ subData }: { subData: SubData }) {
-  const isSubscriptionActive =
-    subData &&
-    (subData.status === "CREATOR" ||
-      subData.status === "STUDENT" ||
-      subData.status === "BUSINESS");
-  const [modalOpen, setModalOpen] = useState(!isSubscriptionActive);
-
-  const closeModal = () => {
-    setModalOpen(false);
-  };
-
-  if (!modalOpen) {
+function FreeModal({ setOpenModal, openModal }: FreeModalProps) {
+  if (!openModal) {
     return null;
   }
 
   return (
-    <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50 backdrop-blur">
-      <div className="max-h-full w-full max-w-xl overflow-y-auto border border-black bg-white dark:bg-white sm:rounded-2xl">
-        <div className="flex h-full w-full flex-col">
-          <div className="m-8 mx-auto my-2 flex flex-grow flex-col items-center px-4">
-            <div className="relative mb-2 h-60 w-full">
-              {/* Container with fixed height to constrain the image */}
-              <Image
-                src={reminder}
-                layout="fill"
-                objectFit="cover"
-                alt="Picture of the author"
-              />
-            </div>
-            {/* Heading */}
-
-            <div className="mt-2">
-              {/* Options with icons */}
-              <h2 className=" ml-7 text-left text-xl font-bold text-primary">
-                Join us for :
+    <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center  bg-black bg-opacity-50 backdrop-blur">
+      <div className="  rounded-xl bg-primary p-8">
+        <div className="max-h-[100vh] min-h-[80vh] w-full max-w-lg overflow-y-auto overflow-x-hidden rounded-full border-4 border-primary bg-white p-4 dark:bg-white sm:rounded-lg">
+          <div className="flex h-full w-full flex-col">
+            <div className="m-8 mx-auto my-2 flex flex-grow flex-col items-center px-4">
+              {/* Heading */}
+              <h2 className="font-poppins text-2xl font-bold text-primary">
+                Upgrade & Create Today!
               </h2>
-              <ul className="pl-6">
-                <li className="dark:text-primary-foreground">
-                  <IconAudioWaveform className="mr-2 inline-block h-6 w-6 font-extrabold text-primary" />
-                  Dozens of voices to choose from
-                </li>
-                <li className="dark:text-primary-foreground">
-                  <IconSave className="mr-3 inline-block h-6 w-6 font-extrabold text-primary" />
-                  Save your voice files - licensed to you
-                </li>
-                <li className="dark:text-primary-foreground">
-                  <IconScanText className="mr-3 inline-block h-6 w-6 font-extrabold text-primary" />
-                  Translate your scripts & voices to other languages
-                </li>
-                <li className="dark:text-primary-foreground">
-                  <IconBotMessageSquare className="mr-2 inline-block h-6 w-6 font-extrabold text-primary" />
-                  Full access to the Magic AI to speed script writing, speech
-                  creation, presentation ideas, even coding
-                </li>
-                <li className="dark:text-primary-foreground">
-                  <IconBookPlus className="mr-2 inline-block h-6 w-6 font-extrabold text-primary" />
-                  Improve your skills in writing, public speaking, producing
-                  videos
-                </li>
-              </ul>
-            </div>
-            <div className="mt-8 space-y-4">
-              {/* Buttons */}
-              <Link href="/plans" target="_blank">
+
+              {/* New Rectangular Rounded Bubble */}
+              <div className="primary relative mb-4 mt-4 rounded-full border-2 border-primary px-6 text-center">
+                <div className="absolute -left-64 top-1/2 -translate-y-1/2 transform">
+                  <Image
+                    src={microphone}
+                    alt="Microphone"
+                    width={400}
+                    height={400}
+                  />
+                </div>
+                <div className="font-poppins text-lg font-medium text-black">
+                  <div>Radio Spot * Podcast * Speech</div>
+                  <div>Marketing * Video * Content</div>
+                </div>
+                <div className="rotate-y-180  absolute   -right-64 top-1/2 -translate-y-1/2 transform">
+                  <Image
+                    src={microphone2side}
+                    alt="microphone"
+                    width={400}
+                    height={400}
+                  />
+                </div>
+              </div>
+
+              <div className="">
+                <h2 className="mb-2 mt-2 text-center font-poppins text-2xl font-bold text-primary">
+                  Don't Miss Out
+                </h2>
+                <ul className="list-disc pl-6">
+                  <li className="font-poppins text-base font-medium dark:text-primary-foreground">
+                    Use AI custom made for scripts & voices
+                  </li>
+                  <li className="font-poppins text-base font-medium dark:text-primary-foreground">
+                    Download and save voice overs and scripts
+                  </li>
+                  <li className="font-poppins text-base font-medium dark:text-primary-foreground">
+                    Almost 100 voices: English, French, German, Hindi...
+                  </li>
+                  <li className="font-poppins text-base font-medium dark:text-primary-foreground">
+                    Upgrade your skills with masterclasses on public speaking,
+                    writing, stories that win
+                  </li>
+                </ul>
+              </div>
+              <div className="mt-8 space-y-4">
+                {/* Buttons */}
+                <Link href="/register">
+                  <button
+                    className="flex w-full transform items-center rounded-lg border-2 border-orange-500 bg-orange-500 p-3 font-poppins font-medium text-white underline transition-transform duration-300 hover:scale-105"
+                    onClick={() => setOpenModal(false)}
+                  >
+                    <IconSquareArrowUpRight className="mr-4 h-6 w-6" />
+                    <span>Start your Scripts, Voices and Learning.</span>
+                  </button>
+                </Link>
                 <button
-                  className="w-full transform rounded-md border-2 border-blue-500 bg-gradient-to-r from-blue-500 to-purple-500 p-3 font-semibold text-white transition-transform duration-300 hover:scale-105"
-                  onClick={closeModal}
+                  className="w-full transform rounded-md border-2 border-black bg-white p-3 font-poppins font-medium transition-transform duration-300 hover:scale-105 dark:text-primary-foreground"
+                  onClick={() => setOpenModal(false)} // Close the modal when clicked
                 >
-                  Upgrade Plan
+                  Skip for now
                 </button>
-              </Link>
-              <button
-                className="w-full transform rounded-md border-2 border-black bg-white p-3 font-semibold transition-transform duration-300 hover:scale-105 dark:text-primary-foreground"
-                onClick={closeModal} // Close the modal when clicked
-              >
-                Skip for now
-              </button>
+              </div>
             </div>
           </div>
         </div>

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+
 import {
   IconChevronLeft,
   IconChevronRight,
   IconSearch,
 } from "@voiceai/ui/@/components/ui/icons";
+
 import { api } from "~/utils/api";
 import FavoriteVoiceCards from "../favoritevoicescard/favoritevoicescard";
 import VoiceCards from "../voicecards/voicecards";
@@ -12,8 +14,11 @@ function VoiceWidget({
   onModelSelect,
   favoriteVoices,
   refreshSubscriptionData,
+  subData,
 }) {
-  const { data: allVoices, refetch } = api.voice.list.useQuery({ name: "" });
+  const { data: allVoices, refetch } = subData
+    ? api.voice.list.useQuery({ name: "" })
+    : api.voice.publicVoices.useQuery();
   const [currentPage, setCurrentPage] = useState(1);
   const [currentFavPage, setCurrentFavPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
@@ -23,13 +28,17 @@ function VoiceWidget({
   const pageSize = 8;
 
   const filteredVoices = allVoices?.filter((voice) => {
-    const matchesSearchQuery = voice.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearchQuery = voice.name
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
     const matchesGenderFilter = !filter || voice.gender === filter;
     return matchesSearchQuery && matchesGenderFilter;
   });
 
   const filteredFavoriteVoices = favoriteVoices?.filter((voice) => {
-    const matchesSearchQuery = voice.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearchQuery = voice.name
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
     const matchesGenderFilter = !filter || voice.gender === filter;
     return matchesSearchQuery && matchesGenderFilter;
   });
@@ -39,11 +48,19 @@ function VoiceWidget({
   const voices = filteredVoices?.slice(startIndex, endIndex);
 
   const favStartIndex = (currentFavPage - 1) * pageSize;
-  const favEndIndex = Math.min(favStartIndex + pageSize, filteredFavoriteVoices?.length || 0);
-  const paginatedFavoriteVoices = filteredFavoriteVoices?.slice(favStartIndex, favEndIndex);
+  const favEndIndex = Math.min(
+    favStartIndex + pageSize,
+    filteredFavoriteVoices?.length || 0,
+  );
+  const paginatedFavoriteVoices = filteredFavoriteVoices?.slice(
+    favStartIndex,
+    favEndIndex,
+  );
 
   const totalPages = Math.ceil((filteredVoices?.length || 0) / pageSize);
-  const totalFavPages = Math.ceil((filteredFavoriteVoices?.length || 0) / pageSize);
+  const totalFavPages = Math.ceil(
+    (filteredFavoriteVoices?.length || 0) / pageSize,
+  );
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
@@ -100,7 +117,11 @@ function VoiceWidget({
       startPage = Math.max(1, totalPages - maxButtons + 1);
     }
 
-    for (let i = startPage; i < startPage + maxButtons && i <= totalPages; i++) {
+    for (
+      let i = startPage;
+      i < startPage + maxButtons && i <= totalPages;
+      i++
+    ) {
       pageNumbers.push(i);
     }
 
@@ -128,7 +149,9 @@ function VoiceWidget({
         ))}
         <button
           className="mx-2 rounded-full px-4 py-2 focus:outline-none"
-          onClick={() => currentPage < totalPages && onPageChange(currentPage + 1)}
+          onClick={() =>
+            currentPage < totalPages && onPageChange(currentPage + 1)
+          }
           disabled={currentPage === totalPages}
         >
           <IconChevronRight className="h-5 w-5" />
@@ -196,7 +219,11 @@ function VoiceWidget({
             refetchVoices={refetch}
           />
           <div className="mt-4">
-            {renderPagination(currentFavPage, totalFavPages, handleFavPageChange)}
+            {renderPagination(
+              currentFavPage,
+              totalFavPages,
+              handleFavPageChange,
+            )}
           </div>
         </div>
       ) : (

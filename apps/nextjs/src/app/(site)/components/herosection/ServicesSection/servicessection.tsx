@@ -30,22 +30,23 @@ export default function ServiceSection() {
       <div className="mx-auto grid max-w-5xl md:grid-cols-2">
         <div>
           <RevealText>
-            <h2 className="font-poppins text-5xl font-semibold   leading-tight">
-              <span className="block text-primary">You have an idea</span>
-              we help you <br />
-              bring it to life
+            <h2 className="font-poppins text-4xl font-semibold   leading-tight">
+              <span className="block text-primary">You have a project.</span>
+              Bring it to life with <br />
+              custom AI built <br />
+              for scripts.
             </h2>
           </RevealText>
           <RevealText>
             <p className=" mt-4 max-w-md">
-              Even for the most most gifted writters, squeezing a lot of of
+              Even for the most most gifted writers, squeezing a lot of of
               information into a short amount of time is extremly hard work
             </p>
           </RevealText>
           <RevealText>
             <p className=" max-w-md">
               The script is critical to your most effective whiteboard video,
-              explainer video,speech or feature film
+              explainer video, speech or feature film
             </p>
           </RevealText>
           <RevealText>

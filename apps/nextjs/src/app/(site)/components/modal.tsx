@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@voiceai/ui";
 import {
@@ -14,18 +15,18 @@ import { api } from "~/utils/api";
 import modalpicture from "../../../../public/modalimage.svg";
 
 interface SubData {
-  status: string | null;
+  status: string | undefined;
   userId: string;
 }
 
-function Modal({ subData, userId }: { subData: SubData; userId: string }) {
+function Modal({ status, userId }: SubData) {
+  const router = useRouter();
   const isSubscriptionActive =
-    subData &&
-    (subData.status === "CREATOR" ||
-      subData.status === "STUDENT" ||
-      subData.status === "BUSINESS" ||
-      subData.status === "FREE" ||
-      subData.status === "FREE_TRIAL");
+    status &&
+    (status === "CREATOR" ||
+      status === "STUDENT" ||
+      status === "BUSINESS" ||
+      status === "FREE_TRIAL");
 
   const [modalOpen, setModalOpen] = useState(!isSubscriptionActive);
 
@@ -68,7 +69,7 @@ function Modal({ subData, userId }: { subData: SubData; userId: string }) {
 
   return (
     <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center overflow-auto bg-black bg-opacity-50 backdrop-blur-sm">
-      <div className="flex w-full max-w-3xl flex-col rounded-xl bg-white p-6 md:flex-row md:p-10 lg:p-12">
+      <div className="flex w-full max-w-4xl flex-col rounded-xl bg-white p-6 md:flex-row md:p-10 lg:p-12">
         <div className="hidden md:flex md:w-1/2 md:items-center">
           <Image
             className="w-full rounded-lg"
@@ -77,6 +78,11 @@ function Modal({ subData, userId }: { subData: SubData; userId: string }) {
           />
         </div>
         <div className="flex flex-col justify-center text-center md:w-1/2 md:text-left">
+          {!userId && (
+            <h3 className="mb-3 px-4 text-center font-semibold">
+              Please look around and login to create scripts, voices, and learn.
+            </h3>
+          )}
           <div className="mb-4 flex items-center justify-center md:justify-start">
             <img
               className="h-4 md:h-5"
@@ -98,7 +104,7 @@ function Modal({ subData, userId }: { subData: SubData; userId: string }) {
             Join a membership today and SAVE 50%
           </span>
           <div className="mt-4 flex flex-col items-center gap-4 md:flex-row md:items-start">
-            <Link href="/plans" target="_blank">
+            <Link href="/plans">
               <Button
                 className="flex items-center rounded-xl bg-tertiary px-7 py-4 text-lg font-bold text-black hover:bg-tertiary focus:ring-4"
                 type="button"
@@ -108,16 +114,28 @@ function Modal({ subData, userId }: { subData: SubData; userId: string }) {
                 Get Full Access
               </Button>
             </Link>
+
             <Button
               className="flex items-center rounded-2xl border border-black bg-secondary px-7 py-4 text-xs font-medium text-secondary-foreground hover:bg-secondary"
               type="button"
               size="sm"
-              onClick={startFreeTrialAndCloseModal}
+              onClick={
+                userId
+                  ? startFreeTrialAndCloseModal
+                  : () => router.push("/register")
+              }
             >
               <IconArrowRight className="mr-2" />
               Start free trial
             </Button>
           </div>
+          <button
+            className="mt-4 hover:text-primary hover:underline"
+            onClick={closeModal}
+          >
+            {" "}
+            Or continue with a free tour
+          </button>
         </div>
       </div>
     </div>

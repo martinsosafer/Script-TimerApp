@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+import type { SubscriptionData } from "~/lib/types";
 import IntroVideo from "../featuredVideo/introvideo";
 import VideoCard from "../videocard/videocard";
 
@@ -16,9 +17,15 @@ interface Video {
 
 interface VideoCardsProps {
   videos: Video[];
+  subData: SubscriptionData | null | undefined;
+  setOpenNoSessionModal: () => void;
 }
 
-const VideoCards: React.FC<VideoCardsProps> = ({ videos }) => {
+const VideoCards: React.FC<VideoCardsProps> = ({
+  videos,
+  subData,
+  setOpenNoSessionModal,
+}) => {
   const [visibleCount, setVisibleCount] = useState(4);
 
   if (videos.length === 0) {
@@ -38,7 +45,12 @@ const VideoCards: React.FC<VideoCardsProps> = ({ videos }) => {
 
       <section className="mt-10 grid w-full grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
         {remainingVideos.map((video) => (
-          <VideoCard key={video.id} video={video} />
+          <button
+            key={video.id}
+            onClick={subData ? undefined : () => setOpenNoSessionModal()}
+          >
+            <VideoCard video={video} subData={subData?.status} />
+          </button>
         ))}
       </section>
 

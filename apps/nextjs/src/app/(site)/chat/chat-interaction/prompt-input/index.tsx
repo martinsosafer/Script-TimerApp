@@ -13,6 +13,8 @@ interface PromptInputProps {
   onSubmit: () => void;
   loadingMessages: boolean;
   isEnabled: boolean;
+  setOpenMopdal: () => void;
+  userId: string | undefined;
 }
 
 export default function PromptInput({
@@ -21,6 +23,8 @@ export default function PromptInput({
   onSubmit,
   loadingMessages,
   isEnabled,
+  setOpenMopdal,
+  userId,
 }: PromptInputProps) {
   return (
     <div className="flex w-full flex-col items-center">
@@ -39,7 +43,7 @@ export default function PromptInput({
             <button
               className={`flex h-8 w-8 items-center justify-center rounded-md ${isEnabled ? "bg-[#0066FF]" : "bg-gray-400"}  p-2`}
               disabled={!isEnabled}
-              onClick={() => onSubmit()}
+              onClick={userId ? () => onSubmit() : setOpenMopdal}
             >
               {loadingMessages ? (
                 <IconSpinner className="animate-spin text-white" />

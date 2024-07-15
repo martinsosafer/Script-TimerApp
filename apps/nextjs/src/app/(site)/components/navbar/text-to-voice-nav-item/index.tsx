@@ -39,7 +39,7 @@ export default function TextToVoiceNavItem() {
                         <span>
                           <IconMic2 />
                         </span>
-                        <span className="ml-1 ">Text to voice</span>
+                        <span className="ml-1 ">Text to Voice</span>
                       </div>
                       <p className="font-normal text-gray-500">
                         Add text, listen to the best grammar & voices
