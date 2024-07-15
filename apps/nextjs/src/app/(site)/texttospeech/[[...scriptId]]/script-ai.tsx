@@ -193,7 +193,15 @@ export function ScriptAI({
     },
   });
 
-  const handleStreaming = async () => {
+  const handleStreaming = async ({
+    voice_id,
+    voice_actor,
+    message,
+    stability,
+    similarity,
+    setLoading,
+    audioRef,
+  }) => {
     setLoading(true);
 
     try {
@@ -203,7 +211,11 @@ export function ScriptAI({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          text: script,
+          text: message,
+          voice_id,
+          voice_actor,
+          stability,
+          similarity,
         }),
       });
 
@@ -213,25 +225,60 @@ export function ScriptAI({
         throw new Error("Failed to fetch the text-to-speech stream.");
       }
 
-      const reader = response.body.getReader();
-      const audioChunks = [];
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        audioChunks.push(value);
+      const responseBody = response.body;
+      if (!responseBody) {
+        throw new Error("Response body is null.");
       }
 
-      const audioBlob = new Blob(audioChunks, { type: "audio/mpeg" });
-      const audioUrl = URL.createObjectURL(audioBlob);
-      setAudio(audioUrl);
+      const mediaSource = new MediaSource();
+      audioRef.current.src = URL.createObjectURL(mediaSource);
+
+      mediaSource.addEventListener("sourceopen", async () => {
+        const sourceBuffer = mediaSource.addSourceBuffer("audio/mpeg");
+        const reader = responseBody.getReader();
+
+        const readStream = async () => {
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) {
+              if (!sourceBuffer.updating) {
+                mediaSource.endOfStream();
+              } else {
+                sourceBuffer.addEventListener(
+                  "updateend",
+                  () => {
+                    mediaSource.endOfStream();
+                  },
+                  { once: true },
+                );
+              }
+              break;
+            }
+            sourceBuffer.appendBuffer(value);
+          }
+        };
+
+        readStream().catch((error) => {
+          console.error("Error streaming audio:", error);
+          if (!sourceBuffer.updating) {
+            mediaSource.endOfStream("decode");
+          } else {
+            sourceBuffer.addEventListener(
+              "updateend",
+              () => {
+                mediaSource.endOfStream("decode");
+              },
+              { once: true },
+            );
+          }
+        });
+
+        audioRef.current.play().catch((error) => {
+          console.error("Error playing audio:", error);
+        });
+      });
+
       setLoading(false);
-
-      // Play audio using audioRef
-      if (audioRef.current) {
-        audioRef.current.src = audioUrl;
-        audioRef.current.play();
-      }
     } catch (error) {
       console.error("Error streaming audio:", error);
       setLoading(false);
@@ -488,12 +535,15 @@ export function ScriptAI({
                                               .split(/\s+/)
                                               .slice(0, 10)
                                               .join(" ");
-                                            await generateVoice({
-                                              voice_id: selectedModel?.id,
-                                              voice_actor: selectedModel?.name,
+                                            await handleStreaming({
+                                              voice_id:
+                                                selectedModel.external_id,
+                                              voice_actor: selectedModel.name,
                                               message: firstTenWords,
-                                              stability: stability?.[0],
-                                              similarity: similarity?.[0],
+                                              stability: stability[0],
+                                              similarity: similarity[0],
+                                              setLoading,
+                                              audioRef,
                                             });
                                             setLoading(false);
                                           } catch {}
@@ -522,7 +572,54 @@ export function ScriptAI({
                               Test the first 10 words of the script
                             </HoverCardContent>
                           </HoverCard>
-
+                          <HoverCard openDelay={200}>
+                            <HoverCardTrigger asChild>
+                              <div>
+                                <CustomButton
+                                  type="secondary"
+                                  onClick={
+                                    !subData
+                                      ? () => setOpenFreeModal(true)
+                                      : async () => {
+                                          try {
+                                            await handleStreaming({
+                                              voice_id:
+                                                selectedModel.external_id,
+                                              voice_actor: selectedModel.name,
+                                              message: script,
+                                              stability: stability[0],
+                                              similarity: similarity[0],
+                                              setLoading,
+                                              audioRef,
+                                            });
+                                          } catch (e) {
+                                            console.log("catcherror", e);
+                                          }
+                                        }
+                                  }
+                                >
+                                  <div className="flex items-center">
+                                    {loading && (
+                                      <div className="absolute inset-0 flex items-center justify-center">
+                                        {" "}
+                                        {/* Center the spinner */}
+                                        <Icons.spinner className="h-4 w-4 animate-spin" />
+                                      </div>
+                                    )}
+                                  </div>
+                                  <span className="relative z-10">
+                                    {loading ? "" : "Stream"}
+                                  </span>
+                                </CustomButton>
+                              </div>
+                            </HoverCardTrigger>
+                            <HoverCardContent
+                              className="w-[320px] text-sm"
+                              side="left"
+                            >
+                              Get the audio live
+                            </HoverCardContent>
+                          </HoverCard>
                           <HoverCard openDelay={200}>
                             <HoverCardTrigger asChild>
                               <div>
@@ -567,36 +664,6 @@ export function ScriptAI({
                                   </span>
                                 </CustomButton>
                                 {/* New Streaming Button */}
-                                <CustomButton
-                                  type="secondary"
-                                  onClick={
-                                    !subData
-                                      ? () => setOpenFreeModal(true)
-                                      : async () => {
-                                          setLoading(true);
-
-                                          try {
-                                            await handleStreaming();
-                                            setLoading(false);
-                                          } catch (e) {
-                                            console.log("catcherror", e);
-                                          }
-                                        }
-                                  }
-                                >
-                                  <div className="flex items-center">
-                                    {loading && (
-                                      <div className="absolute inset-0 flex items-center justify-center">
-                                        {" "}
-                                        {/* Center the spinner */}
-                                        <Icons.spinner className="h-4 w-4 animate-spin" />
-                                      </div>
-                                    )}
-                                  </div>
-                                  <span className="relative z-10">
-                                    {loading ? "" : "Streaming"}
-                                  </span>
-                                </CustomButton>
                               </div>
                             </HoverCardTrigger>
                             <VoiceCreationModal

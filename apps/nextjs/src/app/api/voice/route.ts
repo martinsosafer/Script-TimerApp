@@ -7,14 +7,19 @@ export async function POST(req: { json: () => any }) {
     console.log("Request body:", body);
 
     const data = {
+      model_id: "eleven_multilingual_v2",
       text: body.text,
-      model_id: body.model_id,
+      voice_actor: body.voice_actor,
+      voice_settings: {
+        similarity_boost: body.similarity,
+        stability: body.stability,
+      },
     };
 
     console.log("Data to be sent to ElevenLabs:", data);
 
     const response = await fetch(
-      `https://api.elevenlabs.io/v1/text-to-speech/uKXXYU7Wjzmgv5joQom3/stream`, // Hardcoded voice_id
+      `https://api.elevenlabs.io/v1/text-to-speech/${body.voice_id}/stream`, // Hardcoded voice_id
       {
         method: "POST",
         headers: {
@@ -27,6 +32,8 @@ export async function POST(req: { json: () => any }) {
     );
 
     console.log("Response from ElevenLabs:", response);
+    console.log("Response status:", response.status);
+    console.log("Response headers:", response.headers);
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -34,7 +41,12 @@ export async function POST(req: { json: () => any }) {
       throw new Error("Failed to fetch the text-to-speech stream.");
     }
 
-    const reader = response.body.getReader();
+    const responseBody = response.body;
+    if (!responseBody) {
+      throw new Error("Response body is null.");
+    }
+
+    const reader = responseBody.getReader();
     const stream = new ReadableStream({
       async start(controller) {
         while (true) {
@@ -42,6 +54,7 @@ export async function POST(req: { json: () => any }) {
           if (done) {
             break;
           }
+          console.log("Streaming chunk:", value);
           controller.enqueue(value);
         }
         controller.close();
