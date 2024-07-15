@@ -19,7 +19,6 @@
     "@voiceai/pay": "workspace:^0.1.0",
     "axios": "^1.6.0",
     "superjson": "2.2.0",
-    "ws": "^8.18.0",
     "zod": "^3.22.2"
   },
   "devDependencies": {

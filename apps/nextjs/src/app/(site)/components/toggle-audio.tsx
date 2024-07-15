@@ -1,21 +1,27 @@
 import * as React from "react";
 
 import { Button } from "@voiceai/ui/@/components/ui/button";
+import { Input } from "@voiceai/ui/@/components/ui/input";
+import { Label } from "@voiceai/ui/@/components/ui/label";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetDescription,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@voiceai/ui/@/components/ui/sheet";
 import { MagicWandIcon, SpeakerLoudIcon } from "@voiceai/ui/@/icons/icons";
 
+import { api } from "~/utils/api";
+
 interface ToggleAudioProps {
   audio: string;
   isSubscriptionActive?: boolean;
 }
-
+// export function ToggleAudio({ audio, ref }: ToggleAudioProps) {
 export const ToggleAudio = React.forwardRef(
   ({ audio, isSubscriptionActive }: ToggleAudioProps, ref) => {
     return (
@@ -49,13 +55,24 @@ export const ToggleAudio = React.forwardRef(
                     className="col-span-2 col-start-2 mx-auto w-full"
                   />
                 ) : (
-                  <h3 className="col-span-2 col-start-2 mx-auto w-full">
+                  <h3 className="col-span-2 col-start-2  mx-auto w-full">
                     No audio generated, make a voice by creating one in the
                     Script Voice console
                   </h3>
                 )}
               </div>
+              {/* <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="username" className="text-right">
+                Username
+              </Label>
+              <Input id="username" value="@peduarte" className="col-span-3" />
+            </div> */}
             </div>
+            <SheetFooter>
+              {/* <SheetClose asChild>
+              <Button type="submit">Save changes</Button>
+            </SheetClose> */}
+            </SheetFooter>
           </SheetContent>
         </Sheet>
       </div>
