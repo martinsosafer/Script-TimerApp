@@ -738,12 +738,6 @@ importers:
         specifier: ^5.2.2
         version: 5.4.5
 
-  packages/ws:
-    dependencies:
-      ws:
-        specifier: ^8.18.0
-        version: 8.18.0
-
   tooling/eslint:
     dependencies:
       '@next/eslint-plugin-next':
