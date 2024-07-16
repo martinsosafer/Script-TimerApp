@@ -67,9 +67,9 @@ export function ScriptAI({
 
   const isSubscriptionActive =
     subscriptionData &&
-    (subData.status === "CREATOR" ||
-      subData.status === "STUDENT" ||
-      subData.status === "BUSINESS");
+    (subscriptionData.status === "CREATOR" ||
+      subscriptionData.status === "STUDENT" ||
+      subscriptionData.status === "BUSINESS");
 
   React.useEffect(() => {
     if (subscriptionData?.favorite_voices) {
@@ -194,8 +194,6 @@ export function ScriptAI({
       }
     },
   });
-  const [streamingAudio, setStreamingAudio] = React.useState<string>("");
-  const userPlan = subData.status;
 
   const handleStreaming = async ({
     voice_id,
@@ -205,10 +203,11 @@ export function ScriptAI({
     similarity,
     setLoading,
     audioRef,
-    toggleAudioRef,
+    userPlan,
   }) => {
     setLoading(true);
 
+    // Character limit check based on user plan
     const charLimit = {
       FREE: 300,
       FREE_TRIAL: 2000,
@@ -267,8 +266,7 @@ export function ScriptAI({
       }
 
       const mediaSource = new MediaSource();
-      const audioURL = URL.createObjectURL(mediaSource);
-      audioRef.current.src = audioURL;
+      audioRef.current.src = URL.createObjectURL(mediaSource);
 
       mediaSource.addEventListener("sourceopen", async () => {
         const sourceBuffer = mediaSource.addSourceBuffer("audio/mpeg");
@@ -316,14 +314,6 @@ export function ScriptAI({
       });
 
       setLoading(false);
-
-      // Set the streaming audio URL
-      setStreamingAudio(audioURL);
-
-      // Toggle the audio player using the ref
-      if (toggleAudioRef.current) {
-        toggleAudioRef.current.toggleAudio(true);
-      }
     } catch (error) {
       console.error("Error streaming audio:", error);
       setLoading(false);
@@ -333,14 +323,6 @@ export function ScriptAI({
         description: "Please try again later",
       });
     }
-  };
-  const handleStreamingWrapper = async (params) => {
-    await handleStreaming({
-      ...params,
-      setLoading,
-      audioRef,
-      toggleAudioRef,
-    });
   };
   const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 });
 
@@ -470,9 +452,8 @@ export function ScriptAI({
                         {subData ? (
                           <ToggleAudio
                             ref={toggleAudioRef}
-                            audio=""
-                            streamingAudio={streamingAudio}
-                            isSubscriptionActive={true}
+                            audio={audio}
+                            isSubscriptionActive={isSubscriptionActive}
                           />
                         ) : (
                           <Button
@@ -594,14 +575,13 @@ export function ScriptAI({
                                               .split(/\s+/)
                                               .slice(0, 10)
                                               .join(" ");
-                                            handleStreamingWrapper({
+                                            await handleStreaming({
                                               voice_id:
                                                 selectedModel.external_id,
                                               voice_actor: selectedModel.name,
                                               message: firstTenWords,
                                               stability: stability[0],
                                               similarity: similarity[0],
-                                              userPlan: subData.plan,
                                               setLoading,
                                               audioRef,
                                             });
@@ -642,14 +622,13 @@ export function ScriptAI({
                                       ? () => setOpenFreeModal(true)
                                       : async () => {
                                           try {
-                                            handleStreamingWrapper({
+                                            await handleStreaming({
                                               voice_id:
                                                 selectedModel.external_id,
                                               voice_actor: selectedModel.name,
                                               message: script,
                                               stability: stability[0],
                                               similarity: similarity[0],
-                                              userPlan: subData.plan,
                                               setLoading,
                                               audioRef,
                                             });

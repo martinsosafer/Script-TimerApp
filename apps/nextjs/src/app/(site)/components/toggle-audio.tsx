@@ -14,11 +14,10 @@ import { MagicWandIcon, SpeakerLoudIcon } from "@voiceai/ui/@/icons/icons";
 interface ToggleAudioProps {
   audio: string;
   isSubscriptionActive?: boolean;
-  streamingAudio?: string;
 }
 
 export const ToggleAudio = React.forwardRef(
-  ({ audio, isSubscriptionActive, streamingAudio }: ToggleAudioProps, ref) => {
+  ({ audio, isSubscriptionActive }: ToggleAudioProps, ref) => {
     return (
       <div className="grid gap-2">
         <Sheet>
@@ -42,14 +41,7 @@ export const ToggleAudio = React.forwardRef(
             </SheetHeader>
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
-                {streamingAudio ? (
-                  <audio
-                    controls
-                    src={streamingAudio}
-                    controlsList={isSubscriptionActive ? "" : "nodownload"}
-                    className="col-span-2 col-start-2 mx-auto w-full"
-                  />
-                ) : audio ? (
+                {audio ? (
                   <audio
                     controls
                     src={audio}
