@@ -1,7 +1,12 @@
+import { useState } from "react";
 import Image from "next/image";
 import { set } from "zod";
 
-import { IconTrash } from "@voiceai/ui/@/components/ui/icons";
+import {
+  IconPencilLine,
+  IconSpinner,
+  IconTrash,
+} from "@voiceai/ui/@/components/ui/icons";
 
 import { removeChat } from "~/app/actions/newChatActions";
 import type { Chat, ChatMessage } from "../../types";
@@ -13,6 +18,7 @@ interface ChatHistoryProps {
   setSelectedChatHistory: (arg: Chat | undefined) => void;
   setChatHistory: (value: Chat[]) => void;
   setAssistantsResponse: (value: ChatMessage | undefined) => void;
+  setIsEditingChatSubject: (arg: boolean) => void;
 }
 
 export default function ChatHistory({
@@ -22,8 +28,11 @@ export default function ChatHistory({
   setSelectedChatHistory,
   setChatHistory,
   setAssistantsResponse,
+  setIsEditingChatSubject,
 }: ChatHistoryProps) {
   const noChatHistory = chatHistory?.length === 0;
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   return (
     <div className="flex h-[900px] w-[30%] flex-col rounded-md border border-gray-400 bg-white p-4">
@@ -69,21 +78,39 @@ export default function ChatHistory({
                           alt="feedback"
                           className="mt-1"
                         />
+
                         <p className="w-full">{item.title}</p>
                       </div>
-                      <button
-                        className="flex h-7 w-7 items-center justify-center"
-                        onClick={() => {
-                          removeChat({ id: item.id });
-                          const newChatHistory = chatHistory.filter(
-                            (chat) => chat.id !== item.id,
-                          );
-                          setChatHistory(newChatHistory);
-                          setMessages([]);
-                        }}
-                      >
-                        <IconTrash className="invisible h-5 w-5 cursor-pointer text-[#FF0000] group-hover:visible" />
-                      </button>
+                      <div className="flex gap-1">
+                        <button
+                          className="flex h-6 w-6 items-center justify-center"
+                          onClick={() => {
+                            setIsEditingChatSubject(true);
+                            setSelectedChatHistory(item);
+                          }}
+                        >
+                          <IconPencilLine className="invisible h-5 w-5 cursor-pointer text-green-800 hover:text-green-400 group-hover:visible" />
+                        </button>
+                        <button
+                          className="flex h-6 w-6 items-center justify-center"
+                          onClick={async () => {
+                            setIsLoading(true);
+                            await removeChat({ id: item.id });
+                            const newChatHistory = chatHistory.filter(
+                              (chat) => chat.id !== item.id,
+                            );
+                            setChatHistory(newChatHistory);
+                            setIsLoading(false);
+                            setMessages([]);
+                          }}
+                        >
+                          {isLoading ? (
+                            <IconSpinner className="invisible h-5 w-5 animate-spin group-hover:visible" />
+                          ) : (
+                            <IconTrash className="invisible h-5 w-5 cursor-pointer text-[#FF0000] hover:text-red-400 group-hover:visible" />
+                          )}
+                        </button>
+                      </div>
                     </div>
                   );
                 })}
