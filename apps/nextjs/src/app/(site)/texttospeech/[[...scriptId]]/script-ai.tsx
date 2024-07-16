@@ -67,9 +67,9 @@ export function ScriptAI({
 
   const isSubscriptionActive =
     subscriptionData &&
-    (subscriptionData.status === "CREATOR" ||
-      subscriptionData.status === "STUDENT" ||
-      subscriptionData.status === "BUSINESS");
+    (subData.status === "CREATOR" ||
+      subData.status === "STUDENT" ||
+      subData.status === "BUSINESS");
 
   React.useEffect(() => {
     if (subscriptionData?.favorite_voices) {
@@ -159,8 +159,10 @@ export function ScriptAI({
           errorMessage = "Free plan only supports up to 300 characters";
         } else if (userPlan === "FREE_TRIAL" || userPlan === "STUDENT") {
           errorMessage = "Your plan only supports up to 2000 characters";
-        } else if (userPlan === "CREATOR" || userPlan === "BUSINESS") {
+        } else if (userPlan === "CREATOR") {
           errorMessage = "Your plan only supports up to 5000 characters";
+        } else if (userPlan === "BUSINESS") {
+          errorMessage = "Your plan only supports up to 10000 characters";
         }
 
         toast({
@@ -192,6 +194,8 @@ export function ScriptAI({
       }
     },
   });
+  const [streamingAudio, setStreamingAudio] = React.useState<string>("");
+  const userPlan = subData.status;
 
   const handleStreaming = async ({
     voice_id,
@@ -201,8 +205,40 @@ export function ScriptAI({
     similarity,
     setLoading,
     audioRef,
+    toggleAudioRef,
   }) => {
     setLoading(true);
+
+    const charLimit = {
+      FREE: 300,
+      FREE_TRIAL: 2000,
+      STUDENT: 2000,
+      CREATOR: 5000,
+      BUSINESS: 10000,
+    };
+
+    if (message.length > charLimit[userPlan]) {
+      let errorMessage = "Please try again later";
+
+      if (userPlan === "FREE") {
+        errorMessage = "Free plan only supports up to 300 characters";
+      } else if (userPlan === "FREE_TRIAL" || userPlan === "STUDENT") {
+        errorMessage = "Your plan only supports up to 2000 characters";
+      } else if (userPlan === "CREATOR") {
+        errorMessage = "Your plan only supports up to 5000 characters";
+      } else if (userPlan === "BUSINESS") {
+        errorMessage = "Your plan only supports up to 10000 characters";
+      }
+
+      setLoading(false);
+
+      toast({
+        title: "Character Limit",
+        description: errorMessage,
+      });
+
+      return;
+    }
 
     try {
       const response = await fetch("/api/voice", {
@@ -231,7 +267,8 @@ export function ScriptAI({
       }
 
       const mediaSource = new MediaSource();
-      audioRef.current.src = URL.createObjectURL(mediaSource);
+      const audioURL = URL.createObjectURL(mediaSource);
+      audioRef.current.src = audioURL;
 
       mediaSource.addEventListener("sourceopen", async () => {
         const sourceBuffer = mediaSource.addSourceBuffer("audio/mpeg");
@@ -279,10 +316,31 @@ export function ScriptAI({
       });
 
       setLoading(false);
+
+      // Set the streaming audio URL
+      setStreamingAudio(audioURL);
+
+      // Toggle the audio player using the ref
+      if (toggleAudioRef.current) {
+        toggleAudioRef.current.toggleAudio(true);
+      }
     } catch (error) {
       console.error("Error streaming audio:", error);
       setLoading(false);
+
+      toast({
+        title: "Something went wrong",
+        description: "Please try again later",
+      });
     }
+  };
+  const handleStreamingWrapper = async (params) => {
+    await handleStreaming({
+      ...params,
+      setLoading,
+      audioRef,
+      toggleAudioRef,
+    });
   };
   const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 });
 
@@ -412,8 +470,9 @@ export function ScriptAI({
                         {subData ? (
                           <ToggleAudio
                             ref={toggleAudioRef}
-                            audio={audio}
-                            isSubscriptionActive={isSubscriptionActive}
+                            audio=""
+                            streamingAudio={streamingAudio}
+                            isSubscriptionActive={true}
                           />
                         ) : (
                           <Button
@@ -535,13 +594,14 @@ export function ScriptAI({
                                               .split(/\s+/)
                                               .slice(0, 10)
                                               .join(" ");
-                                            await handleStreaming({
+                                            handleStreamingWrapper({
                                               voice_id:
                                                 selectedModel.external_id,
                                               voice_actor: selectedModel.name,
                                               message: firstTenWords,
                                               stability: stability[0],
                                               similarity: similarity[0],
+                                              userPlan: subData.plan,
                                               setLoading,
                                               audioRef,
                                             });
@@ -560,7 +620,7 @@ export function ScriptAI({
                                     )}
                                   </div>
                                   <span className="relative z-10">
-                                    {loading ? "" : "Demo"}
+                                    {loading ? "" : "Quick Test"}
                                   </span>
                                 </CustomButton>
                               </div>
@@ -582,13 +642,14 @@ export function ScriptAI({
                                       ? () => setOpenFreeModal(true)
                                       : async () => {
                                           try {
-                                            await handleStreaming({
+                                            handleStreamingWrapper({
                                               voice_id:
                                                 selectedModel.external_id,
                                               voice_actor: selectedModel.name,
                                               message: script,
                                               stability: stability[0],
                                               similarity: similarity[0],
+                                              userPlan: subData.plan,
                                               setLoading,
                                               audioRef,
                                             });

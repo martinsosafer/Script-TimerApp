@@ -24,13 +24,24 @@ interface RelatedVideos {
 interface VideoPageProps {
   searchParams: VideoData;
   relatedVideos: RelatedVideos[];
+  previousVideo: RelatedVideos | null;
+  nextVideo: RelatedVideos | null;
 }
 
 const VideoPage: React.FC<VideoPageProps> = ({
   searchParams,
   relatedVideos,
+  previousVideo,
+  nextVideo,
 }) => {
-  return <VideoComponent data={searchParams} relatedVideos={relatedVideos} />;
+  return (
+    <VideoComponent
+      data={searchParams}
+      relatedVideos={relatedVideos}
+      previousVideo={previousVideo}
+      nextVideo={nextVideo}
+    />
+  );
 };
 
 export default VideoPage;

@@ -97,11 +97,10 @@ export const voiceRouter = createTRPCRouter({
           subscription?.status === "STUDENT"
         ) {
           maxMessageLength = 2000;
-        } else if (
-          subscription?.status === "CREATOR" ||
-          subscription?.status === "BUSINESS"
-        ) {
+        } else if (subscription?.status === "CREATOR") {
           maxMessageLength = 5000;
+        } else if (subscription?.status === "BUSINESS") {
+          maxMessageLength = 10000;
         }
 
         if (input.message.length > maxMessageLength) {
