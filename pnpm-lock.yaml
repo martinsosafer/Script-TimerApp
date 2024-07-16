@@ -243,6 +243,9 @@ importers:
       next-themes:
         specifier: ^0.2.1
         version: 0.2.1(next@14.2.3)(react-dom@18.2.0)(react@18.2.0)
+      plagiarism-checker:
+        specifier: ^4.0.0
+        version: 4.0.0(axios@0.21.4)
       pnpm:
         specifier: ^8.12.0
         version: 8.15.8
@@ -7722,6 +7725,14 @@ packages:
     engines: {node: '>=4'}
     dev: false
 
+  /axios@0.21.4:
+    resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
+    dependencies:
+      follow-redirects: 1.15.6
+    transitivePeerDependencies:
+      - debug
+    dev: false
+
   /axios@1.6.8:
     resolution: {integrity: sha512-v/ZHtJDU39mDpyBoFVkETcd/uNdxrWRrg3bKpOKzXFA6Bvqopts6ALSMU3y6ijYxbw2B+wPrIv46egTzJXCLGQ==}
     dependencies:
@@ -15013,6 +15024,15 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       find-up: 3.0.0
+    dev: false
+
+  /plagiarism-checker@4.0.0(axios@0.21.4):
+    resolution: {integrity: sha512-X9kJLnFcl6efJG1GHK61ecY/XU7I3nSXO7BwXEFNnNENaBi2kVHG+SFTLdIGw2khd0kmWLBtnP9LLqCnbKl4+A==}
+    peerDependencies:
+      axios: ^0.21.1
+    dependencies:
+      axios: 0.21.4
+      rimraf: 3.0.2
     dev: false
 
   /plist@3.1.0:
