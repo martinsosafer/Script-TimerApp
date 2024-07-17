@@ -76,11 +76,6 @@ export default function LearnNavItem() {
                       Video Creator MasterClass
                     </Link>
                   </li>
-                  <li>
-                    <h3 className="block py-1 font-normal text-gray-400">
-                      Video Guides (coming soon)
-                    </h3>
-                  </li>
                 </ul>
               </div>
             </div>

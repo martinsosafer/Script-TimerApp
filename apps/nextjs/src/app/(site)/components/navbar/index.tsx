@@ -69,9 +69,9 @@ export default function NewNavBar({ signOut, signIn, session }: NavBarProps) {
               </li>
             </HoverCardTrigger>
           </HoverCard>
-          <li className="group relative px-3 py-2 text-primary-foreground ">
+          {/* <li className="group relative px-3 py-2 text-primary-foreground ">
             <LearnNavItem />
-          </li>
+          </li> */}
           <li className="group relative px-3 py-2 text-primary-foreground hover:cursor-default ">
             <MasterclassesNavItem />
           </li>
