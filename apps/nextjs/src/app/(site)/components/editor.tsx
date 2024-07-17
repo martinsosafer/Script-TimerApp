@@ -56,7 +56,7 @@ interface TextEditorProps {
 
 const CHAR_LIMITS: Record<string, number> = {
   FREE: 300,
-  FREE_TRIAL: 1600,
+  FREE_TRIAL: 2000,
   STUDENT: 2000,
   CREATOR: 5000,
   BUSINESS: 10000,
@@ -274,7 +274,32 @@ function TextEditor({
       }, [])
       .join("\n");
   };
+  const updateCharacterCount = useCallback(() => {
+    const text = editor?.getText() ?? "";
+    setCharCount(text.length);
+  }, [editor]);
 
+  // Use useEffect to update character count
+  useEffect(() => {
+    if (editor) {
+      editor.commands.setContent(localContent);
+      updateCharacterCount();
+    }
+  }, [editor, localContent, updateCharacterCount]);
+
+  useEffect(() => {
+    if (scriptDetails && editor) {
+      editor.commands.setContent(scriptDetails.script);
+      updateCharacterCount(); // Update character count after setting content
+    }
+  }, [scriptDetails, editor, updateCharacterCount]);
+
+  useEffect(() => {
+    if (updatedContent && editor) {
+      editor.commands.setContent(updatedContent);
+      updateCharacterCount(); // Update character count after setting content
+    }
+  }, [updatedContent, editor, updateCharacterCount]);
   if (!editor) {
     return null;
   }
