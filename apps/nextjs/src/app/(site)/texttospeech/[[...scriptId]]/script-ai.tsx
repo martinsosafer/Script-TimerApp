@@ -194,6 +194,8 @@ export function ScriptAI({
       }
     },
   });
+  const [audioSource, setAudioSource] = React.useState(null);
+  const [showPlayer, setShowPlayer] = React.useState(false);
 
   const handleStreaming = async ({
     voice_id,
@@ -202,7 +204,6 @@ export function ScriptAI({
     stability,
     similarity,
     setLoading,
-    audioRef,
     userPlan,
   }) => {
     setLoading(true);
@@ -266,64 +267,71 @@ export function ScriptAI({
       }
 
       const mediaSource = new MediaSource();
-      audioRef.current.src = URL.createObjectURL(mediaSource);
+      const objectUrl = URL.createObjectURL(mediaSource);
+      setAudioSource(objectUrl); // Set the audio source URL
+      audioRef.current.src = objectUrl;
 
       mediaSource.addEventListener("sourceopen", async () => {
         const sourceBuffer = mediaSource.addSourceBuffer("audio/mpeg");
         const reader = responseBody.getReader();
 
         const readStream = async () => {
-          try {
-            while (true) {
-              const { done, value } = await reader.read();
-              if (done) {
-                if (!sourceBuffer.updating) {
-                  mediaSource.endOfStream();
-                } else {
-                  sourceBuffer.addEventListener(
-                    "updateend",
-                    () => {
-                      mediaSource.endOfStream();
-                    },
-                    { once: true },
-                  );
-                }
-                break;
+          const processBuffer = async (value) => {
+            return new Promise((resolve, reject) => {
+              const onBufferAppended = () => {
+                sourceBuffer.removeEventListener("updateend", onBufferAppended);
+                resolve();
+              };
+              sourceBuffer.addEventListener("updateend", onBufferAppended);
+              try {
+                sourceBuffer.appendBuffer(value);
+              } catch (error) {
+                reject(error);
               }
+            });
+          };
 
-              if (sourceBuffer.updating) {
-                await new Promise((resolve) => {
-                  sourceBuffer.addEventListener("updateend", resolve, {
-                    once: true,
-                  });
-                });
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) {
+              if (!sourceBuffer.updating) {
+                mediaSource.endOfStream();
+              } else {
+                sourceBuffer.addEventListener(
+                  "updateend",
+                  () => {
+                    mediaSource.endOfStream();
+                  },
+                  { once: true },
+                );
               }
-
-              sourceBuffer.appendBuffer(value);
+              break;
             }
-          } catch (error) {
-            console.error("Error streaming audio:", error);
-            if (!sourceBuffer.updating) {
-              mediaSource.endOfStream("decode");
-            } else {
-              sourceBuffer.addEventListener(
-                "updateend",
-                () => {
-                  mediaSource.endOfStream("decode");
-                },
-                { once: true },
-              );
-            }
+            await processBuffer(value);
           }
         };
 
-        readStream();
+        readStream().catch((error) => {
+          console.error("Error streaming audio:", error);
+          if (!sourceBuffer.updating) {
+            mediaSource.endOfStream("decode");
+          } else {
+            sourceBuffer.addEventListener(
+              "updateend",
+              () => {
+                mediaSource.endOfStream("decode");
+              },
+              { once: true },
+            );
+          }
+        });
 
         audioRef.current.play().catch((error) => {
           console.error("Error playing audio:", error);
         });
       });
 
+      setShowPlayer(true); // Show the player when audio starts
       setLoading(false);
     } catch (error) {
       console.error("Error streaming audio:", error);
@@ -335,6 +343,29 @@ export function ScriptAI({
       });
     }
   };
+  const audioStyle = {
+    position: "fixed",
+    bottom: showPlayer ? "20px" : "-100px", // Adjust the values as needed
+    left: "50%",
+    transform: "translateX(-50%)",
+    maxWidth: "300px",
+    width: "100%",
+    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+    transition: "bottom 0.5s ease-in-out, opacity 0.5s ease-in-out",
+    opacity: showPlayer ? 1 : 0,
+    display: showPlayer ? "block" : "none",
+    zIndex: 1000,
+  };
+
+  const handleClose = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+    setShowPlayer(false);
+    setAudioSource(null); // Optionally clear the audio source
+  };
+
   const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 });
 
   const onCopy = () => {
@@ -480,11 +511,26 @@ export function ScriptAI({
                             <span className="sr-only">Player</span>
                           </Button>
                         )}
-                        <audio
-                          ref={audioRef}
-                          controls
-                          style={{ display: "none" }}
-                        />
+                        <audio ref={audioRef} controls style={audioStyle} />
+                        {showPlayer && (
+                          <button
+                            onClick={handleClose}
+                            style={{
+                              position: "fixed",
+                              bottom: "60px", // Adjust as needed
+                              left: "50%",
+                              transform: "translateX(-50%)",
+                              zIndex: 1001,
+                              padding: "10px",
+                              background: "#fff",
+                              border: "1px solid #ccc",
+                              borderRadius: "4px",
+                              boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                            }}
+                          >
+                            Close
+                          </button>
+                        )}
                       </TooltipTrigger>
                       <TooltipContent> Open the voice player</TooltipContent>
                     </Tooltip>
