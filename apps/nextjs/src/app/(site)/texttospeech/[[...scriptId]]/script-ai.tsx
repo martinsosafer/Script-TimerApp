@@ -273,40 +273,51 @@ export function ScriptAI({
         const reader = responseBody.getReader();
 
         const readStream = async () => {
-          while (true) {
-            const { done, value } = await reader.read();
-            if (done) {
-              if (!sourceBuffer.updating) {
-                mediaSource.endOfStream();
-              } else {
-                sourceBuffer.addEventListener(
-                  "updateend",
-                  () => {
-                    mediaSource.endOfStream();
-                  },
-                  { once: true },
-                );
+          try {
+            while (true) {
+              const { done, value } = await reader.read();
+              if (done) {
+                if (!sourceBuffer.updating) {
+                  mediaSource.endOfStream();
+                } else {
+                  sourceBuffer.addEventListener(
+                    "updateend",
+                    () => {
+                      mediaSource.endOfStream();
+                    },
+                    { once: true },
+                  );
+                }
+                break;
               }
-              break;
+
+              if (sourceBuffer.updating) {
+                await new Promise((resolve) => {
+                  sourceBuffer.addEventListener("updateend", resolve, {
+                    once: true,
+                  });
+                });
+              }
+
+              sourceBuffer.appendBuffer(value);
             }
-            sourceBuffer.appendBuffer(value);
+          } catch (error) {
+            console.error("Error streaming audio:", error);
+            if (!sourceBuffer.updating) {
+              mediaSource.endOfStream("decode");
+            } else {
+              sourceBuffer.addEventListener(
+                "updateend",
+                () => {
+                  mediaSource.endOfStream("decode");
+                },
+                { once: true },
+              );
+            }
           }
         };
 
-        readStream().catch((error) => {
-          console.error("Error streaming audio:", error);
-          if (!sourceBuffer.updating) {
-            mediaSource.endOfStream("decode");
-          } else {
-            sourceBuffer.addEventListener(
-              "updateend",
-              () => {
-                mediaSource.endOfStream("decode");
-              },
-              { once: true },
-            );
-          }
-        });
+        readStream();
 
         audioRef.current.play().catch((error) => {
           console.error("Error playing audio:", error);
