@@ -357,7 +357,7 @@ export function ScriptAI({
     zIndex: 1000,
   };
 
-  const handleClose = () => {
+  const handleCloseAudio = () => {
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
@@ -514,7 +514,7 @@ export function ScriptAI({
                         <audio ref={audioRef} controls style={audioStyle} />
                         {showPlayer && (
                           <button
-                            onClick={handleClose}
+                            onClick={handleCloseAudio}
                             style={{
                               position: "fixed",
                               bottom: "60px", // Adjust as needed
@@ -726,6 +726,8 @@ export function ScriptAI({
                                     !subData
                                       ? () => setOpenFreeModal(true)
                                       : async () => {
+                                          setShowPlayer(false);
+                                          handleCloseAudio();
                                           setLoading(true);
                                           setWaitModal(false); // Reset modal state before checking again
                                           if (isScriptLongEnough(script)) {
