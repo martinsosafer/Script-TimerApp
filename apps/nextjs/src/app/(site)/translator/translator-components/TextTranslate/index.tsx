@@ -84,7 +84,7 @@ export default function TextTranslate({}) {
           alt="1 icon"
         />
         <p className="text-left font-medium ">
-          Enter the text you want to translate.
+          Enter the text you want to translate
         </p>
       </div>
       <textarea
