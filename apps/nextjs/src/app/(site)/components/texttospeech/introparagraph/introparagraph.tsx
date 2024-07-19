@@ -10,7 +10,7 @@ const characters: Record<string, string> = {
   FREE_TRIAL: "1600 characters",
   STUDENT: "2000 characters",
   CREATOR: "5000 characters",
-  BUSINESS: "5000 characters",
+  BUSINESS: "10000 characters",
 };
 
 function IntroParagraph(props: IntroParagraphProps) {
