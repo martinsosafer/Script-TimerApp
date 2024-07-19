@@ -1,0 +1,53 @@
+"use client";
+
+import * as React from "react";
+import Image from "next/image";
+import Link from "next/link";
+
+import AudioTranslate from "../AudioTranslate";
+import TextTranslate from "../TextTranslate";
+import TranslatorHeader from "../TranslatorHeader";
+
+export default function TranslatorPage() {
+  const [mode, setMode] = React.useState<boolean>(true);
+
+  return (
+    <div className="mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center py-2">
+      <TranslatorHeader />
+      <main className="mb-[100px] flex w-full flex-1 flex-col items-center justify-center px-4 text-center sm:mt-20">
+        <h1 className="max-w-2xl text-4xl font-bold text-slate-900 sm:text-7xl">
+          Lets Translate
+        </h1>
+        <p className="mt-5 max-w-md text-lg font-bold text-slate-900 sm:text-xl">
+          Using Script Timer something something
+        </p>
+        <div className="mb-[-5px] mt-5 flex">
+          <button
+            className={`rounded-md px-4 py-2 font-semibold ${
+              mode ? "bg-black text-white" : "bg-gray-300 text-black"
+            }`}
+            onClick={() => setMode(!mode)}
+          >
+            Translate Text
+          </button>
+          <button
+            className={`rounded-md px-4 py-2 font-semibold ${
+              !mode ? "bg-black text-white" : "bg-gray-300 text-black"
+            }`}
+            onClick={() => setMode(!mode)}
+          >
+            Translate Audio
+          </button>
+        </div>
+        {mode ? <TextTranslate /> : <AudioTranslate />}
+
+        <hr className="border-1 h-px bg-gray-700 dark:bg-gray-700" />
+      </main>
+      <footer className="w-full ">
+        <p className="flex justify-center border-t-2 py-2 font-semibold">
+          Learn a language with LetsTranslate.
+        </p>
+      </footer>
+    </div>
+  );
+}

@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 import OpenAI from "openai";
 
 const openai = new OpenAI({
@@ -7,33 +7,41 @@ const openai = new OpenAI({
 
 interface TranslatorData {
   prompt?: string;
-  sucess?: boolean;
+  success?: boolean;
   data?: string;
   error?: unknown;
 }
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<TranslatorData>,
-) {
-  const { prompt } = req.body;
+
+export async function POST(req: Request) {
+  const { prompt } = await req.json();
+
   try {
-    const response = await openai.completions.create({
-      model: "gpt-4o",
-      prompt: `${prompt}`,
+    const response = await openai.chat.completions.create({
+      model: "gpt-4",
+      messages: [{ role: "user", content: prompt }],
       max_tokens: 4096,
-      temperature: 0.7,
+      temperature: 0.2,
     });
-    res.status(200).json({
-      sucess: true,
-      data: response.choices[0]?.text,
-    });
+
+    return NextResponse.json(
+      {
+        success: true,
+        data: response.choices[0]?.message.content ?? "",
+      },
+      {
+        status: 200,
+      },
+    );
   } catch (error) {
-    if (error) {
-      console.log(error);
-    }
-    res.status(400).json({
-      sucess: false,
-      error: "Failed to translate",
-    });
+    console.error("Error from OpenAI API:", error);
+    return NextResponse.json(
+      {
+        success: false,
+        error: error instanceof Error ? error.message : "Failed to translate",
+      },
+      {
+        status: 500,
+      },
+    );
   }
 }
