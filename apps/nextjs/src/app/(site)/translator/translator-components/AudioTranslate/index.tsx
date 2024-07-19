@@ -27,7 +27,7 @@ export default function AudioTranslate({}) {
     if (language) {
       formData.append("language", language);
     }
-    const apiKey = process.env.OPENAI_API_KEY;
+    const apiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
 
     if (!apiKey) {
       console.error("OpenAI API Key is missing.");
