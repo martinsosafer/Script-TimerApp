@@ -1,3 +1,5 @@
+import type { FormEvent } from "react";
+
 import type { ChatMessage } from "../../types";
 import FeedbackInput from "./feedback-input";
 import STMessage from "./sTMessage";
@@ -7,9 +9,9 @@ export type Chat = ChatMessage[];
 
 export interface FeedbackProps {
   chat: Chat;
-  feedbackInput: string;
+  feedbackInput: string | undefined;
   setFeedbackInput: (value: string) => void;
-  handleSubmit: (arg?: boolean) => void;
+  handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
   loadingMessages: boolean;
 }
 
@@ -27,10 +29,12 @@ export default function Feedback({
   handleSubmit,
   loadingMessages,
 }: FeedbackProps) {
+  const filteredChats = chat.filter((chatItem) => chatItem.role !== "system");
+
   return (
     <div className="flex h-[900px] w-[70%] flex-col justify-between gap-2">
       <div className="flex h-full w-full  flex-col items-start gap-6 overflow-y-auto rounded-md border border-gray-400 bg-white p-6">
-        {chat.map((chatItem, idx) => {
+        {filteredChats.map((chatItem, idx) => {
           const formattedContent = contentFormatter(chatItem.content);
           return chatItem.role === "assistant" ? (
             <STMessage
@@ -50,7 +54,7 @@ export default function Feedback({
         onChange={setFeedbackInput}
         onSubmit={handleSubmit}
         loadingMessages={loadingMessages}
-        isDisabled={chat.length === 0}
+        isDisabled={chat.length === 0 && !feedbackInput}
       />
     </div>
   );
