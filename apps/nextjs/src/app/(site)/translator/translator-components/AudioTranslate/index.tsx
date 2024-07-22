@@ -1,6 +1,7 @@
 import * as React from "react";
 import Image from "next/image";
 
+import { IconEar, IconFlag } from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 import LoadingDots from "~/app/(site)/components/loadingdots";
@@ -71,13 +72,9 @@ export default function AudioTranslate({}) {
     <div>
       <div className="w-full max-w-xl">
         <div className="mt-10 flex flex-row items-center space-x-3">
-          <Image
-            src="/apps/nextjs/public/notebook.png"
-            width={30}
-            height={30}
-            alt="1 icon"
-            className="mb-5 sm:mb-0"
-          />
+          <div className="flex h-9 w-9 items-center justify-center gap-3 rounded-lg border-2 border-[#1877F290] bg-blue-300">
+            <IconEar className="text-black" />
+          </div>
           <div className="">
             <p className="text-left font-medium">
               Upload Audio File <span className="text-slate-500 ">)</span>
@@ -100,12 +97,9 @@ export default function AudioTranslate({}) {
         </p>
 
         <div className="mb-5 flex items-center space-x-3">
-          <Image
-            src="/apps/nextjs/public/notebook.png"
-            width={30}
-            height={30}
-            alt="1 icon"
-          />
+          <div className="flex h-9 w-9 items-center justify-center gap-3 rounded-lg border-2 border-[#1877F290] bg-blue-300">
+            <IconFlag className="text-black" />
+          </div>
           <p className="text-left font-medium">Choose your Language.</p>
         </div>
 
@@ -123,7 +117,7 @@ export default function AudioTranslate({}) {
 
         {!loading && (
           <button
-            className="mt-8 w-full rounded-xl bg-black px-4 py-2 font-medium text-white hover:bg-black/80 sm:mt-10"
+            className="mt-8 w-full rounded-xl bg-primary px-4 py-2 font-medium text-white hover:bg-primary/80 sm:mt-10"
             onClick={translateAudio}
           >
             Translate &rarr;
@@ -131,7 +125,7 @@ export default function AudioTranslate({}) {
         )}
         {loading && (
           <button
-            className="mt-8 w-full rounded-xl bg-black px-4 py-2 font-medium text-white hover:bg-black/80 sm:mt-10"
+            className="mt-8 w-full rounded-xl bg-primary px-4 py-2 font-medium text-white hover:bg-primary/80 sm:mt-10"
             disabled
           >
             <LoadingDots color="white" style="large" />

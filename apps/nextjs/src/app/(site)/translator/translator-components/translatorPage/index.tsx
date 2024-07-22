@@ -6,25 +6,26 @@ import Link from "next/link";
 
 import AudioTranslate from "../AudioTranslate";
 import TextTranslate from "../TextTranslate";
-import TranslatorHeader from "../TranslatorHeader";
 
 export default function TranslatorPage() {
   const [mode, setMode] = React.useState<boolean>(true);
 
   return (
     <div className="mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center py-2">
-      <TranslatorHeader />
-      <main className="mb-[100px] flex w-full flex-1 flex-col items-center justify-center px-4 text-center sm:mt-20">
-        <h1 className="max-w-2xl text-4xl font-bold text-slate-900 sm:text-7xl">
+      <main className=" mb-8 flex w-full flex-1 flex-col items-center justify-center px-4 text-center sm:mt-10">
+        <h1 className="max-w-2xl font-poppins text-4xl font-bold text-primary sm:text-5xl">
           Lets Translate
         </h1>
-        <p className="mt-5 max-w-md text-lg font-bold text-slate-900 sm:text-xl">
-          Using Script Timer something something
+        <p className="sm:text-md text-md mt-5 max-w-md  font-poppins  font-bold text-black">
+          Using Script Timer Ai , you can translate a text to multiple Languages
+          as well
+          <br />
+          audio to text if you provide a sound file
         </p>
         <div className="mb-[-5px] mt-5 flex">
           <button
             className={`rounded-md px-4 py-2 font-semibold ${
-              mode ? "bg-black text-white" : "bg-gray-300 text-black"
+              mode ? "bg-primary text-white" : "bg-gray-300 text-black"
             }`}
             onClick={() => setMode(!mode)}
           >
@@ -32,7 +33,7 @@ export default function TranslatorPage() {
           </button>
           <button
             className={`rounded-md px-4 py-2 font-semibold ${
-              !mode ? "bg-black text-white" : "bg-gray-300 text-black"
+              !mode ? "bg-primary text-white" : "bg-gray-300 text-black"
             }`}
             onClick={() => setMode(!mode)}
           >
@@ -45,7 +46,7 @@ export default function TranslatorPage() {
       </main>
       <footer className="w-full ">
         <p className="flex justify-center border-t-2 py-2 font-semibold">
-          Learn a language with LetsTranslate.
+          Learn a language with Script-Timer.
         </p>
       </footer>
     </div>

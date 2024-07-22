@@ -3,6 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 
+import { IconFlag, IconScanText } from "@voiceai/ui/@/components/ui/icons";
 import { toast, ToastAction } from "@voiceai/ui/@/components/ui/toast";
 
 import LoadingDots from "~/app/(site)/components/loadingdots";
@@ -77,12 +78,9 @@ export default function TextTranslate({}) {
   return (
     <div className="w-full max-w-xl">
       <div className="mt-10 flex items-center space-x-3 ">
-        <Image
-          src="/apps/nextjs/public/notebook.png"
-          width={30}
-          height={30}
-          alt="1 icon"
-        />
+        <div className="flex h-9 w-9 items-center justify-center gap-3 rounded-lg border-2 border-[#1877F290] bg-blue-300">
+          <IconScanText className="text-black" />
+        </div>
         <p className="text-left font-medium ">
           Enter the text you want to translate
         </p>
@@ -93,12 +91,9 @@ export default function TextTranslate({}) {
         onChange={(e) => setText(e.target.value)}
       ></textarea>
       <div className="mb-5 flex items-center space-x-3">
-        <Image
-          src="/apps/nextjs/public/notebook.png"
-          width={30}
-          height={30}
-          alt="1 icon"
-        />
+        <div className="flex h-9 w-9 items-center justify-center gap-3 rounded-lg border-2 border-[#1877F290] bg-blue-300">
+          <IconFlag className="text-black" />
+        </div>
         <p className="text-left font-medium">Choose your Language.</p>
       </div>
 
@@ -116,7 +111,7 @@ export default function TextTranslate({}) {
 
       {!loading && (
         <button
-          className="mt-8 w-full rounded-xl bg-black px-4 py-2 font-medium text-white hover:bg-black/80 sm:mt-10"
+          className="mt-8 w-full rounded-xl bg-primary px-4 py-2 font-medium text-white hover:bg-primary/80 sm:mt-10"
           onClick={translateText}
         >
           Translate &rarr;
@@ -124,7 +119,7 @@ export default function TextTranslate({}) {
       )}
       {loading && (
         <button
-          className="mt-8 w-full rounded-xl bg-black px-4 py-2 font-medium text-white hover:bg-black/80 sm:mt-10"
+          className="mt-8 w-full rounded-xl bg-primary px-4 py-2 font-medium text-white hover:bg-primary/80 sm:mt-10"
           disabled
         >
           <LoadingDots color="white" style="large" />
