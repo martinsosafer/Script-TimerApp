@@ -25,6 +25,7 @@ export const scripts = pgTable("script", {
     .default("OTHER"),
   name: text("name").notNull().default(""),
   script: text("script").notNull().default(""),
+  richText: text("rich_text").notNull().default(""),
   metadata: jsonb("metadata"),
   created_at: timestamp("created_at").notNull().defaultNow(),
   updated_at: timestamp("updated_at").notNull().defaultNow(),
