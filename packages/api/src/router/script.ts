@@ -32,6 +32,7 @@ export const scriptRouter = createTRPCRouter({
           id: schema.scripts.id,
           name: schema.scripts.name,
           script: schema.scripts.script,
+          rich_text: schema.scripts.rich_text,
         })
         .from(schema.scripts)
         .where(
@@ -47,6 +48,7 @@ export const scriptRouter = createTRPCRouter({
       z.object({
         name: z.string().min(1).max(100),
         script: z.string().min(1).max(10000).optional().default(""),
+        richText: z.string().min(1).max(10000).optional().default(""), // New input field for rich text
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -57,16 +59,19 @@ export const scriptRouter = createTRPCRouter({
           name: input.name,
           type: "11LABS",
           script: input.script,
+          richText: input.richText, // Save rich text content
         })
         .returning()
         .then((res) => res?.[0]);
     }),
+
   update: protectedProcedure
     .input(
       z.object({
         id: z.string().min(5),
         name: z.string().min(1).max(100).optional(),
         script: z.string().min(1).max(10000).optional(),
+        richText: z.string().min(1).max(10000).optional(), // New input field for rich text
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -75,6 +80,7 @@ export const scriptRouter = createTRPCRouter({
         .set({
           name: input.name,
           script: input.script,
+          richText: input.richText, // Update rich text content
         })
         .where(
           and(
