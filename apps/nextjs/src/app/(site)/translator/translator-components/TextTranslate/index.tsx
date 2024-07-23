@@ -24,7 +24,7 @@ export default function TextTranslate({}) {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/translator", {
+      const response = await fetch("/api/translatorText", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

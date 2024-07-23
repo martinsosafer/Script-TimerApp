@@ -16,45 +16,36 @@ export default function AudioTranslate({}) {
     undefined,
   );
 
-  const url = "https://api.openai.com/v1/audio/transcriptions";
+  const translateAudio = async () => {
+    setGeneratedTranslation("");
+    setLoading(true);
 
-  const transcribe = async () => {
     const formData = new FormData();
     if (selectedFile) {
       formData.append("file", selectedFile);
     }
-    formData.append("model", "whisper-1");
-    formData.append("response_type", "verbose_json");
-    if (language) {
-      formData.append("language", language);
-    }
-    const apiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
+    formData.append("language", language);
 
-    if (!apiKey) {
-      console.error("OpenAI API Key is missing.");
-      return;
-    }
-    const headers = new Headers();
-
-    headers.append("Authorization", `Bearer ${apiKey}`);
-    return fetch(url, {
-      method: "POST",
-      body: formData,
-      headers: headers,
-    })
-      .then((response) => response.json())
-      .catch((error) => {
-        console.error(error);
+    try {
+      const response = await fetch("/api/translatorAudio", {
+        method: "POST",
+        body: formData,
       });
-  };
 
-  const translateAudio = async () => {
-    setGeneratedTranslation("");
-    setLoading(true);
-    const transcribed = await transcribe();
-    console.log("transcription", transcribed.text);
-    setGeneratedTranslation(transcribed.text);
-    setLoading(false);
+      const data = await response.json();
+
+      if (data.success) {
+        setGeneratedTranslation(data.data.text);
+      } else {
+        console.error("Error transcribing audio:", data.error);
+        toast({ title: "Error transcribing audio", description: data.error });
+      }
+    } catch (error) {
+      console.error("Error transcribing audio:", error);
+      toast({ title: "Error transcribing audio", description: error.message });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
