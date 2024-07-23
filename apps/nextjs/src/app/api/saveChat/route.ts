@@ -33,8 +33,6 @@ export async function POST(req: Request): Promise<Response> {
       messages: messages,
     };
 
-    console.log("dbPayload", dbPayload);
-
     await kv.hmset(`newChat:${id}`, dbPayload);
 
     await kv.zadd(`user:newChat:${userId}`, {
