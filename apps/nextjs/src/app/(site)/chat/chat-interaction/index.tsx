@@ -1,9 +1,14 @@
 "use client";
 
+import type { FormEvent } from "react";
 import { useEffect, useState } from "react";
+import type { CoreMessage } from "ai";
+import { readStreamableValue } from "ai/rsc";
 
 import type { Prompt } from "~/app/(site)/data/chat-prompts/types";
 import { clearChats } from "~/app/actions/newChatActions";
+import { nanoid } from "~/utils/helpers";
+import { continueConversation } from "../../../actions/aiActions";
 import ClearChatHistoryModal from "../../components/modals/clear-chat-history";
 import EditChatSubjectModal from "../../components/modals/edit-chat-subject";
 import NoSessionModal from "../../components/modals/no-session-modal";
@@ -13,6 +18,7 @@ import PromptInput from "./prompt-input";
 import Prompter from "./prompter";
 import PromptsSelector from "./promptSelector";
 import type { Chat, ChatMessage } from "./types";
+import { getChatHistory } from "./utils";
 import WelcomeMessage from "./welcome-message/welcome-message";
 
 interface ChatProps {
@@ -28,6 +34,8 @@ export default function ChatInteraction({ userId }: ChatProps) {
     Chat | undefined
   >(undefined);
 
+  const [feedbackChatId, setFeedbackChatId] = useState<string | undefined>();
+
   const [noSessionModalOpen, setNoSessionModalOpen] = useState<boolean>(false);
 
   const [isDeletingHistory, setIsDeletingHistory] = useState<boolean>(false);
@@ -35,11 +43,7 @@ export default function ChatInteraction({ userId }: ChatProps) {
   const [isEditingChatSubject, setIsEditingChatSubject] =
     useState<boolean>(false);
 
-  const [feedbackInput, setFeedbackInput] = useState<string>("");
-
-  const [assistansResponse, setAssistantsResponse] = useState<
-    ChatMessage | undefined
-  >(undefined);
+  const [feedbackInput, setFeedbackInput] = useState<string | undefined>();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -47,75 +51,53 @@ export default function ChatInteraction({ userId }: ChatProps) {
     setPromptInput("");
     setMessages([]);
     setFeedbackInput("");
-    setAssistantsResponse(undefined);
+    setSelectedChatHistory(undefined);
+    setFeedbackChatId(undefined);
   }, [selectedCard]);
 
   useEffect(() => {
-    async function getChatHistory({ userId }: { userId: string }) {
-      try {
-        const response = await fetch("/api/chatHistory", {
-          method: "POST",
-          body: JSON.stringify({ userId }),
-        });
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = (await response.json()) as Chat[];
-        setChatHistory(data);
-        return data;
-      } catch (err) {
-        console.error(err);
-      }
-    }
     if (userId) {
-      getChatHistory({ userId });
+      getChatHistory({ userId, setChatHistory });
     }
   }, [userId, isLoading]);
 
-  async function handleSubmit(isFeedback = false) {
+  async function handleSubmitChat(e: FormEvent, chatId?: string) {
     setIsLoading(true);
-    const requestBody = {
-      id: null,
-      title: selectedCard?.name,
-      prevMessages: null,
-      messages: [
-        {
-          role: "user",
-          content: `${selectedCard?.prompt_ai}\n ${promptInput}`,
-        },
-      ],
-    };
-
     try {
-      const response = await fetch("/api/newChat", {
-        method: "POST",
-        body: JSON.stringify(
-          isFeedback
-            ? {
-                id: selectedChatHistory?.id ?? "",
-                title: selectedChatHistory?.title,
-                prevMessages: messages,
-                messages: [
-                  assistansResponse,
-                  { role: "user", content: feedbackInput },
-                ],
-              }
-            : requestBody,
-        ),
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = (await response.json()) as Chat;
-      setMessages(
-        isFeedback
-          ? data.messages
-          : ([{ role: "user", content: promptInput }].concat(
-              data.messages,
-            ) as ChatMessage[]),
+      e.preventDefault();
+
+      const newMessages: CoreMessage[] = [
+        ...messages,
+        {
+          content: selectedCard?.prompt_ai ?? "",
+          role: "system",
+        },
+        {
+          content: feedbackInput.length > 0 ? feedbackInput : promptInput,
+          role: "user",
+        },
+      ];
+
+      setMessages(newMessages);
+      setPromptInput("");
+      setFeedbackInput("");
+      setSelectedCard(undefined);
+
+      const { value } = await continueConversation(
+        newMessages,
+        selectedChatHistory,
+        feedbackChatId ?? chatId,
       );
-      setSelectedChatHistory(data);
-      setAssistantsResponse(data.messages[data.messages?.length - 1]);
+
+      for await (const content of readStreamableValue(value)) {
+        setMessages([
+          ...newMessages,
+          {
+            role: "assistant",
+            content: content!,
+          },
+        ]);
+      }
       setIsLoading(false);
     } catch (err) {
       console.error(err);
@@ -133,9 +115,14 @@ export default function ChatInteraction({ userId }: ChatProps) {
       <PromptInput
         value={promptInput}
         onChange={setPromptInput}
-        onSubmit={() => handleSubmit()}
+        onSubmit={async (e) => {
+          const chatId = feedbackChatId ?? nanoid();
+          await handleSubmitChat(e, chatId);
+          await getChatHistory({ userId, setChatHistory });
+          setFeedbackChatId(chatId);
+        }}
         loadingMessages={isLoading}
-        isEnabled={Boolean(selectedCard)}
+        isEnabled={Boolean(selectedCard) && promptInput.length > 0}
         setOpenMopdal={() => setNoSessionModalOpen(true)}
         userId={userId}
       />
@@ -146,11 +133,13 @@ export default function ChatInteraction({ userId }: ChatProps) {
         feedbackInput={feedbackInput}
         setFeedbackInput={setFeedbackInput}
         setMessages={setMessages}
-        handleSubmit={handleSubmit}
+        handleSubmit={async (e) => {
+          await handleSubmitChat(e);
+          await getChatHistory({ userId, setChatHistory });
+        }}
         setIsDeletingHistory={setIsDeletingHistory}
         setSelectedChatHistory={setSelectedChatHistory}
         loadingMessages={isLoading}
-        setAssistantsResponse={setAssistantsResponse}
         setIsEditingChatSubject={setIsEditingChatSubject}
       />
       <GoToOldChat />
