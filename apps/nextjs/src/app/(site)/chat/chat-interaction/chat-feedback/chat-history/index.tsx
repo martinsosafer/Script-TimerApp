@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Image from "next/image";
-import { set } from "zod";
 
 import {
   IconPencilLine,
@@ -17,7 +16,6 @@ interface ChatHistoryProps {
   onClearChatHistory: () => void;
   setSelectedChatHistory: (arg: Chat | undefined) => void;
   setChatHistory: (value: Chat[]) => void;
-  setAssistantsResponse: (value: ChatMessage | undefined) => void;
   setIsEditingChatSubject: (arg: boolean) => void;
 }
 
@@ -27,7 +25,6 @@ export default function ChatHistory({
   onClearChatHistory,
   setSelectedChatHistory,
   setChatHistory,
-  setAssistantsResponse,
   setIsEditingChatSubject,
 }: ChatHistoryProps) {
   const noChatHistory = chatHistory?.length === 0;
@@ -60,9 +57,6 @@ export default function ChatHistory({
                         tabIndex={0}
                         onClick={() => {
                           setSelectedChatHistory(item);
-                          setAssistantsResponse(
-                            item.messages[item.messages.length - 1],
-                          );
                           setMessages(item.messages);
                         }}
                         onKeyDown={(e) => {
