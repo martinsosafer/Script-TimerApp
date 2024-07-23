@@ -40,7 +40,6 @@ const FavoriteVoiceCards: React.FC<FavoriteVoiceCardsProps> = ({
   const [selectedVoiceId, setSelectedVoiceId] = React.useState<string | null>(
     null,
   );
-  console.log("FavoriteVoices", favoriteVoices);
 
   const { mutateAsync: favoriteVoice, error } =
     api.voice.favoriteVoice.useMutation({
@@ -168,10 +167,7 @@ const FavoriteVoiceCards: React.FC<FavoriteVoiceCardsProps> = ({
                 if (isPlaying[voice.id]) {
                   stopAudio(voice.id);
                 } else {
-                  playAudio(
-                    (voice?.metadata?.preview_url as string) ?? "",
-                    voice.id,
-                  );
+                  playAudio(voice?.metadata?.preview_url! ?? "", voice.id);
                 }
               }}
             >

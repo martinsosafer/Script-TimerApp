@@ -13,7 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@voiceai/ui/@/components/ui/dialog";
-import { EditIcon, Icons, IconTrash } from "@voiceai/ui/@/components/ui/icons";
+import { EditIcon, Icons } from "@voiceai/ui/@/components/ui/icons";
 import { Input } from "@voiceai/ui/@/components/ui/input";
 import { Label } from "@voiceai/ui/@/components/ui/label";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
@@ -24,8 +24,13 @@ import { api } from "~/utils/api";
 interface SaveScriptProps {
   script: string;
   subData: string | undefined;
+  richContent: string;
 }
-export function SaveScript({ script = "", subData }: SaveScriptProps) {
+export function SaveScript({
+  script = "",
+  richContent = "",
+  subData,
+}: SaveScriptProps) {
   const router = useRouter();
 
   const [open, setOpen] = React.useState(false);
@@ -54,7 +59,7 @@ export function SaveScript({ script = "", subData }: SaveScriptProps) {
         setLoading(false);
         setOpen(false);
 
-        router.push(`/texttospeech/${data?.id}`, { scroll: false });
+        router.push(`/texttovoice/${data?.id}`, { scroll: false });
       },
       onError(error) {
         setLoading(false);
@@ -142,10 +147,13 @@ export function SaveScript({ script = "", subData }: SaveScriptProps) {
                         id: scriptDetails.id,
                         name: name,
                         script: script,
+                        richText: richContent,
                       })
                     : await createScript({
                         name: name,
                         script: script.length > 1 ? script : undefined,
+                        richText:
+                          richContent.length > 1 ? richContent : undefined,
                       });
                   setLoading(false);
                 } catch {}

@@ -50,6 +50,8 @@ interface TextEditorProps {
   updatedContent?: string;
   scriptLoaded: boolean;
   script: string;
+  richContent: string;
+  setRichContent: (content: string) => void;
   isSubscriptionActive?: boolean;
   subData: SubscriptionData | null | undefined;
 }
@@ -69,8 +71,9 @@ function TextEditor({
   scriptLoaded,
   script,
   subData,
+  richContent,
+  setRichContent,
 }: TextEditorProps) {
-  console.log("SUBDATA", subData?.status);
   const [charCount, setCharCount] = useState(0);
   const [showCharCount, setShowCharCount] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -101,14 +104,15 @@ function TextEditor({
         CharacterCount.configure({}),
         Placeholder.configure({
           emptyEditorClass: "is-editor-empty",
-          placeholder: scriptLoaded
-            ? ""
-            : "1. Add your script here\n2. Choose the voice actor you like\n3. You can quickly check spelling and grammar",
+          placeholder:
+            scriptLoaded && scriptDetails?.rich_text
+              ? ""
+              : "1. Add your script here\n2. Choose the voice actor you like\n3. You can quickly check spelling and grammar",
         }),
       ],
       [scriptLoaded],
     ),
-    content: localContent,
+    content: richContent,
     editorProps: {
       attributes: {
         class:
@@ -124,23 +128,33 @@ function TextEditor({
         setLocalContent(text);
         setCharCount(text.length);
 
+        const htmlContent = editor.getHTML();
+        setRichContent(htmlContent);
         // Throttle or debounce onChange calls here
+        console.log("Plain Text Content:", text);
+        console.log("Rich Text Content (HTML):", htmlContent);
         const handleUpdate = () => onChange(text);
         const debounceUpdate = debounce(handleUpdate, 300); // Adjust the debounce delay as needed
         debounceUpdate();
       },
-      [onChange],
+      [onChange, setRichContent],
     ),
   })!;
 
   useEffect(() => {
-    if (scriptDetails && editor) {
-      editor.commands.setContent(scriptDetails.script);
+    if (editor) {
+      if (scriptDetails?.rich_text) {
+        console.log("Setting editor content:", scriptDetails.rich_text);
+        editor.commands.setContent(scriptDetails.rich_text);
+      } else {
+        console.log("No script content found, setting editor to empty string");
+        editor.commands.setContent(""); // Set content to empty to trigger the placeholder
+      }
     }
   }, [scriptDetails, editor]);
-
   useEffect(() => {
     if (editor && updatedContent) {
+      console.log("Updating content with updatedContent:", updatedContent);
       editor.commands.setContent(updatedContent);
     }
   }, [updatedContent, editor]);

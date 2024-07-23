@@ -83,6 +83,7 @@ export function ScriptAI({
 
   // Script AI parameters
   const [script, setScript] = React.useState("");
+  const [richContent, setRichContent] = React.useState("");
   const [selectedModel, setSelectedModel] = React.useState(null);
   const [similarity, setSimilarity] = React.useState([0.8]);
   const [stability, setStability] = React.useState([0.5]);
@@ -424,7 +425,7 @@ export function ScriptAI({
                   <div className="ml-auto flex w-full space-x-2 sm:justify-end ">
                     <Tooltip>
                       <TooltipTrigger>
-                        <Link href="/texttospeech">
+                        <Link href="/texttovoice">
                           <Button
                             type="button"
                             size="sm"
@@ -449,6 +450,7 @@ export function ScriptAI({
                           <SaveScript
                             script={script}
                             subData={subData?.status}
+                            richContent={richContent}
                           />
                         </button>
                       </TooltipTrigger>
@@ -587,6 +589,10 @@ export function ScriptAI({
                         onChange={handleEditorChange}
                         script={script}
                         subData={subData}
+                        richContent={richContent}
+                        setRichContent={setRichContent}
+                        scriptLoaded={true}
+                        isSubscriptionActive={true}
                       />
 
                       <div className=" mb-4 flex flex-col items-center justify-center">

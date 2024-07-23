@@ -178,7 +178,7 @@ export function Menu({ signOut }: { signOut: () => Promise<null> }) {
         <MenubarTrigger>Services</MenubarTrigger>
         <MenubarContent>
           <MenubarItem asChild>
-            <Link href={`/texttospeech`} className="flex items-center">
+            <Link href={`/texttovoice`} className="flex items-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
