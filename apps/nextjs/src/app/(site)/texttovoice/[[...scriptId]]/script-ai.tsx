@@ -137,45 +137,13 @@ export function ScriptAI({
   const [loading, setLoading] = React.useState(false);
   const audioRef = React.useRef<HTMLAudioElement>(null); // Ref for audio element
   const toggleAudioRef = React.useRef<HTMLButtonElement>(null); // Ref for toggle button
-
   const { mutateAsync: generateVoice, error } = api.voice.create.useMutation({
     onSuccess(data) {
-      if (data?.audio) {
-        const dataURI = `data:audio/mpeg;base64,${data.audio}`;
-        setAudio(dataURI);
-        setLoading(false);
-
-        // Trigger click on toggle button ref
-        if (toggleAudioRef.current && !error) {
-          toggleAudioRef.current.click();
-        }
-      } else {
-        setLoading(false);
-
-        // Handle error scenarios based on user plan
-        const userPlan = subData.status;
-        let errorMessage = "Please try again later";
-
-        if (userPlan === "FREE") {
-          errorMessage = "Free plan only supports up to 300 characters";
-        } else if (userPlan === "FREE_TRIAL" || userPlan === "STUDENT") {
-          errorMessage = "Your plan only supports up to 2000 characters";
-        } else if (userPlan === "CREATOR") {
-          errorMessage = "Your plan only supports up to 5000 characters";
-        } else if (userPlan === "BUSINESS") {
-          errorMessage = "Your plan only supports up to 10000 characters";
-        }
-
-        toast({
-          title: "Character Limit",
-          description: errorMessage,
-        });
-      }
+      setLoading(false);
     },
     onError(error) {
       setLoading(false);
-
-      // Handle specific error cases
+      console.log("Mutation error:", error); // Add this line
       if (error?.data?.code === "FORBIDDEN") {
         toast({
           title: "Upgrade your plan",
@@ -187,7 +155,6 @@ export function ScriptAI({
           ),
         });
       } else {
-        console.log("Error occurred:", error);
         toast({
           title: "Something went wrong",
           description: "Please try again later",
@@ -197,7 +164,7 @@ export function ScriptAI({
   });
   const [audioSource, setAudioSource] = React.useState(null);
   const [showPlayer, setShowPlayer] = React.useState(false);
-
+  const [downloadLink, setDownloadLink] = React.useState(null);
   const handleStreaming = async ({
     voice_id,
     voice_actor,
@@ -209,7 +176,6 @@ export function ScriptAI({
   }) => {
     setLoading(true);
 
-    // Character limit check based on user plan
     const charLimit = {
       FREE: 300,
       FREE_TRIAL: 2000,
@@ -234,7 +200,7 @@ export function ScriptAI({
       setLoading(false);
 
       toast({
-        title: "Character Limit",
+        title: "Character Limit Exceeded",
         description: errorMessage,
       });
 
@@ -272,6 +238,9 @@ export function ScriptAI({
       setAudioSource(objectUrl); // Set the audio source URL
       audioRef.current.src = objectUrl;
 
+      // Store audio data chunks
+      const audioChunks = [];
+
       mediaSource.addEventListener("sourceopen", async () => {
         const sourceBuffer = mediaSource.addSourceBuffer("audio/mpeg");
         const reader = responseBody.getReader();
@@ -286,6 +255,8 @@ export function ScriptAI({
               sourceBuffer.addEventListener("updateend", onBufferAppended);
               try {
                 sourceBuffer.appendBuffer(value);
+                // Push chunk to audioChunks
+                audioChunks.push(value);
               } catch (error) {
                 reject(error);
               }
@@ -295,13 +266,15 @@ export function ScriptAI({
           while (true) {
             const { done, value } = await reader.read();
             if (done) {
-              if (!sourceBuffer.updating) {
+              if (!sourceBuffer.updating && mediaSource.readyState === "open") {
                 mediaSource.endOfStream();
               } else {
                 sourceBuffer.addEventListener(
                   "updateend",
                   () => {
-                    mediaSource.endOfStream();
+                    if (mediaSource.readyState === "open") {
+                      mediaSource.endOfStream();
+                    }
                   },
                   { once: true },
                 );
@@ -314,13 +287,15 @@ export function ScriptAI({
 
         readStream().catch((error) => {
           console.error("Error streaming audio:", error);
-          if (!sourceBuffer.updating) {
+          if (!sourceBuffer.updating && mediaSource.readyState === "open") {
             mediaSource.endOfStream("decode");
           } else {
             sourceBuffer.addEventListener(
               "updateend",
               () => {
-                mediaSource.endOfStream("decode");
+                if (mediaSource.readyState === "open") {
+                  mediaSource.endOfStream("decode");
+                }
               },
               { once: true },
             );
@@ -334,6 +309,11 @@ export function ScriptAI({
 
       setShowPlayer(true); // Show the player when audio starts
       setLoading(false);
+
+      // Create a blob from audioChunks and set download link
+      const audioBlob = new Blob(audioChunks, { type: "audio/mpeg" });
+      const downloadUrl = URL.createObjectURL(audioBlob);
+      setDownloadLink(downloadUrl);
     } catch (error) {
       console.error("Error streaming audio:", error);
       setLoading(false);
@@ -344,6 +324,7 @@ export function ScriptAI({
       });
     }
   };
+
   const audioStyle = {
     position: "fixed",
     bottom: showPlayer ? "20px" : "-100px", // Adjust the values as needed
@@ -514,6 +495,11 @@ export function ScriptAI({
                           </Button>
                         )}
                         <audio ref={audioRef} controls style={audioStyle} />
+                        {downloadLink && (
+                          <a href={downloadLink} download="audio.mp3">
+                            Download Audio
+                          </a>
+                        )}
                         {showPlayer && (
                           <button
                             onClick={handleCloseAudio}
@@ -685,11 +671,19 @@ export function ScriptAI({
                                       ? () => setOpenFreeModal(true)
                                       : async () => {
                                           try {
+                                            await generateVoice({
+                                              voice_id: selectedModel?.id,
+                                              voice_actor: selectedModel?.name,
+                                              message: script,
+                                              stability: stability?.[0],
+                                              similarity: similarity?.[0],
+                                            });
                                             await handleStreaming({
                                               voice_id:
                                                 selectedModel.external_id,
                                               voice_actor: selectedModel.name,
                                               message: script,
+                                              userPlan: subData.status,
                                               stability: stability[0],
                                               similarity: similarity[0],
                                               setLoading,
@@ -711,7 +705,7 @@ export function ScriptAI({
                                     )}
                                   </div>
                                   <span className="relative z-10">
-                                    {loading ? "" : "Stream"}
+                                    {loading ? "" : "Create"}
                                   </span>
                                 </CustomButton>
                               </div>
@@ -719,65 +713,6 @@ export function ScriptAI({
                             <HoverCardContent
                               className="w-[320px] text-sm"
                               side="left"
-                            >
-                              Get the audio live
-                            </HoverCardContent>
-                          </HoverCard>
-                          <HoverCard openDelay={200}>
-                            <HoverCardTrigger asChild>
-                              <div>
-                                <CustomButton
-                                  type="secondary"
-                                  onClick={
-                                    !subData
-                                      ? () => setOpenFreeModal(true)
-                                      : async () => {
-                                          setShowPlayer(false);
-                                          handleCloseAudio();
-                                          setLoading(true);
-                                          setWaitModal(false); // Reset modal state before checking again
-                                          if (isScriptLongEnough(script)) {
-                                            setWaitModal(true); // Show modal only if script is long enough
-                                          }
-                                          try {
-                                            await generateVoice({
-                                              voice_id: selectedModel?.id,
-                                              voice_actor: selectedModel?.name,
-                                              message: script,
-                                              stability: stability?.[0],
-                                              similarity: similarity?.[0],
-                                            });
-                                            setLoading(false);
-                                            setWaitModal(false); // Hide modal when voice generation finishes
-                                          } catch {
-                                            setWaitModal(false); // Hide modal on error
-                                          }
-                                        }
-                                  }
-                                >
-                                  <div className="flex items-center">
-                                    {loading && (
-                                      <div className="absolute inset-0 flex items-center justify-center">
-                                        {" "}
-                                        {/* Center the spinner */}
-                                        <Icons.spinner className="h-4 w-4 animate-spin" />
-                                      </div>
-                                    )}
-                                  </div>
-                                  <span className="relative z-10">
-                                    {loading ? "" : "Create"}
-                                  </span>
-                                </CustomButton>
-                                {/* New Streaming Button */}
-                              </div>
-                            </HoverCardTrigger>
-                            <VoiceCreationModal
-                              isVisible={showWaitModal}
-                              onClose={handleCloseWaitModal}
-                            />
-                            <HoverCardContent
-                              className="w-[320px] text-sm"
-                              side="right"
                             >
                               Press create after your script is above and your
                               voice actor is chosen

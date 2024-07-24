@@ -22,9 +22,9 @@ export const generations = pgTable("generation", {
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   type: generationType("generation_type").notNull().default("OTHER"),
-  rating: integer("rating").notNull().default(0),
+
   prompt: text("prompt").notNull(),
-  response: text("response").notNull(),
+
   metadata: jsonb("metadata"),
   created_at: timestamp("created_at").notNull().defaultNow(),
   updated_at: timestamp("updated_at").notNull().defaultNow(),
