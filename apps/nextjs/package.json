@@ -13,7 +13,7 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@ai-sdk/openai": "^0.0.13",
+    "@ai-sdk/openai": "^0.0.36",
     "@next/font": "^14.2.1",
     "@next/third-parties": "^14.2.4",
     "@segment/analytics-next": "^1.62.0",
@@ -36,12 +36,13 @@
     "@voiceai/pay": "workspace:^0.1.0",
     "@voiceai/ui": "workspace:^0.1.0",
     "add": "^2.0.6",
-    "ai": "^2.2.20",
+    "ai": "^3.1.37",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "clsx": "^2.0.0",
     "crypto-browserify": "^3.12.0",
     "docx": "^8.5.0",
+    "elevenlabs": "^0.9.1",
     "framer-motion": "^11.0.3",
     "jspdf": "^2.5.1",
     "lottie-react": "^2.4.0",

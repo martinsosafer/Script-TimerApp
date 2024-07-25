@@ -1,3 +1,4 @@
+import type { FormEvent } from "react";
 import Image from "next/image";
 
 import {
@@ -10,7 +11,7 @@ import { IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 interface PromptInputProps {
   value: string;
   onChange: (value: string) => void;
-  onSubmit: () => void;
+  onSubmit: (e: FormEvent<HTMLFormElement>) => void;
   loadingMessages: boolean;
   isEnabled: boolean;
   setOpenMopdal: () => void;
@@ -28,10 +29,11 @@ export default function PromptInput({
 }: PromptInputProps) {
   return (
     <div className="flex w-full flex-col items-center">
-      <div className="mt-4 flex w-full items-center gap-4 rounded-md border border-gray-400 bg-white p-3">
+      <form
+        onSubmit={(e) => onSubmit(e)}
+        className="mt-4 flex w-full items-center gap-4 rounded-md border border-gray-400 bg-white p-3"
+      >
         <textarea
-          name=""
-          id=""
           placeholder="Topic, Audience, Goals, Problems solved, or current script.  I will help you improve it."
           className="w-full resize-none p-4 outline-none placeholder:text-lg"
           rows={6}
@@ -43,7 +45,10 @@ export default function PromptInput({
             <button
               className={`flex h-8 w-8 items-center justify-center rounded-md ${isEnabled ? "bg-[#0066FF]" : "bg-gray-400"}  p-2`}
               disabled={!isEnabled}
-              onClick={userId ? () => onSubmit() : setOpenMopdal}
+              type="submit"
+              onClick={() => {
+                userId ? null : setOpenMopdal();
+              }}
             >
               {loadingMessages ? (
                 <IconSpinner className="animate-spin text-white" />
@@ -65,7 +70,7 @@ export default function PromptInput({
             </HoverCardContent>
           )}
         </HoverCard>
-      </div>
+      </form>
     </div>
   );
 }

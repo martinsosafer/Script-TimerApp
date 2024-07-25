@@ -57,7 +57,7 @@ const DeleteButton = ({ scriptId }) => {
         description: "Your script has been deleted",
       });
 
-      router.push("/texttospeech");
+      router.push("/texttovoice");
     },
 
     onError(error) {
@@ -164,7 +164,7 @@ export function ScriptSelector({ ...props }: ScriptSelectorProps) {
                   variant="invisible"
                   key={script.id}
                   onClick={() => {
-                    router.push(`/texttospeech/${script.id}`, {
+                    router.push(`/texttovoice/${script.id}`, {
                       scroll: false,
                     });
 

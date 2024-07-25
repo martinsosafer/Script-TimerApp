@@ -12,7 +12,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "ai": "^2.2.20",
+    "ai": "^3.1.37",
     "langchain": "^0.0.180",
     "zod": "^3.22.2"
   },

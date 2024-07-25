@@ -1,3 +1,5 @@
+import type { FormEvent } from "react";
+
 import type { Chat, ChatMessage } from "../types";
 import ChatHistory from "./chat-history";
 import Feedback from "./feedback";
@@ -5,15 +7,15 @@ import Feedback from "./feedback";
 interface ChatFeedbackProps {
   chat: ChatMessage[];
   chatHistory: Chat[];
-  feedbackInput: string;
+  feedbackInput: string | undefined;
   setFeedbackInput: (value: string) => void;
   setMessages: (value: ChatMessage[]) => void;
-  handleSubmit: (arg?: boolean) => void;
+  handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
   setIsDeletingHistory: (arg: boolean) => void;
   setSelectedChatHistory: (arg: Chat | undefined) => void;
   loadingMessages: boolean;
   setChatHistory: (value: Chat[]) => void;
-  setAssistantsResponse: (value: ChatMessage | undefined) => void;
+  setIsEditingChatSubject: (arg: boolean) => void;
 }
 
 export default function ChatFeedback({
@@ -27,7 +29,7 @@ export default function ChatFeedback({
   setSelectedChatHistory,
   loadingMessages,
   setChatHistory,
-  setAssistantsResponse,
+  setIsEditingChatSubject,
 }: ChatFeedbackProps) {
   return (
     <div className="mt-14 w-full">
@@ -41,7 +43,7 @@ export default function ChatFeedback({
           setMessages={setMessages}
           onClearChatHistory={() => setIsDeletingHistory(true)}
           setSelectedChatHistory={setSelectedChatHistory}
-          setAssistantsResponse={setAssistantsResponse}
+          setIsEditingChatSubject={setIsEditingChatSubject}
         />
         <Feedback
           chat={chat}

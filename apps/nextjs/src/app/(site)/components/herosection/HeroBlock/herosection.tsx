@@ -35,7 +35,7 @@ export default function HeroSection() {
             <RevealText>
               <div className="mt-8 flex justify-center gap-3">
                 <PrimaryButton onClick={TextToVoiceClick}>
-                  <Link href="/texttospeech">Text to Voice</Link>
+                  <Link href="/texttovoice">Text to Voice</Link>
                 </PrimaryButton>
                 <PrimaryButton>
                   <Link href="/chat">Script Coach</Link>
@@ -52,7 +52,7 @@ export default function HeroSection() {
           <MotionTransition className="flex items-start justify-center">
             <div className="w-full">
               <iframe
-                src="https://player.vimeo.com/video/904618003?h=e72a50f24d&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                src="https://player.vimeo.com/video/969324308?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
                 className="h-[340px] w-[520px] "
                 allow="autoplay; fullscreen; picture-in-picture"
                 title="Script-Timer Ai_ On boarding video (Short version) (1)"

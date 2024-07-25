@@ -29,6 +29,26 @@ export async function getChats(userId?: string | null) {
     return [];
   }
 }
+
+export async function editChatSubject(id: string, subject: string) {
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    return {
+      error: "Unauthorized",
+    };
+  }
+  try {
+    const payload = { title: subject };
+    await kv.hset(`newChat:${id}`, payload);
+    return payload;
+  } catch (error) {
+    return {
+      error: "Something went wrong",
+    };
+  }
+}
+
 export async function getChat(id: string, userId: string) {
   const chat = await kv.hgetall<Chat>(`chat:${id}`);
 

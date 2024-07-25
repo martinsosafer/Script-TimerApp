@@ -1653,6 +1653,68 @@ function IconEye({ className, ...props }: React.ComponentProps<"svg">) {
     </svg>
   );
 }
+
+function IconEar({ className, ...props }: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cn("h-6 w-6", className)}
+      {...props}
+    >
+      <path d="M6 8.5a6.5 6.5 0 1 1 13 0c0 6-6 6-6 10a3.5 3.5 0 1 1-7 0" />
+      <path d="M15 8.5a2.5 2.5 0 0 0-5 0v1a2 2 0 1 1 0 4" />
+    </svg>
+  );
+}
+function IconFlag({ className, ...props }: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cn("h-6 w-6", className)}
+      {...props}
+    >
+      <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
+      <line x1="4" x2="4" y1="22" y2="15" />
+    </svg>
+  );
+}
+function IconGlobe({ className, ...props }: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cn("h-6 w-6", className)}
+      {...props}
+    >
+      <circle cx="12" cy="12" r="10" />
+      <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+      <path d="M2 12h20" />
+    </svg>
+  );
+}
 export {
   IconEdit,
   IconNextChat,
@@ -1724,4 +1786,7 @@ export {
   IconCaretDown,
   IconSquareArrowUpRight,
   IconEye,
+  IconEar,
+  IconFlag,
+  IconGlobe,
 };
