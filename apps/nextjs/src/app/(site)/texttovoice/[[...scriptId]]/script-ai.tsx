@@ -3,8 +3,10 @@
 import * as React from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import ArrowDownOnSquareIcon from "@heroicons/react/24/outline/ArrowDownOnSquareIcon";
 import { CopyIcon } from "@radix-ui/react-icons";
 import { useCompletion } from "ai/react";
+import Confetti from "react-confetti";
 
 import { Badge } from "@voiceai/ui/@/components/ui/badge";
 import { Button } from "@voiceai/ui/@/components/ui/button";
@@ -16,6 +18,7 @@ import {
 import {
   CorrectDocumentIcon,
   IconCheck,
+  IconClose,
   IconPlus,
   IconRefresh,
   Icons,
@@ -82,6 +85,7 @@ export function ScriptAI({
   };
 
   // Script AI parameters
+  const [showConfetti, setShowConfetti] = React.useState(false);
   const [script, setScript] = React.useState("");
   const [richContent, setRichContent] = React.useState("");
   const [selectedModel, setSelectedModel] = React.useState(null);
@@ -189,7 +193,9 @@ export function ScriptAI({
 
       if (userPlan === "FREE") {
         errorMessage = "Free plan only supports up to 300 characters";
-      } else if (userPlan === "FREE_TRIAL" || userPlan === "STUDENT") {
+      } else if (userPlan === "FREE_TRIAL") {
+        errorMessage = "Your plan only supports up to 16000 characters";
+      } else if (userPlan === "STUDENT") {
         errorMessage = "Your plan only supports up to 2000 characters";
       } else if (userPlan === "CREATOR") {
         errorMessage = "Your plan only supports up to 5000 characters";
@@ -283,6 +289,14 @@ export function ScriptAI({
             }
             await processBuffer(value);
           }
+
+          // Create a blob from audioChunks and set download link
+          const audioBlob = new Blob(audioChunks, { type: "audio/mpeg" });
+          const downloadUrl = URL.createObjectURL(audioBlob);
+          setDownloadLink(downloadUrl);
+
+          // Audio is ready, stop loading
+          setLoading(false);
         };
 
         readStream().catch((error) => {
@@ -308,12 +322,6 @@ export function ScriptAI({
       });
 
       setShowPlayer(true); // Show the player when audio starts
-      setLoading(false);
-
-      // Create a blob from audioChunks and set download link
-      const audioBlob = new Blob(audioChunks, { type: "audio/mpeg" });
-      const downloadUrl = URL.createObjectURL(audioBlob);
-      setDownloadLink(downloadUrl);
     } catch (error) {
       console.error("Error streaming audio:", error);
       setLoading(false);
@@ -324,20 +332,43 @@ export function ScriptAI({
       });
     }
   };
-
   const audioStyle = {
     position: "fixed",
     bottom: showPlayer ? "20px" : "-100px", // Adjust the values as needed
     left: "50%",
     transform: "translateX(-50%)",
-    maxWidth: "300px",
+    maxWidth: "500px", // Make it wider
     width: "100%",
+    height: "50px", // Set a specific height
+    backgroundColor: "transparent", // Transparent to show default styles
     boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
     transition: "bottom 0.5s ease-in-out, opacity 0.5s ease-in-out",
     opacity: showPlayer ? 1 : 0,
     display: showPlayer ? "block" : "none",
     zIndex: 1000,
   };
+
+  // Inject the additional CSS directly in your component
+  const audioElementStyle = `
+  /* Style the control panel background */
+  audio::-webkit-media-controls-panel {
+    background-color: #3B82F6; /* Tailwind blue-500 */
+  }
+  
+  /* Style the play/pause, seek, and volume buttons */
+  audio::-webkit-media-controls-play-button,
+  audio::-webkit-media-controls-pause-button,
+  audio::-webkit-media-controls-seek-back-button,
+  audio::-webkit-media-controls-seek-forward-button,
+  audio::-webkit-media-controls-volume-slider {
+    color: #F97316; /* Tailwind orange-500 */
+  }
+
+  /* Style the volume slider track and thumb */
+  audio::-webkit-media-controls-volume-slider {
+    background-color: #F97316; /* Tailwind orange-500 */
+  }
+`;
 
   const handleCloseAudio = () => {
     if (audioRef.current) {
@@ -494,30 +525,73 @@ export function ScriptAI({
                             <span className="sr-only">Player</span>
                           </Button>
                         )}
+
+                        <style>{audioElementStyle}</style>
                         <audio ref={audioRef} controls style={audioStyle} />
-                        {downloadLink && (
-                          <a href={downloadLink} download="audio.mp3">
-                            Download Audio
-                          </a>
-                        )}
+
                         {showPlayer && (
-                          <button
-                            onClick={handleCloseAudio}
-                            style={{
-                              position: "fixed",
-                              bottom: "60px", // Adjust as needed
-                              left: "50%",
-                              transform: "translateX(-50%)",
-                              zIndex: 1001,
-                              padding: "10px",
-                              background: "#fff",
-                              border: "1px solid #ccc",
-                              borderRadius: "4px",
-                              boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-                            }}
-                          >
-                            Close
-                          </button>
+                          <div className="fixed bottom-[60px] left-[50%] z-[1001] flex -translate-x-1/2 transform rounded-lg bg-blue-400 p-3">
+                            <button
+                              onClick={() => {
+                                if (downloadLink && isSubscriptionActive) {
+                                  const anchor = document.createElement("a");
+                                  anchor.href = downloadLink;
+                                  anchor.download = "audio.mp3";
+                                  anchor.click();
+                                  URL.revokeObjectURL(downloadLink);
+                                  setShowConfetti(true);
+                                }
+                              }}
+                              disabled={
+                                !downloadLink ||
+                                !isSubscriptionActive ||
+                                loading
+                              }
+                              className={`mr-2 flex items-center p-2 ${
+                                downloadLink && isSubscriptionActive && !loading
+                                  ? "bg-orange-500"
+                                  : "bg-gray-300"
+                              } rounded border-none font-poppins font-bold text-white shadow-md cursor-${
+                                downloadLink && isSubscriptionActive && !loading
+                                  ? "pointer"
+                                  : "not-allowed"
+                              }`}
+                            >
+                              {loading ? (
+                                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                              ) : (
+                                <>
+                                  <ArrowDownOnSquareIcon
+                                    width={30}
+                                    className="mr-2 stroke-black"
+                                  />
+                                  Download
+                                </>
+                              )}
+                            </button>
+                            <button
+                              onClick={handleCloseAudio}
+                              className="ml-2 flex cursor-pointer items-center rounded border-none bg-orange-500 p-2 font-poppins font-bold text-white shadow-md"
+                            >
+                              <IconClose
+                                width={30}
+                                className="mr-2 stroke-black"
+                              />
+                              Close
+                            </button>
+                          </div>
+                        )}
+                        {showConfetti && (
+                          <Confetti
+                            width={window.innerWidth}
+                            height={window.innerHeight}
+                            numberOfPieces={1000}
+                            recycle={false}
+                            gravity={0.1}
+                            initialVelocityX={2}
+                            initialVelocityY={10}
+                            colors={["#0123e7", "#eb8806"]}
+                          />
                         )}
                       </TooltipTrigger>
                       <TooltipContent> Open the voice player</TooltipContent>
@@ -625,6 +699,7 @@ export function ScriptAI({
                                               .slice(0, 10)
                                               .join(" ");
                                             await handleStreaming({
+                                              userPlan: subData.status,
                                               voice_id:
                                                 selectedModel.external_id,
                                               voice_actor: selectedModel.name,
@@ -672,6 +747,7 @@ export function ScriptAI({
                                       : async () => {
                                           try {
                                             await handleStreaming({
+                                              userPlan: subData.status,
                                               voice_id:
                                                 selectedModel.external_id,
                                               voice_actor: selectedModel.name,

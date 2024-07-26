@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server";
 
-import { db, schema } from "@voiceai/db"; // Adjust the import path according to your project structure
-
-export async function POST(req) {
+export async function POST(req: { json: () => any }) {
   try {
+    console.log("Received request:", req);
     const body = await req.json();
 
     const data = {
@@ -17,7 +16,7 @@ export async function POST(req) {
     };
 
     const response = await fetch(
-      `https://api.elevenlabs.io/v1/text-to-speech/${body.voice_id}/stream`,
+      `https://api.elevenlabs.io/v1/text-to-speech/${body.voice_id}/stream`, // Hardcoded voice_id
       {
         method: "POST",
         headers: {
@@ -31,9 +30,8 @@ export async function POST(req) {
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(
-        `Failed to fetch the text-to-speech stream. Response: ${errorText}`,
-      );
+      console.error("Error response from ElevenLabs:", errorText);
+      throw new Error("Failed to fetch the text-to-speech stream.");
     }
 
     const responseBody = response.body;
@@ -42,15 +40,15 @@ export async function POST(req) {
     }
 
     const reader = responseBody.getReader();
-    const audioChunks = [];
     const stream = new ReadableStream({
       async start(controller) {
         while (true) {
           const { done, value } = await reader.read();
-          if (done) break;
+          if (done) {
+            break;
+          }
 
-          audioChunks.push(value); // Accumulate the chunks
-          controller.enqueue(value); // Stream the chunk to the client
+          controller.enqueue(value);
         }
         controller.close();
       },
@@ -59,31 +57,12 @@ export async function POST(req) {
       },
     });
 
-    // Stream the response to the client
-    const responseStream = new NextResponse(stream, {
+    return new NextResponse(stream, {
       status: 200,
       headers: {
         "Content-Type": "audio/mpeg",
       },
     });
-
-    // Wait for the stream to finish and save the accumulated audio data to the database
-    const audioBuffer = new Uint8Array(audioChunks.flat()).buffer;
-    const audioBase64 = Buffer.from(audioBuffer).toString("base64");
-
-    const generationRecord = await db
-      .insert(schema.generations)
-      .values({
-        userId: body.user_id,
-        type: "11LABS",
-        prompt: body.text,
-
-        created_at: new Date(),
-        updated_at: new Date(),
-      })
-      .execute();
-
-    return responseStream;
   } catch (e) {
     console.error("ERROR STREAMING", e);
     return new NextResponse(JSON.stringify({ error: e.message }), {
