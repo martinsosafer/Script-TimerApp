@@ -671,13 +671,6 @@ export function ScriptAI({
                                       ? () => setOpenFreeModal(true)
                                       : async () => {
                                           try {
-                                            await generateVoice({
-                                              voice_id: selectedModel?.id,
-                                              voice_actor: selectedModel?.name,
-                                              message: script,
-                                              stability: stability?.[0],
-                                              similarity: similarity?.[0],
-                                            });
                                             await handleStreaming({
                                               voice_id:
                                                 selectedModel.external_id,
@@ -688,6 +681,13 @@ export function ScriptAI({
                                               similarity: similarity[0],
                                               setLoading,
                                               audioRef,
+                                            });
+                                            await generateVoice({
+                                              voice_id: selectedModel?.id,
+                                              voice_actor: selectedModel?.name,
+                                              message: script,
+                                              stability: stability?.[0],
+                                              similarity: similarity?.[0],
                                             });
                                           } catch (e) {
                                             console.log("catcherror", e);

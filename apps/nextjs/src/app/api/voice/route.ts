@@ -4,9 +4,7 @@ import { db, schema } from "@voiceai/db"; // Adjust the import path according to
 
 export async function POST(req) {
   try {
-    console.log("Received request:", req);
     const body = await req.json();
-    console.log("Request body:", body);
 
     const data = {
       model_id: "eleven_multilingual_v2",
@@ -18,10 +16,8 @@ export async function POST(req) {
       },
     };
 
-    console.log("Data to be sent to ElevenLabs:", data);
-
     const response = await fetch(
-      `https://api.elevenlabs.io/v1/text-to-speech/${body.voice_id}/stream`, // Hardcoded voice_id
+      `https://api.elevenlabs.io/v1/text-to-speech/${body.voice_id}/stream`,
       {
         method: "POST",
         headers: {
@@ -33,14 +29,11 @@ export async function POST(req) {
       },
     );
 
-    console.log("Response from ElevenLabs:", response);
-    console.log("Response status:", response.status);
-    console.log("Response headers:", response.headers);
-
     if (!response.ok) {
       const errorText = await response.text();
-      console.error("Error response from ElevenLabs:", errorText);
-      throw new Error("Failed to fetch the text-to-speech stream.");
+      throw new Error(
+        `Failed to fetch the text-to-speech stream. Response: ${errorText}`,
+      );
     }
 
     const responseBody = response.body;
@@ -54,10 +47,8 @@ export async function POST(req) {
       async start(controller) {
         while (true) {
           const { done, value } = await reader.read();
-          if (done) {
-            break;
-          }
-          console.log("Streaming chunk:", value);
+          if (done) break;
+
           audioChunks.push(value); // Accumulate the chunks
           controller.enqueue(value); // Stream the chunk to the client
         }
@@ -68,6 +59,7 @@ export async function POST(req) {
       },
     });
 
+    // Stream the response to the client
     const responseStream = new NextResponse(stream, {
       status: 200,
       headers: {
@@ -76,9 +68,8 @@ export async function POST(req) {
     });
 
     // Wait for the stream to finish and save the accumulated audio data to the database
-    const audioArray = await new Response(stream).arrayBuffer();
-    const audioBuffer = Buffer.from(audioArray);
-    const audioBase64 = audioBuffer.toString("base64");
+    const audioBuffer = new Uint8Array(audioChunks.flat()).buffer;
+    const audioBase64 = Buffer.from(audioBuffer).toString("base64");
 
     const generationRecord = await db
       .insert(schema.generations)
@@ -86,13 +77,11 @@ export async function POST(req) {
         userId: body.user_id,
         type: "11LABS",
         prompt: body.text,
-        response: audioBase64,
+
         created_at: new Date(),
         updated_at: new Date(),
       })
       .execute();
-
-    console.log("Generation record saved:", generationRecord);
 
     return responseStream;
   } catch (e) {
