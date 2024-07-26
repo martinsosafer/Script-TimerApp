@@ -4,7 +4,6 @@ export async function POST(req: { json: () => any }) {
   try {
     console.log("Received request:", req);
     const body = await req.json();
-    console.log("Request body:", body);
 
     const data = {
       model_id: "eleven_multilingual_v2",
@@ -15,8 +14,6 @@ export async function POST(req: { json: () => any }) {
         stability: body.stability,
       },
     };
-
-    console.log("Data to be sent to ElevenLabs:", data);
 
     const response = await fetch(
       `https://api.elevenlabs.io/v1/text-to-speech/${body.voice_id}/stream`, // Hardcoded voice_id
@@ -30,10 +27,6 @@ export async function POST(req: { json: () => any }) {
         body: JSON.stringify(data),
       },
     );
-
-    console.log("Response from ElevenLabs:", response);
-    console.log("Response status:", response.status);
-    console.log("Response headers:", response.headers);
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -54,7 +47,7 @@ export async function POST(req: { json: () => any }) {
           if (done) {
             break;
           }
-          console.log("Streaming chunk:", value);
+
           controller.enqueue(value);
         }
         controller.close();
