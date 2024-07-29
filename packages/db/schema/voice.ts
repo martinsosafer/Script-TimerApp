@@ -25,7 +25,7 @@ export const voices = pgTable("voice", {
   picture: text("picture"),
   metadata: jsonb("metadata"),
   favorite: boolean("favorite").default(false),
-  custom: boolean("favorite").default(false),
+
   created_at: timestamp("created_at").notNull().defaultNow(),
   updated_at: timestamp("updated_at").notNull().defaultNow(),
 });
