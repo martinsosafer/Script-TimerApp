@@ -243,7 +243,6 @@ export const voiceRouter = createTRPCRouter({
             type: input.type ?? "OTHER",
             active: input.active ?? true,
             metadata: input.metadata ?? {},
-            rank: input.rank ?? 0,
           })
           .execute();
 

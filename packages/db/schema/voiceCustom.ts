@@ -13,7 +13,7 @@ import { pgTable } from "./_table";
 export const voiceType = pgEnum("voice_type", ["11LABS", "OTHER"]);
 export const voiceGender = pgEnum("voice_gender", ["MALE", "FEMALE", "OTHER"]);
 
-export const voices = pgTable("voice", {
+export const voicesCustom = pgTable("voiceCustom", {
   id: uuid("id").notNull().primaryKey().defaultRandom(),
   external_id: text("external_id").notNull(),
   rank: integer("rank").notNull().default(0),
@@ -24,8 +24,6 @@ export const voices = pgTable("voice", {
   description: text("description").notNull(),
   picture: text("picture"),
   metadata: jsonb("metadata"),
-  favorite: boolean("favorite").default(false),
-
   created_at: timestamp("created_at").notNull().defaultNow(),
   updated_at: timestamp("updated_at").notNull().defaultNow(),
 });
