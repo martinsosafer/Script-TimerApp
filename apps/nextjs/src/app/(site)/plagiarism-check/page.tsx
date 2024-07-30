@@ -14,7 +14,7 @@ export default async function indexPage() {
   const session = await auth();
 
   return (
-    <div>
+    <div className="w-full flex justify-center">
       <Checker userId={session?.user.id} />
     </div>
   );

@@ -12,7 +12,7 @@ interface FreeModalProps {
   subData?: SubscriptionData | null | undefined;
   openModal: boolean;
   setOpenModal: Dispatch<SetStateAction<boolean>>;
-  page: "home" | "voice" | "chat" | "courses";
+  page: "home" | "voice" | "chat" | "courses" | "plagiarism";
 }
 
 const pageMessage: Record<string, string> = {
@@ -20,6 +20,8 @@ const pageMessage: Record<string, string> = {
   voice: "Listen To Your Script by Signing In",
   chat: "Brainstorm and Create Your Scripts by Signing In",
   courses: "Learn From Experts by Signing In",
+  plagiarism:
+    "Plagiarism check across nearly every language, detect AI-generated content.",
 };
 
 export default function NoSessionModal({
