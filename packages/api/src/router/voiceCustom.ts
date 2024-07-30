@@ -27,23 +27,19 @@ export const voiceCustomRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       try {
-        // Check if the voice with the given external_id already exists
-        const existingVoice = await ctx.db.query.voicesCustom.findFirst({
-          where: { external_id: input.external_id },
-        });
-
-        if (existingVoice) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Voice with this external ID already exists.",
-          });
-        }
+        // Convert base64 string back to a file
+        const fileBuffer = Buffer.from(input.files.split(",")[1], "base64");
+        const fileName = "voice-file.wav"; // Change the file extension if necessary
 
         // Prepare form data for ElevenLabs API
         const form = new FormData();
         form.append("name", input.name);
         form.append("description", input.description);
-        form.append("files", input.files); // Assuming input.files is a path to the file
+        form.append(
+          "files",
+          new Blob([fileBuffer], { type: "audio/wav" }),
+          fileName,
+        );
         if (input.labels) {
           form.append("labels", input.labels);
         }
@@ -62,22 +58,67 @@ export const voiceCustomRouter = createTRPCRouter({
 
         const data = await response.json();
 
+        // Log the response data to check its structure
+        console.log("API Response Data:", data);
+
         if (!response.ok) {
           throw new Error(data.message || "Failed to add voice to ElevenLabs");
         }
+
+        const externalId = data.voice_id; // Ensure this is the correct field from the API response
 
         // Insert the new voice into your database
         const newVoice = await ctx.db
           .insert(schema.voicesCustom)
           .values({
+            external_id: externalId,
             name: input.name,
             description: input.description,
             picture: input.picture,
             gender: input.gender ?? "OTHER",
             type: input.type ?? "OTHER",
-            active: input.active ?? true,
+            active: input.active,
             metadata: input.metadata ?? {},
           })
+          .execute();
+
+        // Update the user's subscription with the new custom voice
+        const userId = ctx.session.user.id;
+
+        // Fetch the current subscription
+        const subscription = await ctx.db.query.subscriptions.findFirst({
+          where: eq(schema.subscriptions.userId, userId),
+        });
+
+        if (!subscription) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Subscription not found for the user",
+          });
+        }
+
+        const currentCustomVoices = subscription.custom_voices || [];
+
+        // Add the new voice to the list of custom voices
+        const updatedCustomVoices = [
+          ...currentCustomVoices,
+          {
+            id: newVoice.id, // Ensure this matches the newVoice schema
+            external_id: externalId,
+            name: input.name,
+            description: input.description,
+            picture: input.picture,
+            gender: input.gender ?? "OTHER",
+            type: input.type ?? "OTHER",
+            active: input.active,
+            metadata: input.metadata ?? {},
+          },
+        ];
+
+        await ctx.db
+          .update(schema.subscriptions)
+          .set({ custom_voices: updatedCustomVoices })
+          .where(eq(schema.subscriptions.userId, userId))
           .execute();
 
         return newVoice;
@@ -89,6 +130,32 @@ export const voiceCustomRouter = createTRPCRouter({
         });
       }
     }),
+  listAllCustomVoices: protectedProcedure.query(async ({ ctx }) => {
+    const userId = ctx.session.user.id; // Get the user ID from the session
+
+    try {
+      // Fetch the user's subscription to get the list of custom voices
+      const subscription = await ctx.db.query.subscriptions.findFirst({
+        where: eq(schema.subscriptions.userId, userId),
+      });
+
+      if (!subscription) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Subscription not found for the user",
+        });
+      }
+
+      // Return the custom voices
+      return subscription.custom_voices || [];
+    } catch (error) {
+      console.error("Error listing custom voices:", error);
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Error listing custom voices",
+      });
+    }
+  }),
   CustomVoice: protectedProcedure
     .input(
       z.object({
@@ -126,13 +193,13 @@ export const voiceCustomRouter = createTRPCRouter({
 
         // Check if the voice is already in the list of favorites
         const isAlreadyCustom = currentCustom.some(
-          (custom) => custom.external_id === voice.external_id,
+          (custom) => custom.id === voice.external_id,
         );
 
         if (isAlreadyCustom) {
           // Remove the voice from favorites and set the favorite boolean to null
           const updatedCustom = currentCustom.filter(
-            (custom) => custom.external_id !== voice.external_id,
+            (custom) => custom.id !== voice.id,
           );
 
           await ctx.db

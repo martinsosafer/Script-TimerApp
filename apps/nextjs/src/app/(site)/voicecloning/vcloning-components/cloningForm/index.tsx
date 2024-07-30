@@ -68,36 +68,38 @@ export default function VoiceCloningForm() {
     e.preventDefault();
     setLoading(true);
 
-    const submissionData = new FormData();
-    submissionData.append("name", formData.name);
-    submissionData.append("description", formData.description);
-    if (formData.picture) {
-      submissionData.append("picture", formData.picture);
-    }
-    if (formData.file) {
-      submissionData.append("files", formData.file);
-    }
-    submissionData.append("gender", formData.gender);
-    submissionData.append("type", formData.type);
-    submissionData.append("active", formData.active.toString());
-    submissionData.append("metadata", JSON.stringify(formData.metadata));
-
-    try {
-      await newCustomVoice({
-        name: formData.name,
-        description: formData.description,
-        files: formData.file,
-        picture: formData.picture,
-        gender: formData.gender,
-        type: formData.type,
-        active: formData.active,
-        metadata: formData.metadata,
-      });
-    } catch (error) {
-      console.error("Error creating voice", error);
-    } finally {
+    if (!formData.file) {
+      alert("Please select a file");
       setLoading(false);
+      return;
     }
+
+    const reader = new FileReader();
+    reader.readAsDataURL(formData.file);
+    reader.onloadend = async () => {
+      const base64String = reader.result;
+
+      try {
+        await newCustomVoice({
+          name: formData.name,
+          description: formData.description,
+          files: base64String, // Send base64 string to the backend
+          picture: formData.picture,
+          gender: formData.gender,
+          type: formData.type,
+          active: formData.active,
+          metadata: formData.metadata,
+        });
+      } catch (error) {
+        console.error("Error creating voice", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    reader.onerror = () => {
+      console.error("Error reading file");
+      setLoading(false);
+    };
   };
 
   return (
