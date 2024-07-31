@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import {
   IconAudioLines,
+  IconClone,
   IconFileType,
   IconHistory,
   IconLibraryBig,
@@ -72,6 +73,24 @@ export default function TextToVoiceNavItem() {
                     </Link>
                   </li>
                   <li>
+                    <li className="flex items-center">
+                      <Link
+                        href={`/voicecloning`}
+                        className="-mx-2 block rounded-lg p-2 font-semibold text-gray-800 transition duration-300 ease-in-out hover:bg-gradient-to-br hover:from-indigo-200 hover:via-blue-200 hover:to-orange-200 hover:text-indigo-600 dark:text-secondary-foreground dark:hover:bg-gradient-to-br dark:hover:from-gray-800 dark:hover:via-gray-700 dark:hover:to-gray-600 dark:hover:text-indigo-600"
+                      >
+                        <div className="flex items-center ">
+                          {" "}
+                          {/* Envuelve el icono y el texto en un div flex */}
+                          <span>
+                            <IconClone />
+                          </span>
+                          <span className="ml-1 ">Voice Clonning</span>
+                        </div>
+                        <p className="font-normal text-gray-500">
+                          Give us an audio and we will create a voice for you
+                        </p>
+                      </Link>
+                    </li>
                     <Link
                       href={`/history`}
                       className="-mx-2 block rounded-lg p-2 font-semibold text-gray-800 transition duration-300 ease-in-out hover:bg-gradient-to-br hover:from-indigo-200 hover:via-blue-200 hover:to-orange-200 hover:text-indigo-600 dark:text-secondary-foreground dark:hover:bg-gradient-to-br dark:hover:from-gray-800 dark:hover:via-gray-700 dark:hover:to-gray-600 dark:hover:text-indigo-600"
