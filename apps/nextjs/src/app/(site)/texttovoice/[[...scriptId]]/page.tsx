@@ -12,6 +12,7 @@ export const metadata: Metadata = {
 
 export default async function ScriptPage() {
   const session = await auth();
+
   const subData = session?.user.subscription;
 
   return (
