@@ -6,8 +6,8 @@ import { auth, signIn } from "@voiceai/auth";
 import { cn } from "@voiceai/ui/@/lib/utils";
 
 import coverImg from "../../../public/login_photo.png";
+import { LoginWithEmailForm } from "./email-login";
 import LoginForm from "./form-login";
-import { LoginWithEmailForm } from "./signin-button";
 
 export default async function SignIn() {
   const session = await auth();
