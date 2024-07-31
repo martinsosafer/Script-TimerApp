@@ -7,6 +7,7 @@ import { IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 import NoSessionModal from "../../components/modals/no-session-modal";
+import { transformResults } from "./utils";
 import WelcomeMessage from "./welcome-message";
 
 interface CheckerProps {
@@ -14,7 +15,8 @@ interface CheckerProps {
 }
 
 interface CheckResult {
-  results: { probability: number }[];
+  results: { probability: number; classification: number }[];
+  summary: { ai: number };
 }
 
 export default function Checker({ userId }: CheckerProps) {
@@ -22,13 +24,19 @@ export default function Checker({ userId }: CheckerProps) {
   const [aiCheck, setAiCheck] = useState(true);
   const [loading, setLoading] = useState(false);
 
+  const [text, setText] = useState<string>("");
+
   const [noSessionModalOpen, setNoSessionModalOpen] = useState<boolean>(false);
 
   async function handleCheck(e: FormEvent) {
-    setLoading(true);
     e.preventDefault();
+    if (checkResult) {
+      return setCheckResult(null);
+    }
+    setLoading(true);
     const data = new FormData(e.target as HTMLFormElement);
     const text = data.get("textarea") as string;
+    setText(text);
 
     if (text.length < 350) {
       toast({
@@ -48,8 +56,6 @@ export default function Checker({ userId }: CheckerProps) {
         });
 
         const result = await response.json();
-
-        console.log("RESULT", result);
 
         setCheckResult(result);
       } catch (error) {
@@ -97,29 +103,36 @@ export default function Checker({ userId }: CheckerProps) {
             }
             className="flex w-[75%] flex-col items-end gap-2"
           >
-            <div className="w-full rounded-sm border-2 border-gray-300 p-4">
-              <textarea
-                name="textarea"
-                rows={20}
-                placeholder="Enter text here..."
-                className=" w-full outline-none placeholder:text-lg"
-              />
+            <div className="min-h-[500px] w-full rounded-sm border-2 border-gray-300 p-4">
+              {checkResult ? (
+                <div>
+                  {transformResults({
+                    originalText: text,
+                    results: checkResult.results,
+                  })}
+                </div>
+              ) : (
+                <textarea
+                  name="textarea"
+                  rows={20}
+                  placeholder="Enter text here..."
+                  className=" w-full outline-none placeholder:text-lg"
+                />
+              )}
             </div>
             <div className="flex w-full justify-end gap-2">
               {checkResult && (
                 <div className="flex w-full flex-col rounded-md border-2 border-gray-300 p-2">
                   <div className="flex justify-between">
                     <span>AI Content</span>
-                    <span>
-                      {generatePercentage(
-                        checkResult?.results[0]?.probability ?? 0,
-                      )}
-                      %
-                    </span>
+                    <span>{generatePercentage(checkResult?.summary.ai)}%</span>
                   </div>
                   <div className="flex h-3 min-w-full justify-start overflow-hidden rounded-full bg-gray-400">
                     <div
-                      className={`${generatePercentage(checkResult?.results[0]?.probability ?? 0, true)} bg-primary`}
+                      className={`${generatePercentage(
+                        checkResult?.summary.ai,
+                        true,
+                      )} bg-primary`}
                     />
                   </div>
                 </div>
@@ -131,6 +144,8 @@ export default function Checker({ userId }: CheckerProps) {
               >
                 {loading ? (
                   <IconSpinner className="h-6 w-6 animate-spin" />
+                ) : checkResult ? (
+                  "New Scan"
                 ) : (
                   "Scan"
                 )}
