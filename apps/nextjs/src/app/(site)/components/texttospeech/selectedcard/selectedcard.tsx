@@ -8,13 +8,17 @@ const SelectedModelCard = ({ selectedModel }) => {
       <div className="flex items-center p-1 ">
         <div className="mr-2  h-7 w-7 flex-shrink-0 overflow-hidden rounded-full">
           {selectedModel ? (
-            <img
-              src={selectedModel.picture}
-              alt={selectedModel.name}
-              className="h-full w-full object-cover"
-            />
+            selectedModel.picture ? (
+              <img
+                src={selectedModel.picture}
+                alt={selectedModel.name}
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <IconUserRound className="h-full w-full object-cover text-primary" />
+            )
           ) : (
-            <IconUserRound className="h-8 w-8 object-cover" />
+            <IconUserRound className="h-full w-full object-cover text-primary" />
           )}
         </div>
 
@@ -25,7 +29,7 @@ const SelectedModelCard = ({ selectedModel }) => {
 
           {selectedModel && (
             <p className="text-xs text-gray-500 dark:text-slate-100">
-              {selectedModel.metadata?.labels.gender ?? "Unknown"}
+              {selectedModel.metadata?.labels.gender ?? "OTHER"}
             </p>
           )}
         </div>

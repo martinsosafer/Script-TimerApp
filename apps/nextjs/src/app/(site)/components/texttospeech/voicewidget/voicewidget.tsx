@@ -7,6 +7,7 @@ import {
 } from "@voiceai/ui/@/components/ui/icons";
 
 import { api } from "~/utils/api";
+import CustomVoiceCards from "../customvoicecard/customvoicecard";
 import FavoriteVoiceCards from "../favoritevoicescard/favoritevoicescard";
 import VoiceCards from "../voicecards/voicecards";
 
@@ -24,7 +25,7 @@ function VoiceWidget({
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState(null);
   const [showFavorites, setShowFavorites] = useState(false);
-
+  const [showCustom, setShowCustom] = useState(false);
   const pageSize = 8;
 
   const filteredVoices = allVoices?.filter((voice) => {
@@ -78,6 +79,7 @@ function VoiceWidget({
 
   const handleMaleFilterChange = () => {
     setShowFavorites(false);
+    setShowCustom(false);
     setFilter("MALE");
     setCurrentPage(1);
     setCurrentFavPage(1);
@@ -86,6 +88,7 @@ function VoiceWidget({
 
   const handleFemaleFilterChange = () => {
     setShowFavorites(false);
+    setShowCustom(false);
     setFilter("FEMALE");
     setCurrentPage(1);
     setCurrentFavPage(1);
@@ -94,6 +97,7 @@ function VoiceWidget({
 
   const handleShowAll = () => {
     setShowFavorites(false);
+    setShowCustom(false);
     setSearchQuery("");
     setFilter(null);
     setCurrentPage(1);
@@ -102,12 +106,19 @@ function VoiceWidget({
 
   const handleShowFavorites = () => {
     setShowFavorites(true);
+    setShowCustom(false);
     setCurrentPage(1);
     setCurrentFavPage(1);
     setSearchQuery("");
     setFilter(null);
   };
+  const handleShowCustom = () => {
+    setShowCustom(true);
+    setCurrentPage(1);
 
+    setSearchQuery("");
+    setFilter(null);
+  };
   const renderPagination = (currentPage, totalPages, onPageChange) => {
     const pageNumbers = [];
     const maxButtons = 4;
@@ -177,9 +188,9 @@ function VoiceWidget({
 
       <hr className="my-4 border-gray-300" />
 
-      <div className="mb-4 space-x-2">
+      <div className="mb-4 flex space-x-2">
         <button
-          className="rounded-md border border-gray-300 bg-white px-4 py-2 focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground"
+          className="rounded-md border border-gray-300 bg-white px-2 py-2 focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground"
           onClick={handleShowAll}
         >
           All
@@ -193,7 +204,7 @@ function VoiceWidget({
           Male
         </button>
         <button
-          className={`rounded-md border border-gray-300 bg-white px-4 py-2 focus:outline-none focus:ring focus:ring-blue-400  dark:bg-slate-500 dark:text-secondary-foreground ${
+          className={`rounded-md border border-gray-300 bg-white px-2 py-2 focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground ${
             filter === "FEMALE" ? "bg-blue-300 text-primary" : ""
           }`}
           onClick={handleFemaleFilterChange}
@@ -201,12 +212,20 @@ function VoiceWidget({
           Female
         </button>
         <button
-          className={`rounded-md border border-gray-300 bg-white px-4 py-2 focus:outline-none focus:ring focus:ring-blue-400  dark:bg-slate-500 dark:text-secondary-foreground ${
+          className={`rounded-md border border-gray-300 bg-white px-2 py-2 focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground ${
             showFavorites ? "bg-blue-300 text-primary" : ""
           }`}
           onClick={handleShowFavorites}
         >
           Favorites
+        </button>
+        <button
+          className={`rounded-md border border-gray-300 bg-white px-2 py-2 focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground ${
+            showCustom ? "bg-blue-300 text-primary" : ""
+          }`}
+          onClick={handleShowCustom}
+        >
+          Custom
         </button>
       </div>
 
@@ -225,6 +244,11 @@ function VoiceWidget({
               handleFavPageChange,
             )}
           </div>
+        </div>
+      ) : showCustom ? (
+        <div>
+          <CustomVoiceCards onModelSelect={onModelSelect} />
+          <div className="mt-4"></div>
         </div>
       ) : (
         <div>

@@ -26,11 +26,6 @@ export default function VoiceCloningForm() {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    picture: "",
-    gender: "OTHER",
-    type: "OTHER",
-    active: true,
-    metadata: {},
     file: undefined,
   });
 
@@ -38,15 +33,7 @@ export default function VoiceCloningForm() {
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
-    let newValue = type === "checkbox" ? e.target.checked : value;
-
-    if (name === "metadata") {
-      try {
-        newValue = JSON.parse(newValue);
-      } catch (error) {
-        console.error("Error parsing metadata JSON:", error);
-      }
-    }
+    const newValue = type === "checkbox" ? e.target.checked : value;
 
     setFormData((prevData) => ({
       ...prevData,
@@ -84,11 +71,8 @@ export default function VoiceCloningForm() {
           name: formData.name,
           description: formData.description,
           files: base64String, // Send base64 string to the backend
-          picture: formData.picture,
-          gender: formData.gender,
-          type: formData.type,
-          active: formData.active,
-          metadata: formData.metadata,
+          type: "11LABS", // Automatically set type to 11LABS
+          active: true, // Automatically set active to true
         });
       } catch (error) {
         console.error("Error creating voice", error);
@@ -126,68 +110,6 @@ export default function VoiceCloningForm() {
           onChange={handleChange}
           required
           className="input-field"
-        />
-      </div>
-      <div className="mb-4">
-        <input
-          type="text"
-          id="picture"
-          name="picture"
-          placeholder="Picture URL"
-          value={formData.picture}
-          onChange={handleChange}
-          className="input-field"
-        />
-      </div>
-      <div className="mb-4">
-        <select
-          id="gender"
-          name="gender"
-          value={formData.gender}
-          onChange={handleChange}
-          className="input-field"
-        >
-          <option value="MALE">Male</option>
-          <option value="FEMALE">Female</option>
-          <option value="OTHER">Other</option>
-        </select>
-      </div>
-      <div className="mb-4">
-        <select
-          id="type"
-          name="type"
-          value={formData.type}
-          onChange={handleChange}
-          className="input-field"
-        >
-          <option value="11LABS">11LABS</option>
-          <option value="OTHER">Other</option>
-        </select>
-      </div>
-      <div className="mb-4">
-        <input
-          type="checkbox"
-          id="active"
-          name="active"
-          checked={formData.active}
-          onChange={handleChange}
-          className="mr-2"
-        />
-        <label htmlFor="active" className="select-none">
-          Active
-        </label>
-      </div>
-      <div className="mb-4">
-        <textarea
-          id="metadata"
-          name="metadata"
-          placeholder="Metadata"
-          value={
-            formData.metadata ? JSON.stringify(formData.metadata, null, 2) : ""
-          }
-          onChange={handleChange}
-          className="input-field"
-          rows={5}
         />
       </div>
       <div className="mb-4">
