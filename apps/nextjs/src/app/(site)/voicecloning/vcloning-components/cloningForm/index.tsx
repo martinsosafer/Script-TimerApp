@@ -87,8 +87,15 @@ export default function VoiceCloningForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mx-auto max-w-sm">
-      <div className="mb-4">
+    <form
+      onSubmit={handleSubmit}
+      className="mx-auto flex w-full max-w-md flex-col space-y-4"
+    >
+      {/* Name Field */}
+      <div className="flex flex-col space-y-1">
+        <label htmlFor="name" className="text-left text-sm font-semibold">
+          Name
+        </label>
         <input
           type="text"
           id="name"
@@ -96,11 +103,20 @@ export default function VoiceCloningForm() {
           placeholder="Name"
           value={formData.name}
           onChange={handleChange}
+          maxLength={12}
           required
-          className="input-field"
+          className="rounded-md border border-gray-300 px-3 py-2"
         />
       </div>
-      <div className="mb-4">
+
+      {/* Description Field */}
+      <div className="flex flex-col space-y-1">
+        <label
+          htmlFor="description"
+          className="text-left text-sm font-semibold"
+        >
+          Description
+        </label>
         <input
           type="text"
           id="description"
@@ -108,41 +124,41 @@ export default function VoiceCloningForm() {
           placeholder="Description"
           value={formData.description}
           onChange={handleChange}
+          maxLength={35}
           required
-          className="input-field"
+          className="rounded-md border border-gray-300 px-3 py-2"
         />
       </div>
-      <div className="mb-4">
-        <label className="my-1 ml-1 block text-left text-sm font-medium text-gray-900 dark:text-white">
-          Upload file:
+
+      {/* File Upload Field */}
+      <div className="flex flex-col space-y-1">
+        <label htmlFor="file" className="text-left text-sm font-semibold">
+          Upload file{" "}
+          <span className="text-xs  text-slate-500">
+             Formats that  are accepted: m4a, mp3, webm, mp4, mpga,
+            wav, and mpeg.
+          </span>
         </label>
         <input
-          className="mb-2 block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400"
+          className="block w-full cursor-pointer rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-900 focus:outline-none"
           type="file"
           accept="audio/*"
           onChange={handleFileChange}
+          required
         />
-        <p className="my-2 text-sm text-gray-500 dark:text-gray-300">
-          The following file formats are accepted: m4a, mp3, webm, mp4, mpga,
-          wav, and mpeg.
-        </p>
       </div>
-      {!loading && (
-        <button
-          type="submit"
-          className="mt-8 w-full rounded-xl bg-primary px-4 py-2 font-medium text-white hover:bg-primary/80 sm:mt-10"
-        >
-          Submit
-        </button>
-      )}
-      {loading && (
-        <button
-          className="mt-8 w-full rounded-xl bg-primary px-4 py-2 font-medium text-white hover:bg-primary/80 sm:mt-10"
-          disabled
-        >
-          <LoadingDots color="white" style="large" />
-        </button>
-      )}
+
+      <button
+        type="submit"
+        className={`flex items-center justify-center rounded-md py-2 font-semibold text-white ${
+          loading
+            ? "cursor-not-allowed bg-gray-400"
+            : "cursor-pointer bg-primary"
+        }`}
+        disabled={loading}
+      >
+        {loading ? <LoadingDots color="white" style="large" /> : "Create Voice"}
+      </button>
     </form>
   );
 }

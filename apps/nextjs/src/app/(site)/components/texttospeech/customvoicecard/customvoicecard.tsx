@@ -1,11 +1,7 @@
 import React from "react";
 
 import { Button } from "@voiceai/ui";
-import IconUserRound, {
-  IconHeart,
-  IconHeartFill,
-  IconStop,
-} from "@voiceai/ui/@/components/ui/icons";
+import IconUserRound, { IconStop } from "@voiceai/ui/@/components/ui/icons";
 import { PlayIcon } from "@voiceai/ui/@/icons/icons";
 
 import { api } from "~/utils/api";
