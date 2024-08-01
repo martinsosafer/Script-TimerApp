@@ -64,7 +64,7 @@ const CloningCard: React.FC<CloningCardProps> = ({
           onClick={handleGenerateDemo}
           className={`flex items-center justify-center ${
             loading ? "bg-blue-400" : "bg-blue-600"
-          } h-10 w-40 rounded-md text-white`} // Fixed width and height
+          } h-9 w-40 rounded-md text-white`} // Fixed width and height
         >
           {loading ? (
             <LoadingDots color="white" style="small" />
