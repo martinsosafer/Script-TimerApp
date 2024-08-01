@@ -1,14 +1,14 @@
 import { FormData } from "formdata-node";
 import { z } from "zod";
 
+
+
 import { and, asc, db, eq, ilike, schema } from "@voiceai/db";
 
-import {
-  createTRPCRouter,
-  protectedProcedure,
-  publicProcedure,
-  TRPCError,
-} from "../trpc";
+
+
+import { createTRPCRouter, protectedProcedure, publicProcedure, TRPCError } from "../trpc";
+
 
 export const voiceCustomRouter = createTRPCRouter({
   newCustomVoice: protectedProcedure
@@ -140,6 +140,73 @@ export const voiceCustomRouter = createTRPCRouter({
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "Error creating voice",
+        });
+      }
+    }),
+  deleteCustomVoice: protectedProcedure
+    .input(
+      z.object({
+        voiceId: z.string().min(1), // The ID of the voice to delete
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        // Send delete request to ElevenLabs API
+        const response = await fetch(
+          `https://api.elevenlabs.io/v1/voices/${input.voiceId}`,
+          {
+            method: "DELETE",
+            headers: {
+              "xi-api-key": process.env.INTEGRATION_11LABS_API_KEY ?? "",
+            },
+          },
+        );
+
+        if (!response.ok) {
+          const data = await response.json();
+          throw new Error(
+            data.message || "Failed to delete voice from ElevenLabs",
+          );
+        }
+
+        // Delete the voice from the database
+        const userId = ctx.session.user.id;
+
+        // Remove the voice from the voicesCustom table
+        await ctx.db
+          .delete(schema.voicesCustom)
+          .where(eq(schema.voicesCustom.external_id, input.voiceId))
+          .execute();
+
+        // Fetch the current subscription
+        const subscription = await ctx.db.query.subscriptions.findFirst({
+          where: eq(schema.subscriptions.userId, userId),
+        });
+
+        if (!subscription) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Subscription not found for the user",
+          });
+        }
+
+        // Update the subscription to remove the deleted voice
+        const updatedCustomVoices = (subscription.custom_voices || []).filter(
+          (voice) => voice.external_id !== input.voiceId,
+        );
+
+        await ctx.db
+          .update(schema.subscriptions)
+          .set({ custom_voices: updatedCustomVoices })
+          .where(eq(schema.subscriptions.userId, userId))
+          .execute();
+
+        return { success: true, message: "Voice deleted successfully" };
+      } catch (error) {
+        console.error("Error deleting voice:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Error deleting voice",
         });
       }
     }),

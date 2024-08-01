@@ -33,7 +33,6 @@ const CloningCard: React.FC<CloningCardProps> = ({
 
   const handleGenerateDemo = async () => {
     setLoading(true);
-
     try {
       await onGenerateDemo(externalId, audioRef);
     } catch (error) {
@@ -51,7 +50,6 @@ const CloningCard: React.FC<CloningCardProps> = ({
     <div className="flex flex-col rounded-lg border border-gray-300 bg-white p-4 shadow-md dark:bg-gray-800 dark:text-white">
       <div className="flex items-center">
         <IconUserRound className="mr-4 h-12 w-12 text-primary" />{" "}
-        {/* Smaller icon */}
         <div className="flex-grow">
           <h2 className="text-xl font-semibold">{name}</h2>
           <p className="text-sm text-gray-600 dark:text-gray-300">
@@ -64,7 +62,7 @@ const CloningCard: React.FC<CloningCardProps> = ({
           onClick={handleGenerateDemo}
           className={`flex items-center justify-center ${
             loading ? "bg-blue-400" : "bg-blue-600"
-          } h-9 w-40 rounded-md text-white`} // Fixed width and height
+          } h-9 w-40 rounded-md text-white`}
         >
           {loading ? (
             <LoadingDots color="white" style="small" />
@@ -135,7 +133,28 @@ const CustomVoiceCards: React.FC = () => {
           while (true) {
             const { done, value } = await reader.read();
             if (done) {
-              mediaSource.endOfStream();
+              // Wait for sourceBuffer to finish updating before ending the stream
+              if (!sourceBuffer.updating) {
+                mediaSource.endOfStream();
+                if (audioRef.current) {
+                  audioRef.current.play().catch((error) => {
+                    console.error("Failed to play audio:", error);
+                  });
+                }
+              } else {
+                sourceBuffer.addEventListener(
+                  "updateend",
+                  () => {
+                    mediaSource.endOfStream();
+                    if (audioRef.current) {
+                      audioRef.current.play().catch((error) => {
+                        console.error("Failed to play audio:", error);
+                      });
+                    }
+                  },
+                  { once: true },
+                );
+              }
               break;
             }
             sourceBuffer.appendBuffer(value);
@@ -144,15 +163,16 @@ const CustomVoiceCards: React.FC = () => {
 
         readStream().catch((error) => {
           console.error("Error reading stream:", error);
-          mediaSource.endOfStream("decode");
-        });
-
-        // Attempt to play the audio once it's loaded
-        mediaSource.addEventListener("sourceended", () => {
-          if (audioRef.current) {
-            audioRef.current.play().catch((error) => {
-              console.error("Failed to play audio:", error);
-            });
+          if (!sourceBuffer.updating) {
+            mediaSource.endOfStream("decode");
+          } else {
+            sourceBuffer.addEventListener(
+              "updateend",
+              () => {
+                mediaSource.endOfStream("decode");
+              },
+              { once: true },
+            );
           }
         });
       });
@@ -162,6 +182,7 @@ const CustomVoiceCards: React.FC = () => {
       console.error("Failed to generate demo:", error);
     }
   };
+
   const handleDelete = (id: string) => {
     console.log("Delete voice with id:", id);
     // Handle delete logic here
