@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
@@ -8,6 +9,7 @@ import LoadingDots from "~/app/(site)/components/loadingdots";
 import { api } from "~/utils/api";
 
 export default function VoiceCloningForm() {
+  const router = useRouter();
   const { mutateAsync: newCustomVoice } =
     api.voiceCustom.newCustomVoice.useMutation({
       onSuccess(data) {
@@ -16,6 +18,8 @@ export default function VoiceCloningForm() {
           title: "Voice Created",
           description: "Voice created successfully",
         });
+
+        router.replace("/voicecloning");
       },
       onError(error) {
         console.error("Error creating voice", error);
@@ -135,8 +139,7 @@ export default function VoiceCloningForm() {
         <label htmlFor="file" className="text-left text-sm font-semibold">
           Upload file{" "}
           <span className="text-xs  text-slate-500">
-             Formats that  are accepted: m4a, mp3, webm, mp4, mpga,
-            wav, and mpeg.
+            Formats that are accepted: m4a, mp3, webm, mp4, mpga, wav, and mpeg.
           </span>
         </label>
         <input

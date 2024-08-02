@@ -84,7 +84,7 @@ export default function TextToVoiceNavItem() {
                           <span>
                             <IconClone />
                           </span>
-                          <span className="ml-1 ">Voice Clonning</span>
+                          <span className="ml-1 ">Voice Cloning</span>
                         </div>
                         <p className="font-normal text-gray-500">
                           Give us an audio and we will create a voice for you

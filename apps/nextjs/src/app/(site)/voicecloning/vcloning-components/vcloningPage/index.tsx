@@ -30,10 +30,7 @@ export default function VoiceCloningPage() {
         <VoiceCloningForm />
       </main>
       <div className=" mb-4 mt-4">
-        <CloningCard
-          name="Sample Voice"
-          description="A sample voice for demonstration purposes."
-        />
+        <CloningCard />
       </div>
     </div>
   );

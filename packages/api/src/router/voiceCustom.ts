@@ -1,14 +1,14 @@
 import { FormData } from "formdata-node";
 import { z } from "zod";
 
-
-
 import { and, asc, db, eq, ilike, schema } from "@voiceai/db";
 
-
-
-import { createTRPCRouter, protectedProcedure, publicProcedure, TRPCError } from "../trpc";
-
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+  TRPCError,
+} from "../trpc";
 
 export const voiceCustomRouter = createTRPCRouter({
   newCustomVoice: protectedProcedure
@@ -72,6 +72,9 @@ export const voiceCustomRouter = createTRPCRouter({
 
         const externalId = data.voice_id; // Ensure this is the correct field from the API response
 
+        // Retrieve the user's email from the session
+        const userEmail = ctx.session.user.email;
+
         // Insert the new voice into your database
         const newVoice = await ctx.db
           .insert(schema.voicesCustom)
@@ -87,6 +90,7 @@ export const voiceCustomRouter = createTRPCRouter({
             },
             type: input.type ?? "OTHER",
             active: input.active,
+            userEmail, // Add this line to include the user's email
           })
           .execute();
 
@@ -210,6 +214,9 @@ export const voiceCustomRouter = createTRPCRouter({
         });
       }
     }),
+  listAllVoices: protectedProcedure.query(async ({ ctx }) => {
+    return await ctx.db.select().from(schema.voicesCustom);
+  }),
   listAllCustomVoices: protectedProcedure.query(async ({ ctx }) => {
     const userId = ctx.session.user.id; // Get the user ID from the session
 
