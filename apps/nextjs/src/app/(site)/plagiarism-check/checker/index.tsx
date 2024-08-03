@@ -21,7 +21,7 @@ interface CheckResult {
 
 export default function Checker({ userId }: CheckerProps) {
   const [checkResult, setCheckResult] = useState<CheckResult | null>(null);
-  const [aiCheck, setAiCheck] = useState(true);
+  const [aiCheck, setAiCheck] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const [text, setText] = useState<string>("");
@@ -52,7 +52,7 @@ export default function Checker({ userId }: CheckerProps) {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ text: aiCheck ? text : btoa(text) }),
+          body: JSON.stringify({ text }),
         });
 
         const result = await response.json();
@@ -106,10 +106,10 @@ export default function Checker({ userId }: CheckerProps) {
             <div className="min-h-[500px] w-full rounded-sm border-2 border-gray-300 p-4">
               {checkResult ? (
                 <div>
-                  {transformResults({
+                  {/* {transformResults({
                     originalText: text,
                     results: checkResult.results,
-                  })}
+                  })} */}
                 </div>
               ) : (
                 <textarea
@@ -125,15 +125,15 @@ export default function Checker({ userId }: CheckerProps) {
                 <div className="flex w-full flex-col rounded-md border-2 border-gray-300 p-2">
                   <div className="flex justify-between">
                     <span>AI Content</span>
-                    <span>{generatePercentage(checkResult?.summary.ai)}%</span>
+                    {/* <span>{generatePercentage(checkResult?.summary.ai)}%</span> */}
                   </div>
                   <div className="flex h-3 min-w-full justify-start overflow-hidden rounded-full bg-gray-400">
-                    <div
+                    {/* <div
                       className={`${generatePercentage(
                         checkResult?.summary.ai,
                         true,
                       )} bg-primary`}
-                    />
+                    /> */}
                   </div>
                 </div>
               )}

@@ -56,7 +56,10 @@ export async function PUT(request: Request) {
     text: string;
   };
 
-  console.log(text);
+  const base64 = toBase64(text);
+
+  console.log(base64);
+  console.log();
 
   const response = await fetch(
     "https://id.copyleaks.com/v3/account/login/api",
@@ -85,13 +88,14 @@ export async function PUT(request: Request) {
         Authorization: `Bearer ${token.access_token}`,
       },
       body: JSON.stringify({
-        base64: text,
+        base64: base64,
         filename: "text.txt",
         properties: {
           //sandbox: true,
           webhooks: {
-            newResult: `https://petite-rings-press.loca.lt/webhook/new-result`,
-            status: `https://petite-rings-press.loca.lt/{STATUS}/${id}`,
+            //newResult: `https://calm-queens-obey.loca.lt/webhook/plagiarism-result`,
+            status: `https://calm-queens-obey.loca.lt/api/webhook/plagiarism-result/{STATUS}/${id}`,
+            includeHtml: true,
           },
         },
       }),
@@ -119,4 +123,12 @@ export async function PUT(request: Request) {
       { status: 500, statusText: error as string },
     );
   }
+}
+
+function toBase64(str: string): string {
+  return btoa(
+    encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (_, p1) {
+      return String.fromCharCode(parseInt(p1, 16));
+    }),
+  );
 }

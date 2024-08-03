@@ -255,6 +255,9 @@ importers:
       process:
         specifier: ^0.11.10
         version: 0.11.10
+      pubsub-js:
+        specifier: ^1.9.4
+        version: 1.9.4
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -15667,6 +15670,10 @@ packages:
       parse-asn1: 5.1.7
       randombytes: 2.1.0
       safe-buffer: 5.2.1
+    dev: false
+
+  /pubsub-js@1.9.4:
+    resolution: {integrity: sha512-hJYpaDvPH4w8ZX/0Fdf9ma1AwRgU353GfbaVfPjfJQf1KxZ2iHaHl3fAUw1qlJIR5dr4F3RzjGaWohYUEyoh7A==}
     dev: false
 
   /pump@3.0.0:

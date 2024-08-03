@@ -51,6 +51,7 @@
     "plagiarism-checker": "^4.0.0",
     "pnpm": "^8.12.0",
     "process": "^0.11.10",
+    "pubsub-js": "^1.9.4",
     "react": "18.2.0",
     "react-confetti": "^6.1.0",
     "react-countup": "^6.5.3",
