@@ -18,8 +18,6 @@ export default function VoiceCloningForm() {
           title: "Voice Created",
           description: "Voice created successfully",
         });
-
-        router.replace("/voicecloning");
       },
       onError(error) {
         console.error("Error creating voice", error);
