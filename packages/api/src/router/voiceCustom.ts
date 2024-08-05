@@ -49,6 +49,11 @@ export const voiceCustomRouter = createTRPCRouter({
           form.append("preview_url", input.preview_url);
         }
 
+        // Log form data for debugging
+        form.forEach((value, key) => {
+          console.log(key, value);
+        });
+
         // Send the request to ElevenLabs API
         const response = await fetch(
           "https://api.elevenlabs.io/v1/voices/add",
@@ -61,9 +66,20 @@ export const voiceCustomRouter = createTRPCRouter({
           },
         );
 
-        const data = await response.json();
+        const responseText = await response.text();
 
-        // Log the response data to check its structure
+        // Attempt to parse the response JSON
+        let data;
+        try {
+          data = JSON.parse(responseText);
+        } catch (parseError) {
+          console.error("Error parsing response:", responseText);
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Error creating voice",
+          });
+        }
+
         console.log("API Response Data:", data);
 
         if (!response.ok) {
