@@ -116,7 +116,8 @@ export default function VoiceCloningForm() {
             htmlFor="name"
             className="text-left text-sm font-semibold text-gray-700"
           >
-            Name
+            Name{" "}
+            <span className="text-sm text-slate-400">(max 12 characters)</span>
           </label>
           <input
             type="text"
@@ -136,7 +137,8 @@ export default function VoiceCloningForm() {
             htmlFor="description"
             className="text-left text-sm font-semibold text-gray-700"
           >
-            Description
+            Description{" "}
+            <span className="text-sm text-slate-400">(max 20 characters)</span>
           </label>
           <input
             type="text"
