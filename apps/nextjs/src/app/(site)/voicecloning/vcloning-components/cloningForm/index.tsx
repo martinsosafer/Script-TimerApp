@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { IconMic2 } from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 import LoadingDots from "~/app/(site)/components/loadingdots";
@@ -59,14 +60,11 @@ export default function VoiceCloningForm() {
 
   const handleSaveAudio = (file) => {
     console.log("Audio file saved:", file);
-
-    // Use the functional update form to ensure the latest state is used
     setFormData((prevData) => {
       const updatedData = { ...prevData, file };
       console.log("Form data updated with recorded file:", updatedData);
       return updatedData;
     });
-
     setIsModalOpen(false);
   };
 
@@ -111,10 +109,13 @@ export default function VoiceCloningForm() {
     <>
       <form
         onSubmit={handleSubmit}
-        className="mx-auto flex w-full max-w-md flex-col space-y-4"
+        className="mx-auto flex w-full max-w-md flex-col space-y-4 rounded-lg bg-slate-100 p-6 shadow-md"
       >
         <div className="flex flex-col space-y-1">
-          <label htmlFor="name" className="text-left text-sm font-semibold">
+          <label
+            htmlFor="name"
+            className="text-left text-sm font-semibold text-gray-700"
+          >
             Name
           </label>
           <input
@@ -124,16 +125,16 @@ export default function VoiceCloningForm() {
             placeholder="Name"
             value={formData.name}
             onChange={handleChange}
-            maxLength={12}
+            maxLength={14}
             required
-            className="rounded-md border border-gray-300 px-3 py-2"
+            className="rounded-md border border-gray-300 px-3 py-2 focus:border-primary focus:ring-primary"
           />
         </div>
 
         <div className="flex flex-col space-y-1">
           <label
             htmlFor="description"
-            className="text-left text-sm font-semibold"
+            className="text-left text-sm font-semibold text-gray-700"
           >
             Description
           </label>
@@ -144,14 +145,17 @@ export default function VoiceCloningForm() {
             placeholder="Description"
             value={formData.description}
             onChange={handleChange}
-            maxLength={35}
+            maxLength={20}
             required
-            className="rounded-md border border-gray-300 px-3 py-2"
+            className="rounded-md border border-gray-300 px-3 py-2 focus:border-primary focus:ring-primary"
           />
         </div>
 
         <div className="flex flex-col space-y-1">
-          <label htmlFor="file" className="text-left text-sm font-semibold">
+          <label
+            htmlFor="file"
+            className="text-left text-sm font-semibold text-gray-700"
+          >
             Upload file{" "}
             <span className="text-xs text-slate-500">
               Formats that are accepted: m4a, mp3, webm, mp4, mpga, wav, and
@@ -159,24 +163,30 @@ export default function VoiceCloningForm() {
             </span>
           </label>
           <input
-            className="block w-full cursor-pointer rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-900 focus:outline-none"
+            className="block w-full cursor-pointer rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-900 focus:border-primary focus:ring-primary"
             type="file"
             accept="audio/*"
             onChange={handleFileChange}
           />
           {formData.file && (
-            <div className="text-sm text-gray-600">
+            <div className="text-md text-black">
               Selected file: {formData.file.name}
             </div>
           )}
         </div>
 
+        <p className="text-sm text-gray-600">
+          If you don't have a sample audio, please go ahead and press "Record
+          Audio".
+        </p>
+
         <button
           type="button"
-          className="btn btn-primary"
+          className="hover:bg-secondary-dark flex items-center justify-center rounded-md bg-primary py-2 font-semibold text-white focus:outline-none"
           onClick={() => setIsModalOpen(true)}
         >
           Record Audio
+          <IconMic2 className="ml-2 h-5 w-5 text-white" />
         </button>
 
         <button
@@ -184,7 +194,7 @@ export default function VoiceCloningForm() {
           className={`flex items-center justify-center rounded-md py-2 font-semibold text-white ${
             loading
               ? "cursor-not-allowed bg-gray-400"
-              : "cursor-pointer bg-primary"
+              : "hover:bg-primary-dark cursor-pointer bg-tertiary"
           }`}
           disabled={loading}
         >
