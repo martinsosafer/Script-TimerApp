@@ -46,7 +46,7 @@ export default function TranslatorPage() {
       </main>
       <footer className="w-full ">
         <p className="flex justify-center border-t-2 py-2 font-semibold">
-          Learn a language with Script-Timer.
+          Translate anything with Script-Timer!
         </p>
       </footer>
     </div>
