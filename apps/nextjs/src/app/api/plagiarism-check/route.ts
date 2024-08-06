@@ -39,8 +39,6 @@ export async function POST(request: Request) {
 
   const aiCheckResult = await aiCheckResponse.json();
 
-  console.log(aiCheckResult);
-
   try {
     return new Response(JSON.stringify(aiCheckResult));
   } catch (error) {
@@ -94,26 +92,13 @@ export async function PUT(request: Request) {
           //sandbox: true,
           webhooks: {
             //newResult: `https://calm-queens-obey.loca.lt/webhook/plagiarism-result`,
-            status: `https://calm-queens-obey.loca.lt/api/webhook/plagiarism-result/{STATUS}/${id}`,
+            status: `https://lovely-numbers-sip.loca.lt/api/webhook/plagiarism-result/{STATUS}/${id}`,
             includeHtml: true,
           },
         },
       }),
     },
   );
-
-  //const aiCheckResult = await aiCheckResponse.json();
-
-  // console.log(
-  //   "CHECK RESULT",
-  //   aiCheckResponse.status,
-  //   aiCheckResponse.text,
-  //   aiCheckResponse.json,
-  // );
-
-  //const check = await fetch(`https://petite-rings-press.loca.lt/new-result`);
-  console.log(aiCheckResponse);
-  //console.log(url, `https://app.script-timer.com/webhook/{STATUS}/${id}`);
 
   try {
     return new Response(JSON.stringify("Succuess"));

@@ -1,11 +1,12 @@
 "use client";
 
 import type { FormEvent } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
+import { pusherClient } from "~/lib/pusher";
 import NoSessionModal from "../../components/modals/no-session-modal";
 import { transformResults } from "./utils";
 import WelcomeMessage from "./welcome-message";
@@ -23,6 +24,8 @@ export default function Checker({ userId }: CheckerProps) {
   const [checkResult, setCheckResult] = useState<CheckResult | null>(null);
   const [aiCheck, setAiCheck] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const [pcResult, setPcResult] = useState(null);
 
   const [text, setText] = useState<string>("");
 
@@ -73,6 +76,14 @@ export default function Checker({ userId }: CheckerProps) {
     }
     return percentage;
   }
+
+  useEffect(() => {
+    pusherClient.subscribe("plagiarism-check");
+
+    pusherClient.bind("upcomming-message", (data: { message: string }) => {
+      console.log("REAL TIME MESSAGE", data.message);
+    });
+  }, []);
 
   return (
     <>
