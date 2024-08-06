@@ -50,9 +50,6 @@ export default function TextToVoiceNavItem() {
                 </ul>
               </div>
               <div>
-                <p className="text-[13px] font-medium uppercase tracking-wider text-gray-500">
-                  Voice Repository
-                </p>
                 <ul className="mt-3 text-[15px]">
                   <li>
                     <Link
