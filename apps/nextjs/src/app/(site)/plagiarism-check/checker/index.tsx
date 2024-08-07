@@ -6,8 +6,12 @@ import { useEffect, useState } from "react";
 import { IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
+import type { PlagiarismPayload } from "~/app/api/webhook/plagiarism-result/[status]/[id]/route";
 import { pusherClient } from "~/lib/pusher";
 import NoSessionModal from "../../components/modals/no-session-modal";
+import ModeSelector from "./mode-selector";
+import PercentageBar from "./percentage-bar";
+import PlagiarismResult from "./plagiarism-result";
 import { transformResults } from "./utils";
 import WelcomeMessage from "./welcome-message";
 
@@ -15,17 +19,17 @@ interface CheckerProps {
   userId: string | undefined;
 }
 
-interface CheckResult {
+export interface CheckResult {
   results: { probability: number; classification: number }[];
   summary: { ai: number };
 }
 
 export default function Checker({ userId }: CheckerProps) {
-  const [checkResult, setCheckResult] = useState<CheckResult | null>(null);
   const [aiCheck, setAiCheck] = useState(false);
+  const [aiCheckResult, setAiCheckResult] = useState<CheckResult | null>(null);
+  const [plagiarismCheck, setPlagiarismCheck] =
+    useState<PlagiarismPayload | null>(null);
   const [loading, setLoading] = useState(false);
-
-  const [pcResult, setPcResult] = useState(null);
 
   const [text, setText] = useState<string>("");
 
@@ -33,8 +37,9 @@ export default function Checker({ userId }: CheckerProps) {
 
   async function handleCheck(e: FormEvent) {
     e.preventDefault();
-    if (checkResult) {
-      return setCheckResult(null);
+    if (aiCheckResult ?? plagiarismCheck) {
+      setPlagiarismCheck(null);
+      return setAiCheckResult(null);
     }
     setLoading(true);
     const data = new FormData(e.target as HTMLFormElement);
@@ -58,37 +63,43 @@ export default function Checker({ userId }: CheckerProps) {
           body: JSON.stringify({ text }),
         });
 
-        const result = await response.json();
-
-        setCheckResult(result);
+        if (aiCheck) {
+          const result = (await response.json()) as CheckResult;
+          setAiCheckResult(result);
+          setLoading(false);
+        }
       } catch (error) {
         console.error(error);
         setLoading(false);
       }
-      setLoading(false);
     }
   }
 
-  function generatePercentage(result: number, classname?: boolean) {
-    const percentage = Math.floor(result * 100);
-    if (classname) {
-      return `w-[${percentage}%]`;
-    }
-    return percentage;
-  }
+  useEffect(() => {
+    setLoading(false);
+  }, [plagiarismCheck]);
 
   useEffect(() => {
     pusherClient.subscribe("plagiarism-check");
 
-    pusherClient.bind("upcomming-message", (data: { message: string }) => {
-      console.log("REAL TIME MESSAGE", data.message);
-    });
+    pusherClient.bind(
+      "upcomming-message",
+      (data: { message: PlagiarismPayload }) => {
+        setPlagiarismCheck(data.message);
+      },
+    );
   }, []);
 
   return (
     <>
       <div className="flex w-[1024px] flex-col py-10">
         <WelcomeMessage />
+        <ModeSelector
+          aiCheck={aiCheck}
+          setAiCheck={setAiCheck}
+          setAiCheckResult={setAiCheckResult}
+          setPlagiarismCheck={setPlagiarismCheck}
+        />
         <div className="mt-10 flex w-full gap-2">
           <div className="flex w-[25%] flex-col rounded-sm border-2 border-gray-300 p-2">
             <div className="relative">
@@ -97,7 +108,7 @@ export default function Checker({ userId }: CheckerProps) {
               </div>
               <div className="relative flex justify-center text-sm uppercase ">
                 <span className="bg-background px-2 text-primary">
-                  Detection Modes
+                  Plagiarism Scans History
                 </span>
               </div>
             </div>
@@ -115,14 +126,18 @@ export default function Checker({ userId }: CheckerProps) {
             className="flex w-[75%] flex-col items-end gap-2"
           >
             <div className="min-h-[500px] w-full rounded-sm border-2 border-gray-300 p-4">
-              {checkResult ? (
+              {aiCheck && aiCheckResult && (
                 <div>
-                  {/* {transformResults({
+                  {transformResults({
                     originalText: text,
-                    results: checkResult.results,
-                  })} */}
+                    results: aiCheckResult.results,
+                  })}
                 </div>
-              ) : (
+              )}
+              {!aiCheck && plagiarismCheck && (
+                <PlagiarismResult text={text} result={plagiarismCheck} />
+              )}
+              {!aiCheckResult && !plagiarismCheck && (
                 <textarea
                   name="textarea"
                   rows={20}
@@ -132,21 +147,18 @@ export default function Checker({ userId }: CheckerProps) {
               )}
             </div>
             <div className="flex w-full justify-end gap-2">
-              {checkResult && (
-                <div className="flex w-full flex-col rounded-md border-2 border-gray-300 p-2">
-                  <div className="flex justify-between">
-                    <span>AI Content</span>
-                    {/* <span>{generatePercentage(checkResult?.summary.ai)}%</span> */}
-                  </div>
-                  <div className="flex h-3 min-w-full justify-start overflow-hidden rounded-full bg-gray-400">
-                    {/* <div
-                      className={`${generatePercentage(
-                        checkResult?.summary.ai,
-                        true,
-                      )} bg-primary`}
-                    /> */}
-                  </div>
-                </div>
+              {aiCheckResult && (
+                <PercentageBar
+                  label="AI Content"
+                  percentage={aiCheckResult.summary.ai}
+                />
+              )}
+
+              {plagiarismCheck && (
+                <PercentageBar
+                  label="Plagiarism Content"
+                  percentage={plagiarismCheck.aggregated_score / 100}
+                />
               )}
 
               <button
@@ -155,7 +167,7 @@ export default function Checker({ userId }: CheckerProps) {
               >
                 {loading ? (
                   <IconSpinner className="h-6 w-6 animate-spin" />
-                ) : checkResult ? (
+                ) : aiCheckResult ?? plagiarismCheck ? (
                   "New Scan"
                 ) : (
                   "Scan"

@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+import { auth } from "@voiceai/auth";
+
 import { nanoid } from "~/utils/helpers";
 
 export async function POST(request: Request) {
@@ -54,10 +56,9 @@ export async function PUT(request: Request) {
     text: string;
   };
 
-  const base64 = toBase64(text);
+  const session = await auth();
 
-  console.log(base64);
-  console.log();
+  const base64 = toBase64(text);
 
   const response = await fetch(
     "https://id.copyleaks.com/v3/account/login/api",
@@ -77,28 +78,26 @@ export async function PUT(request: Request) {
 
   const id = nanoid().toLocaleLowerCase();
 
-  const aiCheckResponse = await fetch(
-    `https://api.copyleaks.com/v3/scans/submit/file/${id}`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token.access_token}`,
-      },
-      body: JSON.stringify({
-        base64: base64,
-        filename: "text.txt",
-        properties: {
-          //sandbox: true,
-          webhooks: {
-            //newResult: `https://calm-queens-obey.loca.lt/webhook/plagiarism-result`,
-            status: `https://lovely-numbers-sip.loca.lt/api/webhook/plagiarism-result/{STATUS}/${id}`,
-            includeHtml: true,
-          },
-        },
-      }),
+  await fetch(`https://api.copyleaks.com/v3/scans/submit/file/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token.access_token}`,
     },
-  );
+    body: JSON.stringify({
+      base64: base64,
+      filename: "text.txt",
+      properties: {
+        //sandbox: true,
+        webhooks: {
+          //newResult: `https://calm-queens-obey.loca.lt/webhook/plagiarism-result`,
+          status: `${process.env.HOST_URL}/api/webhook/plagiarism-result/{STATUS}/${id}`,
+        },
+        includeHtml: true,
+        developerPayload: session?.user.id,
+      },
+    }),
+  });
 
   try {
     return new Response(JSON.stringify("Succuess"));
