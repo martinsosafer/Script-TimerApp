@@ -233,8 +233,24 @@ export const voiceCustomRouter = createTRPCRouter({
         });
       }
 
+      // Fetch the custom voices from the voicesCustom table
+      const customVoices = await ctx.db.query.voicesCustom.findMany({
+        where: eq(schema.voicesCustom.userEmail, ctx.session.user.email),
+        select: {
+          id: true,
+          external_id: true,
+          active: true,
+          type: true,
+          name: true,
+          description: true,
+          metadata: true,
+          created_at: true,
+          updated_at: true,
+        },
+      });
+
       // Return the custom voices
-      return subscription.custom_voices || [];
+      return customVoices;
     } catch (error) {
       console.error("Error listing custom voices:", error);
       throw new TRPCError({

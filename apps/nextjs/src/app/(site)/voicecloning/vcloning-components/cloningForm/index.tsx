@@ -10,7 +10,7 @@ import LoadingDots from "~/app/(site)/components/loadingdots";
 import { api } from "~/utils/api";
 import AudioRecorderModal from "../cloningRmodal";
 
-export default function VoiceCloningForm() {
+export default function VoiceCloningForm({ onVoiceCreated }) {
   const router = useRouter();
   const { mutateAsync: newCustomVoice } =
     api.voiceCustom.newCustomVoice.useMutation({
@@ -20,7 +20,7 @@ export default function VoiceCloningForm() {
           title: "Voice Created",
           description: "Voice created successfully",
         });
-        router.replace("/voicecloning");
+        onVoiceCreated();
       },
       onError(error) {
         console.error("Error creating voice", error);
@@ -93,6 +93,12 @@ export default function VoiceCloningForm() {
           type: "11LABS",
           active: true,
         });
+        // Reset form fields after successful submission
+        setFormData({
+          name: "",
+          description: "",
+          file: undefined,
+        });
       } catch (error) {
         console.error("Error creating voice", error);
       } finally {
@@ -104,7 +110,6 @@ export default function VoiceCloningForm() {
       setLoading(false);
     };
   };
-
   return (
     <>
       <form
@@ -138,7 +143,7 @@ export default function VoiceCloningForm() {
             className="text-left text-sm font-semibold text-gray-700"
           >
             Description{" "}
-            <span className="text-sm text-slate-400">(max 20 characters)</span>
+            <span className="text-sm text-slate-400">(max 30 characters)</span>
           </label>
           <input
             type="text"
@@ -147,7 +152,7 @@ export default function VoiceCloningForm() {
             placeholder="Description"
             value={formData.description}
             onChange={handleChange}
-            maxLength={20}
+            maxLength={30}
             required
             className="rounded-md border border-gray-300 px-3 py-2 focus:border-primary focus:ring-primary"
           />
@@ -193,23 +198,16 @@ export default function VoiceCloningForm() {
 
         <button
           type="submit"
-          className={`flex items-center justify-center rounded-md py-2 font-semibold text-white ${
-            loading
-              ? "cursor-not-allowed bg-gray-400"
-              : "hover:bg-primary-dark cursor-pointer bg-tertiary"
-          }`}
           disabled={loading}
+          className="hover:bg-secondary-dark flex items-center justify-center rounded-md bg-primary py-2 font-semibold text-white focus:outline-none"
         >
-          {loading ? (
-            <LoadingDots color="white" style="large" />
-          ) : (
-            "Create Voice"
-          )}
+          {loading ? <LoadingDots color="#fff" /> : "Clone Voice"}
         </button>
       </form>
+
       <AudioRecorderModal
         isOpen={isModalOpen}
-        onRequestClose={() => setIsModalOpen(false)}
+        onClose={() => setIsModalOpen(false)}
         onSave={handleSaveAudio}
       />
     </>

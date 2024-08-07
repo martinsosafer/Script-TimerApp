@@ -100,7 +100,9 @@ const CloningCard: React.FC<CloningCardProps> = ({
       <div className="mt-4 flex space-x-4">
         <Button
           onClick={handleGenerateDemo}
-          className={`flex items-center justify-center ${loading ? "bg-blue-400" : "bg-blue-600"} h-9 w-40 rounded-md text-white`}
+          className={`flex items-center justify-center ${
+            loading ? "bg-blue-400" : "bg-blue-600"
+          } h-9 w-40 rounded-md text-white`}
         >
           {loading ? (
             <LoadingDots color="white" style="small" />
@@ -147,14 +149,22 @@ const CloningCard: React.FC<CloningCardProps> = ({
   );
 };
 
-const CustomVoiceCards: React.FC = () => {
-  const { data: customvoices = [], refetch } =
-    api.voiceCustom.listAllCustomVoices.useQuery("", {
-      refetchOnWindowFocus: true,
-    });
+interface CustomVoiceCardsProps {
+  customVoices: {
+    id: string;
+    name: string;
+    description: string;
+    externalId: string;
+  }[];
+  refetch: () => void;
+}
 
+const CustomVoiceCards: React.FC<CustomVoiceCardsProps> = ({
+  customVoices,
+  refetch,
+}) => {
   const handleGenerateDemo = async (
-    externalId: string,
+    external_id: string,
     audioRef: React.RefObject<HTMLAudioElement>,
   ) => {
     try {
@@ -165,7 +175,7 @@ const CustomVoiceCards: React.FC = () => {
         },
         body: JSON.stringify({
           text: "This is a cloned voice created by Script Timer",
-          voice_id: externalId,
+          voice_id: external_id,
           voice_actor: "your-demo-voice-actor",
           stability: 0.5,
           similarity: 0.5,
@@ -248,10 +258,10 @@ const CustomVoiceCards: React.FC = () => {
 
   return (
     <div className="grid grid-cols-1 gap-4">
-      {customvoices.length === 0 ? (
+      {customVoices.length === 0 ? (
         <div className="flex flex-col items-center justify-center gap-3 p-4 text-center text-slate-500">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg border-2 border-[#1877F290] bg-blue-300">
-            <IconClone className="text-black" />
+            <IconClone className="text-black" />s
           </div>
           <span className="whitespace-pre-line text-sm">
             No voices created yet. Give it a try!
@@ -266,7 +276,7 @@ const CustomVoiceCards: React.FC = () => {
             Great! Looks like you created a custom voice. Use it on the
             text-to-voice page now!
           </span>
-          {customvoices.map((voice) => (
+          {customVoices.map((voice) => (
             <CloningCard
               key={voice.id}
               id={voice.id}

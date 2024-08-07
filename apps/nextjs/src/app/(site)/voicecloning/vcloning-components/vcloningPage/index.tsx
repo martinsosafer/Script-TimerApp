@@ -1,11 +1,20 @@
+"use client";
+
 import * as React from "react";
 
 import { IconInfo } from "@voiceai/ui/@/components/ui/icons";
 
-import CloningCard from "../cloningCard";
+import { api } from "~/utils/api";
+import CustomVoiceCards from "../cloningCard";
 import VoiceCloningForm from "../cloningForm";
 
 export default function VoiceCloningPage() {
+  // Use the query hook directly inside the functional component
+  const { data: customVoices = [], refetch } =
+    api.voiceCustom.listAllCustomVoices.useQuery("", {
+      refetchOnWindowFocus: true,
+    });
+  console.log("CUSTOMVOICE==", customVoices);
   return (
     <div className="mx-auto flex max-w-5xl flex-col items-center">
       <main className="mt-10 flex w-full flex-col items-center px-4 text-center">
@@ -27,10 +36,10 @@ export default function VoiceCloningPage() {
           </span>
         </div>
         <hr className="border-1 my-5 h-px bg-gray-700 dark:bg-gray-700" />
-        <VoiceCloningForm />
+        <VoiceCloningForm onVoiceCreated={refetch} />
       </main>
-      <div className=" mb-4 mt-4">
-        <CloningCard />
+      <div className="mb-4 mt-4">
+        <CustomVoiceCards customVoices={customVoices} refetch={refetch} />
       </div>
     </div>
   );

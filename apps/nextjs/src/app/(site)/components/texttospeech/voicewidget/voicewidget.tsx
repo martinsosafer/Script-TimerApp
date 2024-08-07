@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 
-import {
-  IconChevronLeft,
-  IconChevronRight,
-  IconSearch,
-} from "@voiceai/ui/@/components/ui/icons";
+
+
+import { IconChevronLeft, IconChevronRight, IconSearch } from "@voiceai/ui/@/components/ui/icons";
+
+
 
 import { api } from "~/utils/api";
 import CustomVoiceCards from "../customvoicecard/customvoicecard";
 import FavoriteVoiceCards from "../favoritevoicescard/favoritevoicescard";
 import VoiceCards from "../voicecards/voicecards";
+
 
 function VoiceWidget({
   onModelSelect,
@@ -115,7 +116,7 @@ function VoiceWidget({
   const handleShowCustom = () => {
     setShowCustom(true);
     setCurrentPage(1);
-
+ setShowFavorites(false);
     setSearchQuery("");
     setFilter(null);
   };
