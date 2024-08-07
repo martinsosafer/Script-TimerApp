@@ -60,47 +60,49 @@ export async function PUT(request: Request) {
 
   const base64 = toBase64(text);
 
-  const response = await fetch(
-    "https://id.copyleaks.com/v3/account/login/api",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        key: process.env.COPYLEAKS_API_KEY,
-        email: "MROGOW@ripmediagroup.COM",
-      }),
-    },
-  );
-
-  const token = (await response.json()) as { access_token: string };
-
-  const id = nanoid().toLocaleLowerCase();
-
-  await fetch(`https://api.copyleaks.com/v3/scans/submit/file/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token.access_token}`,
-    },
-    body: JSON.stringify({
-      base64: base64,
-      filename: "text.txt",
-      properties: {
-        //sandbox: true,
-        webhooks: {
-          //newResult: `https://calm-queens-obey.loca.lt/webhook/plagiarism-result`,
-          status: `${process.env.HOST_URL}/api/webhook/plagiarism-result/{STATUS}/${id}`,
-        },
-        includeHtml: true,
-        developerPayload: session?.user.id,
-      },
-    }),
-  });
-
   try {
-    return new Response(JSON.stringify("Succuess"));
+    const response = await fetch(
+      "https://id.copyleaks.com/v3/account/login/api",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          key: process.env.COPYLEAKS_API_KEY,
+          email: "MROGOW@ripmediagroup.COM",
+        }),
+      },
+    );
+
+    const token = (await response.json()) as { access_token: string };
+
+    const id = nanoid().toLocaleLowerCase();
+
+    const result = await fetch(
+      `https://api.copyleaks.com/v3/scans/submit/file/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token.access_token}`,
+        },
+        body: JSON.stringify({
+          base64: base64,
+          filename: "text.txt",
+          properties: {
+            //sandbox: true,
+            webhooks: {
+              //newResult: `https://calm-queens-obey.loca.lt/webhook/plagiarism-result`,
+              status: `${process.env.HOST_URL}/api/webhook/plagiarism-result/{STATUS}/${id}`,
+            },
+            includeHtml: true,
+            developerPayload: session?.user.id,
+          },
+        }),
+      },
+    );
+    return NextResponse.json(result);
   } catch (error) {
     return NextResponse.json(
       { error: error as string },
