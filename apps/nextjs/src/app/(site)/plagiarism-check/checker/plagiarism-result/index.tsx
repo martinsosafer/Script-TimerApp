@@ -48,6 +48,7 @@ export default function PlagiarismResult({
           <div key={item.id} className="mt-3">
             <Link
               href={item.url}
+              target="_blank"
               className="font cursor-pointer text-lg text-primary hover:underline"
             >
               {item.title}{" "}

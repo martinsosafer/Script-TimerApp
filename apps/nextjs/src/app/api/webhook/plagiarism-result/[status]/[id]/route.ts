@@ -86,7 +86,7 @@ export async function POST(
 
     await db.insert(schema.plagiarism).values(payload).execute();
 
-    await sendMessage(payload);
+    await sendMessage(payload.id);
 
     // await resend.emails.send({
     //   from: "login@script-timer.ai",

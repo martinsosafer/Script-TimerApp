@@ -29,6 +29,9 @@ export default function Checker({ userId }: CheckerProps) {
   const [aiCheckResult, setAiCheckResult] = useState<CheckResult | null>(null);
   const [plagiarismCheck, setPlagiarismCheck] =
     useState<PlagiarismPayload | null>(null);
+
+  const [scanCheckId, setScanCheckId] = useState<string | null>(null);
+
   const [loading, setLoading] = useState(false);
 
   const [text, setText] = useState<string>("");
@@ -82,13 +85,24 @@ export default function Checker({ userId }: CheckerProps) {
   useEffect(() => {
     pusherClient.subscribe("plagiarism-check");
 
-    pusherClient.bind(
-      "upcomming-message",
-      (data: { message: PlagiarismPayload }) => {
-        setPlagiarismCheck(data.message);
-      },
-    );
+    pusherClient.bind("upcomming-message", (data: { message: string }) => {
+      setScanCheckId(data.message);
+    });
   }, []);
+
+  async function handleScanCheck(id: string) {
+    const response = await fetch(`/api/get-scan-results/${id}`);
+    const scan = (await response.json()) as PlagiarismPayload;
+
+    console.log("Scan", scan);
+    setPlagiarismCheck(scan);
+  }
+
+  useEffect(() => {
+    if (scanCheckId) {
+      handleScanCheck(scanCheckId);
+    }
+  }, [scanCheckId]);
 
   return (
     <>

@@ -1,6 +1,8 @@
+import type { NextApiRequest } from "next";
 import { NextResponse } from "next/server";
 
 import { auth } from "@voiceai/auth";
+import { db } from "@voiceai/db";
 
 import { nanoid } from "~/utils/helpers";
 
