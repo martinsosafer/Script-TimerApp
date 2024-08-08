@@ -79,30 +79,29 @@ export async function PUT(request: Request) {
 
     const id = nanoid().toLocaleLowerCase();
 
-    const result = await fetch(
-      `https://api.copyleaks.com/v3/scans/submit/file/${id}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token.access_token}`,
-        },
-        body: JSON.stringify({
-          base64: base64,
-          filename: "text.txt",
-          properties: {
-            //sandbox: true,
-            webhooks: {
-              //newResult: `https://calm-queens-obey.loca.lt/webhook/plagiarism-result`,
-              status: `${process.env.HOST_URL}/api/webhook/plagiarism-result/{STATUS}/${id}`,
-            },
-            includeHtml: true,
-            developerPayload: session?.user.id,
-          },
-        }),
+    await fetch(`https://api.copyleaks.com/v3/scans/submit/file/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token.access_token}`,
       },
-    );
-    return NextResponse.json(result);
+      body: JSON.stringify({
+        base64: base64,
+        filename: "text.txt",
+        properties: {
+          //sandbox: true,
+          webhooks: {
+            //newResult: `https://calm-queens-obey.loca.lt/webhook/plagiarism-result`,
+            status: `${process.env.HOST_URL}/api/webhook/plagiarism-result/{STATUS}/${id}`,
+          },
+          includeHtml: true,
+          developerPayload: session?.user.id,
+        },
+      }),
+    });
+    return NextResponse.json({
+      message: `success for ${process.env.HOST_URL}`,
+    });
   } catch (error) {
     return NextResponse.json(
       { error: error as string },
