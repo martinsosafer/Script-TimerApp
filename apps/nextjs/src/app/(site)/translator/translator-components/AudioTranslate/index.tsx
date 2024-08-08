@@ -127,9 +127,6 @@ export default function AudioTranslate({}) {
           <label className="text-md my-2 block text-left font-medium text-gray-900 dark:text-white">
             Translation:
           </label>
-          <p className="my-1 text-sm text-gray-500 dark:text-gray-300">
-            Click on translation to copy on clipboard.
-          </p>
           <div
             className="w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
             onClick={() => {
@@ -142,7 +139,7 @@ export default function AudioTranslate({}) {
             <p> {generatedTranslation}</p>
           </div>
           <p className="my-1 text-sm text-gray-500 dark:text-gray-300">
-            Click on translation to copy on clipboard
+            Click on the translation to copy.
           </p>{" "}
           <button
             className="my-2 text-sm text-blue-500 underline"
@@ -151,7 +148,7 @@ export default function AudioTranslate({}) {
               window.location.href = "/texttovoice";
             }}
           >
-            Copy and go to Text to Voice
+            Copy and open Text to Voice
           </button>
           <div className="mb-[-80px]" />
         </>

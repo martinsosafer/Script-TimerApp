@@ -3,12 +3,8 @@ import Link from "next/link";
 
 import { Button } from "@voiceai/ui";
 import IconUserRound, {
-  IconPlus,
-  IconPlusSquare,
   IconPlusSquareDiff,
-  IconStop,
 } from "@voiceai/ui/@/components/ui/icons";
-import { PlayIcon } from "@voiceai/ui/@/icons/icons";
 
 import { api } from "~/utils/api";
 
@@ -24,14 +20,12 @@ interface CustomVoice {
 }
 
 interface CustomVoiceCardsProps {
-  onModelSelect: (voice: Voice) => void;
+  onModelSelect: (voice: CustomVoice) => void;
 }
 
 const CustomVoiceCards: React.FC<CustomVoiceCardsProps> = ({
   onModelSelect,
 }) => {
-  const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
-  const [isPlaying, setIsPlaying] = useState<Record<string, boolean>>({});
   const [selectedVoiceId, setSelectedVoiceId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { data: customvoices = [], isLoading: isQueryLoading } =
@@ -43,43 +37,10 @@ const CustomVoiceCards: React.FC<CustomVoiceCardsProps> = ({
     }
   }, [isQueryLoading]);
 
-  useEffect(() => {
-    setAudio(new Audio());
-  }, []);
-
-  const playAudio = (audioSrc: string, voiceId: string) => {
-    if (!audio) return;
-    audio.src = audioSrc;
-    audio.play();
-    setIsPlaying((prevState) => ({ ...prevState, [voiceId]: true }));
-    audio.addEventListener("ended", () => {
-      setIsPlaying((prevState) => ({ ...prevState, [voiceId]: false }));
-    });
-  };
-
-  const stopAudio = (voiceId: string) => {
-    if (!audio) return;
-    audio.pause();
-    audio.currentTime = 0;
-    setIsPlaying((prevState) => ({ ...prevState, [voiceId]: false }));
-  };
-
-  const stopAllAudio = () => {
-    if (audio) {
-      audio.pause();
-      audio.currentTime = 0;
-      setIsPlaying({});
-    }
-  };
-
-  const handleVoiceCardClick = (voice: Voice) => {
-    stopAllAudio();
+  const handleVoiceCardClick = (voice: CustomVoice) => {
     if (selectedVoiceId === voice.id) {
-      if (isPlaying[voice.id]) {
-        stopAudio(voice.id);
-      } else {
-        playAudio((voice?.metadata?.preview_url as string) ?? "", voice.id);
-      }
+      onModelSelect(voice);
+      setSelectedVoiceId(null);
     } else {
       onModelSelect(voice);
       setSelectedVoiceId(voice.id);
@@ -124,7 +85,7 @@ const CustomVoiceCards: React.FC<CustomVoiceCardsProps> = ({
                 </div>
                 <div className="flex-grow">
                   <h2 className="text-sm font-semibold dark:text-secondary-foreground">
-                    New Custom Voice
+                    Add a Voice
                   </h2>
                 </div>
               </div>
@@ -155,17 +116,6 @@ const CustomVoiceCards: React.FC<CustomVoiceCardsProps> = ({
                       {gender === "OTHER" ? "Cloned Voice" : gender}
                     </p>
                   </div>
-                  <Button
-                    className="ml-auto rounded-full"
-                    size="xs"
-                    type="button"
-                  >
-                    {selectedVoiceId === voice.id && isPlaying[voice.id] ? (
-                      <IconStop className="h-3 w-3 text-tertiary" />
-                    ) : (
-                      <PlayIcon className="h-3 w-3" />
-                    )}
-                  </Button>
                 </div>
               </div>
             );

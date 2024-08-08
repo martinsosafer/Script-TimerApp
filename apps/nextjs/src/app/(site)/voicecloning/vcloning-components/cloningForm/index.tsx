@@ -183,8 +183,7 @@ export default function VoiceCloningForm({ onVoiceCreated }) {
         </div>
 
         <p className="text-sm text-gray-600">
-          If you don't have a sample audio, please go ahead and press "Record
-          Audio".
+          If you have no sample audio, just click "Record Audio".
         </p>
 
         <button
