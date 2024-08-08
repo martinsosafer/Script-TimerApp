@@ -22,6 +22,7 @@ export default function VoiceForm() {
     active?: boolean;
     metadata?: Record<string, unknown>;
     rank: number;
+    celebrity: boolean; // New field added
   }>({
     external_id: "",
     name: "",
@@ -32,6 +33,7 @@ export default function VoiceForm() {
     active: true,
     metadata: {},
     rank: 0,
+    celebrity: false, // Default value
   });
 
   const handleChange = (
@@ -42,20 +44,14 @@ export default function VoiceForm() {
     const { name, value, type } = e.target;
     let newValue = type === "checkbox" ? e.target.checked : value;
 
-    // If the field is 'metadata', parse the JSON string into an object
     if (name === "metadata") {
       try {
         newValue = JSON.parse(newValue);
       } catch (error) {
-        // Handle parsing error
         console.error("Error parsing metadata JSON:", error);
       }
     } else if (name === "rank") {
-      // Ensure rank is always a number
       newValue = parseFloat(newValue);
-      // Or if you're certain it should be an integer, use parseInt:
-      // newValue = parseInt(newValue);
-      // If parsing fails, set it to NaN
       if (isNaN(newValue)) {
         newValue = 0;
       }
@@ -75,6 +71,7 @@ export default function VoiceForm() {
       console.error("Error creating voice", error);
     }
   };
+
   return (
     <form onSubmit={handleSubmit} className="mx-auto max-w-sm">
       <div className="mb-4">
@@ -172,7 +169,7 @@ export default function VoiceForm() {
           }
           onChange={handleChange}
           className="input-field"
-          rows={5} // Adjust the number of rows as needed
+          rows={5}
         />
       </div>
       <div className="mb-4">
@@ -185,6 +182,19 @@ export default function VoiceForm() {
           onChange={handleChange}
           className="input-field"
         />
+      </div>
+      <div className="mb-4">
+        <input
+          type="checkbox"
+          id="celebrity"
+          name="celebrity"
+          checked={formData.celebrity}
+          onChange={handleChange}
+          className="mr-2"
+        />
+        <label htmlFor="celebrity" className="select-none">
+          Celebrity?
+        </label>
       </div>
       <button type="submit" className="btn-primary">
         Submit
