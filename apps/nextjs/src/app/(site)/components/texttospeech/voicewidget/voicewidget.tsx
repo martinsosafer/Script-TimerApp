@@ -221,7 +221,7 @@ function VoiceWidget({
       <div className="relative">
         <input
           type="text"
-          placeholder="Search"
+          placeholder="Search..."
           value={searchQuery}
           onChange={handleSearchChange}
           className="w-full rounded-md border border-gray-300 px-8 py-2 focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground"
