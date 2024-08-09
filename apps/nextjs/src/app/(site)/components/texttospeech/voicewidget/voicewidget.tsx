@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 
-
-
-import { IconChevronLeft, IconChevronRight, IconSearch } from "@voiceai/ui/@/components/ui/icons";
-
-
+import {
+  IconChevronLeft,
+  IconChevronRight,
+  IconSearch,
+} from "@voiceai/ui/@/components/ui/icons";
 
 import { api } from "~/utils/api";
-import CustomVoiceCards from "../customvoicecard/customvoicecard";
+import CelebrityVoiceCards from "../celebrityvoicecard/celebrityvoicecard";
 import FavoriteVoiceCards from "../favoritevoicescard/favoritevoicescard";
 import VoiceCards from "../voicecards/voicecards";
-
 
 function VoiceWidget({
   onModelSelect,
@@ -21,12 +20,20 @@ function VoiceWidget({
   const { data: allVoices, refetch } = subData
     ? api.voice.list.useQuery({ name: "" })
     : api.voice.publicVoices.useQuery();
+  const { data: celebrityVoices = [], isLoading: isQueryLoading } =
+    api.voice.listCelebrity.useQuery({ name: "" });
+  const { data: customVoices = [] } = api.voice.customVoices.useQuery();
+
   const [currentPage, setCurrentPage] = useState(1);
   const [currentFavPage, setCurrentFavPage] = useState(1);
+  const [currentCelebrityPage, setCurrentCelebrityPage] = useState(1);
+  const [currentCustomPage, setCurrentCustomPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState(null);
   const [showFavorites, setShowFavorites] = useState(false);
+  const [showCelebrities, setShowCelebrities] = useState(false);
   const [showCustom, setShowCustom] = useState(false);
+
   const pageSize = 8;
 
   const filteredVoices = allVoices?.filter((voice) => {
@@ -34,7 +41,14 @@ function VoiceWidget({
       .toLowerCase()
       .includes(searchQuery.toLowerCase());
     const matchesGenderFilter = !filter || voice.gender === filter;
-    return matchesSearchQuery && matchesGenderFilter;
+    const matchesCelebrityFilter = !showCelebrities || voice.isCelebrity;
+    const matchesCustomFilter = !showCustom || voice.isCustom;
+    return (
+      matchesSearchQuery &&
+      matchesGenderFilter &&
+      matchesCelebrityFilter &&
+      matchesCustomFilter
+    );
   });
 
   const filteredFavoriteVoices = favoriteVoices?.filter((voice) => {
@@ -59,15 +73,41 @@ function VoiceWidget({
     favEndIndex,
   );
 
+  const celebStartIndex = (currentCelebrityPage - 1) * pageSize;
+  const celebEndIndex = Math.min(
+    celebStartIndex + pageSize,
+    celebrityVoices?.length || 0,
+  );
+  const paginatedCelebrityVoices = celebrityVoices?.slice(
+    celebStartIndex,
+    celebEndIndex,
+  );
+
+  const customStartIndex = (currentCustomPage - 1) * pageSize;
+  const customEndIndex = Math.min(
+    customStartIndex + pageSize,
+    customVoices?.length || 0,
+  );
+  const paginatedCustomVoices = customVoices?.slice(
+    customStartIndex,
+    customEndIndex,
+  );
+
   const totalPages = Math.ceil((filteredVoices?.length || 0) / pageSize);
   const totalFavPages = Math.ceil(
     (filteredFavoriteVoices?.length || 0) / pageSize,
   );
+  const totalCelebrityPages = Math.ceil(
+    (celebrityVoices?.length || 0) / pageSize,
+  );
+  const totalCustomPages = Math.ceil((customVoices?.length || 0) / pageSize);
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
     setCurrentPage(1);
     setCurrentFavPage(1);
+    setCurrentCelebrityPage(1);
+    setCurrentCustomPage(1);
   };
 
   const handlePageChange = (pageNumber) => {
@@ -78,48 +118,86 @@ function VoiceWidget({
     setCurrentFavPage(pageNumber);
   };
 
+  const handleCelebrityPageChange = (pageNumber) => {
+    setCurrentCelebrityPage(pageNumber);
+  };
+
+  const handleCustomPageChange = (pageNumber) => {
+    setCurrentCustomPage(pageNumber);
+  };
+
   const handleMaleFilterChange = () => {
     setShowFavorites(false);
+    setShowCelebrities(false);
     setShowCustom(false);
     setFilter("MALE");
     setCurrentPage(1);
     setCurrentFavPage(1);
+    setCurrentCelebrityPage(1);
+    setCurrentCustomPage(1);
     setSearchQuery("");
   };
 
   const handleFemaleFilterChange = () => {
     setShowFavorites(false);
+    setShowCelebrities(false);
     setShowCustom(false);
     setFilter("FEMALE");
     setCurrentPage(1);
     setCurrentFavPage(1);
+    setCurrentCelebrityPage(1);
+    setCurrentCustomPage(1);
     setSearchQuery("");
   };
 
   const handleShowAll = () => {
     setShowFavorites(false);
+    setShowCelebrities(false);
     setShowCustom(false);
     setSearchQuery("");
     setFilter(null);
     setCurrentPage(1);
     setCurrentFavPage(1);
+    setCurrentCelebrityPage(1);
+    setCurrentCustomPage(1);
   };
 
   const handleShowFavorites = () => {
     setShowFavorites(true);
+    setShowCelebrities(false);
     setShowCustom(false);
     setCurrentPage(1);
     setCurrentFavPage(1);
+    setCurrentCelebrityPage(1);
+    setCurrentCustomPage(1);
     setSearchQuery("");
     setFilter(null);
   };
+
+  const handleShowCelebrities = () => {
+    setShowCelebrities(true);
+    setShowFavorites(false);
+    setShowCustom(false);
+    setCurrentPage(1);
+    setCurrentFavPage(1);
+    setCurrentCelebrityPage(1);
+    setCurrentCustomPage(1);
+    setSearchQuery("");
+    setFilter(null);
+  };
+
   const handleShowCustom = () => {
     setShowCustom(true);
+    setShowFavorites(false);
+    setShowCelebrities(false);
     setCurrentPage(1);
- setShowFavorites(false);
+    setCurrentFavPage(1);
+    setCurrentCelebrityPage(1);
+    setCurrentCustomPage(1);
     setSearchQuery("");
     setFilter(null);
   };
+
   const renderPagination = (currentPage, totalPages, onPageChange) => {
     const pageNumbers = [];
     const maxButtons = 4;
@@ -180,89 +258,157 @@ function VoiceWidget({
           placeholder="Search..."
           value={searchQuery}
           onChange={handleSearchChange}
-          className="w-full rounded-md border border-gray-300 px-8 py-2 focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground"
+          className="w-full rounded-md border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none"
         />
-        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+        <span className="absolute inset-y-0 right-3 flex items-center">
           <IconSearch className="h-5 w-5 text-gray-400" />
-        </div>
+        </span>
       </div>
 
-      <hr className="my-4 border-gray-300" />
-
-      <div className="mb-4 flex space-x-2">
+      <div className="my-4 flex justify-center space-x-4">
         <button
-          className="rounded-md border border-gray-300 bg-white px-2 py-2 focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground"
           onClick={handleShowAll}
+          className={`rounded-md px-4 py-2 ${
+            !showFavorites && !showCelebrities && !showCustom && !filter
+              ? "bg-blue-500 text-white"
+              : "bg-gray-300 text-gray-700"
+          }`}
         >
-          All
+          Show All
         </button>
         <button
-          className={`rounded-md border border-gray-300 bg-white px-2 py-2 focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground ${
-            filter === "MALE" ? "bg-blue-300 text-primary" : ""
-          }`}
           onClick={handleMaleFilterChange}
+          className={`rounded-md px-4 py-2 ${
+            filter === "MALE"
+              ? "bg-blue-500 text-white"
+              : "bg-gray-300 text-gray-700"
+          }`}
         >
           Male
         </button>
         <button
-          className={`rounded-md border border-gray-300 bg-white px-2 py-2 focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground ${
-            filter === "FEMALE" ? "bg-blue-300 text-primary" : ""
-          }`}
           onClick={handleFemaleFilterChange}
+          className={`rounded-md px-4 py-2 ${
+            filter === "FEMALE"
+              ? "bg-blue-500 text-white"
+              : "bg-gray-300 text-gray-700"
+          }`}
         >
           Female
         </button>
         <button
-          className={`rounded-md border border-gray-300 bg-white px-2 py-2 focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground ${
-            showFavorites ? "bg-blue-300 text-primary" : ""
-          }`}
           onClick={handleShowFavorites}
+          className={`rounded-md px-4 py-2 ${
+            showFavorites
+              ? "bg-blue-500 text-white"
+              : "bg-gray-300 text-gray-700"
+          }`}
         >
           Favorites
         </button>
         <button
-          className={`rounded-md border border-gray-300 bg-white px-2 py-2 focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground ${
-            showCustom ? "bg-blue-300 text-primary" : ""
+          onClick={handleShowCelebrities}
+          className={`rounded-md px-4 py-2 ${
+            showCelebrities
+              ? "bg-blue-500 text-white"
+              : "bg-gray-300 text-gray-700"
           }`}
+        >
+          Celebrities
+        </button>
+        <button
           onClick={handleShowCustom}
+          className={`rounded-md px-4 py-2 ${
+            showCustom ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-700"
+          }`}
         >
           Custom
         </button>
       </div>
 
-      {showFavorites ? (
-        <div>
-          <FavoriteVoiceCards
-            favoriteVoices={paginatedFavoriteVoices}
-            onModelSelect={onModelSelect}
-            onFavoriteChange={refreshSubscriptionData}
-            refetchVoices={refetch}
-          />
-          <div className="mt-4">
-            {renderPagination(
-              currentFavPage,
-              totalFavPages,
-              handleFavPageChange,
+      {showFavorites && (
+        <>
+          <div>
+            <h2 className="mb-4 text-center text-lg font-semibold">
+              Favorite Voices
+            </h2>
+            {paginatedFavoriteVoices?.length === 0 ? (
+              <p className="text-center">No favorite voices found.</p>
+            ) : (
+              <FavoriteVoiceCards
+                favoriteVoices={paginatedFavoriteVoices}
+                onModelSelect={onModelSelect}
+                refreshSubscriptionData={refreshSubscriptionData}
+              />
             )}
           </div>
-        </div>
-      ) : showCustom ? (
-        <div>
-          <CustomVoiceCards onModelSelect={onModelSelect} />
-          <div className="mt-4"></div>
-        </div>
-      ) : (
-        <div>
-          <VoiceCards
-            voices={voices}
-            onModelSelect={onModelSelect}
-            onFavoriteChange={refreshSubscriptionData}
-            favoriteVoices={favoriteVoices}
-          />
-          <div className="mt-4">
-            {renderPagination(currentPage, totalPages, handlePageChange)}
+          {renderPagination(currentFavPage, totalFavPages, handleFavPageChange)}
+        </>
+      )}
+
+      {showCelebrities && (
+        <>
+          <div>
+            <h2 className="mb-4 text-center text-lg font-semibold">
+              Celebrity Voices
+            </h2>
+            {paginatedCelebrityVoices?.length === 0 ? (
+              <p className="text-center">No celebrity voices found.</p>
+            ) : (
+              <CelebrityVoiceCards
+                celebrityVoices={paginatedCelebrityVoices}
+                onModelSelect={onModelSelect}
+                refreshSubscriptionData={refreshSubscriptionData}
+              />
+            )}
           </div>
-        </div>
+          {renderPagination(
+            currentCelebrityPage,
+            totalCelebrityPages,
+            handleCelebrityPageChange,
+          )}
+        </>
+      )}
+
+      {showCustom && (
+        <>
+          <div>
+            <h2 className="mb-4 text-center text-lg font-semibold">
+              Custom Voices
+            </h2>
+            {paginatedCustomVoices?.length === 0 ? (
+              <p className="text-center">No custom voices found.</p>
+            ) : (
+              <VoiceCards
+                voices={paginatedCustomVoices}
+                onModelSelect={onModelSelect}
+                refreshSubscriptionData={refreshSubscriptionData}
+              />
+            )}
+          </div>
+          {renderPagination(
+            currentCustomPage,
+            totalCustomPages,
+            handleCustomPageChange,
+          )}
+        </>
+      )}
+
+      {!showFavorites && !showCelebrities && !showCustom && (
+        <>
+          <div>
+            {voices?.length === 0 ? (
+              <p className="text-center">No voices found.</p>
+            ) : (
+              <VoiceCards
+                voices={voices}
+                onModelSelect={onModelSelect}
+                refreshSubscriptionData={refreshSubscriptionData}
+              />
+            )}
+          </div>
+          {renderPagination(currentPage, totalPages, handlePageChange)}
+        </>
       )}
     </div>
   );
