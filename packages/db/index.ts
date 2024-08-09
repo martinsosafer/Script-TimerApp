@@ -8,6 +8,7 @@ import * as plagiarism from "./schema/plagiarism";
 import * as script from "./schema/script";
 import * as subscription from "./schema/subscription";
 import * as voice from "./schema/voice";
+import * as voiceCustom from "./schema/voiceCustom";
 
 export const schema = {
   ...auth,
@@ -16,6 +17,7 @@ export const schema = {
   ...script,
   ...subscription,
   ...voice,
+  ...voiceCustom,
   ...plagiarism,
 };
 

@@ -8,6 +8,7 @@ import {
 
 import { api } from "~/utils/api";
 import CelebrityVoiceCards from "../celebrityvoicecard/celebrityvoicecard";
+import CustomVoiceCards from "../customvoicecard/customvoicecard";
 import FavoriteVoiceCards from "../favoritevoicescard/favoritevoicescard";
 import VoiceCards from "../voicecards/voicecards";
 
@@ -29,7 +30,7 @@ function VoiceWidget({
   const [filter, setFilter] = useState(null);
   const [showFavorites, setShowFavorites] = useState(false);
   const [showCelebrities, setShowCelebrities] = useState(false);
-
+  const [showCustom, setShowCustom] = useState(false);
   const pageSize = 8;
 
   const filteredVoices = allVoices?.filter((voice) => {
@@ -105,6 +106,7 @@ function VoiceWidget({
   const handleMaleFilterChange = () => {
     setShowFavorites(false);
     setShowCelebrities(false);
+    setShowCustom(false);
     setFilter("MALE");
     setCurrentPage(1);
     setCurrentFavPage(1);
@@ -115,6 +117,7 @@ function VoiceWidget({
   const handleFemaleFilterChange = () => {
     setShowFavorites(false);
     setShowCelebrities(false);
+    setShowCustom(false);
     setFilter("FEMALE");
     setCurrentPage(1);
     setCurrentFavPage(1);
@@ -125,6 +128,7 @@ function VoiceWidget({
   const handleShowAll = () => {
     setShowFavorites(false);
     setShowCelebrities(false);
+    setShowCustom(false);
     setSearchQuery("");
     setFilter(null);
     setCurrentPage(1);
@@ -135,6 +139,7 @@ function VoiceWidget({
   const handleShowFavorites = () => {
     setShowFavorites(true);
     setShowCelebrities(false);
+    setShowCustom(false);
     setCurrentPage(1);
     setCurrentFavPage(1);
     setCurrentCelebrityPage(1); // Added
@@ -145,13 +150,20 @@ function VoiceWidget({
   const handleShowCelebrities = () => {
     setShowCelebrities(true);
     setShowFavorites(false);
+    setShowCustom(false);
     setCurrentPage(1);
     setCurrentFavPage(1);
     setCurrentCelebrityPage(1); // Added
     setSearchQuery("");
     setFilter(null);
   };
-
+  const handleShowCustom = () => {
+    setShowCustom(true);
+    setCurrentPage(1);
+    setShowFavorites(false);
+    setSearchQuery("");
+    setFilter(null);
+  };
   const renderPagination = (currentPage, totalPages, onPageChange) => {
     const pageNumbers = [];
     const maxButtons = 4;
@@ -260,8 +272,13 @@ function VoiceWidget({
         >
           Celebrities
         </button>
-        <button className="py-0.25 rounded-md border border-gray-300 bg-white px-1.5 text-xs focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground">
-          New Filter
+        <button
+          className={`py-0.25 rounded-md border border-gray-300 bg-white px-1.5 text-xs focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground ${
+            showCustom ? "bg-blue-300 text-primary" : ""
+          }`}
+          onClick={handleShowCustom}
+        >
+          Custom
         </button>
       </div>
 
@@ -284,17 +301,21 @@ function VoiceWidget({
       ) : showCelebrities ? (
         <div className="mt-4">
           <CelebrityVoiceCards
-            celebrityVoices={paginatedCelebrityVoices} // Updated to use paginated data
+            celebrityVoices={paginatedCelebrityVoices}
             isQueryLoading={isQueryLoading}
             onModelSelect={onModelSelect}
           />
           <div className="mt-4">
             {renderPagination(
-              currentCelebrityPage, // Updated to use celebrity page state
+              currentCelebrityPage,
               totalCelebrityPages,
-              handleCelebrityPageChange, // Updated to handle celebrity page changes
+              handleCelebrityPageChange,
             )}
           </div>
+        </div>
+      ) : showCustom ? (
+        <div className="mt-4">
+          <CustomVoiceCards onModelSelect={onModelSelect} />
         </div>
       ) : (
         <div className="mt-4">

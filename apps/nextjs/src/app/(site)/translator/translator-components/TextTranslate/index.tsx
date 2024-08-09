@@ -77,7 +77,7 @@ export default function TextTranslate({}) {
 
   return (
     <div className="w-full max-w-xl">
-      <div className="mt-10 flex items-center space-x-3 ">
+      <div className="mt-10 flex items-center space-x-3">
         <div className="flex h-9 w-9 items-center justify-center gap-3 rounded-lg border-2 border-[#1877F290] bg-blue-300">
           <IconScanText className="text-black" />
         </div>
@@ -131,6 +131,7 @@ export default function TextTranslate({}) {
           <label className="text-md my-2 block text-left font-medium text-gray-900 dark:text-white">
             Translation:
           </label>
+
           <div
             className="w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
             onClick={() => {
@@ -140,11 +141,20 @@ export default function TextTranslate({}) {
               });
             }}
           >
-            <p> {generatedTranslation}</p>
+            <p>{generatedTranslation}</p>
           </div>
           <p className="my-1 text-sm text-gray-500 dark:text-gray-300">
-            Click on translation to copy on clipboard
+            Click on the translation to copy.
           </p>
+          <button
+            className="my-2 text-sm text-blue-500 underline"
+            onClick={() => {
+              navigator.clipboard.writeText(generatedTranslation);
+              window.location.href = "/texttovoice";
+            }}
+          >
+            Copy and open Text to Voice
+          </button>
         </>
       )}
     </div>

@@ -10,6 +10,10 @@ overrides:
 importers:
 
   .:
+    dependencies:
+      formdata-node:
+        specifier: ^6.0.3
+        version: 6.0.3
     devDependencies:
       '@turbo/gen':
         specifier: ^1.10.16

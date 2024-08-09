@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 
-
+import CloneBoard from "~/app/_components/cloneboard";
 import Voiceboard from "~/app/_components/voiceboard";
 import { api } from "~/utils/api";
 
@@ -11,7 +11,7 @@ export default function AdminVoicePage() {
     data: allVoices,
     isLoading,
     isError,
-  } = api.voice.listAllVoices.useQuery({ name: "" });
+  } = api.voiceCustom.listAllVoices.useQuery();
   console.log("allVoices", allVoices);
   if (isLoading) {
     return <div>Loading...</div>;
@@ -23,7 +23,7 @@ export default function AdminVoicePage() {
 
   return (
     <div className=" mt-9">
-      <Voiceboard voiceList={allVoices} />
+      <CloneBoard voiceList={allVoices} />
     </div>
   );
 }
