@@ -8,6 +8,7 @@ import {
 
 import { api } from "~/utils/api";
 import CelebrityVoiceCards from "../celebrityvoicecard/celebrityvoicecard";
+import CustomVoiceCards from "../customvoicecard/customvoicecard";
 import FavoriteVoiceCards from "../favoritevoicescard/favoritevoicescard";
 import VoiceCards from "../voicecards/voicecards";
 
@@ -22,18 +23,14 @@ function VoiceWidget({
     : api.voice.publicVoices.useQuery();
   const { data: celebrityVoices = [], isLoading: isQueryLoading } =
     api.voice.listCelebrity.useQuery({ name: "" });
-  const { data: customVoices = [] } = api.voice.customVoices.useQuery();
-
   const [currentPage, setCurrentPage] = useState(1);
   const [currentFavPage, setCurrentFavPage] = useState(1);
-  const [currentCelebrityPage, setCurrentCelebrityPage] = useState(1);
-  const [currentCustomPage, setCurrentCustomPage] = useState(1);
+  const [currentCelebrityPage, setCurrentCelebrityPage] = useState(1); // Added state
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState(null);
   const [showFavorites, setShowFavorites] = useState(false);
   const [showCelebrities, setShowCelebrities] = useState(false);
   const [showCustom, setShowCustom] = useState(false);
-
   const pageSize = 8;
 
   const filteredVoices = allVoices?.filter((voice) => {
@@ -42,13 +39,7 @@ function VoiceWidget({
       .includes(searchQuery.toLowerCase());
     const matchesGenderFilter = !filter || voice.gender === filter;
     const matchesCelebrityFilter = !showCelebrities || voice.isCelebrity;
-    const matchesCustomFilter = !showCustom || voice.isCustom;
-    return (
-      matchesSearchQuery &&
-      matchesGenderFilter &&
-      matchesCelebrityFilter &&
-      matchesCustomFilter
-    );
+    return matchesSearchQuery && matchesGenderFilter && matchesCelebrityFilter;
   });
 
   const filteredFavoriteVoices = favoriteVoices?.filter((voice) => {
@@ -56,7 +47,8 @@ function VoiceWidget({
       .toLowerCase()
       .includes(searchQuery.toLowerCase());
     const matchesGenderFilter = !filter || voice.gender === filter;
-    return matchesSearchQuery && matchesGenderFilter;
+    const matchesCelebrityFilter = !showCelebrities || voice.isCelebrity;
+    return matchesSearchQuery && matchesGenderFilter && matchesCelebrityFilter;
   });
 
   const startIndex = (currentPage - 1) * pageSize;
@@ -73,25 +65,15 @@ function VoiceWidget({
     favEndIndex,
   );
 
-  const celebStartIndex = (currentCelebrityPage - 1) * pageSize;
+  const celebStartIndex = (currentCelebrityPage - 1) * pageSize; // Added
   const celebEndIndex = Math.min(
     celebStartIndex + pageSize,
     celebrityVoices?.length || 0,
-  );
+  ); // Added
   const paginatedCelebrityVoices = celebrityVoices?.slice(
     celebStartIndex,
     celebEndIndex,
-  );
-
-  const customStartIndex = (currentCustomPage - 1) * pageSize;
-  const customEndIndex = Math.min(
-    customStartIndex + pageSize,
-    customVoices?.length || 0,
-  );
-  const paginatedCustomVoices = customVoices?.slice(
-    customStartIndex,
-    customEndIndex,
-  );
+  ); // Added
 
   const totalPages = Math.ceil((filteredVoices?.length || 0) / pageSize);
   const totalFavPages = Math.ceil(
@@ -99,15 +81,13 @@ function VoiceWidget({
   );
   const totalCelebrityPages = Math.ceil(
     (celebrityVoices?.length || 0) / pageSize,
-  );
-  const totalCustomPages = Math.ceil((customVoices?.length || 0) / pageSize);
+  ); // Added
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
     setCurrentPage(1);
     setCurrentFavPage(1);
-    setCurrentCelebrityPage(1);
-    setCurrentCustomPage(1);
+    setCurrentCelebrityPage(1); // Added
   };
 
   const handlePageChange = (pageNumber) => {
@@ -119,11 +99,8 @@ function VoiceWidget({
   };
 
   const handleCelebrityPageChange = (pageNumber) => {
+    // Added
     setCurrentCelebrityPage(pageNumber);
-  };
-
-  const handleCustomPageChange = (pageNumber) => {
-    setCurrentCustomPage(pageNumber);
   };
 
   const handleMaleFilterChange = () => {
@@ -133,8 +110,7 @@ function VoiceWidget({
     setFilter("MALE");
     setCurrentPage(1);
     setCurrentFavPage(1);
-    setCurrentCelebrityPage(1);
-    setCurrentCustomPage(1);
+    setCurrentCelebrityPage(1); // Added
     setSearchQuery("");
   };
 
@@ -145,8 +121,7 @@ function VoiceWidget({
     setFilter("FEMALE");
     setCurrentPage(1);
     setCurrentFavPage(1);
-    setCurrentCelebrityPage(1);
-    setCurrentCustomPage(1);
+    setCurrentCelebrityPage(1); // Added
     setSearchQuery("");
   };
 
@@ -158,8 +133,7 @@ function VoiceWidget({
     setFilter(null);
     setCurrentPage(1);
     setCurrentFavPage(1);
-    setCurrentCelebrityPage(1);
-    setCurrentCustomPage(1);
+    setCurrentCelebrityPage(1); // Added
   };
 
   const handleShowFavorites = () => {
@@ -168,8 +142,7 @@ function VoiceWidget({
     setShowCustom(false);
     setCurrentPage(1);
     setCurrentFavPage(1);
-    setCurrentCelebrityPage(1);
-    setCurrentCustomPage(1);
+    setCurrentCelebrityPage(1); // Added
     setSearchQuery("");
     setFilter(null);
   };
@@ -180,24 +153,17 @@ function VoiceWidget({
     setShowCustom(false);
     setCurrentPage(1);
     setCurrentFavPage(1);
-    setCurrentCelebrityPage(1);
-    setCurrentCustomPage(1);
+    setCurrentCelebrityPage(1); // Added
     setSearchQuery("");
     setFilter(null);
   };
-
   const handleShowCustom = () => {
     setShowCustom(true);
-    setShowFavorites(false);
-    setShowCelebrities(false);
     setCurrentPage(1);
-    setCurrentFavPage(1);
-    setCurrentCelebrityPage(1);
-    setCurrentCustomPage(1);
+    setShowFavorites(false);
     setSearchQuery("");
     setFilter(null);
   };
-
   const renderPagination = (currentPage, totalPages, onPageChange) => {
     const pageNumbers = [];
     const maxButtons = 4;
@@ -258,157 +224,111 @@ function VoiceWidget({
           placeholder="Search..."
           value={searchQuery}
           onChange={handleSearchChange}
-          className="w-full rounded-md border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none"
+          className="w-full rounded-md border border-gray-300 px-8 py-2 focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground"
         />
-        <span className="absolute inset-y-0 right-3 flex items-center">
+        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
           <IconSearch className="h-5 w-5 text-gray-400" />
-        </span>
+        </div>
       </div>
 
-      <div className="my-4 flex justify-center space-x-4">
+      <hr className="my-4 border-gray-300" />
+
+      <div className="mb-4 flex flex-wrap space-x-1">
         <button
+          className="py-0.25 rounded-md border border-gray-300 bg-white px-1.5 text-xs focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground"
           onClick={handleShowAll}
-          className={`rounded-md px-4 py-2 ${
-            !showFavorites && !showCelebrities && !showCustom && !filter
-              ? "bg-blue-500 text-white"
-              : "bg-gray-300 text-gray-700"
-          }`}
         >
-          Show All
+          All
         </button>
         <button
-          onClick={handleMaleFilterChange}
-          className={`rounded-md px-4 py-2 ${
-            filter === "MALE"
-              ? "bg-blue-500 text-white"
-              : "bg-gray-300 text-gray-700"
+          className={`py-0.25 rounded-md border border-gray-300 bg-white px-1.5 text-xs focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground ${
+            filter === "MALE" ? "bg-blue-300 text-primary" : ""
           }`}
+          onClick={handleMaleFilterChange}
         >
           Male
         </button>
         <button
-          onClick={handleFemaleFilterChange}
-          className={`rounded-md px-4 py-2 ${
-            filter === "FEMALE"
-              ? "bg-blue-500 text-white"
-              : "bg-gray-300 text-gray-700"
+          className={`py-0.25 rounded-md border border-gray-300 bg-white px-1.5 text-xs focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground ${
+            filter === "FEMALE" ? "bg-blue-300 text-primary" : ""
           }`}
+          onClick={handleFemaleFilterChange}
         >
           Female
         </button>
         <button
-          onClick={handleShowFavorites}
-          className={`rounded-md px-4 py-2 ${
-            showFavorites
-              ? "bg-blue-500 text-white"
-              : "bg-gray-300 text-gray-700"
+          className={`py-0.25 rounded-md border border-gray-300 bg-white px-1.5 text-xs focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground ${
+            showFavorites ? "bg-blue-300 text-primary" : ""
           }`}
+          onClick={handleShowFavorites}
         >
           Favorites
         </button>
         <button
-          onClick={handleShowCelebrities}
-          className={`rounded-md px-4 py-2 ${
-            showCelebrities
-              ? "bg-blue-500 text-white"
-              : "bg-gray-300 text-gray-700"
+          className={`py-0.25 rounded-md border border-gray-300 bg-white px-1.5 text-xs focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground ${
+            showCelebrities ? "bg-blue-300 text-primary" : ""
           }`}
+          onClick={handleShowCelebrities}
         >
           Celebrities
         </button>
         <button
-          onClick={handleShowCustom}
-          className={`rounded-md px-4 py-2 ${
-            showCustom ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-700"
+          className={`py-0.25 rounded-md border border-gray-300 bg-white px-1.5 text-xs focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground ${
+            showCustom ? "bg-blue-300 text-primary" : ""
           }`}
+          onClick={handleShowCustom}
         >
           Custom
         </button>
       </div>
 
-      {showFavorites && (
-        <>
-          <div>
-            <h2 className="mb-4 text-center text-lg font-semibold">
-              Favorite Voices
-            </h2>
-            {paginatedFavoriteVoices?.length === 0 ? (
-              <p className="text-center">No favorite voices found.</p>
-            ) : (
-              <FavoriteVoiceCards
-                favoriteVoices={paginatedFavoriteVoices}
-                onModelSelect={onModelSelect}
-                refreshSubscriptionData={refreshSubscriptionData}
-              />
+      {showFavorites ? (
+        <div className="mt-4">
+          <FavoriteVoiceCards
+            favoriteVoices={paginatedFavoriteVoices}
+            onModelSelect={onModelSelect}
+            onFavoriteChange={refreshSubscriptionData}
+            refetchVoices={refetch}
+          />
+          <div className="mt-4">
+            {renderPagination(
+              currentFavPage,
+              totalFavPages,
+              handleFavPageChange,
             )}
           </div>
-          {renderPagination(currentFavPage, totalFavPages, handleFavPageChange)}
-        </>
-      )}
-
-      {showCelebrities && (
-        <>
-          <div>
-            <h2 className="mb-4 text-center text-lg font-semibold">
-              Celebrity Voices
-            </h2>
-            {paginatedCelebrityVoices?.length === 0 ? (
-              <p className="text-center">No celebrity voices found.</p>
-            ) : (
-              <CelebrityVoiceCards
-                celebrityVoices={paginatedCelebrityVoices}
-                onModelSelect={onModelSelect}
-                refreshSubscriptionData={refreshSubscriptionData}
-              />
+        </div>
+      ) : showCelebrities ? (
+        <div className="mt-4">
+          <CelebrityVoiceCards
+            celebrityVoices={paginatedCelebrityVoices}
+            isQueryLoading={isQueryLoading}
+            onModelSelect={onModelSelect}
+          />
+          <div className="mt-4">
+            {renderPagination(
+              currentCelebrityPage,
+              totalCelebrityPages,
+              handleCelebrityPageChange,
             )}
           </div>
-          {renderPagination(
-            currentCelebrityPage,
-            totalCelebrityPages,
-            handleCelebrityPageChange,
-          )}
-        </>
-      )}
-
-      {showCustom && (
-        <>
-          <div>
-            <h2 className="mb-4 text-center text-lg font-semibold">
-              Custom Voices
-            </h2>
-            {paginatedCustomVoices?.length === 0 ? (
-              <p className="text-center">No custom voices found.</p>
-            ) : (
-              <VoiceCards
-                voices={paginatedCustomVoices}
-                onModelSelect={onModelSelect}
-                refreshSubscriptionData={refreshSubscriptionData}
-              />
-            )}
+        </div>
+      ) : showCustom ? (
+        <div className="mt-4">
+          <CustomVoiceCards onModelSelect={onModelSelect} />
+        </div>
+      ) : (
+        <div className="mt-4">
+          <VoiceCards
+            voices={voices}
+            onModelSelect={onModelSelect}
+            onFavoriteChange={refreshSubscriptionData}
+            favoriteVoices={favoriteVoices}
+          />
+          <div className="mt-4">
+            {renderPagination(currentPage, totalPages, handlePageChange)}
           </div>
-          {renderPagination(
-            currentCustomPage,
-            totalCustomPages,
-            handleCustomPageChange,
-          )}
-        </>
-      )}
-
-      {!showFavorites && !showCelebrities && !showCustom && (
-        <>
-          <div>
-            {voices?.length === 0 ? (
-              <p className="text-center">No voices found.</p>
-            ) : (
-              <VoiceCards
-                voices={voices}
-                onModelSelect={onModelSelect}
-                refreshSubscriptionData={refreshSubscriptionData}
-              />
-            )}
-          </div>
-          {renderPagination(currentPage, totalPages, handlePageChange)}
-        </>
+        </div>
       )}
     </div>
   );

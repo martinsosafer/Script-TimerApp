@@ -178,6 +178,14 @@ export function ScriptAI({
     setLoading,
     userPlan,
   }) => {
+    if (!message || message.trim() === "") {
+      toast({
+        title: "Error",
+        description: "Please remember to write a script before making a voice!",
+      });
+      return;
+    }
+
     setLoading(true);
 
     const charLimit = {
