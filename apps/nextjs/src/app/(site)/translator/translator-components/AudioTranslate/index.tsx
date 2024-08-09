@@ -60,16 +60,14 @@ export default function AudioTranslate({}) {
   };
 
   return (
-    <div className="w-full max-w-xl">
-      <div className="mt-10 flex flex-row items-center space-x-3">
-        <div className="flex h-9 w-9 items-center justify-center gap-3 rounded-lg border-2 border-[#1877F290] bg-blue-300">
+    <div className="w-full max-w-xl p-4">
+      <div className="mt-10 flex items-center space-x-3">
+        <div className="flex h-9 w-9 items-center justify-center rounded-lg border-2 border-[#1877F290] bg-blue-300">
           <IconEar className="text-black" />
         </div>
-        <div className="">
-          <p className="text-left font-medium">
-            Upload Audio File <span className="text-slate-500 ">)</span>
-          </p>
-        </div>
+        <p className="text-left font-medium">
+          Upload Audio File <span className="text-slate-500">)</span>
+        </p>
       </div>
 
       <label className="my-1 ml-1 block text-left text-sm font-medium text-gray-900 dark:text-white">
@@ -82,12 +80,11 @@ export default function AudioTranslate({}) {
         onChange={handleFileChange}
       />
       <p className="my-2 text-sm text-gray-500 dark:text-gray-300">
-        The following file formats are accepted: m4a, mp3, webm, mp4, mpga, wav,
-        and mpeg.
+        Accepted file formats: m4a, mp3, webm, mp4, mpga, wav, and mpeg.
       </p>
 
       <div className="mb-5 flex items-center space-x-3">
-        <div className="flex h-9 w-9 items-center justify-center gap-3 rounded-lg border-2 border-[#1877F290] bg-blue-300">
+        <div className="flex h-9 w-9 items-center justify-center rounded-lg border-2 border-[#1877F290] bg-blue-300">
           <IconFlag className="text-black" />
         </div>
         <p className="text-left font-medium">Choose your Language.</p>
@@ -123,7 +120,7 @@ export default function AudioTranslate({}) {
       )}
 
       {generatedTranslation && (
-        <>
+        <div className="mt-8">
           <label className="text-md my-2 block text-left font-medium text-gray-900 dark:text-white">
             Translation:
           </label>
@@ -131,16 +128,14 @@ export default function AudioTranslate({}) {
             className="w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
             onClick={() => {
               navigator.clipboard.writeText(generatedTranslation);
-              toast({
-                title: "Translation copied to clipboard",
-              });
+              toast({ title: "Translation copied to clipboard" });
             }}
           >
-            <p> {generatedTranslation}</p>
+            <p>{generatedTranslation}</p>
           </div>
           <p className="my-1 text-sm text-gray-500 dark:text-gray-300">
             Click on the translation to copy.
-          </p>{" "}
+          </p>
           <button
             className="my-2 text-sm text-blue-500 underline"
             onClick={() => {
@@ -150,8 +145,7 @@ export default function AudioTranslate({}) {
           >
             Copy and open Text to Voice
           </button>
-          <div className="mb-[-80px]" />
-        </>
+        </div>
       )}
     </div>
   );
