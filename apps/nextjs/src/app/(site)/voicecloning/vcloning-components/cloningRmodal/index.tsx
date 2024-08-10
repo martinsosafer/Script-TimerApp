@@ -4,7 +4,7 @@ import React from "react";
 
 import AudioRecorder from "../cloningRecord";
 
-const AudioRecorderModal = ({ isOpen, onRequestClose, onSave }) => {
+const AudioRecorderModal = ({ isOpen, onClose, onSave }) => {
   if (!isOpen) return null;
 
   return (
@@ -12,7 +12,7 @@ const AudioRecorderModal = ({ isOpen, onRequestClose, onSave }) => {
       <div className="w-full max-w-lg rounded-lg border-2 border-slate-400 bg-white p-6 shadow-lg">
         <h2 className="text-lg font-semibold">Record Your Audio</h2>
         <AudioRecorder onSave={onSave} />
-        <button onClick={onRequestClose} className="btn btn-secondary mt-4">
+        <button onClick={onClose} className="btn btn-secondary mt-4">
           Close
         </button>
       </div>
