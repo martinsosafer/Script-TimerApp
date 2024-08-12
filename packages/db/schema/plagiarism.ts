@@ -8,6 +8,8 @@ export const plagiarism = pgTable("plagiarism_scan", {
   userId: text("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
+  title: text("title").default("New Scan"),
+  content: text("content").default(""),
   total_words: integer("total_words").notNull().default(0),
   identical_words: integer("identical_words").notNull().default(0),
   minor_changed_words: integer("minor_changed_words").notNull().default(0),

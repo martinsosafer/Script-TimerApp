@@ -8,15 +8,18 @@ import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 import type { PlagiarismPayload } from "~/app/api/webhook/plagiarism-result/[status]/[id]/route";
 import { pusherClient } from "~/lib/pusher";
+import EditScanTitleModal from "../../components/modals/edit-scan-title";
 import NoSessionModal from "../../components/modals/no-session-modal";
-import ModeSelector from "./mode-selector";
-import PercentageBar from "./percentage-bar";
+import ModeSelector from "../../components/mode-selector";
+import PercentageBar from "../../components/percentage-bar";
+import { addContentToScan } from "../utils";
 import PlagiarismResult from "./plagiarism-result";
-import { transformResults } from "./utils";
+import ScansHistory from "./scans-history";
 import WelcomeMessage from "./welcome-message";
 
 interface CheckerProps {
   userId: string | undefined;
+  scans: PlagiarismPayload[] | [];
 }
 
 export interface CheckResult {
@@ -24,8 +27,10 @@ export interface CheckResult {
   summary: { ai: number };
 }
 
-export default function Checker({ userId }: CheckerProps) {
-  const [aiCheck, setAiCheck] = useState(false);
+export default function Checker({ userId, scans }: CheckerProps) {
+  const [scansHistory, setScansHistory] = useState<PlagiarismPayload[] | []>(
+    scans,
+  );
   const [aiCheckResult, setAiCheckResult] = useState<CheckResult | null>(null);
   const [plagiarismCheck, setPlagiarismCheck] =
     useState<PlagiarismPayload | null>(null);
@@ -37,6 +42,8 @@ export default function Checker({ userId }: CheckerProps) {
   const [text, setText] = useState<string>("");
 
   const [noSessionModalOpen, setNoSessionModalOpen] = useState<boolean>(false);
+
+  const [isEditingScanTitle, setIsEditingScanTitle] = useState<boolean>(false);
 
   async function handleCheck(e: FormEvent) {
     e.preventDefault();
@@ -53,24 +60,18 @@ export default function Checker({ userId }: CheckerProps) {
       toast({
         title: "More Text Required",
         description:
-          "Our AI Content Detector requires 350 characters or more for accuracy purposes.",
+          "Our Plagiarism Detector requires 350 characters or more for accuracy purposes.",
       });
       setLoading(false);
     } else {
       try {
-        const response = await fetch("/api/plagiarism-check", {
-          method: aiCheck ? "POST" : "PUT",
+        await fetch("/api/plagiarism-check", {
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ text }),
         });
-
-        if (aiCheck) {
-          const result = (await response.json()) as CheckResult;
-          setAiCheckResult(result);
-          setLoading(false);
-        }
       } catch (error) {
         console.error(error);
         setLoading(false);
@@ -91,11 +92,9 @@ export default function Checker({ userId }: CheckerProps) {
   }, []);
 
   async function handleScanCheck(id: string) {
-    const response = await fetch(`/api/get-scan-results/${id}`);
-    const scan = (await response.json()) as PlagiarismPayload;
-
-    console.log("Scan", scan);
+    const scan = (await addContentToScan(id, text)) as PlagiarismPayload;
     setPlagiarismCheck(scan);
+    setScansHistory([...scansHistory, scan]);
   }
 
   useEffect(() => {
@@ -108,25 +107,14 @@ export default function Checker({ userId }: CheckerProps) {
     <>
       <div className="flex w-[1024px] flex-col py-10">
         <WelcomeMessage />
-        <ModeSelector
-          aiCheck={aiCheck}
-          setAiCheck={setAiCheck}
-          setAiCheckResult={setAiCheckResult}
-          setPlagiarismCheck={setPlagiarismCheck}
-        />
+        <ModeSelector aiCheck={false} />
         <div className="mt-10 flex w-full gap-2">
-          <div className="flex w-[25%] flex-col rounded-sm border-2 border-gray-300 p-2">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t border-primary" />
-              </div>
-              <div className="relative flex justify-center text-sm uppercase ">
-                <span className="bg-background px-2 text-primary">
-                  Plagiarism Scans History
-                </span>
-              </div>
-            </div>
-          </div>
+          <ScansHistory
+            scanHistory={scansHistory}
+            setScansHistory={setScansHistory}
+            setPlagiarismCheck={setPlagiarismCheck}
+            setIsEditingScanTitle={setIsEditingScanTitle}
+          />
 
           <form
             onSubmit={
@@ -140,18 +128,10 @@ export default function Checker({ userId }: CheckerProps) {
             className="flex w-[75%] flex-col items-end gap-2"
           >
             <div className="min-h-[500px] w-full rounded-sm border-2 border-gray-300 p-4">
-              {aiCheck && aiCheckResult && (
-                <div>
-                  {transformResults({
-                    originalText: text,
-                    results: aiCheckResult.results,
-                  })}
-                </div>
-              )}
-              {!aiCheck && plagiarismCheck && (
+              {plagiarismCheck && (
                 <PlagiarismResult text={text} result={plagiarismCheck} />
               )}
-              {!aiCheckResult && !plagiarismCheck && (
+              {!plagiarismCheck && (
                 <textarea
                   name="textarea"
                   rows={20}
@@ -161,13 +141,6 @@ export default function Checker({ userId }: CheckerProps) {
               )}
             </div>
             <div className="flex w-full justify-end gap-2">
-              {aiCheckResult && (
-                <PercentageBar
-                  label="AI Content"
-                  percentage={aiCheckResult.summary.ai}
-                />
-              )}
-
               {plagiarismCheck && (
                 <PercentageBar
                   label="Plagiarism Content"
@@ -181,7 +154,7 @@ export default function Checker({ userId }: CheckerProps) {
               >
                 {loading ? (
                   <IconSpinner className="h-6 w-6 animate-spin" />
-                ) : aiCheckResult ?? plagiarismCheck ? (
+                ) : plagiarismCheck ? (
                   "New Scan"
                 ) : (
                   "Scan"
@@ -191,6 +164,17 @@ export default function Checker({ userId }: CheckerProps) {
           </form>
         </div>
       </div>
+      {isEditingScanTitle && (
+        <EditScanTitleModal
+          onClose={() => {
+            setIsEditingScanTitle(false);
+            setPlagiarismCheck(null);
+          }}
+          setScansHistory={setScansHistory}
+          scansHistory={scansHistory}
+          plagiarismCheck={plagiarismCheck}
+        />
+      )}
       {noSessionModalOpen && (
         <NoSessionModal
           openModal={noSessionModalOpen}

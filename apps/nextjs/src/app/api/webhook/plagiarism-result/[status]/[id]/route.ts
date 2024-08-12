@@ -39,6 +39,8 @@ interface InternetPayload {
 export interface PlagiarismPayload {
   id: string;
   userId: string;
+  title: string;
+  content: string;
   total_words: number;
   identical_words: number;
   minor_changed_words: number;
@@ -76,6 +78,8 @@ export async function POST(
     const payload: PlagiarismPayload = {
       id,
       userId: developerPayload,
+      title: "New Scan",
+      content: "",
       total_words: totalWords,
       identical_words: identicalWords,
       minor_changed_words: minorChangedWords,

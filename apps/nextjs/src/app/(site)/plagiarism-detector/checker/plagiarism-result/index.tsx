@@ -18,10 +18,11 @@ export default function PlagiarismResult({
     total_words,
     minor_changed_words,
     related_meaning_words,
+    content,
   } = result;
   return (
-    <div className="flex w-full flex-col gap-2">
-      <p>{text}</p>
+    <div className="flex h-full min-h-[500px] flex-col gap-2">
+      <p>{content}</p>
       <div className="mt-3 flex flex-wrap gap-2">
         <div className="rounded-sm bg-gray-200 p-2">
           {" "}
