@@ -6,11 +6,16 @@ import { useRouter } from "next/navigation";
 import { IconMic2 } from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
+import FreeModal from "~/app/(site)/components/free-modal";
 import LoadingDots from "~/app/(site)/components/loadingdots";
 import { api } from "~/utils/api";
 import AudioRecorderModal from "../cloningRmodal";
 
-export default function VoiceCloningForm({ onVoiceCreated }) {
+export default function VoiceCloningForm({
+  onVoiceCreated,
+  subData,
+  setOpenNoSessionModal,
+}) {
   const router = useRouter();
   const { mutateAsync: newCustomVoice } =
     api.voiceCustom.newCustomVoice.useMutation({
@@ -36,6 +41,7 @@ export default function VoiceCloningForm({ onVoiceCreated }) {
 
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showFreeModal, setShowFreeModal] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
@@ -70,6 +76,17 @@ export default function VoiceCloningForm({ onVoiceCreated }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!subData) {
+      setOpenNoSessionModal();
+      return;
+    }
+
+    if (subData.status !== "CREATOR" && subData.status !== "BUSINESS") {
+      setShowFreeModal(true);
+      return;
+    }
+
     setLoading(true);
 
     if (!formData.file) {
@@ -110,6 +127,28 @@ export default function VoiceCloningForm({ onVoiceCreated }) {
       setLoading(false);
     };
   };
+
+  const handleRecordAudioClick = (e) => {
+    if (loading) {
+      e.preventDefault();
+      return;
+    }
+
+    if (!subData) {
+      e.preventDefault();
+      setOpenNoSessionModal();
+      return;
+    }
+
+    if (subData.status !== "CREATOR" && subData.status !== "BUSINESS") {
+      e.preventDefault();
+      setShowFreeModal(true);
+      return;
+    }
+
+    setIsModalOpen(true);
+  };
+
   return (
     <>
       <form
@@ -185,11 +224,10 @@ export default function VoiceCloningForm({ onVoiceCreated }) {
         <p className="text-sm text-gray-600">
           If you have no sample audio, just click "Record Audio".
         </p>
-
         <button
           type="button"
           className="hover:bg-secondary-dark flex items-center justify-center rounded-md bg-primary py-2 font-semibold text-white focus:outline-none"
-          onClick={() => setIsModalOpen(true)}
+          onClick={handleRecordAudioClick}
         >
           Record Audio
           <IconMic2 className="ml-2 h-5 w-5 text-white" />
@@ -197,8 +235,23 @@ export default function VoiceCloningForm({ onVoiceCreated }) {
 
         <button
           type="submit"
-          disabled={loading}
           className="hover:bg-secondary-dark flex items-center justify-center rounded-md bg-primary py-2 font-semibold text-white focus:outline-none"
+          onClick={(e) => {
+            if (!subData) {
+              e.preventDefault();
+              setOpenNoSessionModal();
+              return;
+            }
+
+            if (subData.status !== "CREATOR" && subData.status !== "BUSINESS") {
+              e.preventDefault();
+              setShowFreeModal(true);
+              return;
+            }
+
+            // If the user has the required plan, proceed with the form submission
+            handleSubmit(e);
+          }}
         >
           {loading ? <LoadingDots color="#fff" /> : "Clone Voice"}
         </button>
@@ -209,6 +262,13 @@ export default function VoiceCloningForm({ onVoiceCreated }) {
         onClose={() => setIsModalOpen(false)}
         onSave={handleSaveAudio}
       />
+      {showFreeModal && (
+        <FreeModal
+          openModal={showFreeModal}
+          setOpenModal={setShowFreeModal}
+          plan="Creator" // You can set this dynamically if needed
+        />
+      )}
     </>
   );
 }

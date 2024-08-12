@@ -21,8 +21,10 @@ function VoiceWidget({
   const { data: allVoices, refetch } = subData
     ? api.voice.list.useQuery({ name: "" })
     : api.voice.publicVoices.useQuery();
-  const { data: celebrityVoices = [], isLoading: isQueryLoading } =
-    api.voice.listCelebrity.useQuery({ name: "" });
+
+  const { data: celebrityVoices = [], isLoading: isQueryLoading } = subData
+    ? api.voice.listCelebrity.useQuery({ name: "" })
+    : api.voice.PubliclistCelebrity.useQuery({ name: "" }); 
   const [currentPage, setCurrentPage] = useState(1);
   const [currentFavPage, setCurrentFavPage] = useState(1);
   const [currentCelebrityPage, setCurrentCelebrityPage] = useState(1); // Added state
@@ -158,6 +160,7 @@ function VoiceWidget({
     setFilter(null);
   };
   const handleShowCustom = () => {
+    setShowCelebrities(false);
     setShowCustom(true);
     setCurrentPage(1);
     setShowFavorites(false);
@@ -270,7 +273,7 @@ function VoiceWidget({
           }`}
           onClick={handleShowCelebrities}
         >
-          Celebrities
+          Celebs
         </button>
         <button
           className={`py-0.25 rounded-md border border-gray-300 bg-white px-1.5 text-xs focus:outline-none focus:ring focus:ring-blue-400 dark:bg-slate-500 dark:text-secondary-foreground ${

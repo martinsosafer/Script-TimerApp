@@ -3,10 +3,6 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
-import { IconStop } from "@voiceai/ui/@/icons/icons"; // Remove PlayIcon import
-
-import { api } from "~/utils/api"; // Make sure this imports your listCelebrity procedure
-
 interface CelebrityVoice {
   id: string;
   name: string;
@@ -57,7 +53,6 @@ const CelebrityVoiceCards: React.FC<CelebrityVoiceCardsProps> = ({
         <div className="flex items-center justify-center p-6">
           <div className="max-w-md rounded-lg border border-gray-300 bg-white p-6 shadow-md">
             <div className="flex flex-col items-center text-center">
-              <IconStop className="mb-4 h-16 w-16 text-primary" />
               <h2 className="mb-2 text-lg font-semibold">
                 No celebrity voices found!
               </h2>

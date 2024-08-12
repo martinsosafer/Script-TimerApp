@@ -340,44 +340,62 @@ export function ScriptAI({
       });
     }
   };
-  const audioStyle = {
+  const containerStyle = {
     position: "fixed",
-    bottom: showPlayer ? "20px" : "-100px", // Adjust the values as needed
+    bottom: "20px",
     left: "50%",
     transform: "translateX(-50%)",
-    maxWidth: "500px", // Make it wider
+    maxWidth: "500px", // Reduced size
     width: "100%",
-    height: "50px", // Set a specific height
-    backgroundColor: "transparent", // Transparent to show default styles
+    height: "80px", // Reduced height
+    backgroundColor: "#3B82F6",
     boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-    transition: "bottom 0.5s ease-in-out, opacity 0.5s ease-in-out",
-    opacity: showPlayer ? 1 : 0,
-    display: showPlayer ? "block" : "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: "10px",
+    borderRadius: "8px",
     zIndex: 1000,
+    opacity: showPlayer ? 1 : 0,
+    transition: "opacity 0.5s ease-in-out",
+    border: "1px solid black", // Subtle black border
   };
 
-  // Inject the additional CSS directly in your component
-  const audioElementStyle = `
-  /* Style the control panel background */
-  audio::-webkit-media-controls-panel {
-    background-color: #3B82F6; /* Tailwind blue-500 */
-  }
-  
-  /* Style the play/pause, seek, and volume buttons */
-  audio::-webkit-media-controls-play-button,
-  audio::-webkit-media-controls-pause-button,
-  audio::-webkit-media-controls-seek-back-button,
-  audio::-webkit-media-controls-seek-forward-button,
-  audio::-webkit-media-controls-volume-slider {
-    color: #F97316; /* Tailwind orange-500 */
-  }
+  const audioStyle = {
+    flex: 1,
+    height: "50px", // Slightly smaller height
+    backgroundColor: "transparent",
+    border: "none",
+  };
 
-  /* Style the volume slider track and thumb */
-  audio::-webkit-media-controls-volume-slider {
-    background-color: #F97316; /* Tailwind orange-500 */
-  }
-`;
+  const buttonStyle = {
+    backgroundColor: "#F97316",
+    border: "1px solid black", // Subtle black border
+    borderRadius: "4px", // Square corners
+    color: "white",
+    padding: "8px", // Padding around the icon
+    cursor: "pointer",
+    fontFamily: "Poppins, sans-serif",
+    fontWeight: "bold",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    transition: "background-color 0.3s",
+    width: "40px", // Square size
+    height: "40px", // Square size
+    marginLeft: "4px",
+  };
 
+  const buttonHoverStyle = {
+    ...buttonStyle,
+    backgroundColor: "#e76f00", // Darker on hover
+  };
+  const disabledButtonStyle = {
+    ...buttonStyle,
+    backgroundColor: "#f7a07a", // Lighter orange
+    cursor: "not-allowed",
+    opacity: 0.6,
+  };
   const handleCloseAudio = () => {
     if (audioRef.current) {
       audioRef.current.pause();
@@ -534,73 +552,109 @@ export function ScriptAI({
                           </Button>
                         )}
 
-                        <style>{audioElementStyle}</style>
-                        <audio ref={audioRef} controls style={audioStyle} />
+                        <div style={containerStyle}>
+                          <audio ref={audioRef} controls style={audioStyle} />
 
-                        {showPlayer && (
-                          <div className="fixed bottom-[60px] left-[50%] z-[1001] flex -translate-x-1/2 transform rounded-lg bg-blue-400 p-3">
-                            <button
-                              onClick={() => {
-                                if (downloadLink && isSubscriptionActive) {
-                                  const anchor = document.createElement("a");
-                                  anchor.href = downloadLink;
-                                  anchor.download = "audio.mp3";
-                                  anchor.click();
-                                  URL.revokeObjectURL(downloadLink);
-                                  setShowConfetti(true);
+                          {showPlayer && (
+                            <div
+                              className="controls-container"
+                              style={{ display: "flex", gap: "10px" }}
+                            >
+                              <HoverCard>
+                                <HoverCardTrigger asChild>
+                                  <button
+                                    onClick={() => {
+                                      if (
+                                        downloadLink &&
+                                        isSubscriptionActive
+                                      ) {
+                                        const anchor =
+                                          document.createElement("a");
+                                        anchor.href = downloadLink;
+                                        anchor.download = "audio.mp3";
+                                        anchor.click();
+                                        URL.revokeObjectURL(downloadLink);
+                                        setShowConfetti(true);
+                                      }
+                                    }}
+                                    disabled={
+                                      !downloadLink ||
+                                      !isSubscriptionActive ||
+                                      loading
+                                    }
+                                    style={
+                                      !isSubscriptionActive
+                                        ? disabledButtonStyle
+                                        : buttonStyle
+                                    }
+                                    onMouseOver={(e) =>
+                                      !isSubscriptionActive || loading
+                                        ? null
+                                        : (e.currentTarget.style.backgroundColor =
+                                            buttonHoverStyle.backgroundColor)
+                                    }
+                                    onMouseOut={(e) =>
+                                      !isSubscriptionActive || loading
+                                        ? null
+                                        : (e.currentTarget.style.backgroundColor =
+                                            buttonStyle.backgroundColor)
+                                    }
+                                  >
+                                    {loading ? (
+                                      <Icons.spinner
+                                        className="h-6 w-6"
+                                        style={{ color: "white" }}
+                                      />
+                                    ) : (
+                                      <ArrowDownOnSquareIcon
+                                        width={24}
+                                        style={{ color: "white" }}
+                                      />
+                                    )}
+                                  </button>
+                                </HoverCardTrigger>
+                                {!isSubscriptionActive && (
+                                  <HoverCardContent
+                                    className="w-[320px] text-sm"
+                                    side="right"
+                                  >
+                                    Free users can't download audio files.
+                                  </HoverCardContent>
+                                )}
+                              </HoverCard>
+                              <button
+                                onClick={handleCloseAudio}
+                                style={buttonStyle}
+                                onMouseOver={(e) =>
+                                  (e.currentTarget.style.backgroundColor =
+                                    buttonHoverStyle.backgroundColor)
                                 }
-                              }}
-                              disabled={
-                                !downloadLink ||
-                                !isSubscriptionActive ||
-                                loading
-                              }
-                              className={`mr-2 flex items-center p-2 ${
-                                downloadLink && isSubscriptionActive && !loading
-                                  ? "bg-orange-500"
-                                  : "bg-gray-300"
-                              } rounded border-none font-poppins font-bold text-white shadow-md cursor-${
-                                downloadLink && isSubscriptionActive && !loading
-                                  ? "pointer"
-                                  : "not-allowed"
-                              }`}
-                            >
-                              {loading ? (
-                                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                              ) : (
-                                <>
-                                  <ArrowDownOnSquareIcon
-                                    width={30}
-                                    className="mr-2 stroke-black"
-                                  />
-                                  Download
-                                </>
-                              )}
-                            </button>
-                            <button
-                              onClick={handleCloseAudio}
-                              className="ml-2 flex cursor-pointer items-center rounded border-none bg-orange-500 p-2 font-poppins font-bold text-white shadow-md"
-                            >
-                              <IconClose
-                                width={30}
-                                className="mr-2 stroke-black"
-                              />
-                              Close
-                            </button>
-                          </div>
-                        )}
-                        {showConfetti && (
-                          <Confetti
-                            width={window.innerWidth}
-                            height={window.innerHeight}
-                            numberOfPieces={1000}
-                            recycle={false}
-                            gravity={0.1}
-                            initialVelocityX={2}
-                            initialVelocityY={10}
-                            colors={["#0123e7", "#eb8806"]}
-                          />
-                        )}
+                                onMouseOut={(e) =>
+                                  (e.currentTarget.style.backgroundColor =
+                                    buttonStyle.backgroundColor)
+                                }
+                              >
+                                <IconClose
+                                  width={24}
+                                  style={{ color: "white" }}
+                                />
+                              </button>
+                            </div>
+                          )}
+
+                          {showConfetti && (
+                            <Confetti
+                              width={window.innerWidth}
+                              height={window.innerHeight}
+                              numberOfPieces={1000}
+                              recycle={false}
+                              gravity={0.1}
+                              initialVelocityX={2}
+                              initialVelocityY={10}
+                              colors={["#0123e7", "#eb8806"]}
+                            />
+                          )}
+                        </div>
                       </TooltipTrigger>
                       <TooltipContent> Open the voice player</TooltipContent>
                     </Tooltip>

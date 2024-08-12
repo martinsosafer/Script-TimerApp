@@ -12,11 +12,11 @@ export const metadata: Metadata = {
 
 export default async function indexPage() {
   const session = await auth();
-  const userId = session?.user.id;
+  const subData = session?.user.subscription;
 
   return (
     <div>
-      <VoiceCloningPage />
+      <VoiceCloningPage subData={subData} />
     </div>
   );
 }

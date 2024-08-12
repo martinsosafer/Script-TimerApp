@@ -6,19 +6,22 @@ import Image from "next/image";
 import { IconFlag, IconScanText } from "@voiceai/ui/@/components/ui/icons";
 import { toast, ToastAction } from "@voiceai/ui/@/components/ui/toast";
 
+import FreeModal from "~/app/(site)/components/free-modal"; // Import the FreeModal
 import LoadingDots from "~/app/(site)/components/loadingdots";
-// import Loadingdots
 import languages from "~/lib/languages";
 
-export default function TextTranslate({}) {
+export default function TextTranslate({ subData, setOpenNoSessionModal }) {
   const [loading, setLoading] = React.useState(false);
   const [language, setLanguage] = React.useState<string>(languages[0]?.value);
   const [generatedTranslation, setGeneratedTranslation] =
     React.useState<string>("");
   const [text, setText] = React.useState<string>("");
+  const [showFreeModal, setShowFreeModal] = React.useState(false); // State for showing the FreeModal
+
   const url = "https://api.openai.com/v1/audio/transcriptions";
   const currentModel = "gpt-4o";
   const prompt = `Please translate the following text into ${language},The translation should always be in ${language} and should be grammatically correct , only give me the text do not add anything else . \n\nOriginal text:\n"${text}"\n\nPlease provide your translation below:`;
+
   const translateText = async () => {
     setGeneratedTranslation("");
     setLoading(true);
@@ -35,19 +38,15 @@ export default function TextTranslate({}) {
         }),
       });
 
-      // Log the raw response for debugging
       const responseText = await response.text();
       console.log("Raw response:", responseText);
 
-      // Check if the response is OK
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      // Parse the response text as JSON
       const data = JSON.parse(responseText);
 
-      // Handle the case where data might not have the expected structure
       if (!data?.data) {
         throw new Error("Invalid response structure");
       }
@@ -72,6 +71,20 @@ export default function TextTranslate({}) {
     )?.value;
     if (selectedLabel) {
       setLanguage(selectedLabel);
+    }
+  };
+
+  const handleTranslateClick = () => {
+    if (!subData) {
+      setOpenNoSessionModal();
+    } else if (
+      subData.status !== "STUDENT" &&
+      subData.status !== "CREATOR" &&
+      subData.status !== "BUSINESS"
+    ) {
+      setShowFreeModal(true);
+    } else {
+      translateText();
     }
   };
 
@@ -112,7 +125,7 @@ export default function TextTranslate({}) {
       {!loading && (
         <button
           className="mt-8 w-full rounded-xl bg-primary px-4 py-2 font-medium text-white hover:bg-primary/80 sm:mt-10"
-          onClick={translateText}
+          onClick={handleTranslateClick} // Modified to use handleTranslateClick
         >
           Translate &rarr;
         </button>
@@ -149,13 +162,25 @@ export default function TextTranslate({}) {
           <button
             className="my-2 text-sm text-blue-500 underline"
             onClick={() => {
-              navigator.clipboard.writeText(generatedTranslation);
-              window.location.href = "/texttovoice";
+              navigator.clipboard
+                .writeText(generatedTranslation)
+                .then(() => {
+                  window.open("/texttovoice", "_blank");
+                })
+                .catch((err) => console.error("Failed to copy text: ", err));
             }}
           >
             Copy and open Text to Voice
           </button>
         </>
+      )}
+
+      {showFreeModal && (
+        <FreeModal
+          openModal={showFreeModal}
+          setOpenModal={setShowFreeModal}
+          plan="Student" // You can adjust this as needed
+        />
       )}
     </div>
   );

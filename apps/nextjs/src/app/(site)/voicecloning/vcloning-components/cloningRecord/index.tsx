@@ -67,7 +67,7 @@ const AudioRecorder = ({ onSave }) => {
         onClick={() => setShowInspiration(!showInspiration)}
         className="mb-4 w-full rounded-md bg-blue-500 py-2 text-white hover:bg-blue-600 focus:outline-none"
       >
-        {showInspiration ? "Hide Inspiration" : "Show Inspiration"}
+        {showInspiration ? "Hide sample script" : "Show me a sample script"}
       </button>
       {showInspiration && (
         <div className="mb-4 max-h-48 overflow-y-auto rounded-md border border-gray-300 bg-gray-50 p-4 text-gray-700">
@@ -136,13 +136,20 @@ const AudioRecorder = ({ onSave }) => {
       )}
       {audioURL && (
         <>
-          <audio ref={audioRef} src={audioURL} controls className="mt-4" />
-          <button
-            onClick={handleSave}
-            className="hover:bg-secondary-dark mt-2 w-full rounded-md bg-tertiary py-2 font-semibold text-white focus:outline-none"
-          >
-            Save Recording
-          </button>
+          <div className="mt-4 flex flex-col items-center">
+            <audio
+              ref={audioRef}
+              src={audioURL}
+              controls
+              className="w-full max-w-md"
+            />
+            <button
+              onClick={handleSave}
+              className="hover:bg-secondary-dark mt-2 w-full max-w-md rounded-md bg-tertiary py-2 font-semibold text-white focus:outline-none"
+            >
+              Save Recording
+            </button>
+          </div>
         </>
       )}
     </div>

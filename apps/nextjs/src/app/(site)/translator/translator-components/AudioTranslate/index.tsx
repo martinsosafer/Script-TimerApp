@@ -1,13 +1,16 @@
+"use client";
+
 import * as React from "react";
 import Image from "next/image";
 
 import { IconEar, IconFlag } from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
+import FreeModal from "~/app/(site)/components/free-modal"; // Import the FreeModal
 import LoadingDots from "~/app/(site)/components/loadingdots";
 import languages from "~/lib/languages";
 
-export default function AudioTranslate({}) {
+export default function AudioTranslate({ subData, setOpenNoSessionModal }) {
   const [loading, setLoading] = React.useState(false);
   const [language, setLanguage] = React.useState<string>(languages[0]?.value);
   const [generatedTranslation, setGeneratedTranslation] =
@@ -15,6 +18,7 @@ export default function AudioTranslate({}) {
   const [selectedFile, setSelectedFile] = React.useState<File | undefined>(
     undefined,
   );
+  const [showFreeModal, setShowFreeModal] = React.useState(false); // State for showing the FreeModal
 
   const translateAudio = async () => {
     setGeneratedTranslation("");
@@ -57,6 +61,20 @@ export default function AudioTranslate({}) {
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setLanguage(event.target.value);
+  };
+
+  const handleTranslateClick = () => {
+    if (!subData) {
+      setOpenNoSessionModal();
+    } else if (
+      subData.status !== "STUDENT" &&
+      subData.status !== "CREATOR" &&
+      subData.status !== "BUSINESS"
+    ) {
+      setShowFreeModal(true);
+    } else {
+      translateAudio();
+    }
   };
 
   return (
@@ -105,7 +123,7 @@ export default function AudioTranslate({}) {
       {!loading && (
         <button
           className="mt-8 w-full rounded-xl bg-primary px-4 py-2 font-medium text-white hover:bg-primary/80 sm:mt-10"
-          onClick={translateAudio}
+          onClick={handleTranslateClick} // Modified to use handleTranslateClick
         >
           Translate &rarr;
         </button>
@@ -127,8 +145,12 @@ export default function AudioTranslate({}) {
           <div
             className="w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
             onClick={() => {
-              navigator.clipboard.writeText(generatedTranslation);
-              toast({ title: "Translation copied to clipboard" });
+              navigator.clipboard
+                .writeText(generatedTranslation)
+                .then(() => {
+                  window.open("/texttovoice", "_blank");
+                })
+                .catch((err) => console.error("Failed to copy text: ", err));
             }}
           >
             <p>{generatedTranslation}</p>
@@ -146,6 +168,14 @@ export default function AudioTranslate({}) {
             Copy and open Text to Voice
           </button>
         </div>
+      )}
+
+      {showFreeModal && (
+        <FreeModal
+          openModal={showFreeModal}
+          setOpenModal={setShowFreeModal}
+          plan="Student" // You can adjust this as needed
+        />
       )}
     </div>
   );

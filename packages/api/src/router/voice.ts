@@ -26,9 +26,46 @@ export const voiceRouter = createTRPCRouter({
     return await db
       .select()
       .from(schema.voices)
-      .where(eq(schema.voices.active, true))
+      .where(
+        and(
+          eq(schema.voices.active, true),
+          eq(schema.voices.celebrity, false), // Exclude celebrity voices
+        ),
+      )
       .orderBy(asc(schema.voices.rank));
   }),
+  PubliclistCelebrity: publicProcedure
+    .input(
+      z.object({
+        name: z.string().optional(), // Optional name input for searching
+      }),
+    )
+    .query(async ({ input }) => {
+      if (input?.name && input?.name.length > 0) {
+        return await db
+          .select()
+          .from(schema.voices)
+          .where(
+            and(
+              ilike(schema.voices.name, `%${input.name}%`),
+              eq(schema.voices.active, true),
+              eq(schema.voices.celebrity, true), // Include only celebrity voices
+            ),
+          )
+          .orderBy(asc(schema.voices.rank));
+      }
+
+      return await db
+        .select()
+        .from(schema.voices)
+        .where(
+          and(
+            eq(schema.voices.active, true),
+            eq(schema.voices.celebrity, true), // Include only celebrity voices
+          ),
+        )
+        .orderBy(asc(schema.voices.rank));
+    }),
   listAllVoices: protectedProcedure.query(async ({ ctx }) => {
     return await ctx.db
       .select()
