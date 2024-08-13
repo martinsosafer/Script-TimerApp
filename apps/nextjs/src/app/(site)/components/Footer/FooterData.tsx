@@ -7,7 +7,7 @@ import {
 export const footerData = [
   {
     id: 1,
-    title: "Usefull Links",
+    title: "Useful Links",
     links: [
       {
         id: 1,
