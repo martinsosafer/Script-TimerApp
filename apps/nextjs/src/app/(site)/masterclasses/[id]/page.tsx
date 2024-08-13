@@ -25,6 +25,7 @@ interface PageProps {
     imageUrl: string;
   };
 }
+
 interface RelatedVideo {
   id: number;
   course: string;
@@ -40,27 +41,37 @@ export default async function Page({ searchParams }: PageProps) {
   const userData = await auth();
   const subData = userData?.user?.subscription?.status;
 
-  const modifiedSearchParams = {
-    ...searchParams,
-    id: Number(searchParams.id),
-  };
+  const currentVideoId = Number(searchParams.id);
+
   const relatedVideos: RelatedVideo[] = videoCardData
-    .filter(
-      (video) =>
-        video.course === searchParams.course &&
-        video.id !== Number(searchParams.id),
-    )
-    .slice(0, 4)
+    .filter((video) => video.course === searchParams.course)
     .map((video) => ({
       ...video,
       imageUrl: video.avatarUrl,
     }));
+
+  const currentIndex = relatedVideos.findIndex(
+    (video) => video.id === currentVideoId,
+  );
+  const previousVideo =
+    currentIndex > 0 ? relatedVideos[currentIndex - 1] : null;
+  const nextVideo =
+    currentIndex < relatedVideos.length - 1
+      ? relatedVideos[currentIndex + 1]
+      : null;
+
+  const modifiedSearchParams = {
+    ...searchParams,
+    id: currentVideoId,
+  };
 
   return (
     <>
       <VideoPage
         searchParams={modifiedSearchParams}
         relatedVideos={relatedVideos}
+        previousVideo={previousVideo}
+        nextVideo={nextVideo}
       />
       <MasterClassModal status={subData} />
     </>

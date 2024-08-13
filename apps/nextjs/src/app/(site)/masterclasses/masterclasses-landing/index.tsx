@@ -33,16 +33,23 @@ export default function MasterclasessLanding({
               className="mt-8 text-center font-poppins  text-3xl  font-bold  text-primary
           "
             >
-              Why Masterclasses?
+              Why take Masterclasses?
             </h1>
             <RevealText>
-              <p className="mb-10 mt-10  text-center text-lg font-medium text-secondary-foreground">
-                Preparing the best story connects you emotionally with your
-                audience. This helps you be at ease, get the outcomes you
-                desire, and inspires your audience. There are specific
-                components in great stories. Learn the story frameworks that
-                have transformed careers, created over $100,000,000 in sales,
-                and been seen in films & commercials seen around the world.
+              <p className="mb-10 mt-10 text-center text-lg font-medium text-secondary-foreground">
+                The best stories and structure connect you emotionally and
+                inspire your audience.
+                <br />
+                Join 70,000 people who have transformed their careers by
+                presenting their best to an audience, when interviewing,
+                creating ads, podcasts, and videos.
+                <br />
+                Learn the specific story frameworks inside great stories.
+                Transform your career like those who have created over
+                $100,000,000 in new revenue.
+                <br />
+                Watch the preview for the first 5 courses included in your
+                business membership, with more coming.
               </p>
             </RevealText>
           </div>

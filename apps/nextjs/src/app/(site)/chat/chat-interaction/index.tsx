@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import type { Prompt } from "~/app/(site)/data/chat-prompts/types";
 import { clearChats } from "~/app/actions/newChatActions";
 import ClearChatHistoryModal from "../../components/modals/clear-chat-history";
+import EditChatSubjectModal from "../../components/modals/edit-chat-subject";
 import NoSessionModal from "../../components/modals/no-session-modal";
 import ChatFeedback from "./chat-feedback";
 import GoToOldChat from "./go-to-old-chat";
@@ -30,6 +31,9 @@ export default function ChatInteraction({ userId }: ChatProps) {
   const [noSessionModalOpen, setNoSessionModalOpen] = useState<boolean>(false);
 
   const [isDeletingHistory, setIsDeletingHistory] = useState<boolean>(false);
+
+  const [isEditingChatSubject, setIsEditingChatSubject] =
+    useState<boolean>(false);
 
   const [feedbackInput, setFeedbackInput] = useState<string>("");
 
@@ -147,16 +151,27 @@ export default function ChatInteraction({ userId }: ChatProps) {
         setSelectedChatHistory={setSelectedChatHistory}
         loadingMessages={isLoading}
         setAssistantsResponse={setAssistantsResponse}
+        setIsEditingChatSubject={setIsEditingChatSubject}
       />
       <GoToOldChat />
       {isDeletingHistory && (
         <ClearChatHistoryModal
           onClose={() => setIsDeletingHistory(false)}
-          onConfirm={() => {
-            clearChats();
+          onConfirm={async () => {
+            await clearChats();
             setChatHistory([]);
             setIsDeletingHistory(false);
           }}
+        />
+      )}
+      {isEditingChatSubject && (
+        <EditChatSubjectModal
+          onClose={() => {
+            setIsEditingChatSubject(false);
+          }}
+          setChatHistory={setChatHistory}
+          chatHistory={chatHistory}
+          selectedChat={selectedChatHistory}
         />
       )}
       {noSessionModalOpen && (

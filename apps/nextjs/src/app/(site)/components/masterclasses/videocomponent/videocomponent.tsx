@@ -16,6 +16,7 @@ interface VideoData {
   avatarUrl: string;
   description: string;
 }
+
 interface RelatedVideo {
   id: number;
   course: string;
@@ -26,14 +27,19 @@ interface RelatedVideo {
   description: string;
   image: string;
 }
+
 interface VideoComponentProps {
   data: VideoData;
   relatedVideos: RelatedVideo[];
+  previousVideo: RelatedVideo | null;
+  nextVideo: RelatedVideo | null;
 }
 
 const VideoComponent: React.FC<VideoComponentProps> = ({
   data,
   relatedVideos,
+  previousVideo,
+  nextVideo,
 }) => {
   return (
     <MotionTransition className="mb-16 flex items-center justify-center">
@@ -44,6 +50,25 @@ const VideoComponent: React.FC<VideoComponentProps> = ({
           </h1>
         </RevealText>
         <div className="relative flex items-center justify-center">
+          {previousVideo && (
+            <Link
+              href={{
+                pathname: `/masterclasses/${previousVideo.id}`,
+                query: {
+                  title: previousVideo.title,
+                  id: previousVideo.id,
+                  course: previousVideo.course,
+                  name: previousVideo.name,
+                  videoUrl: previousVideo.videoUrl,
+                  avatarUrl: previousVideo.avatarUrl,
+                  description: previousVideo.description,
+                },
+              }}
+              className="absolute left-0 z-10 rounded-full bg-gray-800 p-2 text-white shadow-lg"
+            >
+              &larr;
+            </Link>
+          )}
           <AspectRatio ratio={16 / 8}>
             <iframe
               src={data.videoUrl}
@@ -52,6 +77,25 @@ const VideoComponent: React.FC<VideoComponentProps> = ({
               title={data.title}
             />
           </AspectRatio>
+          {nextVideo && (
+            <Link
+              href={{
+                pathname: `/masterclasses/${nextVideo.id}`,
+                query: {
+                  title: nextVideo.title,
+                  id: nextVideo.id,
+                  course: nextVideo.course,
+                  name: nextVideo.name,
+                  videoUrl: nextVideo.videoUrl,
+                  avatarUrl: nextVideo.avatarUrl,
+                  description: nextVideo.description,
+                },
+              }}
+              className="absolute right-0 z-10 rounded-full bg-gray-800 p-2 text-white shadow-lg"
+            >
+              &rarr;
+            </Link>
+          )}
         </div>
         <div className="mb-3 mt-6 flex w-full items-center justify-between px-2">
           <div className="flex items-center justify-center gap-2">

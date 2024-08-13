@@ -22,13 +22,13 @@ export const footerData = [
       {
         id: 3,
         name: "Pricing",
-        link: "https://script-timer.com/voice123-pricing/",
+        link: "https://app.script-timer.com/plans",
       },
     ],
   },
   {
     id: 2,
-    title: "Latest News",
+    title: "Blog and learning links",
     links: [
       {
         id: 1,
@@ -42,13 +42,28 @@ export const footerData = [
       },
       {
         id: 3,
-        name: "Yes and No toimprove your script",
-        link: "https://script-timer.com/speech-and-presentation/how-to-improve-your-public-speaking-with-yes-or-no-questions/",
+        name: "Prompt cheatsheet",
+        link: "https://script-timer.com/chatgpt-prompts/chatgpt-cheatsheet-guide-to-efficiency-without-the-burnout-2/",
       },
       {
         id: 4,
         name: "Tone of voice is important, but why?",
         link: "https://script-timer.com/speech-and-presentation/why-tone-of-voice-makes-or-breaks-your-voice-over/",
+      },
+      {
+        id: 5,
+        name: "Yes and No toimprove your script",
+        link: "https://script-timer.com/speech-and-presentation/how-to-improve-your-public-speaking-with-yes-or-no-questions/",
+      },
+      {
+        id: 6,
+        name: " Script Timing Foundations",
+        link: "https://script-timer.com/script-writing/how-long-will-my-script-take-to-read/",
+      },
+      {
+        id: 6,
+        name: " Video Creator MasterClass",
+        link: "https://script-timer.com/lcs-masterclass/",
       },
     ],
   },
