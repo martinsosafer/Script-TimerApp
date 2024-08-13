@@ -1,5 +1,7 @@
 import OpenAI from "openai";
 
+export const maxDuration = 45;
+
 // export const runtime = "edge";
 
 const openai = new OpenAI({

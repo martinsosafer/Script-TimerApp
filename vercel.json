@@ -3,6 +3,6 @@
     "silent": true
   },
   "functions": {
-    "apps/nextjs/src/app/api/**/**": { "maxDuration": 30 }
+    "/src/app/api/**/**": { "maxDuration": 30 }
   }
 }
