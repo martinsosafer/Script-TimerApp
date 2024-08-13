@@ -16,10 +16,10 @@ export const voiceCustomRouter = createTRPCRouter({
       z.object({
         name: z.string().min(1),
         description: z.string().min(1),
-        files: z.string().min(1), // URL or path to the audio file
+        files: z.string().min(1), // Base64 string for the audio file
         labels: z.string().optional(),
-        gender: z.string().optional(), // New field
-        preview_url: z.string().optional(), // New field
+        gender: z.string().optional(),
+        preview_url: z.string().optional(),
         type: z.enum(["11LABS", "OTHER"]).optional(),
         active: z.boolean().default(true),
       }),
@@ -28,17 +28,21 @@ export const voiceCustomRouter = createTRPCRouter({
       try {
         // Convert base64 string back to a file
         const fileBuffer = Buffer.from(input.files.split(",")[1], "base64");
+        const maxSize = 4.4 * 1024 * 1024; // 4.4 MB in bytes
         const fileName = "voice-file.wav"; // Change the file extension if necessary
+
+        // Create a Blob from the buffer, trim if needed
+        const trimmedBuffer =
+          fileBuffer.length > maxSize
+            ? fileBuffer.slice(0, maxSize)
+            : fileBuffer;
+        const fileBlob = new Blob([trimmedBuffer], { type: "audio/wav" });
 
         // Prepare form data for ElevenLabs API
         const form = new FormData();
         form.append("name", input.name);
         form.append("description", input.description);
-        form.append(
-          "files",
-          new Blob([fileBuffer], { type: "audio/wav" }),
-          fileName,
-        );
+        form.append("files", fileBlob, fileName);
         if (input.labels) {
           form.append("labels", input.labels);
         }
