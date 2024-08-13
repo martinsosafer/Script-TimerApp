@@ -6,25 +6,28 @@ import Image from "next/image";
 import { IconFlag, IconScanText } from "@voiceai/ui/@/components/ui/icons";
 import { toast, ToastAction } from "@voiceai/ui/@/components/ui/toast";
 
+import FreeModal from "~/app/(site)/components/free-modal"; // Import the FreeModal
 import LoadingDots from "~/app/(site)/components/loadingdots";
-// import Loadingdots
 import languages from "~/lib/languages";
 
-export default function TextTranslate({}) {
+export default function TextTranslate({ subData, setOpenNoSessionModal }) {
   const [loading, setLoading] = React.useState(false);
   const [language, setLanguage] = React.useState<string>(languages[0]?.value);
   const [generatedTranslation, setGeneratedTranslation] =
     React.useState<string>("");
   const [text, setText] = React.useState<string>("");
+  const [showFreeModal, setShowFreeModal] = React.useState(false); // State for showing the FreeModal
+
   const url = "https://api.openai.com/v1/audio/transcriptions";
   const currentModel = "gpt-4o";
   const prompt = `Please translate the following text into ${language},The translation should always be in ${language} and should be grammatically correct , only give me the text do not add anything else . \n\nOriginal text:\n"${text}"\n\nPlease provide your translation below:`;
+
   const translateText = async () => {
     setGeneratedTranslation("");
     setLoading(true);
 
     try {
-      const response = await fetch("/api/translator", {
+      const response = await fetch("/api/translatorText", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -35,19 +38,15 @@ export default function TextTranslate({}) {
         }),
       });
 
-      // Log the raw response for debugging
       const responseText = await response.text();
       console.log("Raw response:", responseText);
 
-      // Check if the response is OK
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      // Parse the response text as JSON
       const data = JSON.parse(responseText);
 
-      // Handle the case where data might not have the expected structure
       if (!data?.data) {
         throw new Error("Invalid response structure");
       }
@@ -75,9 +74,23 @@ export default function TextTranslate({}) {
     }
   };
 
+  const handleTranslateClick = () => {
+    if (!subData) {
+      setOpenNoSessionModal();
+    } else if (
+      subData.status !== "STUDENT" &&
+      subData.status !== "CREATOR" &&
+      subData.status !== "BUSINESS"
+    ) {
+      setShowFreeModal(true);
+    } else {
+      translateText();
+    }
+  };
+
   return (
     <div className="w-full max-w-xl">
-      <div className="mt-10 flex items-center space-x-3 ">
+      <div className="mt-10 flex items-center space-x-3">
         <div className="flex h-9 w-9 items-center justify-center gap-3 rounded-lg border-2 border-[#1877F290] bg-blue-300">
           <IconScanText className="text-black" />
         </div>
@@ -112,7 +125,7 @@ export default function TextTranslate({}) {
       {!loading && (
         <button
           className="mt-8 w-full rounded-xl bg-primary px-4 py-2 font-medium text-white hover:bg-primary/80 sm:mt-10"
-          onClick={translateText}
+          onClick={handleTranslateClick} // Modified to use handleTranslateClick
         >
           Translate &rarr;
         </button>
@@ -131,6 +144,7 @@ export default function TextTranslate({}) {
           <label className="text-md my-2 block text-left font-medium text-gray-900 dark:text-white">
             Translation:
           </label>
+
           <div
             className="w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
             onClick={() => {
@@ -140,12 +154,33 @@ export default function TextTranslate({}) {
               });
             }}
           >
-            <p> {generatedTranslation}</p>
+            <p>{generatedTranslation}</p>
           </div>
           <p className="my-1 text-sm text-gray-500 dark:text-gray-300">
-            Click on translation to copy on clipboard
+            Click on the translation to copy.
           </p>
+          <button
+            className="my-2 text-sm text-blue-500 underline"
+            onClick={() => {
+              navigator.clipboard
+                .writeText(generatedTranslation)
+                .then(() => {
+                  window.open("/texttovoice", "_blank");
+                })
+                .catch((err) => console.error("Failed to copy text: ", err));
+            }}
+          >
+            Copy and open Text to Voice
+          </button>
         </>
+      )}
+
+      {showFreeModal && (
+        <FreeModal
+          openModal={showFreeModal}
+          setOpenModal={setShowFreeModal}
+          plan="Student" // You can adjust this as needed
+        />
       )}
     </div>
   );

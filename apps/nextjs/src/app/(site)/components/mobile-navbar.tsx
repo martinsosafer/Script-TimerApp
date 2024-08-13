@@ -5,7 +5,6 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 
 import {
-
   IconAudioLines,
   IconBot,
   IconFileStack,
@@ -107,7 +106,7 @@ export default function MobileNavBar({ toggle }) {
                 <IconAudioLines className="mr-2 h-7 w-7 underline " />
                 Text to voice
               </h2>
-              <Link href={`/texttospeech`} onClick={toggle}>
+              <Link href={`/texttovoice`} onClick={toggle}>
                 <div className="mt-4 flex items-center text-secondary-foreground">
                   {" "}
                   {/* Wrapping h4 and IconMic2 in a flex container */}

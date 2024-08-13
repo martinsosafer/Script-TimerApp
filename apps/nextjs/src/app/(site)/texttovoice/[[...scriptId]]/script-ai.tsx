@@ -3,8 +3,10 @@
 import * as React from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import ArrowDownOnSquareIcon from "@heroicons/react/24/outline/ArrowDownOnSquareIcon";
 import { CopyIcon } from "@radix-ui/react-icons";
 import { useCompletion } from "ai/react";
+import Confetti from "react-confetti";
 
 import { Badge } from "@voiceai/ui/@/components/ui/badge";
 import { Button } from "@voiceai/ui/@/components/ui/button";
@@ -16,6 +18,7 @@ import {
 import {
   CorrectDocumentIcon,
   IconCheck,
+  IconClose,
   IconPlus,
   IconRefresh,
   Icons,
@@ -82,7 +85,9 @@ export function ScriptAI({
   };
 
   // Script AI parameters
+  const [showConfetti, setShowConfetti] = React.useState(false);
   const [script, setScript] = React.useState("");
+  const [richContent, setRichContent] = React.useState("");
   const [selectedModel, setSelectedModel] = React.useState(null);
   const [similarity, setSimilarity] = React.useState([0.8]);
   const [stability, setStability] = React.useState([0.5]);
@@ -136,45 +141,13 @@ export function ScriptAI({
   const [loading, setLoading] = React.useState(false);
   const audioRef = React.useRef<HTMLAudioElement>(null); // Ref for audio element
   const toggleAudioRef = React.useRef<HTMLButtonElement>(null); // Ref for toggle button
-
   const { mutateAsync: generateVoice, error } = api.voice.create.useMutation({
     onSuccess(data) {
-      if (data?.audio) {
-        const dataURI = `data:audio/mpeg;base64,${data.audio}`;
-        setAudio(dataURI);
-        setLoading(false);
-
-        // Trigger click on toggle button ref
-        if (toggleAudioRef.current && !error) {
-          toggleAudioRef.current.click();
-        }
-      } else {
-        setLoading(false);
-
-        // Handle error scenarios based on user plan
-        const userPlan = subData.status;
-        let errorMessage = "Please try again later";
-
-        if (userPlan === "FREE") {
-          errorMessage = "Free plan only supports up to 300 characters";
-        } else if (userPlan === "FREE_TRIAL" || userPlan === "STUDENT") {
-          errorMessage = "Your plan only supports up to 2000 characters";
-        } else if (userPlan === "CREATOR") {
-          errorMessage = "Your plan only supports up to 5000 characters";
-        } else if (userPlan === "BUSINESS") {
-          errorMessage = "Your plan only supports up to 10000 characters";
-        }
-
-        toast({
-          title: "Character Limit",
-          description: errorMessage,
-        });
-      }
+      setLoading(false);
     },
     onError(error) {
       setLoading(false);
-
-      // Handle specific error cases
+      console.log("Mutation error:", error); // Add this line
       if (error?.data?.code === "FORBIDDEN") {
         toast({
           title: "Upgrade your plan",
@@ -186,7 +159,6 @@ export function ScriptAI({
           ),
         });
       } else {
-        console.log("Error occurred:", error);
         toast({
           title: "Something went wrong",
           description: "Please try again later",
@@ -196,7 +168,7 @@ export function ScriptAI({
   });
   const [audioSource, setAudioSource] = React.useState(null);
   const [showPlayer, setShowPlayer] = React.useState(false);
-
+  const [downloadLink, setDownloadLink] = React.useState(null);
   const handleStreaming = async ({
     voice_id,
     voice_actor,
@@ -206,9 +178,16 @@ export function ScriptAI({
     setLoading,
     userPlan,
   }) => {
+    if (!message || message.trim() === "") {
+      toast({
+        title: "Error",
+        description: "Please remember to write a script before making a voice!",
+      });
+      return;
+    }
+
     setLoading(true);
 
-    // Character limit check based on user plan
     const charLimit = {
       FREE: 300,
       FREE_TRIAL: 2000,
@@ -222,7 +201,9 @@ export function ScriptAI({
 
       if (userPlan === "FREE") {
         errorMessage = "Free plan only supports up to 300 characters";
-      } else if (userPlan === "FREE_TRIAL" || userPlan === "STUDENT") {
+      } else if (userPlan === "FREE_TRIAL") {
+        errorMessage = "Your plan only supports up to 16000 characters";
+      } else if (userPlan === "STUDENT") {
         errorMessage = "Your plan only supports up to 2000 characters";
       } else if (userPlan === "CREATOR") {
         errorMessage = "Your plan only supports up to 5000 characters";
@@ -233,7 +214,7 @@ export function ScriptAI({
       setLoading(false);
 
       toast({
-        title: "Character Limit",
+        title: "Character Limit Exceeded",
         description: errorMessage,
       });
 
@@ -271,6 +252,9 @@ export function ScriptAI({
       setAudioSource(objectUrl); // Set the audio source URL
       audioRef.current.src = objectUrl;
 
+      // Store audio data chunks
+      const audioChunks = [];
+
       mediaSource.addEventListener("sourceopen", async () => {
         const sourceBuffer = mediaSource.addSourceBuffer("audio/mpeg");
         const reader = responseBody.getReader();
@@ -285,6 +269,8 @@ export function ScriptAI({
               sourceBuffer.addEventListener("updateend", onBufferAppended);
               try {
                 sourceBuffer.appendBuffer(value);
+                // Push chunk to audioChunks
+                audioChunks.push(value);
               } catch (error) {
                 reject(error);
               }
@@ -294,13 +280,15 @@ export function ScriptAI({
           while (true) {
             const { done, value } = await reader.read();
             if (done) {
-              if (!sourceBuffer.updating) {
+              if (!sourceBuffer.updating && mediaSource.readyState === "open") {
                 mediaSource.endOfStream();
               } else {
                 sourceBuffer.addEventListener(
                   "updateend",
                   () => {
-                    mediaSource.endOfStream();
+                    if (mediaSource.readyState === "open") {
+                      mediaSource.endOfStream();
+                    }
                   },
                   { once: true },
                 );
@@ -309,17 +297,27 @@ export function ScriptAI({
             }
             await processBuffer(value);
           }
+
+          // Create a blob from audioChunks and set download link
+          const audioBlob = new Blob(audioChunks, { type: "audio/mpeg" });
+          const downloadUrl = URL.createObjectURL(audioBlob);
+          setDownloadLink(downloadUrl);
+
+          // Audio is ready, stop loading
+          setLoading(false);
         };
 
         readStream().catch((error) => {
           console.error("Error streaming audio:", error);
-          if (!sourceBuffer.updating) {
+          if (!sourceBuffer.updating && mediaSource.readyState === "open") {
             mediaSource.endOfStream("decode");
           } else {
             sourceBuffer.addEventListener(
               "updateend",
               () => {
-                mediaSource.endOfStream("decode");
+                if (mediaSource.readyState === "open") {
+                  mediaSource.endOfStream("decode");
+                }
               },
               { once: true },
             );
@@ -332,7 +330,6 @@ export function ScriptAI({
       });
 
       setShowPlayer(true); // Show the player when audio starts
-      setLoading(false);
     } catch (error) {
       console.error("Error streaming audio:", error);
       setLoading(false);
@@ -343,20 +340,62 @@ export function ScriptAI({
       });
     }
   };
-  const audioStyle = {
+  const containerStyle = {
     position: "fixed",
-    bottom: showPlayer ? "20px" : "-100px", // Adjust the values as needed
+    bottom: "20px",
     left: "50%",
     transform: "translateX(-50%)",
-    maxWidth: "300px",
+    maxWidth: "500px", // Reduced size
     width: "100%",
+    height: "80px", // Reduced height
+    backgroundColor: "#3B82F6",
     boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-    transition: "bottom 0.5s ease-in-out, opacity 0.5s ease-in-out",
-    opacity: showPlayer ? 1 : 0,
-    display: showPlayer ? "block" : "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: "10px",
+    borderRadius: "8px",
     zIndex: 1000,
+    opacity: showPlayer ? 1 : 0,
+    transition: "opacity 0.5s ease-in-out",
+    border: "1px solid black", // Subtle black border
   };
 
+  const audioStyle = {
+    flex: 1,
+    height: "50px", // Slightly smaller height
+    backgroundColor: "transparent",
+    border: "none",
+  };
+
+  const buttonStyle = {
+    backgroundColor: "#F97316",
+    border: "1px solid black", // Subtle black border
+    borderRadius: "4px", // Square corners
+    color: "white",
+    padding: "8px", // Padding around the icon
+    cursor: "pointer",
+    fontFamily: "Poppins, sans-serif",
+    fontWeight: "bold",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    transition: "background-color 0.3s",
+    width: "40px", // Square size
+    height: "40px", // Square size
+    marginLeft: "4px",
+  };
+
+  const buttonHoverStyle = {
+    ...buttonStyle,
+    backgroundColor: "#e76f00", // Darker on hover
+  };
+  const disabledButtonStyle = {
+    ...buttonStyle,
+    backgroundColor: "#f7a07a", // Lighter orange
+    cursor: "not-allowed",
+    opacity: 0.6,
+  };
   const handleCloseAudio = () => {
     if (audioRef.current) {
       audioRef.current.pause();
@@ -424,7 +463,7 @@ export function ScriptAI({
                   <div className="ml-auto flex w-full space-x-2 sm:justify-end ">
                     <Tooltip>
                       <TooltipTrigger>
-                        <Link href="/texttospeech">
+                        <Link href="/texttovoice">
                           <Button
                             type="button"
                             size="sm"
@@ -449,6 +488,7 @@ export function ScriptAI({
                           <SaveScript
                             script={script}
                             subData={subData?.status}
+                            richContent={richContent}
                           />
                         </button>
                       </TooltipTrigger>
@@ -511,26 +551,110 @@ export function ScriptAI({
                             <span className="sr-only">Player</span>
                           </Button>
                         )}
-                        <audio ref={audioRef} controls style={audioStyle} />
-                        {showPlayer && (
-                          <button
-                            onClick={handleCloseAudio}
-                            style={{
-                              position: "fixed",
-                              bottom: "60px", // Adjust as needed
-                              left: "50%",
-                              transform: "translateX(-50%)",
-                              zIndex: 1001,
-                              padding: "10px",
-                              background: "#fff",
-                              border: "1px solid #ccc",
-                              borderRadius: "4px",
-                              boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-                            }}
-                          >
-                            Close
-                          </button>
-                        )}
+
+                        <div style={containerStyle}>
+                          <audio ref={audioRef} controls style={audioStyle} />
+
+                          {showPlayer && (
+                            <div
+                              className="controls-container"
+                              style={{ display: "flex", gap: "10px" }}
+                            >
+                              <HoverCard>
+                                <HoverCardTrigger asChild>
+                                  <button
+                                    onClick={() => {
+                                      if (
+                                        downloadLink &&
+                                        isSubscriptionActive
+                                      ) {
+                                        const anchor =
+                                          document.createElement("a");
+                                        anchor.href = downloadLink;
+                                        anchor.download = "audio.mp3";
+                                        anchor.click();
+                                        URL.revokeObjectURL(downloadLink);
+                                        setShowConfetti(true);
+                                      }
+                                    }}
+                                    disabled={
+                                      !downloadLink ||
+                                      !isSubscriptionActive ||
+                                      loading
+                                    }
+                                    style={
+                                      !isSubscriptionActive
+                                        ? disabledButtonStyle
+                                        : buttonStyle
+                                    }
+                                    onMouseOver={(e) =>
+                                      !isSubscriptionActive || loading
+                                        ? null
+                                        : (e.currentTarget.style.backgroundColor =
+                                            buttonHoverStyle.backgroundColor)
+                                    }
+                                    onMouseOut={(e) =>
+                                      !isSubscriptionActive || loading
+                                        ? null
+                                        : (e.currentTarget.style.backgroundColor =
+                                            buttonStyle.backgroundColor)
+                                    }
+                                  >
+                                    {loading ? (
+                                      <Icons.spinner
+                                        className="h-6 w-6"
+                                        style={{ color: "white" }}
+                                      />
+                                    ) : (
+                                      <ArrowDownOnSquareIcon
+                                        width={24}
+                                        style={{ color: "white" }}
+                                      />
+                                    )}
+                                  </button>
+                                </HoverCardTrigger>
+                                {!isSubscriptionActive && (
+                                  <HoverCardContent
+                                    className="w-[320px] text-sm"
+                                    side="right"
+                                  >
+                                    Free users can't download audio files.
+                                  </HoverCardContent>
+                                )}
+                              </HoverCard>
+                              <button
+                                onClick={handleCloseAudio}
+                                style={buttonStyle}
+                                onMouseOver={(e) =>
+                                  (e.currentTarget.style.backgroundColor =
+                                    buttonHoverStyle.backgroundColor)
+                                }
+                                onMouseOut={(e) =>
+                                  (e.currentTarget.style.backgroundColor =
+                                    buttonStyle.backgroundColor)
+                                }
+                              >
+                                <IconClose
+                                  width={24}
+                                  style={{ color: "white" }}
+                                />
+                              </button>
+                            </div>
+                          )}
+
+                          {showConfetti && (
+                            <Confetti
+                              width={window.innerWidth}
+                              height={window.innerHeight}
+                              numberOfPieces={1000}
+                              recycle={false}
+                              gravity={0.1}
+                              initialVelocityX={2}
+                              initialVelocityY={10}
+                              colors={["#0123e7", "#eb8806"]}
+                            />
+                          )}
+                        </div>
                       </TooltipTrigger>
                       <TooltipContent> Open the voice player</TooltipContent>
                     </Tooltip>
@@ -587,6 +711,10 @@ export function ScriptAI({
                         onChange={handleEditorChange}
                         script={script}
                         subData={subData}
+                        richContent={richContent}
+                        setRichContent={setRichContent}
+                        scriptLoaded={true}
+                        isSubscriptionActive={true}
                       />
 
                       <div className=" mb-4 flex flex-col items-center justify-center">
@@ -633,6 +761,7 @@ export function ScriptAI({
                                               .slice(0, 10)
                                               .join(" ");
                                             await handleStreaming({
+                                              userPlan: subData.status,
                                               voice_id:
                                                 selectedModel.external_id,
                                               voice_actor: selectedModel.name,
@@ -680,14 +809,23 @@ export function ScriptAI({
                                       : async () => {
                                           try {
                                             await handleStreaming({
+                                              userPlan: subData.status,
                                               voice_id:
                                                 selectedModel.external_id,
                                               voice_actor: selectedModel.name,
                                               message: script,
+                                              userPlan: subData.status,
                                               stability: stability[0],
                                               similarity: similarity[0],
                                               setLoading,
                                               audioRef,
+                                            });
+                                            await generateVoice({
+                                              voice_id: selectedModel?.id,
+                                              voice_actor: selectedModel?.name,
+                                              message: script,
+                                              stability: stability?.[0],
+                                              similarity: similarity?.[0],
                                             });
                                           } catch (e) {
                                             console.log("catcherror", e);
@@ -705,7 +843,7 @@ export function ScriptAI({
                                     )}
                                   </div>
                                   <span className="relative z-10">
-                                    {loading ? "" : "Stream"}
+                                    {loading ? "" : "Create"}
                                   </span>
                                 </CustomButton>
                               </div>
@@ -713,65 +851,6 @@ export function ScriptAI({
                             <HoverCardContent
                               className="w-[320px] text-sm"
                               side="left"
-                            >
-                              Get the audio live
-                            </HoverCardContent>
-                          </HoverCard>
-                          <HoverCard openDelay={200}>
-                            <HoverCardTrigger asChild>
-                              <div>
-                                <CustomButton
-                                  type="secondary"
-                                  onClick={
-                                    !subData
-                                      ? () => setOpenFreeModal(true)
-                                      : async () => {
-                                          setShowPlayer(false);
-                                          handleCloseAudio();
-                                          setLoading(true);
-                                          setWaitModal(false); // Reset modal state before checking again
-                                          if (isScriptLongEnough(script)) {
-                                            setWaitModal(true); // Show modal only if script is long enough
-                                          }
-                                          try {
-                                            await generateVoice({
-                                              voice_id: selectedModel?.id,
-                                              voice_actor: selectedModel?.name,
-                                              message: script,
-                                              stability: stability?.[0],
-                                              similarity: similarity?.[0],
-                                            });
-                                            setLoading(false);
-                                            setWaitModal(false); // Hide modal when voice generation finishes
-                                          } catch {
-                                            setWaitModal(false); // Hide modal on error
-                                          }
-                                        }
-                                  }
-                                >
-                                  <div className="flex items-center">
-                                    {loading && (
-                                      <div className="absolute inset-0 flex items-center justify-center">
-                                        {" "}
-                                        {/* Center the spinner */}
-                                        <Icons.spinner className="h-4 w-4 animate-spin" />
-                                      </div>
-                                    )}
-                                  </div>
-                                  <span className="relative z-10">
-                                    {loading ? "" : "Create"}
-                                  </span>
-                                </CustomButton>
-                                {/* New Streaming Button */}
-                              </div>
-                            </HoverCardTrigger>
-                            <VoiceCreationModal
-                              isVisible={showWaitModal}
-                              onClose={handleCloseWaitModal}
-                            />
-                            <HoverCardContent
-                              className="w-[320px] text-sm"
-                              side="right"
                             >
                               Press create after your script is above and your
                               voice actor is chosen

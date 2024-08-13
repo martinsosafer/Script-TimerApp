@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import {
   IconAudioLines,
+  IconClone,
   IconFileType,
   IconHistory,
   IconLibraryBig,
@@ -11,7 +12,7 @@ import {
 export default function TextToVoiceNavItem() {
   return (
     <>
-      <Link href={`/texttospeech`} className="flex flex-col items-center">
+      <Link href={`/texttovoice`} className="flex flex-col items-center">
         <IconAudioLines className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
         <IconFileType className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
         <span className="font-poppins font-semibold">Text to Voice</span>
@@ -27,15 +28,13 @@ export default function TextToVoiceNavItem() {
                 {/* <p className="text-[13px] font-medium uppercase tracking-wider text-gray-500  ">
                   Voice Tools
                 </p> */}
-                <ul className="mt-3 text-[15px]">
+                <ul className="text-[15px]">
                   <li className="flex items-center">
                     <Link
-                      href={`/texttospeech`}
+                      href={`/texttovoice`}
                       className="-mx-2 block rounded-lg p-2 font-semibold text-gray-800 transition duration-300 ease-in-out hover:bg-gradient-to-br hover:from-indigo-200 hover:via-blue-200 hover:to-orange-200 hover:text-indigo-600 dark:text-secondary-foreground dark:hover:bg-gradient-to-br dark:hover:from-gray-800 dark:hover:via-gray-700 dark:hover:to-gray-600 dark:hover:text-indigo-600"
                     >
                       <div className="flex items-center ">
-                        {" "}
-                        {/* Envuelve el icono y el texto en un div flex */}
                         <span>
                           <IconMic2 />
                         </span>
@@ -47,20 +46,14 @@ export default function TextToVoiceNavItem() {
                     </Link>
                   </li>
                 </ul>
-              </div>
-              <div>
-                <p className="text-[13px] font-medium uppercase tracking-wider text-gray-500">
-                  Voice Repository
-                </p>
-                <ul className="mt-3 text-[15px]">
+
+                <ul className="text-[15px]">
                   <li>
                     <Link
                       href={`/library`}
                       className="-mx-2 block rounded-lg p-2 font-semibold text-gray-800 transition duration-300 ease-in-out hover:bg-gradient-to-br hover:from-indigo-200 hover:via-blue-200 hover:to-orange-200 hover:text-indigo-600 dark:text-secondary-foreground dark:hover:bg-gradient-to-br dark:hover:from-gray-800 dark:hover:via-gray-700 dark:hover:to-gray-600 dark:hover:text-indigo-600"
                     >
                       <div className="flex items-center">
-                        {" "}
-                        {/* Envuelve el icono y el texto en un div flex */}
                         <span>
                           <IconLibraryBig />
                         </span>
@@ -73,12 +66,26 @@ export default function TextToVoiceNavItem() {
                   </li>
                   <li>
                     <Link
+                      href={`/voicecloning`}
+                      className="-mx-2 block rounded-lg p-2 font-semibold text-gray-800 transition duration-300 ease-in-out hover:bg-gradient-to-br hover:from-indigo-200 hover:via-blue-200 hover:to-orange-200 hover:text-indigo-600 dark:text-secondary-foreground dark:hover:bg-gradient-to-br dark:hover:from-gray-800 dark:hover:via-gray-700 dark:hover:to-gray-600 dark:hover:text-indigo-600"
+                    >
+                      <div className="flex items-center ">
+                        <span>
+                          <IconClone />
+                        </span>
+                        <span className="ml-1 ">Voice Cloning</span>
+                      </div>
+                      <p className="font-normal text-gray-500">
+                        Give us an audio and we will create a voice for you
+                      </p>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
                       href={`/history`}
                       className="-mx-2 block rounded-lg p-2 font-semibold text-gray-800 transition duration-300 ease-in-out hover:bg-gradient-to-br hover:from-indigo-200 hover:via-blue-200 hover:to-orange-200 hover:text-indigo-600 dark:text-secondary-foreground dark:hover:bg-gradient-to-br dark:hover:from-gray-800 dark:hover:via-gray-700 dark:hover:to-gray-600 dark:hover:text-indigo-600"
                     >
                       <div className="flex items-center ">
-                        {" "}
-                        {/* Envuelve el icono y el texto en un div flex */}
                         <span>
                           <IconHistory />
                         </span>

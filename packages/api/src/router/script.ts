@@ -32,7 +32,7 @@ export const scriptRouter = createTRPCRouter({
           id: schema.scripts.id,
           name: schema.scripts.name,
           script: schema.scripts.script,
-          rich_text: schema.scripts.rich_text,
+          rich_text: schema.scripts.richText,
         })
         .from(schema.scripts)
         .where(

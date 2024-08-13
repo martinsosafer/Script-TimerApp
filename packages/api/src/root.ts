@@ -4,6 +4,7 @@ import { scriptRouter } from "./router/script";
 import { subscriptionRouter } from "./router/subscription";
 import { userRouter } from "./router/user";
 import { voiceRouter } from "./router/voice";
+import { voiceCustomRouter } from "./router/voiceCustom";
 import { createTRPCRouter } from "./trpc";
 
 export const appRouter = createTRPCRouter({
@@ -12,6 +13,7 @@ export const appRouter = createTRPCRouter({
   script: scriptRouter,
   subscription: subscriptionRouter,
   voice: voiceRouter,
+  voiceCustom: voiceCustomRouter,
   user: userRouter,
 });
 
