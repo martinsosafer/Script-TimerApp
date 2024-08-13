@@ -261,13 +261,10 @@ const CustomVoiceCards: React.FC<CustomVoiceCardsProps> = ({
       {customVoices.length === 0 ? (
         <div className="flex flex-col items-center justify-center gap-3 p-4 text-center text-slate-500">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg border-2 border-[#1877F290] bg-blue-300">
-            <IconClone className="text-black" />s
+            <IconClone className="text-black" />
           </div>
           <span className="whitespace-pre-line text-sm">
             No voices created yet. Give it a try!
-            {"\n"}
-            Use a clean sample recording. Samples should contain:
-            {"\n"}1 speaker, be over 1 minute long, and no background noise.
           </span>
         </div>
       ) : (
