@@ -8,12 +8,13 @@ const openai = new OpenAI({
 
 export async function POST(req: Request): Promise<Response> {
   try {
-    const data = await req.json();
-    console.log("TEXT: ", data);
+    const data = (await req.json()) as { text: string };
+
+    console.log(data.text);
 
     const response = await openai.images.generate({
       model: "dall-e-3",
-      prompt: data.text as string,
+      prompt: data.text,
       n: 1,
       size: "1792x1024",
       quality: "hd",

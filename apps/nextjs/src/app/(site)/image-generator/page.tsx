@@ -6,8 +6,8 @@ import { auth } from "@voiceai/auth";
 import ImageGenerator from "./image-generator";
 
 export const metadata: Metadata = {
-  title: "Translator",
-  description: "Translator bla bla bla not really inspire now ",
+  title: "Image Generator",
+  description: "Create your own storyboards.",
 };
 
 export default async function indexPage() {
