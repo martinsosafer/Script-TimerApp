@@ -143,7 +143,7 @@ export default function Checker({ userId, scans }: CheckerProps) {
             <div className="flex w-full justify-end gap-2">
               {plagiarismCheck && (
                 <PercentageBar
-                  label="Plagiarism Content"
+                  label="Plagiarism likelihood"
                   percentage={plagiarismCheck.aggregated_score / 100}
                 />
               )}

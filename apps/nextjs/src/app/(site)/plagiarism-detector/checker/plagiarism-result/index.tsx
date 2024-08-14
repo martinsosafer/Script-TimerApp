@@ -30,7 +30,8 @@ export default function PlagiarismResult({
         </div>
         <div className="rounded-sm bg-gray-200 p-2">
           {" "}
-          Score: <strong>{aggregated_score}%</strong>
+          Likelihood of Plagiarized content:{" "}
+          <strong>{aggregated_score}%</strong>
         </div>
         <div className="rounded-sm bg-gray-200 p-2">
           Identical words: <strong>{identical_words}</strong>
@@ -44,7 +45,8 @@ export default function PlagiarismResult({
           Related meaning words: <strong>{related_meaning_words}</strong>
         </div>
       </div>
-      <div className="mt-2">
+      <div className="mt-4 font-semibold">{`Your content is extremely similar to what we found at this link${internet.length === 1 ? "" : "s"}:`}</div>
+      <div>
         {internet.map((item) => (
           <div key={item.id} className="mt-3">
             <Link
