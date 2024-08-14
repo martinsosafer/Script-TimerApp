@@ -16,7 +16,7 @@ export const voiceCustomRouter = createTRPCRouter({
       z.object({
         name: z.string().min(1),
         description: z.string().min(1),
-        files: z.string().min(1), // Base64 string for the audio file
+        files: z.string().url(), // File URL instead of Base64 string
         labels: z.string().optional(),
         gender: z.string().optional(),
         preview_url: z.string().optional(),
@@ -26,23 +26,19 @@ export const voiceCustomRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       try {
-        // Convert base64 string back to a file
-        const fileBuffer = Buffer.from(input.files.split(",")[1], "base64");
-        const maxSize = 4.4 * 1024 * 1024; // 4.4 MB in bytes
-        const fileName = "voice-file.wav"; // Change the file extension if necessary
-
-        // Create a Blob from the buffer, trim if needed
-        const trimmedBuffer =
-          fileBuffer.length > maxSize
-            ? fileBuffer.slice(0, maxSize)
-            : fileBuffer;
-        const fileBlob = new Blob([trimmedBuffer], { type: "audio/wav" });
+        // Download the file from the URL
+        const response = await fetch(input.files);
+        const fileBuffer = await response.arrayBuffer();
 
         // Prepare form data for ElevenLabs API
         const form = new FormData();
         form.append("name", input.name);
         form.append("description", input.description);
-        form.append("files", fileBlob, fileName);
+        form.append(
+          "files",
+          new Blob([fileBuffer], { type: "audio/wav" }),
+          "voice-file.wav",
+        );
         if (input.labels) {
           form.append("labels", input.labels);
         }
@@ -54,7 +50,7 @@ export const voiceCustomRouter = createTRPCRouter({
         }
 
         // Send the request to ElevenLabs API
-        const response = await fetch(
+        const elevenLabsResponse = await fetch(
           "https://api.elevenlabs.io/v1/voices/add",
           {
             method: "POST",
@@ -65,16 +61,13 @@ export const voiceCustomRouter = createTRPCRouter({
           },
         );
 
-        const data = await response.json();
+        const data = await elevenLabsResponse.json();
 
-        // Log the response data to check its structure
-        console.log("API Response Data:", data);
-
-        if (!response.ok) {
+        if (!elevenLabsResponse.ok) {
           throw new Error(data.message || "Failed to add voice to ElevenLabs");
         }
 
-        const externalId = data.voice_id; // Ensure this is the correct field from the API response
+        const externalId = data.voice_id;
 
         // Retrieve the user's email from the session
         const userEmail = ctx.session.user.email;
@@ -94,14 +87,13 @@ export const voiceCustomRouter = createTRPCRouter({
             },
             type: input.type ?? "OTHER",
             active: input.active,
-            userEmail, // Add this line to include the user's email
+            userEmail,
           })
           .execute();
 
         // Update the user's subscription with the new custom voice
         const userId = ctx.session.user.id;
 
-        // Fetch the current subscription
         const subscription = await ctx.db.query.subscriptions.findFirst({
           where: eq(schema.subscriptions.userId, userId),
         });
@@ -115,11 +107,10 @@ export const voiceCustomRouter = createTRPCRouter({
 
         const currentCustomVoices = subscription.custom_voices || [];
 
-        // Add the new voice to the list of custom voices
         const updatedCustomVoices = [
           ...currentCustomVoices,
           {
-            id: newVoice.id, // Ensure this matches the newVoice schema
+            id: newVoice.id,
             external_id: externalId,
             name: input.name,
             description: input.description,

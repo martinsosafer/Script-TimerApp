@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { upload } from "@vercel/blob/client";
 
 import { IconInfo, IconMic2 } from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
@@ -95,39 +96,41 @@ export default function VoiceCloningForm({
       return;
     }
 
-    console.log("File before reading:", formData.file);
+    try {
+      // Upload file to Vercel Blob
+      const uploadedFile = await upload(formData.file.name, formData.file, {
+        access: "public",
+        handleUploadUrl: "/api/upload", // This will be the API route on your backend
+      });
 
-    const reader = new FileReader();
-    reader.readAsDataURL(formData.file);
-    reader.onloadend = async () => {
-      const base64String = reader.result;
-      console.log("Base64 audio string:", base64String);
-      try {
-        await newCustomVoice({
-          name: formData.name,
-          description: formData.description,
-          files: base64String,
-          type: "11LABS",
-          active: true,
-        });
-        // Reset form fields after successful submission
-        setFormData({
-          name: "",
-          description: "",
-          file: undefined,
-        });
-      } catch (error) {
-        console.error("Error creating voice", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    reader.onerror = () => {
-      console.error("Error reading file");
+      // Submit the form data with the uploaded file URL
+      await newCustomVoice({
+        name: formData.name,
+        description: formData.description,
+        files: uploadedFile.url, // Send the URL to your backend
+        type: "11LABS",
+        active: true,
+      });
+
+      // Reset form fields after successful submission
+      setFormData({
+        name: "",
+        description: "",
+        file: undefined,
+      });
+
+      toast({
+        title: "Voice Created",
+        description: "Voice created successfully",
+      });
+      onVoiceCreated();
+    } catch (error) {
+      console.error("Error creating voice", error);
+      toast({ title: "Error creating voice", description: error.message });
+    } finally {
       setLoading(false);
-    };
+    }
   };
-
   const handleRecordAudioClick = (e) => {
     if (loading) {
       e.preventDefault();
