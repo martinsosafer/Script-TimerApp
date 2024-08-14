@@ -118,9 +118,6 @@ function TextEditor({
         class:
           "h-full prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none overflow-hidden overflow-y-auto break-words border border-slate-400 bg-white dark:border-black",
       },
-      transformPastedText(text) {
-        return text.toUpperCase();
-      },
     },
     onUpdate: useCallback(
       ({ editor }) => {
