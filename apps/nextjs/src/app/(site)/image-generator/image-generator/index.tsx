@@ -15,10 +15,11 @@ export default function ImageGenerator() {
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
     const data = new FormData(event.currentTarget as HTMLFormElement);
+    const prompt = data.get("prompt") ?? "";
     const text = data.get("text") ?? "";
-    const frames = data.get("frames") ?? 9;
+    // const frames = data.get("frames") ?? 9;
 
-    const prompt = `Plase generate a ${String(frames)} frames storyboard for the following text: ${String(text)} \n, be sure to fit all the frames in the generated image.`;
+    const finalPrompt = `${String(prompt)}:\n ${String(text)}.`;
     try {
       setLoading(true);
       const result = await fetch("/api/generate-image", {
@@ -26,7 +27,7 @@ export default function ImageGenerator() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ text: prompt }),
+        body: JSON.stringify({ text: finalPrompt }),
       });
 
       const url = (await result.json()) as string;
@@ -42,21 +43,33 @@ export default function ImageGenerator() {
     <div className="mt-20 flex w-[1024px] flex-col items-center">
       <WelcomeMessage />
       <form onSubmit={handleSubmit} className="mt-12 w-full">
+        <label htmlFor="prompt">Prompt</label>
+        <div className="mb-2 rounded-md border border-gray-300 bg-gray-50 p-4">
+          <textarea
+            className="mb-2 block w-full bg-gray-50 text-sm text-gray-900 placeholder:text-lg focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400"
+            rows={8}
+            name="prompt"
+            id="prompt"
+            placeholder="Maurys prompt"
+          />
+        </div>
+        <label htmlFor="text">Script</label>
         <div className="mb-2 rounded-md border border-gray-300 bg-gray-50 p-4">
           <textarea
             className="mb-2 block w-full bg-gray-50 text-sm text-gray-900 placeholder:text-lg focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400"
             rows={20}
             name="text"
+            id="text"
             placeholder="Enter your script here"
           />
         </div>
         <div className="flex gap-2">
-          <input
+          {/* <input
             type="number"
             name="frames"
             className="rounded-md border border-primary p-2"
             placeholder="Number of frames"
-          />
+          /> */}
           <button
             type="submit"
             className=" flex w-full items-center justify-center rounded-md bg-primary p-3 text-white"
