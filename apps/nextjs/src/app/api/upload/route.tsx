@@ -17,7 +17,14 @@ export async function POST(request: Request): Promise<NextResponse> {
           throw new Error("User not authenticated");
         }
         return {
-          allowedContentTypes: ["audio/mpeg", "audio/wav"],
+          allowedContentTypes: [
+            "audio/mpeg", // mp3, mpga
+            "audio/wav", // wav
+            "audio/mp4", // m4a
+            "audio/webm", // webm
+            "video/mp4", // mp4
+            "video/mpeg", // mpeg
+          ],
         };
       },
       onUploadCompleted: async ({ blob }) => {
