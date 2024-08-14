@@ -10,6 +10,8 @@ import {
   TRPCError,
 } from "../trpc";
 
+const MAX_FILE_SIZE_MB = 8;
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 export const voiceCustomRouter = createTRPCRouter({
   newCustomVoice: protectedProcedure
     .input(
@@ -29,7 +31,12 @@ export const voiceCustomRouter = createTRPCRouter({
         // Download the file from the URL
         const response = await fetch(input.files);
         const fileBuffer = await response.arrayBuffer();
-
+        if (fileBuffer.byteLength > MAX_FILE_SIZE_BYTES) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: `File size exceeds the ${MAX_FILE_SIZE_MB} MB limit.`,
+          });
+        }
         // Prepare form data for ElevenLabs API
         const form = new FormData();
         form.append("name", input.name);

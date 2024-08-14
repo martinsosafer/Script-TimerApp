@@ -226,7 +226,7 @@ export default function VoiceCloningForm({
               Formats that are accepted: m4a, mp3, webm, mp4, mpga, wav, and
               mpeg.
             </span>{" "}
-            <span className="text-sm text-slate-400">(max 4.5 MB)</span>
+            <span className="text-sm text-slate-400">(max 8 MB)</span>
           </label>
           <input
             className="block w-full cursor-pointer rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-900 focus:border-primary focus:ring-primary"
@@ -277,7 +277,7 @@ export default function VoiceCloningForm({
             handleSubmit(e);
           }}
         >
-          {loading ? <LoadingDots color="#fff" /> : "Clone Voice"}
+          {loading ? <LoadingDots color="#fff" /> : "Accept & Create"}
         </button>
       </form>
 
