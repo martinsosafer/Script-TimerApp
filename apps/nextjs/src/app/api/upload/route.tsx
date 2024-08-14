@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { handleUpload } from "@vercel/blob/client";
 import type { HandleUploadBody } from "@vercel/blob/client";
 
+import { auth } from "@voiceai/auth";
+
 export async function POST(request: Request): Promise<NextResponse> {
   const body = (await request.json()) as HandleUploadBody;
 
@@ -10,7 +12,10 @@ export async function POST(request: Request): Promise<NextResponse> {
       body,
       request,
       onBeforeGenerateToken: async (pathname) => {
-        // Ensure that only authenticated users can upload files
+        const user = await auth();
+        if (!user) {
+          throw new Error("User not authenticated");
+        }
         return {
           allowedContentTypes: ["audio/mpeg", "audio/wav"],
         };
