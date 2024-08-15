@@ -16,6 +16,9 @@ export async function POST(request: Request): Promise<NextResponse> {
         if (!user) {
           throw new Error("User not authenticated");
         }
+        // Set the folder name in the pathname
+        const folderName = "CelebrityVoices";
+        const filePath = `${folderName}/${pathname}`;
         return {
           allowedContentTypes: [
             "audio/mpeg", // mp3, mpga
@@ -25,6 +28,7 @@ export async function POST(request: Request): Promise<NextResponse> {
             "video/mp4", // mp4
             "video/mpeg", // mpeg
           ],
+          pathname: filePath,
         };
       },
       onUploadCompleted: async ({ blob }) => {
