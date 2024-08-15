@@ -16,6 +16,7 @@ export const plagiarism = pgTable("plagiarism_scan", {
   related_meaning_words: integer("related_meaning_words").notNull().default(0),
   aggregated_score: real("aggregated_score").notNull().default(0.0),
   internet: jsonb("internet").default([]),
+  credits_used: integer("credits_used").notNull().default(0),
   created_at: timestamp("created_at").notNull().defaultNow(),
   updated_at: timestamp("updated_at").notNull().defaultNow(),
 });

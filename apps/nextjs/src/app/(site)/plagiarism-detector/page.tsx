@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 
 import { auth } from "@voiceai/auth";
 
+import { getScans } from "./actions";
 import Checker from "./checker";
-import { getScans } from "./utils";
 
 export const metadata: Metadata = {
   title: "Pagiarism Detector",

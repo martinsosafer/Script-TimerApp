@@ -3,14 +3,10 @@ import Link from "next/link";
 import type { PlagiarismPayload } from "~/app/api/webhook/plagiarism-result/[status]/[id]/route";
 
 interface PlagiarismResultProps {
-  text: string;
   result: PlagiarismPayload;
 }
 
-export default function PlagiarismResult({
-  text,
-  result,
-}: PlagiarismResultProps) {
+export default function PlagiarismResult({ result }: PlagiarismResultProps) {
   const {
     aggregated_score,
     identical_words,
@@ -19,6 +15,7 @@ export default function PlagiarismResult({
     minor_changed_words,
     related_meaning_words,
     content,
+    credits_used,
   } = result;
   return (
     <div className="flex h-full min-h-[500px] flex-col gap-2">
@@ -43,6 +40,10 @@ export default function PlagiarismResult({
         <div className="rounded-sm bg-gray-200 p-2">
           {" "}
           Related meaning words: <strong>{related_meaning_words}</strong>
+        </div>
+        <div className="rounded-sm bg-red-200 p-2">
+          {" "}
+          Credits consumed: <strong>{credits_used}</strong>
         </div>
       </div>
       <div className="mt-4 font-semibold">{`Your content is extremely similar to what we found at this link${internet.length === 1 ? "" : "s"}:`}</div>

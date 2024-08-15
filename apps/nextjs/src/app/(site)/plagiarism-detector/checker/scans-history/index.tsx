@@ -9,7 +9,7 @@ import {
 } from "@voiceai/ui/@/components/ui/icons";
 
 import type { PlagiarismPayload } from "~/app/api/webhook/plagiarism-result/[status]/[id]/route";
-import { deleteScan } from "../../utils";
+import { deleteScan } from "../../actions";
 
 interface PlagiarismScan extends PlagiarismPayload {
   title: string;
@@ -101,6 +101,10 @@ export default function ScansHistory({
             })}
           </>
         )}
+      </div>
+      <div className="flex h-10 w-full items-center justify-center rounded-md bg-primary text-white">
+        {" "}
+        18 credits left
       </div>
     </div>
   );

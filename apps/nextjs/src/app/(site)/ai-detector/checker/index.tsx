@@ -6,11 +6,10 @@ import { useState } from "react";
 import { IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
-import type { PlagiarismPayload } from "~/app/api/webhook/plagiarism-result/[status]/[id]/route";
 import NoSessionModal from "../../components/modals/no-session-modal";
 import ModeSelector from "../../components/mode-selector";
 import PercentageBar from "../../components/percentage-bar";
-import { transformResults } from "./utils";
+import { consumedCreditsWarning, transformResults } from "./utils";
 import WelcomeMessage from "./welcome-message";
 
 interface CheckerProps {
@@ -24,8 +23,6 @@ export interface CheckResult {
 
 export default function AiChecker({ userId }: CheckerProps) {
   const [aiCheckResult, setAiCheckResult] = useState<CheckResult | null>(null);
-  const [plagiarismCheck, setPlagiarismCheck] =
-    useState<PlagiarismPayload | null>(null);
 
   const [loading, setLoading] = useState(false);
 
@@ -35,8 +32,8 @@ export default function AiChecker({ userId }: CheckerProps) {
 
   async function handleCheck(e: FormEvent) {
     e.preventDefault();
-    if (aiCheckResult ?? plagiarismCheck) {
-      setPlagiarismCheck(null);
+    if (aiCheckResult) {
+      setText("");
       return setAiCheckResult(null);
     }
     setLoading(true);
@@ -97,13 +94,21 @@ export default function AiChecker({ userId }: CheckerProps) {
                   })}
                 </div>
               )}
-              {!aiCheckResult && !plagiarismCheck && (
-                <textarea
-                  name="textarea"
-                  rows={20}
-                  placeholder="Enter text here..."
-                  className=" w-full outline-none placeholder:text-lg"
-                />
+              {!aiCheckResult && (
+                <>
+                  <textarea
+                    name="textarea"
+                    rows={20}
+                    placeholder="Enter text here..."
+                    onChange={(e) => setText(e.target.value)}
+                    className=" w-full outline-none placeholder:text-lg"
+                  />
+                  {text.length > 0 && (
+                    <div className="mt-2 flex w-full justify-center ">
+                      {consumedCreditsWarning(text, 18)}
+                    </div>
+                  )}
+                </>
               )}
             </div>
             <div className="flex w-full justify-end gap-2">

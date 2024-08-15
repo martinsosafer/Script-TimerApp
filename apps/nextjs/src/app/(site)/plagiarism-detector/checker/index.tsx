@@ -12,7 +12,8 @@ import EditScanTitleModal from "../../components/modals/edit-scan-title";
 import NoSessionModal from "../../components/modals/no-session-modal";
 import ModeSelector from "../../components/mode-selector";
 import PercentageBar from "../../components/percentage-bar";
-import { addContentToScan } from "../utils";
+import { addContentToScan } from "../actions";
+import { consumedCreditsWarning } from "../utils";
 import PlagiarismResult from "./plagiarism-result";
 import ScansHistory from "./scans-history";
 import WelcomeMessage from "./welcome-message";
@@ -31,7 +32,6 @@ export default function Checker({ userId, scans }: CheckerProps) {
   const [scansHistory, setScansHistory] = useState<PlagiarismPayload[] | []>(
     scans,
   );
-  const [aiCheckResult, setAiCheckResult] = useState<CheckResult | null>(null);
   const [plagiarismCheck, setPlagiarismCheck] =
     useState<PlagiarismPayload | null>(null);
 
@@ -47,9 +47,10 @@ export default function Checker({ userId, scans }: CheckerProps) {
 
   async function handleCheck(e: FormEvent) {
     e.preventDefault();
-    if (aiCheckResult ?? plagiarismCheck) {
+    if (plagiarismCheck) {
       setPlagiarismCheck(null);
-      return setAiCheckResult(null);
+      setText("");
+      return;
     }
     setLoading(true);
     const data = new FormData(e.target as HTMLFormElement);
@@ -128,16 +129,22 @@ export default function Checker({ userId, scans }: CheckerProps) {
             className="flex w-[75%] flex-col items-end gap-2"
           >
             <div className="min-h-[500px] w-full rounded-sm border-2 border-gray-300 p-4">
-              {plagiarismCheck && (
-                <PlagiarismResult text={text} result={plagiarismCheck} />
-              )}
+              {plagiarismCheck && <PlagiarismResult result={plagiarismCheck} />}
               {!plagiarismCheck && (
-                <textarea
-                  name="textarea"
-                  rows={20}
-                  placeholder="Enter text here..."
-                  className=" w-full outline-none placeholder:text-lg"
-                />
+                <>
+                  <textarea
+                    name="textarea"
+                    onChange={(e) => setText(e.target.value)}
+                    rows={20}
+                    placeholder="Enter text here..."
+                    className=" w-full outline-none placeholder:text-lg"
+                  />
+                  {text.length > 0 && (
+                    <div className="mt-2 flex w-full justify-center ">
+                      {consumedCreditsWarning(text)}
+                    </div>
+                  )}
+                </>
               )}
             </div>
             <div className="flex w-full justify-end gap-2">

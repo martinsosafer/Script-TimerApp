@@ -12,6 +12,7 @@ import { sendMessage } from "~/app/actions/messageAction";
 export interface PlagiarismResult {
   scannedDocument: {
     totalWords: number;
+    credits: number;
   };
   results: {
     score: {
@@ -47,6 +48,7 @@ export interface PlagiarismPayload {
   related_meaning_words: number;
   aggregated_score: number;
   internet: InternetPayload[] | [];
+  credits_used: number;
 }
 
 export async function POST(
@@ -62,7 +64,7 @@ export async function POST(
   try {
     const body = (await request.json()) as PlagiarismResult;
     const {
-      scannedDocument: { totalWords },
+      scannedDocument: { totalWords, credits },
       results: {
         score: {
           identicalWords,
@@ -86,6 +88,7 @@ export async function POST(
       related_meaning_words: relatedMeaningWords,
       aggregated_score: aggregatedScore,
       internet,
+      credits_used: credits,
     };
 
     await db.insert(schema.plagiarism).values(payload).execute();

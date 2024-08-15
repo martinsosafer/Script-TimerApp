@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { IconPencilLine, IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 
-import { editScanTitle } from "~/app/(site)/plagiarism-detector/utils";
+import { editScanTitle } from "~/app/(site)/plagiarism-detector/actions";
 import type { PlagiarismPayload } from "~/app/api/webhook/plagiarism-result/[status]/[id]/route";
 
 interface ModalProps {
