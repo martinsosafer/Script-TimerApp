@@ -28,7 +28,43 @@ export const voiceCustomRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       try {
-        // Download the file from the URL
+        // Retrieve the user's subscription data
+        const userId = ctx.session.user.id;
+        const subscription = await ctx.db.query.subscriptions.findFirst({
+          where: eq(schema.subscriptions.userId, userId),
+        });
+
+        if (!subscription) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Subscription not found for the user",
+          });
+        }
+
+        const customVoiceLimit =
+          subscription.plan === "CREATOR"
+            ? 3
+            : subscription.plan === "BUSINESS"
+              ? 5
+              : 0;
+
+        if (customVoiceLimit === 0) {
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: "Your plan does not allow creating custom voices",
+          });
+        }
+
+        const currentCustomVoices = subscription.custom_voices || [];
+
+        if (currentCustomVoices.length >= customVoiceLimit) {
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: `You have reached the limit of ${customVoiceLimit} custom voices for your plan`,
+          });
+        }
+
+        // Proceed with creating the new custom voice
         const response = await fetch(input.files);
         const fileBuffer = await response.arrayBuffer();
         if (fileBuffer.byteLength > MAX_FILE_SIZE_BYTES) {
@@ -37,6 +73,7 @@ export const voiceCustomRouter = createTRPCRouter({
             message: `File size exceeds the ${MAX_FILE_SIZE_MB} MB limit.`,
           });
         }
+
         // Prepare form data for ElevenLabs API
         const form = new FormData();
         form.append("name", input.name);
@@ -76,9 +113,6 @@ export const voiceCustomRouter = createTRPCRouter({
 
         const externalId = data.voice_id;
 
-        // Retrieve the user's email from the session
-        const userEmail = ctx.session.user.email;
-
         // Insert the new voice into your database
         const newVoice = await ctx.db
           .insert(schema.voicesCustom)
@@ -94,26 +128,11 @@ export const voiceCustomRouter = createTRPCRouter({
             },
             type: input.type ?? "OTHER",
             active: input.active,
-            userEmail,
+            userEmail: ctx.session.user.email,
           })
           .execute();
 
         // Update the user's subscription with the new custom voice
-        const userId = ctx.session.user.id;
-
-        const subscription = await ctx.db.query.subscriptions.findFirst({
-          where: eq(schema.subscriptions.userId, userId),
-        });
-
-        if (!subscription) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Subscription not found for the user",
-          });
-        }
-
-        const currentCustomVoices = subscription.custom_voices || [];
-
         const updatedCustomVoices = [
           ...currentCustomVoices,
           {
