@@ -3,6 +3,10 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
+import { Button } from "@voiceai/ui";
+import { IconStop } from "@voiceai/ui/@/components/ui/icons";
+import { PlayIcon } from "@voiceai/ui/@/icons/icons";
+
 interface CelebrityVoice {
   id: string;
   name: string;
@@ -11,6 +15,7 @@ interface CelebrityVoice {
     labels?: {
       gender?: string;
     };
+    preview_url?: string; // Add preview_url to metadata
   };
 }
 
@@ -27,6 +32,9 @@ const CelebrityVoiceCards: React.FC<CelebrityVoiceCardsProps> = ({
 }) => {
   const [selectedVoiceId, setSelectedVoiceId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentAudioUrl, setCurrentAudioUrl] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isQueryLoading) {
@@ -34,12 +42,70 @@ const CelebrityVoiceCards: React.FC<CelebrityVoiceCardsProps> = ({
     }
   }, [isQueryLoading]);
 
+  useEffect(() => {
+    if (currentAudioUrl) {
+      // Initialize the audio element with the current URL
+      const newAudio = new Audio(currentAudioUrl);
+      setAudio(newAudio);
+
+      // Cleanup on unmount
+      return () => {
+        if (audio) {
+          audio.pause();
+        }
+      };
+    }
+  }, [currentAudioUrl]);
+
+  const handlePlayPause = (voiceId: string, audioUrl: string | undefined) => {
+    if (selectedVoiceId !== voiceId) {
+      return; // Prevent playing audio for an unselected card
+    }
+
+    if (audio) {
+      if (isPlaying) {
+        audio.pause();
+        setIsPlaying(false);
+      } else {
+        audio.currentTime = 0;
+        audio.play();
+        setIsPlaying(true);
+      }
+
+      // Reset the play state when the audio ends
+      audio.onended = () => {
+        setIsPlaying(false);
+      };
+    } else if (audioUrl) {
+      const newAudio = new Audio(audioUrl);
+      setAudio(newAudio);
+      newAudio.play();
+      setIsPlaying(true);
+
+      // Reset the play state when the audio ends
+      newAudio.onended = () => {
+        setIsPlaying(false);
+      };
+    }
+  };
+
   const handleVoiceCardClick = (voice: CelebrityVoice) => {
     if (selectedVoiceId === voice.id) {
-      setSelectedVoiceId(null); // Toggle selection
+      // If the same voice is selected, do nothing
+      return;
     } else {
+      // Stop the currently playing audio
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+        setIsPlaying(false);
+      }
+
+      // Select a new voice
       onModelSelect(voice);
       setSelectedVoiceId(voice.id);
+      setCurrentAudioUrl(voice.metadata?.preview_url || "");
+      setIsPlaying(false);
     }
   };
 
@@ -83,11 +149,7 @@ const CelebrityVoiceCards: React.FC<CelebrityVoiceCardsProps> = ({
                 onClick={() => handleVoiceCardClick(voice)}
               >
                 <div className="flex items-center p-3">
-                  {" "}
-                  {/* Adjusted padding */}
                   <div className="mr-2 h-12 w-12 flex-shrink-0 overflow-hidden rounded-full">
-                    {" "}
-                    {/* Adjusted size */}
                     <img
                       src={voice.picture || "/default-avatar.png"}
                       alt={voice.name}
@@ -97,10 +159,24 @@ const CelebrityVoiceCards: React.FC<CelebrityVoiceCardsProps> = ({
                   <div className="flex-grow">
                     <h2 className="text-sm font-semibold">{voice.name}</h2>
                     <p className="text-xs text-gray-500">
-                      {gender === "OTHER" ? "Celebrity Voice" : gender}
+                      {gender === "OTHER" ? "Celebrity" : gender}
                     </p>
                   </div>
-                  {/* Button removed */}
+                  <Button
+                    size="xs"
+                    type="button"
+                    className="rounded-full"
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent triggering the card click event
+                      handlePlayPause(voice.id, voice.metadata?.preview_url);
+                    }}
+                  >
+                    {selectedVoiceId === voice.id && isPlaying ? (
+                      <IconStop className="h-3 w-3 text-tertiary" />
+                    ) : (
+                      <PlayIcon className="h-3 w-3" />
+                    )}
+                  </Button>
                 </div>
               </div>
             );
