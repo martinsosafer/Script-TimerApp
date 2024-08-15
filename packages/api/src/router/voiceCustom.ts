@@ -51,6 +51,17 @@ export const voiceCustomRouter = createTRPCRouter({
               ? 5
               : 0;
 
+        if (currentCustomVoices.length >= customVoiceLimit) {
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message:
+              subscription.status === "CREATOR"
+                ? `Error creating voice: Creator plan can make up to 3 voices.`
+                : subscription.status === "BUSINESS"
+                  ? `Error creating voice: Business plan can make up to 5 voices.`
+                  : "Error creating voice: Your plan does not allow creating custom voices.",
+          });
+        }
         // Log the custom voice limit for debugging
         console.log("Custom voice limit for the user:", customVoiceLimit);
 

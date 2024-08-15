@@ -30,7 +30,12 @@ export default function VoiceCloningForm({
       },
       onError(error) {
         console.error("Error creating voice", error);
-        toast({ title: "Error creating voice", description: error.message });
+        toast({
+          title: "Error creating voice",
+          description:
+            error.message ||
+            "An unexpected error occurred while creating the voice",
+        });
       },
     });
 
