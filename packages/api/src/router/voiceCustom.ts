@@ -45,23 +45,12 @@ export const voiceCustomRouter = createTRPCRouter({
         console.log("User subscription plan:", subscription.plan);
 
         const customVoiceLimit =
-          subscription.status === "CREATOR"
+          subscription.plan === "CREATOR"
             ? 3
-            : subscription.status === "BUSINESS"
+            : subscription.plan === "BUSINESS"
               ? 5
               : 0;
 
-        if (currentCustomVoices.length >= customVoiceLimit) {
-          throw new TRPCError({
-            code: "FORBIDDEN",
-            message:
-              subscription.status === "CREATOR"
-                ? `Error creating voice: Creator plan can make up to 3 voices.`
-                : subscription.status === "BUSINESS"
-                  ? `Error creating voice: Business plan can make up to 5 voices.`
-                  : "Error creating voice: Your plan does not allow creating custom voices.",
-          });
-        }
         // Log the custom voice limit for debugging
         console.log("Custom voice limit for the user:", customVoiceLimit);
 
@@ -77,7 +66,12 @@ export const voiceCustomRouter = createTRPCRouter({
         if (currentCustomVoices.length >= customVoiceLimit) {
           throw new TRPCError({
             code: "FORBIDDEN",
-            message: `You have reached the limit of ${customVoiceLimit} custom voices for your plan`,
+            message:
+              subscription.plan === "CREATOR"
+                ? `Error creating voice: Creator plan can make up to 3 voices.`
+                : subscription.plan === "BUSINESS"
+                  ? `Error creating voice: Business plan can make up to 5 voices.`
+                  : "Error creating voice: Your plan does not allow creating custom voices.",
           });
         }
 
@@ -161,9 +155,7 @@ export const voiceCustomRouter = createTRPCRouter({
               labels: {
                 gender: input.gender || "OTHER",
               },
-              preview_url:
-                input.preview_url ||
-                "This is a cloned voice created by Script Timer",
+              preview_url: input.preview_url || "",
             },
             type: input.type ?? "OTHER",
             active: input.active,
@@ -181,10 +173,11 @@ export const voiceCustomRouter = createTRPCRouter({
         console.error("Error creating voice:", error);
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: "Error creating voice",
+          message: error.message || "Error creating voice",
         });
       }
     }),
+
   deleteCustomVoice: protectedProcedure
     .input(
       z.object({
