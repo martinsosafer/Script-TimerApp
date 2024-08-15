@@ -16,9 +16,11 @@ export async function POST(request: Request): Promise<NextResponse> {
         if (!user) {
           throw new Error("User not authenticated");
         }
-        // Set the folder name in the pathname
-        const folderName = "CelebrityVoices";
-        const filePath = `${folderName}/${pathname}`;
+        // Explicitly set the folder name in the pathname
+        const folderName = "ClonedVoices";
+        const fileName = pathname.split("/").pop(); // Extract the file name
+        const filePath = `${folderName}/${fileName}`; // Set the full path to the folder and file name
+
         return {
           allowedContentTypes: [
             "audio/mpeg", // mp3, mpga
