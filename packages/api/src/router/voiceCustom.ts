@@ -18,7 +18,7 @@ export const voiceCustomRouter = createTRPCRouter({
       z.object({
         name: z.string().min(1),
         description: z.string().min(1),
-        files: z.string().url(), // File URL instead of Base64 string
+        files: z.string().url(),
         labels: z.string().optional(),
         gender: z.string().optional(),
         preview_url: z.string().optional(),
@@ -41,12 +41,18 @@ export const voiceCustomRouter = createTRPCRouter({
           });
         }
 
+        // Add logging to verify the plan value
+        console.log("User subscription plan:", subscription.plan);
+
         const customVoiceLimit =
-          subscription.plan === "CREATOR"
+          subscription.status === "CREATOR"
             ? 3
-            : subscription.plan === "BUSINESS"
+            : subscription.status === "BUSINESS"
               ? 5
               : 0;
+
+        // Log the custom voice limit for debugging
+        console.log("Custom voice limit for the user:", customVoiceLimit);
 
         if (customVoiceLimit === 0) {
           throw new TRPCError({
