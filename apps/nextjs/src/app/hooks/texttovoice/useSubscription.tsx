@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { api } from "~/utils/api";
 
-export function useSubscriptionData() {
+export function useSubscription() {
   const { data: subscriptionData, refetch } =
     api.subscription.mySubscription.useQuery();
   const [favoriteVoices, setFavoriteVoices] = useState([]);
@@ -13,14 +13,18 @@ export function useSubscriptionData() {
     }
   }, [subscriptionData]);
 
+  const isSubscriptionActive =
+    subscriptionData &&
+    ["CREATOR", "STUDENT", "BUSINESS"].includes(subscriptionData.status);
+
+  const refreshSubscriptionData = () => {
+    refetch();
+  };
+
   return {
     subscriptionData,
     favoriteVoices,
-    refreshSubscriptionData: refetch,
-    isSubscriptionActive:
-      subscriptionData &&
-      (subscriptionData.status === "CREATOR" ||
-        subscriptionData.status === "STUDENT" ||
-        subscriptionData.status === "BUSINESS"),
+    isSubscriptionActive,
+    refreshSubscriptionData,
   };
 }

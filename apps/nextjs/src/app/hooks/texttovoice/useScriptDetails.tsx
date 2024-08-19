@@ -1,11 +1,8 @@
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useEffect } from "react";
 
 import { api } from "~/utils/api";
 
-export function useScriptDetails() {
-  const { scriptId } = useParams();
-  const [script, setScript] = useState("");
+export function useScriptDetails(scriptId, setScript) {
   const { data: scriptDetails } = api.script.get.useQuery(
     { id: scriptId?.[0] ?? "" },
     { enabled: Boolean(scriptId?.[0]) },
@@ -15,7 +12,5 @@ export function useScriptDetails() {
     if (scriptDetails) {
       setScript(scriptDetails.script);
     }
-  }, [scriptDetails]);
-
-  return { script, setScript };
+  }, [scriptDetails, setScript]);
 }

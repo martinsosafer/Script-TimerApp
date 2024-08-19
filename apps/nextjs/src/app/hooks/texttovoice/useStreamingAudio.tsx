@@ -2,30 +2,30 @@ import { useRef, useState } from "react";
 
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
-export function useAudioPlayer(audioRef: React.RefObject<HTMLAudioElement>) {
+const useStreamingAudio = () => {
   const [audioSource, setAudioSource] = useState<string | null>(null);
   const [showPlayer, setShowPlayer] = useState(false);
   const [downloadLink, setDownloadLink] = useState<string | null>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const toggleAudioRef = useRef<HTMLButtonElement>(null);
 
-  const handleStreaming = async (params: {
-    voice_id: string;
-    voice_actor: string;
-    message: string;
-    stability: number;
-    similarity: number;
-    setLoading: (loading: boolean) => void;
-    userPlan: string;
+  const handleStreaming = async ({
+    voice_id,
+    voice_actor,
+    message,
+    stability,
+    similarity,
+    setLoading,
+    userPlan,
+  }: {
+    voice_id: any;
+    voice_actor: any;
+    message: any;
+    stability: any;
+    similarity: any;
+    setLoading: any;
+    userPlan: any;
   }) => {
-    const {
-      voice_id,
-      voice_actor,
-      message,
-      stability,
-      similarity,
-      setLoading,
-      userPlan,
-    } = params;
-
     if (!message || message.trim() === "") {
       toast({
         title: "Error",
@@ -36,7 +36,7 @@ export function useAudioPlayer(audioRef: React.RefObject<HTMLAudioElement>) {
 
     setLoading(true);
 
-    const charLimit = {
+    const charLimit: Record<string, number> = {
       FREE: 300,
       FREE_TRIAL: 2000,
       STUDENT: 2000,
@@ -45,13 +45,19 @@ export function useAudioPlayer(audioRef: React.RefObject<HTMLAudioElement>) {
     };
 
     if (message.length > charLimit[userPlan]) {
-      const errorMessage = `Your plan only supports up to ${charLimit[userPlan]} characters.`;
+      const errorMessages: Record<string, string> = {
+        FREE: "Free plan only supports up to 300 characters",
+        FREE_TRIAL: "Your plan only supports up to 2000 characters",
+        STUDENT: "Your plan only supports up to 2000 characters",
+        CREATOR: "Your plan only supports up to 5000 characters",
+        BUSINESS: "Your plan only supports up to 10000 characters",
+      };
 
       setLoading(false);
 
       toast({
         title: "Character Limit Exceeded",
-        description: errorMessage,
+        description: errorMessages[userPlan] || "Please try again later",
       });
 
       return;
@@ -86,12 +92,8 @@ export function useAudioPlayer(audioRef: React.RefObject<HTMLAudioElement>) {
       const mediaSource = new MediaSource();
       const objectUrl = URL.createObjectURL(mediaSource);
       setAudioSource(objectUrl);
-
       if (audioRef.current) {
         audioRef.current.src = objectUrl;
-        audioRef.current.play().catch((error) => {
-          console.error("Error playing audio:", error);
-        });
       }
 
       const audioChunks: Uint8Array[] = [];
@@ -101,6 +103,22 @@ export function useAudioPlayer(audioRef: React.RefObject<HTMLAudioElement>) {
         const reader = responseBody.getReader();
 
         const readStream = async () => {
+          const processBuffer = async (value: Uint8Array) => {
+            return new Promise<void>((resolve, reject) => {
+              const onBufferAppended = () => {
+                sourceBuffer.removeEventListener("updateend", onBufferAppended);
+                resolve();
+              };
+              sourceBuffer.addEventListener("updateend", onBufferAppended);
+              try {
+                sourceBuffer.appendBuffer(value);
+                audioChunks.push(value);
+              } catch (error) {
+                reject(error);
+              }
+            });
+          };
+
           while (true) {
             const { done, value } = await reader.read();
             if (done) {
@@ -119,14 +137,12 @@ export function useAudioPlayer(audioRef: React.RefObject<HTMLAudioElement>) {
               }
               break;
             }
-            sourceBuffer.appendBuffer(value);
-            audioChunks.push(value);
+            await processBuffer(value);
           }
 
           const audioBlob = new Blob(audioChunks, { type: "audio/mpeg" });
           const downloadUrl = URL.createObjectURL(audioBlob);
           setDownloadLink(downloadUrl);
-
           setLoading(false);
         };
 
@@ -146,13 +162,18 @@ export function useAudioPlayer(audioRef: React.RefObject<HTMLAudioElement>) {
             );
           }
         });
+
+        if (audioRef.current) {
+          audioRef.current.play().catch((error) => {
+            console.error("Error playing audio:", error);
+          });
+        }
       });
 
       setShowPlayer(true);
     } catch (error) {
       console.error("Error streaming audio:", error);
       setLoading(false);
-
       toast({
         title: "Something went wrong",
         description: "Please try again later",
@@ -173,7 +194,11 @@ export function useAudioPlayer(audioRef: React.RefObject<HTMLAudioElement>) {
     audioSource,
     showPlayer,
     downloadLink,
+    audioRef,
+    toggleAudioRef,
     handleStreaming,
-    handleCloseAudio,
+    handleCloseAudio, // Return the handleCloseAudio function
   };
-}
+};
+
+export default useStreamingAudio;

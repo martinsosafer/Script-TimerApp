@@ -7,10 +7,10 @@ import {
 } from "@voiceai/ui/@/components/ui/icons";
 
 import { api } from "~/utils/api";
-import CelebrityVoiceCards from "../celebrityvoicecard/celebrityvoicecard";
-import CustomVoiceCards from "../customvoicecard/customvoicecard";
-import FavoriteVoiceCards from "../favoritevoicescard/favoritevoicescard";
-import VoiceCards from "../voicecards/voicecards";
+import CelebrityVoiceCards from "./celebrityvoicecard/celebrityvoicecard";
+import CustomVoiceCards from "./customvoicecard/customvoicecard";
+import FavoriteVoiceCards from "./favoritevoicescard/favoritevoicescard";
+import VoiceCards from "./voicecards/voicecards";
 
 function VoiceWidget({
   onModelSelect,
@@ -24,7 +24,7 @@ function VoiceWidget({
 
   const { data: celebrityVoices = [], isLoading: isQueryLoading } = subData
     ? api.voice.listCelebrity.useQuery({ name: "" })
-    : api.voice.PubliclistCelebrity.useQuery({ name: "" }); 
+    : api.voice.PubliclistCelebrity.useQuery({ name: "" });
   const [currentPage, setCurrentPage] = useState(1);
   const [currentFavPage, setCurrentFavPage] = useState(1);
   const [currentCelebrityPage, setCurrentCelebrityPage] = useState(1); // Added state
