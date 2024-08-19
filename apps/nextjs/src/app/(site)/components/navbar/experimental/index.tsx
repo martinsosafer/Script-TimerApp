@@ -1,20 +1,13 @@
 import Link from "next/link";
 
-import {
-  IconBot,
-  IconCopyright,
-  IconGlobe,
-  IconImage,
-  IconTestTube,
-  IconTestTubeDiagonal,
-} from "@voiceai/ui/@/components/ui/icons";
+import { IconFlask, IconImage } from "@voiceai/ui/@/components/ui/icons";
 
 export default function ExperimentalNavItem() {
   return (
     <>
       <div className="flex cursor-pointer flex-col items-center">
-        <IconTestTubeDiagonal className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform text-white opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
-        <IconTestTube className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform text-white opacity-0  transition-opacity duration-300 group-hover:opacity-100" />
+        <IconFlask className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform text-white opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
+        <IconFlask className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full rotate-45 transform text-white  opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
         <span className="font-poppins font-semibold">Experimental</span>
       </div>
       <div className="absolute inset-x-0 bottom-0  mb-2 h-0.5 origin-left scale-x-0 transform bg-primary-foreground transition-transform duration-300 group-hover:scale-x-100" />
