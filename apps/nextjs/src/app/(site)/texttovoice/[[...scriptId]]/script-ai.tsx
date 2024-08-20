@@ -1,37 +1,10 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
 import { useParams } from "next/navigation";
-import ArrowDownOnSquareIcon from "@heroicons/react/24/outline/ArrowDownOnSquareIcon";
-import { CopyIcon } from "@radix-ui/react-icons";
-import ReactConfetti from "react-confetti";
 
-import { Button, Tooltip, TooltipContent, TooltipTrigger } from "@voiceai/ui";
-import { Badge } from "@voiceai/ui/@/components/ui/badge";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@voiceai/ui/@/components/ui/hover-card";
-import {
-  CorrectDocumentIcon,
-  IconCheck,
-  IconClose,
-  IconPlus,
-  IconRefresh,
-  Icons,
-  PencilIcon,
-} from "@voiceai/ui/@/components/ui/icons";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@voiceai/ui/@/components/ui/tabs";
-import { Textarea } from "@voiceai/ui/@/components/ui/textarea";
+import { Tabs } from "@voiceai/ui/@/components/ui/tabs";
 import { useCopyToClipboard } from "@voiceai/ui/@/hooks/use-copy-to-clipboard";
-import { MagicWandIcon, SpeakerLoudIcon } from "@voiceai/ui/@/icons/icons";
 
 import { useGenerateVoice } from "~/app/hooks/texttovoice/useGenerateVoice";
 import { useReviseScript } from "~/app/hooks/texttovoice/useRevisedScript";
@@ -39,18 +12,10 @@ import { useScriptDetails } from "~/app/hooks/texttovoice/useScriptDetails";
 import useStreamingAudio from "~/app/hooks/texttovoice/useStreamingAudio";
 import { useSubscription } from "~/app/hooks/texttovoice/useSubscription";
 import { calculateLengthTime } from "~/lib/calculate-length-time";
-import CustomButton from "../../components/custom-button";
-import { TextEditor } from "../../components/editor";
-import { HistoryButton } from "../../components/history-button";
 import NoSessionModal from "../../components/modals/no-session-modal";
-import { SaveScript } from "../../components/save-script";
-import { ScriptSelector } from "../../components/script-selector";
 import TabOne from "../../components/texttospeech/Tab1";
 import TabTwo from "../../components/texttospeech/Tab2";
 import TTVIntroBlock from "../../components/texttospeech/ttvintroblock";
-import SelectedModelCard from "../../components/texttospeech/voicewidget/selectedcard/selectedcard";
-import { ToggleAudio } from "../../components/toggle-audio";
-import { ToggleLibrary } from "../../components/toggle-voice-library";
 
 export function ScriptAI({
   subData,
