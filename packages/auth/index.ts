@@ -98,6 +98,27 @@ export const {
             status: "FREE_TRIAL",
           })
           .execute();
+
+        await db
+          .insert(schema.clCredits)
+          .values({
+            userId: user?.id ?? token.sub,
+          })
+          .execute();
+      }
+
+      const clCreditStatus = await db.query.clCredits.findFirst({
+        where: (clCredits, { eq }) =>
+          eq(clCredits.userId, user?.id ?? token.sub),
+      });
+
+      if (!clCreditStatus) {
+        await db
+          .insert(schema.clCredits)
+          .values({
+            userId: user?.id ?? token.sub,
+          })
+          .execute();
       }
 
       const subscription = {

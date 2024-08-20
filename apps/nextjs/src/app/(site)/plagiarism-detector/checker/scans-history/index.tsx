@@ -20,6 +20,7 @@ interface ScansHistoryProps {
   setScansHistory: Dispatch<SetStateAction<PlagiarismPayload[]>>;
   setPlagiarismCheck: (arg: PlagiarismPayload | null) => void;
   setIsEditingScanTitle: Dispatch<SetStateAction<boolean>>;
+  creditsLeft: number | undefined;
 }
 
 export default function ScansHistory({
@@ -27,6 +28,7 @@ export default function ScansHistory({
   setScansHistory,
   setPlagiarismCheck,
   setIsEditingScanTitle,
+  creditsLeft,
 }: ScansHistoryProps) {
   const [isLoading, setIsLoading] = useState(false);
   return (
@@ -104,7 +106,7 @@ export default function ScansHistory({
       </div>
       <div className="flex h-10 w-full items-center justify-center rounded-md bg-primary text-white">
         {" "}
-        18 credits left
+        {creditsLeft} credits left
       </div>
     </div>
   );

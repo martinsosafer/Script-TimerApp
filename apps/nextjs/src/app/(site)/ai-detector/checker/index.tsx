@@ -14,14 +14,16 @@ import WelcomeMessage from "./welcome-message";
 
 interface CheckerProps {
   userId: string | undefined;
+  credits: number;
 }
 
 export interface CheckResult {
+  scannedDocument: { actualCredits: number };
   results: { probability: number; classification: number }[];
   summary: { ai: number };
 }
 
-export default function AiChecker({ userId }: CheckerProps) {
+export default function AiChecker({ userId, credits }: CheckerProps) {
   const [aiCheckResult, setAiCheckResult] = useState<CheckResult | null>(null);
 
   const [loading, setLoading] = useState(false);
@@ -29,6 +31,8 @@ export default function AiChecker({ userId }: CheckerProps) {
   const [text, setText] = useState<string>("");
 
   const [noSessionModalOpen, setNoSessionModalOpen] = useState<boolean>(false);
+
+  const [creditsLeft, setCreditsLeft] = useState<number>(credits);
 
   async function handleCheck(e: FormEvent) {
     e.preventDefault();
@@ -41,7 +45,13 @@ export default function AiChecker({ userId }: CheckerProps) {
     const text = data.get("textarea") as string;
     setText(text);
 
-    if (text.length < 350) {
+    if (Math.ceil(text.length / 250) > creditsLeft) {
+      toast({
+        title: "Insufficient Credits",
+        description: "You do not have enough credits to perform this scan.",
+      });
+      setLoading(false);
+    } else if (text.length < 350) {
       toast({
         title: "More Text Required",
         description:
@@ -60,6 +70,7 @@ export default function AiChecker({ userId }: CheckerProps) {
 
         const result = (await response.json()) as CheckResult;
         setAiCheckResult(result);
+        setCreditsLeft(creditsLeft - result.scannedDocument.actualCredits);
         setLoading(false);
       } catch (error) {
         console.error(error);
@@ -105,7 +116,7 @@ export default function AiChecker({ userId }: CheckerProps) {
                   />
                   {text.length > 0 && (
                     <div className="mt-2 flex w-full justify-center ">
-                      {consumedCreditsWarning(text, 18)}
+                      {consumedCreditsWarning(text, creditsLeft)}
                     </div>
                   )}
                 </>

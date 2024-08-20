@@ -28,4 +28,3 @@ export const voices = pgTable("voice", {
   created_at: timestamp("created_at").notNull().defaultNow(),
   updated_at: timestamp("updated_at").notNull().defaultNow(),
 });
-//g

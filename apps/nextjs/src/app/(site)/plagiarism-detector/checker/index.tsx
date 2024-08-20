@@ -21,6 +21,7 @@ import WelcomeMessage from "./welcome-message";
 interface CheckerProps {
   userId: string | undefined;
   scans: PlagiarismPayload[] | [];
+  credits: number;
 }
 
 export interface CheckResult {
@@ -28,7 +29,7 @@ export interface CheckResult {
   summary: { ai: number };
 }
 
-export default function Checker({ userId, scans }: CheckerProps) {
+export default function Checker({ userId, scans, credits }: CheckerProps) {
   const [scansHistory, setScansHistory] = useState<PlagiarismPayload[] | []>(
     scans,
   );
@@ -45,6 +46,8 @@ export default function Checker({ userId, scans }: CheckerProps) {
 
   const [isEditingScanTitle, setIsEditingScanTitle] = useState<boolean>(false);
 
+  const [creditsLeft, setCreditsLeft] = useState<number>(credits);
+
   async function handleCheck(e: FormEvent) {
     e.preventDefault();
     if (plagiarismCheck) {
@@ -57,7 +60,13 @@ export default function Checker({ userId, scans }: CheckerProps) {
     const text = data.get("textarea") as string;
     setText(text);
 
-    if (text.length < 350) {
+    if (Math.ceil(text.length / 250) > creditsLeft) {
+      toast({
+        title: "Insufficient Credits",
+        description: "You do not have enough credits to perform this scan.",
+      });
+      setLoading(false);
+    } else if (text.length < 350) {
       toast({
         title: "More Text Required",
         description:
@@ -96,6 +105,7 @@ export default function Checker({ userId, scans }: CheckerProps) {
     const scan = (await addContentToScan(id, text)) as PlagiarismPayload;
     setPlagiarismCheck(scan);
     setScansHistory([...scansHistory, scan]);
+    setCreditsLeft(creditsLeft - scan.credits_used);
   }
 
   useEffect(() => {
@@ -115,6 +125,7 @@ export default function Checker({ userId, scans }: CheckerProps) {
             setScansHistory={setScansHistory}
             setPlagiarismCheck={setPlagiarismCheck}
             setIsEditingScanTitle={setIsEditingScanTitle}
+            creditsLeft={creditsLeft}
           />
 
           <form

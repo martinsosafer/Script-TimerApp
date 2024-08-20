@@ -50,3 +50,15 @@ export async function deleteScan(id: string) {
     console.error(error);
   }
 }
+
+export async function getCredits(userId: string) {
+  try {
+    const credits = await db.query.clCredits.findFirst({
+      where: (credits, { eq }) => eq(credits.userId, userId),
+    });
+
+    return credits;
+  } catch (error) {
+    console.error(error);
+  }
+}

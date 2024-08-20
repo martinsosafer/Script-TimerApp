@@ -7,6 +7,7 @@ import {
   IconUserRound,
 } from "@voiceai/ui/@/components/ui/icons";
 
+import { getCredits } from "../plagiarism-detector/actions";
 import type { I_Subscription } from "../plans/types";
 import SubscriptionDetails from "./subscription-details";
 
@@ -39,6 +40,8 @@ export default async function MyProfile() {
     session?.user.subscription?.planId,
   );
 
+  const clCredit = await getCredits(session?.user.id ?? "");
+
   if (!session) {
     redirect("/");
   }
@@ -62,7 +65,10 @@ export default async function MyProfile() {
               <p className="text-md text-gray-600">{session?.user.email}</p>
             </div>
           </div>
-          <SubscriptionDetails subscription={subscription as I_Subscription} />
+          <SubscriptionDetails
+            subscription={subscription as I_Subscription}
+            clCredits={clCredit?.credits ?? 0}
+          />
         </div>
       </div>
     </div>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { auth } from "@voiceai/auth";
 
+import { getCredits } from "../plagiarism-detector/actions";
 import AiChecker from "./checker";
 
 export const metadata: Metadata = {
@@ -11,9 +12,10 @@ export const metadata: Metadata = {
 
 export default async function indexPage() {
   const session = await auth();
+  const credit = await getCredits(session?.user.id ?? "");
   return (
     <div className="flex w-full justify-center">
-      <AiChecker userId={session?.user.id} />
+      <AiChecker userId={session?.user.id} credits={credit?.credits ?? 0} />
     </div>
   );
 }

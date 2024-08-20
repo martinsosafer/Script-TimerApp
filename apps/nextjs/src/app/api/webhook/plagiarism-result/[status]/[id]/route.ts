@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 //import { Resend } from "resend";
 
-import { db, schema } from "@voiceai/db";
+import { db, eq, schema } from "@voiceai/db";
 
 import { sendMessage } from "~/app/actions/messageAction";
 
@@ -92,6 +92,20 @@ export async function POST(
     };
 
     await db.insert(schema.plagiarism).values(payload).execute();
+
+    const fetchedCredits = await db.query.clCredits.findFirst({
+      where: (clCredits, { eq }) => eq(clCredits.userId, developerPayload),
+    });
+
+    if (
+      fetchedCredits?.credits &&
+      fetchedCredits.credits >= payload.credits_used
+    ) {
+      await db
+        .update(schema.clCredits)
+        .set({ credits: fetchedCredits.credits - payload.credits_used })
+        .where(eq(schema.clCredits.userId, developerPayload));
+    }
 
     await sendMessage(payload.id);
 
