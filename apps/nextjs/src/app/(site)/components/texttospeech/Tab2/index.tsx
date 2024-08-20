@@ -15,6 +15,7 @@ import {
   IconCheck,
   IconClose,
   IconPlus,
+  IconRefresh,
   Icons,
   PencilIcon,
 } from "@voiceai/ui/@/components/ui/icons";
@@ -37,98 +38,43 @@ import SelectedModelCard from "../voicewidget/selectedcard/selectedcard";
 
 const TabTwo = ({
   script,
+  subData,
+  setOpenFreeModal,
   richContent,
   setRichContent,
-  selectedModel,
-  handleEditorChange,
-  handleStreaming,
-  generateVoice,
-  stability,
-  similarity,
-  setLoading,
-  audioRef,
-  downloadLink,
-  setShowConfetti,
-  isSubscriptionActive,
-  setOpenFreeModal,
-  subData,
-  showPlayer,
-  setShowPlayer,
+  toggleAudioRef,
   audio,
-  showConfetti,
+  isSubscriptionActive,
+  audioRef,
+  showPlayer,
   handleCloseAudio,
-  isCopied,
-  onCopy,
-  revisedScript,
-  setRevisedScript,
-  checkAndPublish,
+  containerStyle,
+  audioStyle,
+  downloadLink,
   loading,
-  error,
+  buttonStyle,
+  buttonHoverStyle,
+  setShowConfetti,
+  showConfetti,
   speedCategory,
   wordCount,
   minutes,
   formattedSeconds,
-  audioSource,
-
-  toggleAudioRef,
+  selectedModel,
+  handleStreaming,
+  stability,
+  similarity,
+  generateVoice,
+  revisedScript,
+  setRevisedScript,
+  setScript,
+  checkAndPublish,
+  setLoading,
+  handleEditorChange,
+  disabledButtonStyle,
+  onCopy,
+  isCopied,
 }) => {
-  const containerStyle = {
-    position: "fixed",
-    bottom: "20px",
-    left: "50%",
-    transform: "translateX(-50%)",
-    maxWidth: "500px", // Reduced size
-    width: "100%",
-    height: "80px", // Reduced height
-    backgroundColor: "#3B82F6",
-    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: "10px",
-    borderRadius: "8px",
-    zIndex: 1000,
-    opacity: showPlayer ? 1 : 0,
-    transition: "opacity 0.5s ease-in-out",
-    border: "1px solid black", // Subtle black border
-  };
-
-  const audioStyle = {
-    flex: 1,
-    height: "50px", // Slightly smaller height
-    backgroundColor: "transparent",
-    border: "none",
-  };
-
-  const buttonStyle = {
-    backgroundColor: "#F97316",
-    border: "1px solid black", // Subtle black border
-    borderRadius: "4px", // Square corners
-    color: "white",
-    padding: "8px", // Padding around the icon
-    cursor: "pointer",
-    fontFamily: "Poppins, sans-serif",
-    fontWeight: "bold",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    transition: "background-color 0.3s",
-    width: "40px", // Square size
-    height: "40px", // Square size
-    marginLeft: "4px",
-  };
-
-  const buttonHoverStyle = {
-    ...buttonStyle,
-    backgroundColor: "#e76f00", // Darker on hover
-  };
-  const disabledButtonStyle = {
-    ...buttonStyle,
-    backgroundColor: "#f7a07a", // Lighter orange
-    cursor: "not-allowed",
-    opacity: 0.6,
-  };
-
   return (
     <div className="md:order-2">
       <div className="rounded-lg bg-gray-100 p-4 shadow-md dark:bg-slate-400">
@@ -196,7 +142,7 @@ const TabTwo = ({
             <TooltipTrigger>
               {subData ? (
                 <ToggleAudio
-                  ref={audioRef}
+                  ref={toggleAudioRef}
                   audio={audio}
                   isSubscriptionActive={isSubscriptionActive}
                 />
@@ -445,42 +391,20 @@ const TabTwo = ({
                         type="secondary"
                         onClick={
                           !subData
-                            ? () => {
-                                console.log(
-                                  "No subscription data, opening modal",
-                                );
-                                setOpenFreeModal(true);
-                              }
+                            ? () => setOpenFreeModal(true)
                             : async () => {
-                                setLoading(true);
                                 try {
-                                  // Extract the first 10 words from the script
-                                  const firstTenWords = script
-                                    .replace(/<[^>]+>/g, "")
-                                    .split(/\s+/)
-                                    .slice(0, 10)
-                                    .join(" ");
-                                  console.log("Handling streaming with:", {
-                                    userPlan: subData.status,
-                                    voice_id: selectedModel.external_id,
-                                    voice_actor: selectedModel.name,
-                                    message: firstTenWords,
-                                    stability: stability[0],
-                                    similarity: similarity[0],
-                                  });
-                                  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                                   await handleStreaming({
                                     userPlan: subData.status,
                                     voice_id: selectedModel.external_id,
                                     voice_actor: selectedModel.name,
-                                    message: firstTenWords,
+                                    message: script,
+                                    userPlan: subData.status,
                                     stability: stability[0],
                                     similarity: similarity[0],
                                     setLoading,
                                     audioRef,
                                   });
-                                  console.log("Streaming handled successfully");
-                                  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                                   await generateVoice({
                                     voice_id: selectedModel?.id,
                                     voice_actor: selectedModel?.name,
@@ -488,14 +412,8 @@ const TabTwo = ({
                                     stability: stability?.[0],
                                     similarity: similarity?.[0],
                                   });
-                                  console.log("Voice generated successfully");
                                 } catch (e) {
-                                  console.error(
-                                    "Error handling streaming or generating voice:",
-                                    e,
-                                  );
-                                } finally {
-                                  setLoading(false);
+                                  console.log("catcherror", e);
                                 }
                               }
                         }

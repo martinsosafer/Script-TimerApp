@@ -25,5 +25,5 @@ export function useReviseScript(setLoading) {
     [complete, setLoading],
   );
 
-  return { revisedScript, checkAndPublish };
+  return { revisedScript, checkAndPublish, setRevisedScript };
 }
