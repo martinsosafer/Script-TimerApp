@@ -2,7 +2,7 @@ import Link from "next/link";
 import { CopyIcon } from "@radix-ui/react-icons";
 
 import { Button } from "@voiceai/ui/@/components/ui/button";
-import { IconCheck } from "@voiceai/ui/@/components/ui/icons";
+import { IconCheck, IconRefresh } from "@voiceai/ui/@/components/ui/icons";
 import { Textarea } from "@voiceai/ui/@/components/ui/textarea";
 import {
   Tooltip,
