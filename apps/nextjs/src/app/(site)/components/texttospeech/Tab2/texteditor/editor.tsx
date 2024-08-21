@@ -25,7 +25,8 @@ import Typography from "@tiptap/extension-typography";
 import Underline from "@tiptap/extension-underline";
 import { EditorContent, useEditor } from "@tiptap/react";
 import classNames from "classnames";
-import { Document, Paragraph as DocxParagraph, Packer, TextRun } from "docx"; // Import docx
+import { Document, Paragraph as DocxParagraph, Packer, TextRun } from "docx";
+import html2pdf from "html2pdf.js";
 import { jsPDF } from "jspdf";
 
 import { Button } from "@voiceai/ui";
@@ -42,7 +43,7 @@ import { IconCopy } from "@voiceai/ui/@/components/ui/icons";
 
 import type { SubscriptionData } from "~/lib/types";
 import { api } from "~/utils/api";
-import { CharLimitModal } from "./charlimit-modal";
+import { CharLimitModal } from "../../../charlimit-modal";
 
 interface TextEditorProps {
   className?: string;
@@ -128,8 +129,7 @@ function TextEditor({
         const htmlContent = editor.getHTML();
         setRichContent(htmlContent);
         // Throttle or debounce onChange calls here
-        console.log("Plain Text Content:", text);
-        console.log("Rich Text Content (HTML):", htmlContent);
+
         const handleUpdate = () => onChange(text);
         const debounceUpdate = debounce(handleUpdate, 300); // Adjust the debounce delay as needed
         debounceUpdate();
@@ -187,32 +187,58 @@ function TextEditor({
   }, [editor]);
 
   // Function to handle PDF generation
+
   const saveAsPDF = () => {
     if (editor) {
-      const content = editor.getText();
-      const pdf = new jsPDF("p", "pt", "letter");
-      const margin = { top: 30, right: 30, bottom: 30, left: 30 };
-      pdf.text(content, margin.left, margin.top, {
-        align: "left",
-        maxWidth: 500,
-      });
-      pdf.save("document.pdf");
+      const content = editor.getHTML(); // Assuming your editor can output HTML
+      const element = document.createElement("div");
+      element.innerHTML = content;
+
+      // Apply some styles to ensure the content fits within the page
+      element.style.padding = "20px"; // Add padding around the content
+      element.style.boxSizing = "border-box"; // Ensure padding is included in width calculations
+      element.style.maxWidth = "8.5in"; // Ensure it fits within letter-size paper
+      element.style.wordWrap = "break-word"; // Prevent text from overflowing
+
+      const opt = {
+        margin: [20, 20, 20, 20], // Margins in points
+        filename: "document.pdf",
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 1.2 }, // Adjust scale to fit content
+        jsPDF: { unit: "pt", format: "letter", orientation: "portrait" },
+      };
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      html2pdf().from(element).set(opt).save();
     }
   };
-
   // Function to handle DOCX generation
   const saveAsDOCX = async () => {
     if (editor) {
-      const content = editor.getText();
       const doc = new Document({
         sections: [
           {
             properties: {},
-            children: [
-              new DocxParagraph({
-                children: [new TextRun(content)],
-              }),
-            ],
+            children: editor.getJSON().content.map((block) => {
+              if (block.type === "paragraph") {
+                return new DocxParagraph({
+                  children: block.content.map((item) => {
+                    const textRun = new TextRun({
+                      text: item.text,
+                      bold: item.marks?.some((mark) => mark.type === "bold"),
+                      italics: item.marks?.some(
+                        (mark) => mark.type === "italic",
+                      ),
+                      underline: item.marks?.some(
+                        (mark) => mark.type === "underline",
+                      ),
+                    });
+                    return textRun;
+                  }),
+                });
+              }
+              // Handle other block types (e.g., headings, lists) if necessary
+            }),
           },
         ],
       });

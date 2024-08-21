@@ -1,44 +1,11 @@
-import Link from "next/link";
-import ArrowDownOnSquareIcon from "@heroicons/react/24/outline/ArrowDownOnSquareIcon";
-import { CopyIcon } from "@radix-ui/react-icons";
-import Confetti from "react-confetti";
+import { TabsContent } from "@voiceai/ui/@/components/ui/tabs";
 
-import { Button, Tooltip, TooltipContent, TooltipTrigger } from "@voiceai/ui";
-import { Badge } from "@voiceai/ui/@/components/ui/badge";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@voiceai/ui/@/components/ui/hover-card";
-import {
-  CorrectDocumentIcon,
-  IconCheck,
-  IconClose,
-  IconPlus,
-  IconRefresh,
-  Icons,
-  PencilIcon,
-} from "@voiceai/ui/@/components/ui/icons";
-import {
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@voiceai/ui/@/components/ui/tabs";
-import { Textarea } from "@voiceai/ui/@/components/ui/textarea";
-import { MagicWandIcon, SpeakerLoudIcon } from "@voiceai/ui/@/icons/icons";
-
-import CustomButton from "../../custom-button";
-import { TextEditor } from "../../editor";
-import { HistoryButton } from "../../history-button";
-import { SaveScript } from "../../save-script";
-import { ScriptSelector } from "../../script-selector";
-import { ToggleAudio } from "../../toggle-audio";
-import { ToggleLibrary } from "../../toggle-voice-library";
 import SelectedModelCard from "../voicewidget/selectedcard/selectedcard";
 import AudioStreamButtons from "./audiostreambutton";
 import ScriptInfoBadge from "./badge";
 import ButtonsMenu from "./buttonmenu.tsx";
 import CheckGrammarBlock from "./checkgrammar";
+import { TextEditor } from "./texteditor/editor";
 
 const TabTwo = ({
   script,
@@ -100,7 +67,7 @@ const TabTwo = ({
           buttonStyle={buttonStyle}
           buttonHoverStyle={buttonHoverStyle}
           disabledButtonStyle={disabledButtonStyle}
-            handleCloseAudio={  handleCloseAudio}
+          handleCloseAudio={handleCloseAudio}
         />
         <TabsContent value="complete" className="mt-0 border-0 p-0">
           <div className="flex h-3/6 flex-col ">
