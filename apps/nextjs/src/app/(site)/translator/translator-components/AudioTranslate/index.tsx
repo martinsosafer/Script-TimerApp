@@ -145,12 +145,10 @@ export default function AudioTranslate({ subData, setOpenNoSessionModal }) {
           <div
             className="w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
             onClick={() => {
-              navigator.clipboard
-                .writeText(generatedTranslation)
-                .then(() => {
-                  window.open("/texttovoice", "_blank");
-                })
-                .catch((err) => console.error("Failed to copy text: ", err));
+              navigator.clipboard.writeText(generatedTranslation);
+              toast({
+                title: "Translation copied to clipboard",
+              });
             }}
           >
             <p>{generatedTranslation}</p>
@@ -161,8 +159,12 @@ export default function AudioTranslate({ subData, setOpenNoSessionModal }) {
           <button
             className="my-2 text-sm text-blue-500 underline"
             onClick={() => {
-              navigator.clipboard.writeText(generatedTranslation);
-              window.location.href = "/texttovoice";
+              navigator.clipboard
+                .writeText(generatedTranslation)
+                .then(() => {
+                  window.open("/texttovoice", "_blank");
+                })
+                .catch((err) => console.error("Failed to copy text: ", err));
             }}
           >
             Copy and open Text to Voice
