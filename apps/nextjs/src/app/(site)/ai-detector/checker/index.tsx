@@ -98,11 +98,16 @@ export default function AiChecker({ userId, credits }: CheckerProps) {
           >
             <div className="min-h-[500px] w-full rounded-sm border-2 border-gray-300 p-4">
               {aiCheckResult && (
-                <div>
-                  {transformResults({
-                    originalText: text,
-                    results: aiCheckResult.results,
-                  })}
+                <div className="flex h-full flex-col items-center justify-between">
+                  <div>
+                    {transformResults({
+                      originalText: text,
+                      results: aiCheckResult.results,
+                    })}
+                  </div>
+                  <span className="rounded-md bg-red-200 px-4 py-2 text-sm">
+                    All highlighted text is considered as AI generated content.
+                  </span>
                 </div>
               )}
               {!aiCheckResult && (
@@ -135,7 +140,9 @@ export default function AiChecker({ userId, credits }: CheckerProps) {
                 className="flex h-[58px] min-w-[200px] items-center justify-center rounded-md bg-primary p-2 text-white"
               >
                 {loading ? (
-                  <IconSpinner className="h-6 w-6 animate-spin" />
+                  <span className="flex gap-2">
+                    <IconSpinner className="h-6 w-6 animate-spin" /> Working
+                  </span>
                 ) : aiCheckResult ? (
                   "New Scan"
                 ) : (
