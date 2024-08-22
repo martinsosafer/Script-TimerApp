@@ -34,7 +34,7 @@ import {
 import { toast, ToastAction } from "@voiceai/ui/@/components/ui/toast";
 
 import { api } from "~/utils/api";
-import IntroParagraph from "../(site)/components/texttospeech/introparagraph/introparagraph";
+import IntroParagraph from "../(site)/components/texttospeech/ttvintroblock/introparagraph/introparagraph";
 
 export const History = ({ ...rest }) => {
   const [loadingDownload, setLoadingDownload] = React.useState({});

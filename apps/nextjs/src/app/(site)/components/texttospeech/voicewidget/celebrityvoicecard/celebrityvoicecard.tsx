@@ -125,12 +125,6 @@ const CelebrityVoiceCards: React.FC<CelebrityVoiceCardsProps> = ({
               <p className="mb-4 text-sm text-gray-600">
                 Please check back later for more celebrity voices.
               </p>
-              <Link
-                href="/voicecloning"
-                className="rounded-md bg-primary px-4 py-2 text-white"
-              >
-                Go to Voice Cloning
-              </Link>
             </div>
           </div>
         </div>
