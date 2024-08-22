@@ -34,7 +34,10 @@ export default function Feedback({
 
   const messageEnd = useRef<HTMLDivElement>(null);
   const scrollToBottom = () => {
-    messageEnd.current?.scrollTo(0, messageEnd.current?.scrollHeight);
+    messageEnd.current?.scrollTo({
+      top: messageEnd.current?.scrollHeight,
+      behavior: "smooth",
+    });
   };
 
   useEffect(() => {
