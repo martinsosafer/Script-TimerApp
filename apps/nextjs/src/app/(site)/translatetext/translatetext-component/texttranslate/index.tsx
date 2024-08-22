@@ -1,66 +1,76 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
 
-import { IconEar, IconFlag } from "@voiceai/ui/@/components/ui/icons";
-import { toast } from "@voiceai/ui/@/components/ui/toast";
+import { IconFlag, IconScanText } from "@voiceai/ui/@/components/ui/icons";
+import { toast, ToastAction } from "@voiceai/ui/@/components/ui/toast";
 
 import FreeModal from "~/app/(site)/components/free-modal"; // Import the FreeModal
 import LoadingDots from "~/app/(site)/components/loadingdots";
 import languages from "~/lib/languages";
 
-export default function AudioTranslate({ subData, setOpenNoSessionModal }) {
+export default function TextTranslate({ subData, setOpenNoSessionModal }) {
   const [loading, setLoading] = React.useState(false);
   const [language, setLanguage] = React.useState<string>(languages[0]?.value);
   const [generatedTranslation, setGeneratedTranslation] =
     React.useState<string>("");
-  const [selectedFile, setSelectedFile] = React.useState<File | undefined>(
-    undefined,
-  );
+  const [text, setText] = React.useState<string>("");
   const [showFreeModal, setShowFreeModal] = React.useState(false); // State for showing the FreeModal
 
-  const translateAudio = async () => {
+  const url = "https://api.openai.com/v1/audio/transcriptions";
+  const currentModel = "gpt-4o";
+  const prompt = `Please translate the following text into ${language},The translation should always be in ${language} and should be grammatically correct , only give me the text do not add anything else . \n\nOriginal text:\n"${text}"\n\nPlease provide your translation below:`;
+
+  const translateText = async () => {
     setGeneratedTranslation("");
     setLoading(true);
 
-    const formData = new FormData();
-    if (selectedFile) {
-      formData.append("file", selectedFile);
-    }
-    formData.append("language", language);
-
     try {
-      const response = await fetch("/api/translatorAudio", {
+      const response = await fetch("/api/translatorText", {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt,
+          currentModel,
+        }),
       });
 
-      const data = await response.json();
+      const responseText = await response.text();
+      console.log("Raw response:", responseText);
 
-      if (data.success) {
-        setGeneratedTranslation(data.data.text);
-      } else {
-        console.error("Error transcribing audio:", data.error);
-        toast({ title: "Error transcribing audio", description: data.error });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+
+      const data = JSON.parse(responseText);
+
+      if (!data?.data) {
+        throw new Error("Invalid response structure");
+      }
+
+      setGeneratedTranslation(data.data);
     } catch (error) {
-      console.error("Error transcribing audio:", error);
-      toast({ title: "Error transcribing audio", description: error.message });
+      console.error("Error during translation:", error);
+      toast({
+        title: "Translation failed",
+        description:
+          "An error occurred while translating the text. Please try again.",
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setSelectedFile(file);
-    }
-  };
-
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setLanguage(event.target.value);
+    const selectedValue = event.target.value;
+    const selectedLabel = languages.find(
+      (language) => language.value === selectedValue,
+    )?.value;
+    if (selectedLabel) {
+      setLanguage(selectedLabel);
+    }
   };
 
   const handleTranslateClick = () => {
@@ -73,36 +83,27 @@ export default function AudioTranslate({ subData, setOpenNoSessionModal }) {
     ) {
       setShowFreeModal(true);
     } else {
-      translateAudio();
+      translateText();
     }
   };
 
   return (
-    <div className="w-full max-w-xl p-4">
+    <div className="w-full max-w-xl">
       <div className="mt-10 flex items-center space-x-3">
-        <div className="flex h-9 w-9 items-center justify-center rounded-lg border-2 border-[#1877F290] bg-blue-300">
-          <IconEar className="text-black" />
+        <div className="flex h-9 w-9 items-center justify-center gap-3 rounded-lg border-2 border-[#1877F290] bg-blue-300">
+          <IconScanText className="text-black" />
         </div>
-        <p className="text-left font-medium">
-          Upload Audio File <span className="text-slate-500">)</span>
+        <p className="text-left font-medium ">
+          Enter the text you want to translate
         </p>
       </div>
-
-      <label className="my-1 ml-1 block text-left text-sm font-medium text-gray-900 dark:text-white">
-        Upload file:
-      </label>
-      <input
-        className="mb-2 block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400"
-        type="file"
-        accept="audio/*"
-        onChange={handleFileChange}
-      />
-      <p className="my-2 text-sm text-gray-500 dark:text-gray-300">
-        Accepted file formats: m4a, mp3, webm, mp4, mpga, wav, and mpeg.
-      </p>
-
+      <textarea
+        className="my-3 block h-[80px] w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-black focus:ring-black dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-black dark:focus:ring-black"
+        placeholder="Write your text here..."
+        onChange={(e) => setText(e.target.value)}
+      ></textarea>
       <div className="mb-5 flex items-center space-x-3">
-        <div className="flex h-9 w-9 items-center justify-center rounded-lg border-2 border-[#1877F290] bg-blue-300">
+        <div className="flex h-9 w-9 items-center justify-center gap-3 rounded-lg border-2 border-[#1877F290] bg-blue-300">
           <IconFlag className="text-black" />
         </div>
         <p className="text-left font-medium">Choose your Language.</p>
@@ -138,10 +139,11 @@ export default function AudioTranslate({ subData, setOpenNoSessionModal }) {
       )}
 
       {generatedTranslation && (
-        <div className="mt-8">
+        <>
           <label className="text-md my-2 block text-left font-medium text-gray-900 dark:text-white">
             Translation:
           </label>
+
           <div
             className="w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
             onClick={() => {
@@ -169,7 +171,7 @@ export default function AudioTranslate({ subData, setOpenNoSessionModal }) {
           >
             Copy and open Text to Voice
           </button>
-        </div>
+        </>
       )}
 
       {showFreeModal && (

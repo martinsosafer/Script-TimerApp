@@ -3,11 +3,11 @@ import type { Metadata } from "next";
 
 import { auth } from "@voiceai/auth";
 
-import TranslatorPage from "./translator-components/translatorPage";
+import AudioTranslatorPage from "./audiotranslate";
 
 export const metadata: Metadata = {
   title: "Translator",
-  description: "Translator bla bla bla not really inspire now ",
+  description: "Translate Audio ",
 };
 
 export default async function indexPage() {
@@ -16,7 +16,7 @@ export default async function indexPage() {
 
   return (
     <div>
-      <TranslatorPage subData={subData} />
+      <AudioTranslatorPage subData={subData} />
     </div>
   );
 }
