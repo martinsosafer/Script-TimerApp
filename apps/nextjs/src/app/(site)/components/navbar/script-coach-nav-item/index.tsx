@@ -3,7 +3,6 @@ import Link from "next/link";
 import {
   IconBot,
   IconBrainCog,
-  IconCopyright,
   IconGlobe,
   IconPencilLine,
 } from "@voiceai/ui/@/components/ui/icons";
@@ -59,23 +58,6 @@ export default function ScriptCoachNavItem() {
                       </div>
                       <p className="font-normal text-gray-500">
                         Translate text and audio to multiple languages
-                      </p>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href={`/plagiarism-check`}
-                      className="-mx-2 block rounded-lg p-2 font-semibold text-gray-800 transition duration-300 ease-in-out hover:bg-gradient-to-br hover:from-indigo-200 hover:via-blue-200 hover:to-orange-200 hover:text-indigo-600 dark:text-secondary-foreground dark:hover:bg-gradient-to-br dark:hover:from-gray-800 dark:hover:via-gray-700 dark:hover:to-gray-600 dark:hover:text-indigo-600"
-                    >
-                      <div className="flex items-center">
-                        <span>
-                          <IconCopyright className="h-4 w-4" />
-                        </span>
-                        <span className="ml-1">Plagiarism Check</span>
-                      </div>
-                      <p className="font-normal text-gray-500">
-                        Check plagiarism and detect possible AI-generated
-                        content.
                       </p>
                     </Link>
                   </li>
