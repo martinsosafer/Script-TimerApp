@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import type { FormEvent } from "react";
 
 import type { ChatMessage } from "../../types";
@@ -31,9 +32,24 @@ export default function Feedback({
 }: FeedbackProps) {
   const filteredChats = chat.filter((chatItem) => chatItem.role !== "system");
 
+  const messageEnd = useRef<HTMLDivElement>(null);
+  const scrollToBottom = () => {
+    messageEnd.current?.scrollTo({
+      top: messageEnd.current?.scrollHeight,
+      behavior: "smooth",
+    });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [filteredChats]);
+
   return (
     <div className="flex h-[900px] w-[70%] flex-col justify-between gap-2">
-      <div className="flex h-full w-full  flex-col items-start gap-6 overflow-y-auto rounded-md border border-gray-400 bg-white p-6">
+      <div
+        className="flex h-full w-full  flex-col items-start gap-6 overflow-y-auto rounded-md border border-gray-400 bg-white p-6"
+        ref={messageEnd}
+      >
         {filteredChats.map((chatItem, idx) => {
           const formattedContent = contentFormatter(chatItem.content);
           return chatItem.role === "assistant" ? (
