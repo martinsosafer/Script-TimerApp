@@ -1,11 +1,9 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
-import Link from "next/link";
 
 import NoSessionModal from "~/app/(site)/components/modals/no-session-modal";
-import TextTranslate from "../TextTranslate";
+import TextTranslate from "../texttranslate/index";
 
 export default function TextTranslatorPage({
   subData,
@@ -29,18 +27,7 @@ export default function TextTranslatorPage({
         <p className="sm:text-md text-md mt-2 max-w-md font-poppins font-bold text-black">
           Enter the text you want to translate:
         </p>
-        {/* Remove the mode toggle buttons */}
-        {/* {mode ? (
-          <TextTranslate
-            subData={subData}
-            setOpenNoSessionModal={() => setOpenNoSessionModal(true)}
-          />
-        ) : (
-          <AudioTranslate
-            subData={subData}
-            setOpenNoSessionModal={() => setOpenNoSessionModal(true)}
-          />
-        )} */}
+
         <TextTranslate
           subData={subData}
           setOpenNoSessionModal={() => setOpenNoSessionModal(true)}
