@@ -195,7 +195,7 @@ function TextEditor({
       element.innerHTML = content;
 
       // Apply some styles to ensure the content fits within the page
-      element.style.padding = "20px"; // Add padding around the content
+      element.style.padding = "50px"; // Add padding around the content
       element.style.boxSizing = "border-box"; // Ensure padding is included in width calculations
       element.style.maxWidth = "8.5in"; // Ensure it fits within letter-size paper
       element.style.wordWrap = "break-word"; // Prevent text from overflowing

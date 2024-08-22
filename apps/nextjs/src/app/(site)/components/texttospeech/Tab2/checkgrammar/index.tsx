@@ -2,7 +2,11 @@ import Link from "next/link";
 import { CopyIcon } from "@radix-ui/react-icons";
 
 import { Button } from "@voiceai/ui/@/components/ui/button";
-import { IconCheck, IconRefresh } from "@voiceai/ui/@/components/ui/icons";
+import {
+  IconCheck,
+  IconRefresh,
+  Icons,
+} from "@voiceai/ui/@/components/ui/icons";
 import { Textarea } from "@voiceai/ui/@/components/ui/textarea";
 import {
   Tooltip,
@@ -34,11 +38,6 @@ const CheckGrammarBlock = ({
             placeholder="Your script here..."
             className="min-h-[50vh] md:min-h-[55vh] lg:min-h-[70vh] xl:min-h-[70vh]"
           />
-          <div className="flex items-center justify-end">
-            {selectedModel && (
-              <SelectedModelCard selectedModel={selectedModel} />
-            )}
-          </div>
         </div>
         {revisedScript.length > 0 ? (
           <div className="relative">
@@ -119,13 +118,22 @@ const CheckGrammarBlock = ({
             <span>Grammar and spell check your script</span>
             <Button
               className="border-2 border-dashed"
-              disabled={script.trim() === "" || script === revisedScript}
+              disabled={
+                script.trim() === "" || script === revisedScript || loading
+              }
               onClick={() => {
                 setLoading(true);
                 checkAndPublish(script);
               }}
             >
-              Grammar and Spelling
+              {loading ? (
+                <Icons.spinner
+                  className="h-6 w-6 animate-spin"
+                  style={{ color: "white" }}
+                />
+              ) : (
+                "Grammar and Spelling"
+              )}
             </Button>
           </div>
         )}

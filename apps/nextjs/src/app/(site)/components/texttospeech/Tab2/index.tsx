@@ -19,11 +19,11 @@ const TabTwo = ({
   audioRef,
   showPlayer,
   handleCloseAudio,
-  containerStyle,
+
   audioStyle,
   downloadLink,
   loading,
-  buttonStyle,
+
   buttonHoverStyle,
   setShowConfetti,
   showConfetti,
@@ -42,7 +42,7 @@ const TabTwo = ({
   checkAndPublish,
   setLoading,
   handleEditorChange,
-  disabledButtonStyle,
+
   onCopy,
   isCopied,
 }) => {
@@ -57,16 +57,11 @@ const TabTwo = ({
           toggleAudioRef={toggleAudioRef}
           audio={audio}
           isSubscriptionActive={isSubscriptionActive}
-          containerStyle={containerStyle}
           audioRef={audioRef}
-          audioStyle={audioStyle}
           showPlayer={showPlayer}
           downloadLink={downloadLink}
           loading={loading}
           setShowConfetti={setShowConfetti}
-          buttonStyle={buttonStyle}
-          buttonHoverStyle={buttonHoverStyle}
-          disabledButtonStyle={disabledButtonStyle}
           handleCloseAudio={handleCloseAudio}
         />
         <TabsContent value="complete" className="mt-0 border-0 p-0">
@@ -83,7 +78,6 @@ const TabTwo = ({
 
             <div className=" mb-4 flex flex-col items-center justify-center">
               <ScriptInfoBadge
-                speedCategory={speedCategory}
                 wordCount={wordCount}
                 minutes={minutes}
                 formattedSeconds={formattedSeconds}

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Link from "next/link";
 import ArrowDownOnSquareIcon from "@heroicons/react/24/outline/ArrowDownOnSquareIcon";
 import ReactConfetti from "react-confetti";
@@ -23,6 +24,7 @@ import { SaveScript } from "../../../save-script";
 import { ScriptSelector } from "../../../script-selector";
 import { ToggleAudio } from "../../../toggle-audio";
 import { ToggleLibrary } from "../../../toggle-voice-library";
+import { SpeedButton } from "./speedbutton";
 
 const ButtonsMenu = ({
   script,
@@ -32,20 +34,74 @@ const ButtonsMenu = ({
   toggleAudioRef,
   audio,
   isSubscriptionActive,
-  containerStyle,
+
   audioRef,
-  audioStyle,
+
   showPlayer,
   downloadLink,
   loading,
   setShowConfetti,
-  buttonStyle,
-  buttonHoverStyle,
+
   handleCloseAudio,
   showConfetti,
-  disabledButtonStyle,
-  
 }) => {
+  const containerStyle = {
+    position: "fixed",
+    bottom: "20px",
+    left: "50%",
+    transform: "translateX(-50%)",
+    maxWidth: "500px", // Reduced size
+    width: "100%",
+    height: "80px", // Reduced height
+    backgroundColor: "#3B82F6",
+    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: "10px",
+    borderRadius: "8px",
+    zIndex: 1000,
+    opacity: showPlayer ? 1 : 0,
+    transition: "opacity 0.5s ease-in-out",
+    border: "1px solid black", // Subtle black border
+  };
+
+  const audioStyle = {
+    flex: 1,
+    height: "50px", // Slightly smaller height
+    backgroundColor: "transparent",
+    border: "none",
+  };
+
+  const buttonStyle = {
+    backgroundColor: "#F97316",
+    border: "1px solid black", // Subtle black border
+    borderRadius: "4px", // Square corners
+    color: "white",
+    padding: "8px", // Padding around the icon
+    cursor: "pointer",
+    fontFamily: "Poppins, sans-serif",
+    fontWeight: "bold",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    transition: "background-color 0.3s",
+    width: "40px", // Square size
+    height: "40px", // Square size
+    marginLeft: "4px",
+  };
+
+  const buttonHoverStyle = {
+    ...buttonStyle,
+    backgroundColor: "#e76f00", // Darker on hover
+  };
+  const disabledButtonStyle = {
+    ...buttonStyle,
+    backgroundColor: "#f7a07a", // Lighter orange
+    cursor: "not-allowed",
+    opacity: 0.6,
+  };
+
   return (
     <div className="ml-auto flex w-full space-x-2 sm:justify-end">
       <Tooltip>
@@ -131,12 +187,21 @@ const ButtonsMenu = ({
             </Button>
           )}
           <div style={containerStyle}>
-            <audio ref={audioRef} controls style={audioStyle} />
+            <audio ref={audioRef} controls="controls" style={audioStyle} />
             {showPlayer && (
               <div
                 className="controls-container"
                 style={{ display: "flex", gap: "10px" }}
               >
+                {/* Speed Button */}
+                <SpeedButton
+                  audioRef={audioRef}
+                  buttonStyle={buttonStyle}
+                  buttonHoverStyle={buttonHoverStyle}
+                  disabledButtonStyle={disabledButtonStyle}
+                />
+
+                {/* Download Button */}
                 <HoverCard>
                   <HoverCardTrigger asChild>
                     <button
@@ -193,6 +258,8 @@ const ButtonsMenu = ({
                     </HoverCardContent>
                   )}
                 </HoverCard>
+
+                {/* Close Button */}
                 <button
                   onClick={handleCloseAudio}
                   style={buttonStyle}

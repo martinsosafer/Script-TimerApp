@@ -75,62 +75,7 @@ export function ScriptAI({
   };
   const { wordCount, minutes, formattedSeconds, speedCategory } =
     calculateLengthTime(script);
-  const containerStyle = {
-    position: "fixed",
-    bottom: "20px",
-    left: "50%",
-    transform: "translateX(-50%)",
-    maxWidth: "500px", // Reduced size
-    width: "100%",
-    height: "80px", // Reduced height
-    backgroundColor: "#3B82F6",
-    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: "10px",
-    borderRadius: "8px",
-    zIndex: 1000,
-    opacity: showPlayer ? 1 : 0,
-    transition: "opacity 0.5s ease-in-out",
-    border: "1px solid black", // Subtle black border
-  };
 
-  const audioStyle = {
-    flex: 1,
-    height: "50px", // Slightly smaller height
-    backgroundColor: "transparent",
-    border: "none",
-  };
-
-  const buttonStyle = {
-    backgroundColor: "#F97316",
-    border: "1px solid black", // Subtle black border
-    borderRadius: "4px", // Square corners
-    color: "white",
-    padding: "8px", // Padding around the icon
-    cursor: "pointer",
-    fontFamily: "Poppins, sans-serif",
-    fontWeight: "bold",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    transition: "background-color 0.3s",
-    width: "40px", // Square size
-    height: "40px", // Square size
-    marginLeft: "4px",
-  };
-
-  const buttonHoverStyle = {
-    ...buttonStyle,
-    backgroundColor: "#e76f00", // Darker on hover
-  };
-  const disabledButtonStyle = {
-    ...buttonStyle,
-    backgroundColor: "#f7a07a", // Lighter orange
-    cursor: "not-allowed",
-    opacity: 0.6,
-  };
   return (
     <>
       <div className="  mb-32 h-full   flex-col md:flex">
@@ -159,12 +104,8 @@ export function ScriptAI({
                 audioRef={audioRef}
                 showPlayer={showPlayer}
                 handleCloseAudio={handleCloseAudio}
-                containerStyle={containerStyle}
-                audioStyle={audioStyle}
                 downloadLink={downloadLink}
                 loading={loading}
-                buttonStyle={buttonStyle}
-                buttonHoverStyle={buttonHoverStyle}
                 setShowConfetti={setShowConfetti}
                 showConfetti={showConfetti}
                 speedCategory={speedCategory}
@@ -182,7 +123,6 @@ export function ScriptAI({
                 setScript={setScript}
                 setLoading={setLoading}
                 handleEditorChange={handleEditorChange}
-                disabledButtonStyle={disabledButtonStyle}
                 onCopy={onCopy}
                 isCopied={isCopied}
               />
