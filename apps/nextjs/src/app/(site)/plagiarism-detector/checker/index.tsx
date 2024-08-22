@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
+import JokesLoader from "~/app/_components/jokes-loader";
 import type { PlagiarismPayload } from "~/app/api/webhook/plagiarism-result/[status]/[id]/route";
 import { pusherClient } from "~/lib/pusher";
 import EditScanTitleModal from "../../components/modals/edit-scan-title";
@@ -140,8 +141,10 @@ export default function Checker({ userId, scans, credits }: CheckerProps) {
             className="flex w-[75%] flex-col items-end gap-2"
           >
             <div className="min-h-[500px] w-full rounded-sm border-2 border-gray-300 p-4">
-              {plagiarismCheck && <PlagiarismResult result={plagiarismCheck} />}
-              {!plagiarismCheck && (
+              {!loading && plagiarismCheck && (
+                <PlagiarismResult result={plagiarismCheck} />
+              )}
+              {!loading && !plagiarismCheck && (
                 <>
                   <textarea
                     name="textarea"
@@ -157,6 +160,7 @@ export default function Checker({ userId, scans, credits }: CheckerProps) {
                   )}
                 </>
               )}
+              {loading && <JokesLoader />}
             </div>
             <div className="flex w-full justify-end gap-2">
               {plagiarismCheck && (
@@ -171,7 +175,9 @@ export default function Checker({ userId, scans, credits }: CheckerProps) {
                 className="flex h-[58px] min-w-[200px] items-center justify-center rounded-md bg-primary p-2 text-white"
               >
                 {loading ? (
-                  <IconSpinner className="h-6 w-6 animate-spin" />
+                  <span>
+                    <IconSpinner className="h-6 w-6 animate-spin" /> Working
+                  </span>
                 ) : plagiarismCheck ? (
                   "New Scan"
                 ) : (
