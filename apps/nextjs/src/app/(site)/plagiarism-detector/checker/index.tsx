@@ -175,7 +175,7 @@ export default function Checker({ userId, scans, credits }: CheckerProps) {
                 className="flex h-[58px] min-w-[200px] items-center justify-center rounded-md bg-primary p-2 text-white"
               >
                 {loading ? (
-                  <span>
+                  <span className="flex gap-2">
                     <IconSpinner className="h-6 w-6 animate-spin" /> Working
                   </span>
                 ) : plagiarismCheck ? (
