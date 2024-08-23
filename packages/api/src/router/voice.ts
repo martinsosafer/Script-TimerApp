@@ -12,11 +12,7 @@ import {
 function addWatermark(message: string) {
   const watermark = "created by script timer";
 
-  // Prepend the watermark to the message
-  // const prependedMessage = `${watermark} - ${message}`;
-
-  // Append the watermark to the message
-  // const appendedMessage = `${prependedMessage} - ${watermark}`;
+  
   const appendedMessage = `${message} - ${watermark}`;
   return appendedMessage;
 }
