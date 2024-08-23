@@ -79,6 +79,7 @@ function TextEditor({
   const [showCharCount, setShowCharCount] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [localContent, setLocalContent] = useState(script);
+  const [isCopyEnabled, setIsCopyEnabled] = useState(false);
   const { scriptId } = useParams();
   const { data: scriptDetails } = api.script.get.useQuery(
     { id: scriptId?.[0] ?? "" },
@@ -128,6 +129,8 @@ function TextEditor({
 
         const htmlContent = editor.getHTML();
         setRichContent(htmlContent);
+        // Update the copy button's enabled state based on whether there is text
+        setIsCopyEnabled(text.trim().length > 0);
         // Throttle or debounce onChange calls here
 
         const handleUpdate = () => onChange(text);
@@ -143,9 +146,15 @@ function TextEditor({
       if (scriptDetails?.rich_text) {
         console.log("Setting editor content:", scriptDetails.rich_text);
         editor.commands.setContent(scriptDetails.rich_text);
+        // Set the character count based on the loaded content
+        const text = editor.getText();
+        setCharCount(text.length);
+        setIsCopyEnabled(text.trim().length > 0);
       } else {
         console.log("No script content found, setting editor to empty string");
         editor.commands.setContent(""); // Set content to empty to trigger the placeholder
+        setCharCount(0); // Reset character count
+        setIsCopyEnabled(false);
       }
     }
   }, [scriptDetails, editor]);
@@ -153,6 +162,9 @@ function TextEditor({
     if (editor && updatedContent) {
       console.log("Updating content with updatedContent:", updatedContent);
       editor.commands.setContent(updatedContent);
+      // Set the character count based on the updated content
+      const text = editor.getText();
+      setCharCount(text.length);
     }
   }, [updatedContent, editor]);
 
@@ -163,7 +175,12 @@ function TextEditor({
       setShowModal(false);
     }
   }, [charCount, charLimit]);
-
+  useEffect(() => {
+    if (editor) {
+      const text = editor.getText();
+      setCharCount(text.length);
+    }
+  }, [editor]);
   const toggleBold = useCallback(() => {
     editor.chain().focus().toggleBold().run();
   }, [editor]);
@@ -382,7 +399,7 @@ function TextEditor({
           <Button
             variant="ghost"
             className="rounded-full border border-slate-500 bg-white"
-            disabled={charCount === 0}
+            disabled={!isCopyEnabled}
             onClick={copyToClipboard}
           >
             <IconCopy className="h-5 w-5" />
