@@ -105,7 +105,7 @@ export const voiceCustomRouter = createTRPCRouter({
           {
             method: "POST",
             headers: {
-              "xi-api-key": process.env.INTEGRATION_11LABS_API_KEY ?? "",
+              "xi-api-key": process.env.CLONE_11LABS_API_KEY ?? "",
             },
             body: form,
           },
