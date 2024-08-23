@@ -1,21 +1,18 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
-import Link from "next/link";
 
 import NoSessionModal from "~/app/(site)/components/modals/no-session-modal";
-import AudioTranslate from "../AudioTranslate";
-import TextTranslate from "../TextTranslate";
+import TextTranslate from "../texttranslate/index";
 
-export default function TranslatorPage({
+export default function TextTranslatorPage({
   subData,
 }: {
   subData: SubscriptionData | null | undefined;
 }) {
-  const [mode, setMode] = React.useState<boolean>(true);
   const [openNoSessionModal, setOpenNoSessionModal] =
     React.useState<boolean>(false);
+
   return (
     <div className="mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center py-2">
       <main className="mb-8 flex w-full flex-1 flex-col items-center justify-center px-4 text-center sm:mt-10">
@@ -28,37 +25,13 @@ export default function TranslatorPage({
           into multiple languages.
         </p>
         <p className="sm:text-md text-md mt-2 max-w-md font-poppins font-bold text-black">
-          Enter the text or upload an audio file:
+          Enter the text you want to translate:
         </p>
-        <div className="mb-[-5px] mt-5 flex">
-          <button
-            className={`rounded-md px-4 py-2 font-semibold ${
-              mode ? "bg-primary text-white" : "bg-gray-300 text-black"
-            }`}
-            onClick={() => setMode(!mode)}
-          >
-            Translate Text
-          </button>
-          <button
-            className={`rounded-md px-4 py-2 font-semibold ${
-              !mode ? "bg-primary text-white" : "bg-gray-300 text-black"
-            }`}
-            onClick={() => setMode(!mode)}
-          >
-            Translate Audio
-          </button>
-        </div>
-        {mode ? (
-          <TextTranslate
-            subData={subData}
-            setOpenNoSessionModal={() => setOpenNoSessionModal(true)}
-          />
-        ) : (
-          <AudioTranslate
-            subData={subData}
-            setOpenNoSessionModal={() => setOpenNoSessionModal(true)}
-          />
-        )}
+
+        <TextTranslate
+          subData={subData}
+          setOpenNoSessionModal={() => setOpenNoSessionModal(true)}
+        />
         {openNoSessionModal && (
           <NoSessionModal
             page="translator"
