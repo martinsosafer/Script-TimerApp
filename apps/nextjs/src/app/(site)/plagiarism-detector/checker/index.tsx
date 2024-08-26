@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
-import JokesLoader from "~/app/_components/jokes-loader";
+import JokesLoader from "~/app/(site)/components/jokes-loader";
 import type { PlagiarismPayload } from "~/app/api/webhook/plagiarism-result/[status]/[id]/route";
 import { pusherClient } from "~/lib/pusher";
 import EditScanTitleModal from "../../components/modals/edit-scan-title";
@@ -193,6 +193,7 @@ export default function Checker({ userId, scans, credits }: CheckerProps) {
           onClose={() => {
             setIsEditingScanTitle(false);
             setPlagiarismCheck(null);
+            setText("");
           }}
           setScansHistory={setScansHistory}
           scansHistory={scansHistory}

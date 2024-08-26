@@ -6,14 +6,14 @@ const { jokes } = data;
 
 export default function JokesLoader() {
   const [joke, setJoke] = useState<string>(
-    "Hey! Here are a few jokes for you while you wait.",
+    "It takes a few seconds to scan the ‘interwebs’ to make sure your content is original. \n Here are some thoughts to share a smile with you while you wait…",
   );
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       const randomIndex = Math.floor(Math.random() * jokes.length);
       setJoke(jokes[randomIndex]!);
-    }, 7000);
+    }, 8000);
 
     // Cleanup interval on component unmount
     return () => clearInterval(intervalId);
@@ -30,9 +30,9 @@ export default function JokesLoader() {
 
   return (
     <div className="flex h-full w-full items-center justify-center">
-      <p className="flex w-[60%] flex-col items-start justify-center text-lg">
+      <div className="flex min-h-[180px] w-[70%] flex-col items-start justify-center gap-2 rounded-md bg-gradient-to-br from-indigo-200 via-blue-200 to-orange-200 p-6 text-lg ">
         {parseJoke(joke)}
-      </p>
+      </div>
     </div>
   );
 }
