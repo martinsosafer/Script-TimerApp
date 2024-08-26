@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import {
   IconBot,
-  IconBrainCog,
+  IconBotMessageSquare,
   IconGlobe,
   IconPencilLine,
 } from "@voiceai/ui/@/components/ui/icons";
@@ -12,7 +12,7 @@ export default function ScriptCoachNavItem() {
     <>
       <Link href={`/chat`} className="flex flex-col items-center">
         <IconPencilLine className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
-        <IconBrainCog className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
+        <IconBotMessageSquare className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
         <span className="font-poppins font-semibold">Script Coach</span>
       </Link>
       <div className="absolute inset-x-0 bottom-0  mb-2 h-0.5 origin-left scale-x-0 transform bg-primary-foreground transition-transform duration-300 group-hover:scale-x-100" />
