@@ -1,0 +1,69 @@
+"use client";
+
+import * as React from "react";
+
+import { IconSpinner } from "@voiceai/ui/@/components/ui/icons";
+
+//import { signIn } from "@voiceai/auth";
+
+import { createUser } from "./actions";
+
+export function LoginWithEmailForm() {
+  const [loading, setLoading] = React.useState(false);
+  async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
+    setLoading(true);
+    try {
+      event.preventDefault();
+      const formData = new FormData(event.currentTarget);
+      await createUser(formData);
+    } catch (error) {
+      alert(
+        "An error occurred while signing in. Please check your credentials",
+      );
+      console.log("ERROR", error);
+    }
+    setLoading(false);
+  }
+
+  return (
+    <div>
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <span className="w-full border-t" />
+        </div>
+        <div className="relative flex justify-center text-xs uppercase">
+          <span className="bg-background px-2 text-muted-foreground">
+            LEGACY USERS: LOGIN VIA LINK
+          </span>
+        </div>
+      </div>
+      <p className="mb-3 p-2 text-center text-sm text-muted-foreground">
+        Please create a password before 10.1.24
+      </p>
+      <form
+        onSubmit={handleLogin}
+        className="mx-auto flex w-full max-w-md flex-col space-y-4"
+      >
+        <div className="flex flex-col space-y-2">
+          <input
+            type="email"
+            name="email"
+            placeholder="name@example.com"
+            className="rounded-md border border-gray-300 px-3 py-2"
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="flex items-center justify-center rounded-md bg-primary py-2 font-semibold text-white"
+        >
+          {loading ? (
+            <IconSpinner className="h-6 w-6 animate-spin" />
+          ) : (
+            "Sign In with Email"
+          )}
+        </button>
+      </form>
+    </div>
+  );
+}
