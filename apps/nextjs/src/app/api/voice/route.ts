@@ -1,34 +1,49 @@
 import { NextResponse } from "next/server";
 
 import { auth } from "@voiceai/auth";
-import { db, schema } from "@voiceai/db"; // Adjust the import path based on your project structure
+import { db, eq, schema } from "@voiceai/db";
 
-function addWatermark(message) {
+function addWatermark(message: string) {
   const watermark = "created by script timer";
   return `${message} - ${watermark}`;
 }
 
-export async function POST(req) {
-  const session = await auth();
-  const status = session?.user.subscription?.status;
-  const userId = session?.user.id;
-
+export async function POST(req: { json: () => any }) {
   try {
     console.log("Received request:", req);
+
+    // Get the authenticated user
+    const session = await auth();
+    const userId = session?.user.id;
+
+    if (!userId) {
+      return new NextResponse(
+        JSON.stringify({ error: "User not authenticated." }),
+        { status: 401, headers: { "Content-Type": "application/json" } },
+      );
+    }
+
     const body = await req.json();
 
-    // Set maximum message length based on the user's subscription status
-    let maxMessageLength = 300; // Default for free users
+    // Retrieve user subscription
+    const subscription = await db.query.subscriptions.findFirst({
+      where: eq(schema.subscriptions.userId, userId),
+    });
 
-    if (status === "FREE_TRIAL" || status === "STUDENT") {
+    // Determine max message length based on subscription
+    let maxMessageLength = 300; // Default maximum message length for free users
+    if (
+      subscription?.status === "FREE_TRIAL" ||
+      subscription?.status === "STUDENT"
+    ) {
       maxMessageLength = 2000;
-    } else if (status === "CREATOR") {
+    } else if (subscription?.status === "CREATOR") {
       maxMessageLength = 5000;
-    } else if (status === "BUSINESS") {
+    } else if (subscription?.status === "BUSINESS") {
       maxMessageLength = 10000;
     }
 
-    // Check if the message length exceeds the maximum allowed length
+    // Check message length
     if (body.text.length > maxMessageLength) {
       return new NextResponse(
         JSON.stringify({
@@ -38,9 +53,8 @@ export async function POST(req) {
       );
     }
 
-    // Append the watermark if the user doesn't have a paid subscription
     let message = body.text;
-    if (!["BUSINESS", "STUDENT", "CREATOR"].includes(status)) {
+    if (!["BUSINESS", "STUDENT", "CREATOR"].includes(subscription?.status)) {
       message = addWatermark(message);
     }
 
@@ -54,6 +68,7 @@ export async function POST(req) {
       },
     };
 
+    // Fetch audio stream from ElevenLabs
     const response = await fetch(
       `https://api.elevenlabs.io/v1/text-to-speech/${body.voice_id}/stream`,
       {
@@ -79,45 +94,48 @@ export async function POST(req) {
     }
 
     const reader = responseBody.getReader();
-    const chunks = [];
-    let credits = 0;
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      chunks.push(value);
-      credits += value.length;
-    }
-
-    const audioBase64 = Buffer.concat(chunks).toString("base64");
-
-    // Save the generated audio and other metadata to the database
-    const generationId = await db
-      .insert(schema.generations)
-      .values({
-        userId,
-        type: "11LABS",
-        prompt: body.text,
-        response: audioBase64,
-        metadata: data,
-      })
-      .returning({ generationId: schema.generations.id })
-      .then((res) => res?.[0]?.generationId);
-
-    if (!generationId) throw new Error("Error creating voice");
-
-    // Deduct the credits used based on the message length
-    await db.insert(schema.credits).values({
-      userId,
-      generationId,
-      type: "11LABS",
-      credits: body.text.length,
-    });
-
+    const audioChunks: Uint8Array[] = [];
     const stream = new ReadableStream({
       async start(controller) {
-        controller.enqueue(Buffer.from(audioBase64, "base64"));
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          // Stream the audio data to the client
+          controller.enqueue(value);
+
+          // Collect the audio chunks to save later
+          audioChunks.push(value);
+        }
         controller.close();
+
+        // Convert collected audio chunks to base64
+        const audioBase64 = Buffer.concat(audioChunks).toString("base64");
+
+        // Save generation to the database after the stream completes
+        const generationId = await db
+          .insert(schema.generations)
+          .values({
+            userId: userId,
+            type: "11LABS",
+            prompt: body.text,
+            response: audioBase64,
+            metadata: data,
+          })
+          .returning({ generationId: schema.generations.id })
+          .then((res) => res?.[0]?.generationId);
+
+        if (!generationId) throw new Error("Error creating voice");
+
+        await db.insert(schema.credits).values({
+          userId: userId,
+          generationId: generationId,
+          type: "11LABS",
+          credits: body.text.length,
+        });
+      },
+      cancel() {
+        reader.cancel();
       },
     });
 
@@ -131,9 +149,7 @@ export async function POST(req) {
     console.error("ERROR STREAMING", e);
     return new NextResponse(JSON.stringify({ error: e.message }), {
       status: 500,
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
     });
   }
 }
