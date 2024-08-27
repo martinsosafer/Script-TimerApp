@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import { auth } from "@voiceai/auth";
 import { db, eq, schema } from "@voiceai/db";
+import { elevenLabsCredit } from "@voiceai/db/schema/11LabsCredits";
 
 function addWatermark(message: string) {
   const watermark = "created by script timer";
@@ -31,11 +32,11 @@ export async function POST(req: { json: () => any }) {
     });
 
     // Determine max message length based on subscription
-    let maxMessageLength = 300; // Default maximum message length for free users
-    if (
-      subscription?.status === "FREE_TRIAL" ||
-      subscription?.status === "STUDENT"
-    ) {
+    let maxMessageLength = 500; // Default maximum message length for free users
+
+    if (subscription?.status === "FREE_TRIAL") {
+      maxMessageLength = 1000; // Updated maximum message length for free trials
+    } else if (subscription?.status === "STUDENT") {
       maxMessageLength = 2000;
     } else if (subscription?.status === "CREATOR") {
       maxMessageLength = 5000;
@@ -52,6 +53,29 @@ export async function POST(req: { json: () => any }) {
         { status: 403, headers: { "Content-Type": "application/json" } },
       );
     }
+
+    // Fetch user credits from elevenLabsCredit table
+    const userCredits = await db.query.elevenLabsCredit.findFirst({
+      where: eq(elevenLabsCredit.userId, userId),
+    });
+
+    if (!userCredits || userCredits.credits < body.text.length) {
+      return new NextResponse(
+        JSON.stringify({
+          error: "Not enough credits to process the request.",
+        }),
+        { status: 403, headers: { "Content-Type": "application/json" } },
+      );
+    }
+
+    // Subtract credits
+    await db
+      .update(elevenLabsCredit)
+      .set({
+        credits: userCredits.credits - body.text.length,
+        updated_at: new Date(), // Ensure fields are correctly updated
+      })
+      .where(eq(elevenLabsCredit.userId, userId));
 
     let message = body.text;
     if (!["BUSINESS", "STUDENT", "CREATOR"].includes(subscription?.status)) {
@@ -127,12 +151,13 @@ export async function POST(req: { json: () => any }) {
 
         if (!generationId) throw new Error("Error creating voice");
 
-        await db.insert(schema.credits).values({
-          userId: userId,
-          generationId: generationId,
-          type: "11LABS",
-          credits: body.text.length,
-        });
+        // Optionally, you can insert a record into the credits table, if needed
+        // await db.insert(schema.credits).values({
+        //   userId: userId,
+        //   generationId: generationId,
+        //   type: "11LABS",
+        //   credits: body.text.length,
+        // });
       },
       cancel() {
         reader.cancel();
