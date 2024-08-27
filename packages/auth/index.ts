@@ -10,6 +10,7 @@ import NextAuth from "next-auth";
 
 import { db, schema, tableCreator } from "@voiceai/db";
 
+import { STARTING_CL_CREDITS } from "./constants";
 import { env } from "./env.mjs";
 import { sendVerificationRequest } from "./send-verification-request";
 
@@ -117,6 +118,7 @@ export const {
           .insert(schema.clCredits)
           .values({
             userId: user?.id ?? token.sub,
+            credits: STARTING_CL_CREDITS[subscriptionStatus?.status ?? "FREE"],
           })
           .execute();
       }

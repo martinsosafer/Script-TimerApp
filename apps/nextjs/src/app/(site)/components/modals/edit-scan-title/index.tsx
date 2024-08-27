@@ -62,7 +62,7 @@ export default function EditScanTitleModal({
               {isLoading ? (
                 <IconSpinner className="h-6 w-6 animate-spin" />
               ) : (
-                "Edit Title"
+                "Save"
               )}
             </button>
           </form>
