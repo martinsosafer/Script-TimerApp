@@ -172,14 +172,6 @@ export async function POST(req: { json: () => any }) {
           .then((res) => res?.[0]?.generationId);
 
         if (!generationId) throw new Error("Error creating voice");
-
-        // Optionally, you can insert a record into the credits table, if needed
-        // await db.insert(schema.credits).values({
-        //   userId: userId,
-        //   generationId: generationId,
-        //   type: "11LABS",
-        //   credits: body.text.length,
-        // });
       },
       cancel() {
         reader.cancel();
