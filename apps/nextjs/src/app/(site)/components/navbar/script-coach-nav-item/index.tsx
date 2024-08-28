@@ -3,6 +3,7 @@ import Link from "next/link";
 import {
   IconBot,
   IconBotMessageSquare,
+  IconCopyright,
   IconGlobe,
   IconNoAi,
   IconPencilLine,
