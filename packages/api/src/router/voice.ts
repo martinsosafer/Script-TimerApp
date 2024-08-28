@@ -12,11 +12,7 @@ import {
 function addWatermark(message: string) {
   const watermark = "created by script timer";
 
-  // Prepend the watermark to the message
-  // const prependedMessage = `${watermark} - ${message}`;
-
-  // Append the watermark to the message
-  // const appendedMessage = `${prependedMessage} - ${watermark}`;
+  
   const appendedMessage = `${message} - ${watermark}`;
   return appendedMessage;
 }
@@ -26,9 +22,46 @@ export const voiceRouter = createTRPCRouter({
     return await db
       .select()
       .from(schema.voices)
-      .where(eq(schema.voices.active, true))
+      .where(
+        and(
+          eq(schema.voices.active, true),
+          eq(schema.voices.celebrity, false), // Exclude celebrity voices
+        ),
+      )
       .orderBy(asc(schema.voices.rank));
   }),
+  PubliclistCelebrity: publicProcedure
+    .input(
+      z.object({
+        name: z.string().optional(), // Optional name input for searching
+      }),
+    )
+    .query(async ({ input }) => {
+      if (input?.name && input?.name.length > 0) {
+        return await db
+          .select()
+          .from(schema.voices)
+          .where(
+            and(
+              ilike(schema.voices.name, `%${input.name}%`),
+              eq(schema.voices.active, true),
+              eq(schema.voices.celebrity, true), // Include only celebrity voices
+            ),
+          )
+          .orderBy(asc(schema.voices.rank));
+      }
+
+      return await db
+        .select()
+        .from(schema.voices)
+        .where(
+          and(
+            eq(schema.voices.active, true),
+            eq(schema.voices.celebrity, true), // Include only celebrity voices
+          ),
+        )
+        .orderBy(asc(schema.voices.rank));
+    }),
   listAllVoices: protectedProcedure.query(async ({ ctx }) => {
     return await ctx.db
       .select()
@@ -50,9 +83,11 @@ export const voiceRouter = createTRPCRouter({
             and(
               ilike(schema.voices.name, `%${input.name}%`),
               eq(schema.voices.active, true),
+              eq(schema.voices.celebrity, false), // Exclude celebrity voices
             ),
           );
       }
+
       const subscription = await ctx.db.query.subscriptions.findFirst({
         where: eq(schema.subscriptions.userId, ctx.session.user.id),
       });
@@ -70,7 +105,58 @@ export const voiceRouter = createTRPCRouter({
       return await ctx.db
         .select()
         .from(schema.voices)
-        .where(eq(schema.voices.active, true))
+        .where(
+          and(
+            eq(schema.voices.active, true),
+            eq(schema.voices.celebrity, false), // Exclude celebrity voices
+          ),
+        )
+        .limit(maxVoices)
+        .orderBy(asc(schema.voices.rank));
+    }),
+  listCelebrity: protectedProcedure
+    .input(
+      z.object({
+        name: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      if (input?.name && input?.name.length > 0) {
+        return await ctx.db
+          .select()
+          .from(schema.voices)
+          .where(
+            and(
+              ilike(schema.voices.name, `%${input.name}%`),
+              eq(schema.voices.active, true),
+              eq(schema.voices.celebrity, true), // Include only celebrity voices
+            ),
+          );
+      }
+
+      const subscription = await ctx.db.query.subscriptions.findFirst({
+        where: eq(schema.subscriptions.userId, ctx.session.user.id),
+      });
+
+      let maxVoices = 5; // Maximum number of voices for free users
+      if (
+        subscription?.status === "STUDENT" ||
+        subscription?.status === "CREATOR" ||
+        subscription?.status === "BUSINESS" ||
+        subscription?.status === "FREE_TRIAL"
+      ) {
+        // If user has an active subscription, set maximum voices to a higher value
+        maxVoices = Number.MAX_SAFE_INTEGER; // Set to a very large number
+      }
+      return await ctx.db
+        .select()
+        .from(schema.voices)
+        .where(
+          and(
+            eq(schema.voices.active, true),
+            eq(schema.voices.celebrity, true), // Include only celebrity voices
+          ),
+        )
         .limit(maxVoices)
         .orderBy(asc(schema.voices.rank));
     }),
@@ -217,6 +303,7 @@ export const voiceRouter = createTRPCRouter({
         active: z.boolean().default(true),
         metadata: z.record(z.unknown()).optional(),
         rank: z.number().default(0),
+        celebrity: z.boolean().default(false), // New field added
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -244,6 +331,7 @@ export const voiceRouter = createTRPCRouter({
             active: input.active ?? true,
             metadata: input.metadata ?? {},
             rank: input.rank ?? 0,
+            celebrity: input.celebrity ?? false, // New field added
           })
           .execute();
 

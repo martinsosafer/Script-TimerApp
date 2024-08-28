@@ -14,21 +14,23 @@ interface FreeModalProps {
   subData?: SubscriptionData | null | undefined;
   openModal: boolean;
   setOpenModal: Dispatch<SetStateAction<boolean>>;
+  plan: string; // Added plan prop
 }
-function FreeModal({ setOpenModal, openModal }: FreeModalProps) {
+
+function FreeModal({ setOpenModal, openModal, plan }: FreeModalProps) {
   if (!openModal) {
     return null;
   }
 
   return (
-    <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center  bg-black bg-opacity-50 backdrop-blur">
-      <div className="  rounded-xl bg-primary p-8">
+    <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50 backdrop-blur">
+      <div className="rounded-xl bg-primary p-8">
         <div className="max-h-[100vh] min-h-[80vh] w-full max-w-lg overflow-y-auto overflow-x-hidden rounded-full border-4 border-primary bg-white p-4 dark:bg-white sm:rounded-lg">
           <div className="flex h-full w-full flex-col">
             <div className="m-8 mx-auto my-2 flex flex-grow flex-col items-center px-4">
               {/* Heading */}
               <h2 className="font-poppins text-2xl font-bold text-primary">
-                Upgrade & Create Today!
+                You need at least a {plan} plan to use this feature
               </h2>
 
               {/* New Rectangular Rounded Bubble */}
@@ -45,7 +47,7 @@ function FreeModal({ setOpenModal, openModal }: FreeModalProps) {
                   <div>Radio Spot * Podcast * Speech</div>
                   <div>Marketing * Video * Content</div>
                 </div>
-                <div className="rotate-y-180  absolute   -right-64 top-1/2 -translate-y-1/2 transform">
+                <div className="rotate-y-180 absolute -right-64 top-1/2 -translate-y-1/2 transform">
                   <Image
                     src={microphone2side}
                     alt="microphone"

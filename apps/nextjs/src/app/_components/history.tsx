@@ -34,7 +34,7 @@ import {
 import { toast, ToastAction } from "@voiceai/ui/@/components/ui/toast";
 
 import { api } from "~/utils/api";
-import IntroParagraph from "../(site)/components/texttospeech/introparagraph/introparagraph";
+import IntroParagraph from "../(site)/components/texttospeech/ttvintroblock/introparagraph/introparagraph";
 
 export const History = ({ ...rest }) => {
   const [loadingDownload, setLoadingDownload] = React.useState({});
@@ -73,24 +73,32 @@ export const History = ({ ...rest }) => {
       });
     },
   });
-
   const copyTextToClipboard = (text: string | null) => {
+    if (!text) {
+      toast({
+        title: "Error",
+        description: "No text available to copy",
+      });
+      return;
+    }
+
     navigator.clipboard
       .writeText(text)
       .then(() => {
         toast({
           title: "Text copied",
+          description: "Your text has been successfully copied",
           duration: 2000,
         });
       })
       .catch((error) => {
+        console.error("Error copying text: ", error);
         toast({
           title: "Error",
           description: "Failed to copy text to clipboard",
         });
       });
   };
-
   const saveAsPDF = (content) => {
     const pdf = new jsPDF("p", "pt", "letter");
     const margin = { top: 30, right: 30, bottom: 30, left: 30 };

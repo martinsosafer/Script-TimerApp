@@ -7,7 +7,7 @@ import {
 export const footerData = [
   {
     id: 1,
-    title: "Usefull Links",
+    title: "Useful Links",
     links: [
       {
         id: 1,
@@ -43,7 +43,7 @@ export const footerData = [
       {
         id: 3,
         name: "Prompt cheatsheet",
-        link: "https://script-timer.com/chatgpt-prompts/chatgpt-cheatsheet-guide-to-efficiency-without-the-burnout-2/",
+        link: "https://script-timer.com/chatgpt-prompts/chatgpt-cheatsheet-guide-to-efficiency-without-the-burnout/",
       },
       {
         id: 4,
