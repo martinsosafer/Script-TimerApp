@@ -92,13 +92,8 @@ export async function POST(req: { json: () => any }) {
       },
     };
 
-<<<<<<< HEAD
     // Try with the first API key (e.g., for cloned voices)
     let response = await fetch(
-=======
-    // Fetch audio stream from ElevenLabs
-    const response = await fetch(
->>>>>>> f7c498402c29f49bc1e71c46df232d96d9572b81
       `https://api.elevenlabs.io/v1/text-to-speech/${body.voice_id}/stream`,
       {
         method: "POST",
@@ -150,15 +145,9 @@ export async function POST(req: { json: () => any }) {
       async start(controller) {
         while (true) {
           const { done, value } = await reader.read();
-<<<<<<< HEAD
           if (done) {
             break;
           }
-=======
-          if (done) break;
-
-          // Stream the audio data to the client
->>>>>>> f7c498402c29f49bc1e71c46df232d96d9572b81
           controller.enqueue(value);
 
           // Collect the audio chunks to save later
