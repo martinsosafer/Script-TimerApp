@@ -20,7 +20,6 @@ import {
 
 import { hasValidPlan } from "../../siteUtils";
 import MobileNavBar from "../mobile-navbar";
-import LearnNavItem from "./learn-nav-item";
 import MasterclassesNavItem from "./masterclass-nav-item";
 import PlansNavItem from "./plans-nav-item";
 import ProfileNavItem from "./profile-nav-item";

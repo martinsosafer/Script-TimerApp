@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 //import { Resend } from "resend";
 
-import { db, schema } from "@voiceai/db";
+import { db, eq, schema } from "@voiceai/db";
 
 import { sendMessage } from "~/app/actions/messageAction";
 
@@ -12,6 +12,7 @@ import { sendMessage } from "~/app/actions/messageAction";
 export interface PlagiarismResult {
   scannedDocument: {
     totalWords: number;
+    credits: number;
   };
   results: {
     score: {
@@ -39,12 +40,15 @@ interface InternetPayload {
 export interface PlagiarismPayload {
   id: string;
   userId: string;
+  title: string;
+  content: string;
   total_words: number;
   identical_words: number;
   minor_changed_words: number;
   related_meaning_words: number;
   aggregated_score: number;
   internet: InternetPayload[] | [];
+  credits_used: number;
 }
 
 export async function POST(
@@ -60,7 +64,7 @@ export async function POST(
   try {
     const body = (await request.json()) as PlagiarismResult;
     const {
-      scannedDocument: { totalWords },
+      scannedDocument: { totalWords, credits },
       results: {
         score: {
           identicalWords,
@@ -76,17 +80,34 @@ export async function POST(
     const payload: PlagiarismPayload = {
       id,
       userId: developerPayload,
+      title: "New Scan",
+      content: "",
       total_words: totalWords,
       identical_words: identicalWords,
       minor_changed_words: minorChangedWords,
       related_meaning_words: relatedMeaningWords,
       aggregated_score: aggregatedScore,
       internet,
+      credits_used: credits,
     };
 
     await db.insert(schema.plagiarism).values(payload).execute();
 
-    await sendMessage(payload);
+    const fetchedCredits = await db.query.clCredits.findFirst({
+      where: (clCredits, { eq }) => eq(clCredits.userId, developerPayload),
+    });
+
+    if (
+      fetchedCredits?.credits &&
+      fetchedCredits.credits >= payload.credits_used
+    ) {
+      await db
+        .update(schema.clCredits)
+        .set({ credits: fetchedCredits.credits - payload.credits_used })
+        .where(eq(schema.clCredits.userId, developerPayload));
+    }
+
+    await sendMessage(payload.id);
 
     // await resend.emails.send({
     //   from: "login@script-timer.ai",
