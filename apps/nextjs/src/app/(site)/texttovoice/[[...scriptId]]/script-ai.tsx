@@ -19,8 +19,10 @@ import TTVIntroBlock from "../../components/texttospeech/ttvintroblock";
 
 export function ScriptAI({
   subData,
+  credits,
 }: {
   subData: SubscriptionData | null | undefined;
+  credits: number;
 }) {
   const {
     subscriptionData,
@@ -79,7 +81,7 @@ export function ScriptAI({
   return (
     <>
       <div className="  mb-32 h-full   flex-col md:flex">
-        <TTVIntroBlock subscriptionData={subscriptionData} />
+        <TTVIntroBlock subscriptionData={subscriptionData} credits={credits} />
 
         <Tabs defaultValue="complete" className="flex-1">
           <div className="container mb-4 h-full ">

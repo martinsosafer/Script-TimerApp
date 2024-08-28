@@ -20,14 +20,11 @@ const TabTwo = ({
   showPlayer,
   handleCloseAudio,
 
-  audioStyle,
   downloadLink,
   loading,
 
-  buttonHoverStyle,
   setShowConfetti,
-  showConfetti,
-  speedCategory,
+
   wordCount,
   minutes,
   formattedSeconds,

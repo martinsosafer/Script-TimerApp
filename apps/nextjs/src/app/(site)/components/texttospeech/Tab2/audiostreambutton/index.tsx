@@ -1,6 +1,11 @@
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@voiceai/ui/@/components/ui/hover-card";
-import CustomButton from "../../../custom-button";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@voiceai/ui/@/components/ui/hover-card";
 import { Icons } from "@voiceai/ui/@/components/ui/icons";
+
+import CustomButton from "../../../custom-button";
 
 const AudioStreamButtons = ({
   subData,
@@ -50,13 +55,13 @@ const AudioStreamButtons = ({
         setLoading,
         audioRef,
       });
-      await generateVoice({
-        voice_id: selectedModel.id,
-        voice_actor: selectedModel.name,
-        message: script,
-        stability: stability[0],
-        similarity: similarity[0],
-      });
+      // await generateVoice({
+      //   voice_id: selectedModel.id,
+      //   voice_actor: selectedModel.name,
+      //   message: script,
+      //   stability: stability[0],
+      //   similarity: similarity[0],
+      // });
     } catch (e) {
       console.log("catcherror", e);
     }
