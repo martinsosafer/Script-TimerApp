@@ -15,8 +15,9 @@ export async function POST(req: { json: () => any }) {
       },
     };
 
-    const response = await fetch(
-      `https://api.elevenlabs.io/v1/text-to-speech/${body.voice_id}/stream`, // Hardcoded voice_id
+    // Try with the first API key (e.g., for cloned voices)
+    let response = await fetch(
+      `https://api.elevenlabs.io/v1/text-to-speech/${body.voice_id}/stream`,
       {
         method: "POST",
         headers: {
@@ -28,10 +29,32 @@ export async function POST(req: { json: () => any }) {
       },
     );
 
+    // If the first attempt fails, try with the second API key (e.g., for standard voices)
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error("Error response from ElevenLabs:", errorText);
-      throw new Error("Failed to fetch the text-to-speech stream.");
+      console.error(
+        "Failed with CLONE_11LABS_API_KEY, trying with STANDARD_11LABS_API_KEY...",
+      );
+
+      response = await fetch(
+        `https://api.elevenlabs.io/v1/text-to-speech/${body.voice_id}/stream`,
+        {
+          method: "POST",
+          headers: {
+            accept: "audio/mpeg",
+            "xi-api-key": process.env.CLONE_11LABS_API_KEY ?? "",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        },
+      );
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error response from ElevenLabs:", errorText);
+        throw new Error(
+          "Failed to fetch the text-to-speech stream with both API keys.",
+        );
+      }
     }
 
     const responseBody = response.body;
@@ -47,7 +70,6 @@ export async function POST(req: { json: () => any }) {
           if (done) {
             break;
           }
-
           controller.enqueue(value);
         }
         controller.close();
