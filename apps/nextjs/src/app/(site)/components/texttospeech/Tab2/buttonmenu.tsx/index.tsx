@@ -206,7 +206,7 @@ const ButtonsMenu = ({
                   <HoverCardTrigger asChild>
                     <button
                       onClick={() => {
-                        if (downloadLink && isSubscriptionActive) {
+                        if (downloadLink) {
                           const anchor = document.createElement("a");
                           anchor.href = downloadLink;
                           anchor.download = "audio.mp3";
@@ -215,22 +215,20 @@ const ButtonsMenu = ({
                           setShowConfetti(true);
                         }
                       }}
-                      disabled={
-                        !downloadLink || !isSubscriptionActive || loading
-                      }
+                      disabled={loading || !downloadLink} // Removed isSubscriptionActive check
                       style={
-                        !isSubscriptionActive
+                        !downloadLink || loading // Style adjustments
                           ? disabledButtonStyle
                           : buttonStyle
                       }
                       onMouseOver={(e) =>
-                        !isSubscriptionActive || loading
+                        !downloadLink || loading
                           ? null
                           : (e.currentTarget.style.backgroundColor =
                               buttonHoverStyle.backgroundColor)
                       }
                       onMouseOut={(e) =>
-                        !isSubscriptionActive || loading
+                        !downloadLink || loading
                           ? null
                           : (e.currentTarget.style.backgroundColor =
                               buttonStyle.backgroundColor)
@@ -250,11 +248,8 @@ const ButtonsMenu = ({
                     </button>
                   </HoverCardTrigger>
                   {!isSubscriptionActive && (
-                    <HoverCardContent
-                      className="w-[320px] text-sm"
-                      side="right"
-                    >
-                      Free users can't download audio files.
+                    <HoverCardContent className="w-[200px] text-sm" side="left">
+                      Dowload audio file.
                     </HoverCardContent>
                   )}
                 </HoverCard>
