@@ -1,6 +1,6 @@
 export async function fetchUserCredits(userId: string): Promise<number> {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_HOST_URL}/api/get11LabsCredits?userId=${userId}`,
+    `${process.env.HOST_URL}/api/get11LabsCredits?userId=${userId}`,
   );
 
   if (!response.ok) {
