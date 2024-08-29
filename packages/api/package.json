@@ -18,6 +18,8 @@
     "@voiceai/db": "workspace:^0.1.0",
     "@voiceai/pay": "workspace:^0.1.0",
     "axios": "^1.6.0",
+    "fluent-ffmpeg": "^2.1.3",
+    "formdata-node": "^6.0.3",
     "superjson": "2.2.0",
     "ws": "^8.18.0",
     "zod": "^3.22.2"

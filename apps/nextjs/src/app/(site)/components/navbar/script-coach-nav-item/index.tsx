@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import {
   IconBot,
-  IconBrainCog,
+  IconBotMessageSquare,
   IconCopyright,
   IconGlobe,
   IconNoAi,
@@ -14,7 +14,7 @@ export default function ScriptCoachNavItem() {
     <>
       <Link href={`/chat`} className="flex flex-col items-center">
         <IconPencilLine className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
-        <IconBrainCog className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
+        <IconBotMessageSquare className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
         <span className="font-poppins font-semibold">Script Coach</span>
       </Link>
       <div className="absolute inset-x-0 bottom-0  mb-2 h-0.5 origin-left scale-x-0 transform bg-primary-foreground transition-transform duration-300 group-hover:scale-x-100" />
@@ -49,17 +49,17 @@ export default function ScriptCoachNavItem() {
                   </li>
                   <li>
                     <Link
-                      href={`/translator`}
+                      href={`/translatetext`}
                       className="-mx-2 block rounded-lg p-2 font-semibold text-gray-800 transition duration-300 ease-in-out hover:bg-gradient-to-br hover:from-indigo-200 hover:via-blue-200 hover:to-orange-200 hover:text-indigo-600 dark:text-secondary-foreground dark:hover:bg-gradient-to-br dark:hover:from-gray-800 dark:hover:via-gray-700 dark:hover:to-gray-600 dark:hover:text-indigo-600"
                     >
                       <div className="flex items-center">
                         <span>
                           <IconGlobe className="h-4 w-4" />
                         </span>
-                        <span className="ml-1">Translator</span>
+                        <span className="ml-1">Translate Text</span>
                       </div>
                       <p className="font-normal text-gray-500">
-                        Translate text and audio to multiple languages
+                        Translate text and audio to multiple languages.
                       </p>
                     </Link>
                   </li>
