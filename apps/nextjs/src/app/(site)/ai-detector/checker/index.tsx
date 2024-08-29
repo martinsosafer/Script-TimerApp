@@ -34,6 +34,14 @@ export default function AiChecker({ userId, credits }: CheckerProps) {
 
   const [creditsLeft, setCreditsLeft] = useState<number>(credits);
 
+  console.log(
+    "AiChecker",
+    Math.ceil(text.split(" ").length / 250),
+    creditsLeft,
+  );
+
+  console.log("AiChecker", text);
+
   async function handleCheck(e: FormEvent) {
     e.preventDefault();
     if (aiCheckResult) {
@@ -44,8 +52,9 @@ export default function AiChecker({ userId, credits }: CheckerProps) {
     const data = new FormData(e.target as HTMLFormElement);
     const text = data.get("textarea") as string;
     setText(text);
+    const words = text.split(" ");
 
-    if (Math.ceil(text.length / 250) > creditsLeft) {
+    if (Math.ceil(words.length / 250) > creditsLeft) {
       toast({
         title: "Insufficient Credits",
         description: "You do not have enough credits to perform this scan.",
