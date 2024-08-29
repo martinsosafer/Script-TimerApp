@@ -42,7 +42,6 @@ export default function PromptCard({
   isAddYourOwn = false,
 }: PromptCardProps) {
   const { icon, name } = card;
-  console.log("PromptCardProps", isSelected, isAddYourOwn);
   return (
     <button
       className={handleStyle(isSelected, isAddYourOwn).card}

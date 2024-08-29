@@ -96,7 +96,7 @@ const Newnavbar: React.FC<Props> = ({ signOut, subData }) => {
         <ul className="flex items-center justify-center font-semibold">
           <li className=" group relative items-center px-3 py-2  text-primary-foreground">
             <div className="flex flex-col items-center">
-              <Link href={`/texttospeech`}>
+              <Link href={`/texttovoice`}>
                 <IconAudioLines className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
                 <IconFileType className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
               </Link>

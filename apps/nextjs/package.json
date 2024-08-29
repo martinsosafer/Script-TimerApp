@@ -13,7 +13,8 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@ai-sdk/openai": "^0.0.13",
+    "@ai-sdk/openai": "^0.0.36",
+    "@ffmpeg/ffmpeg": "^0.12.10",
     "@next/font": "^14.2.1",
     "@next/third-parties": "^14.2.4",
     "@segment/analytics-next": "^1.62.0",
@@ -28,6 +29,7 @@
     "@trpc/next": "11.0.0-next-beta.228",
     "@trpc/react-query": "11.0.0-next-beta.228",
     "@trpc/server": "11.0.0-next-beta.228",
+    "@vercel/blob": "^0.23.4",
     "@vercel/kv": "^1.0.1",
     "@voiceai/ai": "workspace:^0.1.0",
     "@voiceai/api": "workspace:^0.1.0",
@@ -36,7 +38,7 @@
     "@voiceai/pay": "workspace:^0.1.0",
     "@voiceai/ui": "workspace:^0.1.0",
     "add": "^2.0.6",
-    "ai": "^2.2.20",
+    "ai": "^3.1.37",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "clsx": "^2.0.0",
@@ -44,12 +46,17 @@
     "docx": "^8.5.0",
     "elevenlabs": "^0.9.1",
     "framer-motion": "^11.0.3",
+    "html2canvas": "^1.4.1",
+    "html2pdf.js": "^0.10.2",
     "jspdf": "^2.5.1",
     "lottie-react": "^2.4.0",
     "next": "^14.0.1",
     "next-themes": "^0.2.1",
+    "plagiarism-checker": "^4.0.0",
     "pnpm": "^8.12.0",
     "process": "^0.11.10",
+    "pusher": "^5.2.0",
+    "pusher-js": "8.4.0-rc2",
     "react": "18.2.0",
     "react-confetti": "^6.1.0",
     "react-countup": "^6.5.3",
@@ -57,6 +64,7 @@
     "react-lottie": "^1.2.4",
     "react-toastify": "^9.1.3",
     "react-use-intercom": "^5.1.4",
+    "socket.io": "^4.7.5",
     "stream-browserify": "^3.0.0",
     "superjson": "2.2.0",
     "swiper": "^11.1.1",
@@ -78,6 +86,9 @@
     "prettier": "^3.0.3",
     "tailwindcss": "3.3.5",
     "typescript": "^5.2.2"
+  },
+  "browser": {
+    "crypto": false
   },
   "eslintConfig": {
     "root": true,

@@ -49,7 +49,7 @@ function SlideCards() {
             AI voice generation , choose a voice actor and give us a script.
           </p>
           <button className="inline-flex h-9 items-center justify-center rounded-xl bg-sky-500 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-blue-600 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300">
-            <Link href="/texttospeech">See More</Link>
+            <Link href="/texttosvoice">See More</Link>
           </button>
         </div>
       </div>

@@ -1,0 +1,10 @@
+export const STARTING_CL_CREDITS = {
+  INACTIVE: 0,
+  PAUSED: 0,
+  ACTIVE: 5,
+  FREE: 5,
+  FREE_TRIAL: 5,
+  STUDENT: 6,
+  CREATOR: 7,
+  BUSINESS: 8,
+};

@@ -56,7 +56,7 @@ export function ChatPanel({
               <IconCopy />
             </span>{" "}
             and{" "}
-            <Link href="/texttospeech" target="_blank">
+            <Link href="/texttovoice" target="_blank">
               <span className="cursor-pointer underline">TEXT to SPEECH</span>
             </Link>{" "}
             for a voice actor.

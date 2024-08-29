@@ -1,0 +1,43 @@
+import * as React from "react";
+import type { Metadata } from "next";
+
+import { auth } from "@voiceai/auth";
+
+import { fetchUserCredits } from "~/lib/get11LabsCredits";
+import { set11LabsCreditsBasedOnPlan } from "~/lib/set11labsCredits";
+import { ScriptAI } from "./script-ai";
+
+export const metadata: Metadata = {
+  title: "Script Timer",
+  description: "AI helping you find your voice.",
+};
+
+export default async function ScriptPage() {
+  const session = await auth();
+
+  // Initialize credits variable
+  let credits = 0;
+
+  if (session?.user.id && session?.user.subscription?.status) {
+    // Set credits based on the user's subscription plan
+    await set11LabsCreditsBasedOnPlan(
+      session.user.id,
+      session.user.subscription.status,
+    );
+
+    // Fetch and log the user's current credits
+    try {
+      credits = await fetchUserCredits(session.user.id);
+    } catch (error) {
+      console.error("Error fetching user credits:", error);
+    }
+  }
+
+  const subData = session?.user.subscription;
+
+  return (
+    <>
+      <ScriptAI subData={subData} credits={credits} />
+    </>
+  );
+}

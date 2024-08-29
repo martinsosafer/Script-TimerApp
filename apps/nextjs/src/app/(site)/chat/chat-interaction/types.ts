@@ -6,7 +6,7 @@ export interface ChatMessage {
 export interface Chat {
   id: string | null;
   title: string | undefined;
-  userId: string;
+  userId: string | undefined;
   prevMessages: ChatMessage[] | null;
   messages: ChatMessage[];
 }

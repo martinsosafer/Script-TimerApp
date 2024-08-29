@@ -35,7 +35,7 @@ export default function HeroSection() {
             <RevealText>
               <div className="mt-8 flex justify-center gap-3">
                 <PrimaryButton onClick={TextToVoiceClick}>
-                  <Link href="/texttospeech">Text to Voice</Link>
+                  <Link href="/texttovoice">Text to Voice</Link>
                 </PrimaryButton>
                 <PrimaryButton>
                   <Link href="/chat">Script Coach</Link>

@@ -57,7 +57,7 @@ const DeleteButton = ({ scriptId }) => {
         description: "Your script has been deleted",
       });
 
-      router.push("/texttospeech");
+      router.push("/texttovoice");
     },
 
     onError(error) {
@@ -86,9 +86,7 @@ const DeleteButton = ({ scriptId }) => {
         <DialogContent className="sm:max-w-[475px]">
           <DialogHeader>
             <DialogTitle className="text-red-600">Delete script</DialogTitle>
-            <DialogDescription>
-              'This will delete your script'
-            </DialogDescription>
+            <DialogDescription>This will delete your script</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
@@ -164,7 +162,7 @@ export function ScriptSelector({ ...props }: ScriptSelectorProps) {
                   variant="invisible"
                   key={script.id}
                   onClick={() => {
-                    router.push(`/texttospeech/${script.id}`, {
+                    router.push(`/texttovoice/${script.id}`, {
                       scroll: false,
                     });
 

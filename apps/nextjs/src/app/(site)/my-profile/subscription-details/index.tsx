@@ -7,10 +7,12 @@ import type { I_Subscription } from "../../plans/types";
 
 interface SubscriptionDetailsProps {
   subscription: I_Subscription;
+  clCredits: number;
 }
 
 export default function SubscriptionDetails({
   subscription,
+  clCredits,
 }: SubscriptionDetailsProps) {
   const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
   const router = useRouter();
@@ -92,9 +94,9 @@ export default function SubscriptionDetails({
       </div>
       <div className="mt-3 flex gap-4 px-12 py-2">
         <div className="flex flex-col">
-          <span className="px-2 text-xs text-gray-400">Characters user</span>
+          <span className="px-2 text-xs text-gray-400">Characters used</span>
           <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
-            Characters user
+            Characters used
           </div>
         </div>
         <div className="flex flex-col">
@@ -111,6 +113,16 @@ export default function SubscriptionDetails({
           <span className="px-2 text-xs text-gray-400">Reset In</span>
           <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
             Reset In
+          </div>
+        </div>
+      </div>
+      <div className="flex gap-4 px-12 py-2">
+        <div className="flex flex-col">
+          <span className="px-2 text-xs text-gray-400">
+            Plagiarism detector and Ai detector credits left
+          </span>
+          <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
+            {clCredits}
           </div>
         </div>
       </div>

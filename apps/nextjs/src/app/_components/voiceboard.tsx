@@ -15,6 +15,7 @@ interface VoiceData {
   description: string;
   gender: string;
   rank: number;
+  celebrity: boolean; // New field added
 }
 
 interface VoiceboardProps {
@@ -39,7 +40,6 @@ const Voiceboard: React.FC<VoiceboardProps> = ({ voiceList }) => {
     setFilteredVoices(filtered);
   }, [searchTerm, voiceList]);
 
-  
   const handleAddVoice = () => {
     setVoiceForm(true);
   };
@@ -87,6 +87,7 @@ const Voiceboard: React.FC<VoiceboardProps> = ({ voiceList }) => {
             <th className="px-4 py-2">Description</th>
             <th className="px-4 py-2">Gender</th>
             <th className="px-4 py-2">Rank</th>
+            <th className="px-4 py-2">Celebrity</th> {/* New column added */}
           </tr>
         </thead>
         <tbody>
@@ -98,7 +99,11 @@ const Voiceboard: React.FC<VoiceboardProps> = ({ voiceList }) => {
               <td className="px-4 py-2">{voice.voice_type}</td>
               <td className="px-4 py-2">{voice.name}</td>
               <td className="px-4 py-2">
-                <img src={voice.picture} alt={voice.name} />
+                <img
+                  src={voice.picture}
+                  alt={voice.name}
+                  className="h-16 w-16 object-cover"
+                />
               </td>
               <td className="px-4 py-2">{JSON.stringify(voice.metadata)}</td>{" "}
               {/* You may need to format metadata accordingly */}
@@ -111,6 +116,10 @@ const Voiceboard: React.FC<VoiceboardProps> = ({ voiceList }) => {
               <td className="px-4 py-2">{voice.description}</td>
               <td className="px-4 py-2">{voice.gender}</td>
               <td className="px-4 py-2">{voice.rank}</td>
+              <td className="px-4 py-2">
+                {voice.celebrity ? "Yes" : "No"}
+              </td>{" "}
+              {/* New data column */}
             </tr>
           ))}
         </tbody>
