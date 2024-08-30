@@ -12,6 +12,7 @@ import { useScriptDetails } from "~/app/hooks/texttovoice/useScriptDetails";
 import useStreamingAudio from "~/app/hooks/texttovoice/useStreamingAudio";
 import { useSubscription } from "~/app/hooks/texttovoice/useSubscription";
 import { calculateLengthTime } from "~/lib/calculate-length-time";
+import { fetchUserCredits } from "~/lib/get11LabsCredits";
 import NoSessionModal from "../../components/modals/no-session-modal";
 import TabOne from "../../components/texttospeech/Tab1";
 import TabTwo from "../../components/texttospeech/Tab2";
@@ -19,10 +20,10 @@ import TTVIntroBlock from "../../components/texttospeech/ttvintroblock";
 
 export function ScriptAI({
   subData,
-  credits,
+  initialCredits,
 }: {
   subData: SubscriptionData | null | undefined;
-  credits: number;
+  initialCredits: number;
 }) {
   const {
     subscriptionData,
@@ -78,6 +79,25 @@ export function ScriptAI({
   const { wordCount, minutes, formattedSeconds, speedCategory } =
     calculateLengthTime(script);
 
+  const [credits, setCredits] = React.useState(initialCredits);
+
+  // Function to refetch credits
+  const refetchCredits = async () => {
+    try {
+      // Assuming we have the user's ID available (adjust as needed)
+      const userId = subData?.userId;
+      if (!userId) return; // Ensure userId is available
+      const newCredits = await fetchUserCredits(userId); // Refetch the credits
+      setCredits(newCredits); // Update the state with the new credits
+    } catch (error) {
+      console.error("Error refetching credits:", error);
+    }
+  };
+  React.useEffect(() => {
+    if (subData) {
+      refetchCredits();
+    }
+  }, [subData]);
   return (
     <>
       <div className="  mb-32 h-full   flex-col md:flex">
@@ -127,6 +147,7 @@ export function ScriptAI({
                 handleEditorChange={handleEditorChange}
                 onCopy={onCopy}
                 isCopied={isCopied}
+                refetchCredits={refetchCredits}
               />
             </div>
           </div>

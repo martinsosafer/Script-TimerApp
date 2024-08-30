@@ -21,6 +21,7 @@ export const SpeedButton = ({
       <div>
         <Menu.Button
           style={buttonStyle}
+          className="text-sm"
           onMouseOver={(e) =>
             (e.currentTarget.style.backgroundColor =
               buttonHoverStyle.backgroundColor)
@@ -50,7 +51,7 @@ export const SpeedButton = ({
             transform: "translateY(-10px)", // Adjust vertical positioning
           }}
         >
-          {["0.5x", "1x", "1.5x", "2x"].map((speed) => (
+          {["0.5x", "0.75x", "1x", "1.25x", "1.5x", "2x"].map((speed) => (
             <Menu.Item key={speed}>
               {({ active }) => (
                 <button
