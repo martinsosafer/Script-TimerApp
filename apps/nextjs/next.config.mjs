@@ -21,6 +21,7 @@ const config = {
       "drive.google.com",
       "oaidalleapiprodscus.blob.core.windows.net",
       "upload.wikimedia.org",
+      "imgur.com",
     ],
   },
 };

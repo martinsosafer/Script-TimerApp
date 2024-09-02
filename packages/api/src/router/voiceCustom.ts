@@ -10,25 +10,75 @@ import {
   TRPCError,
 } from "../trpc";
 
+const MAX_FILE_SIZE_MB = 8;
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 export const voiceCustomRouter = createTRPCRouter({
   newCustomVoice: protectedProcedure
     .input(
       z.object({
         name: z.string().min(1),
         description: z.string().min(1),
-        files: z.string().min(1), // URL or path to the audio file
+        files: z.string().url(),
         labels: z.string().optional(),
-        gender: z.string().optional(), // New field
-        preview_url: z.string().optional(), // New field
+        gender: z.string().optional(),
+        preview_url: z.string().optional(),
         type: z.enum(["11LABS", "OTHER"]).optional(),
         active: z.boolean().default(true),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       try {
-        // Convert base64 string back to a file
-        const fileBuffer = Buffer.from(input.files.split(",")[1], "base64");
-        const fileName = "voice-file.wav"; // Change the file extension if necessary
+        // Retrieve the user's subscription data
+        const userId = ctx.session.user.id;
+        const subscription = await ctx.db.query.subscriptions.findFirst({
+          where: eq(schema.subscriptions.userId, userId),
+        });
+
+        if (!subscription) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Subscription not found for the user",
+          });
+        }
+
+        // Add logging to verify the plan value
+        console.log("User subscription plan:", subscription.plan);
+
+        const customVoiceLimit =
+          subscription.status === "CREATOR"
+            ? 3
+            : subscription.status === "BUSINESS"
+              ? 5
+              : 0;
+
+        // Log the custom voice limit for debugging
+        console.log("Custom voice limit for the user:", customVoiceLimit);
+
+        if (customVoiceLimit === 0) {
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: "Your plan does not allow creating custom voices",
+          });
+        }
+
+        const currentCustomVoices = subscription.custom_voices || [];
+
+        if (currentCustomVoices.length >= customVoiceLimit) {
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: `You have reached the limit of ${customVoiceLimit} custom voices for your plan`,
+          });
+        }
+
+        // Proceed with creating the new custom voice
+        const response = await fetch(input.files);
+        const fileBuffer = await response.arrayBuffer();
+        if (fileBuffer.byteLength > MAX_FILE_SIZE_BYTES) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: `File size exceeds the ${MAX_FILE_SIZE_MB} MB limit.`,
+          });
+        }
 
         // Prepare form data for ElevenLabs API
         const form = new FormData();
@@ -37,7 +87,7 @@ export const voiceCustomRouter = createTRPCRouter({
         form.append(
           "files",
           new Blob([fileBuffer], { type: "audio/wav" }),
-          fileName,
+          "voice-file.wav",
         );
         if (input.labels) {
           form.append("labels", input.labels);
@@ -50,30 +100,24 @@ export const voiceCustomRouter = createTRPCRouter({
         }
 
         // Send the request to ElevenLabs API
-        const response = await fetch(
+        const elevenLabsResponse = await fetch(
           "https://api.elevenlabs.io/v1/voices/add",
           {
             method: "POST",
             headers: {
-              "xi-api-key": process.env.INTEGRATION_11LABS_API_KEY ?? "",
+              "xi-api-key": process.env.CLONE_11LABS_API_KEY ?? "",
             },
             body: form,
           },
         );
 
-        const data = await response.json();
+        const data = await elevenLabsResponse.json();
 
-        // Log the response data to check its structure
-        console.log("API Response Data:", data);
-
-        if (!response.ok) {
+        if (!elevenLabsResponse.ok) {
           throw new Error(data.message || "Failed to add voice to ElevenLabs");
         }
 
-        const externalId = data.voice_id; // Ensure this is the correct field from the API response
-
-        // Retrieve the user's email from the session
-        const userEmail = ctx.session.user.email;
+        const externalId = data.voice_id;
 
         // Insert the new voice into your database
         const newVoice = await ctx.db
@@ -90,32 +134,15 @@ export const voiceCustomRouter = createTRPCRouter({
             },
             type: input.type ?? "OTHER",
             active: input.active,
-            userEmail, // Add this line to include the user's email
+            userEmail: ctx.session.user.email,
           })
           .execute();
 
         // Update the user's subscription with the new custom voice
-        const userId = ctx.session.user.id;
-
-        // Fetch the current subscription
-        const subscription = await ctx.db.query.subscriptions.findFirst({
-          where: eq(schema.subscriptions.userId, userId),
-        });
-
-        if (!subscription) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Subscription not found for the user",
-          });
-        }
-
-        const currentCustomVoices = subscription.custom_voices || [];
-
-        // Add the new voice to the list of custom voices
         const updatedCustomVoices = [
           ...currentCustomVoices,
           {
-            id: newVoice.id, // Ensure this matches the newVoice schema
+            id: newVoice.id,
             external_id: externalId,
             name: input.name,
             description: input.description,
@@ -123,9 +150,7 @@ export const voiceCustomRouter = createTRPCRouter({
               labels: {
                 gender: input.gender || "OTHER",
               },
-              preview_url:
-                input.preview_url ||
-                "This is a cloned voice created by Script Timer",
+              preview_url: input.preview_url || "",
             },
             type: input.type ?? "OTHER",
             active: input.active,
@@ -143,10 +168,11 @@ export const voiceCustomRouter = createTRPCRouter({
         console.error("Error creating voice:", error);
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: "Error creating voice",
+          message: error.message || "Error creating voice",
         });
       }
     }),
+
   deleteCustomVoice: protectedProcedure
     .input(
       z.object({
@@ -161,7 +187,7 @@ export const voiceCustomRouter = createTRPCRouter({
           {
             method: "DELETE",
             headers: {
-              "xi-api-key": process.env.INTEGRATION_11LABS_API_KEY ?? "",
+              "xi-api-key": process.env.CLONE_11LABS_API_KEY ?? "",
             },
           },
         );

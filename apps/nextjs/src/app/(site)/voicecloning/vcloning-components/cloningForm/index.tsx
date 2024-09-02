@@ -2,8 +2,9 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { upload } from "@vercel/blob/client";
 
-import { IconMic2 } from "@voiceai/ui/@/components/ui/icons";
+import { IconInfo, IconMic2 } from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 import FreeModal from "~/app/(site)/components/free-modal";
@@ -29,7 +30,12 @@ export default function VoiceCloningForm({
       },
       onError(error) {
         console.error("Error creating voice", error);
-        toast({ title: "Error creating voice", description: error.message });
+        toast({
+          title: "Error creating voice",
+          description:
+            error.message ||
+            "An unexpected error occurred while creating the voice",
+        });
       },
     });
 
@@ -95,39 +101,41 @@ export default function VoiceCloningForm({
       return;
     }
 
-    console.log("File before reading:", formData.file);
+    try {
+      // Upload file to Vercel Blob
+      const uploadedFile = await upload(formData.file.name, formData.file, {
+        access: "public",
+        handleUploadUrl: "/api/upload", // This will be the API route on your backend
+      });
 
-    const reader = new FileReader();
-    reader.readAsDataURL(formData.file);
-    reader.onloadend = async () => {
-      const base64String = reader.result;
-      console.log("Base64 audio string:", base64String);
-      try {
-        await newCustomVoice({
-          name: formData.name,
-          description: formData.description,
-          files: base64String,
-          type: "11LABS",
-          active: true,
-        });
-        // Reset form fields after successful submission
-        setFormData({
-          name: "",
-          description: "",
-          file: undefined,
-        });
-      } catch (error) {
-        console.error("Error creating voice", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    reader.onerror = () => {
-      console.error("Error reading file");
+      // Submit the form data with the uploaded file URL
+      await newCustomVoice({
+        name: formData.name,
+        description: formData.description,
+        files: uploadedFile.url, // Send the URL to your backend
+        type: "11LABS",
+        active: true,
+      });
+
+      // Reset form fields after successful submission
+      setFormData({
+        name: "",
+        description: "",
+        file: undefined,
+      });
+
+      toast({
+        title: "Voice Created",
+        description: "Voice created successfully",
+      });
+      onVoiceCreated();
+    } catch (error) {
+      console.error("Error creating voice", error);
+      toast({ title: "Error creating voice", description: error.message });
+    } finally {
       setLoading(false);
-    };
+    }
   };
-
   const handleRecordAudioClick = (e) => {
     if (loading) {
       e.preventDefault();
@@ -155,6 +163,20 @@ export default function VoiceCloningForm({
         onSubmit={handleSubmit}
         className="mx-auto flex w-full max-w-md flex-col space-y-4 rounded-lg bg-slate-100 p-6 shadow-md"
       >
+        {/* Instructional message */}
+        <div className="flex justify-center">
+          <div className="flex max-w-md items-start text-sm text-slate-500 sm:text-sm">
+            <div className="flex h-9 w-9 items-center justify-center gap-3 rounded-lg border-2 border-[#1877F290] bg-blue-300">
+              <IconInfo className="text-black" />
+            </div>
+            <span className="ml-3">
+              Use a clean sample recording. Samples should contain:
+              {"\n"}1 speaker, be over 1 minute long, and no background noise.
+            </span>
+          </div>
+        </div>
+
+        {/* Name Field */}
         <div className="flex flex-col space-y-1">
           <label
             htmlFor="name"
@@ -176,6 +198,7 @@ export default function VoiceCloningForm({
           />
         </div>
 
+        {/* Description Field */}
         <div className="flex flex-col space-y-1">
           <label
             htmlFor="description"
@@ -197,6 +220,7 @@ export default function VoiceCloningForm({
           />
         </div>
 
+        {/* File Upload Field */}
         <div className="flex flex-col space-y-1">
           <label
             htmlFor="file"
@@ -206,7 +230,8 @@ export default function VoiceCloningForm({
             <span className="text-xs text-slate-500">
               Formats that are accepted: m4a, mp3, webm, mp4, mpga, wav, and
               mpeg.
-            </span>
+            </span>{" "}
+            <span className="text-sm text-slate-400">(max 8 MB)</span>
           </label>
           <input
             className="block w-full cursor-pointer rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-900 focus:border-primary focus:ring-primary"
@@ -221,9 +246,12 @@ export default function VoiceCloningForm({
           )}
         </div>
 
+        {/* Recording Instructions */}
         <p className="text-sm text-gray-600">
           If you have no sample audio, just click "Record Audio".
         </p>
+
+        {/* Record Audio Button */}
         <button
           type="button"
           className="hover:bg-secondary-dark flex items-center justify-center rounded-md bg-primary py-2 font-semibold text-white focus:outline-none"
@@ -233,6 +261,7 @@ export default function VoiceCloningForm({
           <IconMic2 className="ml-2 h-5 w-5 text-white" />
         </button>
 
+        {/* Submit Button */}
         <button
           type="submit"
           className="hover:bg-secondary-dark flex items-center justify-center rounded-md bg-primary py-2 font-semibold text-white focus:outline-none"
@@ -253,7 +282,7 @@ export default function VoiceCloningForm({
             handleSubmit(e);
           }}
         >
-          {loading ? <LoadingDots color="#fff" /> : "Clone Voice"}
+          {loading ? <LoadingDots color="#fff" /> : "Accept & Create"}
         </button>
       </form>
 

@@ -86,9 +86,7 @@ const DeleteButton = ({ scriptId }) => {
         <DialogContent className="sm:max-w-[475px]">
           <DialogHeader>
             <DialogTitle className="text-red-600">Delete script</DialogTitle>
-            <DialogDescription>
-              'This will delete your script'
-            </DialogDescription>
+            <DialogDescription>This will delete your script</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
