@@ -4,6 +4,7 @@ import { api } from "~/utils/api";
 import type { PriceCardsProps } from "../types";
 import FAQs from "./faqs";
 import PriceCards from "./priceCards";
+import PricingTable from "./pricingTable";
 
 export default function PlansSections({
   monthlyPlans,
@@ -15,13 +16,7 @@ export default function PlansSections({
 
   return (
     <>
-      <PriceCards
-        monthlyPlans={monthlyPlans}
-        yearlyPlans={yearlyPlans}
-        currentPlan={data?.status}
-        planInterval={planInterval}
-        session={session}
-      />
+      <PricingTable />
       <FAQs />
     </>
   );
