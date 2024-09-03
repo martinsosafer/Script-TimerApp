@@ -8,3 +8,14 @@ export const STARTING_CL_CREDITS = {
   CREATOR: 7,
   BUSINESS: 8,
 };
+
+export const STARTING_IMG_CREDITS = {
+  INACTIVE: 0,
+  PAUSED: 0,
+  ACTIVE: 5,
+  FREE: 5,
+  FREE_TRIAL: 10,
+  STUDENT: 10,
+  CREATOR: 10,
+  BUSINESS: 10,
+};
