@@ -16,7 +16,14 @@ export default function PlansSections({
 
   return (
     <>
-      <PricingTable />
+      <PriceCards
+        monthlyPlans={monthlyPlans}
+        yearlyPlans={yearlyPlans}
+        currentPlan={data?.status}
+        planInterval={planInterval}
+        session={session}
+      />
+      {/* <PricingTable /> */}
       <FAQs />
     </>
   );

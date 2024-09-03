@@ -26,7 +26,7 @@ async function getSubscription(planId: string | null | undefined) {
 
   try {
     const subscription = await stripe.subscriptions.retrieve(planId);
-
+    console.log("SubscriptionInfo:", subscription);
     return subscription;
   } catch (e) {
     console.error(e);
