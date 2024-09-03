@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 
 import { auth } from "@voiceai/auth";
 
+import { getCredits } from "./actions";
 import ImageGenerator from "./image-generator";
 
 export const metadata: Metadata = {
@@ -13,10 +14,11 @@ export const metadata: Metadata = {
 export default async function indexPage() {
   const session = await auth();
   const userId = session?.user.id;
+  const credits = await getCredits(userId ?? "");
 
   return (
     <div className="flex justify-center">
-      <ImageGenerator />
+      <ImageGenerator credits={credits?.credits ?? 0} />
     </div>
   );
 }

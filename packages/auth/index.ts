@@ -106,6 +106,13 @@ export const {
             userId: user?.id ?? token.sub,
           })
           .execute();
+
+        await db
+          .insert(schema.imgCredit)
+          .values({
+            userId: user?.id ?? token.sub,
+          })
+          .execute();
       }
 
       const clCreditStatus = await db.query.clCredits.findFirst({
@@ -119,6 +126,21 @@ export const {
           .values({
             userId: user?.id ?? token.sub,
             credits: STARTING_CL_CREDITS[subscriptionStatus?.status ?? "FREE"],
+          })
+          .execute();
+      }
+
+      const imgCreditStatus = await db.query.imgCredit.findFirst({
+        where: (imgCredit, { eq }) =>
+          eq(imgCredit.userId, user?.id ?? token.sub),
+      });
+
+      if (!imgCreditStatus) {
+        await db
+          .insert(schema.imgCredit)
+          .values({
+            userId: user?.id ?? token.sub,
+            credits: 10,
           })
           .execute();
       }

@@ -22,6 +22,7 @@ const config = {
       "oaidalleapiprodscus.blob.core.windows.net",
       "upload.wikimedia.org",
       "imgur.com",
+      "images.pexels.com"
     ],
   },
 };

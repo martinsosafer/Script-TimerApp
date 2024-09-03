@@ -1,4 +1,10 @@
+import { kv } from "@vercel/kv";
 import OpenAI from "openai";
+
+import { auth } from "@voiceai/auth";
+import { db, eq, schema, sql } from "@voiceai/db";
+
+import { nanoid } from "~/utils/helpers";
 
 export const maxDuration = 60;
 
@@ -9,10 +15,13 @@ const openai = new OpenAI({
 });
 
 export async function POST(req: Request): Promise<Response> {
+  const session = await auth();
+
+  if (!session) {
+    return new Response("Unauthorized", { status: 401 });
+  }
   try {
     const data = (await req.json()) as { text: string };
-
-    console.log(data.text);
 
     const response = await openai.images.generate({
       model: "dall-e-3",
@@ -22,6 +31,23 @@ export async function POST(req: Request): Promise<Response> {
       quality: "hd",
     });
     const image_url = response.data[0]?.url;
+
+    if (image_url) {
+      await db
+        .update(schema.imgCredit)
+        .set({ credits: sql`${schema.imgCredit.credits} - 1` })
+        .where(eq(schema.imgCredit.userId, session?.user.id));
+
+      const id = nanoid();
+      const createdAt = Date.now();
+
+      await kv.hmset(`aiImage:${id}`, { prompt: data.text, image_url });
+
+      await kv.zadd(`user:aiImage:${session?.user.id}`, {
+        score: createdAt,
+        member: `aiImage:${id}`,
+      });
+    }
 
     return new Response(JSON.stringify(image_url));
   } catch (err) {

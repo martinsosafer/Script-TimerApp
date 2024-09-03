@@ -1920,6 +1920,7 @@ function IconFlask({ className, ...props }: React.ComponentProps<"svg">) {
     </svg>
   );
 }
+
 function IconNoAi({ className, ...props }: React.ComponentProps<"svg">) {
   return (
     <svg
@@ -1935,9 +1936,13 @@ function IconNoAi({ className, ...props }: React.ComponentProps<"svg">) {
       className={cn("h-6 w-6", className)}
       {...props}
     >
-      <path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2" />
-      <path d="M8.5 2h7" />
-      <path d="M7 16h10" />
+      <path d="M13.67 8H18a2 2 0 0 1 2 2v4.33" />
+      <path d="M2 14h2" />
+      <path d="M20 14h2" />
+      <path d="M22 22 2 2" />
+      <path d="M8 8H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 1.414-.586" />
+      <path d="M9 13v2" />
+      <path d="M9.67 4H12v2.33" />
     </svg>
   );
 }
