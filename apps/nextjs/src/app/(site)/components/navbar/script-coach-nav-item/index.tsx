@@ -75,7 +75,8 @@ export default function ScriptCoachNavItem() {
                         <span className="ml-1">Plagiarism Detector</span>
                       </div>
                       <p className="font-normal text-gray-500">
-                        Check plagiarism content accross the internet.
+                        Detect possible plagiarism and related sources on the
+                        internet
                       </p>
                     </Link>
                   </li>
