@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 /* @see https://github.com/nextauthjs/next-auth/pull/8932 */
-"use client";
 
 import CredentialsProviders from "@auth/core/providers/credentials";
 import Google from "@auth/core/providers/google";
