@@ -29,7 +29,7 @@ const PriceCards: React.FC<PriceCardsProps> = ({
                 showMonthly ? "translate-x-0" : "-translate-x-full"
               } absolute left-0 top-0 h-full w-full rounded-full transition-transform duration-300 ease-in-out`}
             ></span>
-            <span className="relative z-10">Monthly</span>
+            <span className="relative z-10">Monthly.</span>
           </button>
           <button
             className={`${
