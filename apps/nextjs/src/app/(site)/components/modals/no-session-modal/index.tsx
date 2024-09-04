@@ -7,6 +7,7 @@ import microphone from "@public/microphone (1).png";
 import { IconSquareArrowUpRight } from "@voiceai/ui/@/components/ui/icons";
 
 import type { SubscriptionData } from "~/lib/types";
+import { image } from "html2canvas/dist/types/css/types/image";
 
 interface FreeModalProps {
   subData?: SubscriptionData | null | undefined;
@@ -19,7 +20,8 @@ interface FreeModalProps {
     | "courses"
     | "plagiarism"
     | "translator"
-    | "clone";
+    | "clone"
+    | "image";
 }
 
 const pageMessage: Record<string, string> = {
@@ -31,6 +33,7 @@ const pageMessage: Record<string, string> = {
     "Plagiarism check across nearly every language, detect AI-generated content.",
   translator: "Translate anything by Signing In",
   clone: "For cloning any voice first you need to Sign in",
+  image: "Create your own storyboards by Signing In",
 };
 
 export default function NoSessionModal({

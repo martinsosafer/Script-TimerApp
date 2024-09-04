@@ -7,24 +7,36 @@ import Image from "next/image";
 import { IconNoImage, IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
+import JokesLoader from "../../components/jokes-loader";
+import NoSessionModal from "../../components/modals/no-session-modal";
 import { magicPrompt } from "../prompt";
 import PromptSelector from "../prompt-type-selector";
 import WelcomeMessage from "./welcome-message/welcome-message";
 
-export default function ImageGenerator({ credits }: { credits: number }) {
+export default function ImageGenerator({
+  credits,
+  userId,
+}: {
+  credits: number;
+  userId: string | undefined;
+}) {
   const [image, setImage] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const [script, setScript] = useState<string>("");
 
   const [creditsLeft, setCreditsLeft] = useState<number>(credits);
 
   const [isMagicPrompt, setIsMagicPrompt] = useState<boolean>(true);
 
+  const [noSessionModalOpen, setNoSessionModalOpen] = useState<boolean>(false);
+
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
     const data = new FormData(event.currentTarget as HTMLFormElement);
     const prompt = isMagicPrompt ? magicPrompt : data.get("prompt");
-    const text = data.get("text") ?? "";
-    // const frames = data.get("frames") ?? 9;
+    const text = (data.get("text") as string) ?? "";
+    setScript(text);
 
     const finalPrompt = `${String(prompt)}:\n ${String(text)}.`;
     setLoading(true);
@@ -47,6 +59,7 @@ export default function ImageGenerator({ credits }: { credits: number }) {
         const url = (await result.json()) as string;
         setImage(url);
         setLoading(false);
+        setScript("");
         setCreditsLeft(creditsLeft - 1);
       } catch (error) {
         console.error(error);
@@ -63,7 +76,14 @@ export default function ImageGenerator({ credits }: { credits: number }) {
         setIsMagicPrompt={setIsMagicPrompt}
       />
       <form
-        onSubmit={handleSubmit}
+        onSubmit={
+          userId
+            ? (e) => handleSubmit(e)
+            : (e) => {
+                e.preventDefault();
+                setNoSessionModalOpen(true);
+              }
+        }
         className="mt-12 flex w-full flex-col items-center"
       >
         {!isMagicPrompt && (
@@ -91,18 +111,26 @@ export default function ImageGenerator({ credits }: { credits: number }) {
         >
           Enter your Script
         </label>
-        <div className="mb-2 flex w-full flex-col items-center rounded-md border border-gray-300 bg-gray-50 p-4">
-          <textarea
-            className="mb-2 block w-full bg-gray-50 text-sm text-gray-900 placeholder:text-lg focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400"
-            rows={20}
-            name="text"
-            id="text"
-            placeholder="Enter your script here"
-          />
-          <span className="rounded-md bg-red-200 px-4 py-2 text-sm">
-            This scan will consume 1 credit. - Credits left:{" "}
-            <strong>{creditsLeft}</strong>
-          </span>
+        <div className="mb-2 flex min-h-[450px] w-full flex-col items-center justify-center rounded-md border border-gray-300 bg-gray-50 p-4">
+          {loading && <JokesLoader isImage />}
+          {!loading && (
+            <>
+              <textarea
+                className="mb-2 block w-full bg-gray-50 text-sm text-gray-900 placeholder:text-lg focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400"
+                rows={20}
+                name="text"
+                id="text"
+                placeholder="Enter your script here"
+                onChange={(e) => setScript(e.target.value)}
+              />
+              {script.length > 0 && (
+                <span className="rounded-md bg-primary px-4 py-2 text-sm text-white">
+                  This scan will consume 1 credit. - Credits left:{" "}
+                  <strong>{creditsLeft}</strong>
+                </span>
+              )}
+            </>
+          )}
         </div>
 
         <button
@@ -123,7 +151,6 @@ export default function ImageGenerator({ credits }: { credits: number }) {
             fill
             objectFit="cover"
             alt="Generates Image"
-            //className="mb-20 mt-10"
           />
         ) : loading ? (
           <IconSpinner className="h-10 w-10 animate-spin" />
@@ -131,6 +158,13 @@ export default function ImageGenerator({ credits }: { credits: number }) {
           <IconNoImage className="h-10 w-10" />
         )}
       </div>
+      {noSessionModalOpen && (
+        <NoSessionModal
+          openModal={noSessionModalOpen}
+          page="image"
+          setOpenModal={setNoSessionModalOpen}
+        />
+      )}
     </div>
   );
 }

@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 
 import data from "./jokes.json";
 
-const { jokes } = data;
+const { generalJokes, imageJokes } = data;
 
-export default function JokesLoader() {
+export default function JokesLoader({isImage = false}: {isImage?: boolean}) {
   const [joke, setJoke] = useState<string>(
     "It takes a few seconds to scan the ‘interwebs’ to make sure your content is original. \n Here are some thoughts to share a smile with you while you wait…",
   );
+
+  const jokes = isImage ? imageJokes : generalJokes;
 
   useEffect(() => {
     const intervalId = setInterval(() => {

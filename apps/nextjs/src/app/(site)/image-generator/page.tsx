@@ -18,7 +18,7 @@ export default async function indexPage() {
 
   return (
     <div className="flex justify-center">
-      <ImageGenerator credits={credits?.credits ?? 0} />
+      <ImageGenerator credits={credits?.credits ?? 0} userId={userId} />
     </div>
   );
 }
