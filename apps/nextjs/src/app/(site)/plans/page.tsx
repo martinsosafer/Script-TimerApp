@@ -5,6 +5,7 @@ import { Stripe } from "stripe";
 import { auth } from "@voiceai/auth";
 
 import PlansSections from "./sections";
+import PricingTable from "./sections/pricingTable";
 import type { Product } from "./types";
 
 export const metadata: Metadata = {
@@ -127,12 +128,13 @@ async function PlansPage() {
           Save up to 35% on yearly plans!
         </span>
       </div>
-      <PlansSections
+      {/* <PlansSections
         monthlyPlans={monthlyPlans}
         yearlyPlans={yearlyPlans}
         planInterval={subscription?.plan?.interval}
         session={session}
-      />
+      /> */}
+      <PricingTable />
     </div>
   );
 }
