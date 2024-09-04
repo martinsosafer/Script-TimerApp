@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 /* @see https://github.com/nextauthjs/next-auth/pull/8932 */
-
 import CredentialsProviders from "@auth/core/providers/credentials";
 import Google from "@auth/core/providers/google";
 import type { DefaultSession } from "@auth/core/types";
@@ -10,7 +9,7 @@ import NextAuth from "next-auth";
 
 import { db, schema, tableCreator } from "@voiceai/db";
 
-import { STARTING_CL_CREDITS } from "./constants";
+import { STARTING_11CL_CREDITS, STARTING_CL_CREDITS } from "./constants";
 import { env } from "./env.mjs";
 import { sendVerificationRequest } from "./send-verification-request";
 
@@ -28,6 +27,7 @@ declare module "next-auth" {
         status: string;
         planId: string | null;
       } | null;
+      credits?: number; // Add credits to the session user object
     } & DefaultSession["user"];
   }
 }
@@ -85,16 +85,19 @@ export const {
   ],
   callbacks: {
     async session({ session, user, token }) {
+      const userId = user?.id ?? token.sub;
+
+      // Fetch the user's subscription status
       const subscriptionStatus = await db.query.subscriptions.findFirst({
-        where: (subscriptions, { eq }) =>
-          eq(subscriptions.userId, user?.id ?? token.sub),
+        where: (subscriptions, { eq }) => eq(subscriptions.userId, userId),
       });
 
+      // If the user has no subscription, initialize it
       if (!subscriptionStatus) {
         await db
           .insert(schema.subscriptions)
           .values({
-            userId: user?.id ?? token.sub,
+            userId,
             plan: "STARTER",
             status: "FREE_TRIAL",
           })
@@ -103,28 +106,42 @@ export const {
         await db
           .insert(schema.clCredits)
           .values({
-            userId: user?.id ?? token.sub,
+            userId,
           })
           .execute();
       }
 
-      const clCreditStatus = await db.query.clCredits.findFirst({
-        where: (clCredits, { eq }) =>
-          eq(clCredits.userId, user?.id ?? token.sub),
+      // Check if the user's credits need to be reset or renewed
+      const elevenLabsCreditStatus = await db.query.elevenLabsCredit.findFirst({
+        where: (elevenLabsCredit, { eq }) =>
+          eq(elevenLabsCredit.userId, userId),
       });
 
-      if (!clCreditStatus) {
+      const currentTime = new Date();
+      const lastUpdated = new Date(
+        elevenLabsCreditStatus?.updated_at || currentTime,
+      );
+      const shouldRenewCredits =
+        currentTime.getMonth() !== lastUpdated.getMonth() ||
+        currentTime.getFullYear() !== lastUpdated.getFullYear();
+
+      if (shouldRenewCredits) {
+        // Update the user's Eleven Labs credits based on their subscription status
         await db
-          .insert(schema.clCredits)
-          .values({
-            userId: user?.id ?? token.sub,
-            credits: STARTING_CL_CREDITS[subscriptionStatus?.status ?? "FREE"],
+          .update(schema.elevenLabsCredit)
+          .set({
+            credits:
+              STARTING_11CL_CREDITS[subscriptionStatus?.status ?? "FREE"],
+            updated_at: currentTime,
           })
+          .where((elevenLabsCredit, { eq }) =>
+            eq(elevenLabsCredit.userId, userId),
+          )
           .execute();
       }
 
       const subscription = {
-        userId: user?.id ?? token.sub,
+        userId,
         status: subscriptionStatus?.status ?? "FREE_TRIAL",
         planId: subscriptionStatus?.plan_id ?? "initial_plan_id",
       };
@@ -133,8 +150,11 @@ export const {
         ...session,
         user: {
           ...session.user,
-          id: user?.id ?? token.sub,
+          id: userId,
           subscription: subscription,
+          credits:
+            elevenLabsCreditStatus?.credits ??
+            STARTING_11CL_CREDITS[subscriptionStatus?.status ?? "FREE"],
         },
       };
 
