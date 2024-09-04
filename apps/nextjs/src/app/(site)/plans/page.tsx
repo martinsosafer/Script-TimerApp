@@ -128,13 +128,13 @@ async function PlansPage() {
           Save up to 35% on yearly plans!
         </span>
       </div>
-      {/* <PlansSections
+      <PlansSections
         monthlyPlans={monthlyPlans}
         yearlyPlans={yearlyPlans}
         planInterval={subscription?.plan?.interval}
         session={session}
-      /> */}
-      <PricingTable />
+      />
+      {/* <PricingTable /> */}
     </div>
   );
 }
