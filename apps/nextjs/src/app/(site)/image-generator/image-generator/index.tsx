@@ -4,13 +4,18 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import Image from "next/image";
 
-import { IconNoImage, IconSpinner } from "@voiceai/ui/@/components/ui/icons";
+import {
+  IconDownload,
+  IconNoImage,
+  IconSpinner,
+} from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 import JokesLoader from "../../components/jokes-loader";
 import NoSessionModal from "../../components/modals/no-session-modal";
 import { magicPrompt } from "../prompt";
 import PromptSelector from "../prompt-type-selector";
+import { downloadImage } from "../utils";
 import WelcomeMessage from "./welcome-message/welcome-message";
 
 export default function ImageGenerator({
@@ -30,6 +35,7 @@ export default function ImageGenerator({
   const [isMagicPrompt, setIsMagicPrompt] = useState<boolean>(true);
 
   const [noSessionModalOpen, setNoSessionModalOpen] = useState<boolean>(false);
+  console.log(image);
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
@@ -46,6 +52,13 @@ export default function ImageGenerator({
         description: "You do not have enough credits to generate this image.",
       });
       setLoading(false);
+    } else if (finalPrompt.length > 3950) {
+      toast({
+        title: "Prompt Too Long",
+        description:
+          "The prompt you entered is too long. Please shorten it and try again.",
+      });
+      setLoading(false);
     } else {
       try {
         const result = await fetch("/api/generate-image", {
@@ -59,7 +72,6 @@ export default function ImageGenerator({
         const url = (await result.json()) as string;
         setImage(url);
         setLoading(false);
-        setScript("");
         setCreditsLeft(creditsLeft - 1);
       } catch (error) {
         console.error(error);
@@ -67,6 +79,10 @@ export default function ImageGenerator({
       }
     }
   }
+
+  // async function handleDownload(url: string) {
+  //   await downloadImage(url);
+  // }
 
   return (
     <div className="mt-20 flex w-[1024px] flex-col items-center">
@@ -122,6 +138,7 @@ export default function ImageGenerator({
                 id="text"
                 placeholder="Enter your script here"
                 onChange={(e) => setScript(e.target.value)}
+                value={script}
               />
               {script.length > 0 && (
                 <span className="rounded-md bg-primary px-4 py-2 text-sm text-white">
@@ -146,12 +163,17 @@ export default function ImageGenerator({
       </form>
       <div className="relative my-6 flex h-[600px] w-full items-center justify-center border border-gray-300">
         {image ? (
-          <Image
-            src={image ?? ""}
-            fill
-            objectFit="cover"
-            alt="Generates Image"
-          />
+          <>
+            <Image
+              src={image ?? ""}
+              fill
+              objectFit="cover"
+              alt="Generates Image"
+            />
+            <button onClick={() => downloadImage(image)}>
+              <IconDownload className="h-14 w-14 text-white opacity-70 hover:h-16 hover:w-16 hover:opacity-95" />
+            </button>
+          </>
         ) : loading ? (
           <IconSpinner className="h-10 w-10 animate-spin" />
         ) : (
