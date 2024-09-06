@@ -25,7 +25,6 @@ export default async function ScriptPage() {
       session.user.subscription.status,
     );
 
-    // Fetch and log the user's current credits
     try {
       credits = await fetchUserCredits(session.user.id);
     } catch (error) {
