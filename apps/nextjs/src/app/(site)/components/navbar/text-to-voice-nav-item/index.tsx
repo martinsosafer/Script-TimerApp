@@ -42,7 +42,7 @@ export default function TextToVoiceNavItem() {
                         <span className="ml-1 ">Text to Voice</span>
                       </div>
                       <p className="font-normal text-gray-500">
-                        Add text, listen to the best grammar & voices...
+                        Add text, listen to the best grammar & voices
                       </p>
                     </Link>
                   </li>
