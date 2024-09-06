@@ -1,9 +1,6 @@
 export async function fetchUserCredits(userId: string): Promise<number> {
   try {
-    const baseUrl =
-      process.env.HOST_URL ||
-      "http://localhost:3000" ||
-      "https://app.script-timer.com";
+    const baseUrl = "https://app.script-timer.com";
     const response = await fetch(
       `${baseUrl}/api/get11LabsCredits?userId=${userId}`,
     );
