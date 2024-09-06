@@ -116,15 +116,15 @@ async function PlansPage() {
   return (
     <div className="flex w-full flex-col items-center">
       <div className="flex w-full flex-col items-center bg-white px-4 pt-10 text-center xl:w-[800px]">
-        <h2 className="text-center text-3xl font-bold leading-tight tracking-tight text-primary xl:text-3xl xl:font-extrabold">
+        <h1 className="text-center font-poppins text-3xl font-bold leading-tight tracking-tight text-primary xl:text-3xl xl:font-extrabold">
           <span>SCRIPT WRITING, VOICEOVERS & MASTERCLASSES</span>
-        </h2>
+        </h1>
         <p className="mt-4 w-full text-lg font-medium  text-gray-500 xl:w-[600px]">
           Choose an affordable plan that&apos;s packed with the best features
           for engaging your audience, creating scripts, and more.
         </p>
         <span className="mt-2 font-bold text-black">
-          Save up to 35% on yearly plans!
+          Get up to 4 months free on yearly plans!
         </span>
       </div>
       <PlansSections

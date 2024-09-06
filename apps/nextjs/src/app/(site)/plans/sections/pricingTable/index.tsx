@@ -21,7 +21,7 @@ const PricingTable = ({
       name: "FREE",
       price: 0,
       yearlyPrice: 0,
-
+      yearlyMonthlyPrice: 0,
       color: "bg-blue-400",
       rowColor: "bg-blue-100",
       features: {
@@ -52,6 +52,7 @@ const PricingTable = ({
     {
       name: "STUDENT",
       price: 9,
+      yearlyMonthlyPrice: 6.58,
       yearlyPrice: 79,
       monthlyId: "prod_PwYfAY9nKwQ9iV",
       yearlyId: "prod_PwaJpA8vUeG6Wv",
@@ -85,6 +86,7 @@ const PricingTable = ({
     {
       name: "CREATOR",
       price: 19,
+      yearlyMonthlyPrice: 14.75,
       yearlyPrice: 177,
       monthlyId: "prod_PwYzKaNnHflnUj",
       yearlyId: "prod_PwaNjdYvuqa5Io",
@@ -119,6 +121,7 @@ const PricingTable = ({
     {
       name: "BUSINESS",
       price: 39,
+      yearlyMonthlyPrice: 24.75,
       yearlyPrice: 297,
       monthlyId: "prod_PwZAZujl0DVkgR",
       yearlyId: "prod_PwaRtUe2crIFlW",
@@ -160,7 +163,7 @@ const PricingTable = ({
     { label: "Clone Voices", isMain: false },
     { label: " Download", isMain: false },
     { label: "Audio Translator", isMain: false },
-    { label: "Script Writting", isMain: false },
+    { label: "Script Writting", isMain: true },
     { label: "Script Coach", isMain: false },
     { label: "Text Translator", isMain: false },
     { label: "Grammar Spell Check", isMain: false },
@@ -191,9 +194,9 @@ const PricingTable = ({
 
     if (featureData.enabled !== undefined) {
       return featureData.enabled ? (
-        <CheckIcon className="inline-block h-6 w-6  font-bold  text-orange-500 shadow-md shadow-orange-500" />
+        <CheckIcon className="inline-block h-6 w-6  font-bold  text-black " />
       ) : (
-        <IconXCircle className="inline-block h-6 w-6 text-red-500 shadow-md shadow-red-300" />
+        <IconXCircle className="inline-block h-6 w-6 text-black" />
       );
     }
 
@@ -209,7 +212,7 @@ const PricingTable = ({
 
   return (
     <>
-      <div className="mt-8 flex justify-center space-x-4">
+      <div className="mb-8  mt-8 flex justify-center space-x-4">
         <div className="flex gap-2 rounded-full border-2 border-gray-500 p-2">
           <button
             className={`${
@@ -245,15 +248,15 @@ const PricingTable = ({
       </div>
 
       <div className="w-full overflow-x-auto">
-        <div className="min-w-[1000px]">
-          <div className="grid grid-cols-5 gap-4 p-4">
+        <div className="min-w-[800px]">
+          <div className="grid grid-cols-5 gap-2 py-4">
             <div className="flex flex-col">
               <div className="h-[132px]"></div>
               {featureLabels.map((feature, index) => (
                 <div
                   key={index}
                   className={`flex h-[41px] items-center border-b py-2 text-left ${
-                    feature.isMain ? "text-lg font-bold" : "pl-4 font-normal"
+                    feature.isMain ? "text-lg font-bold" : "pl-5 font-normal"
                   } last:border-b-0`}
                 >
                   {feature.label}
@@ -263,29 +266,38 @@ const PricingTable = ({
 
             {tiers.map((tier, tierIndex) => {
               const backgroundColors = getBackgroundColors(tier);
-              const price = showMonthly ? tier.price : tier.yearlyPrice;
-              const priceLabel = showMonthly ? "/month" : "/year";
+              const price = showMonthly ? tier.price : tier.yearlyMonthlyPrice;
+              const priceLabel = showMonthly ? "/month" : "/month";
 
               return (
                 <div
                   key={tierIndex}
-                  className="flex flex-col overflow-hidden rounded-lg bg-white shadow-lg"
+                  className="relative flex flex-col overflow-visible rounded-lg border border-black bg-slate-100 shadow-lg"
                 >
+                  {/* Most Popular Badge (Horizontal and Centered at the Top) */}
+                  {tier.label && (
+                    <div className="absolute left-1/2 top-0 z-50 -translate-x-1/2 -translate-y-1/2 transform rounded-full border border-black bg-orange-500 px-4 py-1 text-xs font-bold text-black">
+                      {tier.label}
+                    </div>
+                  )}
+
                   <div
                     className={`${tier.color} relative p-4 text-center text-white`}
                   >
                     <div className="text-xl font-bold">{tier.name}</div>
+
                     <div className="mt-2 text-3xl font-bold">
                       ${price}
                       <span className="text-sm font-normal">{priceLabel}</span>
+                      {!showMonthly && (
+                        <div className="mt-1 text-lg text-gray-200">
+                          (${tier.yearlyPrice}/year )
+                        </div>
+                      )}
                     </div>
-                    {tier.label && (
-                      <div className="absolute right-0 top-0 translate-x-6 translate-y-3 rotate-45 bg-yellow-400 px-2 py-1 text-xs text-black">
-                        {tier.label}
-                      </div>
-                    )}
                   </div>
-                  <div className="flex-grow p-4">
+
+                  <div className="mt-3 flex-grow p-4">
                     {featureLabels.map((feature, featureIndex) => (
                       <div
                         key={featureIndex}
@@ -295,10 +307,11 @@ const PricingTable = ({
                       </div>
                     ))}
                   </div>
+
                   {tier.name !== "FREE" && (
                     <div className="p-4">
                       <CheckoutButton
-                        productId={getProductId(tier)} // Use getProductId here
+                        productId={getProductId(tier)}
                         session={session}
                       />
                     </div>
