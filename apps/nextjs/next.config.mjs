@@ -18,7 +18,11 @@ const config = {
       "img.freepik.com",
       "ucc390943f4f100a05700d6f5fa3.previews.dropboxusercontent.com",
       "media.licdn.com",
+      "drive.google.com",
+      "oaidalleapiprodscus.blob.core.windows.net",
+      "upload.wikimedia.org",
       "imgur.com",
+      "images.pexels.com"
     ],
   },
 };
