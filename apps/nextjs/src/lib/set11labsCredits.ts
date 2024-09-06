@@ -24,7 +24,7 @@ async function set11LabsCreditsBasedOnPlan(userId: string, plan: string) {
   }
 
   console.log(
-    `Initializing credits: User ID: ${userId}, Plan: ${plan}, Credits: ${credits}`,
+    `Initializing credits: User id: ${userId}, Plan: ${plan}, Credits: ${credits}`,
   );
 
   try {
