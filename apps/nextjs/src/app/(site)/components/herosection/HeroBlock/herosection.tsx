@@ -27,9 +27,9 @@ export default function HeroSection() {
             </RevealText>
             <RevealText>
               <p className="mt-8 max-w-md">
-                Only these custom build Ai's and classes were built for success
-                for scripts.Build with multiple Ai models to save you hours of
-                work and thousands in expense. Try:
+                Only our custom built Ai and classes support every area of your
+                work. Multiple Ai models will save you hours of work and extra
+                expenses - guaranteed. What do you want to create?
               </p>
             </RevealText>
             <RevealText>

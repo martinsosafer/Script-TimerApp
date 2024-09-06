@@ -1,8 +1,49 @@
 import { z } from "zod";
 
-import { eq, schema, sql } from "@voiceai/db";
+import { db, eq, schema, sql } from "@voiceai/db";
+import { elevenLabsCredit } from "@voiceai/db/schema/11LabsCredits";
 
 import { createTRPCRouter, protectedProcedure, TRPCError } from "../trpc";
+
+//Function to update the credits
+async function updateUserCredits(userId: string, credits: number) {
+  try {
+    const existingCredit = await db.query.elevenLabsCredit.findFirst({
+      where: eq(elevenLabsCredit.userId, userId),
+    });
+
+    if (existingCredit) {
+      // Update the existing credits
+      await db
+        .update(elevenLabsCredit)
+        .set({
+          credits: credits,
+          updated_at: new Date(),
+        })
+        .where(eq(elevenLabsCredit.userId, userId))
+        .execute();
+
+      console.log("Credits updated successfully for user:", userId);
+    } else {
+      // Insert new credits if they don't exist
+      await db.insert(elevenLabsCredit).values({
+        userId: userId,
+        credits: credits,
+        updated_at: new Date(),
+      });
+
+      console.log(
+        "Credits initialized and updated successfully for user:",
+        userId,
+      );
+    }
+  } catch (error) {
+    console.error("Error updating 11 Labs credits:", error);
+    throw new Error(`Error updating credits: ${error.message}`);
+  }
+}
+
+export { updateUserCredits };
 
 export const userRouter = createTRPCRouter({
   list: protectedProcedure.query(async ({ ctx }) => {
@@ -122,6 +163,7 @@ export const userRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       try {
+        // Update the user's subscription status to "STUDENT"
         await ctx.db
           .update(schema.subscriptions)
           .set({
@@ -132,12 +174,19 @@ export const userRouter = createTRPCRouter({
           .where(eq(schema.subscriptions.userId, input.userId))
           .execute();
 
+        // Update the user's credits for the "STUDENT" plan
+        const studentPlanCredits = 40000;
+        await updateUserCredits(input.userId, studentPlanCredits);
+
         return { success: true };
       } catch (error) {
-        console.error("Error updating subscription:", error);
+        console.error(
+          "Error updating subscription and setting credits:",
+          error,
+        );
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: "Error updating subscription",
+          message: "Error updating subscription and setting credits",
         });
       }
     }),
@@ -161,6 +210,9 @@ export const userRouter = createTRPCRouter({
           .where(eq(schema.subscriptions.userId, input.userId))
           .execute();
 
+        // Update the user's credits for the "Creator" plan
+        const studentPlanCredits = 80000;
+        await updateUserCredits(input.userId, studentPlanCredits);
         return { success: true };
       } catch (error) {
         console.error("Error updating subscription:", error);
@@ -189,6 +241,10 @@ export const userRouter = createTRPCRouter({
 
           .where(eq(schema.subscriptions.userId, input.userId))
           .execute();
+
+        // Update the user's credits for the "Business" plan
+        const studentPlanCredits = 125000;
+        await updateUserCredits(input.userId, studentPlanCredits);
 
         return { success: true };
       } catch (error) {
