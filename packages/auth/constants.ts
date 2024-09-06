@@ -8,6 +8,18 @@ export const STARTING_CL_CREDITS = {
   CREATOR: 7,
   BUSINESS: 8,
 };
+
+export const STARTING_IMG_CREDITS = {
+  INACTIVE: 0,
+  PAUSED: 0,
+  ACTIVE: 5,
+  FREE: 5,
+  FREE_TRIAL: 10,
+  STUDENT: 25,
+  CREATOR: 50,
+  BUSINESS: 100,
+};
+
 export const STARTING_11CL_CREDITS = {
   INACTIVE: 0,
   PAUSED: 0,
@@ -18,3 +30,4 @@ export const STARTING_11CL_CREDITS = {
   CREATOR: 80000,
   BUSINESS: 125000,
 };
+

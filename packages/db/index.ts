@@ -6,6 +6,7 @@ import * as auth from "./schema/auth";
 import * as clCredit from "./schema/copyLeaksCredit";
 import * as credit from "./schema/credit";
 import * as generation from "./schema/generation";
+import * as imgCredit from "./schema/imgCredit";
 import * as plagiarism from "./schema/plagiarism";
 import * as script from "./schema/script";
 import * as subscription from "./schema/subscription";
@@ -23,6 +24,7 @@ export const schema = {
   ...plagiarism,
   ...clCredit,
   ...elevenLabsCredit,
+  ...imgCredit,
 };
 
 export { pgTable as tableCreator } from "./schema/_table";
