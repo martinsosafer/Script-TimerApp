@@ -42,6 +42,7 @@ const TabTwo = ({
 
   onCopy,
   isCopied,
+  refetchCredits,
 }) => {
   return (
     <div className="md:order-2">
@@ -97,7 +98,7 @@ const TabTwo = ({
                   similarity={similarity}
                   audioRef={audioRef}
                   handleStreaming={handleStreaming}
-                  generateVoice={generateVoice}
+                  refetchCredits={refetchCredits}
                 />
               </div>
             </div>

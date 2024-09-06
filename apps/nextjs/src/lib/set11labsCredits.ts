@@ -24,7 +24,7 @@ async function set11LabsCreditsBasedOnPlan(userId: string, plan: string) {
   }
 
   console.log(
-    `Initializing credits: User id: ${userId}, Plan: ${plan}, Credits: ${credits}`,
+    `Initializing credits: User ID: ${userId}, Plan: ${plan}, Credits: ${credits}`,
   );
 
   try {
@@ -40,7 +40,7 @@ async function set11LabsCreditsBasedOnPlan(userId: string, plan: string) {
         updated_at: new Date(),
       });
 
-      console.log("Database operations result:", result);
+      console.log("Database operation result:", result);
 
       if (!result) {
         throw new Error("Failed to initialize credits.");

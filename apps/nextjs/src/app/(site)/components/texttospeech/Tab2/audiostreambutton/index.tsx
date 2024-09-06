@@ -18,7 +18,8 @@ const AudioStreamButtons = ({
   similarity,
   audioRef,
   handleStreaming,
-  generateVoice,
+
+  refetchCredits,
 }) => {
   const handleQuickTest = async () => {
     setLoading(true);
@@ -55,13 +56,7 @@ const AudioStreamButtons = ({
         setLoading,
         audioRef,
       });
-      // await generateVoice({
-      //   voice_id: selectedModel.id,
-      //   voice_actor: selectedModel.name,
-      //   message: script,
-      //   stability: stability[0],
-      //   similarity: similarity[0],
-      // });
+      await refetchCredits();
     } catch (e) {
       console.log("catcherror", e);
     }
