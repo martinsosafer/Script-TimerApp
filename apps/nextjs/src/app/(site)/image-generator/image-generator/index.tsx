@@ -171,7 +171,11 @@ export default function ImageGenerator({
               alt="Generates Image"
             />
             <button onClick={() => downloadImage(image)}>
-              <IconDownload className="h-14 w-14 text-white opacity-70 hover:h-16 hover:w-16 hover:opacity-95" />
+              <IconDownload
+                className="h-20 w-20 transform text-white opacity-80 duration-300 ease-in-out hover:scale-125 hover:opacity-95"
+                stroke="#000000"
+                strokeWidth="4"
+              />
             </button>
           </>
         ) : loading ? (
