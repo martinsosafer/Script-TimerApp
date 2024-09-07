@@ -19,7 +19,7 @@ const PricingTable = ({
   const tiers = [
     {
       name: "FREE",
-      description: "Services for our free users",
+      description: "Good for hobbyists",
       price: 0,
       yearlyPrice: 0,
       yearlyMonthlyPrice: 0,
@@ -28,32 +28,32 @@ const PricingTable = ({
       features: {
         "Voice Ai": { enabled: true },
         "Text To Voice": { enabled: true },
-        "Ultra-high quality text to voice per month": { value: "44 minutes" },
-        "Text to Voice characters per script": { value: "2,000" },
-        "Total monthly characters": { value: "40,000" },
-        "Highest quality Models": { enabled: true },
-        "Download Voiceovers": { enabled: true },
+        "Monthly ultra-high quality minutes": { value: "11 minutes" },
+        "Text to Voice characters per script": { value: "500" },
+        "Total monthly characters": { value: "10,000" },
+        "Highest quality Models": { enabled: false },
+        "Download Voiceovers": { value: "Yes- watermarked" },
         "Commercial License": { enabled: false },
         "Saved Voice History": { enabled: true },
-        "Celebrity Voices": { value: "YES" },
+        "Celebrity Voices": { enabled: false },
         "Clone your voice ": { enabled: false },
         "Speech to Speech Cloning": { enabled: false },
         "Transcription: Speech to Text": { enabled: true },
-        "Translation into 27 languages": { enabled: false },
+        "Translation into 27 languages": { enabled: true },
         "Audio Translator": { enabled: true },
         "PDF, DOCX, SRT Downloads": { enabled: true },
         "Voice Actor Library": { enabled: true },
-        "No watermark": { enabled: true },
+        "No watermark": { enabled: false },
 
         "Script Writting": { enabled: true },
         "Script Coaching - Ai Rewriting": {
-          value: "200,000 credits",
+          value: "40000",
         },
-        "Translation - Audio & Text": { value: "200,000 credits" },
-        "Grammar / Spell Checker": { value: "200,000 credits" },
-        "6 Steps to Amazing Scripts": { enabled: true },
+        "Translation - Audio & Text": { value: "40000 credits" },
+        "Grammar / Spell Checker": { value: "40000 credits" },
+        "6 Steps to Amazing Scripts": { enabled: false },
         "Images (Experimental)": { enabled: true },
-        "Image Creation": { value: "25" },
+        "Image Creation": { value: "10" },
         "Storyboard creation": { enabled: true },
         "Blog Images": { enabled: true },
         "Social Media Images": { enabled: true },
@@ -79,7 +79,7 @@ const PricingTable = ({
       features: {
         "Voice Ai": { enabled: true },
         "Text To Voice": { enabled: true },
-        "Ultra-high quality text to voice per month": { value: "44 minutes" },
+        "Monthly ultra-high quality minutes": { value: "44 minutes" },
         "Text to Voice characters per script": { value: "2,000" },
         "Total monthly characters": { value: "40,000" },
         "Highest quality Models": { enabled: true },
@@ -131,7 +131,7 @@ const PricingTable = ({
       features: {
         "Voice Ai": { enabled: true },
         "Text To Voice": { enabled: true },
-        "Ultra-high quality text to voice per month": { value: "80 minutes" },
+        "Monthly ultra-high quality minutes": { value: "80 minutes" },
         "Text to Voice characters per script": { value: "5,000" },
         "Total monthly characters": { value: "80,000" },
         "Highest quality Models": { enabled: true },
@@ -182,7 +182,7 @@ const PricingTable = ({
       features: {
         "Voice Ai": { enabled: true },
         "Text To Voice": { enabled: true },
-        "Ultra-high quality text to voice per month": { value: "125 minutes" },
+        "Monthly ultra-high quality minutes": { value: "125 minutes" },
         "Text to Voice characters per script": { value: "10000" },
         "Total monthly characters": { value: "125000" },
         "Highest quality Models": { enabled: true },
@@ -224,7 +224,7 @@ const PricingTable = ({
   const featureLabels = [
     { label: "Voice Ai", isMain: true },
     { label: "Text To Voice", isMain: false },
-    { label: "Ultra-high quality text to voice per month", isMain: false },
+    { label: "Monthly ultra-high quality minutes", isMain: false },
     { label: "Text to Voice characters per script", isMain: false },
     { label: "Total monthly characters", isMain: false },
     { label: "Highest quality Models", isMain: false },
@@ -274,13 +274,20 @@ const PricingTable = ({
     if (!featureData) return null;
 
     if (featureData.enabled !== undefined) {
-      return featureData.enabled ? (
-        <CheckIcon className="inline-block h-6 w-6  font-bold  text-black " />
-      ) : (
-        <IconXCircle className="inline-block h-6 w-6 text-black" />
-      );
+      // Check if it's a main feature (isMain is true)
+      if (feature.isMain) {
+        // Hide the icon for main features but maintain the same height
+        return (
+          <span className="inline-block h-6 w-6 text-black opacity-0">-</span>
+        );
+      } else {
+        return featureData.enabled ? (
+          <CheckIcon className="inline-block h-6 w-6 font-bold text-black" />
+        ) : (
+          <span className="inline-block h-6 w-6 text-black">-</span>
+        );
+      }
     }
-
     if (featureData.value) {
       return <span>{featureData.value}</span>;
     }
