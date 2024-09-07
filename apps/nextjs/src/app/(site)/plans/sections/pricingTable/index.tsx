@@ -19,6 +19,7 @@ const PricingTable = ({
   const tiers = [
     {
       name: "FREE",
+      description: "Services for our free users",
       price: 0,
       yearlyPrice: 0,
       yearlyMonthlyPrice: 0,
@@ -27,17 +28,35 @@ const PricingTable = ({
       features: {
         "Voice Ai": { enabled: true },
         "Text To Voice": { enabled: true },
-        "Characters per Script": { value: "500-Watermarked" },
-        "Characters per Month": { value: "10,000" },
-        "Number of Voices": { value: "10" },
-        "Celebrity Voices": { value: "no" },
-        "Clone Voices": { enabled: false },
-        " Download": { value: "Yes-watermarked" },
-        "Audio Translator": { value: "10" },
+        "Ultra-high quality text to voice per month": { value: "44 minutes" },
+        "Text to Voice characters per script": { value: "2,000" },
+        "Total monthly characters": { value: "40,000" },
+        "Highest quality Models": { enabled: true },
+        "Download Voiceovers": { enabled: true },
+        "Commercial License": { enabled: false },
+        "Saved Voice History": { enabled: true },
+        "Celebrity Voices": { value: "YES" },
+        "Clone your voice ": { enabled: false },
+        "Speech to Speech Cloning": { enabled: false },
+        "Transcription: Speech to Text": { enabled: true },
+        "Translation into 27 languages": { enabled: false },
+        "Audio Translator": { enabled: true },
+        "PDF, DOCX, SRT Downloads": { enabled: true },
+        "Voice Actor Library": { enabled: true },
+        "No watermark": { enabled: true },
+
         "Script Writting": { enabled: true },
-        "Script Coach": { value: "40,000 credits" },
-        "Text Translator": { value: "40,000" },
-        "Grammar Spell Check": { value: "40,000" },
+        "Script Coaching - Ai Rewriting": {
+          value: "200,000 credits",
+        },
+        "Translation - Audio & Text": { value: "200,000 credits" },
+        "Grammar / Spell Checker": { value: "200,000 credits" },
+        "6 Steps to Amazing Scripts": { enabled: true },
+        "Images (Experimental)": { enabled: true },
+        "Image Creation": { value: "25" },
+        "Storyboard creation": { enabled: true },
+        "Blog Images": { enabled: true },
+        "Social Media Images": { enabled: true },
         " Courses": { enabled: false },
         "Stunning Videos": { value: "First 3 Lessons" },
         "Stories for marketing": { value: "First 3 Lessons" },
@@ -45,12 +64,11 @@ const PricingTable = ({
         "Hollywood Storylines": { value: "First 3 Lessons" },
         "Building Rapport": { value: "First 3 Lessons" },
         "Ai to build marketing stack": { value: "First 3 Lessons" },
-        "Images (Experimental)": { enabled: true },
-        "Image Creation": { value: "5" },
       },
     },
     {
       name: "STUDENT",
+      description: "Discounted for .edu emails",
       price: 9,
       yearlyMonthlyPrice: 6.58,
       yearlyPrice: 79,
@@ -61,17 +79,35 @@ const PricingTable = ({
       features: {
         "Voice Ai": { enabled: true },
         "Text To Voice": { enabled: true },
-        "Characters per Script": { value: "2,000" },
-        "Characters per Month": { value: "40,000" },
-        "Number of Voices": { value: "100" },
+        "Ultra-high quality text to voice per month": { value: "44 minutes" },
+        "Text to Voice characters per script": { value: "2,000" },
+        "Total monthly characters": { value: "40,000" },
+        "Highest quality Models": { enabled: true },
+        "Download Voiceovers": { enabled: true },
+        "Commercial License": { enabled: false },
+        "Saved Voice History": { enabled: true },
         "Celebrity Voices": { value: "YES" },
-        "Clone Voices": { enabled: false },
-        " Download": { value: "Yes" },
+        "Clone your voice ": { enabled: false },
+        "Speech to Speech Cloning": { enabled: false },
+        "Transcription: Speech to Text": { enabled: true },
+        "Translation into 27 languages": { enabled: true },
         "Audio Translator": { enabled: true },
+        "PDF, DOCX, SRT Downloads": { enabled: true },
+        "Voice Actor Library": { enabled: true },
+        "No watermark": { enabled: true },
+
         "Script Writting": { enabled: true },
-        "Script Coach": { value: "200,000 credits" },
-        "Text Translator": { value: "200,000 credits" },
-        "Grammar Spell Check": { value: "200,000 credits" },
+        "Script Coaching - Ai Rewriting": {
+          value: "200,000 credits",
+        },
+        "Translation - Audio & Text": { value: "200,000 credits" },
+        "Grammar / Spell Checker": { value: "200,000 credits" },
+        "6 Steps to Amazing Scripts": { enabled: true },
+        "Images (Experimental)": { enabled: true },
+        "Image Creation": { value: "25" },
+        "Storyboard creation": { enabled: true },
+        "Blog Images": { enabled: true },
+        "Social Media Images": { enabled: true },
         " Courses": { enabled: false },
         "Stunning Videos": { value: "First 3 Lessons" },
         "Stories for marketing": { value: "First 3 Lessons" },
@@ -79,12 +115,11 @@ const PricingTable = ({
         "Hollywood Storylines": { value: "First 3 Lessons" },
         "Building Rapport": { value: "First 3 Lessons" },
         "Ai to build marketing stack": { value: "First 3 Lessons" },
-        "Images (Experimental)": { enabled: true },
-        "Image Creation": { value: "25" },
       },
     },
     {
       name: "CREATOR",
+      description: "Ideal for creative professionals",
       price: 19,
       yearlyMonthlyPrice: 14.75,
       yearlyPrice: 177,
@@ -96,17 +131,35 @@ const PricingTable = ({
       features: {
         "Voice Ai": { enabled: true },
         "Text To Voice": { enabled: true },
-        "Characters per Script": { value: "5,000" },
-        "Characters per Month": { value: "80,000" },
-        "Number of Voices": { value: "100" },
+        "Ultra-high quality text to voice per month": { value: "80 minutes" },
+        "Text to Voice characters per script": { value: "5,000" },
+        "Total monthly characters": { value: "80,000" },
+        "Highest quality Models": { enabled: true },
+        "Download Voiceovers": { enabled: true },
+        "Commercial License": { enabled: true },
+        "Saved Voice History": { enabled: true },
         "Celebrity Voices": { value: "YES" },
-        "Clone Voices": { enabled: true },
-        " Download": { value: "Yes" },
+        "Clone your voice ": { enabled: true },
+        "Speech to Speech Cloning": { enabled: true },
+        "Transcription: Speech to Text": { enabled: true },
+        "Translation into 27 languages": { enabled: true },
         "Audio Translator": { enabled: true },
+        "PDF, DOCX, SRT Downloads": { enabled: true },
+        "Voice Actor Library": { enabled: true },
+        "No watermark": { enabled: true },
+
         "Script Writting": { enabled: true },
-        "Script Coach": { value: "400,000 credits" },
-        "Text Translator": { value: "400,000 credits" },
-        "Grammar Spell Check": { value: "400,000 credits" },
+        "Script Coaching - Ai Rewriting": {
+          value: "400,000 credits",
+        },
+        "Translation - Audio & Text": { value: "400,000 credits" },
+        "Grammar / Spell Checker": { value: "400,000 credits" },
+        "6 Steps to Amazing Scripts": { enabled: true },
+        "Images (Experimental)": { enabled: true },
+        "Image Creation": { value: "50" },
+        "Storyboard creation": { enabled: true },
+        "Blog Images": { enabled: true },
+        "Social Media Images": { enabled: true },
         " Courses": { enabled: true },
         "Stunning Videos": { enabled: true },
         "Stories for marketing": { enabled: true },
@@ -114,12 +167,11 @@ const PricingTable = ({
         "Hollywood Storylines": { enabled: true },
         "Building Rapport": { enabled: true },
         "Ai to build marketing stack": { enabled: true },
-        "Images (Experimental)": { enabled: true },
-        "Image Creation": { value: "50" },
       },
     },
     {
       name: "BUSINESS",
+      description: "Best for brand marketers",
       price: 39,
       yearlyMonthlyPrice: 24.75,
       yearlyPrice: 297,
@@ -130,17 +182,35 @@ const PricingTable = ({
       features: {
         "Voice Ai": { enabled: true },
         "Text To Voice": { enabled: true },
-        "Characters per Script": { value: "10,000" },
-        "Characters per Month": { value: "125,000" },
-        "Number of Voices": { value: "100" },
+        "Ultra-high quality text to voice per month": { value: "125 minutes" },
+        "Text to Voice characters per script": { value: "10000" },
+        "Total monthly characters": { value: "125000" },
+        "Highest quality Models": { enabled: true },
+        "Download Voiceovers": { enabled: true },
+        "Commercial License": { enabled: true },
+        "Saved Voice History": { enabled: true },
         "Celebrity Voices": { value: "YES" },
-        "Clone Voices": { enabled: true },
-        " Download": { value: "Yes" },
+        "Clone your voice ": { enabled: true },
+        "Speech to Speech Cloning": { enabled: true },
+        "Transcription: Speech to Text": { enabled: true },
+        "Translation into 27 languages": { enabled: true },
         "Audio Translator": { enabled: true },
+        "PDF, DOCX, SRT Downloads": { enabled: true },
+        "Voice Actor Library": { enabled: true },
+        "No watermark": { enabled: true },
+
         "Script Writting": { enabled: true },
-        "Script Coach": { value: "1,000,000 credits" },
-        "Text Translator": { value: "1,000,000 credits" },
-        "Grammar Spell Check": { value: "1,000,000 credits" },
+        "Script Coaching - Ai Rewriting": {
+          value: "400,000 credits",
+        },
+        "Translation - Audio & Text": { value: "1,000,000 credits" },
+        "Grammar / Spell Checker": { value: "1,000,000 credits" },
+        "6 Steps to Amazing Scripts": { enabled: true },
+        "Images (Experimental)": { enabled: true },
+        "Image Creation": { value: "100" },
+        "Storyboard creation": { enabled: true },
+        "Blog Images": { enabled: true },
+        "Social Media Images": { enabled: true },
         " Courses": { enabled: true },
         "Stunning Videos": { enabled: true },
         "Stories for marketing": { enabled: true },
@@ -148,25 +218,38 @@ const PricingTable = ({
         "Hollywood Storylines": { enabled: true },
         "Building Rapport": { enabled: true },
         "Ai to build marketing stack": { enabled: true },
-        "Images (Experimental)": { enabled: true },
-        "Image Creation": { value: "100" },
       },
     },
   ];
   const featureLabels = [
     { label: "Voice Ai", isMain: true },
     { label: "Text To Voice", isMain: false },
-    { label: "Characters per Script", isMain: false },
-    { label: "Characters per Month", isMain: false },
-    { label: "Number of Voices", isMain: false },
+    { label: "Ultra-high quality text to voice per month", isMain: false },
+    { label: "Text to Voice characters per script", isMain: false },
+    { label: "Total monthly characters", isMain: false },
+    { label: "Highest quality Models", isMain: false },
+    { label: "Download Voiceovers", isMain: false },
+    { label: "Commercial License", isMain: false },
+    { label: "Saved Voice History", isMain: false },
     { label: "Celebrity Voices", isMain: false },
-    { label: "Clone Voices", isMain: false },
-    { label: " Download", isMain: false },
+    { label: "Clone your voice ", isMain: false },
+    { label: "Speech to Speech Cloning", isMain: false },
+    { label: "Transcription: Speech to Text", isMain: false },
+    { label: "Translation into 27 languages", isMain: false },
     { label: "Audio Translator", isMain: false },
+    { label: "PDF, DOCX, SRT Downloads", isMain: false },
+    { label: "Voice Actor Library", isMain: false },
+    { label: "No watermark", isMain: false },
     { label: "Script Writting", isMain: true },
-    { label: "Script Coach", isMain: false },
-    { label: "Text Translator", isMain: false },
-    { label: "Grammar Spell Check", isMain: false },
+    { label: "Script Coaching - Ai Rewriting", isMain: false },
+    { label: "Translation - Audio & Text", isMain: false },
+    { label: "Grammar / Spell Checker", isMain: false },
+    { label: "6 Steps to Amazing Scripts", isMain: false },
+    { label: "Images (Experimental)", isMain: true },
+    { label: "Image Creation", isMain: false },
+    { label: "Storyboard creation", isMain: false },
+    { label: "Blog Images", isMain: false },
+    { label: "Social Media Images", isMain: false },
     { label: " Courses", isMain: true },
     { label: "Stunning Videos", isMain: false },
     { label: "Stories for marketing", isMain: false },
@@ -174,8 +257,6 @@ const PricingTable = ({
     { label: "Hollywood Storylines", isMain: false },
     { label: "Building Rapport", isMain: false },
     { label: "Ai to build marketing stack", isMain: false },
-    { label: "Images (Experimental)", isMain: true },
-    { label: "Image Creation", isMain: false },
   ];
 
   const getBackgroundColors = (tier) => {
@@ -249,14 +330,14 @@ const PricingTable = ({
 
       <div className="w-full overflow-x-auto">
         <div className="min-w-[800px]">
-          <div className="grid grid-cols-5 gap-2 py-4">
+          <div className="grid grid-cols-5 gap-2  px-20  py-4">
             <div className="flex flex-col">
               <div className="h-[132px]"></div>
               {featureLabels.map((feature, index) => (
                 <div
                   key={index}
                   className={`flex h-[41px] items-center border-b py-2 text-left ${
-                    feature.isMain ? "text-lg font-bold" : "pl-5 font-normal"
+                    feature.isMain ? "text-lg font-bold" : "pl-6 font-normal"
                   } last:border-b-0`}
                 >
                   {feature.label}
@@ -276,28 +357,30 @@ const PricingTable = ({
                 >
                   {/* Most Popular Badge (Horizontal and Centered at the Top) */}
                   {tier.label && (
-                    <div className="absolute left-1/2 top-0 z-50 -translate-x-1/2 -translate-y-1/2 transform rounded-full border border-black bg-orange-500 px-4 py-1 text-xs font-bold text-black">
+                    <div className="absolute left-1/2 top-0 z-50 min-w-[80px] max-w-max -translate-x-1/2 -translate-y-1/2 transform overflow-hidden text-ellipsis whitespace-nowrap rounded-full border border-black bg-orange-500 px-4 py-1 text-xs font-bold text-black">
                       {tier.label}
                     </div>
                   )}
 
                   <div
-                    className={`${tier.color} relative p-4 text-center text-white`}
+                    className={`${tier.color} relative p-2 text-center text-white`}
                   >
-                    <div className="text-xl font-bold">{tier.name}</div>
-
+                    <div className="font-poppins text-xl">{tier.name}</div>
+                    <div className="text-sm font-medium text-white">
+                      {tier.description}
+                    </div>
                     <div className="mt-2 text-3xl font-bold">
                       ${price}
                       <span className="text-sm font-normal">{priceLabel}</span>
-                      {!showMonthly && (
-                        <div className="mt-1 text-lg text-gray-200">
-                          (${tier.yearlyPrice}/year )
-                        </div>
-                      )}
+                      <div
+                        className={`mt-1 text-lg text-gray-200 ${showMonthly ? "invisible" : "visible"}`}
+                      >
+                        (${tier.yearlyPrice}/year)
+                      </div>
                     </div>
                   </div>
 
-                  <div className="mt-3 flex-grow p-4">
+                  <div className=" mt-[-25px] flex-grow p-4">
                     {featureLabels.map((feature, featureIndex) => (
                       <div
                         key={featureIndex}
