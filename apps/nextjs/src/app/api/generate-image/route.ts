@@ -14,7 +14,7 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
 });
 
-export async function POST(req: Request): Promise<Response> {
+export async function POST(req: Request, res: Response): Promise<Response> {
   const session = await auth();
 
   if (!session) {
@@ -29,6 +29,7 @@ export async function POST(req: Request): Promise<Response> {
       n: 1,
       size: "1792x1024",
       quality: "hd",
+      response_format: "b64_json",
     });
     const image_url = response.data[0]?.url;
 
@@ -49,7 +50,9 @@ export async function POST(req: Request): Promise<Response> {
       });
     }
 
-    return new Response(JSON.stringify(image_url));
+    return new Response(JSON.stringify(response.data[0]), {
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (err) {
     console.error(err);
     return new Response((err as Error).message as BodyInit | null | undefined, {

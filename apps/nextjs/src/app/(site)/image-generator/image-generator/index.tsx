@@ -125,7 +125,7 @@ export default function ImageGenerator({
           htmlFor="text"
           className="mb-2 text-lg font-semibold text-primary"
         >
-          Enter your Script
+          Enter your scene description.
         </label>
         <div className="mb-2 flex min-h-[450px] w-full flex-col items-center justify-center rounded-md border border-gray-300 bg-gray-50 p-4">
           {loading && <JokesLoader isImage />}
@@ -136,7 +136,7 @@ export default function ImageGenerator({
                 rows={20}
                 name="text"
                 id="text"
-                placeholder="Enter your script here"
+                placeholder="Enter your scene description here"
                 onChange={(e) => setScript(e.target.value)}
                 value={script}
               />
