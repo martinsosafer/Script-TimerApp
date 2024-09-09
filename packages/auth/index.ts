@@ -10,7 +10,7 @@ import NextAuth from "next-auth";
 
 import { db, schema, tableCreator } from "@voiceai/db";
 
-import { STARTING_CL_CREDITS } from "./constants";
+import { STARTING_CL_CREDITS, STARTING_IMG_CREDITS } from "./constants";
 import { env } from "./env.mjs";
 import { sendVerificationRequest } from "./send-verification-request";
 
@@ -85,16 +85,24 @@ export const {
   ],
   callbacks: {
     async session({ session, user, token }) {
+      const userId = user?.id ?? token.sub;
+
+      if (!userId) {
+        throw new Error("User ID is missing");
+      }
+
+      // Debugging: log the user ID
+      console.log("User ID:", userId);
+
       const subscriptionStatus = await db.query.subscriptions.findFirst({
-        where: (subscriptions, { eq }) =>
-          eq(subscriptions.userId, user?.id ?? token.sub),
+        where: (subscriptions, { eq }) => eq(subscriptions.userId, userId),
       });
 
       if (!subscriptionStatus) {
         await db
           .insert(schema.subscriptions)
           .values({
-            userId: user?.id ?? token.sub,
+            userId,
             plan: "STARTER",
             status: "FREE_TRIAL",
           })
@@ -103,28 +111,49 @@ export const {
         await db
           .insert(schema.clCredits)
           .values({
+            userId,
+          })
+          .execute();
+
+        await db
+          .insert(schema.imgCredit)
+          .values({
             userId: user?.id ?? token.sub,
           })
           .execute();
       }
 
       const clCreditStatus = await db.query.clCredits.findFirst({
-        where: (clCredits, { eq }) =>
-          eq(clCredits.userId, user?.id ?? token.sub),
+        where: (clCredits, { eq }) => eq(clCredits.userId, userId),
       });
 
       if (!clCreditStatus) {
         await db
           .insert(schema.clCredits)
           .values({
-            userId: user?.id ?? token.sub,
+            userId,
             credits: STARTING_CL_CREDITS[subscriptionStatus?.status ?? "FREE"],
           })
           .execute();
       }
 
+      const imgCreditStatus = await db.query.imgCredit.findFirst({
+        where: (imgCredit, { eq }) =>
+          eq(imgCredit.userId, user?.id ?? token.sub),
+      });
+
+      if (!imgCreditStatus) {
+        await db
+          .insert(schema.imgCredit)
+          .values({
+            userId: user?.id ?? token.sub,
+            credits: STARTING_IMG_CREDITS[subscriptionStatus?.status ?? "FREE"],
+          })
+          .execute();
+      }
+
       const subscription = {
-        userId: user?.id ?? token.sub,
+        userId,
         status: subscriptionStatus?.status ?? "FREE_TRIAL",
         planId: subscriptionStatus?.plan_id ?? "initial_plan_id",
       };
@@ -133,7 +162,7 @@ export const {
         ...session,
         user: {
           ...session.user,
-          id: user?.id ?? token.sub,
+          id: userId,
           subscription: subscription,
         },
       };

@@ -34,14 +34,6 @@ export default function AiChecker({ userId, credits }: CheckerProps) {
 
   const [creditsLeft, setCreditsLeft] = useState<number>(credits);
 
-  console.log(
-    "AiChecker",
-    Math.ceil(text.split(" ").length / 250),
-    creditsLeft,
-  );
-
-  console.log("AiChecker", text);
-
   async function handleCheck(e: FormEvent) {
     e.preventDefault();
     if (aiCheckResult) {

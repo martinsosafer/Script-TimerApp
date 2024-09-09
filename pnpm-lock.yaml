@@ -10,10 +10,6 @@ overrides:
 importers:
 
   .:
-    dependencies:
-      formdata-node:
-        specifier: ^6.0.3
-        version: 6.0.3
     devDependencies:
       '@turbo/gen':
         specifier: ^1.10.16
@@ -21,6 +17,9 @@ importers:
       '@voiceai/prettier-config':
         specifier: workspace:^0.1.0
         version: link:tooling/prettier
+      formdata-node:
+        specifier: ^6.0.3
+        version: 6.0.3
       prettier:
         specifier: ^3.0.3
         version: 3.3.3
@@ -9841,7 +9840,6 @@ packages:
   /formdata-node@6.0.3:
     resolution: {integrity: sha512-8e1++BCiTzUno9v5IZ2J6bv4RU+3UKDmqWUQD0MIMVCd9AdhWkO1gw57oo1mNEX1dMq2EGI+FbWz4B92pscSQg==}
     engines: {node: '>= 18'}
-    dev: false
 
   /fraction.js@4.3.7:
     resolution: {integrity: sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==}

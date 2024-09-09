@@ -19,7 +19,6 @@ const TabOne = ({
           favoriteVoices={favoriteVoices}
           refreshSubscriptionData={refreshSubscriptionData}
           subData={subData}
-          
         />
 
         <StabilitySelector value={stability} onValueChange={setStability} />
