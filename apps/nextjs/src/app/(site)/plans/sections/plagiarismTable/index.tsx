@@ -143,7 +143,7 @@ const PlagiarismTable = ({
     <div className="w-full overflow-x-auto">
       {/* Title for Plagiarism and Add-ons on the left side */}
       <div className="px-20 py-4">
-        <h2 className="font-poppins  text-xl font-bold text-primary  underline">
+        <h2 className="font-poppins  text-2xl font-bold text-primary  underline">
           Plagiarism and Add-ons
         </h2>
       </div>
