@@ -21,7 +21,7 @@ async function loadProducts() {
 
   const stripe = new Stripe(stripeSecretKey);
   const stripeProducts = await stripe.products.list();
-
+  console.log("stripeProducts", stripeProducts);
   const products = stripeProducts.data.map((stripeProduct) => {
     return {
       id: stripeProduct.id,
@@ -128,6 +128,7 @@ async function PlansPage() {
         </span>
       </div>
       <PlansSections
+        
         monthlyPlans={monthlyPlans}
         yearlyPlans={yearlyPlans}
         planInterval={subscription?.plan?.interval}

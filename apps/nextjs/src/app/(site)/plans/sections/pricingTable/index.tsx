@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 
-import { Button } from "@voiceai/ui";
-import { IconXCircle } from "@voiceai/ui/@/components/ui/icons";
 import { CheckIcon } from "@voiceai/ui/@/icons/icons";
 
 import CheckoutButton from "../priceCards/check-out-button";
@@ -12,10 +10,10 @@ const PricingTable = ({
   currentPlan,
   planInterval,
   session,
+  scrollToPlagiarismTable,
 }) => {
   const [showMonthly, setShowMonthly] = useState(true);
-  console.log("monthlyPlans", monthlyPlans);
-  console.log("YearlyPlans", yearlyPlans);
+
   const tiers = [
     {
       name: "FREE",
@@ -24,15 +22,16 @@ const PricingTable = ({
       yearlyPrice: 0,
       yearlyMonthlyPrice: 0,
       color: "bg-blue-400",
-      rowColor: "bg-blue-100",
+      // rowColor: "bg-blue-100",
+      rowColor: "bg-white",
       features: {
         "Voice Ai": { enabled: true },
         "Text To Voice": { enabled: true },
-        "Monthly ultra-high quality minutes": { value: "11 minutes" },
+        "Monthly ultra-high quality minutes": { value: "10 minutes" },
         "Text to Voice characters per script": { value: "500" },
         "Total monthly characters": { value: "10,000" },
         "Highest quality Models": { enabled: false },
-        "Download Voiceovers": { value: "Yes- watermarked" },
+        "Download Voiceovers": { value: "watermarked" },
         "Commercial License": { enabled: false },
         "Saved Voice History": { enabled: true },
         "Celebrity Voices": { enabled: false },
@@ -57,6 +56,16 @@ const PricingTable = ({
         "Storyboard creation": { enabled: true },
         "Blog Images": { enabled: true },
         "Social Media Images": { enabled: true },
+        "Plagiarism and Ai Detective ": { enabled: true },
+        "Plagiarism & Ai Detection": { enabled: true },
+        "Source links to original": { enabled: true },
+        "GPT, Claude, Gemini detection": { enabled: true },
+        "Over 100 language detection": { enabled: true },
+        "Paraphrasing detection": { enabled: true },
+        "Text spinner paraphrase detection": { enabled: true },
+        "Included words per month": { value: "1,250 credits" },
+        "Easy-add more monthly scans": { value: "See Table" },
+
         " Courses": { enabled: false },
         "Stunning Videos": { value: "First 3 Lessons" },
         "Stories for marketing": { value: "First 3 Lessons" },
@@ -67,7 +76,7 @@ const PricingTable = ({
       },
     },
     {
-      name: "STUDENT",
+      name: "EDUCATION",
       description: "Discounted for .edu emails",
       price: 9,
       yearlyMonthlyPrice: 6.58,
@@ -75,11 +84,12 @@ const PricingTable = ({
       monthlyId: "prod_PwYfAY9nKwQ9iV",
       yearlyId: "prod_PwaJpA8vUeG6Wv",
       color: "bg-blue-500",
-      rowColor: "bg-blue-200",
+      // rowColor: "bg-blue-200",
+      rowColor: "bg-white",
       features: {
         "Voice Ai": { enabled: true },
         "Text To Voice": { enabled: true },
-        "Monthly ultra-high quality minutes": { value: "44 minutes" },
+        "Monthly ultra-high quality minutes": { value: "40 minutes" },
         "Text to Voice characters per script": { value: "2,000" },
         "Total monthly characters": { value: "40,000" },
         "Highest quality Models": { enabled: true },
@@ -108,6 +118,15 @@ const PricingTable = ({
         "Storyboard creation": { enabled: true },
         "Blog Images": { enabled: true },
         "Social Media Images": { enabled: true },
+        "Plagiarism and Ai Detective ": { enabled: true },
+        "Plagiarism & Ai Detection": { enabled: true },
+        "Source links to original": { enabled: true },
+        "GPT, Claude, Gemini detection": { enabled: true },
+        "Over 100 language detection": { enabled: true },
+        "Paraphrasing detection": { enabled: true },
+        "Text spinner paraphrase detection": { enabled: true },
+        "Included words per month": { value: "1,500 credits" },
+        "Easy-add more monthly scans": { value: "See Table" },
         " Courses": { enabled: false },
         "Stunning Videos": { value: "First 3 Lessons" },
         "Stories for marketing": { value: "First 3 Lessons" },
@@ -126,7 +145,8 @@ const PricingTable = ({
       monthlyId: "prod_PwYzKaNnHflnUj",
       yearlyId: "prod_PwaNjdYvuqa5Io",
       color: "bg-blue-600",
-      rowColor: "bg-blue-300",
+      // rowColor: "bg-blue-300",
+      rowColor: "bg-white",
       label: "Most Popular",
       features: {
         "Voice Ai": { enabled: true },
@@ -160,6 +180,15 @@ const PricingTable = ({
         "Storyboard creation": { enabled: true },
         "Blog Images": { enabled: true },
         "Social Media Images": { enabled: true },
+        "Plagiarism and Ai Detective ": { enabled: true },
+        "Plagiarism & Ai Detection": { enabled: true },
+        "Source links to original": { enabled: true },
+        "GPT, Claude, Gemini detection": { enabled: true },
+        "Over 100 language detection": { enabled: true },
+        "Paraphrasing detection": { enabled: true },
+        "Text spinner paraphrase detection": { enabled: true },
+        "Included words per month": { value: "1,750 credits" },
+        "Easy-add more monthly scans": { value: "See Table" },
         " Courses": { enabled: true },
         "Stunning Videos": { enabled: true },
         "Stories for marketing": { enabled: true },
@@ -178,7 +207,8 @@ const PricingTable = ({
       monthlyId: "prod_PwZAZujl0DVkgR",
       yearlyId: "prod_PwaRtUe2crIFlW",
       color: "bg-blue-700",
-      rowColor: "bg-blue-400",
+      // rowColor: "bg-blue-400",
+      rowColor: "bg-white",
       features: {
         "Voice Ai": { enabled: true },
         "Text To Voice": { enabled: true },
@@ -201,7 +231,7 @@ const PricingTable = ({
 
         "Script Writting": { enabled: true },
         "Script Coaching - Ai Rewriting": {
-          value: "400,000 credits",
+          value: "1,000,000 credits",
         },
         "Translation - Audio & Text": { value: "1,000,000 credits" },
         "Grammar / Spell Checker": { value: "1,000,000 credits" },
@@ -211,6 +241,16 @@ const PricingTable = ({
         "Storyboard creation": { enabled: true },
         "Blog Images": { enabled: true },
         "Social Media Images": { enabled: true },
+        "Plagiarism and Ai Detective ": { enabled: true },
+        "Plagiarism & Ai Detection": { enabled: true },
+        "Source links to original": { enabled: true },
+        "GPT, Claude, Gemini detection": { enabled: true },
+        "Over 100 language detection": { enabled: true },
+        "Paraphrasing detection": { enabled: true },
+        "Text spinner paraphrase detection": { enabled: true },
+        "Included words per month": { value: "2,000 credits" },
+        "Easy-add more monthly scans": { value: "See Table" },
+
         " Courses": { enabled: true },
         "Stunning Videos": { enabled: true },
         "Stories for marketing": { enabled: true },
@@ -249,7 +289,16 @@ const PricingTable = ({
     { label: "Image Creation", isMain: false },
     { label: "Storyboard creation", isMain: false },
     { label: "Blog Images", isMain: false },
-    { label: "Social Media Images", isMain: false },
+    { label: "Plagiarism and Ai Detective ", isMain: true },
+    { label: "Plagiarism & Ai Detection", isMain: false },
+    { label: "Source links to original", isMain: false },
+    { label: "GPT, Claude, Gemini detection", isMain: false },
+    { label: "Over 100 language detection", isMain: false },
+    { label: "Paraphrasing detection", isMain: false },
+    { label: "Text spinner paraphrase detection", isMain: false },
+    { label: "Included words per month", isMain: false },
+    { label: "Easy-add more monthly scans", isMain: false },
+
     { label: " Courses", isMain: true },
     { label: "Stunning Videos", isMain: false },
     { label: "Stories for marketing", isMain: false },
@@ -271,12 +320,15 @@ const PricingTable = ({
 
   const renderFeature = (feature, tier) => {
     const featureData = tier.features[feature.label];
-    if (!featureData) return null;
+
+    // Check if feature data exists
+    if (!featureData) {
+      console.warn(`Feature ${feature.label} not found for tier ${tier.name}`);
+      return null;
+    }
 
     if (featureData.enabled !== undefined) {
-      // Check if it's a main feature (isMain is true)
       if (feature.isMain) {
-        // Hide the icon for main features but maintain the same height
         return (
           <span className="inline-block h-6 w-6 text-black opacity-0">-</span>
         );
@@ -288,6 +340,31 @@ const PricingTable = ({
         );
       }
     }
+
+    if (
+      typeof featureData.value === "string" &&
+      feature.label === "Easy-add more monthly scans"
+    ) {
+      // Ensure scrollToPlagiarismTable is defined
+      if (typeof scrollToPlagiarismTable === "function") {
+        return (
+          <button
+            onClick={scrollToPlagiarismTable}
+            className="cursor-pointer text-blue-500 underline"
+          >
+            {featureData.value}
+          </button>
+        );
+      } else {
+        console.warn("scrollToPlagiarismTable function is not defined");
+        return null;
+      }
+    }
+
+    if (React.isValidElement(featureData.value)) {
+      return featureData.value;
+    }
+
     if (featureData.value) {
       return <span>{featureData.value}</span>;
     }
@@ -364,7 +441,7 @@ const PricingTable = ({
                 >
                   {/* Most Popular Badge (Horizontal and Centered at the Top) */}
                   {tier.label && (
-                    <div className="absolute left-1/2 top-0 z-50 min-w-[80px] max-w-max -translate-x-1/2 -translate-y-1/2 transform overflow-hidden text-ellipsis whitespace-nowrap rounded-full border border-black bg-orange-500 px-4 py-1 text-xs font-bold text-black">
+                    <div className="absolute left-1/2 top-0 z-50 min-w-[140px] max-w-max -translate-x-1/2 -translate-y-1/2 transform overflow-hidden text-ellipsis whitespace-nowrap rounded-full border border-black bg-orange-500 px-4 py-1 text-center text-xs font-bold text-white">
                       {tier.label}
                     </div>
                   )}
@@ -399,7 +476,7 @@ const PricingTable = ({
                   </div>
 
                   {tier.name !== "FREE" && (
-                    <div className="p-4">
+                    <div className="flex justify-center p-4">
                       <CheckoutButton
                         productId={getProductId(tier)}
                         session={session}
