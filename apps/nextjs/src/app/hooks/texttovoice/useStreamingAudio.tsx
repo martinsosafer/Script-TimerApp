@@ -18,13 +18,13 @@ const useStreamingAudio = () => {
     setLoading,
     userPlan,
   }: {
-    voice_id: any;
-    voice_actor: any;
-    message: any;
-    stability: any;
-    similarity: any;
-    setLoading: any;
-    userPlan: any;
+    voice_id: string;
+    voice_actor: string;
+    message: string;
+    stability: number;
+    similarity: number;
+    setLoading: (loading: boolean) => void;
+    userPlan: string;
   }) => {
     if (!message || message.trim() === "") {
       toast({
@@ -89,85 +89,38 @@ const useStreamingAudio = () => {
         throw new Error("Response body is null.");
       }
 
-      const mediaSource = new MediaSource();
-      const objectUrl = URL.createObjectURL(mediaSource);
-      setAudioSource(objectUrl);
-      if (audioRef.current) {
-        audioRef.current.src = objectUrl;
-      }
-
+      const reader = responseBody.getReader();
       const audioChunks: Uint8Array[] = [];
 
-      mediaSource.addEventListener("sourceopen", async () => {
-        const sourceBuffer = mediaSource.addSourceBuffer("audio/mpeg");
-        const reader = responseBody.getReader();
+      const readStream = async () => {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          audioChunks.push(value);
+        }
 
-        const readStream = async () => {
-          const processBuffer = async (value: Uint8Array) => {
-            return new Promise<void>((resolve, reject) => {
-              const onBufferAppended = () => {
-                sourceBuffer.removeEventListener("updateend", onBufferAppended);
-                resolve();
-              };
-              sourceBuffer.addEventListener("updateend", onBufferAppended);
-              try {
-                sourceBuffer.appendBuffer(value);
-                audioChunks.push(value);
-              } catch (error) {
-                reject(error);
-              }
-            });
-          };
-
-          while (true) {
-            const { done, value } = await reader.read();
-            if (done) {
-              if (!sourceBuffer.updating && mediaSource.readyState === "open") {
-                mediaSource.endOfStream();
-              } else {
-                sourceBuffer.addEventListener(
-                  "updateend",
-                  () => {
-                    if (mediaSource.readyState === "open") {
-                      mediaSource.endOfStream();
-                    }
-                  },
-                  { once: true },
-                );
-              }
-              break;
-            }
-            await processBuffer(value);
-          }
-
-          const audioBlob = new Blob(audioChunks, { type: "audio/mpeg" });
-          const downloadUrl = URL.createObjectURL(audioBlob);
-          setDownloadLink(downloadUrl);
-          setLoading(false);
-        };
-
-        readStream().catch((error) => {
-          console.error("Error streaming audio:", error);
-          if (!sourceBuffer.updating && mediaSource.readyState === "open") {
-            mediaSource.endOfStream("decode");
-          } else {
-            sourceBuffer.addEventListener(
-              "updateend",
-              () => {
-                if (mediaSource.readyState === "open") {
-                  mediaSource.endOfStream("decode");
-                }
-              },
-              { once: true },
-            );
-          }
-        });
+        const audioBlob = new Blob(audioChunks, { type: "audio/mpeg" });
+        const objectUrl = URL.createObjectURL(audioBlob);
+        setAudioSource(objectUrl);
+        setDownloadLink(objectUrl);
 
         if (audioRef.current) {
+          audioRef.current.src = objectUrl;
           audioRef.current.play().catch((error) => {
             console.error("Error playing audio:", error);
           });
         }
+
+        setLoading(false);
+      };
+
+      readStream().catch((error) => {
+        console.error("Error streaming audio:", error);
+        setLoading(false);
+        toast({
+          title: "Something went wrong",
+          description: "Please try again later",
+        });
       });
 
       setShowPlayer(true);
@@ -197,7 +150,7 @@ const useStreamingAudio = () => {
     audioRef,
     toggleAudioRef,
     handleStreaming,
-    handleCloseAudio, // Return the handleCloseAudio function
+    handleCloseAudio,
   };
 };
 
