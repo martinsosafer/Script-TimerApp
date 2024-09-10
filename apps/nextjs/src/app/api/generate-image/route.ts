@@ -31,8 +31,6 @@ export async function POST(req: Request): Promise<Response> {
       quality: "hd",
     });
 
-    console.log(response.data[0]);
-
     const image_url = response?.data[0]?.url ?? "";
 
     if (image_url) {
