@@ -35,7 +35,8 @@ export default function ImageGenerator({
   const [isMagicPrompt, setIsMagicPrompt] = useState<boolean>(true);
 
   const [noSessionModalOpen, setNoSessionModalOpen] = useState<boolean>(false);
-  console.log(image);
+
+  const [openDownloadWarning, setOpenDownloadWarning] = useState(false);
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
@@ -71,6 +72,7 @@ export default function ImageGenerator({
 
         const url = (await result.json()) as string;
         setImage(url);
+        setOpenDownloadWarning(true);
         setLoading(false);
         setCreditsLeft(creditsLeft - 1);
       } catch (error) {
@@ -79,10 +81,6 @@ export default function ImageGenerator({
       }
     }
   }
-
-  // async function handleDownload(url: string) {
-  //   await downloadImage(url);
-  // }
 
   return (
     <div className="mt-20 flex w-[1024px] flex-col items-center">
@@ -190,6 +188,26 @@ export default function ImageGenerator({
           page="image"
           setOpenModal={setNoSessionModalOpen}
         />
+      )}
+      {openDownloadWarning && (
+        <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50 p-4 backdrop-blur">
+          <div className="w-[500px] rounded-md bg-white p-8">
+            <h3 className="mb-4 text-xl font-semibold text-primary">
+              Image ready
+            </h3>
+            <p>
+              Image generation is ready, the image link will be available for
+              the next <strong>60 minutes</strong>, be sure to save it before it
+              expires.
+            </p>
+            <button
+              className="mt-4 w-full rounded-md bg-primary p-2 font-poppins font-bold text-white"
+              onClick={() => setOpenDownloadWarning(false)}
+            >
+              Continue to the image
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );
