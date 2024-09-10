@@ -48,8 +48,8 @@ const PricingTable = ({
         "Script Coaching - Ai Rewriting": {
           value: "40000",
         },
-        "Translation - Audio & Text": { value: "40000 credits" },
-        "Grammar / Spell Checker": { value: "40000 credits" },
+        "Translation - Audio & Text": { value: "40,000 credits" },
+        "Grammar / Spell Checker": { value: "40,000 credits" },
         "6 Steps to Amazing Scripts": { enabled: false },
         "Images (Experimental)": { enabled: true },
         "Image Creation": { value: "10" },
@@ -213,8 +213,8 @@ const PricingTable = ({
         "Voice Ai": { enabled: true },
         "Text To Voice": { enabled: true },
         "Monthly ultra-high quality minutes": { value: "125 minutes" },
-        "Text to Voice characters per script": { value: "10000" },
-        "Total monthly characters": { value: "125000" },
+        "Text to Voice characters per script": { value: "10,000" },
+        "Total monthly characters": { value: "125,000" },
         "Highest quality Models": { enabled: true },
         "Download Voiceovers": { enabled: true },
         "Commercial License": { enabled: true },
@@ -413,7 +413,7 @@ const PricingTable = ({
       </div>
 
       <div className="w-full overflow-x-auto">
-        <div className="min-w-[800px]">
+        <div className="flex min-w-[1500px]">
           <div className="grid grid-cols-5 gap-2  px-20  py-4">
             <div className="flex flex-col">
               <div className="h-[132px]"></div>

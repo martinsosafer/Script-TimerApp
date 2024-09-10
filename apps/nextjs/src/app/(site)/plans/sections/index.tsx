@@ -38,16 +38,17 @@ export default function PlansSections({
         session={session}
         scrollToPlagiarismTable={scrollToPlagiarismTable}
       />
-      <div ref={plagiarismTableRef}>
-        <PlagiarismTable
-          id="plagiarism-table"
-          monthlyPlans={monthlyPlans}
-          yearlyPlans={yearlyPlans}
-          currentPlan={data?.status}
-          planInterval={planInterval}
-          session={session}
-        />
-      </div>
+
+      <PlagiarismTable
+        id="plagiarism-table"
+        monthlyPlans={monthlyPlans}
+        yearlyPlans={yearlyPlans}
+        currentPlan={data?.status}
+        planInterval={planInterval}
+        session={session}
+        ref={plagiarismTableRef}
+      />
+
       <FAQs />
     </>
   );
