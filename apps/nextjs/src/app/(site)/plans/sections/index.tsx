@@ -5,7 +5,9 @@ import { useRef } from "react";
 import { api } from "~/utils/api";
 import type { PriceCardsProps } from "../types";
 import FAQs from "./faqs";
+import LanguagesRows from "./LanguagesRows";
 import PlagiarismTable from "./plagiarismTable";
+import PricingTestimonials from "./plansTestimonials";
 import PriceCards from "./priceCards";
 import PricingTable from "./pricingTable";
 
@@ -17,10 +19,11 @@ export default function PlansSections({
 }: PriceCardsProps) {
   const { data } = api.subscription.mySubscription.useQuery();
   const plagiarismTableRef = useRef<HTMLDivElement>(null);
-
+  const currentPlan = session?.user.subscription?.status;
   const scrollToPlagiarismTable = () => {
     plagiarismTableRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
   return (
     <>
       {/* <PriceCards
@@ -33,7 +36,7 @@ export default function PlansSections({
       <PricingTable
         monthlyPlans={monthlyPlans}
         yearlyPlans={yearlyPlans}
-        currentPlan={data?.status}
+        currentPlan={currentPlan}
         planInterval={planInterval}
         session={session}
         scrollToPlagiarismTable={scrollToPlagiarismTable}
@@ -43,13 +46,14 @@ export default function PlansSections({
         id="plagiarism-table"
         monthlyPlans={monthlyPlans}
         yearlyPlans={yearlyPlans}
-        currentPlan={data?.status}
+        currentPlan={currentPlan}
         planInterval={planInterval}
         session={session}
         ref={plagiarismTableRef}
       />
-
       <FAQs />
+      <LanguagesRows />
+      <PricingTestimonials />
     </>
   );
 }

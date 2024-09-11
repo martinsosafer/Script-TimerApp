@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import Link from "next/link";
 
 import { CheckIcon } from "@voiceai/ui/@/icons/icons";
 
 import CheckoutButton from "../priceCards/check-out-button";
+import CheckoutButton2 from "../priceCards/check.out-button2";
 
 const PricingTable = ({
   monthlyPlans,
@@ -26,16 +28,16 @@ const PricingTable = ({
       rowColor: "bg-white",
       features: {
         "Voice Ai": { enabled: true },
-        "Text To Voice": { enabled: true },
-        "Monthly ultra-high quality minutes": { value: "10 minutes" },
-        "Text to Voice characters per script": { value: "500" },
+        "Text To Voice": { value: "Yes- Watermarked" },
+        "Ultra High Quality": { value: "10 minutes" },
+        "Characters Per Script": { value: "500" },
         "Total monthly characters": { value: "10,000" },
-        "Highest quality Models": { enabled: false },
-        "Download Voiceovers": { value: "watermarked" },
+        "Highest Quality Voices": { enabled: false },
+        "Download Voiceovers": { value: "Watermarked" },
         "Commercial License": { enabled: false },
         "Saved Voice History": { enabled: true },
         "Celebrity Voices": { enabled: false },
-        "Clone your voice ": { enabled: false },
+        "Clone your Voice ": { enabled: false },
         "Speech to Speech Cloning": { enabled: false },
         "Transcription: Speech to Text": { enabled: true },
         "Translation into 27 languages": { enabled: true },
@@ -46,7 +48,7 @@ const PricingTable = ({
 
         "Script Writting": { enabled: true },
         "Script Coaching - Ai Rewriting": {
-          value: "40000",
+          value: "40,000 credits",
         },
         "Translation - Audio & Text": { value: "40,000 credits" },
         "Grammar / Spell Checker": { value: "40,000 credits" },
@@ -63,7 +65,7 @@ const PricingTable = ({
         "Over 100 language detection": { enabled: true },
         "Paraphrasing detection": { enabled: true },
         "Text spinner paraphrase detection": { enabled: true },
-        "Included words per month": { value: "1,250 credits" },
+        "Included words per month": { value: "1,250" },
         "Easy-add more monthly scans": { value: "See Table" },
 
         " Courses": { enabled: false },
@@ -89,15 +91,15 @@ const PricingTable = ({
       features: {
         "Voice Ai": { enabled: true },
         "Text To Voice": { enabled: true },
-        "Monthly ultra-high quality minutes": { value: "40 minutes" },
-        "Text to Voice characters per script": { value: "2,000" },
+        "Ultra High Quality": { value: "40 minutes" },
+        "Characters Per Script": { value: "2,000" },
         "Total monthly characters": { value: "40,000" },
-        "Highest quality Models": { enabled: true },
+        "Highest Quality Voices": { enabled: true },
         "Download Voiceovers": { enabled: true },
         "Commercial License": { enabled: false },
         "Saved Voice History": { enabled: true },
         "Celebrity Voices": { value: "YES" },
-        "Clone your voice ": { enabled: false },
+        "Clone your Voice ": { enabled: false },
         "Speech to Speech Cloning": { enabled: false },
         "Transcription: Speech to Text": { enabled: true },
         "Translation into 27 languages": { enabled: true },
@@ -125,7 +127,7 @@ const PricingTable = ({
         "Over 100 language detection": { enabled: true },
         "Paraphrasing detection": { enabled: true },
         "Text spinner paraphrase detection": { enabled: true },
-        "Included words per month": { value: "1,500 credits" },
+        "Included words per month": { value: "1,500" },
         "Easy-add more monthly scans": { value: "See Table" },
         " Courses": { enabled: false },
         "Stunning Videos": { value: "First 3 Lessons" },
@@ -151,15 +153,15 @@ const PricingTable = ({
       features: {
         "Voice Ai": { enabled: true },
         "Text To Voice": { enabled: true },
-        "Monthly ultra-high quality minutes": { value: "80 minutes" },
-        "Text to Voice characters per script": { value: "5,000" },
+        "Ultra High Quality": { value: "80 minutes" },
+        "Characters Per Script": { value: "5,000" },
         "Total monthly characters": { value: "80,000" },
-        "Highest quality Models": { enabled: true },
+        "Highest Quality Voices": { enabled: true },
         "Download Voiceovers": { enabled: true },
         "Commercial License": { enabled: true },
         "Saved Voice History": { enabled: true },
         "Celebrity Voices": { value: "YES" },
-        "Clone your voice ": { enabled: true },
+        "Clone your Voice ": { enabled: true },
         "Speech to Speech Cloning": { enabled: true },
         "Transcription: Speech to Text": { enabled: true },
         "Translation into 27 languages": { enabled: true },
@@ -187,7 +189,7 @@ const PricingTable = ({
         "Over 100 language detection": { enabled: true },
         "Paraphrasing detection": { enabled: true },
         "Text spinner paraphrase detection": { enabled: true },
-        "Included words per month": { value: "1,750 credits" },
+        "Included words per month": { value: "1,750" },
         "Easy-add more monthly scans": { value: "See Table" },
         " Courses": { enabled: true },
         "Stunning Videos": { enabled: true },
@@ -212,15 +214,15 @@ const PricingTable = ({
       features: {
         "Voice Ai": { enabled: true },
         "Text To Voice": { enabled: true },
-        "Monthly ultra-high quality minutes": { value: "125 minutes" },
-        "Text to Voice characters per script": { value: "10,000" },
+        "Ultra High Quality": { value: "125 minutes" },
+        "Characters Per Script": { value: "10,000" },
         "Total monthly characters": { value: "125,000" },
-        "Highest quality Models": { enabled: true },
+        "Highest Quality Voices": { enabled: true },
         "Download Voiceovers": { enabled: true },
         "Commercial License": { enabled: true },
         "Saved Voice History": { enabled: true },
         "Celebrity Voices": { value: "YES" },
-        "Clone your voice ": { enabled: true },
+        "Clone your Voice ": { enabled: true },
         "Speech to Speech Cloning": { enabled: true },
         "Transcription: Speech to Text": { enabled: true },
         "Translation into 27 languages": { enabled: true },
@@ -248,7 +250,7 @@ const PricingTable = ({
         "Over 100 language detection": { enabled: true },
         "Paraphrasing detection": { enabled: true },
         "Text spinner paraphrase detection": { enabled: true },
-        "Included words per month": { value: "2,000 credits" },
+        "Included words per month": { value: "2,000" },
         "Easy-add more monthly scans": { value: "See Table" },
 
         " Courses": { enabled: true },
@@ -264,15 +266,15 @@ const PricingTable = ({
   const featureLabels = [
     { label: "Voice Ai", isMain: true },
     { label: "Text To Voice", isMain: false },
-    { label: "Monthly ultra-high quality minutes", isMain: false },
-    { label: "Text to Voice characters per script", isMain: false },
+    { label: "Ultra High Quality", isMain: false },
+    { label: "Characters Per Script", isMain: false },
     { label: "Total monthly characters", isMain: false },
-    { label: "Highest quality Models", isMain: false },
+    { label: "Highest Quality Voices", isMain: false },
     { label: "Download Voiceovers", isMain: false },
     { label: "Commercial License", isMain: false },
     { label: "Saved Voice History", isMain: false },
     { label: "Celebrity Voices", isMain: false },
-    { label: "Clone your voice ", isMain: false },
+    { label: "Clone your Voice ", isMain: false },
     { label: "Speech to Speech Cloning", isMain: false },
     { label: "Transcription: Speech to Text", isMain: false },
     { label: "Translation into 27 languages", isMain: false },
@@ -307,6 +309,13 @@ const PricingTable = ({
     { label: "Building Rapport", isMain: false },
     { label: "Ai to build marketing stack", isMain: false },
   ];
+  const hasPlan = (tierName) => {
+    // Check if the current plan matches the tier name or if it's the special case
+    if (tierName === "EDUCATION" && currentPlan === "STUDENT") {
+      return true;
+    }
+    return tierName === currentPlan;
+  };
 
   const getBackgroundColors = (tier) => {
     let currentGroup = -1;
@@ -413,7 +422,7 @@ const PricingTable = ({
       </div>
 
       <div className="w-full overflow-x-auto">
-        <div className="flex min-w-[1500px]">
+        <div className="flex min-w-[1200px] max-w-[1300px]">
           <div className="grid grid-cols-5 gap-2  px-20  py-4">
             <div className="flex flex-col">
               <div className="h-[132px]"></div>
@@ -441,13 +450,13 @@ const PricingTable = ({
                 >
                   {/* Most Popular Badge (Horizontal and Centered at the Top) */}
                   {tier.label && (
-                    <div className="absolute left-1/2 top-0 z-50 min-w-[140px] max-w-max -translate-x-1/2 -translate-y-1/2 transform overflow-hidden text-ellipsis whitespace-nowrap rounded-full border border-black bg-orange-500 px-4 py-1 text-center text-xs font-bold text-white">
+                    <div className="absolute left-1/2 top-0 z-50 min-w-[130px] max-w-max -translate-x-1/2 -translate-y-1/2 transform overflow-hidden text-ellipsis whitespace-nowrap rounded-full border border-black bg-orange-500 px-4  text-center text-xs font-bold text-white">
                       {tier.label}
                     </div>
                   )}
 
                   <div
-                    className={`${tier.color} relative p-2 text-center text-white`}
+                    className={`${tier.color} relative p-1 text-center text-white`}
                   >
                     <div className="font-poppins text-xl">{tier.name}</div>
                     <div className="text-sm font-medium text-white">
@@ -457,14 +466,43 @@ const PricingTable = ({
                       ${price}
                       <span className="text-sm font-normal">{priceLabel}</span>
                       <div
-                        className={`mt-1 text-lg text-gray-200 ${showMonthly ? "invisible" : "visible"}`}
+                        className={`mt-1 text-lg text-gray-200 ${
+                          showMonthly ? "invisible" : "visible"
+                        }`}
                       >
                         (${tier.yearlyPrice}/year)
+                      </div>
+                      {/* Render button below yearly price */}
+                      <div className="flex justify-center ">
+                        {tier.name === "FREE" ? (
+                          // Render 'Start Free Trial' button if the plan is free
+                          <button
+                            className={`mt-[7px] block w-[85%] ${
+                              hasPlan(tier.name)
+                                ? "bg-gray-400"
+                                : "bg-white hover:bg-slate-300"
+                            } whitespace-nowrap rounded-2xl px-2  text-center text-lg font-semibold text-primary shadow-md transition duration-300 ease-in-out`}
+                          >
+                            {/* Render "Current Plan" if the user has a FREE or FREE_TRIAL plan, otherwise "Start Free Trial" */}
+                            <Link href="/signin">
+                              {currentPlan === "FREE" ||
+                              currentPlan === "FREE_TRIAL"
+                                ? "Current Plan"
+                                : "Free Trial"}
+                            </Link>
+                          </button>
+                        ) : (
+                          // Render CheckoutButton if the plan is not free
+                          <CheckoutButton2
+                            productId={getProductId(tier)}
+                            session={session}
+                          />
+                        )}
                       </div>
                     </div>
                   </div>
 
-                  <div className=" mt-[-25px] flex-grow p-4">
+                  <div className=" mt-[-51px] flex-grow p-4">
                     {featureLabels.map((feature, featureIndex) => (
                       <div
                         key={featureIndex}
@@ -475,14 +513,32 @@ const PricingTable = ({
                     ))}
                   </div>
 
-                  {tier.name !== "FREE" && (
-                    <div className="flex justify-center p-4">
+                  <div className="flex justify-center p-4">
+                    {tier.name === "FREE" ? (
+                      // Render 'Start Free Trial' button if the plan is free
+                      <button
+                        className={`mt-8 block w-[85%] ${
+                          hasPlan(tier.name)
+                            ? "bg-gray-400"
+                            : "bg-orange-400 hover:bg-tertiary"
+                        }  whitespace-nowrap rounded-2xl px-8 py-4 text-center text-lg font-semibold leading-4 text-black shadow-md transition duration-300 ease-in-out`}
+                      >
+                        {/* Render "Current Plan" if the user has a FREE or FREE_TRIAL plan, otherwise "Start Free Trial" */}
+                        <Link href="/signin">
+                          {currentPlan === "FREE" ||
+                          currentPlan === "FREE_TRIAL"
+                            ? "Current Plan"
+                            : " Free Trial"}
+                        </Link>
+                      </button>
+                    ) : (
+                      // Render CheckoutButton if the plan is not free
                       <CheckoutButton
                         productId={getProductId(tier)}
                         session={session}
                       />
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               );
             })}
