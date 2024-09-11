@@ -4,15 +4,36 @@ import { useRouter } from "next/navigation";
 
 import { api } from "~/utils/api";
 import type { I_Subscription } from "../../plans/types";
+import CreditRow from "../credits-row";
 
+type Credits = Record<
+  "cl_credit" | "11labs_credit" | "img_credit" | "openai_credit",
+  {
+    credits: number;
+    id: string;
+    created_at: Date;
+    updated_at: Date;
+    userId: string;
+  } | null
+> &
+  Record<
+    string,
+    {
+      credits: number;
+      id: string;
+      created_at: Date;
+      updated_at: Date;
+      userId: string;
+    } | null
+  >;
 interface SubscriptionDetailsProps {
   subscription: I_Subscription;
-  clCredits: number;
+  credits?: Credits | null | undefined;
 }
 
 export default function SubscriptionDetails({
   subscription,
-  clCredits,
+  credits,
 }: SubscriptionDetailsProps) {
   const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
   const router = useRouter();
@@ -92,37 +113,31 @@ export default function SubscriptionDetails({
         </span>
         <p className="text-xl font-semibold text-gray-700">Usage Report</p>
       </div>
-      <div className="mt-3 flex gap-4 px-12 py-2">
-        <div className="flex flex-col">
-          <span className="px-2 text-xs text-gray-400">Characters used</span>
-          <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
-            Characters used
-          </div>
-        </div>
-        <div className="flex flex-col">
-          <span className="px-2 text-xs text-gray-400">
-            Characters remaining
-          </span>
-          <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
-            Characters remaining
-          </div>
-        </div>
+      <div className="mt-3 flex flex-col gap-4 py-2">
+        {Object.keys(credits ?? {}).map((key) => {
+          if (!credits) return null;
+          const credit = credits[key]?.credits ?? 0;
+          return (
+            <CreditRow
+              key={key}
+              creditsLeft={credit}
+              type={
+                key as
+                  | "cl_credit"
+                  | "11labs_credit"
+                  | "img_credit"
+                  | "openai_credit"
+              }
+              subscription={subscriptionData?.status ?? "FREE"}
+            />
+          );
+        })}
       </div>
       <div className="flex gap-4 px-12 py-2">
         <div className="flex flex-col">
           <span className="px-2 text-xs text-gray-400">Reset In</span>
           <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
             Reset In
-          </div>
-        </div>
-      </div>
-      <div className="flex gap-4 px-12 py-2">
-        <div className="flex flex-col">
-          <span className="px-2 text-xs text-gray-400">
-            Plagiarism detector and Ai detector credits left
-          </span>
-          <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
-            {clCredits}
           </div>
         </div>
       </div>

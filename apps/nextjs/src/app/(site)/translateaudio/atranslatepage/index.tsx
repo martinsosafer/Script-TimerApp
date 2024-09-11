@@ -8,6 +8,7 @@ import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 import FreeModal from "~/app/(site)/components/free-modal"; // Import the FreeModal
 import LoadingDots from "~/app/(site)/components/loadingdots";
+import deductOpenAiCredits from "~/app/actions/openAiCredits";
 import languages from "~/lib/languages";
 
 export default function AudioTranslate({ subData, setOpenNoSessionModal }) {
@@ -38,15 +39,19 @@ export default function AudioTranslate({ subData, setOpenNoSessionModal }) {
 
       const data = await response.json();
 
-      if (data.success) {
+      if (data.success as boolean) {
         setGeneratedTranslation(data.data.text);
+        await deductOpenAiCredits(data.data.text.length * 3);
       } else {
         console.error("Error transcribing audio:", data.error);
         toast({ title: "Error transcribing audio", description: data.error });
       }
     } catch (error) {
       console.error("Error transcribing audio:", error);
-      toast({ title: "Error transcribing audio", description: error.message });
+      toast({
+        title: "Error transcribing audio",
+        description: (error as Error).message,
+      });
     } finally {
       setLoading(false);
     }

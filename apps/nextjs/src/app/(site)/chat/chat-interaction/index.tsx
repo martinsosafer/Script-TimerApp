@@ -7,6 +7,7 @@ import { readStreamableValue } from "ai/rsc";
 
 import type { Prompt } from "~/app/(site)/data/chat-prompts/types";
 import { clearChats } from "~/app/actions/newChatActions";
+import deductOpenAiCredits from "~/app/actions/openAiCredits";
 import { nanoid } from "~/utils/helpers";
 import { continueConversation } from "../../../actions/aiActions";
 import ClearChatHistoryModal from "../../components/modals/clear-chat-history";
@@ -63,6 +64,7 @@ export default function ChatInteraction({ userId }: ChatProps) {
 
   async function handleSubmitChat(e: FormEvent, chatId?: string) {
     setIsLoading(true);
+    const tokens = promptInput.length + (feedbackInput?.length ?? 0);
     try {
       e.preventDefault();
 
@@ -98,6 +100,7 @@ export default function ChatInteraction({ userId }: ChatProps) {
           },
         ]);
       }
+      await deductOpenAiCredits(tokens);
       setIsLoading(false);
     } catch (err) {
       console.error(err);

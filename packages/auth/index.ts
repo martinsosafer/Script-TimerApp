@@ -10,7 +10,11 @@ import NextAuth from "next-auth";
 
 import { db, schema, tableCreator } from "@voiceai/db";
 
-import { STARTING_CL_CREDITS, STARTING_IMG_CREDITS } from "./constants";
+import {
+  STARTING_CL_CREDITS,
+  STARTING_IMG_CREDITS,
+  STARTING_OPENAI_CREDITS,
+} from "./constants";
 import { env } from "./env.mjs";
 import { sendVerificationRequest } from "./send-verification-request";
 
@@ -121,6 +125,13 @@ export const {
             userId: user?.id ?? token.sub,
           })
           .execute();
+
+        await db
+          .insert(schema.openAiCredit)
+          .values({
+            userId: user?.id ?? token.sub,
+          })
+          .execute();
       }
 
       const clCreditStatus = await db.query.clCredits.findFirst({
@@ -148,6 +159,22 @@ export const {
           .values({
             userId: user?.id ?? token.sub,
             credits: STARTING_IMG_CREDITS[subscriptionStatus?.status ?? "FREE"],
+          })
+          .execute();
+      }
+
+      const openAiCreditStatus = await db.query.openAiCredit.findFirst({
+        where: (openAiCredit, { eq }) =>
+          eq(openAiCredit.userId, user?.id ?? token.sub),
+      });
+
+      if (!openAiCreditStatus) {
+        await db
+          .insert(schema.openAiCredit)
+          .values({
+            userId: user?.id ?? token.sub,
+            credits:
+              STARTING_OPENAI_CREDITS[subscriptionStatus?.status ?? "FREE"],
           })
           .execute();
       }

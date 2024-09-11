@@ -8,7 +8,7 @@ export const openAiCredit = pgTable("openai_credit", {
   userId: text("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
-  credits: integer("credits").notNull().default(5),
+  credits: integer("credits").notNull().default(40000),
   created_at: timestamp("created_at").notNull().defaultNow(),
   updated_at: timestamp("updated_at").notNull().defaultNow(),
 });
