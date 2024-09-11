@@ -9,6 +9,8 @@ const useStreamingAudio = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const toggleAudioRef = useRef<HTMLButtonElement>(null);
 
+  const isFirefox = navigator.userAgent.toLowerCase().includes("firefox");
+
   const handleStreaming = async ({
     voice_id,
     voice_actor,
@@ -89,88 +91,134 @@ const useStreamingAudio = () => {
         throw new Error("Response body is null.");
       }
 
-      const mediaSource = new MediaSource();
-      const objectUrl = URL.createObjectURL(mediaSource);
-      setAudioSource(objectUrl);
-      if (audioRef.current) {
-        audioRef.current.src = objectUrl;
-      }
-
-      const audioChunks: Uint8Array[] = [];
-
-      mediaSource.addEventListener("sourceopen", async () => {
-        const sourceBuffer = mediaSource.addSourceBuffer("audio/mpeg");
+      if (isFirefox) {
+        // Firefox-specific streaming logic
         const reader = responseBody.getReader();
+        const audioChunks: Uint8Array[] = [];
 
         const readStream = async () => {
-          const processBuffer = async (value: Uint8Array) => {
-            return new Promise<void>((resolve, reject) => {
-              const onBufferAppended = () => {
-                sourceBuffer.removeEventListener("updateend", onBufferAppended);
-                resolve();
-              };
-              sourceBuffer.addEventListener("updateend", onBufferAppended);
-              try {
-                sourceBuffer.appendBuffer(value);
-                audioChunks.push(value);
-              } catch (error) {
-                reject(error);
-              }
-            });
-          };
-
           while (true) {
             const { done, value } = await reader.read();
-            if (done) {
-              if (!sourceBuffer.updating && mediaSource.readyState === "open") {
-                mediaSource.endOfStream();
-              } else {
-                sourceBuffer.addEventListener(
-                  "updateend",
-                  () => {
-                    if (mediaSource.readyState === "open") {
-                      mediaSource.endOfStream();
-                    }
-                  },
-                  { once: true },
-                );
-              }
-              break;
-            }
-            await processBuffer(value);
+            if (done) break;
+            audioChunks.push(value);
           }
 
           const audioBlob = new Blob(audioChunks, { type: "audio/mpeg" });
-          const downloadUrl = URL.createObjectURL(audioBlob);
-          setDownloadLink(downloadUrl);
+          const objectUrl = URL.createObjectURL(audioBlob);
+          setAudioSource(objectUrl);
+          setDownloadLink(objectUrl);
+
+          if (audioRef.current) {
+            audioRef.current.src = objectUrl;
+            audioRef.current.play().catch((error) => {
+              console.error("Error playing audio:", error);
+            });
+          }
+
           setLoading(false);
         };
 
         readStream().catch((error) => {
           console.error("Error streaming audio:", error);
-          if (!sourceBuffer.updating && mediaSource.readyState === "open") {
-            mediaSource.endOfStream("decode");
-          } else {
-            sourceBuffer.addEventListener(
-              "updateend",
-              () => {
-                if (mediaSource.readyState === "open") {
-                  mediaSource.endOfStream("decode");
+          setLoading(false);
+          toast({
+            title: "Something went wrong",
+            description: "Please try again later",
+          });
+        });
+
+        setShowPlayer(true);
+      } else {
+        // Other browsers' streaming logic (e.g., Chrome, Edge)
+        const mediaSource = new MediaSource();
+        const objectUrl = URL.createObjectURL(mediaSource);
+        setAudioSource(objectUrl);
+        if (audioRef.current) {
+          audioRef.current.src = objectUrl;
+        }
+
+        const audioChunks: Uint8Array[] = [];
+
+        mediaSource.addEventListener("sourceopen", async () => {
+          const sourceBuffer = mediaSource.addSourceBuffer("audio/mpeg");
+          const reader = responseBody.getReader();
+
+          const readStream = async () => {
+            const processBuffer = async (value: Uint8Array) => {
+              return new Promise<void>((resolve, reject) => {
+                const onBufferAppended = () => {
+                  sourceBuffer.removeEventListener(
+                    "updateend",
+                    onBufferAppended,
+                  );
+                  resolve();
+                };
+                sourceBuffer.addEventListener("updateend", onBufferAppended);
+                try {
+                  sourceBuffer.appendBuffer(value);
+                  audioChunks.push(value);
+                } catch (error) {
+                  reject(error);
                 }
-              },
-              { once: true },
-            );
+              });
+            };
+
+            while (true) {
+              const { done, value } = await reader.read();
+              if (done) {
+                if (
+                  !sourceBuffer.updating &&
+                  mediaSource.readyState === "open"
+                ) {
+                  mediaSource.endOfStream();
+                } else {
+                  sourceBuffer.addEventListener(
+                    "updateend",
+                    () => {
+                      if (mediaSource.readyState === "open") {
+                        mediaSource.endOfStream();
+                      }
+                    },
+                    { once: true },
+                  );
+                }
+                break;
+              }
+              await processBuffer(value);
+            }
+
+            const audioBlob = new Blob(audioChunks, { type: "audio/mpeg" });
+            const downloadUrl = URL.createObjectURL(audioBlob);
+            setDownloadLink(downloadUrl);
+            setLoading(false);
+          };
+
+          readStream().catch((error) => {
+            console.error("Error streaming audio:", error);
+            if (!sourceBuffer.updating && mediaSource.readyState === "open") {
+              mediaSource.endOfStream("decode");
+            } else {
+              sourceBuffer.addEventListener(
+                "updateend",
+                () => {
+                  if (mediaSource.readyState === "open") {
+                    mediaSource.endOfStream("decode");
+                  }
+                },
+                { once: true },
+              );
+            }
+          });
+
+          if (audioRef.current) {
+            audioRef.current.play().catch((error) => {
+              console.error("Error playing audio:", error);
+            });
           }
         });
 
-        if (audioRef.current) {
-          audioRef.current.play().catch((error) => {
-            console.error("Error playing audio:", error);
-          });
-        }
-      });
-
-      setShowPlayer(true);
+        setShowPlayer(true);
+      }
     } catch (error) {
       console.error("Error streaming audio:", error);
       setLoading(false);
@@ -197,7 +245,7 @@ const useStreamingAudio = () => {
     audioRef,
     toggleAudioRef,
     handleStreaming,
-    handleCloseAudio, // Return the handleCloseAudio function
+    handleCloseAudio,
   };
 };
 
