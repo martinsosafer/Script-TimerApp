@@ -28,7 +28,7 @@ const PricingTable = ({
       rowColor: "bg-white",
       features: {
         "Voice Ai": { enabled: true },
-        "Text To Voice": { value: "Yes- Watermarked" },
+        "Text To Voice": { enabled: true },
         "Ultra High Quality": { value: "10 minutes" },
         "Characters Per Script": { value: "500" },
         "Total monthly characters": { value: "10,000" },
@@ -37,7 +37,7 @@ const PricingTable = ({
         "Commercial License": { enabled: false },
         "Saved Voice History": { enabled: true },
         "Celebrity Voices": { enabled: false },
-        "Clone your Voice ": { enabled: false },
+        "Voice Cloning": { enabled: false },
         "Speech to Speech Cloning": { enabled: false },
         "Transcription: Speech to Text": { enabled: true },
         "Translation into 27 languages": { enabled: true },
@@ -59,14 +59,15 @@ const PricingTable = ({
         "Blog Images": { enabled: true },
         "Social Media Images": { enabled: true },
         "Plagiarism and Ai Detective ": { enabled: true },
+        "Included words per month": { value: "1,250" },
         "Plagiarism & Ai Detection": { enabled: true },
         "Source links to original": { enabled: true },
         "GPT, Claude, Gemini detection": { enabled: true },
         "Over 100 language detection": { enabled: true },
         "Paraphrasing detection": { enabled: true },
-        "Text spinner paraphrase detection": { enabled: true },
-        "Included words per month": { value: "1,250" },
-        "Easy-add more monthly scans": { value: "See Table" },
+        "Text spinner detection": { enabled: true },
+
+        "Easy Add-on": { value: "See Below" },
 
         " Courses": { enabled: false },
         "Stunning Videos": { value: "First 3 Lessons" },
@@ -99,7 +100,7 @@ const PricingTable = ({
         "Commercial License": { enabled: false },
         "Saved Voice History": { enabled: true },
         "Celebrity Voices": { value: "YES" },
-        "Clone your Voice ": { enabled: false },
+        "Voice Cloning": { enabled: false },
         "Speech to Speech Cloning": { enabled: false },
         "Transcription: Speech to Text": { enabled: true },
         "Translation into 27 languages": { enabled: true },
@@ -121,14 +122,15 @@ const PricingTable = ({
         "Blog Images": { enabled: true },
         "Social Media Images": { enabled: true },
         "Plagiarism and Ai Detective ": { enabled: true },
+        "Included words per month": { value: "1,500" },
         "Plagiarism & Ai Detection": { enabled: true },
         "Source links to original": { enabled: true },
         "GPT, Claude, Gemini detection": { enabled: true },
         "Over 100 language detection": { enabled: true },
         "Paraphrasing detection": { enabled: true },
-        "Text spinner paraphrase detection": { enabled: true },
-        "Included words per month": { value: "1,500" },
-        "Easy-add more monthly scans": { value: "See Table" },
+        "Text spinner detection": { enabled: true },
+
+        "Easy Add-on": { value: "See Below" },
         " Courses": { enabled: false },
         "Stunning Videos": { value: "First 3 Lessons" },
         "Stories for marketing": { value: "First 3 Lessons" },
@@ -161,7 +163,7 @@ const PricingTable = ({
         "Commercial License": { enabled: true },
         "Saved Voice History": { enabled: true },
         "Celebrity Voices": { value: "YES" },
-        "Clone your Voice ": { enabled: true },
+        "Voice Cloning": { enabled: false },
         "Speech to Speech Cloning": { enabled: true },
         "Transcription: Speech to Text": { enabled: true },
         "Translation into 27 languages": { enabled: true },
@@ -183,14 +185,15 @@ const PricingTable = ({
         "Blog Images": { enabled: true },
         "Social Media Images": { enabled: true },
         "Plagiarism and Ai Detective ": { enabled: true },
+        "Included words per month": { value: "1,750" },
         "Plagiarism & Ai Detection": { enabled: true },
         "Source links to original": { enabled: true },
         "GPT, Claude, Gemini detection": { enabled: true },
         "Over 100 language detection": { enabled: true },
         "Paraphrasing detection": { enabled: true },
-        "Text spinner paraphrase detection": { enabled: true },
-        "Included words per month": { value: "1,750" },
-        "Easy-add more monthly scans": { value: "See Table" },
+        "Text spinner detection": { enabled: true },
+
+        "Easy Add-on": { value: "See Below" },
         " Courses": { enabled: true },
         "Stunning Videos": { enabled: true },
         "Stories for marketing": { enabled: true },
@@ -222,7 +225,7 @@ const PricingTable = ({
         "Commercial License": { enabled: true },
         "Saved Voice History": { enabled: true },
         "Celebrity Voices": { value: "YES" },
-        "Clone your Voice ": { enabled: true },
+        "Voice Cloning": { enabled: false },
         "Speech to Speech Cloning": { enabled: true },
         "Transcription: Speech to Text": { enabled: true },
         "Translation into 27 languages": { enabled: true },
@@ -244,14 +247,15 @@ const PricingTable = ({
         "Blog Images": { enabled: true },
         "Social Media Images": { enabled: true },
         "Plagiarism and Ai Detective ": { enabled: true },
+        "Included words per month": { value: "2,000" },
         "Plagiarism & Ai Detection": { enabled: true },
         "Source links to original": { enabled: true },
         "GPT, Claude, Gemini detection": { enabled: true },
         "Over 100 language detection": { enabled: true },
         "Paraphrasing detection": { enabled: true },
-        "Text spinner paraphrase detection": { enabled: true },
-        "Included words per month": { value: "2,000" },
-        "Easy-add more monthly scans": { value: "See Table" },
+        "Text spinner detection": { enabled: true },
+
+        "Easy Add-on": { value: "See Below" },
 
         " Courses": { enabled: true },
         "Stunning Videos": { enabled: true },
@@ -274,7 +278,7 @@ const PricingTable = ({
     { label: "Commercial License", isMain: false },
     { label: "Saved Voice History", isMain: false },
     { label: "Celebrity Voices", isMain: false },
-    { label: "Clone your Voice ", isMain: false },
+    { label: "Voice Cloning", isMain: false },
     { label: "Speech to Speech Cloning", isMain: false },
     { label: "Transcription: Speech to Text", isMain: false },
     { label: "Translation into 27 languages", isMain: false },
@@ -292,14 +296,15 @@ const PricingTable = ({
     { label: "Storyboard creation", isMain: false },
     { label: "Blog Images", isMain: false },
     { label: "Plagiarism and Ai Detective ", isMain: true },
+    { label: "Included words per month", isMain: false },
     { label: "Plagiarism & Ai Detection", isMain: false },
     { label: "Source links to original", isMain: false },
     { label: "GPT, Claude, Gemini detection", isMain: false },
     { label: "Over 100 language detection", isMain: false },
     { label: "Paraphrasing detection", isMain: false },
-    { label: "Text spinner paraphrase detection", isMain: false },
-    { label: "Included words per month", isMain: false },
-    { label: "Easy-add more monthly scans", isMain: false },
+    { label: "Text spinner detection", isMain: false },
+
+    { label: "Easy Add-on", isMain: false },
 
     { label: " Courses", isMain: true },
     { label: "Stunning Videos", isMain: false },
@@ -352,14 +357,14 @@ const PricingTable = ({
 
     if (
       typeof featureData.value === "string" &&
-      feature.label === "Easy-add more monthly scans"
+      feature.label === "Easy Add-on"
     ) {
       // Ensure scrollToPlagiarismTable is defined
       if (typeof scrollToPlagiarismTable === "function") {
         return (
           <button
             onClick={scrollToPlagiarismTable}
-            className="cursor-pointer text-blue-500 underline"
+            className="cursor-pointer text-blue-500 "
           >
             {featureData.value}
           </button>
@@ -386,7 +391,7 @@ const PricingTable = ({
 
   return (
     <>
-      <div className="mb-8  mt-8 flex justify-center space-x-4">
+      <div className="mb-14  mt-8 flex justify-center space-x-4">
         <div className="flex gap-2 rounded-full border-2 border-gray-500 p-2">
           <button
             className={`${
@@ -423,7 +428,7 @@ const PricingTable = ({
 
       <div className="w-full overflow-x-auto">
         <div className="flex min-w-[1200px] max-w-[1300px]">
-          <div className="grid grid-cols-5 gap-2  px-20  py-4">
+          <div className="grid grid-cols-5 gap-2  px-20  py-8">
             <div className="flex flex-col">
               <div className="h-[132px]"></div>
               {featureLabels.map((feature, index) => (
@@ -450,7 +455,7 @@ const PricingTable = ({
                 >
                   {/* Most Popular Badge (Horizontal and Centered at the Top) */}
                   {tier.label && (
-                    <div className="absolute left-1/2 top-0 z-50 min-w-[130px] max-w-max -translate-x-1/2 -translate-y-1/2 transform overflow-hidden text-ellipsis whitespace-nowrap rounded-full border border-black bg-orange-500 px-4  text-center text-xs font-bold text-white">
+                    <div className="text-md absolute left-1/2 top-[-30px] z-[9999] min-h-[30px] min-w-[130px] max-w-max -translate-x-1/2 transform overflow-visible text-ellipsis whitespace-nowrap rounded-full border border-black bg-orange-500 px-4 py-1 text-center font-bold text-white">
                       {tier.label}
                     </div>
                   )}

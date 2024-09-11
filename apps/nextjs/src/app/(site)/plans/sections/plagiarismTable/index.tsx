@@ -28,19 +28,19 @@ const PlagiarismTable = forwardRef(
           "6 Steps to Amazing Scripts": { enabled: true },
 
           "Plagiarism and Ai Detective": { enabled: true },
+          "Included words per month": { value: "1,500" },
           "Plagiarism & Ai Detection": { enabled: true },
           "Source links to original": { enabled: true },
           "GPT, Claude, Gemini detection": { enabled: true },
           "Over 100 language detection": { enabled: true },
           "Paraphrasing detection": { enabled: true },
-          "Text spinner paraphrase detection": { enabled: true },
-          "Included words per month": { value: "1,500" },
+          "Text spinner detection": { enabled: true },
         },
       },
       {
         name: "CREATOR",
         description: "Discounted for .edu emails",
-        price: 9,
+        price: 14,
         yearlyMonthlyPrice: 14.99,
         yearlyPrice: 149,
         color: "bg-blue-600",
@@ -54,19 +54,20 @@ const PlagiarismTable = forwardRef(
           "6 Steps to Amazing Scripts": { enabled: true },
 
           "Plagiarism and Ai Detective": { enabled: true },
+          "Included words per month": { value: "1,750" },
           "Plagiarism & Ai Detection": { enabled: true },
           "Source links to original": { enabled: true },
           "GPT, Claude, Gemini detection": { enabled: true },
           "Over 100 language detection": { enabled: true },
           "Paraphrasing detection": { enabled: true },
-          "Text spinner paraphrase detection": { enabled: true },
+          "Text spinner detection": { enabled: true },
           "Included words per month": { value: "1,750" },
         },
       },
       {
         name: "BUSINESS",
         description: "Discounted for .edu emails",
-        price: 9,
+        price: 19,
         yearlyMonthlyPrice: 19.97,
         yearlyPrice: 197,
         color: "bg-blue-700",
@@ -80,13 +81,13 @@ const PlagiarismTable = forwardRef(
           "6 Steps to Amazing Scripts": { enabled: true },
 
           "Plagiarism and Ai Detective": { enabled: true },
+          "Included words per month": { value: "2000" },
           "Plagiarism & Ai Detection": { enabled: true },
           "Source links to original": { enabled: true },
           "GPT, Claude, Gemini detection": { enabled: true },
           "Over 100 language detection": { enabled: true },
           "Paraphrasing detection": { enabled: true },
-          "Text spinner paraphrase detection": { enabled: true },
-          "Included words per month": { value: "2000" },
+          "Text spinner detection": { enabled: true },
         },
       },
     ];
@@ -99,13 +100,13 @@ const PlagiarismTable = forwardRef(
       { label: "6 Steps to Amazing Scripts", isMain: false },
 
       { label: "Plagiarism and Ai Detective", isMain: true },
+      { label: "Included words per month", isMain: false },
       { label: "Plagiarism & Ai Detection", isMain: false },
       { label: "Source links to original", isMain: false },
       { label: "GPT, Claude, Gemini detection", isMain: false },
       { label: "Over 100 language detection", isMain: false },
       { label: "Paraphrasing detection", isMain: false },
-      { label: "Text spinner paraphrase detection", isMain: false },
-      { label: "Included words per month", isMain: false },
+      { label: "Text spinner detection", isMain: false },
     ];
 
     const getBackgroundColors = (tier) => {
@@ -191,7 +192,7 @@ const PlagiarismTable = forwardRef(
             className="flex min-w-[1200px] max-w-[1300px] "
             id="plagiarism-table"
           >
-            <div className="grid grid-cols-5 gap-2 px-20 py-4">
+            <div className="grid grid-cols-5 gap-2 px-20 py-8">
               <div className="flex flex-col">
                 <div className="h-[132px]"></div>
                 {featureLabels.map((feature, index) => (
@@ -219,7 +220,7 @@ const PlagiarismTable = forwardRef(
                   >
                     {/* Most Popular Badge (Horizontal and Centered at the Top) */}
                     {tier.label && (
-                      <div className="absolute left-1/2 top-0 z-50 min-w-[130px] max-w-max -translate-x-1/2 -translate-y-1/2 transform overflow-hidden text-ellipsis whitespace-nowrap rounded-full border border-black bg-orange-500 px-4  text-center text-xs font-bold text-white">
+                      <div className="text-md absolute left-1/2 top-[-30px] z-[9999] min-h-[30px] min-w-[130px] max-w-max -translate-x-1/2 transform overflow-visible text-ellipsis whitespace-nowrap rounded-full border border-black bg-orange-500 px-4 py-1 text-center font-bold text-white">
                         {tier.label}
                       </div>
                     )}
