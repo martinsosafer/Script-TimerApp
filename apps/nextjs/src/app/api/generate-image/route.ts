@@ -30,7 +30,8 @@ export async function POST(req: Request): Promise<Response> {
       size: "1792x1024",
       quality: "hd",
     });
-    const image_url = response.data[0]?.url;
+
+    const image_url = response?.data[0]?.url ?? "";
 
     if (image_url) {
       await db
