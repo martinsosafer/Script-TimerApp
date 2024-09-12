@@ -56,12 +56,12 @@ const languages = [
 export default function LanguagesRows() {
   return (
     <>
-      <div className="sticky top-0 z-10 mb-20 bg-white px-4">
+      <div className="sticky top-0 z-10  mb-5 bg-white px-4">
         <h2 className="font-poppins text-lg font-semibold text-black  md:text-xl">
           Our ai supports the following languages
         </h2>
       </div>
-      <div className="container mx-auto px-20 py-8">
+      <div className="container mx-auto mb-8 px-20 py-8">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7">
           {languages.map((lang) => (
             <button

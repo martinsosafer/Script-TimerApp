@@ -54,7 +54,7 @@ const testimonials = [
 
 export default function PricingTestimonials() {
   return (
-    <div className="mb-5 rounded-md bg-blue-600 p-10 text-white">
+    <div className="mb-5 mb-8 rounded-md bg-blue-600 p-10 text-white">
       <div className="mx-auto max-w-6xl">
         <div className="mb-8 grid grid-cols-2 gap-4 rounded-lg bg-white p-6 text-black md:grid-cols-4">
           {ratings.map((rating, index) => (

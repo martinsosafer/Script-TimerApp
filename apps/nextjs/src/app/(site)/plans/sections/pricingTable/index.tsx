@@ -430,7 +430,7 @@ const PricingTable = ({
         <div className="flex min-w-[1200px] max-w-[1300px]">
           <div className="grid grid-cols-5 gap-2  px-20  py-8">
             <div className="flex flex-col">
-              <div className="h-[132px]"></div>
+              <div className="h-[170px]"></div>
               {featureLabels.map((feature, index) => (
                 <div
                   key={index}
@@ -461,7 +461,7 @@ const PricingTable = ({
                   )}
 
                   <div
-                    className={`${tier.color} relative p-1 text-center text-white`}
+                    className={`${tier.color} relative p-1 py-6 text-center text-white`}
                   >
                     <div className="font-poppins text-xl">{tier.name}</div>
                     <div className="text-sm font-medium text-white">
@@ -507,7 +507,7 @@ const PricingTable = ({
                     </div>
                   </div>
 
-                  <div className=" mt-[-51px] flex-grow p-4">
+                  <div className=" mt-[-54px] flex-grow p-4">
                     {featureLabels.map((feature, featureIndex) => (
                       <div
                         key={featureIndex}

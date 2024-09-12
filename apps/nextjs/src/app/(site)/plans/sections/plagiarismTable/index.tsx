@@ -146,14 +146,15 @@ const PlagiarismTable = forwardRef(
     return (
       <>
         {/* Title for Plagiarism and Add-ons on the left side */}
-        <div className="sticky top-0 z-10 bg-white px-4 py-6 text-center">
-          <h2 className="font-poppins text-xl font-bold text-black  md:text-2xl">
-            Only need writing and Plagiarism / Ai support? <br />
+        <div className="top-0 z-10 bg-white px-4 py-6 text-center">
+          <h2 className="font-poppins text-xl font-bold text-black md:text-2xl">
+            Only need writing and Plagiarism / Ai support?
+            <br />
             Start here:
           </h2>
         </div>
 
-        <div className="mb-8  mt-8 flex justify-center space-x-4">
+        <div className="mb-14  mt-8 flex justify-center space-x-4">
           <div className="flex gap-2 rounded-full border-2 border-gray-500 p-2">
             <button
               className={`${
