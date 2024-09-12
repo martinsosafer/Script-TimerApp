@@ -56,7 +56,7 @@ const languages = [
 export default function LanguagesRows() {
   return (
     <>
-      <div className="sticky top-0 z-10 mb-10 bg-white px-4">
+      <div className="sticky top-0 z-10 mb-20 bg-white px-4">
         <h2 className="font-poppins text-lg font-semibold text-black  md:text-xl">
           Our ai supports the following languages
         </h2>

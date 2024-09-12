@@ -31,24 +31,23 @@ const ratings = [
 
 const testimonials = [
   {
-    quote:
-      "We had an incredible time working with you. We are overwhelmed with our results...Thank you!",
-    author: "DAVID JOO",
-    position: "CEO at KnowRe",
+    quote: "We are so happy we work with you, our efficiency has exploded.",
+    author: "David J",
+    position: "CEO ",
     image: David,
   },
   {
     quote:
-      "LexisNexis was searching for the right agency, something innovative, creative, and cutting edge... RipMedia blew us away.",
-    author: "SUSAN CRANDALL",
-    position: "Senior Director of Marketing at LexisNexis",
+      "We were searching for a solution, and this platform is exactly what we needed.",
+    author: "Susan C",
+    position: "Senior Marketing Lead",
     image: Susan,
   },
   {
     quote:
-      "It is such a pleasure working with you, your team is unbelievably CREATIVE and ORGANIZED.",
-    author: "JILL BAUMAN",
-    position: "CEO at Imagine L.A.",
+      "Our productivity is now over 4 times higher than just last quarter. Our ability to create is amazingly fast, accurate and has the highest efficacy.",
+    author: "Jill B",
+    position: "CEO",
     image: Jill,
   },
 ];

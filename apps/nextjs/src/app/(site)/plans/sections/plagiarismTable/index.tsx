@@ -15,8 +15,8 @@ const PlagiarismTable = forwardRef(
         name: "EDUCATION",
         description: "Discounted for .edu emails",
         price: 9,
-        yearlyMonthlyPrice: 9.97,
-        yearlyPrice: 97,
+        yearlyMonthlyPrice: 7.75,
+        yearlyPrice: 93,
 
         color: "bg-blue-500",
         rowColor: "bg-white",
@@ -28,7 +28,7 @@ const PlagiarismTable = forwardRef(
           "6 Steps to Amazing Scripts": { enabled: true },
 
           "Plagiarism and Ai Detective": { enabled: true },
-          "Included words per month": { value: "1,500" },
+          "Included words per month": { value: "10,000" },
           "Plagiarism & Ai Detection": { enabled: true },
           "Source links to original": { enabled: true },
           "GPT, Claude, Gemini detection": { enabled: true },
@@ -41,8 +41,8 @@ const PlagiarismTable = forwardRef(
         name: "CREATOR",
         description: "Discounted for .edu emails",
         price: 14,
-        yearlyMonthlyPrice: 14.99,
-        yearlyPrice: 149,
+        yearlyMonthlyPrice: 11,
+        yearlyPrice: 132,
         color: "bg-blue-600",
         rowColor: "bg-white",
         label: "Most Popular",
@@ -54,21 +54,20 @@ const PlagiarismTable = forwardRef(
           "6 Steps to Amazing Scripts": { enabled: true },
 
           "Plagiarism and Ai Detective": { enabled: true },
-          "Included words per month": { value: "1,750" },
+          "Included words per month": { value: "15,000" },
           "Plagiarism & Ai Detection": { enabled: true },
           "Source links to original": { enabled: true },
           "GPT, Claude, Gemini detection": { enabled: true },
           "Over 100 language detection": { enabled: true },
           "Paraphrasing detection": { enabled: true },
           "Text spinner detection": { enabled: true },
-          "Included words per month": { value: "1,750" },
         },
       },
       {
         name: "BUSINESS",
         description: "Discounted for .edu emails",
         price: 19,
-        yearlyMonthlyPrice: 19.97,
+        yearlyMonthlyPrice: 16.41,
         yearlyPrice: 197,
         color: "bg-blue-700",
         rowColor: "bg-white",
@@ -81,7 +80,7 @@ const PlagiarismTable = forwardRef(
           "6 Steps to Amazing Scripts": { enabled: true },
 
           "Plagiarism and Ai Detective": { enabled: true },
-          "Included words per month": { value: "2000" },
+          "Included words per month": { value: "20,000" },
           "Plagiarism & Ai Detection": { enabled: true },
           "Source links to original": { enabled: true },
           "GPT, Claude, Gemini detection": { enabled: true },
@@ -147,9 +146,10 @@ const PlagiarismTable = forwardRef(
     return (
       <>
         {/* Title for Plagiarism and Add-ons on the left side */}
-        <div className="sticky top-0 z-10 bg-white px-4 py-3">
-          <h2 className="text-blacks font-poppins text-xl font-bold  md:text-2xl">
-            Only need writing and Plagiarism / Ai support? Start here:
+        <div className="sticky top-0 z-10 bg-white px-4 py-6 text-center">
+          <h2 className="font-poppins text-xl font-bold text-black  md:text-2xl">
+            Only need writing and Plagiarism / Ai support? <br />
+            Start here:
           </h2>
         </div>
 
