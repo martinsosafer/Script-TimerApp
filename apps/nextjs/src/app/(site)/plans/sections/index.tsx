@@ -16,6 +16,8 @@ export default function PlansSections({
   yearlyPlans,
   planInterval,
   session,
+  plagiarismMonthlyPlans,
+  plagiarismYearlyPlans,
 }: PriceCardsProps) {
   const { data } = api.subscription.mySubscription.useQuery();
   const plagiarismTableRef = useRef<HTMLDivElement>(null);
@@ -44,7 +46,8 @@ export default function PlansSections({
 
       <PlagiarismTable
         id="plagiarism-table"
-        monthlyPlans={monthlyPlans}
+        plagiarismMonthlyPlans={plagiarismMonthlyPlans}
+        plagiarismYearlyPlans={plagiarismYearlyPlans}
         yearlyPlans={yearlyPlans}
         currentPlan={currentPlan}
         planInterval={planInterval}

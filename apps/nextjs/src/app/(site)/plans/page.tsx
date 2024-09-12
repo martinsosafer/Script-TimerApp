@@ -21,7 +21,7 @@ async function loadProducts() {
 
   const stripe = new Stripe(stripeSecretKey);
   const stripeProducts = await stripe.products.list();
-  console.log("stripeProducts", stripeProducts);
+
   const products = stripeProducts.data.map((stripeProduct) => {
     return {
       id: stripeProduct.id,
@@ -51,27 +51,50 @@ async function loadProducts() {
   }
   const plans: Plans[] = [Plans.STUDENT, Plans.CREATOR, Plans.BUSINESS];
 
+  // Sort all products by price
   products.sort((a, b) => a.metadata.price - b.metadata.price);
 
-  // Filter products into monthly and yearly plans
-  const monthlyPlans = products.filter(
-    (product) =>
-      product.metadata.price <= 39 && plans.includes(product.name as Plans),
+  const originalPlans = products.filter((product) =>
+    plans.includes(product.name as Plans),
   );
-  const yearlyPlans = products.filter(
-    (product) =>
-      product.metadata.price > 39 && plans.includes(product.name as Plans),
+
+  const plagiarismProducts = products.filter((product) =>
+    product.name.includes("Plagiarism + Ai Detection"),
+  );
+
+  const monthlyPlans = originalPlans.filter((product) =>
+    product.name.toLowerCase().includes("/ mo"),
+  );
+  const yearlyPlans = originalPlans.filter((product) =>
+    product.name.toLowerCase().includes("/ yr"),
+  );
+
+  const plagiarismMonthlyPlans = plagiarismProducts.filter((product) =>
+    product.name.toLowerCase().includes("/ mo"),
+  );
+  const plagiarismYearlyPlans = plagiarismProducts.filter((product) =>
+    product.name.toLowerCase().includes("/ yr"),
   );
 
   const orderedMonthlyPlans = monthlyPlans.sort(
     (a, b) => a.metadata.price - b.metadata.price,
   );
-
   const orderedYearlyPlans = yearlyPlans.sort(
     (a, b) => a.metadata.price - b.metadata.price,
   );
+  const orderedPlagiarismMonthlyPlans = plagiarismMonthlyPlans.sort(
+    (a, b) => a.metadata.price - b.metadata.price,
+  );
+  const orderedPlagiarismYearlyPlans = plagiarismYearlyPlans.sort(
+    (a, b) => a.metadata.price - b.metadata.price,
+  );
 
-  return { monthlyPlans: orderedMonthlyPlans, yearlyPlans: orderedYearlyPlans };
+  return {
+    monthlyPlans: orderedMonthlyPlans,
+    yearlyPlans: orderedYearlyPlans,
+    plagiarismMonthlyPlans: orderedPlagiarismMonthlyPlans,
+    plagiarismYearlyPlans: orderedPlagiarismYearlyPlans,
+  };
 }
 
 async function getSubscription(planId: string | null | undefined) {
@@ -106,7 +129,12 @@ async function getSubscription(planId: string | null | undefined) {
 }
 
 async function PlansPage() {
-  const { monthlyPlans, yearlyPlans } = await loadProducts();
+  const {
+    monthlyPlans,
+    yearlyPlans,
+    plagiarismMonthlyPlans,
+    plagiarismYearlyPlans,
+  } = await loadProducts();
   const session = await auth();
   let subscription;
   if (session) {
@@ -128,11 +156,12 @@ async function PlansPage() {
         </span>
       </div>
       <PlansSections
-        
         monthlyPlans={monthlyPlans}
         yearlyPlans={yearlyPlans}
         planInterval={subscription?.plan?.interval}
         session={session}
+        plagiarismMonthlyPlans={plagiarismMonthlyPlans}
+        plagiarismYearlyPlans={plagiarismYearlyPlans}
       />
     </div>
   );

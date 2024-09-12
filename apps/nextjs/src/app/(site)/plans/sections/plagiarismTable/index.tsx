@@ -5,10 +5,7 @@ import { CheckIcon } from "@voiceai/ui/@/icons/icons";
 import CheckoutButton from "../priceCards/check-out-button";
 
 const PlagiarismTable = forwardRef(
-  (
-    { id, monthlyPlans, yearlyPlans, currentPlan, planInterval, session },
-    ref,
-  ) => {
+  ({ session, plagiarismMonthlyPlans, plagiarismYearlyPlans, id }, ref) => {
     const [showMonthly, setShowMonthly] = useState(true);
     const tiers = [
       {
@@ -17,21 +14,22 @@ const PlagiarismTable = forwardRef(
         price: 9,
         yearlyMonthlyPrice: 7.75,
         yearlyPrice: 93,
-
+        productIdMonth: "prod_Qpsuj4pfwigoce",
+        productIdYear: "prod_QpsuGyXva9dKLW",
         color: "bg-blue-500",
         rowColor: "bg-white",
         features: {
           "Script Writing": { enabled: true },
-          "Script Coaching - Ai Rewriting": { value: "200,000 credits" },
+          "Ai Writing": { value: "200,000 credits" },
           "Translation - Audio & Text": { value: "200,000 credits" },
           "Grammar / Spell Checker": { value: "200,000 credits" },
           "6 Steps to Amazing Scripts": { enabled: true },
 
-          "Plagiarism and Ai Detective": { enabled: true },
+          "Plagiarism Detection": { enabled: true },
           "Included words per month": { value: "10,000" },
           "Plagiarism & Ai Detection": { enabled: true },
           "Source links to original": { enabled: true },
-          "GPT, Claude, Gemini detection": { enabled: true },
+          "GPT, Claude, Gemini": { enabled: true },
           "Over 100 language detection": { enabled: true },
           "Paraphrasing detection": { enabled: true },
           "Text spinner detection": { enabled: true },
@@ -43,21 +41,23 @@ const PlagiarismTable = forwardRef(
         price: 14,
         yearlyMonthlyPrice: 11,
         yearlyPrice: 132,
+        productIdMonth: "prod_QpsrhfYRpJokHB",
+        productIdYear: "prod_QpspBNC8085JtD",
         color: "bg-blue-600",
         rowColor: "bg-white",
         label: "Most Popular",
         features: {
           "Script Writing": { enabled: true },
-          "Script Coaching - Ai Rewriting": { value: "400,000 credits" },
+          "Ai Writing": { value: "400,000 credits" },
           "Translation - Audio & Text": { value: "400,000 credits" },
           "Grammar / Spell Checker": { value: "400,000 credits" },
           "6 Steps to Amazing Scripts": { enabled: true },
 
-          "Plagiarism and Ai Detective": { enabled: true },
+          "Plagiarism Detection": { enabled: true },
           "Included words per month": { value: "15,000" },
           "Plagiarism & Ai Detection": { enabled: true },
           "Source links to original": { enabled: true },
-          "GPT, Claude, Gemini detection": { enabled: true },
+          "GPT, Claude, Gemini": { enabled: true },
           "Over 100 language detection": { enabled: true },
           "Paraphrasing detection": { enabled: true },
           "Text spinner detection": { enabled: true },
@@ -69,21 +69,23 @@ const PlagiarismTable = forwardRef(
         price: 19,
         yearlyMonthlyPrice: 16.41,
         yearlyPrice: 197,
+        productIdMonth: "prod_QpstEY5wQbjQb8",
+        productIdYear: "prod_Qpst51UXUqyaUQ",
         color: "bg-blue-700",
         rowColor: "bg-white",
 
         features: {
           "Script Writing": { enabled: true },
-          "Script Coaching - Ai Rewriting": { value: "1,000,000 credits" },
+          "Ai Writing": { value: "1,000,000 credits" },
           "Translation - Audio & Text": { value: "1,000,000 credits" },
           "Grammar / Spell Checker": { value: "1,000,000 credits" },
           "6 Steps to Amazing Scripts": { enabled: true },
 
-          "Plagiarism and Ai Detective": { enabled: true },
+          "Plagiarism Detection": { enabled: true },
           "Included words per month": { value: "20,000" },
           "Plagiarism & Ai Detection": { enabled: true },
           "Source links to original": { enabled: true },
-          "GPT, Claude, Gemini detection": { enabled: true },
+          "GPT, Claude, Gemini": { enabled: true },
           "Over 100 language detection": { enabled: true },
           "Paraphrasing detection": { enabled: true },
           "Text spinner detection": { enabled: true },
@@ -93,20 +95,23 @@ const PlagiarismTable = forwardRef(
 
     const featureLabels = [
       { label: "Script Writing", isMain: true },
-      { label: "Script Coaching - Ai Rewriting", isMain: false },
+      { label: "Ai Writing", isMain: false },
       { label: "Translation - Audio & Text", isMain: false },
       { label: "Grammar / Spell Checker", isMain: false },
       { label: "6 Steps to Amazing Scripts", isMain: false },
 
-      { label: "Plagiarism and Ai Detective", isMain: true },
+      { label: "Plagiarism Detection", isMain: true },
       { label: "Included words per month", isMain: false },
       { label: "Plagiarism & Ai Detection", isMain: false },
       { label: "Source links to original", isMain: false },
-      { label: "GPT, Claude, Gemini detection", isMain: false },
+      { label: "GPT, Claude, Gemini", isMain: false },
       { label: "Over 100 language detection", isMain: false },
       { label: "Paraphrasing detection", isMain: false },
       { label: "Text spinner detection", isMain: false },
     ];
+    const handleProductId = (tier) => {
+      return showMonthly ? tier.productIdMonth : tier.productIdYear;
+    };
 
     const getBackgroundColors = (tier) => {
       let currentGroup = -1;
@@ -142,14 +147,18 @@ const PlagiarismTable = forwardRef(
 
       return null;
     };
-
+    console.log("PLAGMonth", plagiarismMonthlyPlans);
+    console.log("PLAGMYEARLY", plagiarismYearlyPlans);
     return (
       <>
         {/* Title for Plagiarism and Add-ons on the left side */}
-        <div className="top-0 z-10 bg-white px-4 py-6 text-center">
+        <div
+          className="top-0 z-10 mt-10 bg-white px-4 py-6 text-center"
+          ref={ref}
+        >
           <h2 className="font-poppins text-xl font-bold text-black md:text-2xl">
             Only need writing and Plagiarism / Ai support?
-            <br />
+            <br className="mt-4" />
             Start here:
           </h2>
         </div>
@@ -259,7 +268,10 @@ const PlagiarismTable = forwardRef(
 
                     {tier.name !== "FREE" && (
                       <div className="flex justify-center p-4">
-                        <CheckoutButton session={session} />
+                        <CheckoutButton
+                          session={session}
+                          productId={handleProductId(tier)}
+                        />
                       </div>
                     )}
                   </div>

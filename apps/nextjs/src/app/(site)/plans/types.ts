@@ -23,6 +23,8 @@ export interface Product {
 export interface PriceCardsProps {
   monthlyPlans: Product[];
   yearlyPlans: Product[];
+  plagiarismMonthlyPlans: Product[];
+  plagiarismYearlyPlans: Product[];
   currentPlan?: string | undefined;
   planInterval?: string;
   session: Session | null;
