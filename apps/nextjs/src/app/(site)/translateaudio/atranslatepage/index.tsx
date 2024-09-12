@@ -11,7 +11,11 @@ import LoadingDots from "~/app/(site)/components/loadingdots";
 import deductOpenAiCredits from "~/app/actions/openAiCredits";
 import languages from "~/lib/languages";
 
-export default function AudioTranslate({ subData, setOpenNoSessionModal }) {
+export default function AudioTranslate({
+  subData,
+  setOpenNoSessionModal,
+  openAiCredits,
+}) {
   const [loading, setLoading] = React.useState(false);
   const [language, setLanguage] = React.useState<string>(languages[0]?.value);
   const [generatedTranslation, setGeneratedTranslation] =
@@ -20,6 +24,8 @@ export default function AudioTranslate({ subData, setOpenNoSessionModal }) {
     undefined,
   );
   const [showFreeModal, setShowFreeModal] = React.useState(false); // State for showing the FreeModal
+
+  const [credits, setcredits] = React.useState(openAiCredits);
 
   const translateAudio = async () => {
     setGeneratedTranslation("");
@@ -31,29 +37,38 @@ export default function AudioTranslate({ subData, setOpenNoSessionModal }) {
     }
     formData.append("language", language);
 
-    try {
-      const response = await fetch("/api/translatorAudio", {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await response.json();
-
-      if (data.success as boolean) {
-        setGeneratedTranslation(data.data.text);
-        await deductOpenAiCredits(data.data.text.length * 3);
-      } else {
-        console.error("Error transcribing audio:", data.error);
-        toast({ title: "Error transcribing audio", description: data.error });
-      }
-    } catch (error) {
-      console.error("Error transcribing audio:", error);
+    if (credits < 60) {
       toast({
-        title: "Error transcribing audio",
-        description: (error as Error).message,
+        title: "Insufficient Credits",
+        description: "You do not have enough credits for this translation.",
       });
-    } finally {
       setLoading(false);
+    } else {
+      try {
+        const response = await fetch("/api/translatorAudio", {
+          method: "POST",
+          body: formData,
+        });
+
+        const data = await response.json();
+
+        if (data.success as boolean) {
+          setGeneratedTranslation(data.data.text);
+          setcredits(credits - data.data.text.length * 3);
+          await deductOpenAiCredits(data.data.text.length * 3);
+        } else {
+          console.error("Error transcribing audio:", data.error);
+          toast({ title: "Error transcribing audio", description: data.error });
+        }
+      } catch (error) {
+        console.error("Error transcribing audio:", error);
+        toast({
+          title: "Error transcribing audio",
+          description: (error as Error).message,
+        });
+      } finally {
+        setLoading(false);
+      }
     }
   };
 

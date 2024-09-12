@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import type { CoreMessage } from "ai";
 import { readStreamableValue } from "ai/rsc";
 
+import { toast } from "@voiceai/ui/@/components/ui/toast";
+
 import type { Prompt } from "~/app/(site)/data/chat-prompts/types";
 import { clearChats } from "~/app/actions/newChatActions";
 import deductOpenAiCredits from "~/app/actions/openAiCredits";
@@ -24,9 +26,10 @@ import WelcomeMessage from "./welcome-message/welcome-message";
 
 interface ChatProps {
   userId: string | undefined;
+  openAiCredits: number;
 }
 
-export default function ChatInteraction({ userId }: ChatProps) {
+export default function ChatInteraction({ userId, openAiCredits }: ChatProps) {
   const [selectedCard, setSelectedCard] = useState<Prompt | undefined>();
   const [promptInput, setPromptInput] = useState<string>("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -48,6 +51,8 @@ export default function ChatInteraction({ userId }: ChatProps) {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const [credits, setCredits] = useState(openAiCredits);
+
   useEffect(() => {
     setPromptInput("");
     setMessages([]);
@@ -65,45 +70,55 @@ export default function ChatInteraction({ userId }: ChatProps) {
   async function handleSubmitChat(e: FormEvent, chatId?: string) {
     setIsLoading(true);
     const tokens = promptInput.length + (feedbackInput?.length ?? 0);
-    try {
-      e.preventDefault();
 
-      const newMessages: CoreMessage[] = [
-        ...messages,
-        {
-          content: selectedCard?.prompt_ai ?? "",
-          role: "system",
-        },
-        {
-          content: feedbackInput.length > 0 ? feedbackInput : promptInput,
-          role: "user",
-        },
-      ];
-
-      setMessages(newMessages);
-      setPromptInput("");
-      setFeedbackInput("");
-      setSelectedCard(undefined);
-
-      const { value } = await continueConversation(
-        newMessages,
-        selectedChatHistory,
-        feedbackChatId ?? chatId,
-      );
-
-      for await (const content of readStreamableValue(value)) {
-        setMessages([
-          ...newMessages,
-          {
-            role: "assistant",
-            content: content!,
-          },
-        ]);
-      }
-      await deductOpenAiCredits(tokens);
+    if (tokens > credits) {
+      toast({
+        title: "Insufficient Credits",
+        description: "You do not have enough credits for this interaction.",
+      });
       setIsLoading(false);
-    } catch (err) {
-      console.error(err);
+    } else {
+      try {
+        e.preventDefault();
+
+        const newMessages: CoreMessage[] = [
+          ...messages,
+          {
+            content: selectedCard?.prompt_ai ?? "",
+            role: "system",
+          },
+          {
+            content: feedbackInput.length > 0 ? feedbackInput : promptInput,
+            role: "user",
+          },
+        ];
+
+        setCredits(credits - tokens);
+        setMessages(newMessages);
+        setPromptInput("");
+        setFeedbackInput("");
+        setSelectedCard(undefined);
+
+        const { value } = await continueConversation(
+          newMessages,
+          selectedChatHistory,
+          feedbackChatId ?? chatId,
+        );
+
+        for await (const content of readStreamableValue(value)) {
+          setMessages([
+            ...newMessages,
+            {
+              role: "assistant",
+              content: content!,
+            },
+          ]);
+        }
+        await deductOpenAiCredits(tokens);
+        setIsLoading(false);
+      } catch (err) {
+        console.error(err);
+      }
     }
   }
 

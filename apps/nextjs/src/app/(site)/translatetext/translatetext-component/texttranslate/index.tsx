@@ -9,13 +9,18 @@ import FreeModal from "~/app/(site)/components/free-modal"; // Import the FreeMo
 import LoadingDots from "~/app/(site)/components/loadingdots";
 import languages from "~/lib/languages";
 
-export default function TextTranslate({ subData, setOpenNoSessionModal }) {
+export default function TextTranslate({
+  subData,
+  setOpenNoSessionModal,
+  openAiCredits,
+}) {
   const [loading, setLoading] = React.useState(false);
   const [language, setLanguage] = React.useState<string>(languages[0]?.value);
   const [generatedTranslation, setGeneratedTranslation] =
     React.useState<string>("");
   const [text, setText] = React.useState<string>("");
   const [showFreeModal, setShowFreeModal] = React.useState(false); // State for showing the FreeModal
+  const [credits, setCredits] = React.useState(openAiCredits);
 
   const url = "https://api.openai.com/v1/audio/transcriptions";
   const currentModel = "gpt-4o";
@@ -25,41 +30,49 @@ export default function TextTranslate({ subData, setOpenNoSessionModal }) {
     setGeneratedTranslation("");
     setLoading(true);
 
-    try {
-      const response = await fetch("/api/translatorText", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          prompt,
-          currentModel,
-        }),
-      });
-
-      const responseText = await response.text();
-      console.log("Raw response:", responseText);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = JSON.parse(responseText);
-
-      if (!data?.data) {
-        throw new Error("Invalid response structure");
-      }
-
-      setGeneratedTranslation(data.data);
-    } catch (error) {
-      console.error("Error during translation:", error);
+    if (prompt.length > credits) {
       toast({
-        title: "Translation failed",
-        description:
-          "An error occurred while translating the text. Please try again.",
+        title: "Insufficient Credits",
+        description: "You do not have enough credits for this translation.",
       });
-    } finally {
       setLoading(false);
+    } else {
+      try {
+        const response = await fetch("/api/translatorText", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            prompt,
+            currentModel,
+          }),
+        });
+
+        const responseText = await response.text();
+        console.log("Raw response:", responseText);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = JSON.parse(responseText);
+
+        if (!data?.data) {
+          throw new Error("Invalid response structure");
+        }
+        setCredits(credits - prompt.length);
+        setGeneratedTranslation(data.data);
+      } catch (error) {
+        console.error("Error during translation:", error);
+        toast({
+          title: "Translation failed",
+          description:
+            "An error occurred while translating the text. Please try again.",
+        });
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
