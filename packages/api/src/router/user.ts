@@ -49,6 +49,8 @@ async function updateUserCredits(
       where: eq(schema.openAiCredit.userId, userId),
     });
 
+    console.log("OPENAICREDIT", openAiCredit);
+
     if (openAiCredit) {
       // Update the existing credits
       await db
@@ -57,10 +59,8 @@ async function updateUserCredits(
           credits: openAiCredits,
           updated_at: new Date(),
         })
-        .where(eq(elevenLabsCredit.userId, userId))
+        .where(eq(schema.openAiCredit.userId, userId))
         .execute();
-
-      console.log("Credits updated successfully for user:", userId);
     } else {
       // Insert new credits if they don't exist
       await db.insert(schema.openAiCredit).values({
