@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 
 import { api } from "~/utils/api";
+import AdminFilters from "../filters";
 
 interface UserData {
   name: string;
@@ -273,79 +274,26 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
   return (
     <div className="container mx-auto mb-12 p-4">
       <h1 className="mb-4 text-2xl font-bold">User Dashboard</h1>
-      <div className="mb-4 flex flex-wrap">
-        <div className="mb-4 flex w-full flex-wrap md:mb-0 md:w-1/2">
-          <input
-            type="text"
-            placeholder="Search by email, name or id"
-            value={searchTerm}
-            onChange={handleSearch}
-            className="w-full rounded-lg border border-gray-300 px-4 py-2"
-          />
-        </div>
-        <div className="mb-4 flex w-full flex-wrap md:mb-0 md:w-1/4">
-          <select
-            value={selectedPlan}
-            onChange={handlePlanChange}
-            className="w-full rounded-lg border border-gray-300 px-4 py-2"
-          >
-            <option value="">All Plans</option>
-            <option value="student">Student</option>
-            <option value="creator">Creator</option>
-            <option value="business">Business</option>
-          </select>
-        </div>
-        <div className="mb-4 flex w-full flex-wrap md:mb-0 md:w-1/4">
-          <input
-            type="number"
-            placeholder="Min Credits"
-            value={minCredits === "" ? "" : minCredits}
-            onChange={handleMinCreditsChange}
-            className="w-full rounded-lg border border-gray-300 px-4 py-2"
-          />
-        </div>
-        <div className="mb-4 flex w-full flex-wrap md:mb-0 md:w-1/4">
-          <input
-            type="number"
-            placeholder="Min Days with Current Plan Asc"
-            value={minDaysWithPlanAsc === "" ? "" : minDaysWithPlanAsc}
-            onChange={handleMinDaysWithPlanAscChange}
-            className="w-full rounded-lg border border-gray-300 px-4 py-2"
-          />
-        </div>
-        <div className="mb-4 flex w-full flex-wrap md:mb-0 md:w-1/4">
-          <input
-            type="number"
-            placeholder="Max Days with Current Plan Desc"
-            value={minDaysWithPlanDesc === "" ? "" : minDaysWithPlanDesc}
-            onChange={handleMinDaysWithPlanDescChange}
-            className="w-full rounded-lg border border-gray-300 px-4 py-2"
-          />
-        </div>
-        <div className="mb-4 flex w-full flex-wrap md:mb-0 md:w-1/4">
-          <input
-            type="number"
-            placeholder="Min Days Since Creation Asc"
-            value={
-              minDaysSinceCreationAsc === "" ? "" : minDaysSinceCreationAsc
-            }
-            onChange={handleMinDaysSinceCreationAscChange}
-            className="w-full rounded-lg border border-gray-300 px-4 py-2"
-          />
-        </div>
-        <div className="mb-4 flex w-full flex-wrap md:mb-0 md:w-1/4">
-          <input
-            type="number"
-            placeholder="Max Days Since Creation Desc"
-            value={
-              minDaysSinceCreationDesc === "" ? "" : minDaysSinceCreationDesc
-            }
-            onChange={handleMinDaysSinceCreationDescChange}
-            className="w-full rounded-lg border border-gray-300 px-4 py-2"
-          />
-        </div>
-      </div>
-
+      <AdminFilters
+        searchTerm={searchTerm}
+        handleSearch={handleSearch}
+        selectedPlan={selectedPlan}
+        handlePlanChange={handlePlanChange}
+        minCredits={minCredits}
+        handleMinCreditsChange={handleMinCreditsChange}
+        minDaysWithPlanAsc={minDaysWithPlanAsc}
+        handleMinDaysWithPlanAscChange={handleMinDaysWithPlanAscChange}
+        minDaysWithPlanDesc={minDaysWithPlanDesc}
+        handleMinDaysWithPlanDescChange={handleMinDaysWithPlanDescChange}
+        minDaysSinceCreationAsc={minDaysSinceCreationAsc}
+        handleMinDaysSinceCreationAscChange={
+          handleMinDaysSinceCreationAscChange
+        }
+        minDaysSinceCreationDesc={minDaysSinceCreationDesc}
+        handleMinDaysSinceCreationDescChange={
+          handleMinDaysSinceCreationDescChange
+        }
+      />
       <table className="w-full table-auto border-collapse">
         <thead>
           <tr>

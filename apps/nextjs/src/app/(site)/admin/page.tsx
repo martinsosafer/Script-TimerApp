@@ -1,7 +1,7 @@
 "use client";
 
-import Dashboard from "~/app/_components/dashboard";
 import { api } from "~/utils/api";
+import Dashboard from "./dashboard";
 
 export default function AdminPage() {
   const { data: userList, isLoading, isError } = api.user.list.useQuery();
