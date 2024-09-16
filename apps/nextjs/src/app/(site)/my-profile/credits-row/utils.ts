@@ -1,5 +1,3 @@
-import { ACTION } from "next/dist/client/components/app-router-headers";
-
 export const displayData = {
   FREE: {
     cl_credit: {
@@ -15,7 +13,7 @@ export const displayData = {
       credits: 5,
     },
     openai_credit: {
-      label: "Script choach",
+      label: "Script coach",
       credits: 40000,
     },
   },
@@ -33,7 +31,7 @@ export const displayData = {
       credits: 10,
     },
     openai_credit: {
-      label: "Script choach",
+      label: "Script coach",
       credits: 40000,
     },
   },
@@ -51,7 +49,7 @@ export const displayData = {
       credits: 25,
     },
     openai_credit: {
-      label: "Script choach",
+      label: "Script coach",
       credits: 200000,
     },
   },
@@ -69,7 +67,7 @@ export const displayData = {
       credits: 50,
     },
     openai_credit: {
-      label: "Script choach",
+      label: "Script coach",
       credits: 400000,
     },
   },
@@ -87,7 +85,7 @@ export const displayData = {
       credits: 100,
     },
     openai_credit: {
-      label: "Script choach",
+      label: "Script coach",
       credits: 1000000,
     },
   },
@@ -105,7 +103,7 @@ export const displayData = {
       credits: 5,
     },
     openai_credit: {
-      label: "Script choach",
+      label: "Script coach",
       credits: 40000,
     },
   },
@@ -123,7 +121,7 @@ export const displayData = {
       credits: 0,
     },
     openai_credit: {
-      label: "Script choach",
+      label: "Script coach",
       credits: 0,
     },
   },
@@ -141,7 +139,7 @@ export const displayData = {
       credits: 0,
     },
     openai_credit: {
-      label: "Script choach",
+      label: "Script coach",
       credits: 0,
     },
   },
