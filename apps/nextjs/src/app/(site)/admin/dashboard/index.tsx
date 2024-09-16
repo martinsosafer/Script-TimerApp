@@ -272,7 +272,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
   };
 
   return (
-    <div className="container mx-auto mb-12 p-4">
+    <div className="mb-12 p-4">
       <h1 className="mb-4 text-2xl font-bold">User Dashboard</h1>
       <AdminFilters
         searchTerm={searchTerm}
@@ -294,46 +294,69 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
           handleMinDaysSinceCreationDescChange
         }
       />
-      <table className="w-full table-auto border-collapse">
-        <thead>
-          <tr>
-            <th className="border px-4 py-2">Name</th>
-            <th className="border px-4 py-2">Email</th>
-            <th className="border px-4 py-2">ID</th>
-            <th className="border px-4 py-2">Create on</th>
-            <th className="border px-4 py-2">Current Plan</th>
-            <th className="border px-4 py-2">Total Credits</th>
-            <th className="border px-4 py-2">
-              <button onClick={toggleSortOrder}>
-                Days with Current Plan {isAscending ? "↑" : "↓"}
-              </button>
-            </th>
-            <th className="border px-4 py-2">
-              <button onClick={toggleCreationSortOrder}>
-                Days Since Creation {isCreationAscending ? "↑" : "↓"}
-              </button>
-            </th>
-            <th className="border px-4 py-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
+
+      <div className="flex">
+        <div className="flex w-[240px] min-w-[240px] items-center justify-center border px-4 py-2">
+          Name
+        </div>
+        <div className="flex min-w-[380px] items-center justify-center border px-4 py-2">
+          Email
+        </div>
+        <div className="flex min-w-[350px] items-center justify-center border px-4 py-2">
+          ID
+        </div>
+        <div className="flex min-w-[120px] items-center justify-center border px-4 py-2">
+          Create on
+        </div>
+        <div className="flex min-w-[120px] items-center justify-center border px-4 py-2">
+          Current Plan
+        </div>
+        <div className="flex w-[100px] min-w-[100px] items-center justify-center border px-4 py-2">
+          Total Credits
+        </div>
+        <div className="flex w-[120px] min-w-[120px] items-center justify-center border px-2 py-2">
+          <button onClick={toggleSortOrder}>
+            Days with Current Plan {isAscending ? "↑" : "↓"}
+          </button>
+        </div>
+        <div className="flex w-[120px] min-w-[120px] items-center justify-center border px-2 py-2">
+          <button onClick={toggleCreationSortOrder}>
+            Days Since Creation {isCreationAscending ? "↑" : "↓"}
+          </button>
+        </div>
+        <div className="flex min-w-[120px] items-center justify-center border px-2 py-2">
+          Actions
+        </div>
+        <div className="flex min-w-[180px] items-center justify-center border px-2 py-2">
+          Subscription ID
+        </div>
+      </div>
+
+      <div className="h-[600px] overflow-hidden overflow-y-auto border">
+        <div>
           {filteredData.map((user) => (
-            <tr key={user.id}>
-              <td className="border px-4 py-2">{user.name}</td>
-              <td className="border px-4 py-2">{user.email}</td>
-              <td className="border px-4 py-2">{user.id}</td>
-              <td className="px-4 py-2">
+            <div key={user.id} className="flex">
+              <div className="w-[240px] min-w-[240px] border px-4 py-2">
+                {user.name}
+              </div>
+              <div className="min-w-[380px] border px-4 py-2">{user.email}</div>
+              <div className="min-w-[350px] border px-4 py-2">{user.id}</div>
+              <div className="min-w-[120px] border px-4 py-2">
                 {new Date(user.created_at).toLocaleDateString()}
-              </td>
-              <td className="border px-4 py-2">{user.status}</td>
-              <td className="border px-4 py-2">{user.total_credits}</td>
-              <td className="border px-4 py-2">
+              </div>
+              <div className="min-w-[120px] border px-4 py-2">
+                {user.status}
+              </div>
+              <div className="min-w-[100px] border px-4 py-2">
+                {user.total_credits}
+              </div>
+              <div className="min-w-[100px] border px-4 py-2">
                 {daysWithCurrentPlan(user.updated_at)}
-              </td>
-              <td className="border px-4 py-2">
+              </div>
+              <div className="min-w-[100px] border px-4 py-2">
                 {daysSinceCreated(user.created_at)}
-              </td>
-              <td className="space-y-2 border px-4 py-2">
+              </div>
+              <div className="min-w-[120px] border px-4 py-2">
                 <select
                   value={user.subscription}
                   onChange={(e) => {
@@ -362,11 +385,11 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
                   <option value="BUSINESS">Business</option>
                   <option value="FREE_TRIAL">Free Trial</option>
                 </select>
-              </td>
-            </tr>
+              </div>
+            </div>
           ))}
-        </tbody>
-      </table>
+        </div>
+      </div>
     </div>
   );
 };
