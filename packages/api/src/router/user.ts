@@ -199,6 +199,177 @@ export const userRouter = createTRPCRouter({
         });
       }
     }),
+  updateStudentClMO: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string().min(5),
+        planId: z.string().min(5).optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await ctx.db
+          .update(schema.subscriptions)
+          .set({
+            status: "STUDENTClMO",
+            plan_id: input.planId ?? "initial_plan_id",
+            updated_at: sql`NOW()`,
+          })
+          .where(eq(schema.subscriptions.userId, input.userId))
+          .execute();
+
+        return { success: true };
+      } catch (error) {
+        console.error("Error updating subscription:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Error updating subscription",
+        });
+      }
+    }),
+
+  updateCreatorClMO: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string().min(5),
+        planId: z.string().min(5).optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await ctx.db
+          .update(schema.subscriptions)
+          .set({
+            status: "CREATORClMO",
+            plan_id: input.planId ?? "initial_plan_id",
+            updated_at: sql`NOW()`,
+          })
+          .where(eq(schema.subscriptions.userId, input.userId))
+          .execute();
+
+        return { success: true };
+      } catch (error) {
+        console.error("Error updating subscription:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Error updating subscription",
+        });
+      }
+    }),
+  updateBusinessClMO: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string().min(5),
+        planId: z.string().min(5).optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await ctx.db
+          .update(schema.subscriptions)
+          .set({
+            status: "BUSINESSClMO",
+            plan_id: input.planId ?? "initial_plan_id",
+            updated_at: sql`NOW()`,
+          })
+          .where(eq(schema.subscriptions.userId, input.userId))
+          .execute();
+
+        return { success: true };
+      } catch (error) {
+        console.error("Error updating subscription:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Error updating subscription",
+        });
+      }
+    }),
+  updateStudentClYR: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string().min(5),
+        planId: z.string().min(5).optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await ctx.db
+          .update(schema.subscriptions)
+          .set({
+            status: "STUDENTClYR",
+            plan_id: input.planId ?? "initial_plan_id",
+            updated_at: sql`NOW()`,
+          })
+          .where(eq(schema.subscriptions.userId, input.userId))
+          .execute();
+
+        return { success: true };
+      } catch (error) {
+        console.error("Error updating subscription:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Error updating subscription",
+        });
+      }
+    }),
+
+  updateCreatorClYR: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string().min(5),
+        planId: z.string().min(5).optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await ctx.db
+          .update(schema.subscriptions)
+          .set({
+            status: "CREATORClYR",
+            plan_id: input.planId ?? "initial_plan_id",
+            updated_at: sql`NOW()`,
+          })
+          .where(eq(schema.subscriptions.userId, input.userId))
+          .execute();
+
+        return { success: true };
+      } catch (error) {
+        console.error("Error updating subscription:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Error updating subscription",
+        });
+      }
+    }),
+  updateBusinessClYR: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string().min(5),
+        planId: z.string().min(5).optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await ctx.db
+          .update(schema.subscriptions)
+          .set({
+            status: "BUSINESSYR",
+            plan_id: input.planId ?? "initial_plan_id",
+            updated_at: sql`NOW()`,
+          })
+          .where(eq(schema.subscriptions.userId, input.userId))
+          .execute();
+
+        return { success: true };
+      } catch (error) {
+        console.error("Error updating subscription:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Error updating subscription",
+        });
+      }
+    }),
+
   cancelSubscription: protectedProcedure
     .input(
       z.object({
