@@ -89,6 +89,119 @@ export const displayData = {
       credits: 1000000,
     },
   },
+  STUDENTCLMO: {
+    cl_credit: {
+      label: "Plagiarism and AI detector",
+      credits: 60,
+    },
+    "11labs_credit": {
+      label: "Voice",
+      credits: 10000,
+    },
+    img_credit: {
+      label: "Images",
+      credits: 10,
+    },
+    openai_credit: {
+      label: "Script coach",
+      credits: 200000,
+    },
+  },
+
+  CREATORCLMO: {
+    cl_credit: {
+      label: "Plagiarism and AI detector",
+      credits: 60,
+    },
+    "11labs_credit": {
+      label: "Voice",
+      credits: 10000, // Adjust the credits accordingly
+    },
+    img_credit: {
+      label: "Images",
+      credits: 10, // Adjust the credits accordingly
+    },
+    openai_credit: {
+      label: "Script coach",
+      credits: 600000, // Adjust the credits accordingly
+    },
+  },
+
+  BUSINESSCLMO: {
+    cl_credit: {
+      label: "Plagiarism and AI detector",
+      credits: 80,
+    },
+    "11labs_credit": {
+      label: "Voice",
+      credits: 10000,
+    },
+    img_credit: {
+      label: "Images",
+      credits: 10,
+    },
+    openai_credit: {
+      label: "Script coach",
+      credits: 1000000,
+    },
+  },
+
+  STUDENTCLYR: {
+    cl_credit: {
+      label: "Plagiarism and AI detector",
+      credits: 40, // Adjust the credits accordingly
+    },
+    "11labs_credit": {
+      label: "Voice",
+      credits: 10000, // Adjust the credits accordingly
+    },
+    img_credit: {
+      label: "Images",
+      credits: 10, // Adjust the credits accordingly
+    },
+    openai_credit: {
+      label: "Script coach",
+      credits: 200000, // Adjust the credits accordingly
+    },
+  },
+
+  CREATORCLYR: {
+    cl_credit: {
+      label: "Plagiarism and AI detector",
+      credits: 60, // Adjust the credits accordingly
+    },
+    "11labs_credit": {
+      label: "Voice",
+      credits: 10000, // Adjust the credits accordingly
+    },
+    img_credit: {
+      label: "Images",
+      credits: 10, // Adjust the credits accordingly
+    },
+    openai_credit: {
+      label: "Script coach",
+      credits: 400000, // Adjust the credits accordingly
+    },
+  },
+
+  BUSINESSCLYR: {
+    cl_credit: {
+      label: "Plagiarism and AI detector",
+      credits: 80,
+    },
+    "11labs_credit": {
+      label: "Voice",
+      credits: 10000,
+    },
+    img_credit: {
+      label: "Images",
+      credits: 10,
+    },
+    openai_credit: {
+      label: "Script coach",
+      credits: 1000000,
+    },
+  },
   ACTIVE: {
     cl_credit: {
       label: "Pagiarism and AI detector",

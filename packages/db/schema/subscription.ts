@@ -13,12 +13,12 @@ export const status = pgEnum("status", [
   "PAUSED",
   "FREE",
   "BUSINESS",
-  "STUDENTClMO",
-  "CREATORClMO",
-  "BUSINESSClMO",
-  "STUDENTClYR",
-  "CREATORClYR",
-  "BUSINESSYR",
+  "STUDENTCLMO",
+  "CREATORCLMO",
+  "BUSINESSCLMO",
+  "STUDENTCLYR",
+  "CREATORCLYR",
+  "BUSINESSCLYR",
 ]);
 
 export const subscriptions = pgTable("subscription", {
