@@ -60,8 +60,9 @@ export default function Checker({ userId, scans, credits }: CheckerProps) {
     const data = new FormData(e.target as HTMLFormElement);
     const text = data.get("textarea") as string;
     setText(text);
+    const words = text.split(" ");
 
-    if (Math.ceil(text.length / 250) > creditsLeft) {
+    if (Math.ceil(words.length / 250) > creditsLeft) {
       toast({
         title: "Insufficient Credits",
         description: "You do not have enough credits to perform this scan.",

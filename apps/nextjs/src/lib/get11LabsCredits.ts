@@ -1,7 +1,6 @@
 export async function fetchUserCredits(userId: string): Promise<number> {
   try {
-    // Use NEXT_PUBLIC_HOST_URL for client-side requests
-    const baseUrl = process.env.NEXT_PUBLIC_HOST_URL || "http://localhost:3000";
+    const baseUrl = process.env.NEXT_PUBLIC_HOST_URL;
     const response = await fetch(
       `${baseUrl}/api/get11LabsCredits?userId=${userId}`,
     );

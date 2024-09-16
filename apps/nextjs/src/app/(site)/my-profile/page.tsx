@@ -7,8 +7,8 @@ import {
   IconUserRound,
 } from "@voiceai/ui/@/components/ui/icons";
 
-import { getCredits } from "../plagiarism-detector/actions";
 import type { I_Subscription } from "../plans/types";
+import { getCredits } from "./actions";
 import SubscriptionDetails from "./subscription-details";
 
 async function getSubscription(planId: string | null | undefined) {
@@ -26,7 +26,7 @@ async function getSubscription(planId: string | null | undefined) {
 
   try {
     const subscription = await stripe.subscriptions.retrieve(planId);
-
+    console.log("SubscriptionInfo:", subscription);
     return subscription;
   } catch (e) {
     console.error(e);
@@ -40,7 +40,7 @@ export default async function MyProfile() {
     session?.user.subscription?.planId,
   );
 
-  const clCredit = await getCredits(session?.user.id ?? "");
+  const credits = await getCredits(session?.user.id ?? "");
 
   if (!session) {
     redirect("/");
@@ -48,7 +48,7 @@ export default async function MyProfile() {
 
   return (
     <div className="flex h-full w-full justify-center bg-[#FAFAFA] py-10">
-      <div className="flex h-[800px] w-[1024px] flex-col items-center overflow-hidden rounded-3xl bg-white shadow-lg shadow-gray-500">
+      <div className="flex w-[1024px] flex-col items-center overflow-hidden rounded-3xl bg-white shadow-lg shadow-gray-500">
         <div className="h-[100px] w-full bg-gradient-to-b from-[#0066FF] to-[#13EBCDCC]" />
         <div className="flex w-full flex-col p-8">
           <div className="mt-[-80px] flex flex-col items-start">
@@ -67,7 +67,7 @@ export default async function MyProfile() {
           </div>
           <SubscriptionDetails
             subscription={subscription as I_Subscription}
-            clCredits={clCredit?.credits ?? 0}
+            credits={credits?.[0]}
           />
         </div>
       </div>

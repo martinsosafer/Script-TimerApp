@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useRef, useState } from "react";
 import PauseIcon from "@heroicons/react/24/solid/PauseIcon";
 import PlayIcon from "@heroicons/react/24/solid/PlayIcon";

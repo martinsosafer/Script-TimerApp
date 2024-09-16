@@ -5,6 +5,7 @@ import { Stripe } from "stripe";
 import { auth } from "@voiceai/auth";
 
 import PlansSections from "./sections";
+import PricingTable from "./sections/pricingTable";
 import type { Product } from "./types";
 
 export const metadata: Metadata = {
@@ -169,6 +170,7 @@ async function PlansPage() {
         plagiarismMonthlyPlans={plagiarismMonthlyPlans}
         plagiarismYearlyPlans={plagiarismYearlyPlans}
       />
+      {/* <PricingTable /> */}
     </div>
   );
 }

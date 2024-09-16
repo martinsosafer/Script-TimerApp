@@ -1,5 +1,5 @@
 {
-  "jokes": [
+  "generalJokes": [
     "- What did the big tomato say to the little tomato lagging behind? \n - Ketchup!",
     "- How does a snowman get so good at waiting? \n - He just has to chill!",
     "- Why did the gum refuse to rush? \n - Because it wanted to stick around and see what would bubble up!",
@@ -19,5 +19,29 @@
     "- Why did the man sit on his watch? \n - He wanted to be on time.",
     "- Why was the computer cold at the office? \n - It left its Windows open.",
     "- What did the digital clock say to its mother? \n - “Look, Ma! No hands!”"
-  ]
+  ], 
+  "imageJokes": [
+      "- Why don't artists trust sketchbooks? \n Because something always seems to be drawn out.",
+      "- What did the designer say to their font? \n - \"You’re so bold!\"",
+      "- Why did the artist break up with the pencil? \n - It was pointless.",
+      "- Why did the paintbrush feel sad? \n - It was in a bit of a stroke of bad luck.",
+      "- What’s an artist’s favorite martial art? \n - Taekwondoodle.",
+      "- Why did the movie director go broke? \n - Because they kept losing their scenes.",
+      "- How do you know an artist is a perfectionist? \n - They can’t draw the line at one sketch.",
+      "- What did the art teacher say when the class started to get messy? \n - \"I am drawing the line here!\"",
+      "- Why don’t artists play hide and seek? \n - Because good luck hiding from someone who draws their own conclusions.",
+      "- Why did the movie studio hire a magician? \n - For the special effects!",
+      "- What’s an artist’s favorite band? \n - D'Sketch Mode.",
+      "- Why do film directors love elevators? \n - They always have their ups and downs.",
+      "- Why did the artist go to jail? \n - Because they got framed!",
+      "- Why do movie producers always carry a pencil? \n - In case they have to draw a blank.",
+      "- Why don’t storyboard artists ever get lost? \n - Because they always have a character to follow.",
+      "- What did the artist say when their house was messy? \n - “It’s just a little abstract.”",
+      "- Why did the artist bring a ladder to the gallery? \n - To reach new heights.",
+      "- Why are sketch artists always so calm? \n - Because they always keep their lines straight.",
+      "- Why did the artist keep their studio so clean? \n - They swept it under the canvas.",
+      "- What do you get when you mix a writer and a director? \n - A script with direction!",
+      "- Why don’t artists ever play cards? \n - They’re afraid of drawing the wrong hand.",
+      "- Why was the camera always calm? \n - Because it knew how to focus."
+    ]
 }
