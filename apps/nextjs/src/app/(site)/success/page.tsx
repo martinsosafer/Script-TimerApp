@@ -14,11 +14,11 @@ enum Plans {
   STUDENT = "Student Plan",
   CREATOR = "Creator Plan",
   BUSINESS = "Business Plan",
-  STUDENTClMO = "Plagiarism + Ai Detection: Edu / Mo",
-  CREATORClMO = "Plagiarism + Ai Detection: Creator / Mo",
+  STUDENTCLMO = "Plagiarism + Ai Detection: Edu / Mo",
+  CREATORCLMO = "Plagiarism + Ai Detection: Creator / Mo",
   BUSINESSCLMO = "Plagiarism + Ai Detection: Business / Mo",
-  STUDENTClYR = "Plagiarism + Ai Detection: Edu / Yr",
-  CREATORClYR = "Plagiarism + Ai Detection: Creator / Yr",
+  STUDENTCLYR = "Plagiarism + Ai Detection: Edu / Yr",
+  CREATORCLYR = "Plagiarism + Ai Detection: Creator / Yr",
   BUSINESSCLYR = "Plagiarism + Ai Detection: Business / Yr",
 }
 
@@ -207,23 +207,23 @@ function SuccessPage() {
       handleBusiness(userId, planId);
     }
     // New plans
-    if (name === Plans.STUDENTClMO) {
+    if (name === Plans.STUDENTCLMO) {
       handleStudentClMO(userId, planId);
     }
-    if (name === Plans.CREATORClMO) {
+    if (name === Plans.CREATORCLMO) {
       handleCreatorClMO(userId, planId);
     }
     if (name === Plans.BUSINESSCLMO) {
       handleBusinessClMO(userId, planId);
     }
-    if (name === Plans.STUDENTClYR) {
+    if (name === Plans.STUDENTCLYR) {
       handleStudentClYR(userId, planId);
     }
-    if (name === Plans.CREATORClYR) {
-      handleCreatorClYR(userId, planId);
+    if (name === Plans.CREATORCLYR) {
+      handleCreatorClYr(userId, planId);
     }
     if (name === Plans.BUSINESSCLYR) {
-      handleBusinessClYR(userId, planId);
+      handleBusinessClYr(userId, planId);
     }
   }
 

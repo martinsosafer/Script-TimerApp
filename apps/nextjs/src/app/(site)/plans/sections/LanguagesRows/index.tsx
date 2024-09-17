@@ -36,7 +36,6 @@ const languages = [
   { name: "Portuguese", flag: Portugal },
   { name: "Arabic", flag: Arabia },
   { name: "Hindi", flag: India },
-  { name: "Tamil", flag: India },
   { name: "Chinese", flag: China },
   { name: "Japanese", flag: Japan },
   { name: "Korean", flag: Korea },

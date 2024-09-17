@@ -42,7 +42,7 @@ const PricingTable = ({
         "Transcribe Voice to Text": { enabled: true },
         "Multilingual Translation": { enabled: true },
         "Audio Translator": { enabled: true },
-        "PDF, DOCX, SRT Downloads": { enabled: true },
+        "PDF, DOCX, SRT": { enabled: true },
         "Voice Actor Library": { enabled: true },
         "No watermark": { enabled: false },
 
@@ -63,7 +63,7 @@ const PricingTable = ({
         "Plagiarism & Ai Detection": { enabled: true },
         "Source links to original": { enabled: true },
         "GPT, Claude, Gemini": { enabled: true },
-        "Over 100 language detection": { enabled: true },
+        "Over 100 languages": { enabled: true },
         "Paraphrasing detection": { enabled: true },
         "Text spinner detection": { enabled: true },
 
@@ -105,7 +105,7 @@ const PricingTable = ({
         "Transcribe Voice to Text": { enabled: true },
         "Multilingual Translation": { enabled: true },
         "Audio Translator": { enabled: true },
-        "PDF, DOCX, SRT Downloads": { enabled: true },
+        "PDF, DOCX, SRT": { enabled: true },
         "Voice Actor Library": { enabled: true },
         "No watermark": { enabled: true },
 
@@ -126,7 +126,7 @@ const PricingTable = ({
         "Plagiarism & Ai Detection": { enabled: true },
         "Source links to original": { enabled: true },
         "GPT, Claude, Gemini": { enabled: true },
-        "Over 100 language detection": { enabled: true },
+        "Over 100 languages": { enabled: true },
         "Paraphrasing detection": { enabled: true },
         "Text spinner detection": { enabled: true },
 
@@ -168,7 +168,7 @@ const PricingTable = ({
         "Transcribe Voice to Text": { enabled: true },
         "Multilingual Translation": { enabled: true },
         "Audio Translator": { enabled: true },
-        "PDF, DOCX, SRT Downloads": { enabled: true },
+        "PDF, DOCX, SRT": { enabled: true },
         "Voice Actor Library": { enabled: true },
         "No watermark": { enabled: true },
 
@@ -189,7 +189,7 @@ const PricingTable = ({
         "Plagiarism & Ai Detection": { enabled: true },
         "Source links to original": { enabled: true },
         "GPT, Claude, Gemini": { enabled: true },
-        "Over 100 language detection": { enabled: true },
+        "Over 100 languages": { enabled: true },
         "Paraphrasing detection": { enabled: true },
         "Text spinner detection": { enabled: true },
 
@@ -230,7 +230,7 @@ const PricingTable = ({
         "Transcribe Voice to Text": { enabled: true },
         "Multilingual Translation": { enabled: true },
         "Audio Translator": { enabled: true },
-        "PDF, DOCX, SRT Downloads": { enabled: true },
+        "PDF, DOCX, SRT": { enabled: true },
         "Voice Actor Library": { enabled: true },
         "No watermark": { enabled: true },
 
@@ -251,7 +251,7 @@ const PricingTable = ({
         "Plagiarism & Ai Detection": { enabled: true },
         "Source links to original": { enabled: true },
         "GPT, Claude, Gemini": { enabled: true },
-        "Over 100 language detection": { enabled: true },
+        "Over 100 languages": { enabled: true },
         "Paraphrasing detection": { enabled: true },
         "Text spinner detection": { enabled: true },
 
@@ -283,7 +283,7 @@ const PricingTable = ({
     { label: "Transcribe Voice to Text", isMain: false },
     { label: "Multilingual Translation", isMain: false },
     { label: "Audio Translator", isMain: false },
-    { label: "PDF, DOCX, SRT Downloads", isMain: false },
+    { label: "PDF, DOCX, SRT", isMain: false },
     { label: "Voice Actor Library", isMain: false },
     { label: "No watermark", isMain: false },
     { label: "Script Writing", isMain: true },
@@ -300,7 +300,7 @@ const PricingTable = ({
     { label: "Plagiarism & Ai Detection", isMain: false },
     { label: "Source links to original", isMain: false },
     { label: "GPT, Claude, Gemini", isMain: false },
-    { label: "Over 100 language detection", isMain: false },
+    { label: "Over 100 languages", isMain: false },
     { label: "Paraphrasing detection", isMain: false },
     { label: "Text spinner detection", isMain: false },
 

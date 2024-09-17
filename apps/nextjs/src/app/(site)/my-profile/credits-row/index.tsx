@@ -7,6 +7,12 @@ interface CreditRowProps {
     | "STUDENT"
     | "CREATOR"
     | "BUSINESS"
+    | "STUDENTCLMO"
+    | "CREATORCLMO"
+    | "BUSINESSCLMO"
+    | "STUDENTCLYR"
+    | "CREATORCLYR"
+    | "BUSINESSCLYR"
     | "INACTIVE"
     | "ACTIVE"
     | "PAUSED";
@@ -20,6 +26,11 @@ export default function CreditRow({
   creditsLeft,
 }: CreditRowProps) {
   const subscriptionData = displayData[subscription];
+  if (!subscriptionData?.[type]) {
+    console.error(`Invalid subscription or type: ${subscription}, ${type}`);
+    return null; // Or handle the error appropriately
+  }
+
   const { label, credits } = subscriptionData[type];
 
   const creditsUsed = credits - creditsLeft;

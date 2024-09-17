@@ -334,7 +334,7 @@ export const userRouter = createTRPCRouter({
         await ctx.db
           .update(schema.subscriptions)
           .set({
-            status: "STUDENTClMO",
+            status: "STUDENTCLMO",
             plan_id: input.planId ?? "initial_plan_id",
             updated_at: sql`NOW()`,
           })

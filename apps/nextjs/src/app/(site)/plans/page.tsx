@@ -49,11 +49,11 @@ async function loadProducts() {
     STUDENT = "Student Plan",
     CREATOR = "Creator Plan",
     BUSINESS = "Business Plan",
-    STUDENTClMO = "Plagiarism + Ai Detection: Edu / Mo",
-    CREATORClMO = "Plagiarism + Ai Detection: Creator / Mo",
+    STUDENTCLMO = "Plagiarism + Ai Detection: Edu / Mo",
+    CREATORCLMO = "Plagiarism + Ai Detection: Creator / Mo",
     BUSINESSCLMO = "Plagiarism + Ai Detection: Business / Mo",
-    STUDENTClYR = "Plagiarism + Ai Detection: Edu / Yr",
-    CREATORClYR = "Plagiarism + Ai Detection: Creator / Yr",
+    STUDENTCLYR = "Plagiarism + Ai Detection: Edu / Yr",
+    CREATORCLYR = "Plagiarism + Ai Detection: Creator / Yr",
     BUSINESSCLYR = "Plagiarism + Ai Detection: Business / Yr",
   }
   const plans: Plans[] = [Plans.STUDENT, Plans.CREATOR, Plans.BUSINESS];
