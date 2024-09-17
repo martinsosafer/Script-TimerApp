@@ -8,16 +8,24 @@ export default function Footer() {
   return (
     <div className="w-full bg-primary">
       <div className="mx-20 mt-4 justify-between md:flex">
-        <div>
-          <h2 className="font-poppins text-2xl font-bold text-primary-foreground">
-            SCRIPT TIMER
-          </h2>
+        <Link
+          href="/"
+          className="flex flex-col font-poppins text-primary-foreground"
+        >
           <RevealText>
-            <p className=" mt-2 max-w-[250px] from-accent text-lg  text-primary-foreground">
-              Your Voice Matters
-            </p>
+            {/* Container for better alignment */}
+            <div className="flex flex-col items-start">
+              {/* Main title */}
+              <span className="text-left font-poppins text-4xl font-bold">
+                Script-Timer
+              </span>
+              {/* Subtitle positioned directly below the main title */}
+              <span className="mt-1 text-left text-sm text-orange-400">
+                Your voice is important
+              </span>
+            </div>
           </RevealText>
-        </div>
+        </Link>
         {footerData.map(({ id, title, links }) => (
           <div key={id}>
             <h4 className="mt-8 font-poppins   font-semibold text-primary-foreground md:mt-0">
