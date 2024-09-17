@@ -6,7 +6,7 @@ import { getCredits, getScans } from "./actions";
 import Checker from "./checker";
 
 export const metadata: Metadata = {
-  title: "Pagiarism Detector",
+  title: "Plagiarism Detector",
   description: "Identify potential plagiarism across nearly every language.",
 };
 

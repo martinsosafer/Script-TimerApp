@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 
 import { auth } from "@voiceai/auth";
 
+import getOpenAiCredits from "../chat/actions";
 import TextTranslatorPage from "./translatetext-component/ttranslatepage";
 
 export const metadata: Metadata = {
@@ -13,10 +14,11 @@ export const metadata: Metadata = {
 export default async function indexPage() {
   const session = await auth();
   const subData = session?.user.subscription;
+  const openAiCredits = getOpenAiCredits(subData?.userId ?? "");
 
   return (
     <div>
-      <TextTranslatorPage subData={subData} />
+      <TextTranslatorPage subData={subData} openAiCredits={openAiCredits} />
     </div>
   );
 }
