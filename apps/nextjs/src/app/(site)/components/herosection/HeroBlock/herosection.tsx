@@ -50,12 +50,12 @@ export default function HeroSection() {
           </div>
 
           <MotionTransition className="flex items-start justify-center">
-            <div className="w-full">
+            <div className="h-[340px] w-full overflow-hidden   rounded-lg">
               <iframe
                 src="https://player.vimeo.com/video/969324308?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                className="h-[340px] w-[520px] "
+                className="h-full w-full  rounded-lg"
                 allow="autoplay; fullscreen; picture-in-picture"
-                title="Script-Timer Ai_ On boarding video (Short version) (1)"
+                title="Script-Timer Ai Onboarding video"
               />
             </div>
           </MotionTransition>

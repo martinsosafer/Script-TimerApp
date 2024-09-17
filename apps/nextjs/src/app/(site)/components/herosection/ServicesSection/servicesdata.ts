@@ -2,7 +2,7 @@ export const servicesData = [
   {
     id: 1,
     icon: "IconAudioLines",
-    title: "Text2Speech",
+    title: "Text to Voice",
     description: "Convert your text to voice",
   },
   {
@@ -13,24 +13,36 @@ export const servicesData = [
   },
   {
     id: 3,
-    icon: "IconBrainCog",
-    title: "Script Coach",
-    description: "Refine your ideas with the assistance of our AI.",
+    icon: "IconClone",
+    title: "Voice Cloning",
+    description: "Create any voice you want",
+  },
+  {
+    id: 4,
+    icon: "IconEar",
+    title: "Translate Audio",
+    description: "Audio Files Translations",
   },
   {
     id: 5,
+    icon: "IconBrainCog",
+    title: "Script Coach",
+    description: "Refine your ideas our AI.",
+  },
+  {
+    id: 6,
     icon: "IconFileHeart",
     title: "Blog",
     description: "Keep up with our latest news",
   },
   {
-    id: 6,
+    id: 7,
     icon: "IconGraduationCap",
     title: "Classes",
     description: "Keep on learning with personalized masterclasses",
   },
   {
-    id: 7,
+    id: 8,
     icon: "IconBookPlus",
     title: "Much More",
     description: "New features will be coming up soon",

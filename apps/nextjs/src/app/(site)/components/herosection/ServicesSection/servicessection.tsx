@@ -1,11 +1,14 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 
 import {
   IconAudioLines,
   IconBookPlus,
   IconBrainCog,
+  IconClone,
+  IconEar,
   IconFileHeart,
   IconGraduationCap,
   IconLibraryBig,
@@ -13,6 +16,7 @@ import {
 } from "@voiceai/ui/@/components/ui/icons";
 
 import { RevealText } from "~/app/animations/RevealText";
+import ArtificialIntelligenceRobot from "../../../../../../public/Artificial-Intelligence-2--Streamline-Brooklyn 1.png";
 import { servicesData } from "./servicesdata";
 
 const iconComponents = {
@@ -23,61 +27,86 @@ const iconComponents = {
   IconGraduationCap,
   IconLibraryBig,
   IconMic2,
+  IconClone,
+  IconEar,
 };
 export default function ServiceSection() {
   return (
-    <div className="relative px-6 py-6 md:py-10">
-      <div className="mx-auto grid max-w-5xl md:grid-cols-2">
-        <div>
-          <RevealText>
-            <h2 className="font-poppins text-4xl font-semibold   leading-tight">
-              <span className="block text-primary">You have a project.</span>
-              Bring it to life with <br />
-              custom AI built <br />
-              for scripts.
-            </h2>
-          </RevealText>
-          <RevealText>
-            <p className=" mt-4 max-w-md">
-              Even for the most most gifted writers, squeezing a lot of of
-              information into a short amount of time is extremly hard work
-            </p>
-          </RevealText>
-          <RevealText>
-            <p className=" max-w-md">
-              The script is critical to your most effective whiteboard video,
-              explainer video, speech or feature film
-            </p>
-          </RevealText>
-          <RevealText>
-            <p className=" max-w-md">
-              If you need help or advice on the script or storyboard,please just
-              ask.
-            </p>
-          </RevealText>
-        </div>
-        <div className="md:p8 ml-12 grid items-center py-5">
-          {servicesData.map(({ id, icon, title, description }) => {
-            // Get the corresponding icon component based on the icon name
-            const IconComponent = iconComponents[icon];
-            return (
-              <RevealText key={id}>
-                <div className=" group grid grid-flow-col gap-2 rounded-3xl px-4">
-                  <div>
-                    <IconComponent className=" h-10 w-10" />
-                  </div>
-                  <div>
-                    <h4 className="font-poppins font-semibold text-primary">
-                      {title}
-                    </h4>
-                    <p className="font-medium text-black dark:text-white">
-                      {description}
-                    </p>
-                  </div>
-                </div>
-              </RevealText>
-            );
-          })}
+    <div className="relative px-6 py-10 md:py-16">
+      <div className="mx-auto max-w-6xl">
+        <RevealText>
+          <h2 className="mb-8 text-center font-poppins text-4xl font-semibold leading-tight md:text-5xl">
+            <span className="block text-gray-800">You have a project.</span>
+            <span className="text-primary">
+              Bring it to life with custom AI built for scripts.
+            </span>
+          </h2>
+        </RevealText>
+
+        <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-4">
+          <div className="flex items-center justify-center">
+            <Image
+              src={ArtificialIntelligenceRobot}
+              alt="AI Robot"
+              width={535}
+              height={535}
+              className="rounded-lg"
+            />
+          </div>
+
+          <div className="grid gap-2">
+            {servicesData
+              .slice(0, 4)
+              .map(({ id, icon, title, description }) => {
+                const IconComponent = iconComponents[icon];
+                return (
+                  <RevealText key={id}>
+                    <div className="flex h-full w-[250px] flex-col rounded-lg border border-black bg-white px-4 shadow-sm transition-shadow hover:shadow-md">
+                      <div className="flex flex-grow items-start gap-2">
+                        <div className="flex-shrink-0">
+                          <IconComponent className="h-12 w-12 text-primary" />
+                        </div>
+                        <div>
+                          <h4 className="font-poppins text-base font-semibold text-primary">
+                            {title}
+                          </h4>
+                          <p className="mt-1 text-xs text-gray-600">
+                            {description}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </RevealText>
+                );
+              })}
+          </div>
+
+          <div className="grid gap-2">
+            {servicesData
+              .slice(5, 6)
+              .map(({ id, icon, title, description }) => {
+                const IconComponent = iconComponents[icon];
+                return (
+                  <RevealText key={id}>
+                    <div className="flex h-full w-[250px] flex-col rounded-lg border border-black bg-white px-4 shadow-sm transition-shadow hover:shadow-md">
+                      <div className="flex flex-grow items-start gap-2">
+                        <div className="flex-shrink-0">
+                          <IconComponent className="h-12 w-12 text-primary" />
+                        </div>
+                        <div>
+                          <h4 className="font-poppins text-base font-semibold text-primary">
+                            {title}
+                          </h4>
+                          <p className="mt-1 text-xs text-gray-600">
+                            {description}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </RevealText>
+                );
+              })}
+          </div>
         </div>
       </div>
     </div>
