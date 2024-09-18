@@ -105,6 +105,7 @@ async function updateUserCredits(
 export { updateUserCredits };
 export const userRouter = createTRPCRouter({
   list: protectedProcedure.query(async ({ ctx }) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return await ctx.db
       .select({
         name: schema.users.name,
@@ -114,22 +115,22 @@ export const userRouter = createTRPCRouter({
         updated_at: schema.subscriptions.updated_at,
         status: schema.subscriptions.status,
         plan_id: schema.subscriptions.plan_id,
-        total_credits: sql`COALESCE(SUM(${schema.credits.credits}), 0)`,
         cl_credits: schema.clCredits.credits,
         eleven_labs_credits: schema.elevenLabsCredit.credits,
+        open_ai_credits: schema.openAiCredit.credits,
       })
       .from(schema.users)
       .leftJoin(schema.subscriptions, () =>
         eq(schema.users.id, schema.subscriptions.userId),
-      )
-      .leftJoin(schema.credits, () =>
-        eq(schema.users.id, schema.credits.userId),
       )
       .leftJoin(schema.clCredits, () =>
         eq(schema.users.id, schema.clCredits.userId),
       )
       .leftJoin(schema.elevenLabsCredit, () =>
         eq(schema.users.id, schema.elevenLabsCredit.userId),
+      )
+      .leftJoin(schema.openAiCredit, () =>
+        eq(schema.users.id, schema.openAiCredit.userId),
       )
       .groupBy(
         schema.users.id,
@@ -141,6 +142,7 @@ export const userRouter = createTRPCRouter({
         schema.subscriptions.updated_at,
         schema.clCredits.credits,
         schema.elevenLabsCredit.credits,
+        schema.openAiCredit.credits,
       );
   }),
 

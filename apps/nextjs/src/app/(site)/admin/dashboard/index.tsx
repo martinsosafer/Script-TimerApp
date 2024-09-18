@@ -28,9 +28,9 @@ export interface UserData {
     | "BUSINESS"
     | null;
   plan_id: string | null;
-  total_credits: unknown;
   cl_credits: number | null;
   eleven_labs_credits: number | null;
+  open_ai_credits: number | null;
 }
 
 interface DashboardProps {
@@ -218,7 +218,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
                   {user.eleven_labs_credits}
                 </div>
                 <div className="flex w-[100px] min-w-[100px] items-center border px-2 py-2">
-                  0
+                  {user.open_ai_credits}
                 </div>
                 <div className="flex w-[120px] min-w-[100px] items-center border px-2 py-2">
                   {daysWithCurrentPlan(user.updated_at ?? new Date())}
