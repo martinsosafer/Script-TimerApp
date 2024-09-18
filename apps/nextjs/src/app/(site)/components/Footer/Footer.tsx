@@ -17,11 +17,11 @@ export default function Footer() {
             <div className="flex flex-col items-start">
               {/* Main title */}
               <span className="text-left font-poppins text-4xl font-bold">
-                Script-Timer
+                Co-Producer
               </span>
               {/* Subtitle positioned directly below the main title */}
-              <span className="mt-1 text-left text-sm text-orange-400">
-                Your voice is important
+              <span className=" text-left text-sm text-white">
+                created by Script-Timer
               </span>
             </div>
           </RevealText>

@@ -271,13 +271,15 @@ const PlagiarismTable = forwardRef(
                           <>
                             ${price}
                             <span className="text-sm font-normal">
-                              {showMonthly ? "/month" : "/year"}
+                              {showMonthly ? "/month" : "/month"}
                             </span>
                           </>
                         )}
                         {/* Always render the yearly price with consistent space allocation */}
                         <div
-                          className={`text-md mt-1 text-gray-200 ${tier.name === "FREE" ? "opacity-0" : "mt-[11px] text-lg opacity-100"}`}
+                          className={`text-md mt-1 text-gray-200 ${
+                            showMonthly ? "invisible" : "visible"
+                          } ${tier.name === "FREE" ? "mt-[5px] text-lg opacity-0" : "mt-[5px] text-lg opacity-100"}`}
                         >
                           ({tier.yearlyPrice}/year)
                         </div>

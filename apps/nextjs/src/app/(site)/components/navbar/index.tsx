@@ -60,11 +60,11 @@ export default function NewNavBar({ signOut, signIn, session }: NavBarProps) {
           <div className="flex flex-col items-start">
             {/* Main title */}
             <span className="text-left font-poppins text-4xl font-bold">
-              Script-Timer
+              Co-Producer
             </span>
             {/* Subtitle positioned directly below the main title */}
-            <span className="mt-1 text-left text-sm text-orange-400">
-              Your voice is important
+            <span className=" text-left text-sm text-white">
+              Created by Script-Timer
             </span>
           </div>
         </RevealText>
