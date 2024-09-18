@@ -7,8 +7,10 @@ import TextTranslate from "../texttranslate/index";
 
 export default function TextTranslatorPage({
   subData,
+  openAiCredits,
 }: {
   subData: SubscriptionData | null | undefined;
+  openAiCredits: number;
 }) {
   const [openNoSessionModal, setOpenNoSessionModal] =
     React.useState<boolean>(false);
@@ -31,6 +33,7 @@ export default function TextTranslatorPage({
         <TextTranslate
           subData={subData}
           setOpenNoSessionModal={() => setOpenNoSessionModal(true)}
+          openAiCredits={openAiCredits}
         />
         {openNoSessionModal && (
           <NoSessionModal

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { auth } from "@voiceai/auth";
 
+import getOpenAiCredits from "./actions";
 import ChatInteraction from "./chat-interaction";
 
 export const metadata: Metadata = {
@@ -13,10 +14,11 @@ export const metadata: Metadata = {
 export default async function indexPage() {
   const session = await auth();
   const userId = session?.user.id; // Ensure userId is always a string
+  const openAiCredits = await getOpenAiCredits(userId ?? "");
 
   return (
     <div className="flex w-[1024px] flex-col items-center ">
-      <ChatInteraction userId={userId} />
+      <ChatInteraction userId={userId} openAiCredits={openAiCredits} />
     </div>
   );
 }

@@ -2,49 +2,107 @@ import { z } from "zod";
 
 import { db, eq, schema, sql } from "@voiceai/db";
 import { elevenLabsCredit } from "@voiceai/db/schema/11LabsCredits";
+import { clCredits } from "@voiceai/db/schema/copyLeaksCredit";
 
 import { createTRPCRouter, protectedProcedure, TRPCError } from "../trpc";
 
 //Function to update the credits
-async function updateUserCredits(userId: string, credits: number) {
+async function updateUserCredits(
+  userId: string,
+  planCredits: {
+    elevenLabsCredits: number;
+    openAiCredits: number;
+    clCredits: number; // Add CopyLeaks credits
+  },
+) {
+  const {
+    elevenLabsCredits,
+    openAiCredits,
+    clCredits: copyLeaksCredits,
+  } = planCredits;
+
   try {
-    const existingCredit = await db.query.elevenLabsCredit.findFirst({
-      where: eq(elevenLabsCredit.userId, userId),
+    // Update CopyLeaks credits (clCredits)
+    const existingClCredits = await db.query.clCredits.findFirst({
+      where: eq(clCredits.userId, userId),
     });
 
-    if (existingCredit) {
-      // Update the existing credits
+    if (existingClCredits) {
+      // Update the existing CL credits
       await db
-        .update(elevenLabsCredit)
+        .update(clCredits)
         .set({
-          credits: credits,
+          credits: copyLeaksCredits,
           updated_at: new Date(),
         })
-        .where(eq(elevenLabsCredit.userId, userId))
+        .where(eq(clCredits.userId, userId))
         .execute();
 
-      console.log("Credits updated successfully for user:", userId);
+      console.log("CL credits updated successfully for user:", userId);
     } else {
-      // Insert new credits if they don't exist
-      await db.insert(elevenLabsCredit).values({
+      // Insert new CL credits if they don't exist
+      await db.insert(clCredits).values({
         userId: userId,
-        credits: credits,
+        credits: copyLeaksCredits,
         updated_at: new Date(),
       });
 
       console.log(
-        "Credits initialized and updated successfully for user:",
+        "CL credits initialized and updated successfully for user:",
         userId,
       );
     }
+
+    // Eleven Labs Credits Update (As per your existing code)
+    const existingElevenLabsCredit = await db.query.elevenLabsCredit.findFirst({
+      where: eq(elevenLabsCredit.userId, userId),
+    });
+
+    if (existingElevenLabsCredit) {
+      await db
+        .update(elevenLabsCredit)
+        .set({
+          credits: elevenLabsCredits,
+          updated_at: new Date(),
+        })
+        .where(eq(elevenLabsCredit.userId, userId))
+        .execute();
+    } else {
+      await db.insert(elevenLabsCredit).values({
+        userId: userId,
+        credits: elevenLabsCredits,
+        updated_at: new Date(),
+      });
+    }
+
+    // OpenAI Credits Update (As per your existing code)
+    const openAiCredit = await db.query.openAiCredit.findFirst({
+      where: eq(schema.openAiCredit.userId, userId),
+    });
+
+    if (openAiCredit) {
+      await db
+        .update(schema.openAiCredit)
+        .set({
+          credits: openAiCredits,
+          updated_at: new Date(),
+        })
+        .where(eq(schema.openAiCredit.userId, userId))
+        .execute();
+    } else {
+      await db.insert(schema.openAiCredit).values({
+        userId: userId,
+        credits: openAiCredits,
+        updated_at: new Date(),
+      });
+    }
   } catch (error) {
-    console.error("Error updating 11 Labs credits:", error);
-    throw new Error(`Error updating credits: ${error.message}`);
+    console.error("Error updating credits:", error);
+    throw new Error(`Error updating credits: ${(error as Error).message}`);
   }
 }
 
 export { updateUserCredits };
-
 export const userRouter = createTRPCRouter({
   list: protectedProcedure.query(async ({ ctx }) => {
     return await ctx.db
@@ -175,8 +233,11 @@ export const userRouter = createTRPCRouter({
           .execute();
 
         // Update the user's credits for the "STUDENT" plan
-        const studentPlanCredits = 40000;
-        await updateUserCredits(input.userId, studentPlanCredits);
+        const planCredits = {
+          elevenLabsCredits: 40000,
+          openAiCredits: 200000,
+        };
+        await updateUserCredits(input.userId, planCredits);
 
         return { success: true };
       } catch (error) {
@@ -211,8 +272,11 @@ export const userRouter = createTRPCRouter({
           .execute();
 
         // Update the user's credits for the "Creator" plan
-        const studentPlanCredits = 80000;
-        await updateUserCredits(input.userId, studentPlanCredits);
+        const planCredits = {
+          elevenLabsCredits: 80000,
+          openAiCredits: 400000,
+        };
+        await updateUserCredits(input.userId, planCredits);
         return { success: true };
       } catch (error) {
         console.error("Error updating subscription:", error);
@@ -243,8 +307,11 @@ export const userRouter = createTRPCRouter({
           .execute();
 
         // Update the user's credits for the "Business" plan
-        const studentPlanCredits = 125000;
-        await updateUserCredits(input.userId, studentPlanCredits);
+        const planCredits = {
+          elevenLabsCredits: 125000,
+          openAiCredits: 1000000,
+        };
+        await updateUserCredits(input.userId, planCredits);
 
         return { success: true };
       } catch (error) {
@@ -255,6 +322,213 @@ export const userRouter = createTRPCRouter({
         });
       }
     }),
+  updateStudentClMO: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string().min(5),
+        planId: z.string().min(5).optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await ctx.db
+          .update(schema.subscriptions)
+          .set({
+            status: "STUDENTCLMO",
+            plan_id: input.planId ?? "initial_plan_id",
+            updated_at: sql`NOW()`,
+          })
+          .where(eq(schema.subscriptions.userId, input.userId))
+          .execute();
+
+        const planCredits = {
+          elevenLabsCredits: 10000,
+          openAiCredits: 200000,
+          clCredits: 40,
+        };
+        await updateUserCredits(input.userId, planCredits);
+        return { success: true };
+      } catch (error) {
+        console.error("Error updating subscription:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Error updating subscription",
+        });
+      }
+    }),
+
+  updateCreatorClMO: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string().min(5),
+        planId: z.string().min(5).optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await ctx.db
+          .update(schema.subscriptions)
+          .set({
+            status: "CREATORCLMO",
+            plan_id: input.planId ?? "initial_plan_id",
+            updated_at: sql`NOW()`,
+          })
+          .where(eq(schema.subscriptions.userId, input.userId))
+          .execute();
+        const planCredits = {
+          elevenLabsCredits: 10000,
+          openAiCredits: 400000,
+          clCredits: 60,
+        };
+        await updateUserCredits(input.userId, planCredits);
+        return { success: true };
+      } catch (error) {
+        console.error("Error updating subscription:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Error updating subscription",
+        });
+      }
+    }),
+  updateBusinessClMO: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string().min(5),
+        planId: z.string().min(5).optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await ctx.db
+          .update(schema.subscriptions)
+          .set({
+            status: "BUSINESSCLMO",
+            plan_id: input.planId ?? "initial_plan_id",
+            updated_at: sql`NOW()`,
+          })
+          .where(eq(schema.subscriptions.userId, input.userId))
+          .execute();
+        const planCredits = {
+          elevenLabsCredits: 10000,
+          openAiCredits: 1000000,
+          clCredits: 80,
+        };
+        await updateUserCredits(input.userId, planCredits);
+        return { success: true };
+      } catch (error) {
+        console.error("Error updating subscription:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Error updating subscription",
+        });
+      }
+    }),
+  updateStudentClYR: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string().min(5),
+        planId: z.string().min(5).optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await ctx.db
+          .update(schema.subscriptions)
+          .set({
+            status: "STUDENTCLYR",
+            plan_id: input.planId ?? "initial_plan_id",
+            updated_at: sql`NOW()`,
+          })
+          .where(eq(schema.subscriptions.userId, input.userId))
+          .execute();
+        const planCredits = {
+          elevenLabsCredits: 10000,
+          openAiCredits: 200000,
+          clCredits: 40,
+        };
+        await updateUserCredits(input.userId, planCredits);
+
+        return { success: true };
+      } catch (error) {
+        console.error("Error updating subscription:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Error updating subscription",
+        });
+      }
+    }),
+
+  updateCreatorClYR: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string().min(5),
+        planId: z.string().min(5).optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await ctx.db
+          .update(schema.subscriptions)
+          .set({
+            status: "CREATORCLYR",
+            plan_id: input.planId ?? "initial_plan_id",
+            updated_at: sql`NOW()`,
+          })
+          .where(eq(schema.subscriptions.userId, input.userId))
+          .execute();
+
+        const planCredits = {
+          elevenLabsCredits: 10000,
+          openAiCredits: 400000,
+          clCredits: 60,
+        };
+        await updateUserCredits(input.userId, planCredits);
+
+        return { success: true };
+      } catch (error) {
+        console.error("Error updating subscription:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Error updating subscription",
+        });
+      }
+    }),
+  updateBusinessClYR: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string().min(5),
+        planId: z.string().min(5).optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await ctx.db
+          .update(schema.subscriptions)
+          .set({
+            status: "BUSINESSCLYR",
+            plan_id: input.planId ?? "initial_plan_id",
+            updated_at: sql`NOW()`,
+          })
+          .where(eq(schema.subscriptions.userId, input.userId))
+          .execute();
+
+        const planCredits = {
+          elevenLabsCredits: 10000,
+          openAiCredits: 1000000,
+          clCredits: 60,
+        };
+        await updateUserCredits(input.userId, planCredits);
+
+        return { success: true };
+      } catch (error) {
+        console.error("Error updating subscription:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Error updating subscription",
+        });
+      }
+    }),
+
   cancelSubscription: protectedProcedure
     .input(
       z.object({

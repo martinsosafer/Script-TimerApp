@@ -18,6 +18,7 @@ import {
   IconSun,
 } from "@voiceai/ui/@/components/ui/icons";
 
+import { RevealText } from "~/app/animations/RevealText";
 import { hasValidPlan } from "../../siteUtils";
 import MobileNavBar from "../mobile-navbar";
 import ExperimentalNavItem from "./experimental";
@@ -49,12 +50,24 @@ export default function NewNavBar({ signOut, signIn, session }: NavBarProps) {
   const subscriptionData = session?.user.subscription?.status;
 
   return (
-    <header className=" sticky top-0 z-50 flex h-16 w-full items-center justify-between bg-primary px-8">
+    <header className=" sticky top-0 z-50 mb-8 flex h-16 w-full items-center justify-between bg-primary  px-8  py-14">
       <Link
-        href={`/`}
-        className="font-poppins text-2xl font-bold text-primary-foreground"
+        href="/"
+        className="flex flex-col font-poppins text-primary-foreground"
       >
-        Script Timer
+        <RevealText>
+          {/* Container for better alignment */}
+          <div className="flex flex-col items-start">
+            {/* Main title */}
+            <span className="text-left font-poppins text-4xl font-bold">
+              Co-Producer
+            </span>
+            {/* Subtitle positioned directly below the main title */}
+            <span className=" text-left text-sm text-white">
+              Created by Script-Timer
+            </span>
+          </div>
+        </RevealText>
       </Link>
 
       <nav className="mt-4 hidden md:block lg:block xl:block">

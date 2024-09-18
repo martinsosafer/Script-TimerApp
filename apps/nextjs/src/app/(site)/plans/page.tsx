@@ -49,30 +49,59 @@ async function loadProducts() {
     STUDENT = "Student Plan",
     CREATOR = "Creator Plan",
     BUSINESS = "Business Plan",
+    STUDENTCLMO = "Plagiarism + Ai Detection: Edu / Mo",
+    CREATORCLMO = "Plagiarism + Ai Detection: Creator / Mo",
+    BUSINESSCLMO = "Plagiarism + Ai Detection: Business / Mo",
+    STUDENTCLYR = "Plagiarism + Ai Detection: Edu / Yr",
+    CREATORCLYR = "Plagiarism + Ai Detection: Creator / Yr",
+    BUSINESSCLYR = "Plagiarism + Ai Detection: Business / Yr",
   }
   const plans: Plans[] = [Plans.STUDENT, Plans.CREATOR, Plans.BUSINESS];
 
+  // Sort all products by price
   products.sort((a, b) => a.metadata.price - b.metadata.price);
 
-  // Filter products into monthly and yearly plans
-  const monthlyPlans = products.filter(
-    (product) =>
-      product.metadata.price <= 39 && plans.includes(product.name as Plans),
+  const originalPlans = products.filter((product) =>
+    plans.includes(product.name as Plans),
   );
-  const yearlyPlans = products.filter(
-    (product) =>
-      product.metadata.price > 39 && plans.includes(product.name as Plans),
+
+  const plagiarismProducts = products.filter((product) =>
+    product.name.includes("Plagiarism + Ai Detection"),
+  );
+
+  const monthlyPlans = originalPlans.filter((product) =>
+    product.name.toLowerCase().includes("/ mo"),
+  );
+  const yearlyPlans = originalPlans.filter((product) =>
+    product.name.toLowerCase().includes("/ yr"),
+  );
+
+  const plagiarismMonthlyPlans = plagiarismProducts.filter((product) =>
+    product.name.toLowerCase().includes("/ mo"),
+  );
+  const plagiarismYearlyPlans = plagiarismProducts.filter((product) =>
+    product.name.toLowerCase().includes("/ yr"),
   );
 
   const orderedMonthlyPlans = monthlyPlans.sort(
     (a, b) => a.metadata.price - b.metadata.price,
   );
-
   const orderedYearlyPlans = yearlyPlans.sort(
     (a, b) => a.metadata.price - b.metadata.price,
   );
+  const orderedPlagiarismMonthlyPlans = plagiarismMonthlyPlans.sort(
+    (a, b) => a.metadata.price - b.metadata.price,
+  );
+  const orderedPlagiarismYearlyPlans = plagiarismYearlyPlans.sort(
+    (a, b) => a.metadata.price - b.metadata.price,
+  );
 
-  return { monthlyPlans: orderedMonthlyPlans, yearlyPlans: orderedYearlyPlans };
+  return {
+    monthlyPlans: orderedMonthlyPlans,
+    yearlyPlans: orderedYearlyPlans,
+    plagiarismMonthlyPlans: orderedPlagiarismMonthlyPlans,
+    plagiarismYearlyPlans: orderedPlagiarismYearlyPlans,
+  };
 }
 
 async function getSubscription(planId: string | null | undefined) {
@@ -107,7 +136,12 @@ async function getSubscription(planId: string | null | undefined) {
 }
 
 async function PlansPage() {
-  const { monthlyPlans, yearlyPlans } = await loadProducts();
+  const {
+    monthlyPlans,
+    yearlyPlans,
+    plagiarismMonthlyPlans,
+    plagiarismYearlyPlans,
+  } = await loadProducts();
   const session = await auth();
   let subscription;
   if (session) {
@@ -117,15 +151,15 @@ async function PlansPage() {
   return (
     <div className="flex w-full flex-col items-center">
       <div className="flex w-full flex-col items-center bg-white px-4 pt-10 text-center xl:w-[800px]">
-        <h2 className="text-center text-3xl font-bold leading-tight tracking-tight text-primary xl:text-3xl xl:font-extrabold">
+        <h1 className="text-center font-poppins text-3xl font-bold leading-tight tracking-tight text-primary xl:text-3xl xl:font-extrabold">
           <span>SCRIPT WRITING, VOICEOVERS & MASTERCLASSES</span>
-        </h2>
+        </h1>
         <p className="mt-4 w-full text-lg font-medium  text-gray-500 xl:w-[600px]">
           Choose an affordable plan that&apos;s packed with the best features
           for engaging your audience, creating scripts, and more.
         </p>
         <span className="mt-2 font-bold text-black">
-          Save up to 35% on yearly plans!
+          Get up to 4 months free on yearly plans!
         </span>
       </div>
       <PlansSections
@@ -133,6 +167,8 @@ async function PlansPage() {
         yearlyPlans={yearlyPlans}
         planInterval={subscription?.plan?.interval}
         session={session}
+        plagiarismMonthlyPlans={plagiarismMonthlyPlans}
+        plagiarismYearlyPlans={plagiarismYearlyPlans}
       />
       {/* <PricingTable /> */}
     </div>
