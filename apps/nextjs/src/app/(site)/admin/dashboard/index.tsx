@@ -155,7 +155,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
           <div className="flex w-[220px] min-w-[220px] items-center justify-center border border-gray-400 px-4 py-2 text-center font-semibold">
             Name
           </div>
-          <div className="flex w-[340px] min-w-[340px] items-center justify-center border border-gray-400 px-4 py-2 text-center font-semibold ">
+          <div className="flex w-[330px] min-w-[330px] items-center justify-center border border-gray-400 px-4 py-2 text-center font-semibold ">
             Email
           </div>
           <div className="flex w-[100px] min-w-[100px] items-center justify-center border border-gray-400 px-2 py-2 text-center font-semibold">
@@ -183,10 +183,10 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
               Days Since Creation {isCreationAscending ? "↑" : "↓"}
             </button>
           </div>
-          <div className="flex w-[120px] min-w-[120px] items-center justify-center border border-gray-400 px-1 py-2 text-center font-semibold">
+          <div className="flex w-[160px] min-w-[160px] items-center justify-center border border-gray-400 px-1 py-2 text-center font-semibold">
             Actions
           </div>
-          <div className="flex w-[300px] min-w-[300px] items-center justify-center border border-gray-400 px-1 py-2 text-center font-semibold">
+          <div className="flex w-[290px] min-w-[290px] items-center justify-center border border-gray-400 px-1 py-2 text-center font-semibold">
             Subscription ID
           </div>
           <div className="flex w-[80px] min-w-[80px] items-center justify-center border border-gray-400 px-4 py-2 text-center font-semibold">
@@ -201,7 +201,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
                 <div className="flex w-[220px] min-w-[220px] items-center border px-4 py-2">
                   {user.name}
                 </div>
-                <div className="flex w-[340px] min-w-[340px] items-center overflow-auto border p-2">
+                <div className="flex w-[330px] min-w-[330px] items-center overflow-auto border p-2">
                   {user.email}
                 </div>
                 <div className="flex w-[100px] min-w-[100px] items-center border px-2 py-2">
@@ -226,11 +226,12 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
                 <div className="flex w-[120px] min-w-[100px] items-center border px-2 py-2">
                   {daysSinceCreated(user.created_at)}
                 </div>
-                <div className="flex w-[120px] min-w-[120px] items-center border px-2 py-2">
+                <div className="flex w-[160px] min-w-[160px] items-center justify-center border px-1 py-2">
                   <select
                     value={user?.status ?? ""}
                     onChange={async (e) => {
                       const selectedStatus = e.target.value;
+                      if (selectedStatus === "EXTEND") return;
                       await handleSubscription(user.id, selectedStatus);
                     }}
                     className="mr-2 rounded-lg border border-gray-300 px-2 py-1"
@@ -242,10 +243,11 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
                     <option value="CREATOR">Creator</option>
                     <option value="BUSINESS">Business</option>
                     <option value="FREE_TRIAL">Free Trial</option>
+                    <option value="EXTEND">Extend Free Trial</option>
                   </select>
                 </div>
                 <button
-                  className="flex w-[300px] min-w-[300px] items-center justify-center overflow-auto border px-2 py-2"
+                  className="flex w-[290px] min-w-[290px] items-center justify-center overflow-auto border px-2 py-2"
                   onClick={() => {
                     setSelectedUserId(user.id);
                     setIsAddingPlanId(true);
