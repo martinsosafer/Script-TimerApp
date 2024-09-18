@@ -44,16 +44,16 @@ export default function PlansSections({
         scrollToPlagiarismTable={scrollToPlagiarismTable}
       />
 
+      <div className="mb-12" ref={plagiarismTableRef}></div>
       <PlagiarismTable
-        id="plagiarism-table"
         plagiarismMonthlyPlans={plagiarismMonthlyPlans}
         plagiarismYearlyPlans={plagiarismYearlyPlans}
         yearlyPlans={yearlyPlans}
         currentPlan={currentPlan}
         planInterval={planInterval}
         session={session}
-        ref={plagiarismTableRef}
       />
+
       <FAQs />
       <LanguagesRows />
       <PricingTestimonials />
