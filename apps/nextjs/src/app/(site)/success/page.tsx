@@ -14,6 +14,12 @@ enum Plans {
   STUDENT = "Student Plan",
   CREATOR = "Creator Plan",
   BUSINESS = "Business Plan",
+  STUDENTCLMO = "Plagiarism + Ai Detection: Edu / Mo",
+  CREATORCLMO = "Plagiarism + Ai Detection: Creator / Mo",
+  BUSINESSCLMO = "Plagiarism + Ai Detection: Business / Mo",
+  STUDENTCLYR = "Plagiarism + Ai Detection: Edu / Yr",
+  CREATORCLYR = "Plagiarism + Ai Detection: Creator / Yr",
+  BUSINESSCLYR = "Plagiarism + Ai Detection: Business / Yr",
 }
 
 async function stripeSession(sessionId: string) {
@@ -65,6 +71,61 @@ function SuccessPage() {
       console.error("Error updating subscription:", error);
     },
   });
+  const { mutateAsync: updateStudentClMo } =
+    api.user.updateStudentClMO.useMutation({
+      onSuccess(data) {
+        console.log("Subscription updated successfully:", data);
+      },
+      onError(error) {
+        console.error("Error updating subscription:", error);
+      },
+    });
+  const { mutateAsync: updateCreatorClMo } =
+    api.user.updateCreatorClMO.useMutation({
+      onSuccess(data) {
+        console.log("Subscription updated successfully:", data);
+      },
+      onError(error) {
+        console.error("Error updating subscription:", error);
+      },
+    });
+  const { mutateAsync: updateBusinessClMo } =
+    api.user.updateBusinessClMO.useMutation({
+      onSuccess(data) {
+        console.log("Subscription updated successfully:", data);
+      },
+      onError(error) {
+        console.error("Error updating subscription:", error);
+      },
+    });
+  const { mutateAsync: updateStudentClYr } =
+    api.user.updateStudentClYR.useMutation({
+      onSuccess(data) {
+        console.log("Subscription updated successfully:", data);
+      },
+      onError(error) {
+        console.error("Error updating subscription:", error);
+      },
+    });
+  const { mutateAsync: updateCreatorClYr } =
+    api.user.updateCreatorClYR.useMutation({
+      onSuccess(data) {
+        console.log("Subscription updated successfully:", data);
+      },
+      onError(error) {
+        console.error("Error updating subscription:", error);
+      },
+    });
+  const { mutateAsync: updateBusinessClYr } =
+    api.user.updateBusinessClYR.useMutation({
+      onSuccess(data) {
+        console.log("Subscription updated successfully:", data);
+      },
+      onError(error) {
+        console.error("Error updating subscription:", error);
+      },
+    });
+  //HANDLERS
 
   const handleStudent = async (userId: string, planId: string) => {
     try {
@@ -87,7 +148,49 @@ function SuccessPage() {
       console.error("Error giving subscription:", error);
     }
   };
-
+  //COPYLEAKS HANDLERS
+  const handleStudentClMO = async (userId: string, planId: string) => {
+    try {
+      await updateStudentClMo({ userId, planId });
+    } catch (error) {
+      console.error("Error updating subscription:", error);
+    }
+  };
+  const handleCreatorClMO = async (userId: string, planId: string) => {
+    try {
+      await updateCreatorClMo({ userId, planId });
+    } catch (error) {
+      console.error("Error updating subscription:", error);
+    }
+  };
+  const handleBusinessClMO = async (userId: string, planId: string) => {
+    try {
+      await updateBusinessClMo({ userId, planId });
+    } catch (error) {
+      console.error("Error updating subscription:", error);
+    }
+  };
+  const handleStudentClYR = async (userId: string, planId: string) => {
+    try {
+      await updateStudentClYr({ userId, planId });
+    } catch (error) {
+      console.error("Error updating subscription:", error);
+    }
+  };
+  const handleCreatorClYr = async (userId: string, planId: string) => {
+    try {
+      await updateCreatorClYr({ userId, planId });
+    } catch (error) {
+      console.error("Error updating subscription:", error);
+    }
+  };
+  const handleBusinessClYr = async (userId: string, planId: string) => {
+    try {
+      await updateBusinessClYr({ userId, planId });
+    } catch (error) {
+      console.error("Error updating subscription:", error);
+    }
+  };
   function handleSubscriptionUdate(
     name: string,
     planId: string,
@@ -102,6 +205,25 @@ function SuccessPage() {
     }
     if (name === Plans.BUSINESS) {
       handleBusiness(userId, planId);
+    }
+    // New plans
+    if (name === Plans.STUDENTCLMO) {
+      handleStudentClMO(userId, planId);
+    }
+    if (name === Plans.CREATORCLMO) {
+      handleCreatorClMO(userId, planId);
+    }
+    if (name === Plans.BUSINESSCLMO) {
+      handleBusinessClMO(userId, planId);
+    }
+    if (name === Plans.STUDENTCLYR) {
+      handleStudentClYR(userId, planId);
+    }
+    if (name === Plans.CREATORCLYR) {
+      handleCreatorClYr(userId, planId);
+    }
+    if (name === Plans.BUSINESSCLYR) {
+      handleBusinessClYr(userId, planId);
     }
   }
 

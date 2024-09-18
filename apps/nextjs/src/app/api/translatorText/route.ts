@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 
+import deductOpenAiCredits from "~/app/actions/openAiCredits";
+
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -13,7 +15,7 @@ interface TranslatorData {
 }
 
 export async function POST(req: Request) {
-  const { prompt } = await req.json();
+  const { prompt } = (await req.json()) as { prompt: string };
 
   try {
     const response = await openai.chat.completions.create({
@@ -22,6 +24,8 @@ export async function POST(req: Request) {
       max_tokens: 4096,
       temperature: 0.2,
     });
+
+    await deductOpenAiCredits(prompt.length);
 
     return NextResponse.json(
       {

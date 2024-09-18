@@ -20,7 +20,7 @@ export default function NotFound() {
     <div style={centerStyle}>
       <div style={boxStyle}>
         <h1 style={{ marginBottom: "20px" }}>
-          Thank you for joining Script Timer!
+          Thank you for joining Co-Producer!
         </h1>
         <p>Please check your email.</p>
       </div>

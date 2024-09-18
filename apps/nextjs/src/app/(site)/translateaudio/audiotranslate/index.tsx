@@ -7,8 +7,10 @@ import AudioTranslate from "../atranslatepage";
 
 export default function AudioTranslatorPage({
   subData,
+  openAiCredits,
 }: {
   subData: SubscriptionData | null | undefined;
+  openAiCredits: number;
 }) {
   const [openNoSessionModal, setOpenNoSessionModal] =
     React.useState<boolean>(false);
@@ -31,6 +33,7 @@ export default function AudioTranslatorPage({
         <AudioTranslate
           subData={subData}
           setOpenNoSessionModal={() => setOpenNoSessionModal(true)}
+          openAiCredits={openAiCredits}
         />
         {openNoSessionModal && (
           <NoSessionModal

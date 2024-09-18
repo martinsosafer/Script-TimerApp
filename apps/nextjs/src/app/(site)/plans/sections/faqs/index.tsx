@@ -19,7 +19,7 @@ export default function FAQs() {
   >(undefined);
 
   return (
-    <div className="mb-20 flex w-full flex-col items-center justify-center bg-gray-100 p-10">
+    <div className="mb-10 flex w-full flex-col items-center justify-center bg-gray-100 p-10">
       <h2 className="mb-8 text-5xl font-bold text-primary">FAQs</h2>
       <div className="flex w-full flex-col gap-2 text-xl text-primary xl:w-[800px]">
         {faqs.map((faq, index) => {
