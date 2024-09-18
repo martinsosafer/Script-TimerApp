@@ -1,44 +1,117 @@
+import type { Dispatch, SetStateAction } from "react";
+import { useEffect, useState } from "react";
+
+import type { UserData } from "../dashboard";
+import { daysSinceCreated, daysWithCurrentPlan } from "../helpers";
+
 interface AdminFiltersProps {
-  searchTerm: string;
-  handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  selectedPlan: string;
-  handlePlanChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  minCredits: number | "";
-  handleMinCreditsChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  minDaysWithPlanAsc: number | "";
-  handleMinDaysWithPlanAscChange: (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => void;
-  minDaysWithPlanDesc: number | "";
-  handleMinDaysWithPlanDescChange: (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => void;
-  minDaysSinceCreationAsc: number | "";
-  handleMinDaysSinceCreationAscChange: (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => void;
-  minDaysSinceCreationDesc: number | "";
-  handleMinDaysSinceCreationDescChange: (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => void;
+  userList: UserData[];
+  setFilteredList: Dispatch<SetStateAction<UserData[]>>;
 }
 
 export default function AdminFilters({
-  searchTerm,
-  handleSearch,
-  selectedPlan,
-  handlePlanChange,
-  minCredits,
-  handleMinCreditsChange,
-  minDaysWithPlanAsc,
-  handleMinDaysWithPlanAscChange,
-  minDaysWithPlanDesc,
-  handleMinDaysWithPlanDescChange,
-  minDaysSinceCreationAsc,
-  handleMinDaysSinceCreationAscChange,
-  minDaysSinceCreationDesc,
-  handleMinDaysSinceCreationDescChange,
+  setFilteredList,
+  userList,
 }: AdminFiltersProps) {
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [minDaysWithPlanAsc, setMinDaysWithPlanAsc] = useState<number | "">("");
+  const [minDaysWithPlanDesc, setMinDaysWithPlanDesc] = useState<number | "">(
+    "",
+  );
+  const [minDaysSinceCreationAsc, setMinDaysSinceCreationAsc] = useState<
+    number | ""
+  >("");
+  const [minDaysSinceCreationDesc, setMinDaysSinceCreationDesc] = useState<
+    number | ""
+  >("");
+
+  const [selectedPlan, setSelectedPlan] = useState<string>("");
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handlePlanChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+    setSelectedPlan(e.target.value);
+  };
+
+  const handleMinDaysWithPlanAscChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
+    setMinDaysWithPlanAsc(parseInt(e.target.value, 10) || "");
+  };
+
+  const handleMinDaysWithPlanDescChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
+    setMinDaysWithPlanDesc(parseInt(e.target.value, 10) || "");
+  };
+
+  const handleMinDaysSinceCreationAscChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
+    setMinDaysSinceCreationAsc(parseInt(e.target.value, 10) || "");
+  };
+
+  const handleMinDaysSinceCreationDescChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
+    setMinDaysSinceCreationDesc(parseInt(e.target.value, 10) || "");
+  };
+
+  useEffect(() => {
+    let filtered = userList.filter(
+      (user) =>
+        user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (user.name &&
+          user.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        user.id.toLowerCase().includes(searchTerm.toLowerCase()),
+    );
+
+    if (selectedPlan) {
+      filtered = filtered.filter((user) => user.status === selectedPlan);
+    }
+
+    if (minDaysWithPlanAsc !== "") {
+      filtered = filtered.filter(
+        (user) =>
+          daysWithCurrentPlan(user.updated_at ?? new Date()) >=
+          minDaysWithPlanAsc,
+      );
+    }
+
+    if (minDaysWithPlanDesc !== "") {
+      filtered = filtered.filter(
+        (user) =>
+          daysWithCurrentPlan(user.updated_at ?? new Date()) <=
+          minDaysWithPlanDesc,
+      );
+    }
+
+    if (minDaysSinceCreationAsc !== "") {
+      filtered = filtered.filter(
+        (user) => daysSinceCreated(user.created_at) >= minDaysSinceCreationAsc,
+      );
+    }
+
+    if (minDaysSinceCreationDesc !== "") {
+      filtered = filtered.filter(
+        (user) => daysSinceCreated(user.created_at) <= minDaysSinceCreationDesc,
+      );
+    }
+
+    setFilteredList(filtered);
+  }, [
+    searchTerm,
+    selectedPlan,
+    minDaysWithPlanAsc,
+    minDaysWithPlanDesc,
+    minDaysSinceCreationAsc,
+    minDaysSinceCreationDesc,
+    setFilteredList,
+    userList,
+  ]);
+
   return (
     <div className="mb-4 flex flex-wrap">
       <div className="mb-4 flex w-full flex-wrap md:mb-0 md:w-1/2">
@@ -57,20 +130,14 @@ export default function AdminFilters({
           className="w-full rounded-lg border border-gray-300 px-4 py-2"
         >
           <option value="">All Plans</option>
-          <option value="student">Student</option>
-          <option value="creator">Creator</option>
-          <option value="business">Business</option>
+          <option value="STUDENT">Student</option>
+          <option value="CREATOR">Creator</option>
+          <option value="BUSSINES">Business</option>
+          <option value="FREE">Free</option>
+          <option value="FREE_TRIAL">Free Trial</option>
         </select>
       </div>
-      <div className="mb-4 flex w-full flex-wrap md:mb-0 md:w-1/4">
-        <input
-          type="number"
-          placeholder="Min Credits"
-          value={minCredits === "" ? "" : minCredits}
-          onChange={handleMinCreditsChange}
-          className="w-full rounded-lg border border-gray-300 px-4 py-2"
-        />
-      </div>
+
       <div className="mb-4 flex w-full flex-wrap md:mb-0 md:w-1/4">
         <input
           type="number"

@@ -1,89 +1,53 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+
+import { IconCopy } from "@voiceai/ui/@/components/ui/icons";
+import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 import { api } from "~/utils/api";
+import AddPlanIdModal from "../../components/modals/add-plan-id";
+import { addPlanId } from "../actions";
 import AdminFilters from "../filters";
+import { daysSinceCreated, daysWithCurrentPlan } from "../helpers";
 
-interface UserData {
-  name: string;
+export interface UserData {
+  name: string | null;
   email: string;
   id: string;
-  created_at: string;
-  subscription: string;
-  status: string;
-  total_credits: number;
-  updated_at: string;
+  created_at: Date;
+  updated_at: Date | null;
+  status:
+    | "ACTIVE"
+    | "INACTIVE"
+    | "STUDENT"
+    | "CREATOR"
+    | "FREE_TRIAL"
+    | "PAUSED"
+    | "FREE"
+    | "BUSINESS"
+    | null;
+  plan_id: string | null;
+  total_credits: unknown;
+  cl_credits: number | null;
+  eleven_labs_credits: number | null;
 }
 
 interface DashboardProps {
   userList: UserData[];
+  refetch: () => void;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [minCredits, setMinCredits] = useState<number | "">("");
-  const [minDaysWithPlanAsc, setMinDaysWithPlanAsc] = useState<number | "">("");
-  const [minDaysWithPlanDesc, setMinDaysWithPlanDesc] = useState<number | "">(
-    "",
-  );
-  const [minDaysSinceCreationAsc, setMinDaysSinceCreationAsc] = useState<
-    number | ""
-  >("");
-  const [minDaysSinceCreationDesc, setMinDaysSinceCreationDesc] = useState<
-    number | ""
-  >("");
-  const [filteredData, setFilteredData] = useState<UserData[]>(userList);
-  const [selectedPlan, setSelectedPlan] = useState<string>("");
+const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
+  const [filteredList, setFilteredList] = useState<UserData[]>(userList);
   const [isAscending, setIsAscending] = useState<boolean>(true);
   const [isCreationAscending, setIsCreationAscending] = useState<boolean>(true);
 
-  const { mutateAsync: giveSubscription } =
-    api.user.giveSubscription.useMutation({
-      onSuccess(data) {
-        console.log("Subscription given successfully:", data);
-      },
-      onError(error) {
-        console.error("Error giving subscription:", error);
-      },
-    });
+  const [isAddingPlanId, setIsAddingPlanId] = useState(false);
 
-  const { mutateAsync: cancelSubscription } =
-    api.user.cancelSubscription.useMutation({
-      onSuccess(data) {
-        console.log("Subscription cancelled successfully:", data);
-      },
-      onError(error) {
-        console.error("Error cancelling subscription:", error);
-      },
-    });
-
-  const { mutateAsync: updateStudent } = api.user.updateStudent.useMutation({
-    onSuccess(data) {
-      console.log("Subscription updated successfully:", data);
-    },
-    onError(error) {
-      console.error("Error updating subscription:", error);
-    },
-  });
-
-  const { mutateAsync: updateCreator } = api.user.updateCreator.useMutation({
-    onSuccess(data) {
-      console.log("Subscription updated successfully:", data);
-    },
-    onError(error) {
-      console.error("Error updating subscription:", error);
-    },
-  });
-
-  const { mutateAsync: updateBusiness } = api.user.updateBusiness.useMutation({
-    onSuccess(data) {
-      console.log("Subscription updated successfully:", data);
-    },
-    onError(error) {
-      console.error("Error updating subscription:", error);
-    },
-  });
+  const [selectedUserId, setSelectedUserId] = useState<undefined | string>(
+    undefined,
+  );
 
   const { mutateAsync: giveFreeTrial } = api.user.giveFreeTrial.useMutation({
     onSuccess(data) {
@@ -94,302 +58,227 @@ const Dashboard: React.FC<DashboardProps> = ({ userList }) => {
     },
   });
 
-  const handleGiveSubscription = async (userId: string) => {
-    try {
-      await giveSubscription({ userId });
-    } catch (error) {
-      console.error("Error giving subscription:", error);
-    }
-  };
-
-  const handleCancelSubscription = async (userId: string) => {
-    try {
-      await cancelSubscription({ userId });
-    } catch (error) {
-      console.error("Error cancelling subscription:", error);
-    }
-  };
-
-  const handleStudent = async (userId: string, status: string) => {
-    try {
-      await updateStudent({ userId, status });
-    } catch (error) {
-      console.error("Error updating subscription:", error);
-    }
-  };
-
-  const handleCreator = async (userId: string, status: string) => {
-    try {
-      await updateCreator({ userId, status });
-    } catch (error) {
-      console.error("Error updating subscription:", error);
-    }
-  };
-
-  const handleBusiness = async (userId: string, status: string) => {
-    try {
-      await updateBusiness({ userId, status });
-    } catch (error) {
-      console.error("Error updating subscription:", error);
-    }
-  };
-
-  const handleGiveFreeTrial = async (userId: string) => {
-    try {
-      await giveFreeTrial({ userId });
-    } catch (error) {
+  const { mutateAsync: updateStudent } = api.user.updateStudent.useMutation({
+    onSuccess(data) {
+      console.log("Free trial given successfully:", data);
+    },
+    onError(error) {
       console.error("Error giving free trial:", error);
+    },
+  });
+
+  const { mutateAsync: updateCreator } = api.user.updateCreator.useMutation({
+    onSuccess(data) {
+      console.log("Free trial given successfully:", data);
+    },
+    onError(error) {
+      console.error("Error giving free trial:", error);
+    },
+  });
+
+  const { mutateAsync: updateBusiness } = api.user.updateBusiness.useMutation({
+    onSuccess(data) {
+      console.log("Free trial given successfully:", data);
+    },
+    onError(error) {
+      console.error("Error giving free trial:", error);
+    },
+  });
+
+  const { mutateAsync: cancelSubscription } =
+    api.user.cancelSubscription.useMutation({
+      onSuccess(data) {
+        console.log("Free trial given successfully:", data);
+      },
+      onError(error) {
+        console.error("Error giving free trial:", error);
+      },
+    });
+
+  async function handleSubscription(userId: string, selectedStatus: string) {
+    try {
+      if (selectedStatus === "FREE_TRIAL") {
+        await giveFreeTrial({ userId });
+      } else if (selectedStatus === "STUDENT") {
+        await updateStudent({ userId });
+      } else if (selectedStatus === "CREATOR") {
+        await updateCreator({ userId });
+      } else if (selectedStatus === "BUSSINES") {
+        await updateBusiness({ userId });
+      } else if (selectedStatus === "FREE") {
+        await cancelSubscription({ userId });
+      }
+      refetch();
+    } catch (error) {
+      console.error("Error updating subscription:", error);
     }
-  };
-
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setSearchTerm(e.target.value);
-  };
-
-  const handlePlanChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    setSelectedPlan(e.target.value);
-  };
-
-  const handleMinCreditsChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ): void => {
-    setMinCredits(parseInt(e.target.value, 10) || "");
-  };
-
-  const handleMinDaysWithPlanAscChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ): void => {
-    setMinDaysWithPlanAsc(parseInt(e.target.value, 10) || "");
-  };
-
-  const handleMinDaysWithPlanDescChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ): void => {
-    setMinDaysWithPlanDesc(parseInt(e.target.value, 10) || "");
-  };
-
-  const handleMinDaysSinceCreationAscChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ): void => {
-    setMinDaysSinceCreationAsc(parseInt(e.target.value, 10) || "");
-  };
-
-  const handleMinDaysSinceCreationDescChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ): void => {
-    setMinDaysSinceCreationDesc(parseInt(e.target.value, 10) || "");
-  };
+  }
 
   const toggleSortOrder = () => {
+    const sortedList = [...filteredList].sort((a, b) => {
+      if (isAscending) {
+        return (
+          daysWithCurrentPlan(a.updated_at ?? new Date()) -
+          daysWithCurrentPlan(b.updated_at ?? new Date())
+        );
+      } else {
+        return (
+          daysWithCurrentPlan(a.updated_at ?? new Date()) +
+          daysWithCurrentPlan(b.updated_at ?? new Date())
+        );
+      }
+    });
+
+    setFilteredList(sortedList);
     setIsAscending(!isAscending);
   };
 
   const toggleCreationSortOrder = () => {
+    const sortedList = [...filteredList].sort((a, b) => {
+      if (isCreationAscending) {
+        return daysSinceCreated(a.created_at) - daysSinceCreated(b.created_at);
+      } else {
+        return daysSinceCreated(a.created_at) + daysSinceCreated(b.created_at);
+      }
+    });
+
+    setFilteredList(sortedList);
     setIsCreationAscending(!isCreationAscending);
   };
 
-  useEffect(() => {
-    let filtered = userList.filter(
-      (user) =>
-        user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (user.name &&
-          user.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        user.id.toLowerCase().includes(searchTerm.toLowerCase()),
-    );
-
-    if (selectedPlan) {
-      filtered = filtered.filter((user) => user.status === selectedPlan);
-    }
-
-    if (minCredits !== "") {
-      filtered = filtered.filter((user) => user.total_credits >= minCredits);
-    }
-
-    if (minDaysWithPlanAsc !== "") {
-      filtered = filtered.filter(
-        (user) => daysWithCurrentPlan(user.updated_at) >= minDaysWithPlanAsc,
-      );
-    }
-
-    if (minDaysWithPlanDesc !== "") {
-      filtered = filtered.filter(
-        (user) => daysWithCurrentPlan(user.updated_at) <= minDaysWithPlanDesc,
-      );
-    }
-
-    if (minDaysSinceCreationAsc !== "") {
-      filtered = filtered.filter(
-        (user) => daysSinceCreated(user.created_at) >= minDaysSinceCreationAsc,
-      );
-    }
-
-    if (minDaysSinceCreationDesc !== "") {
-      filtered = filtered.filter(
-        (user) => daysSinceCreated(user.created_at) <= minDaysSinceCreationDesc,
-      );
-    }
-
-    filtered.sort((a, b) => {
-      const comparison =
-        daysWithCurrentPlan(a.updated_at) - daysWithCurrentPlan(b.updated_at);
-      return isAscending ? comparison : -comparison;
-    });
-
-    filtered.sort((a, b) => {
-      const comparison =
-        daysSinceCreated(a.created_at) - daysSinceCreated(b.created_at);
-      return isCreationAscending ? comparison : -comparison;
-    });
-
-    setFilteredData(filtered);
-  }, [
-    searchTerm,
-    userList,
-    selectedPlan,
-    minCredits,
-    minDaysWithPlanAsc,
-    minDaysWithPlanDesc,
-    minDaysSinceCreationAsc,
-    minDaysSinceCreationDesc,
-    isAscending,
-    isCreationAscending,
-  ]);
-
-  const daysSinceCreated = (createdAt: string): number => {
-    const createdAtDate = new Date(createdAt);
-    const currentDate = new Date();
-    const differenceInTime = currentDate.getTime() - createdAtDate.getTime();
-    const differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24));
-    return differenceInDays;
-  };
-
-  const daysWithCurrentPlan = (updated_at: string): number => {
-    const updatedAtDate = new Date(updated_at);
-    const currentDate = new Date();
-    const differenceInTime = currentDate.getTime() - updatedAtDate.getTime();
-    const differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24));
-    return differenceInDays;
-  };
-
   return (
-    <div className="mb-12 p-4">
+    <div className="mb-12 flex flex-col items-center overflow-x-scroll p-4">
       <h1 className="mb-4 text-2xl font-bold">User Dashboard</h1>
-      <AdminFilters
-        searchTerm={searchTerm}
-        handleSearch={handleSearch}
-        selectedPlan={selectedPlan}
-        handlePlanChange={handlePlanChange}
-        minCredits={minCredits}
-        handleMinCreditsChange={handleMinCreditsChange}
-        minDaysWithPlanAsc={minDaysWithPlanAsc}
-        handleMinDaysWithPlanAscChange={handleMinDaysWithPlanAscChange}
-        minDaysWithPlanDesc={minDaysWithPlanDesc}
-        handleMinDaysWithPlanDescChange={handleMinDaysWithPlanDescChange}
-        minDaysSinceCreationAsc={minDaysSinceCreationAsc}
-        handleMinDaysSinceCreationAscChange={
-          handleMinDaysSinceCreationAscChange
-        }
-        minDaysSinceCreationDesc={minDaysSinceCreationDesc}
-        handleMinDaysSinceCreationDescChange={
-          handleMinDaysSinceCreationDescChange
-        }
-      />
+      <AdminFilters setFilteredList={setFilteredList} userList={userList} />
+      <div>
+        <div className="flex w-max bg-gray-100">
+          <div className="flex w-[220px] min-w-[220px] items-center justify-center border border-gray-400 px-4 py-2 text-center font-semibold">
+            Name
+          </div>
+          <div className="flex w-[340px] min-w-[340px] items-center justify-center border border-gray-400 px-4 py-2 text-center font-semibold ">
+            Email
+          </div>
+          <div className="flex w-[100px] min-w-[100px] items-center justify-center border border-gray-400 px-2 py-2 text-center font-semibold">
+            Create on
+          </div>
+          <div className="flex w-[120px] min-w-[120px] items-center justify-center border border-gray-400 px-4 py-2 text-center font-semibold">
+            Current Plan
+          </div>
+          <div className="flex w-[100px] min-w-[100px] items-center justify-center border border-gray-400 px-4 py-2 text-center font-semibold">
+            CL Credits Used
+          </div>
+          <div className="flex w-[100px] min-w-[100px] items-center justify-center border border-gray-400 px-4 py-2 text-center font-semibold">
+            11 Credits Used
+          </div>
+          <div className="flex w-[100px] min-w-[100px] items-center justify-center border border-gray-400 px-4 py-2 text-center font-semibold">
+            OpenAi Credits Used
+          </div>
+          <div className="flex w-[120px] min-w-[120px] items-center justify-center border border-gray-400 px-1 py-2 text-center font-semibold">
+            <button onClick={toggleSortOrder}>
+              Days with Current Plan {isAscending ? "↑" : "↓"}
+            </button>
+          </div>
+          <div className="flex w-[120px] min-w-[120px] items-center justify-center border border-gray-400 px-1 py-2 text-center font-semibold">
+            <button onClick={toggleCreationSortOrder}>
+              Days Since Creation {isCreationAscending ? "↑" : "↓"}
+            </button>
+          </div>
+          <div className="flex w-[120px] min-w-[120px] items-center justify-center border border-gray-400 px-1 py-2 text-center font-semibold">
+            Actions
+          </div>
+          <div className="flex w-[300px] min-w-[300px] items-center justify-center border border-gray-400 px-1 py-2 text-center font-semibold">
+            Subscription ID
+          </div>
+          <div className="flex w-[80px] min-w-[80px] items-center justify-center border border-gray-400 px-4 py-2 text-center font-semibold">
+            ID
+          </div>
+        </div>
 
-      <div className="flex">
-        <div className="flex w-[240px] min-w-[240px] items-center justify-center border px-4 py-2">
-          Name
-        </div>
-        <div className="flex min-w-[380px] items-center justify-center border px-4 py-2">
-          Email
-        </div>
-        <div className="flex min-w-[350px] items-center justify-center border px-4 py-2">
-          ID
-        </div>
-        <div className="flex min-w-[120px] items-center justify-center border px-4 py-2">
-          Create on
-        </div>
-        <div className="flex min-w-[120px] items-center justify-center border px-4 py-2">
-          Current Plan
-        </div>
-        <div className="flex w-[100px] min-w-[100px] items-center justify-center border px-4 py-2">
-          Total Credits
-        </div>
-        <div className="flex w-[120px] min-w-[120px] items-center justify-center border px-2 py-2">
-          <button onClick={toggleSortOrder}>
-            Days with Current Plan {isAscending ? "↑" : "↓"}
-          </button>
-        </div>
-        <div className="flex w-[120px] min-w-[120px] items-center justify-center border px-2 py-2">
-          <button onClick={toggleCreationSortOrder}>
-            Days Since Creation {isCreationAscending ? "↑" : "↓"}
-          </button>
-        </div>
-        <div className="flex min-w-[120px] items-center justify-center border px-2 py-2">
-          Actions
-        </div>
-        <div className="flex min-w-[180px] items-center justify-center border px-2 py-2">
-          Subscription ID
-        </div>
-      </div>
+        <div className="h-[600px] w-max overflow-y-scroll border">
+          <div className="flex w-full flex-col items-center">
+            {filteredList.map((user) => (
+              <div key={user.id} className="flex">
+                <div className="flex w-[220px] min-w-[220px] items-center border px-4 py-2">
+                  {user.name}
+                </div>
+                <div className="flex w-[340px] min-w-[340px] items-center overflow-auto border p-2">
+                  {user.email}
+                </div>
+                <div className="flex w-[100px] min-w-[100px] items-center border px-2 py-2">
+                  {new Date(user.created_at).toLocaleDateString()}
+                </div>
+                <div className="flex w-[120px] min-w-[120px] items-center border px-4 py-2">
+                  {user.status}
+                </div>
 
-      <div className="h-[600px] overflow-hidden overflow-y-auto border">
-        <div>
-          {filteredData.map((user) => (
-            <div key={user.id} className="flex">
-              <div className="w-[240px] min-w-[240px] border px-4 py-2">
-                {user.name}
-              </div>
-              <div className="min-w-[380px] border px-4 py-2">{user.email}</div>
-              <div className="min-w-[350px] border px-4 py-2">{user.id}</div>
-              <div className="min-w-[120px] border px-4 py-2">
-                {new Date(user.created_at).toLocaleDateString()}
-              </div>
-              <div className="min-w-[120px] border px-4 py-2">
-                {user.status}
-              </div>
-              <div className="min-w-[100px] border px-4 py-2">
-                {user.total_credits}
-              </div>
-              <div className="min-w-[100px] border px-4 py-2">
-                {daysWithCurrentPlan(user.updated_at)}
-              </div>
-              <div className="min-w-[100px] border px-4 py-2">
-                {daysSinceCreated(user.created_at)}
-              </div>
-              <div className="min-w-[120px] border px-4 py-2">
-                <select
-                  value={user.subscription}
-                  onChange={(e) => {
-                    const selectedStatus = e.target.value;
-                    if (selectedStatus === "ACTIVE") {
-                      handleGiveSubscription(user.id);
-                    } else if (selectedStatus === "FREE") {
-                      handleCancelSubscription(user.id);
-                    } else if (selectedStatus === "STUDENT") {
-                      handleStudent(user.id, "STUDENT");
-                    } else if (selectedStatus === "CREATOR") {
-                      handleCreator(user.id, "CREATOR");
-                    } else if (selectedStatus === "BUSINESS") {
-                      handleBusiness(user.id, "BUSINESS");
-                    } else if (selectedStatus === "FREE_TRIAL") {
-                      handleGiveFreeTrial(user.id, "FREE_TRIAL");
-                    }
+                <div className="flex w-[100px] min-w-[100px] items-center border px-2 py-2">
+                  {user.cl_credits}
+                </div>
+                <div className="flex w-[100px] min-w-[100px] items-center border px-2 py-2">
+                  {user.eleven_labs_credits}
+                </div>
+                <div className="flex w-[100px] min-w-[100px] items-center border px-2 py-2">
+                  0
+                </div>
+                <div className="flex w-[120px] min-w-[100px] items-center border px-2 py-2">
+                  {daysWithCurrentPlan(user.updated_at ?? new Date())}
+                </div>
+                <div className="flex w-[120px] min-w-[100px] items-center border px-2 py-2">
+                  {daysSinceCreated(user.created_at)}
+                </div>
+                <div className="flex w-[120px] min-w-[120px] items-center border px-2 py-2">
+                  <select
+                    value={user?.status ?? ""}
+                    onChange={async (e) => {
+                      const selectedStatus = e.target.value;
+                      await handleSubscription(user.id, selectedStatus);
+                    }}
+                    className="mr-2 rounded-lg border border-gray-300 px-2 py-1"
+                  >
+                    <option value="">Select</option>
+                    <option value="ACTIVE">Activate</option>
+                    <option value="FREE">Free</option>
+                    <option value="STUDENT">Student</option>
+                    <option value="CREATOR">Creator</option>
+                    <option value="BUSINESS">Business</option>
+                    <option value="FREE_TRIAL">Free Trial</option>
+                  </select>
+                </div>
+                <button
+                  className="flex w-[300px] min-w-[300px] items-center justify-center overflow-auto border px-2 py-2"
+                  onClick={() => {
+                    setSelectedUserId(user.id);
+                    setIsAddingPlanId(true);
                   }}
-                  className="mr-2 rounded-lg border border-gray-300 px-2 py-1"
                 >
-                  <option value="">Select</option>
-                  <option value="ACTIVE">Activate</option>
-                  <option value="FREE">Free</option>
-                  <option value="STUDENT">Student</option>
-                  <option value="CREATOR">Creator</option>
-                  <option value="BUSINESS">Business</option>
-                  <option value="FREE_TRIAL">Free Trial</option>
-                </select>
+                  {user.plan_id}
+                </button>
+                <button
+                  id="copyBtn"
+                  className="flex w-[80px] min-w-[80px] items-center justify-center border px-4 py-2"
+                  onClick={async () => {
+                    await navigator.clipboard.writeText(user?.id ?? "");
+                    toast({
+                      title: "Id Copied",
+                      description: "User Id copied to clipboard",
+                    });
+                  }}
+                >
+                  <IconCopy className="h-5 w-5 text-gray-500 hover:text-gray-900" />
+                </button>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
+      {isAddingPlanId && (
+        <AddPlanIdModal
+          onClose={() => setIsAddingPlanId(false)}
+          onSave={addPlanId}
+          userId={selectedUserId}
+          refetch={refetch}
+        />
+      )}
     </div>
   );
 };

@@ -39,7 +39,7 @@ async function updateUserCredits(userId: string, credits: number) {
     }
   } catch (error) {
     console.error("Error updating 11 Labs credits:", error);
-    throw new Error(`Error updating credits: ${error.message}`);
+    throw new Error(`Error updating credits: ${(error as Error).message}`);
   }
 }
 
@@ -57,6 +57,8 @@ export const userRouter = createTRPCRouter({
         status: schema.subscriptions.status,
         plan_id: schema.subscriptions.plan_id,
         total_credits: sql`COALESCE(SUM(${schema.credits.credits}), 0)`,
+        cl_credits: schema.clCredits.credits,
+        eleven_labs_credits: schema.elevenLabsCredit.credits,
       })
       .from(schema.users)
       .leftJoin(schema.subscriptions, () =>
@@ -64,6 +66,12 @@ export const userRouter = createTRPCRouter({
       )
       .leftJoin(schema.credits, () =>
         eq(schema.users.id, schema.credits.userId),
+      )
+      .leftJoin(schema.clCredits, () =>
+        eq(schema.users.id, schema.clCredits.userId),
+      )
+      .leftJoin(schema.elevenLabsCredit, () =>
+        eq(schema.users.id, schema.elevenLabsCredit.userId),
       )
       .groupBy(
         schema.users.id,
@@ -73,6 +81,8 @@ export const userRouter = createTRPCRouter({
         schema.subscriptions.status,
         schema.subscriptions.plan_id,
         schema.subscriptions.updated_at,
+        schema.clCredits.credits,
+        schema.elevenLabsCredit.credits,
       );
   }),
 
