@@ -40,7 +40,7 @@ const PlagiarismTable = forwardRef(
         price: 9,
         yearlyMonthlyPrice: 7.75,
         yearlyPrice: 93,
-        productIdMonth: "prod_QsC2n4FMuspdNO",
+        productIdMonth: "prod_QsC2gen4V6MFdx",
         productIdYear: "prod_QsC2uouKNghxvv",
         color: "bg-blue-500",
         rowColor: "bg-white",
