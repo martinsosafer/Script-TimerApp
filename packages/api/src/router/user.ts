@@ -12,7 +12,7 @@ async function updateUserCredits(
   planCredits: {
     elevenLabsCredits: number;
     openAiCredits: number;
-    clCredits: number; // Add CopyLeaks credits
+    clCredits?: number; // Add CopyLeaks credits
   },
 ) {
   const {
@@ -105,7 +105,6 @@ async function updateUserCredits(
 export { updateUserCredits };
 export const userRouter = createTRPCRouter({
   list: protectedProcedure.query(async ({ ctx }) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return await ctx.db
       .select({
         name: schema.users.name,
@@ -118,6 +117,7 @@ export const userRouter = createTRPCRouter({
         cl_credits: schema.clCredits.credits,
         eleven_labs_credits: schema.elevenLabsCredit.credits,
         open_ai_credits: schema.openAiCredit.credits,
+        images: schema.imgCredit.credits,
       })
       .from(schema.users)
       .leftJoin(schema.subscriptions, () =>
@@ -132,6 +132,9 @@ export const userRouter = createTRPCRouter({
       .leftJoin(schema.openAiCredit, () =>
         eq(schema.users.id, schema.openAiCredit.userId),
       )
+      .leftJoin(schema.imgCredit, () =>
+        eq(schema.users.id, schema.imgCredit.userId),
+      )
       .groupBy(
         schema.users.id,
         schema.users.name,
@@ -143,6 +146,7 @@ export const userRouter = createTRPCRouter({
         schema.clCredits.credits,
         schema.elevenLabsCredit.credits,
         schema.openAiCredit.credits,
+        schema.imgCredit.credits,
       );
   }),
 
@@ -210,7 +214,11 @@ export const userRouter = createTRPCRouter({
       try {
         await ctx.db
           .update(schema.subscriptions)
-          .set({ status: "FREE_TRIAL", updated_at: sql`NOW()` })
+          .set({
+            status: "FREE_TRIAL",
+            updated_at: sql`NOW()`,
+            plan_id: "initial_plan_id",
+          })
           .where(eq(schema.subscriptions.userId, input.userId))
           .execute();
 
@@ -551,7 +559,11 @@ export const userRouter = createTRPCRouter({
       try {
         await ctx.db
           .update(schema.subscriptions)
-          .set({ status: "FREE", updated_at: sql`NOW()` })
+          .set({
+            status: "FREE",
+            updated_at: sql`NOW()`,
+            plan_id: "initial_plan_id",
+          })
           .where(eq(schema.subscriptions.userId, input.userId))
           .execute();
 

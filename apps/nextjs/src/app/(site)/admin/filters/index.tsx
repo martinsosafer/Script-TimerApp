@@ -132,7 +132,7 @@ export default function AdminFilters({
           <option value="">All Plans</option>
           <option value="STUDENT">Student</option>
           <option value="CREATOR">Creator</option>
-          <option value="BUSSINES">Business</option>
+          <option value="BUSINESS">Business</option>
           <option value="FREE">Free</option>
           <option value="FREE_TRIAL">Free Trial</option>
         </select>

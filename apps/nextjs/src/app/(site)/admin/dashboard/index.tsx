@@ -7,9 +7,10 @@ import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 import { api } from "~/utils/api";
 import AddPlanIdModal from "../../components/modals/add-plan-id";
-import { addPlanId } from "../actions";
+import ExtendFreeTrialModal from "../../components/modals/extend-free-trial";
+import { addPlanId, extendFreeTrial } from "../actions";
 import AdminFilters from "../filters";
-import { daysSinceCreated, daysWithCurrentPlan } from "../helpers";
+import { daysSinceCreated, daysWithCurrentPlan, sortHandler } from "../helpers";
 
 export interface UserData {
   name: string | null;
@@ -31,6 +32,7 @@ export interface UserData {
   cl_credits: number | null;
   eleven_labs_credits: number | null;
   open_ai_credits: number | null;
+  images: number | null;
 }
 
 interface DashboardProps {
@@ -43,7 +45,14 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
   const [isAscending, setIsAscending] = useState<boolean>(true);
   const [isCreationAscending, setIsCreationAscending] = useState<boolean>(true);
 
+  const [isClAscending, setIsClAscending] = useState<boolean>(true);
+  const [isElevenLAscending, setIsElevenLAscending] = useState<boolean>(true);
+  const [isOpenAiAscending, setIsOpenAiAscending] = useState<boolean>(true);
+  const [isImgAscending, setIsImgAiAscending] = useState<boolean>(true);
+
   const [isAddingPlanId, setIsAddingPlanId] = useState(false);
+
+  const [isExtendingFreeTrial, setIsExtendingFreeTrial] = useState(false);
 
   const [selectedUserId, setSelectedUserId] = useState<undefined | string>(
     undefined,
@@ -103,7 +112,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
         await updateStudent({ userId });
       } else if (selectedStatus === "CREATOR") {
         await updateCreator({ userId });
-      } else if (selectedStatus === "BUSSINES") {
+      } else if (selectedStatus === "BUSINESS") {
         await updateBusiness({ userId });
       } else if (selectedStatus === "FREE") {
         await cancelSubscription({ userId });
@@ -114,43 +123,11 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
     }
   }
 
-  const toggleSortOrder = () => {
-    const sortedList = [...filteredList].sort((a, b) => {
-      if (isAscending) {
-        return (
-          daysWithCurrentPlan(a.updated_at ?? new Date()) -
-          daysWithCurrentPlan(b.updated_at ?? new Date())
-        );
-      } else {
-        return (
-          daysWithCurrentPlan(a.updated_at ?? new Date()) +
-          daysWithCurrentPlan(b.updated_at ?? new Date())
-        );
-      }
-    });
-
-    setFilteredList(sortedList);
-    setIsAscending(!isAscending);
-  };
-
-  const toggleCreationSortOrder = () => {
-    const sortedList = [...filteredList].sort((a, b) => {
-      if (isCreationAscending) {
-        return daysSinceCreated(a.created_at) - daysSinceCreated(b.created_at);
-      } else {
-        return daysSinceCreated(a.created_at) + daysSinceCreated(b.created_at);
-      }
-    });
-
-    setFilteredList(sortedList);
-    setIsCreationAscending(!isCreationAscending);
-  };
-
   return (
-    <div className="mb-12 flex flex-col items-center overflow-x-scroll p-4">
+    <div className="mb-12 flex flex-col items-center p-4">
       <h1 className="mb-4 text-2xl font-bold">User Dashboard</h1>
       <AdminFilters setFilteredList={setFilteredList} userList={userList} />
-      <div>
+      <div className="scale-[80%]">
         <div className="flex w-max bg-gray-100">
           <div className="flex w-[220px] min-w-[220px] items-center justify-center border border-gray-400 px-4 py-2 text-center font-semibold">
             Name
@@ -164,25 +141,90 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
           <div className="flex w-[120px] min-w-[120px] items-center justify-center border border-gray-400 px-4 py-2 text-center font-semibold">
             Current Plan
           </div>
-          <div className="flex w-[100px] min-w-[100px] items-center justify-center border border-gray-400 px-4 py-2 text-center font-semibold">
-            CL Credits Used
-          </div>
-          <div className="flex w-[100px] min-w-[100px] items-center justify-center border border-gray-400 px-4 py-2 text-center font-semibold">
-            11 Credits Used
-          </div>
-          <div className="flex w-[100px] min-w-[100px] items-center justify-center border border-gray-400 px-4 py-2 text-center font-semibold">
-            OpenAi Credits Used
-          </div>
-          <div className="flex w-[120px] min-w-[120px] items-center justify-center border border-gray-400 px-1 py-2 text-center font-semibold">
-            <button onClick={toggleSortOrder}>
-              Days with Current Plan {isAscending ? "↑" : "↓"}
-            </button>
-          </div>
-          <div className="flex w-[120px] min-w-[120px] items-center justify-center border border-gray-400 px-1 py-2 text-center font-semibold">
-            <button onClick={toggleCreationSortOrder}>
-              Days Since Creation {isCreationAscending ? "↑" : "↓"}
-            </button>
-          </div>
+          <button
+            className="flex w-[100px] min-w-[100px] items-center justify-center border border-gray-400 px-4 py-2 text-center font-semibold"
+            onClick={() =>
+              sortHandler(
+                "cl_credits",
+                isClAscending,
+                setIsClAscending,
+                filteredList,
+                setFilteredList,
+              )
+            }
+          >
+            CL Credits {isClAscending ? "↑" : "↓"}
+          </button>
+          <button
+            className="flex w-[100px] min-w-[100px] items-center justify-center border border-gray-400 px-4 py-2 text-center font-semibold"
+            onClick={() =>
+              sortHandler(
+                "eleven_labs_credits",
+                isElevenLAscending,
+                setIsElevenLAscending,
+                filteredList,
+                setFilteredList,
+              )
+            }
+          >
+            11 Credits {isElevenLAscending ? "↑" : "↓"}
+          </button>
+          <button
+            className="flex w-[100px] min-w-[100px] items-center justify-center border border-gray-400 px-4 py-2 text-center font-semibold"
+            onClick={() =>
+              sortHandler(
+                "open_ai_credits",
+                isOpenAiAscending,
+                setIsOpenAiAscending,
+                filteredList,
+                setFilteredList,
+              )
+            }
+          >
+            OpenAi Credits {isOpenAiAscending ? "↑" : "↓"}
+          </button>
+          <button
+            className="flex w-[100px] min-w-[100px] items-center justify-center border border-gray-400 px-4 py-2 text-center font-semibold"
+            onClick={() =>
+              sortHandler(
+                "images",
+                isImgAscending,
+                setIsImgAiAscending,
+                filteredList,
+                setFilteredList,
+              )
+            }
+          >
+            Images {isImgAscending ? "↑" : "↓"}
+          </button>
+          <button
+            onClick={() =>
+              sortHandler(
+                "updated_at",
+                isAscending,
+                setIsAscending,
+                filteredList,
+                setFilteredList,
+              )
+            }
+            className="flex w-[120px] min-w-[120px] items-center justify-center border border-gray-400 px-1 py-2 text-center font-semibold"
+          >
+            Days with Current Plan {isAscending ? "↑" : "↓"}
+          </button>
+          <button
+            onClick={() =>
+              sortHandler(
+                "created_at",
+                isCreationAscending,
+                setIsCreationAscending,
+                filteredList,
+                setFilteredList,
+              )
+            }
+            className="flex w-[120px] min-w-[120px] items-center justify-center border border-gray-400 px-1 py-2 text-center font-semibold"
+          >
+            Days Since Creation {isCreationAscending ? "↑" : "↓"}
+          </button>
           <div className="flex w-[160px] min-w-[160px] items-center justify-center border border-gray-400 px-1 py-2 text-center font-semibold">
             Actions
           </div>
@@ -220,6 +262,9 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
                 <div className="flex w-[100px] min-w-[100px] items-center border px-2 py-2">
                   {user.open_ai_credits}
                 </div>
+                <div className="flex w-[100px] min-w-[100px] items-center border px-2 py-2">
+                  {user.images}
+                </div>
                 <div className="flex w-[120px] min-w-[100px] items-center border px-2 py-2">
                   {daysWithCurrentPlan(user.updated_at ?? new Date())}
                 </div>
@@ -231,7 +276,11 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
                     value={user?.status ?? ""}
                     onChange={async (e) => {
                       const selectedStatus = e.target.value;
-                      if (selectedStatus === "EXTEND") return;
+                      if (selectedStatus === "EXTEND") {
+                        setSelectedUserId(user.id);
+                        return setIsExtendingFreeTrial(true);
+                      }
+
                       await handleSubscription(user.id, selectedStatus);
                     }}
                     className="mr-2 rounded-lg border border-gray-300 px-2 py-1"
@@ -277,6 +326,14 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
         <AddPlanIdModal
           onClose={() => setIsAddingPlanId(false)}
           onSave={addPlanId}
+          userId={selectedUserId}
+          refetch={refetch}
+        />
+      )}
+      {isExtendingFreeTrial && (
+        <ExtendFreeTrialModal
+          onClose={() => setIsExtendingFreeTrial(false)}
+          onConfirm={extendFreeTrial}
           userId={selectedUserId}
           refetch={refetch}
         />
