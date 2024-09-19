@@ -94,6 +94,7 @@ function VoiceWidget({
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
+    console.log("Current Page:", pageNumber);
   };
 
   const handleFavPageChange = (pageNumber) => {
@@ -327,6 +328,8 @@ function VoiceWidget({
             onModelSelect={onModelSelect}
             onFavoriteChange={refreshSubscriptionData}
             favoriteVoices={favoriteVoices}
+            subData={subData}
+            currentPage={currentPage}
           />
           <div className="mt-4">
             {renderPagination(currentPage, totalPages, handlePageChange)}
