@@ -8,7 +8,7 @@ import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import bcrypt from "bcryptjs";
 import NextAuth from "next-auth";
 
-import { db, schema, tableCreator } from "@voiceai/db";
+import { db, eq, schema, tableCreator } from "@voiceai/db";
 
 import {
   STARTING_CL_CREDITS,
@@ -102,6 +102,55 @@ export const {
         where: (subscriptions, { eq }) => eq(subscriptions.userId, userId),
       });
 
+      if (subscriptionStatus?.status === "FREE_TRIAL") {
+        const createdAt = new Date(subscriptionStatus.created_at);
+        const currentDate = new Date();
+        const differenceInMilliseconds =
+          currentDate.getTime() - createdAt.getTime();
+        const daysWithFreeTrial = Math.floor(
+          differenceInMilliseconds / (1000 * 60 * 60 * 24),
+        );
+
+        if (!subscriptionStatus?.free_trial_expiration) {
+          if (daysWithFreeTrial >= 5) {
+            await db
+              .update(schema.subscriptions)
+              .set({
+                plan: "STARTER",
+                status: "FREE",
+                free_trial_expiration: null,
+              })
+              .where(eq(schema.subscriptions.userId, userId))
+              .execute();
+          } else {
+            await db
+              .update(schema.subscriptions)
+              .set({
+                free_trial_expiration: new Date(
+                  5 * 24 * 60 * 60 * 1000 - createdAt.getTime(),
+                ),
+              })
+              .where(eq(schema.subscriptions.userId, userId))
+              .execute();
+          }
+        }
+
+        if (
+          subscriptionStatus?.free_trial_expiration &&
+          new Date(subscriptionStatus.free_trial_expiration) < currentDate
+        ) {
+          await db
+            .update(schema.subscriptions)
+            .set({
+              plan: "STARTER",
+              status: "FREE",
+              free_trial_expiration: null,
+            })
+            .where(eq(schema.subscriptions.userId, userId))
+            .execute();
+        }
+      }
+
       if (!subscriptionStatus) {
         await db
           .insert(schema.subscriptions)
@@ -109,6 +158,9 @@ export const {
             userId,
             plan: "STARTER",
             status: "FREE_TRIAL",
+            free_trial_expiration: new Date(
+              Date.now() + 5 * 24 * 60 * 60 * 1000,
+            ),
           })
           .execute();
 

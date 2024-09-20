@@ -54,6 +54,9 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
 
   const [isExtendingFreeTrial, setIsExtendingFreeTrial] = useState(false);
 
+  const [isCreatedOnAscending, setIsCreatedOnAscending] =
+    useState<boolean>(false);
+
   const [selectedUserId, setSelectedUserId] = useState<undefined | string>(
     undefined,
   );
@@ -135,22 +138,33 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
           <div className="flex w-[330px] min-w-[330px] items-center justify-center border border-gray-400 px-4 py-2 text-center font-semibold ">
             Email
           </div>
-          <div className="flex w-[100px] min-w-[100px] items-center justify-center border border-gray-400 px-2 py-2 text-center font-semibold">
-            Create on
-          </div>
+          <button
+            className="flex w-[100px] min-w-[100px] items-center justify-center border border-gray-400 px-2 py-2 text-center font-semibold"
+            onClick={() =>
+              sortHandler({
+                filterCreatedAt: true,
+                state: isCreatedOnAscending,
+                setter: setIsCreatedOnAscending,
+                filteredList,
+                setFilteredList,
+              })
+            }
+          >
+            Create on {isCreatedOnAscending ? "↑" : "↓"}
+          </button>
           <div className="flex w-[120px] min-w-[120px] items-center justify-center border border-gray-400 px-4 py-2 text-center font-semibold">
             Current Plan
           </div>
           <button
             className="flex w-[100px] min-w-[100px] items-center justify-center border border-gray-400 px-4 py-2 text-center font-semibold"
             onClick={() =>
-              sortHandler(
-                "cl_credits",
-                isClAscending,
-                setIsClAscending,
+              sortHandler({
+                type: "cl_credits",
+                state: isClAscending,
+                setter: setIsClAscending,
                 filteredList,
                 setFilteredList,
-              )
+              })
             }
           >
             CL Credits {isClAscending ? "↑" : "↓"}
@@ -158,13 +172,13 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
           <button
             className="flex w-[100px] min-w-[100px] items-center justify-center border border-gray-400 px-4 py-2 text-center font-semibold"
             onClick={() =>
-              sortHandler(
-                "eleven_labs_credits",
-                isElevenLAscending,
-                setIsElevenLAscending,
+              sortHandler({
+                type: "eleven_labs_credits",
+                state: isElevenLAscending,
+                setter: setIsElevenLAscending,
                 filteredList,
                 setFilteredList,
-              )
+              })
             }
           >
             11 Credits {isElevenLAscending ? "↑" : "↓"}
@@ -172,13 +186,13 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
           <button
             className="flex w-[100px] min-w-[100px] items-center justify-center border border-gray-400 px-4 py-2 text-center font-semibold"
             onClick={() =>
-              sortHandler(
-                "open_ai_credits",
-                isOpenAiAscending,
-                setIsOpenAiAscending,
+              sortHandler({
+                type: "open_ai_credits",
+                state: isOpenAiAscending,
+                setter: setIsOpenAiAscending,
                 filteredList,
                 setFilteredList,
-              )
+              })
             }
           >
             OpenAi Credits {isOpenAiAscending ? "↑" : "↓"}
@@ -186,26 +200,26 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
           <button
             className="flex w-[100px] min-w-[100px] items-center justify-center border border-gray-400 px-4 py-2 text-center font-semibold"
             onClick={() =>
-              sortHandler(
-                "images",
-                isImgAscending,
-                setIsImgAiAscending,
+              sortHandler({
+                type: "images",
+                state: isImgAscending,
+                setter: setIsImgAiAscending,
                 filteredList,
                 setFilteredList,
-              )
+              })
             }
           >
             Images {isImgAscending ? "↑" : "↓"}
           </button>
           <button
             onClick={() =>
-              sortHandler(
-                "updated_at",
-                isAscending,
-                setIsAscending,
+              sortHandler({
+                type: "updated_at",
+                state: isAscending,
+                setter: setIsAscending,
                 filteredList,
                 setFilteredList,
-              )
+              })
             }
             className="flex w-[120px] min-w-[120px] items-center justify-center border border-gray-400 px-1 py-2 text-center font-semibold"
           >
@@ -213,19 +227,19 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
           </button>
           <button
             onClick={() =>
-              sortHandler(
-                "created_at",
-                isCreationAscending,
-                setIsCreationAscending,
+              sortHandler({
+                type: "created_at",
+                state: isCreationAscending,
+                setter: setIsCreationAscending,
                 filteredList,
                 setFilteredList,
-              )
+              })
             }
             className="flex w-[120px] min-w-[120px] items-center justify-center border border-gray-400 px-1 py-2 text-center font-semibold"
           >
             Days Since Creation {isCreationAscending ? "↑" : "↓"}
           </button>
-          <div className="flex w-[160px] min-w-[160px] items-center justify-center border border-gray-400 px-1 py-2 text-center font-semibold">
+          <div className="flex w-[200px] min-w-[200px] items-center justify-center border border-gray-400 px-1 py-2 text-center font-semibold">
             Actions
           </div>
           <div className="flex w-[290px] min-w-[290px] items-center justify-center border border-gray-400 px-1 py-2 text-center font-semibold">
@@ -236,7 +250,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
           </div>
         </div>
 
-        <div className="h-[600px] w-max overflow-y-scroll border">
+        <div className="h-[1200px] w-max overflow-y-scroll border">
           <div className="flex w-full flex-col items-center">
             {filteredList.map((user) => (
               <div key={user.id} className="flex">
@@ -271,7 +285,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
                 <div className="flex w-[120px] min-w-[100px] items-center border px-2 py-2">
                   {daysSinceCreated(user.created_at)}
                 </div>
-                <div className="flex w-[160px] min-w-[160px] items-center justify-center border px-1 py-2">
+                <div className="flex w-[200px] min-w-[200px] items-center justify-center border px-1 py-2">
                   <select
                     value={user?.status ?? ""}
                     onChange={async (e) => {
@@ -286,13 +300,12 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
                     className="mr-2 rounded-lg border border-gray-300 px-2 py-1"
                   >
                     <option value="">Select</option>
-                    <option value="ACTIVE">Activate</option>
                     <option value="FREE">Free</option>
+                    <option value="FREE_TRIAL">Free Trial 5</option>
                     <option value="STUDENT">Student</option>
                     <option value="CREATOR">Creator</option>
                     <option value="BUSINESS">Business</option>
-                    <option value="FREE_TRIAL">Free Trial</option>
-                    <option value="EXTEND">Extend Free Trial</option>
+                    <option value="EXTEND">Extend Free Trial 14</option>
                   </select>
                 </div>
                 <button

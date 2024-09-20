@@ -113,7 +113,7 @@ export default function AdminFilters({
   ]);
 
   return (
-    <div className="mb-4 flex flex-wrap">
+    <div className="flex flex-wrap">
       <div className="mb-4 flex w-full flex-wrap md:mb-0 md:w-1/2">
         <input
           type="text"
@@ -130,11 +130,11 @@ export default function AdminFilters({
           className="w-full rounded-lg border border-gray-300 px-4 py-2"
         >
           <option value="">All Plans</option>
+          <option value="FREE">Free</option>
+          <option value="FREE_TRIAL">Free Trial</option>
           <option value="STUDENT">Student</option>
           <option value="CREATOR">Creator</option>
           <option value="BUSINESS">Business</option>
-          <option value="FREE">Free</option>
-          <option value="FREE_TRIAL">Free Trial</option>
         </select>
       </div>
 

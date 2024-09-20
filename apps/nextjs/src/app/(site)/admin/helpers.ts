@@ -1,5 +1,3 @@
-"use client";
-
 import type { Dispatch, SetStateAction } from "react";
 
 import type { UserData } from "./dashboard";
@@ -20,19 +18,29 @@ export const daysWithCurrentPlan = (updated_at: Date): number => {
   return differenceInDays;
 };
 
-export function sortHandler(
-  type:
+interface Sorter {
+  type?:
     | "cl_credits"
     | "eleven_labs_credits"
     | "open_ai_credits"
     | "images"
     | "updated_at"
-    | "created_at",
-  state: boolean,
-  setter: Dispatch<SetStateAction<boolean>>,
-  filteredList: UserData[],
-  setFilteredList: Dispatch<SetStateAction<UserData[]>>,
-) {
+    | "created_at";
+  filterCreatedAt?: boolean;
+  state: boolean;
+  setter: Dispatch<SetStateAction<boolean>>;
+  filteredList: UserData[];
+  setFilteredList: Dispatch<SetStateAction<UserData[]>>;
+}
+
+export function sortHandler({
+  type,
+  filterCreatedAt = false,
+  state,
+  setter,
+  filteredList,
+  setFilteredList,
+}: Sorter) {
   if (type === "updated_at") {
     const sortedList = [...filteredList].sort((a, b) => {
       if (state) {
@@ -63,12 +71,25 @@ export function sortHandler(
 
     setFilteredList(sortedList);
     setter(!state);
-  } else {
+  }
+  if (filterCreatedAt) {
     const sortedList = [...filteredList].sort((a, b) => {
       if (state) {
-        return (a[type] ?? 0) - (b[type] ?? 0);
+        return a.created_at.getTime() - b.created_at.getTime();
       } else {
-        return (a[type] ?? 0) + (b[type] ?? 0);
+        return a.created_at.getTime() + b.created_at.getTime();
+      }
+    });
+
+    setFilteredList(sortedList);
+    setter(!state);
+  }
+  if (type) {
+    const sortedList = [...filteredList].sort((a, b) => {
+      if (state) {
+        return Number(a[type] ?? 0) - Number(b[type] ?? 0);
+      } else {
+        return Number(a[type] ?? 0) + Number(b[type] ?? 0);
       }
     });
 

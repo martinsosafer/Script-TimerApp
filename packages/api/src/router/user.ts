@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { db, eq, schema, sql } from "@voiceai/db";
+import { db, desc, eq, schema, sql } from "@voiceai/db";
 import { elevenLabsCredit } from "@voiceai/db/schema/11LabsCredits";
 import { clCredits } from "@voiceai/db/schema/copyLeaksCredit";
 
@@ -147,7 +147,8 @@ export const userRouter = createTRPCRouter({
         schema.elevenLabsCredit.credits,
         schema.openAiCredit.credits,
         schema.imgCredit.credits,
-      );
+      )
+      .orderBy(desc(schema.users.created_at));
   }),
 
   giveSubscription: protectedProcedure
