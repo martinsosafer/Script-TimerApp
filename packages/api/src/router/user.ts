@@ -219,6 +219,7 @@ export const userRouter = createTRPCRouter({
             status: "FREE_TRIAL",
             updated_at: sql`NOW()`,
             plan_id: "initial_plan_id",
+            free_trial_expiration: sql`NOW() + ${5} * INTERVAL '1 day'`,
           })
           .where(eq(schema.subscriptions.userId, input.userId))
           .execute();
@@ -564,6 +565,7 @@ export const userRouter = createTRPCRouter({
             status: "FREE",
             updated_at: sql`NOW()`,
             plan_id: "initial_plan_id",
+            free_trial_expiration: null,
           })
           .where(eq(schema.subscriptions.userId, input.userId))
           .execute();
