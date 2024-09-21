@@ -5,6 +5,7 @@ import { Stripe } from "stripe";
 import { auth } from "@voiceai/auth";
 
 import PlansSections from "./sections";
+import ComparativeBoard from "./sections/comparativeboard";
 import PricingTable from "./sections/pricingTable";
 import type { Product } from "./types";
 
@@ -162,6 +163,7 @@ async function PlansPage() {
           Get up to 4 months free on yearly plans!
         </span>
       </div>
+      <ComparativeBoard />
       <PlansSections
         monthlyPlans={monthlyPlans}
         yearlyPlans={yearlyPlans}

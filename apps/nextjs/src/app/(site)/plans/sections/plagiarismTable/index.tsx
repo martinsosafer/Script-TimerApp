@@ -219,11 +219,8 @@ const PlagiarismTable = forwardRef(
           </div>
         </div>
         <div className="w-full overflow-x-auto">
-          <div
-            className="flex min-w-[1200px] max-w-[1300px] "
-            id="plagiarism-table"
-          >
-            <div className="grid grid-cols-5 gap-2 px-20 py-8">
+          <div className="flex min-w-[1300px] max-w-[1400px]">
+            <div className="ml-7 grid grid-cols-5  gap-2 px-20  py-8">
               <div className="flex flex-col">
                 <div className="h-[132px]"></div>
                 {featureLabels.map((feature, index) => (
