@@ -11,11 +11,6 @@ import MotionTransition from "../MotionTransition/MotionTransition";
 export default function HeroSection() {
   return (
     <div>
-      <MotionTransition>
-        <h1 className="py-6 text-center font-poppins text-3xl font-bold tracking-tighter text-primary sm:text-5xl xl:text-6xl/none">
-          Welcome
-        </h1>
-      </MotionTransition>
       <div className="relative px-6 ">
         <div className=" mx-auto mt-2 grid max-w-5xl items-start  md:grid-cols-2">
           <div className="mt-4">
