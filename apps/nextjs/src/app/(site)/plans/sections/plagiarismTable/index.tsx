@@ -284,7 +284,7 @@ const PlagiarismTable = forwardRef(
                       </div>
                     </div>
 
-                    <div className=" mt-[-25px] flex-grow p-4">
+                    <div className=" mt-[-25px] flex-grow py-4">
                       {featureLabels.map((feature, featureIndex) => (
                         <div
                           key={featureIndex}

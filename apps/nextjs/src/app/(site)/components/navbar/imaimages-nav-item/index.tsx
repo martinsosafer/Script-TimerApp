@@ -16,7 +16,7 @@ export default function ImagesNavItem() {
         <ImageDownloadIcon className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
       </div>
       <span className=" font-poppins font-semibold">Image</span>
-      <span className=" font-poppins font-semibold">(Experimental)</span>
+      <span className=" font-poppins font-semibold">Creator</span>
     </Link>
   );
 }

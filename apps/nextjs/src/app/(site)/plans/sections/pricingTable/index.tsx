@@ -391,6 +391,20 @@ const PricingTable = ({
 
   return (
     <>
+      <div className="flex w-full flex-col items-center bg-white px-4  py-12 text-center xl:w-[800px]">
+        <h1 className="mb-4 text-3xl font-bold text-primary lg:text-4xl">
+          Co-Producer Plans
+        </h1>
+        <p className="text-black-700 text-base lg:text-xl">
+          Upgrade and speed through your reading and creating with the most
+          advanced tools.
+          <br /> 100+ natural, human-like voices. 30+ exclusive languages and
+          accents.
+          <br /> 5 listening speeds. Download PDF, SRT, and usable files
+          immediately.
+        </p>
+      </div>
+      {/* SWITCHER */}
       <div className="mb-14  mt-8 flex justify-center space-x-4">
         <div className="flex gap-2 rounded-full border-2 border-gray-500 p-2">
           <button
@@ -435,7 +449,7 @@ const PricingTable = ({
                 <div
                   key={index}
                   className={`flex h-[41px] items-center border-b py-2 text-left ${
-                    feature.isMain ? "text-lg font-bold" : "pl-6 font-normal"
+                    feature.isMain ? "text-lg font-bold" : " font-normal"
                   } last:border-b-0`}
                 >
                   {feature.label}
@@ -517,7 +531,7 @@ const PricingTable = ({
                     </div>
                   </div>
 
-                  <div className=" mt-[-54px] flex-grow p-4">
+                  <div className=" mt-[-54px] flex-grow py-4">
                     {featureLabels.map((feature, featureIndex) => (
                       <div
                         key={featureIndex}
