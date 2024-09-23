@@ -5,17 +5,43 @@ import { CheckIcon } from "@voiceai/ui/@/icons/icons";
 import CheckoutButton from "../priceCards/check-out-button";
 
 const PlagiarismTable = forwardRef(
-  ({ session, plagiarismMonthlyPlans, plagiarismYearlyPlans, id }, ref) => {
+  ({ session, plagiarismMonthlyPlans, plagiarismYearlyPlans, id }) => {
     const [showMonthly, setShowMonthly] = useState(true);
     const tiers = [
+      {
+        name: "FREE",
+        description: "Good for hobbyists",
+        price: "0",
+        yearlyMonthlyPrice: "",
+        yearlyPrice: "",
+
+        color: "bg-blue-400",
+        rowColor: "bg-white",
+        features: {
+          "Script Writing": { enabled: true },
+          "Ai Writing": { value: "40,000 creditss" },
+          "Translation - Audio & Text": { value: "40,000 credits" },
+          "Grammar / Spell Checker": { value: "40,000 credits" },
+          "6 Steps to Amazing Scripts": { enabled: true },
+
+          "Plagiarism Detection": { enabled: true },
+          "Included words per month": { value: "1,250" },
+          "Plagiarism & Ai Detection": { enabled: true },
+          "Source links to original": { enabled: true },
+          "GPT, Claude, Gemini": { enabled: true },
+          "Over 100 languages": { enabled: true },
+          "Paraphrasing detection": { enabled: true },
+          "Text spinner detection": { enabled: true },
+        },
+      },
       {
         name: "EDUCATION",
         description: "Discounted for .edu emails",
         price: 9,
         yearlyMonthlyPrice: 7.75,
         yearlyPrice: 93,
-        productIdMonth: "prod_Qpsuj4pfwigoce",
-        productIdYear: "prod_QpsuGyXva9dKLW",
+        productIdMonth: "prod_QsC2gen4V6MFdx",
+        productIdYear: "prod_QsC2uouKNghxvv",
         color: "bg-blue-500",
         rowColor: "bg-white",
         features: {
@@ -41,8 +67,8 @@ const PlagiarismTable = forwardRef(
         price: 14,
         yearlyMonthlyPrice: 11,
         yearlyPrice: 132,
-        productIdMonth: "prod_QpsrhfYRpJokHB",
-        productIdYear: "prod_QpspBNC8085JtD",
+        productIdMonth: "prod_QsC286urBJ7Von",
+        productIdYear: "prod_QsC2PGXx7AIB9Q",
         color: "bg-blue-600",
         rowColor: "bg-white",
         label: "Most Popular",
@@ -69,8 +95,8 @@ const PlagiarismTable = forwardRef(
         price: 19,
         yearlyMonthlyPrice: 16.41,
         yearlyPrice: 197,
-        productIdMonth: "prod_QpstEY5wQbjQb8",
-        productIdYear: "prod_Qpst51UXUqyaUQ",
+        productIdMonth: "prod_QsC2n4FMuspdNO",
+        productIdYear: "prod_QsC2dmRjqQqtlZ",
         color: "bg-blue-700",
         rowColor: "bg-white",
 
@@ -147,15 +173,10 @@ const PlagiarismTable = forwardRef(
 
       return null;
     };
-    console.log("PLAGMonth", plagiarismMonthlyPlans);
-    console.log("PLAGMYEARLY", plagiarismYearlyPlans);
+
     return (
       <>
-        {/* Title for Plagiarism and Add-ons on the left side */}
-        <div
-          className="top-0 z-10 mt-10 bg-white px-4 py-6 text-center"
-          ref={ref}
-        >
+        <div className="top-0 z-10 mt-10 bg-white px-4 py-6 text-center">
           <h2 className="font-poppins text-xl font-bold text-black md:text-2xl">
             Only need writing and Plagiarism / Ai support?
             <br className="mt-4" />
@@ -198,11 +219,8 @@ const PlagiarismTable = forwardRef(
           </div>
         </div>
         <div className="w-full overflow-x-auto">
-          <div
-            className="flex min-w-[1200px] max-w-[1300px] "
-            id="plagiarism-table"
-          >
-            <div className="grid grid-cols-5 gap-2 px-20 py-8">
+          <div className="flex min-w-[1300px] max-w-[1400px]">
+            <div className="ml-7 grid grid-cols-5  gap-2 px-20  py-8">
               <div className="flex flex-col">
                 <div className="h-[132px]"></div>
                 {featureLabels.map((feature, index) => (
@@ -243,15 +261,26 @@ const PlagiarismTable = forwardRef(
                         {tier.description}
                       </div>
                       <div className="mt-2 text-3xl font-bold">
-                        ${price}
-                        <span className="text-sm font-normal">
-                          {priceLabel}
-                        </span>
+                        {/* Display price with conditional label */}
+                        {tier.name === "FREE" ? (
+                          "Free"
+                        ) : (
+                          <>
+                            ${price}
+                            <span className="text-sm font-normal">
+                              {showMonthly ? "/month" : "/month"}
+                            </span>
+                          </>
+                        )}
+                        {/* Always render the yearly price with consistent space allocation */}
                         <div
-                          className={`mt-1 text-lg text-gray-200 ${showMonthly ? "invisible" : "visible"}`}
+                          className={`text-md mt-1 text-gray-200 ${
+                            showMonthly ? "invisible" : "visible"
+                          } ${tier.name === "FREE" ? "mt-[5px] text-lg opacity-0" : "mt-[5px] text-lg opacity-100"}`}
                         >
-                          (${tier.yearlyPrice}/year)
+                          ({tier.yearlyPrice}/year)
                         </div>
+                        {/* Render button below yearly price */}
                       </div>
                     </div>
 

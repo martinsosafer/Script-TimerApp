@@ -84,8 +84,8 @@ const PricingTable = ({
       price: 9,
       yearlyMonthlyPrice: 6.58,
       yearlyPrice: 79,
-      monthlyId: "prod_PwYfAY9nKwQ9iV",
-      yearlyId: "prod_PwaJpA8vUeG6Wv",
+      monthlyId: "prod_Q6wRBImx4i9jIV",
+      yearlyId: "prod_Q6wRBImx4i9jIV",
       color: "bg-blue-500",
       // rowColor: "bg-blue-200",
       rowColor: "bg-white",
@@ -146,8 +146,8 @@ const PricingTable = ({
       price: 19,
       yearlyMonthlyPrice: 14.75,
       yearlyPrice: 177,
-      monthlyId: "prod_PwYzKaNnHflnUj",
-      yearlyId: "prod_PwaNjdYvuqa5Io",
+      monthlyId: "prod_Q6wRA3CPKOd872",
+      yearlyId: "prod_Q6wR4wC3Y5Yili",
       color: "bg-blue-600",
       // rowColor: "bg-blue-300",
       rowColor: "bg-white",
@@ -209,8 +209,8 @@ const PricingTable = ({
       price: 39,
       yearlyMonthlyPrice: 24.75,
       yearlyPrice: 297,
-      monthlyId: "prod_PwZAZujl0DVkgR",
-      yearlyId: "prod_PwaRtUe2crIFlW",
+      monthlyId: "prod_Q6wRdg67cs52NR",
+      yearlyId: "prod_Q6wAIfC2x07sMV",
       color: "bg-blue-700",
       // rowColor: "bg-blue-400",
       rowColor: "bg-white",
@@ -427,8 +427,8 @@ const PricingTable = ({
       </div>
 
       <div className="w-full overflow-x-auto">
-        <div className="flex min-w-[1200px] max-w-[1300px]">
-          <div className="grid grid-cols-5 gap-2  px-20  py-8">
+        <div className="flex min-w-[1300px] max-w-[1400px]">
+          <div className="ml-7 grid grid-cols-5  gap-2 px-20  py-8">
             <div className="flex flex-col">
               <div className="h-[177px]"></div>
               {featureLabels.map((feature, index) => (
@@ -475,13 +475,15 @@ const PricingTable = ({
                         <>
                           ${price}
                           <span className="text-sm font-normal">
-                            {showMonthly ? "/month" : "/year"}
+                            {showMonthly ? "/month" : "/month"}
                           </span>
                         </>
                       )}
                       {/* Always render the yearly price with consistent space allocation */}
                       <div
-                        className={`text-md mt-1 text-gray-200 ${tier.name === "FREE" ? "opacity-0" : "mt-[11px] text-lg opacity-100"}`}
+                        className={`text-md mt-1 text-gray-200 ${
+                          showMonthly ? "invisible" : "visible"
+                        } ${tier.name === "FREE" ? "opacity-0" : "mt-[11px] text-lg opacity-100"}`}
                       >
                         ({tier.yearlyPrice}/year)
                       </div>

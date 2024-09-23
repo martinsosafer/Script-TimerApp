@@ -36,12 +36,15 @@ interface RelatedVideo {
   description: string;
   image: string;
 }
-
 export default async function Page({ searchParams }: PageProps) {
   const userData = await auth();
   const subData = userData?.user?.subscription?.status;
 
   const currentVideoId = Number(searchParams.id);
+  const isSubscriptionActive = subData && subData === "BUSINESS";
+
+  // Determine if modal should be shown
+  const shouldShowModal = currentVideoId > 3 && !isSubscriptionActive;
 
   const relatedVideos: RelatedVideo[] = videoCardData
     .filter((video) => video.course === searchParams.course)
@@ -73,7 +76,7 @@ export default async function Page({ searchParams }: PageProps) {
         previousVideo={previousVideo}
         nextVideo={nextVideo}
       />
-      <MasterClassModal status={subData} />
+      {shouldShowModal && <MasterClassModal status={subData} />}
     </>
   );
 }

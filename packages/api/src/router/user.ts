@@ -364,7 +364,7 @@ export const userRouter = createTRPCRouter({
           .execute();
 
         const planCredits = {
-          elevenLabsCredits: 10000,
+          elevenLabsCredits: 40000,
           openAiCredits: 200000,
           clCredits: 40,
         };
@@ -398,7 +398,7 @@ export const userRouter = createTRPCRouter({
           .where(eq(schema.subscriptions.userId, input.userId))
           .execute();
         const planCredits = {
-          elevenLabsCredits: 10000,
+          elevenLabsCredits: 80000,
           openAiCredits: 400000,
           clCredits: 60,
         };
@@ -431,7 +431,7 @@ export const userRouter = createTRPCRouter({
           .where(eq(schema.subscriptions.userId, input.userId))
           .execute();
         const planCredits = {
-          elevenLabsCredits: 10000,
+          elevenLabsCredits: 125000,
           openAiCredits: 1000000,
           clCredits: 80,
         };
@@ -464,7 +464,7 @@ export const userRouter = createTRPCRouter({
           .where(eq(schema.subscriptions.userId, input.userId))
           .execute();
         const planCredits = {
-          elevenLabsCredits: 10000,
+          elevenLabsCredits: 40000,
           openAiCredits: 200000,
           clCredits: 40,
         };
@@ -500,7 +500,7 @@ export const userRouter = createTRPCRouter({
           .execute();
 
         const planCredits = {
-          elevenLabsCredits: 10000,
+          elevenLabsCredits: 80000,
           openAiCredits: 400000,
           clCredits: 60,
         };
@@ -535,7 +535,7 @@ export const userRouter = createTRPCRouter({
           .execute();
 
         const planCredits = {
-          elevenLabsCredits: 10000,
+          elevenLabsCredits: 125000,
           openAiCredits: 1000000,
           clCredits: 60,
         };

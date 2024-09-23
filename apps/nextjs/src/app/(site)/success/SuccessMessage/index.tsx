@@ -5,15 +5,15 @@ import Link from "next/link";
 
 import { TextToVoiceClick } from "~/app/_components/googleAnalytics/LandingEvents/LandingEvents";
 import { RevealText } from "~/app/animations/RevealText";
-import PrimaryButton from "../../primary-button";
-import MotionTransition from "../MotionTransition/MotionTransition";
+import MotionTransition from "../../components/herosection/MotionTransition/MotionTransition";
+import PrimaryButton from "../../components/primary-button";
 
-export default function HeroSection() {
+export default function SucessMessage() {
   return (
     <div>
       <MotionTransition>
-        <h1 className="py-6 text-center font-poppins text-3xl font-bold tracking-tighter text-primary sm:text-5xl xl:text-6xl/none">
-          Welcome
+        <h1 className=" text-center font-poppins text-3xl font-bold tracking-tighter text-primary sm:text-5xl xl:text-6xl/none">
+          Thank you for joining us!
         </h1>
         <p className="mt-4 text-center font-poppins text-lg text-gray-600 sm:text-xl xl:text-2xl">
           Enjoy creating, testing, voicing faster than ever before. If you have
@@ -23,7 +23,7 @@ export default function HeroSection() {
           Have an amazing time here.
         </p>
       </MotionTransition>
-      <div className="relative px-6 ">
+      <div className="relative mt-6  px-6 ">
         <div className=" mx-auto mt-2 grid max-w-5xl items-start  md:grid-cols-2">
           <div className="mt-4">
             <RevealText>
