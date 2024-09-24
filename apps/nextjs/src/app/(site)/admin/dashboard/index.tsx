@@ -130,7 +130,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
     <div className="mb-12 flex flex-col items-center p-4">
       <h1 className="mb-4 text-2xl font-bold">User Dashboard</h1>
       <AdminFilters setFilteredList={setFilteredList} userList={userList} />
-      <div className="scale-[80%]">
+      <div className="-mt-24 scale-[70%]">
         <div className="flex w-max bg-gray-100">
           <div className="flex w-[220px] min-w-[220px] items-center justify-center border border-gray-400 px-4 py-2 text-center font-semibold">
             Name
