@@ -38,11 +38,11 @@ export default function CounterData() {
   }, []);
   return (
     <MotionTransition className="mx-auto max-w-5xl py-20">
-      <div className="justify-between md:flex">
+      <div className=" justify-between  border  border-black md:flex">
         {counterNumbers.map(({ id, startNumber, endNumber, text }) => (
           <div
             key={id}
-            className="py-5 text-center font-poppins text-2xl font-bold md:text-left"
+            className="rounded-lg  px-7  py-7 text-center font-poppins  text-2xl font-bold text-black md:text-left "
             ref={counterRef}
           >
             {isVisible && ( // Render count-up only when visible
@@ -52,8 +52,11 @@ export default function CounterData() {
                   end={endNumber}
                   duration={4}
                   enableScrollSpy
+                  separator="" // Remove commas
                 />{" "}
-                <span className=" font-bold text-blue-700">{text}</span>
+                <span className=" ml-3  text-lg font-bold text-tertiary">
+                  {text}
+                </span>
               </>
             )}
           </div>
