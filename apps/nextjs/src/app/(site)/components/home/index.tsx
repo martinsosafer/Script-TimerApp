@@ -8,9 +8,17 @@ import HeroSection from "../herosection/HeroBlock/herosection";
 import ServiceSection from "../herosection/ServicesSection/servicessection";
 import Testimonials from "../herosection/Testimonials/Testimonials";
 import NoSessionModal from "../modals/no-session-modal";
+import TrialExpirationModal from "../modals/trial-expiration-modal";
 
-export default function Home({ user }: { user: string }) {
+export default function Home({
+  user,
+  trialExpiration,
+}: {
+  user: string;
+  trialExpiration: boolean;
+}) {
   const [openModal, setOpenModal] = useState(user ? false : true);
+  const [openTrialModal, setOpenTrialModal] = useState(trialExpiration);
 
   return (
     <>
@@ -23,6 +31,10 @@ export default function Home({ user }: { user: string }) {
         openModal={openModal}
         setOpenModal={setOpenModal}
         page="home"
+      />
+      <TrialExpirationModal
+        openModal={openTrialModal}
+        setOpenModal={setOpenTrialModal}
       />
     </>
   );

@@ -134,7 +134,7 @@ export default function ImageGenerator({
                 rows={20}
                 name="text"
                 id="text"
-                placeholder="Enter your scene description here"
+                placeholder="Enter your scene description / what is happening in your scene / scrip."
                 onChange={(e) => setScript(e.target.value)}
                 value={script}
               />

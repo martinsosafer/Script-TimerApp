@@ -8,13 +8,13 @@ import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import bcrypt from "bcryptjs";
 import NextAuth from "next-auth";
 
-import { db, schema, tableCreator } from "@voiceai/db";
+import { db, tableCreator } from "@voiceai/db";
 
 import {
-  STARTING_CL_CREDITS,
-  STARTING_IMG_CREDITS,
-  STARTING_OPENAI_CREDITS,
-} from "./constants";
+  checkAndInsertCredits,
+  insertSubscription,
+  moveToFreeOrAddExpiration,
+} from "./actions";
 import { env } from "./env.mjs";
 import { sendVerificationRequest } from "./send-verification-request";
 
@@ -31,6 +31,7 @@ declare module "next-auth" {
         userId: string;
         status: string;
         planId: string | null;
+        trialExpiration: Date | null;
       } | null;
     } & DefaultSession["user"];
   }
@@ -102,87 +103,24 @@ export const {
         where: (subscriptions, { eq }) => eq(subscriptions.userId, userId),
       });
 
+      // We check if the user is on a free trial and move them to the free plan if the trial is over, or add an expiration date if it doesn't exist and still within the trial period.
+      if (subscriptionStatus?.status === "FREE_TRIAL") {
+        await moveToFreeOrAddExpiration(subscriptionStatus, userId);
+      }
+
+      // If the user doesn't have a subscription, we insert one with the default values.
       if (!subscriptionStatus) {
-        await db
-          .insert(schema.subscriptions)
-          .values({
-            userId,
-            plan: "STARTER",
-            status: "FREE_TRIAL",
-          })
-          .execute();
-
-        await db
-          .insert(schema.clCredits)
-          .values({
-            userId,
-          })
-          .execute();
-
-        await db
-          .insert(schema.imgCredit)
-          .values({
-            userId: user?.id ?? token.sub,
-          })
-          .execute();
-
-        await db
-          .insert(schema.openAiCredit)
-          .values({
-            userId: user?.id ?? token.sub,
-          })
-          .execute();
+        await insertSubscription(userId);
       }
 
-      const clCreditStatus = await db.query.clCredits.findFirst({
-        where: (clCredits, { eq }) => eq(clCredits.userId, userId),
-      });
-
-      if (!clCreditStatus) {
-        await db
-          .insert(schema.clCredits)
-          .values({
-            userId,
-            credits: STARTING_CL_CREDITS[subscriptionStatus?.status ?? "FREE"],
-          })
-          .execute();
-      }
-
-      const imgCreditStatus = await db.query.imgCredit.findFirst({
-        where: (imgCredit, { eq }) =>
-          eq(imgCredit.userId, user?.id ?? token.sub),
-      });
-
-      if (!imgCreditStatus) {
-        await db
-          .insert(schema.imgCredit)
-          .values({
-            userId: user?.id ?? token.sub,
-            credits: STARTING_IMG_CREDITS[subscriptionStatus?.status ?? "FREE"],
-          })
-          .execute();
-      }
-
-      const openAiCreditStatus = await db.query.openAiCredit.findFirst({
-        where: (openAiCredit, { eq }) =>
-          eq(openAiCredit.userId, user?.id ?? token.sub),
-      });
-
-      if (!openAiCreditStatus) {
-        await db
-          .insert(schema.openAiCredit)
-          .values({
-            userId: user?.id ?? token.sub,
-            credits:
-              STARTING_OPENAI_CREDITS[subscriptionStatus?.status ?? "FREE"],
-          })
-          .execute();
-      }
+      // We check if the user has credits and insert them if they don't depending on the plan they are on.
+      await checkAndInsertCredits(userId);
 
       const subscription = {
         userId,
         status: subscriptionStatus?.status ?? "FREE_TRIAL",
         planId: subscriptionStatus?.plan_id ?? "initial_plan_id",
+        trialExpiration: subscriptionStatus?.free_trial_expiration ?? null,
       };
 
       const updatedSession = {

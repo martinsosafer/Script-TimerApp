@@ -5,18 +5,15 @@ import Link from "next/link";
 
 import { TextToVoiceClick } from "~/app/_components/googleAnalytics/LandingEvents/LandingEvents";
 import { RevealText } from "~/app/animations/RevealText";
-import PrimaryButton from "../../primary-button";
-import MotionTransition from "../MotionTransition/MotionTransition";
+import MotionTransition from "../../components/herosection/MotionTransition/MotionTransition";
+import PrimaryButton from "../../components/primary-button";
 
-export default function HeroSection() {
+export default function SucessMessage() {
   return (
     <div>
-<<<<<<< HEAD
-      <div className="relative px-6 py-10 ">
-=======
       <MotionTransition>
-        <h1 className="py-6 text-center font-poppins text-3xl font-bold tracking-tighter text-primary sm:text-5xl xl:text-6xl/none">
-          Welcome
+        <h1 className=" text-center font-poppins text-3xl font-bold tracking-tighter text-primary sm:text-5xl xl:text-6xl/none">
+          Thank you for joining us!
         </h1>
         <p className="mt-4 text-center font-poppins text-lg text-gray-600 sm:text-xl xl:text-2xl">
           Enjoy creating, testing, voicing faster than ever before. If you have
@@ -26,25 +23,24 @@ export default function HeroSection() {
           Have an amazing time here.
         </p>
       </MotionTransition>
-      <div className="relative px-6 ">
->>>>>>> 3d0bbded013d79e825281d7d380d006d223c7877
+      <div className="relative mt-6  px-6 ">
         <div className=" mx-auto mt-2 grid max-w-5xl items-start  md:grid-cols-2">
-          <div className="mt-6">
+          <div className="mt-4">
             <RevealText>
               <h1 className=" font-poppins text-4xl font-semibold sm:text-4xl xl:text-4xl/none">
                 Idea to Script to Voice
-                <span className="mt-1 block text-primary">in Seconds</span>
+                <span className="mt-2 block text-primary">in Seconds</span>
               </h1>
             </RevealText>
             <RevealText>
-              <p className="mt-6 max-w-md">
+              <p className="mt-8 max-w-md">
                 Only our custom built Ai and classes support every area of your
                 work. Multiple Ai models will save you hours of work and extra
                 expenses - guaranteed. What do you want to create?
               </p>
             </RevealText>
             <RevealText>
-              <div className="mt-9 flex justify-center gap-3">
+              <div className="mt-8 flex justify-center gap-3">
                 <PrimaryButton onClick={TextToVoiceClick}>
                   <Link href="/texttovoice">Text to Voice</Link>
                 </PrimaryButton>
@@ -61,12 +57,12 @@ export default function HeroSection() {
           </div>
 
           <MotionTransition className="flex items-start justify-center">
-            <div className="h-[340px] w-full overflow-hidden   rounded-lg">
+            <div className="w-full">
               <iframe
                 src="https://player.vimeo.com/video/969324308?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                className="h-full w-full  rounded-lg"
+                className="h-[340px] w-[520px] "
                 allow="autoplay; fullscreen; picture-in-picture"
-                title="Script-Timer Ai Onboarding video"
+                title="Script-Timer Ai_ On boarding video (Short version) (1)"
               />
             </div>
           </MotionTransition>
