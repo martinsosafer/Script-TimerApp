@@ -151,17 +151,17 @@ async function PlansPage() {
 
   return (
     <div className="flex w-full flex-col items-center">
-      <div className="flex w-full flex-col items-center bg-white px-4 pt-10 text-center xl:w-[800px]">
-        <h1 className="text-center font-poppins text-3xl font-bold leading-tight tracking-tight text-primary xl:text-3xl xl:font-extrabold">
-          <span>SCRIPT WRITING, VOICEOVERS & MASTERCLASSES</span>
+      <div className="mb-12 flex w-full flex-col items-center bg-white px-4 pt-10 text-center xl:w-[1000px]">
+        <h1 className="text-center font-poppins text-5xl font-bold leading-tight tracking-tight text-primary xl:text-5xl xl:font-extrabold">
+          <span>The Most Valuable Software For Creators</span>
         </h1>
-        <p className="mt-4 w-full text-lg font-medium  text-gray-500 xl:w-[600px]">
-          Transform your ideas into perfect
-          <br /> scripts, voice overs, and images <br /> in every language.
+        <p className="mt-4 w-full text-lg font-bold  text-black xl:w-[800px]">
+          Compare the benefits your Co-Producer gives you <br /> compared to the
+          tools it replaces.
+          <br />
+          Then start below to choose your plan to save time, <br /> expense, and
+          increase your productivity - guaranteed.
         </p>
-        <span className="mt-2 font-bold text-black">
-          Get up to 4 months free on yearly plans!
-        </span>
       </div>
       <ComparativeBoard />
       <PlansSections

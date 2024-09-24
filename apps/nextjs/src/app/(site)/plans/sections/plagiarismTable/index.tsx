@@ -177,11 +177,16 @@ const PlagiarismTable = forwardRef(
     return (
       <>
         <div className="top-0 z-10 mt-10 bg-white px-4 py-6 text-center">
-          <h2 className="font-poppins text-xl font-bold text-black md:text-2xl">
-            Only need writing and Plagiarism / Ai support?
-            <br className="mt-4" />
-            Start here:
-          </h2>
+          <h1 className="mb-4 text-4xl font-bold text-primary lg:text-4xl">
+            Are you a writer / creator ?
+          </h1>
+          <p className="text-black-700 text-base lg:text-xl">
+            Add 99.12% accurate Plagiarism and Ai
+            <br /> writing detection credits to be sure these
+            <br />
+            scripts are original.
+          </p>
+        
         </div>
 
         <div className="mb-14  mt-8 flex justify-center space-x-4">
@@ -220,7 +225,7 @@ const PlagiarismTable = forwardRef(
         </div>
         <div className="w-full overflow-x-auto">
           <div className="flex min-w-[1300px] max-w-[1400px]">
-            <div className="ml-7 grid grid-cols-5  gap-2 px-20  py-8">
+            <div className="ml-7 grid grid-cols-5  gap-2 px-16  py-8">
               <div className="flex flex-col">
                 <div className="h-[132px]"></div>
                 {featureLabels.map((feature, index) => (
@@ -254,7 +259,7 @@ const PlagiarismTable = forwardRef(
                     )}
 
                     <div
-                      className={`${tier.color} relative p-2 text-center text-white`}
+                      className={`${tier.color} relative p-1 py-6 text-center text-white`}
                     >
                       <div className="font-poppins text-xl">{tier.name}</div>
                       <div className="text-sm font-medium text-white">
