@@ -34,9 +34,9 @@ export default function GoSection() {
         />
 
         <Section
-          title="Script Coach AI"
+          title="Script Coaching"
           number={2}
-          description="What you say in videos, text, graphics, and messaging are all pieces that build, or erode, brand reputation."
+          description="Our Ai is a collaborator, it asks you questions and clarifies you needs. What you say in videos, text, graphics, and messaging are all pieces that build, or erode, brand reputation."
           imageUrl={ScriptCoachImage}
           imagePosition="left"
         />
@@ -44,7 +44,7 @@ export default function GoSection() {
         <Section
           title="Masterclasses"
           number={3}
-          description="Speaking, Presenting, Storytelling, Video Production."
+          description="After Production, and Using Ai to build marketing assets are courses that can move you from beginner to 'expert' level storyteller."
           imageUrl={MasterclassesImage}
           imagePosition="right"
         />
@@ -55,10 +55,10 @@ export default function GoSection() {
 
 function Section({ title, number, description, imageUrl, imagePosition }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
+  const isInView = useInView(ref, { once: true, threshold: 0.3 }); // Increase threshold to delay animation
 
   const imageVariants = {
-    hidden: { opacity: 0, x: imagePosition === "left" ? -20 : 20 }, // Reduced movement distance
+    hidden: { opacity: 0, x: imagePosition === "left" ? -50 : 50 }, // Slightly bigger initial x value
     visible: { opacity: 1, x: 0 },
   };
 
@@ -80,28 +80,25 @@ function Section({ title, number, description, imageUrl, imagePosition }) {
         </div>
         <p className="text-lg">{description}</p>
       </div>
+
       <motion.div
-        className="mx-auto max-w-lg rounded-lg bg-white p-2 shadow-lg"
+        className="mx-auto max-w-md rounded-lg bg-white p-2 shadow-lg"
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
         variants={imageVariants}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.7 }} // Slightly longer animation duration
       >
-        <div className="beauty-card group relative cursor-pointer items-center justify-center overflow-hidden rounded-md border border-black transition-shadow hover:shadow-xl hover:shadow-black/30">
+        <div className="beauty-card group relative cursor-pointer items-center justify-center overflow-hidden rounded-md transition-shadow hover:shadow-xl hover:shadow-black/30">
           <Image
             src={imageUrl}
             alt={title}
-            width={300} // Adjusted image width
-            height={180}
+            width={300} // Adjusted image width for more separation
+            height={170}
             className="h-auto w-full rounded-lg transition-transform duration-500 group-hover:rotate-3 group-hover:scale-125" // Ensure image takes full width of its container
           />
         </div>
         <div className="absolute inset-0 from-transparent via-transparent to-black group-hover:from-black/70 group-hover:via-black/60 group-hover:to-black/70"></div>
-        <div className="absolute inset-0 flex translate-y-[60%] flex-col items-center justify-center px-9 text-center transition-all duration-500 group-hover:translate-y-0">
-          <button className="inline-flex h-9 items-center justify-center rounded-xl bg-sky-500 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-blue-600 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300">
-            <Link href="/masterclasses">See More</Link>
-          </button>
-        </div>
+        <div className="absolute inset-0 flex translate-y-[60%] flex-col items-center justify-center px-9 text-center transition-all duration-500 group-hover:translate-y-0"></div>
       </motion.div>
     </div>
   );

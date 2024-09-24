@@ -63,7 +63,7 @@ const testimonialsData = [
     id: 6,
     name: "Lorena Rijurfd",
     work: "Executive Producer",
-    testimonial: "Script Timer helps me tremendously in my job presentation",
+    testimonial: "Script Timer helps me tremendously in my job presentations.",
     image: RandomPerson6,
   },
 ];

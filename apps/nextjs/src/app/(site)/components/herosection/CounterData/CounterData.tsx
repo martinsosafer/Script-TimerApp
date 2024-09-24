@@ -52,6 +52,7 @@ export default function CounterData() {
                   end={endNumber}
                   duration={4}
                   enableScrollSpy
+                  separator="" // Remove commas
                 />{" "}
                 <span className=" ml-3  text-lg font-bold text-tertiary">
                   {text}

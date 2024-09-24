@@ -1985,12 +1985,7 @@ function MapPinIcon({ className, ...props }: React.ComponentProps<"svg">) {
     </svg>
   );
 }
-<<<<<<< HEAD
-
-function IconHandHelping({ className, ...props }: React.ComponentProps<"svg">) {
-=======
 function FileImageIcon({ className, ...props }: React.ComponentProps<"svg">) {
->>>>>>> 3d0bbded013d79e825281d7d380d006d223c7877
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -1999,17 +1994,6 @@ function FileImageIcon({ className, ...props }: React.ComponentProps<"svg">) {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-<<<<<<< HEAD
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={cn("lucide lucide-hand-helping", className)}
-      {...props}
-    >
-      <path d="M11 12h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 14" />
-      <path d="m7 18 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9" />
-      <path d="m2 13 6 6" />
-=======
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
@@ -2020,13 +2004,10 @@ function FileImageIcon({ className, ...props }: React.ComponentProps<"svg">) {
       <path d="M14 2v4a2 2 0 0 0 2 2h4" />
       <circle cx="10" cy="12" r="2" />
       <path d="m20 17-1.296-1.296a2.41 2.41 0 0 0-3.408 0L9 22" />
->>>>>>> 3d0bbded013d79e825281d7d380d006d223c7877
     </svg>
   );
 }
 
-<<<<<<< HEAD
-=======
 function ImageDownloadIcon({
   className,
   ...props
@@ -2078,7 +2059,6 @@ function SirenIcon({ className, ...props }: React.ComponentProps<"svg">) {
     </svg>
   );
 }
->>>>>>> 3d0bbded013d79e825281d7d380d006d223c7877
 export {
   IconEdit,
   IconNextChat,
@@ -2165,11 +2145,7 @@ export {
   IconNoAi,
   StarIcon,
   MapPinIcon,
-<<<<<<< HEAD
-  IconHandHelping,
-=======
   FileImageIcon,
   ImageDownloadIcon,
   SirenIcon,
->>>>>>> 3d0bbded013d79e825281d7d380d006d223c7877
 };

@@ -11,25 +11,9 @@ import MotionTransition from "../MotionTransition/MotionTransition";
 export default function HeroSection() {
   return (
     <div>
-<<<<<<< HEAD
       <div className="relative px-6 py-10 ">
-=======
-      <MotionTransition>
-        <h1 className="py-6 text-center font-poppins text-3xl font-bold tracking-tighter text-primary sm:text-5xl xl:text-6xl/none">
-          Welcome
-        </h1>
-        <p className="mt-4 text-center font-poppins text-lg text-gray-600 sm:text-xl xl:text-2xl">
-          Enjoy creating, testing, voicing faster than ever before. If you have
-          questions of any kind, please contact us.
-        </p>
-        <p className="mt-2 text-center font-poppins text-lg text-gray-600 sm:text-xl xl:text-2xl">
-          Have an amazing time here.
-        </p>
-      </MotionTransition>
-      <div className="relative px-6 ">
->>>>>>> 3d0bbded013d79e825281d7d380d006d223c7877
         <div className=" mx-auto mt-2 grid max-w-5xl items-start  md:grid-cols-2">
-          <div className="mt-6">
+          <div className="mt-8">
             <RevealText>
               <h1 className=" font-poppins text-4xl font-semibold sm:text-4xl xl:text-4xl/none">
                 Idea to Script to Voice
@@ -44,7 +28,7 @@ export default function HeroSection() {
               </p>
             </RevealText>
             <RevealText>
-              <div className="mt-9 flex justify-center gap-3">
+              <div className="mt-7 flex justify-center gap-3">
                 <PrimaryButton onClick={TextToVoiceClick}>
                   <Link href="/texttovoice">Text to Voice</Link>
                 </PrimaryButton>

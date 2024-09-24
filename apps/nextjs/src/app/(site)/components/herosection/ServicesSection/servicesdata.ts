@@ -61,9 +61,9 @@ export const servicesData = [
   },
   {
     id: 11,
-    icon: "IconHandHelping",
-    title: "Customer Service",
-    description: "Contact Support at all times",
+    icon: "FileImageIcon",
+    title: "Image Creator",
+    description: "Storyboards and Images",
   },
   {
     id: 12,

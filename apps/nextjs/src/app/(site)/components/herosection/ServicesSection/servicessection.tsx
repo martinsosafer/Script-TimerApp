@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 
 import {
+  FileImageIcon,
   IconAudioLines,
   IconBookPlus,
   IconBrainCog,
@@ -13,7 +14,6 @@ import {
   IconFileHeart,
   IconGlobe,
   IconGraduationCap,
-  IconHandHelping,
   IconLibraryBig,
   IconMic2,
   IconNoAi,
@@ -35,7 +35,7 @@ const iconComponents = {
   IconEar,
   IconGlobe,
   IconNoAi,
-  IconHandHelping,
+  FileImageIcon,
   IconCopyright,
 };
 export default function ServiceSection() {
