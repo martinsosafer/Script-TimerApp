@@ -152,7 +152,7 @@ async function PlansPage() {
   return (
     <div className="flex w-full flex-col items-center">
       <div className="mb-12 flex w-full flex-col items-center bg-white px-4 pt-10 text-center xl:w-[1000px]">
-        <h1 className="text-center font-poppins text-5xl font-bold leading-tight tracking-tight text-primary xl:text-5xl xl:font-extrabold">
+        <h1 className="text-center font-poppins text-5xl font-bold leading-tight tracking-tight text-primary xl:text-5xl xl:font-extrabold mb-10">
           <span>The Most Valuable Software For Creators</span>
         </h1>
         <p className="mt-4 w-full text-lg font-bold  text-black xl:w-[800px]">

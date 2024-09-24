@@ -176,9 +176,9 @@ const PlagiarismTable = forwardRef(
 
     return (
       <>
-        <div className="top-0 z-10 mt-10 bg-white px-4 py-6 text-center">
+        <div className="flex w-full flex-col items-center bg-white px-4  py-12 text-center xl:w-[800px]">
           <h1 className="mb-4 text-4xl font-bold text-primary lg:text-4xl">
-            Are you a writer / creator ?
+            Are You A Writing Creative?
           </h1>
           <p className="text-black-700 text-base lg:text-xl">
             Add 99.12% accurate Plagiarism and Ai
@@ -186,7 +186,6 @@ const PlagiarismTable = forwardRef(
             <br />
             scripts are original.
           </p>
-        
         </div>
 
         <div className="mb-14  mt-8 flex justify-center space-x-4">
@@ -259,7 +258,7 @@ const PlagiarismTable = forwardRef(
                     )}
 
                     <div
-                      className={`${tier.color} relative p-1 py-6 text-center text-white`}
+                      className={`${tier.color} relative  rounded-lg p-1 py-6 text-center text-white`}
                     >
                       <div className="font-poppins text-xl">{tier.name}</div>
                       <div className="text-sm font-medium text-white">

@@ -475,7 +475,7 @@ const PricingTable = ({
                   )}
 
                   <div
-                    className={`${tier.color} relative p-1 py-6 text-center text-white`}
+                    className={`${tier.color} relative rounded-lg p-1 py-6 text-center text-white`}
                   >
                     <div className="font-poppins text-xl">{tier.name}</div>
                     <div className="text-sm font-medium text-white">
