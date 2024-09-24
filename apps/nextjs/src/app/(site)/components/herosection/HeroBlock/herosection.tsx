@@ -11,24 +11,24 @@ import MotionTransition from "../MotionTransition/MotionTransition";
 export default function HeroSection() {
   return (
     <div>
-      <div className="relative px-6 ">
+      <div className="relative px-6 py-10 ">
         <div className=" mx-auto mt-2 grid max-w-5xl items-start  md:grid-cols-2">
-          <div className="mt-4">
+          <div className="mt-6">
             <RevealText>
               <h1 className=" font-poppins text-4xl font-semibold sm:text-4xl xl:text-4xl/none">
                 Idea to Script to Voice
-                <span className="mt-2 block text-primary">in Seconds</span>
+                <span className="mt-1 block text-primary">in Seconds</span>
               </h1>
             </RevealText>
             <RevealText>
-              <p className="mt-8 max-w-md">
+              <p className="mt-6 max-w-md">
                 Only our custom built Ai and classes support every area of your
                 work. Multiple Ai models will save you hours of work and extra
                 expenses - guaranteed. What do you want to create?
               </p>
             </RevealText>
             <RevealText>
-              <div className="mt-8 flex justify-center gap-3">
+              <div className="mt-9 flex justify-center gap-3">
                 <PrimaryButton onClick={TextToVoiceClick}>
                   <Link href="/texttovoice">Text to Voice</Link>
                 </PrimaryButton>

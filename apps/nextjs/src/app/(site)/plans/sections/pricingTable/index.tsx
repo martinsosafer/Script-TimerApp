@@ -84,8 +84,8 @@ const PricingTable = ({
       price: 9,
       yearlyMonthlyPrice: 6.58,
       yearlyPrice: 79,
-      monthlyId: "prod_PwYfAY9nKwQ9iV",
-      yearlyId: "prod_PwaJpA8vUeG6Wv",
+      monthlyId: "prod_Q6wRBImx4i9jIV",
+      yearlyId: "prod_Q6wRBImx4i9jIV",
       color: "bg-blue-500",
       // rowColor: "bg-blue-200",
       rowColor: "bg-white",
@@ -146,8 +146,8 @@ const PricingTable = ({
       price: 19,
       yearlyMonthlyPrice: 14.75,
       yearlyPrice: 177,
-      monthlyId: "prod_PwYzKaNnHflnUj",
-      yearlyId: "prod_PwaNjdYvuqa5Io",
+      monthlyId: "prod_Q6wRA3CPKOd872",
+      yearlyId: "prod_Q6wR4wC3Y5Yili",
       color: "bg-blue-600",
       // rowColor: "bg-blue-300",
       rowColor: "bg-white",
@@ -209,8 +209,8 @@ const PricingTable = ({
       price: 39,
       yearlyMonthlyPrice: 24.75,
       yearlyPrice: 297,
-      monthlyId: "prod_PwZAZujl0DVkgR",
-      yearlyId: "prod_PwaRtUe2crIFlW",
+      monthlyId: "prod_Q6wRdg67cs52NR",
+      yearlyId: "prod_Q6wAIfC2x07sMV",
       color: "bg-blue-700",
       // rowColor: "bg-blue-400",
       rowColor: "bg-white",
@@ -391,6 +391,20 @@ const PricingTable = ({
 
   return (
     <>
+      <div className="flex w-full flex-col items-center bg-white px-4  py-12 text-center xl:w-[800px]">
+        <h1 className="mb-4 text-3xl font-bold text-primary lg:text-4xl">
+          Co-Producer Plans
+        </h1>
+        <p className="text-black-700 text-base lg:text-xl">
+          Upgrade and speed through your reading and creating with the most
+          advanced tools.
+          <br /> 100+ natural, human-like voices. 30+ exclusive languages and
+          accents.
+          <br /> 5 listening speeds. Download PDF, SRT, and usable files
+          immediately.
+        </p>
+      </div>
+      {/* SWITCHER */}
       <div className="mb-14  mt-8 flex justify-center space-x-4">
         <div className="flex gap-2 rounded-full border-2 border-gray-500 p-2">
           <button
@@ -427,15 +441,15 @@ const PricingTable = ({
       </div>
 
       <div className="w-full overflow-x-auto">
-        <div className="flex min-w-[1200px] max-w-[1300px]">
-          <div className="grid grid-cols-5 gap-2  px-20  py-8">
+        <div className="flex min-w-[1300px] max-w-[1400px]">
+          <div className="ml-7 grid grid-cols-5  gap-2 px-20  py-8">
             <div className="flex flex-col">
               <div className="h-[177px]"></div>
               {featureLabels.map((feature, index) => (
                 <div
                   key={index}
                   className={`flex h-[41px] items-center border-b py-2 text-left ${
-                    feature.isMain ? "text-lg font-bold" : "pl-6 font-normal"
+                    feature.isMain ? "text-lg font-bold" : " font-normal"
                   } last:border-b-0`}
                 >
                   {feature.label}
@@ -475,13 +489,15 @@ const PricingTable = ({
                         <>
                           ${price}
                           <span className="text-sm font-normal">
-                            {showMonthly ? "/month" : "/year"}
+                            {showMonthly ? "/month" : "/month"}
                           </span>
                         </>
                       )}
                       {/* Always render the yearly price with consistent space allocation */}
                       <div
-                        className={`text-md mt-1 text-gray-200 ${tier.name === "FREE" ? "opacity-0" : "mt-[11px] text-lg opacity-100"}`}
+                        className={`text-md mt-1 text-gray-200 ${
+                          showMonthly ? "invisible" : "visible"
+                        } ${tier.name === "FREE" ? "opacity-0" : "mt-[11px] text-lg opacity-100"}`}
                       >
                         ({tier.yearlyPrice}/year)
                       </div>
@@ -515,7 +531,7 @@ const PricingTable = ({
                     </div>
                   </div>
 
-                  <div className=" mt-[-54px] flex-grow p-4">
+                  <div className=" mt-[-54px] flex-grow py-4">
                     {featureLabels.map((feature, featureIndex) => (
                       <div
                         key={featureIndex}
