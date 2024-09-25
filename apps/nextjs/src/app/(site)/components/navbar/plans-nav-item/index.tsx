@@ -12,7 +12,7 @@ export default function PlansNavItem() {
         <IconHandshake className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
         <IconWallet className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
       </div>
-      <span className=" font-poppins text-base font-medium">Plans</span>
+      <span className=" font-poppins text-sm font-medium">Plans</span>
     </Link>
   );
 }

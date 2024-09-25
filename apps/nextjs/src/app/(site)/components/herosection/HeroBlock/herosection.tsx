@@ -33,7 +33,7 @@ export default function HeroSection() {
                   <Link href="/texttovoice">Text to Voice</Link>
                 </PrimaryButton>
                 <PrimaryButton>
-                  <Link href="/chat">Script Coach</Link>
+                  <Link href="/chat">Script Writer</Link>
                 </PrimaryButton>
                 <PrimaryButton>
                   <Link href="/masterclasses" target="_blank">

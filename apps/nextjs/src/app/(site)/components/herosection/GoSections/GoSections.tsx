@@ -5,7 +5,7 @@ import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 
 // Import actual images
-import MasterclassesImage from "../../../../../../public/MasterClassesLanding.png";
+import MasterclassesImage from "../../../../../../public/MasterclassesLanding.gif";
 import ScriptCoachImage from "../../../../../../public/ScriptCoachLanding.gif";
 import LandingPageImage from "../../../../../../public/TextToVoiceLanding.gif";
 import MotionTransition from "../MotionTransition/MotionTransition";

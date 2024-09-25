@@ -5,9 +5,14 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 
 import {
+  FileImageIcon,
   IconAudioLines,
   IconBot,
+  IconClone,
+  IconCopyright,
+  IconEar,
   IconFileStack,
+  IconGlobe,
   IconHandshake,
   IconHistory,
   IconLibraryBig,
@@ -78,11 +83,11 @@ export default function MobileNavBar({ toggle }) {
       initial="initial"
       animate="animate"
       exit="exit"
-      className="fixed left-0 top-0 h-screen w-full origin-top bg-slate-100  px-10 text-primary-foreground dark:bg-primary-foreground"
+      className="fixed left-0 top-0 z-50 h-screen w-full origin-top overflow-y-auto bg-slate-100 px-10 text-primary-foreground dark:bg-primary-foreground"
     >
       <div className="flex h-full flex-col">
-        <div className="mb-3 flex  justify-between">
-          <h1 className="text-lg text-primary">Script Timer</h1>
+        <div className="mb-3 flex justify-between">
+          <h1 className="text-lg text-primary">Co-Producer</h1>
           <button
             className="text-md flex cursor-pointer items-center text-black dark:text-secondary-foreground"
             onClick={toggle}
@@ -95,16 +100,16 @@ export default function MobileNavBar({ toggle }) {
           initial="initial"
           animate="open"
           exit="initial"
-          className="flex h-full flex-col  items-start  justify-start gap-4"
+          className="flex h-full flex-col items-start justify-start gap-4"
         >
-          <div className="overflow-hidden">
+          <div className=" overflow-y-auto">
             <motion.div
               variants={mobileLinkVars}
               className=" text-secondary-foreground"
             >
               <h2 className="flex items-center text-2xl underline ">
                 <IconAudioLines className="mr-2 h-7 w-7 underline " />
-                Text to voice
+                Voice AI
               </h2>
               <Link href={`/texttovoice`} onClick={toggle}>
                 <div className="mt-4 flex items-center text-secondary-foreground">
@@ -117,6 +122,45 @@ export default function MobileNavBar({ toggle }) {
                 <p className="text-gray-500">
                   {" "}
                   Add text, listen to the best grammar & voices
+                </p>
+              </Link>
+              <Link href={`/voicecloning`} onClick={toggle}>
+                <div className="mt-4 flex items-center text-secondary-foreground">
+                  {" "}
+                  {/* Wrapping h4 and IconMic2 in a flex container */}
+                  <IconClone className="mr-2" />{" "}
+                  {/* Moving the icon outside of the <h4> */}
+                  <h4 className="inline text-lg ">Voice Cloning</h4>
+                </div>
+                <p className="text-gray-500">
+                  {" "}
+                  Give us an audio and we will create a voice for you
+                </p>
+              </Link>
+              <Link href={`/voicecloning`} onClick={toggle}>
+                <div className="mt-4 flex items-center text-secondary-foreground">
+                  {" "}
+                  {/* Wrapping h4 and IconMic2 in a flex container */}
+                  <IconClone className="mr-2" />{" "}
+                  {/* Moving the icon outside of the <h4> */}
+                  <h4 className="inline text-lg ">Voice Cloning</h4>
+                </div>
+                <p className="text-gray-500">
+                  {" "}
+                  Give us an audio and we will create a voice for you
+                </p>
+              </Link>
+              <Link href={`/translateaudio`} onClick={toggle}>
+                <div className="mt-4 flex items-center text-secondary-foreground">
+                  {" "}
+                  {/* Wrapping h4 and IconMic2 in a flex container */}
+                  <IconEar className="mr-2" />{" "}
+                  {/* Moving the icon outside of the <h4> */}
+                  <h4 className="inline text-lg ">Translate Audio</h4>
+                </div>
+                <p className="text-gray-500">
+                  {" "}
+                  Upload an Audio File and we will translate it
                 </p>
               </Link>
               <Link href={`/library`} onClick={toggle}>
@@ -160,36 +204,41 @@ export default function MobileNavBar({ toggle }) {
                   <IconBot className="mr-2 " />{" "}
                   {/* Moving the icon outside of the <h4> */}
                   <h4 className="inline text-lg text-secondary-foreground">
-                    Script Coach
+                    Script-Coach
                   </h4>
                 </div>
-                <p className="text-gray-500"> Sharpen and create scripts</p>
+                <p className="text-gray-500">
+                  {" "}
+                  Create your script with the aid of the best AI.
+                </p>
               </Link>
-              <Link href={`/library`} onClick={toggle}>
+              <Link href={`/translatetext`} onClick={toggle}>
                 <div className="mt-4 flex items-center text-secondary-foreground">
                   {" "}
                   {/* Wrapping h4 and IconMic2 in a flex container */}
-                  <IconFileStack className="mr-2" />{" "}
+                  <IconGlobe className="mr-2" />{" "}
                   {/* Moving the icon outside of the <h4> */}
                   <h4 className="inline text-lg text-secondary-foreground">
-                    Script History
+                    Translate Text
                   </h4>
                 </div>
-                <p className="text-gray-500"> Your writing history</p>
+                <p className="text-gray-500">
+                  Translate text and audio to multiple languages.
+                </p>
               </Link>
             </motion.div>
             <motion.div
               variants={mobileLinkVars}
               className=" mt-2 text-secondary-foreground"
+            ></motion.div>
+            <motion.div
+              variants={mobileLinkVars}
+              className=" mt-2 text-secondary-foreground"
             >
-              <Link
-                href="https://script-timer.com/blogs/"
-                target="_blank"
-                onClick={toggle}
-              >
+              <Link href={`/plagiarism-detector`} onClick={toggle}>
                 <h2 className="flex items-center text-2xl underline ">
-                  <IconLightbulb className="mr-2 mt-2 h-7 w-7 underline" />
-                  Blog
+                  <IconCopyright className="mr-2 mt-2 h-7 w-7 underline" />
+                  Plagiarism & Ai Detector
                 </h2>
               </Link>
             </motion.div>
@@ -197,10 +246,21 @@ export default function MobileNavBar({ toggle }) {
               variants={mobileLinkVars}
               className=" mt-2 text-secondary-foreground"
             >
-              <Link href="/masterclasses" target="_blank" onClick={toggle}>
+              <Link href={`/image-generator`} onClick={toggle}>
+                <h2 className="flex items-center text-2xl underline ">
+                  <FileImageIcon className="mr-2 mt-2 h-7 w-7 underline" />
+                  Image Creator
+                </h2>
+              </Link>
+            </motion.div>
+            <motion.div
+              variants={mobileLinkVars}
+              className=" mt-2 text-secondary-foreground"
+            >
+              <Link href={`/masterclasses`} onClick={toggle}>
                 <h2 className="flex items-center text-2xl underline ">
                   <IconMonitorPlay className="mr-2 mt-2 h-7 w-7 underline" />
-                  Masterclasses
+                  Story University
                 </h2>
               </Link>
             </motion.div>
@@ -208,11 +268,7 @@ export default function MobileNavBar({ toggle }) {
               variants={mobileLinkVars}
               className=" mt-2 text-secondary-foreground"
             >
-              <Link
-                href="https://script-timer.com/voice123-pricing/"
-                target="_blank"
-                onClick={toggle}
-              >
+              <Link href={`/plans`} onClick={toggle}>
                 <h2 className="flex items-center text-2xl underline ">
                   <IconHandshake className="mr-2 mt-2 h-7 w-7 underline" />
                   Plans
