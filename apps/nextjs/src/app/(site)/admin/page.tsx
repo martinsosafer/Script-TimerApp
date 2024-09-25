@@ -1,11 +1,16 @@
 "use client";
 
-import Dashboard from "~/app/_components/dashboard";
 import { api } from "~/utils/api";
+import Dashboard from "./dashboard";
 
 export default function AdminPage() {
-  const { data: userList, isLoading, isError } = api.user.list.useQuery();
-  console.log("userList", userList);
+  const {
+    data: userList,
+    isLoading,
+    isError,
+    refetch,
+  } = api.user.list.useQuery();
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -16,7 +21,7 @@ export default function AdminPage() {
 
   return (
     <div className=" mt-9">
-      <Dashboard userList={userList} />
+      <Dashboard userList={userList} refetch={refetch} />
     </div>
   );
 }

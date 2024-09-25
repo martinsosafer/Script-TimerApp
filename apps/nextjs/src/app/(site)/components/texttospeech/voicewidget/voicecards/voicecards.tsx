@@ -22,12 +22,13 @@ interface Voice {
   };
   favorite?: boolean | null;
 }
-
 interface VoiceCardsProps {
   voices: Voice[];
   onModelSelect: (voice: Voice) => void;
   onFavoriteChange: () => void;
   favoriteVoices: Voice[];
+  currentPage: number; // Add currentPage prop
+  subData: { status: string }; // Add subData prop
 }
 
 const VoiceCards: React.FC<VoiceCardsProps> = ({
@@ -35,13 +36,15 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({
   onModelSelect,
   onFavoriteChange,
   favoriteVoices,
+  currentPage,
+  subData,
 }) => {
   const [audio, setAudio] = React.useState<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = React.useState<Record<string, boolean>>({});
   const [selectedVoiceId, setSelectedVoiceId] = React.useState<string | null>(
     null,
   );
-
+  const isDisabled = currentPage >= 2 && subData.status === "FREE";
   const { mutateAsync: favoriteVoice, error } =
     api.voice.favoriteVoice.useMutation({
       onSuccess(data) {
@@ -139,15 +142,16 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({
             voice.id === selectedVoiceId
               ? "border-2 border-primary bg-blue-300 dark:border-white"
               : ""
-          }`}
-          onClick={() => handleVoiceCardClick(voice)}
+          } ${isDisabled ? "cursor-not-allowed opacity-50" : ""}`} // Apply styles based on isDisabled
+          onClick={() => !isDisabled && handleVoiceCardClick(voice)} // Prevent click if disabled
         >
           <button
             className="absolute left-0 top-0 rounded-full p-1"
             onClick={(e) => {
               e.stopPropagation();
-              handleFavorite(voice);
+              if (!isDisabled) handleFavorite(voice); // Prevent favorite if disabled
             }}
+            disabled={isDisabled} // Disable button if disabled
           >
             {isFavorite(voice.id) ? (
               <IconHeartFill className="h-5 w-5 text-primary" />
@@ -167,7 +171,7 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({
               <h2 className="text-sm font-semibold dark:text-secondary-foreground">
                 {voice.name}
               </h2>
-              <p className="text-xs text-gray-500  dark:text-slate-100">
+              <p className="text-xs text-gray-500 dark:text-slate-100">
                 {voice.metadata.labels.gender ?? "Unknown"}
               </p>
             </div>

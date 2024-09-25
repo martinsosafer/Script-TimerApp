@@ -119,11 +119,13 @@
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
-    --tertiary: 24.6 95% 53.1%;
+    --tertiary: 38 100% 50%;
     --tertiary-foreground: 60 9.1% 97.8%;
 
-    --secondarybutton: 187.89999999999998, 85.7%, 53.3%;
+    --secondarybutton: 38 100% 50%;
     --secondarybutton-foreground: 222.2 47.4% 11.2%;
+
+    --counterdiv: 240 2% 23%;
 
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;

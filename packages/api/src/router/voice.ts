@@ -12,7 +12,6 @@ import {
 function addWatermark(message: string) {
   const watermark = "created by script timer";
 
-  
   const appendedMessage = `${message} - ${watermark}`;
   return appendedMessage;
 }
@@ -94,6 +93,7 @@ export const voiceRouter = createTRPCRouter({
 
       let maxVoices = 5; // Maximum number of voices for free users
       if (
+        subscription?.status === "FREE" ||
         subscription?.status === "STUDENT" ||
         subscription?.status === "CREATOR" ||
         subscription?.status === "BUSINESS" ||

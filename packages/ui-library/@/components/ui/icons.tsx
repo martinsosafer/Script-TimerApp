@@ -1985,6 +1985,80 @@ function MapPinIcon({ className, ...props }: React.ComponentProps<"svg">) {
     </svg>
   );
 }
+function FileImageIcon({ className, ...props }: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      className={cn("lucide lucide-file-image", className)}
+      {...props}
+    >
+      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+      <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+      <circle cx="10" cy="12" r="2" />
+      <path d="m20 17-1.296-1.296a2.41 2.41 0 0 0-3.408 0L9 22" />
+    </svg>
+  );
+}
+
+function ImageDownloadIcon({
+  className,
+  ...props
+}: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      className={cn("lucide lucide-image-down", className)}
+      {...props}
+    >
+      <path d="M10.3 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10l-3.1-3.1a2 2 0 0 0-2.814.014L6 21" />
+      <path d="m14 19 3 3v-5.5" />
+      <path d="m17 22 3-3" />
+      <circle cx="9" cy="9" r="2" />
+    </svg>
+  );
+}
+function SirenIcon({ className, ...props }: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      className={cn("lucide lucide-siren", className)}
+      {...props}
+    >
+      <path d="M7 18v-6a5 5 0 1 1 10 0v6" />
+      <path d="M5 21a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2z" />
+      <path d="M21 12h1" />
+      <path d="M18.5 4.5 18 5" />
+      <path d="M2 12h1" />
+      <path d="M12 2v1" />
+      <path d="m4.929 4.929.707.707" />
+      <path d="M12 12v6" />
+    </svg>
+  );
+}
 export {
   IconEdit,
   IconNextChat,
@@ -2071,4 +2145,7 @@ export {
   IconNoAi,
   StarIcon,
   MapPinIcon,
+  FileImageIcon,
+  ImageDownloadIcon,
+  SirenIcon,
 };

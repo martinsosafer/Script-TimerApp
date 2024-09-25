@@ -3,6 +3,13 @@ import bcrypt from "bcryptjs";
 
 import { db, schema } from "@voiceai/db";
 
+import {
+  STARTING_11CL_CREDITS,
+  STARTING_CL_CREDITS,
+  STARTING_IMG_CREDITS,
+  STARTING_OPENAI_CREDITS,
+} from "../../../../constants/credits";
+
 interface User {
   name: string;
   email: string;
@@ -24,7 +31,7 @@ export async function POST(request: Request) {
       email,
       password: userPassword,
     } = (await request.json()) as User;
-    console.log("PASSWORD:", userPassword);
+
     const password = await bcrypt.hash(userPassword, 10);
     const id = uuid();
 
@@ -39,9 +46,42 @@ export async function POST(request: Request) {
         userId: id,
         plan: "STARTER",
         status: "FREE_TRIAL",
+        free_trial_expiration: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
       })
       .execute();
-    console.log("NEWUSER", newUser);
+
+    await db
+      .insert(schema.clCredits)
+      .values({
+        userId: id,
+        credits: STARTING_CL_CREDITS.FREE_TRIAL,
+      })
+      .execute();
+
+    await db
+      .insert(schema.imgCredit)
+      .values({
+        userId: id,
+        credits: STARTING_IMG_CREDITS.FREE_TRIAL,
+      })
+      .execute();
+
+    await db
+      .insert(schema.openAiCredit)
+      .values({
+        userId: id,
+        credits: STARTING_OPENAI_CREDITS.FREE_TRIAL,
+      })
+      .execute();
+
+    await db
+      .insert(schema.elevenLabsCredit)
+      .values({
+        userId: id,
+        credits: STARTING_11CL_CREDITS.FREE_TRIAL,
+      })
+      .execute();
+
     return new Response(JSON.stringify(newUser));
   } catch (error) {
     return NextResponse.json(

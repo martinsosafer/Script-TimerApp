@@ -9,6 +9,11 @@ import { AspectRatio } from "@voiceai/ui/@/components/ui/aspect-ratio";
 import { api } from "~/utils/api";
 import SlideCards from "../components/slide-cards";
 import ThanksCard from "../components/thanksCard";
+import SucessMessage from "./SuccessMessage";
+import CounterData from "../components/herosection/CounterData/CounterData";
+import ServiceSection from "../components/herosection/ServicesSection/servicessection";
+import GoSections from "../components/herosection/GoSections/GoSections";
+import Testimonials from "../components/herosection/Testimonials/Testimonials";
 
 enum Plans {
   STUDENT = "Student Plan",
@@ -244,7 +249,7 @@ function SuccessPage() {
   }, [id, setSession, isSuccess]);
 
   return (
-    <div className="mb-20 flex min-h-screen flex-col items-center justify-center space-y-4 text-center">
+    <div className=" flex min-h-screen flex-col items-center   py-5  text-center">
       <Confetti
         width={window.innerWidth}
         height={window.innerHeight}
@@ -255,19 +260,11 @@ function SuccessPage() {
         initialVelocityY={10}
         colors={["#0123e7", "#eb8806"]}
       />
-      <ThanksCard />
-      <AspectRatio ratio={30 / 8}>
-        <iframe
-          src="https://player.vimeo.com/video/904618003?h=e72a50f24d&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-          className="h-full w-full"
-          allow="autoplay; fullscreen; picture-in-picture"
-          title="Script-Timer Ai_ On boarding video (Short version) (1)"
-        />
-      </AspectRatio>
-      <h2 className="mb-8 text-5xl font-bold tracking-wider text-primary">
-        Welcome to Our Site!
-      </h2>
-      <SlideCards />
+      <SucessMessage />
+      <CounterData />
+      <ServiceSection />
+      <GoSections />
+      <Testimonials />
     </div>
   );
 }

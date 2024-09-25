@@ -5,23 +5,34 @@ import Slide from "./slide";
 
 export default function Testimonials() {
   return (
-    <div className="lg:py-15  relative mb-10 md:py-10 xl:py-20">
-      <div className="mx-auto my-6 grid max-w-5xl gap-8 md:grid-cols-2">
-        <RevealText>
-          <h2 className="mb-5 font-poppins text-5xl font-semibold">
-            What our students have to say
-          </h2>
-        </RevealText>
-        <RevealText>
-          <div className="mt-2 self-center">
-            <p className="font-bold text-primary">
-              Our students have witnessed a marked improvement in their skills
-              for speech and content creation.
+    <div className="lg:py-15 relative mb-10 md:py-10 xl:py-20">
+      <div className="mx-auto mt-10   grid h-[500px]  max-w-5xl  items-start md:grid-cols-3">
+        {/* First column */}
+        <div className="mt-20 md:col-span-1">
+          <RevealText>
+            <h2 className="mb-5 font-poppins text-3xl font-semibold">
+              What our <br />
+              students have <br />
+              to say
+            </h2>
+          </RevealText>
+          <RevealText>
+            <p className=" font-poppins text-base font-bold text-primary">
+              Our students have witnessed a marked <br />
+              improvement in their skills for speech
+              <br />
+              and content creation.
             </p>
-          </div>
-        </RevealText>
+          </RevealText>
+        </div>
+
+        {/* Carousel column with additional margin */}
+        <div className="mt-20 md:col-span-2 md:ml-14">
+          {" "}
+          {/* Add margin left for separation */}
+          <Slide />
+        </div>
       </div>
-      <Slide />
     </div>
   );
 }

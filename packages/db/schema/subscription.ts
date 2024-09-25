@@ -36,4 +36,6 @@ export const subscriptions = pgTable("subscription", {
   start_date: timestamp("start_date").notNull().defaultNow(),
   created_at: timestamp("created_at").notNull().defaultNow(),
   updated_at: timestamp("updated_at").notNull().defaultNow(),
+  free_trial_expiration: timestamp("free_trial_expiration"),
+  current_period_start: timestamp("current_period_start"),
 });

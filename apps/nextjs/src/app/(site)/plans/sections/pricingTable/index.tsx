@@ -391,6 +391,20 @@ const PricingTable = ({
 
   return (
     <>
+      <div className="flex w-full flex-col items-center bg-white px-4  py-12 text-center xl:w-[800px]">
+        <h1 className="mb-4 text-4xl font-bold text-primary lg:text-4xl">
+          Co-Producer Plans
+        </h1>
+        <p className="text-black-700 text-base lg:text-xl font-poppins">
+          Transform your ideas into
+          <br /> perfect scripts, voice overs, and images
+          <br /> in every language. ﻿
+        </p>
+        <span className="mt-10 font-poppins font-bold text-black ">
+          Get up to 4 months free on yearly plans!
+        </span>
+      </div>
+      {/* SWITCHER */}
       <div className="mb-14  mt-8 flex justify-center space-x-4">
         <div className="flex gap-2 rounded-full border-2 border-gray-500 p-2">
           <button
@@ -427,15 +441,15 @@ const PricingTable = ({
       </div>
 
       <div className="w-full overflow-x-auto">
-        <div className="flex min-w-[1200px] max-w-[1300px]">
-          <div className="grid grid-cols-5 gap-2  px-20  py-8">
+        <div className="flex min-w-[1300px] max-w-[1400px]">
+          <div className="ml-7 grid grid-cols-5  gap-2 px-16  py-8">
             <div className="flex flex-col">
               <div className="h-[177px]"></div>
               {featureLabels.map((feature, index) => (
                 <div
                   key={index}
                   className={`flex h-[41px] items-center border-b py-2 text-left ${
-                    feature.isMain ? "text-lg font-bold" : "pl-6 font-normal"
+                    feature.isMain ? "text-lg font-bold" : " pl-6 font-normal"
                   } last:border-b-0`}
                 >
                   {feature.label}
@@ -461,7 +475,7 @@ const PricingTable = ({
                   )}
 
                   <div
-                    className={`${tier.color} relative p-1 py-6 text-center text-white`}
+                    className={`${tier.color} relative rounded-lg p-1 py-6 text-center text-white`}
                   >
                     <div className="font-poppins text-xl">{tier.name}</div>
                     <div className="text-sm font-medium text-white">
@@ -517,7 +531,7 @@ const PricingTable = ({
                     </div>
                   </div>
 
-                  <div className=" mt-[-54px] flex-grow p-4">
+                  <div className=" mt-[-54px] flex-grow py-4">
                     {featureLabels.map((feature, featureIndex) => (
                       <div
                         key={featureIndex}

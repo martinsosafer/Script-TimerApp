@@ -54,9 +54,9 @@ export default function PlansSections({
         session={session}
       />
 
-      <FAQs />
       <LanguagesRows />
       <PricingTestimonials />
+      <FAQs />
     </>
   );
 }

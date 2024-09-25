@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { db, eq, schema, sql } from "@voiceai/db";
+import { db, desc, eq, schema, sql } from "@voiceai/db";
 import { elevenLabsCredit } from "@voiceai/db/schema/11LabsCredits";
 import { clCredits } from "@voiceai/db/schema/copyLeaksCredit";
 
@@ -12,7 +12,7 @@ async function updateUserCredits(
   planCredits: {
     elevenLabsCredits: number;
     openAiCredits: number;
-    clCredits: number; // Add CopyLeaks credits
+    clCredits?: number; // Add CopyLeaks credits
   },
 ) {
   const {
@@ -97,7 +97,7 @@ async function updateUserCredits(
       });
     }
   } catch (error) {
-    console.error("Error updating credits:", error);
+    console.error("Error updating 11 Labs credits:", error);
     throw new Error(`Error updating credits: ${(error as Error).message}`);
   }
 }
@@ -114,14 +114,26 @@ export const userRouter = createTRPCRouter({
         updated_at: schema.subscriptions.updated_at,
         status: schema.subscriptions.status,
         plan_id: schema.subscriptions.plan_id,
-        total_credits: sql`COALESCE(SUM(${schema.credits.credits}), 0)`,
+        cl_credits: schema.clCredits.credits,
+        eleven_labs_credits: schema.elevenLabsCredit.credits,
+        open_ai_credits: schema.openAiCredit.credits,
+        images: schema.imgCredit.credits,
       })
       .from(schema.users)
       .leftJoin(schema.subscriptions, () =>
         eq(schema.users.id, schema.subscriptions.userId),
       )
-      .leftJoin(schema.credits, () =>
-        eq(schema.users.id, schema.credits.userId),
+      .leftJoin(schema.clCredits, () =>
+        eq(schema.users.id, schema.clCredits.userId),
+      )
+      .leftJoin(schema.elevenLabsCredit, () =>
+        eq(schema.users.id, schema.elevenLabsCredit.userId),
+      )
+      .leftJoin(schema.openAiCredit, () =>
+        eq(schema.users.id, schema.openAiCredit.userId),
+      )
+      .leftJoin(schema.imgCredit, () =>
+        eq(schema.users.id, schema.imgCredit.userId),
       )
       .groupBy(
         schema.users.id,
@@ -131,7 +143,12 @@ export const userRouter = createTRPCRouter({
         schema.subscriptions.status,
         schema.subscriptions.plan_id,
         schema.subscriptions.updated_at,
-      );
+        schema.clCredits.credits,
+        schema.elevenLabsCredit.credits,
+        schema.openAiCredit.credits,
+        schema.imgCredit.credits,
+      )
+      .orderBy(desc(schema.users.created_at));
   }),
 
   giveSubscription: protectedProcedure
@@ -198,7 +215,12 @@ export const userRouter = createTRPCRouter({
       try {
         await ctx.db
           .update(schema.subscriptions)
-          .set({ status: "FREE_TRIAL", updated_at: sql`NOW()` })
+          .set({
+            status: "FREE_TRIAL",
+            updated_at: sql`NOW()`,
+            plan_id: "initial_plan_id",
+            free_trial_expiration: sql`NOW() + ${5} * INTERVAL '1 day'`,
+          })
           .where(eq(schema.subscriptions.userId, input.userId))
           .execute();
 
@@ -342,7 +364,7 @@ export const userRouter = createTRPCRouter({
           .execute();
 
         const planCredits = {
-          elevenLabsCredits: 10000,
+          elevenLabsCredits: 40000,
           openAiCredits: 200000,
           clCredits: 40,
         };
@@ -376,7 +398,7 @@ export const userRouter = createTRPCRouter({
           .where(eq(schema.subscriptions.userId, input.userId))
           .execute();
         const planCredits = {
-          elevenLabsCredits: 10000,
+          elevenLabsCredits: 80000,
           openAiCredits: 400000,
           clCredits: 60,
         };
@@ -409,7 +431,7 @@ export const userRouter = createTRPCRouter({
           .where(eq(schema.subscriptions.userId, input.userId))
           .execute();
         const planCredits = {
-          elevenLabsCredits: 10000,
+          elevenLabsCredits: 125000,
           openAiCredits: 1000000,
           clCredits: 80,
         };
@@ -442,7 +464,7 @@ export const userRouter = createTRPCRouter({
           .where(eq(schema.subscriptions.userId, input.userId))
           .execute();
         const planCredits = {
-          elevenLabsCredits: 10000,
+          elevenLabsCredits: 40000,
           openAiCredits: 200000,
           clCredits: 40,
         };
@@ -478,7 +500,7 @@ export const userRouter = createTRPCRouter({
           .execute();
 
         const planCredits = {
-          elevenLabsCredits: 10000,
+          elevenLabsCredits: 80000,
           openAiCredits: 400000,
           clCredits: 60,
         };
@@ -513,7 +535,7 @@ export const userRouter = createTRPCRouter({
           .execute();
 
         const planCredits = {
-          elevenLabsCredits: 10000,
+          elevenLabsCredits: 125000,
           openAiCredits: 1000000,
           clCredits: 60,
         };
@@ -539,7 +561,12 @@ export const userRouter = createTRPCRouter({
       try {
         await ctx.db
           .update(schema.subscriptions)
-          .set({ status: "FREE", updated_at: sql`NOW()` })
+          .set({
+            status: "FREE",
+            updated_at: sql`NOW()`,
+            plan_id: "initial_plan_id",
+            free_trial_expiration: null,
+          })
           .where(eq(schema.subscriptions.userId, input.userId))
           .execute();
 

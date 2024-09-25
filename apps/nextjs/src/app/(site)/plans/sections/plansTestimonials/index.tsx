@@ -31,21 +31,21 @@ const ratings = [
 
 const testimonials = [
   {
-    quote: "We are so happy we work with you, our efficiency has exploded.",
+    quote: "You got us started down the amazing path we are on.THANK YOU!",
     author: "David J",
     position: "CEO ",
     image: David,
   },
   {
     quote:
-      "We were searching for a solution, and this platform is exactly what we needed.",
+      "We are overwhelmed with thanks...Thank you for your support and tools!",
     author: "Susan C",
     position: "Senior Marketing Lead",
     image: Susan,
   },
   {
     quote:
-      "Our productivity is now over 4 times higher than just last quarter. Our ability to create is amazingly fast, accurate and has the highest efficacy.",
+      "We are so pleased!Productivity quadrupled. Output is faster, more accurate, and more effective.",
     author: "Jill B",
     position: "CEO",
     image: Jill,

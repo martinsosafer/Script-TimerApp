@@ -15,7 +15,8 @@ interface SubData {
 }
 
 function MasterClassModal({ status }: SubData) {
-  const isSubscriptionActive = status && status === "BUSINESS";
+  const isSubscriptionActive =
+    status && (status === "BUSINESS" || status === "CREATOR");
   const [modalOpen, setModalOpen] = useState(!isSubscriptionActive);
 
   const closeModal = () => {

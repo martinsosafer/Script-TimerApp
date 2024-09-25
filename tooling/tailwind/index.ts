@@ -58,6 +58,10 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        counterdiv: {
+          DEFAULT: "hsl(var(--counterdiv))",
+          foreground: "hsl(var(--counterdiv-foreground))",
+        },
       },
 
       keyframes: {
