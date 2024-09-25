@@ -395,7 +395,7 @@ const PricingTable = ({
         <h1 className="mb-4 text-4xl font-bold text-primary lg:text-4xl">
           Co-Producer Plans
         </h1>
-        <p className="text-black-700 text-base lg:text-xl">
+        <p className="text-black-700 text-base lg:text-xl font-poppins">
           Transform your ideas into
           <br /> perfect scripts, voice overs, and images
           <br /> in every language. ﻿

@@ -151,11 +151,11 @@ async function PlansPage() {
 
   return (
     <div className="flex w-full flex-col items-center">
-      <div className="mb-12 flex w-full flex-col items-center bg-white px-4 pt-10 text-center xl:w-[1000px]">
-        <h1 className="text-center font-poppins text-5xl font-bold leading-tight tracking-tight text-primary xl:text-5xl xl:font-extrabold mb-10">
+      <div className="mb-12 flex w-full flex-col items-center bg-white px-4 pt-16 text-center xl:w-[1000px]">
+        <h1 className="mb-10 text-center font-poppins text-5xl font-bold leading-tight tracking-tight text-primary xl:text-5xl xl:font-extrabold">
           <span>The Most Valuable Software For Creators</span>
         </h1>
-        <p className="mt-4 w-full text-lg font-bold  text-black xl:w-[800px]">
+        <p className="text-black-700 font-poppins text-base lg:text-xl xl:w-[800px]">
           Compare the benefits your Co-Producer gives you <br /> compared to the
           tools it replaces.
           <br />

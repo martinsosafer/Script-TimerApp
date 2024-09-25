@@ -18,8 +18,8 @@ export default function TextToVoiceNavItem() {
           <IconAudioLines className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0 " />
           <IconFileType className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
         </div>
-        <span className="font-poppins font-semibold">Voice</span>
-        <span className="font-poppins font-semibold">AI</span>
+        <span className="font-poppins text-base font-medium">Voice</span>
+        <span className="font-poppins text-base font-medium">AI</span>
       </Link>
       <div className="absolute inset-x-0 bottom-0  mb-2 h-0.5 origin-left scale-x-0 transform bg-primary-foreground transition-transform duration-300 group-hover:scale-x-100" />
       <div className="invisible absolute -left-48 top-7 z-50 min-w-[300px] translate-y-0 transform opacity-0 transition duration-500 ease-in-out group-hover:visible group-hover:translate-y-5 group-hover:transform group-hover:opacity-100">

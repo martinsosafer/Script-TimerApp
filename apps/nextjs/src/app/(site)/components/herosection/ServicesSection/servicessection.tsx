@@ -46,10 +46,10 @@ export default function ServiceSection() {
           <div className=" justify-center text-center align-middle">
             <h2 className="mb-8 ml-32 text-center font-poppins text-4xl font-semibold md:text-4xl">
               <span className="block text-center text-black">
-                You have a project.
+                You have a project
               </span>
               <span className="text-center text-primary">
-                Bring it to life with custom AI built for scripts.
+                Bring it to life with custom AI built for scripts
               </span>
             </h2>
           </div>

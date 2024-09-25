@@ -18,13 +18,6 @@ const PlagiarismTable = forwardRef(
         color: "bg-blue-400",
         rowColor: "bg-white",
         features: {
-          "Script Writing": { enabled: true },
-          "Ai Writing": { value: "40,000 creditss" },
-          "Translation - Audio & Text": { value: "40,000 credits" },
-          "Grammar / Spell Checker": { value: "40,000 credits" },
-          "6 Steps to Amazing Scripts": { enabled: true },
-
-          "Plagiarism Detection": { enabled: true },
           "Included words per month": { value: "1,250" },
           "Plagiarism & Ai Detection": { enabled: true },
           "Source links to original": { enabled: true },
@@ -45,13 +38,6 @@ const PlagiarismTable = forwardRef(
         color: "bg-blue-500",
         rowColor: "bg-white",
         features: {
-          "Script Writing": { enabled: true },
-          "Ai Writing": { value: "200,000 credits" },
-          "Translation - Audio & Text": { value: "200,000 credits" },
-          "Grammar / Spell Checker": { value: "200,000 credits" },
-          "6 Steps to Amazing Scripts": { enabled: true },
-
-          "Plagiarism Detection": { enabled: true },
           "Included words per month": { value: "10,000" },
           "Plagiarism & Ai Detection": { enabled: true },
           "Source links to original": { enabled: true },
@@ -73,13 +59,6 @@ const PlagiarismTable = forwardRef(
         rowColor: "bg-white",
         label: "Most Popular",
         features: {
-          "Script Writing": { enabled: true },
-          "Ai Writing": { value: "400,000 credits" },
-          "Translation - Audio & Text": { value: "400,000 credits" },
-          "Grammar / Spell Checker": { value: "400,000 credits" },
-          "6 Steps to Amazing Scripts": { enabled: true },
-
-          "Plagiarism Detection": { enabled: true },
           "Included words per month": { value: "15,000" },
           "Plagiarism & Ai Detection": { enabled: true },
           "Source links to original": { enabled: true },
@@ -101,13 +80,6 @@ const PlagiarismTable = forwardRef(
         rowColor: "bg-white",
 
         features: {
-          "Script Writing": { enabled: true },
-          "Ai Writing": { value: "1,000,000 credits" },
-          "Translation - Audio & Text": { value: "1,000,000 credits" },
-          "Grammar / Spell Checker": { value: "1,000,000 credits" },
-          "6 Steps to Amazing Scripts": { enabled: true },
-
-          "Plagiarism Detection": { enabled: true },
           "Included words per month": { value: "20,000" },
           "Plagiarism & Ai Detection": { enabled: true },
           "Source links to original": { enabled: true },
@@ -120,12 +92,6 @@ const PlagiarismTable = forwardRef(
     ];
 
     const featureLabels = [
-      { label: "Script Writing", isMain: true },
-      { label: "Ai Writing", isMain: false },
-      { label: "Translation - Audio & Text", isMain: false },
-      { label: "Grammar / Spell Checker", isMain: false },
-      { label: "6 Steps to Amazing Scripts", isMain: false },
-
       { label: "Plagiarism Detection", isMain: true },
       { label: "Included words per month", isMain: false },
       { label: "Plagiarism & Ai Detection", isMain: false },
@@ -180,7 +146,7 @@ const PlagiarismTable = forwardRef(
           <h1 className="mb-4 text-4xl font-bold text-primary lg:text-4xl">
             Are You A Writing Creative?
           </h1>
-          <p className="text-black-700 text-base lg:text-xl">
+          <p className="text-black-700 font-poppins text-base lg:text-xl">
             Add 99.12% accurate Plagiarism and Ai
             <br /> writing detection credits to be sure these
             <br />
@@ -226,7 +192,7 @@ const PlagiarismTable = forwardRef(
           <div className="flex min-w-[1300px] max-w-[1400px]">
             <div className="ml-7 grid grid-cols-5  gap-2 px-16  py-8">
               <div className="flex flex-col">
-                <div className="h-[132px]"></div>
+                <div className="h-[140px]"></div>
                 {featureLabels.map((feature, index) => (
                   <div
                     key={index}

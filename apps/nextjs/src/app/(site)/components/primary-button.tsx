@@ -9,7 +9,7 @@ interface ButtonProps {
 const PrimaryButton: React.FC<ButtonProps> = ({ children, onClick }) => {
   return (
     <button
-      className="group relative flex items-center justify-center rounded-lg border border-secondarybutton bg-tertiary px-[10px] py-3   font-poppins  text-base font-medium text-black transition-all duration-300 ease-in-out  hover:bg-white hover:text-tertiary"
+      className="group relative flex items-center justify-center rounded-lg border border-secondarybutton bg-tertiary px-[11px] py-2   font-poppins  text-sm font-normal text-black transition-all duration-300 ease-in-out  hover:bg-white hover:text-tertiary"
       onClick={onClick}
     >
       {children}
