@@ -29,10 +29,10 @@ const testimonialsData = [
   },
   {
     id: 2,
-    name: "DAVID JOO",
+    name: "David Joo",
     work: "CEO at KnowRe",
     testimonial:
-      "“We had an incredible time working with you. We are overwhelmed with our results…Thank you!”",
+      "“We are overwhelmed with thanks...Thank you for your support and tools!”",
     image: David,
   },
   {
@@ -45,18 +45,18 @@ const testimonialsData = [
   },
   {
     id: 4,
-    name: "David Alons",
-    work: "Marketing Consultant",
+    name: "David Jon",
+    work: "Pres at EduNow",
     testimonial:
-      "Script Timer was incredibly useful in managing my project deadlines.",
+      "You got us started down the amazing path we are on.THANK YOU!",
     image: RandomPerson4,
   },
   {
     id: 5,
-    name: "Lisa Johnson",
-    work: "MD",
+    name: "Lisa Diggs",
+    work: "CMO ",
     testimonial:
-      "I work in medical communications and I’m truly impressed with your technology’s ability to correctly pronounce  the technical terms",
+      "Thanks to you, we have simplified our process by hours. Actually, it saves days!",
     image: RandomPerson5,
   },
   {
