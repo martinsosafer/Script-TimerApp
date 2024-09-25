@@ -51,9 +51,9 @@ export default function PromptsSelector({
   selectedCard,
   setSelectedCard,
 }: PromptsSelectorProps) {
-  const [selectedTab, setSelectedTab] = useState<PromptType>(tabs[1]);
+  const [selectedTab, setSelectedTab] = useState<PromptType>(tabs[3]);
   const [selectedPill, setSelectedPill] = useState<PromptSubType>(
-    improveYourSpeechsubtypes[0],
+    boostYourVideoScriptSubtypes[0],
   );
   return (
     <div className="mt-10 flex w-[1024px] flex-col items-center justify-center">

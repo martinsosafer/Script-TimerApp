@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { auth } from "@voiceai/auth";
 
+import { monthlyCreditsReset } from "../actions/monthlyCreditsReset";
 import Home from "./components/home";
 
 export const metadata: Metadata = {
@@ -12,6 +13,8 @@ export const metadata: Metadata = {
 export default async function LandingPage() {
   const userData = await auth();
   const userId = userData?.user.id ?? "";
+
+  await monthlyCreditsReset(userId);
   const trialExpiration = userData?.user.subscription?.trialExpiration ?? null;
 
   const currentTime = new Date().getTime();
