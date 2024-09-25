@@ -15,8 +15,8 @@ export default function MasterclassesNavItem() {
         <IconGlasses className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
         <IconMonitorPlay className="absolute left-1/2 top-3 h-6 w-6 -translate-x-1/2 -translate-y-full transform opacity-0 transition-opacity  duration-300 group-hover:opacity-100" />
       </div>
-      <span className=" font-poppins text-base font-medium">Story</span>
-      <span className="font-poppins text-base font-medium">University</span>
+      <span className=" font-poppins text-sm font-medium">Story</span>
+      <span className="font-poppins text-sm font-medium">University</span>
     </Link>
   );
 }

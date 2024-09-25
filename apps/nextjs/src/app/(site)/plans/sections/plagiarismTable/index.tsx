@@ -144,10 +144,11 @@ const PlagiarismTable = forwardRef(
       <>
         <div className="flex w-full flex-col items-center bg-white px-4  py-12 text-center xl:w-[800px]">
           <h1 className="mb-4 text-4xl font-bold text-primary lg:text-4xl">
-            Are You A Writing Creative?
+            Are You A Creative Writer?
           </h1>
           <p className="text-black-700 font-poppins text-base lg:text-xl">
-            Add 99.12% accurate Plagiarism and Ai
+            Add 99.12% accurate <span className="font-bold">Plagiarism</span>{" "}
+            and <span className="font-bold">Ai</span>
             <br /> writing detection credits to be sure these
             <br />
             scripts are original.

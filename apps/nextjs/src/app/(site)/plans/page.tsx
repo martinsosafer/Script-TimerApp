@@ -152,13 +152,14 @@ async function PlansPage() {
   return (
     <div className="flex w-full flex-col items-center">
       <div className="mb-12 flex w-full flex-col items-center bg-white px-4 pt-16 text-center xl:w-[1000px]">
-        <h1 className="mb-10 text-center font-poppins text-5xl font-bold leading-tight tracking-tight text-primary xl:text-5xl xl:font-extrabold">
+        <h1 className="mb-14 text-center font-poppins text-5xl font-bold leading-tight tracking-tight text-primary xl:text-5xl xl:font-extrabold">
           <span>The Most Valuable Software For Creators</span>
         </h1>
-        <p className="text-black-700 font-poppins text-base lg:text-xl xl:w-[800px]">
+        <p className="text-black-700 mb-3 font-poppins text-base lg:text-xl xl:w-[800px]">
           Compare the benefits your Co-Producer gives you <br /> compared to the
           tools it replaces.
-          <br />
+        </p>
+        <p className="text-black-700  font-poppins text-base lg:text-xl xl:w-[800px]">
           Then start below to choose your plan to save time, <br /> expense, and
           increase your productivity - guaranteed.
         </p>
