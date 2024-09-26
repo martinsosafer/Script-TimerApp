@@ -174,7 +174,7 @@ export default function MicrophoneComponent() {
             <audio controls src={audioUrl} className="w-full" />
             <button
               onClick={handleDownload}
-              className="mt-4 rounded-md bg-green-400 px-4 py-2 text-white hover:bg-green-500"
+              className="mt-4 rounded-md bg-cyan-400 px-4 py-2 text-white hover:bg-cyan-600"
             >
               Download Recording
             </button>
