@@ -12,12 +12,17 @@ export default function MicrophoneComponent() {
   const [isRecording, setIsRecording] = useState(false);
   const [recordingComplete, setRecordingComplete] = useState(false);
   const [transcript, setTranscript] = useState("");
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
 
   const recognitionRef = useRef<any>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
 
   const startRecording = () => {
     setIsRecording(true);
 
+    // Start speech recognition
     recognitionRef.current = new window.webkitSpeechRecognition();
     recognitionRef.current.continuous = true;
     recognitionRef.current.interimResults = true;
@@ -38,6 +43,27 @@ export default function MicrophoneComponent() {
     };
 
     recognitionRef.current.start();
+
+    // Start audio recording
+    navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+      mediaRecorderRef.current = new MediaRecorder(stream);
+      audioChunksRef.current = [];
+
+      mediaRecorderRef.current.ondataavailable = (event) => {
+        audioChunksRef.current.push(event.data);
+      };
+
+      mediaRecorderRef.current.onstop = () => {
+        const audioBlob = new Blob(audioChunksRef.current, {
+          type: "audio/wav",
+        });
+        setAudioBlob(audioBlob);
+        const audioUrl = URL.createObjectURL(audioBlob);
+        setAudioUrl(audioUrl);
+      };
+
+      mediaRecorderRef.current.start();
+    });
   };
 
   useEffect(() => {
@@ -53,14 +79,26 @@ export default function MicrophoneComponent() {
       recognitionRef.current.stop();
       setRecordingComplete(true);
     }
+    if (mediaRecorderRef.current) {
+      mediaRecorderRef.current.stop();
+    }
+    setIsRecording(false);
   };
 
   const handleToggleRecording = () => {
-    setIsRecording(!isRecording);
     if (!isRecording) {
       startRecording();
     } else {
       stopRecording();
+    }
+  };
+
+  const handleDownload = () => {
+    if (audioBlob) {
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(audioBlob);
+      link.download = "recording.wav";
+      link.click();
     }
   };
 
@@ -130,6 +168,18 @@ export default function MicrophoneComponent() {
             </button>
           )}
         </div>
+
+        {audioUrl && (
+          <div className="mt-6 text-center">
+            <audio controls src={audioUrl} className="w-full" />
+            <button
+              onClick={handleDownload}
+              className="mt-4 rounded-md bg-green-400 px-4 py-2 text-white hover:bg-green-500"
+            >
+              Download Recording
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
