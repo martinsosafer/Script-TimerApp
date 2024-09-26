@@ -114,7 +114,7 @@ export const {
       }
 
       // We check if the user has credits and insert them if they don't depending on the plan they are on.
-      await checkAndInsertCredits(userId, subscriptionStatus?.status ?? "FREE");
+      await checkAndInsertCredits(userId);
 
       const subscription = {
         userId,
