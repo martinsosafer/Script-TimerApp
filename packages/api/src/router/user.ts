@@ -13,12 +13,14 @@ async function updateUserCredits(
     elevenLabsCredits: number;
     openAiCredits: number;
     clCredits?: number; // Add CopyLeaks credits
+    images: number;
   },
 ) {
   const {
     elevenLabsCredits,
     openAiCredits,
     clCredits: copyLeaksCredits,
+    images,
   } = planCredits;
 
   try {
@@ -93,6 +95,27 @@ async function updateUserCredits(
       await db.insert(schema.openAiCredit).values({
         userId: userId,
         credits: openAiCredits,
+        updated_at: new Date(),
+      });
+    }
+
+    const imgCredit = await db.query.imgCredit.findFirst({
+      where: eq(schema.imgCredit.userId, userId),
+    });
+
+    if (imgCredit) {
+      await db
+        .update(schema.imgCredit)
+        .set({
+          credits: images,
+          updated_at: new Date(),
+        })
+        .where(eq(schema.imgCredit.userId, userId))
+        .execute();
+    } else {
+      await db.insert(schema.imgCredit).values({
+        userId: userId,
+        credits: images,
         updated_at: new Date(),
       });
     }
@@ -224,6 +247,15 @@ export const userRouter = createTRPCRouter({
           .where(eq(schema.subscriptions.userId, input.userId))
           .execute();
 
+        // Update the user's credits for the "FREE_TRIAL" plan
+        const planCredits = {
+          elevenLabsCredits: 10000,
+          openAiCredits: 40000,
+          clCredits: 5,
+          images: 10,
+        };
+        await updateUserCredits(input.userId, planCredits);
+
         return { success: true };
       } catch (error) {
         console.error("Error giving free trial:", error);
@@ -258,6 +290,8 @@ export const userRouter = createTRPCRouter({
         const planCredits = {
           elevenLabsCredits: 40000,
           openAiCredits: 200000,
+          clCredits: 6,
+          images: 25,
         };
         await updateUserCredits(input.userId, planCredits);
 
@@ -297,6 +331,8 @@ export const userRouter = createTRPCRouter({
         const planCredits = {
           elevenLabsCredits: 80000,
           openAiCredits: 400000,
+          clCredits: 7,
+          images: 50,
         };
         await updateUserCredits(input.userId, planCredits);
         return { success: true };
@@ -332,6 +368,8 @@ export const userRouter = createTRPCRouter({
         const planCredits = {
           elevenLabsCredits: 125000,
           openAiCredits: 1000000,
+          clCredits: 8,
+          images: 100,
         };
         await updateUserCredits(input.userId, planCredits);
 
@@ -367,6 +405,7 @@ export const userRouter = createTRPCRouter({
           elevenLabsCredits: 40000,
           openAiCredits: 200000,
           clCredits: 40,
+          images: 25,
         };
         await updateUserCredits(input.userId, planCredits);
         return { success: true };
@@ -401,6 +440,7 @@ export const userRouter = createTRPCRouter({
           elevenLabsCredits: 80000,
           openAiCredits: 400000,
           clCredits: 60,
+          images: 50,
         };
         await updateUserCredits(input.userId, planCredits);
         return { success: true };
@@ -434,6 +474,7 @@ export const userRouter = createTRPCRouter({
           elevenLabsCredits: 125000,
           openAiCredits: 1000000,
           clCredits: 80,
+          images: 100,
         };
         await updateUserCredits(input.userId, planCredits);
         return { success: true };
@@ -467,6 +508,7 @@ export const userRouter = createTRPCRouter({
           elevenLabsCredits: 40000,
           openAiCredits: 200000,
           clCredits: 40,
+          images: 25,
         };
         await updateUserCredits(input.userId, planCredits);
 
@@ -503,6 +545,7 @@ export const userRouter = createTRPCRouter({
           elevenLabsCredits: 80000,
           openAiCredits: 400000,
           clCredits: 60,
+          images: 50,
         };
         await updateUserCredits(input.userId, planCredits);
 
@@ -538,6 +581,7 @@ export const userRouter = createTRPCRouter({
           elevenLabsCredits: 125000,
           openAiCredits: 1000000,
           clCredits: 60,
+          images: 100,
         };
         await updateUserCredits(input.userId, planCredits);
 
@@ -569,6 +613,14 @@ export const userRouter = createTRPCRouter({
           })
           .where(eq(schema.subscriptions.userId, input.userId))
           .execute();
+
+        const planCredits = {
+          elevenLabsCredits: 10000,
+          openAiCredits: 40000,
+          clCredits: 5,
+          images: 5,
+        };
+        await updateUserCredits(input.userId, planCredits);
 
         return { success: true };
       } catch (error) {
