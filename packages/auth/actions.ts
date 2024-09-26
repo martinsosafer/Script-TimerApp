@@ -131,7 +131,7 @@ export async function insertSubscription(userId: string) {
     .execute();
 }
 
-export async function checkAndInsertCredits(userId: string) {
+export async function checkAndInsertCredits(userId: string, status: string) {
   const clCreditStatus = await db.query.clCredits.findFirst({
     where: (clCredits, { eq }) => eq(clCredits.userId, userId),
   });
@@ -141,7 +141,7 @@ export async function checkAndInsertCredits(userId: string) {
       .insert(schema.clCredits)
       .values({
         userId,
-        credits: STARTING_CL_CREDITS[subscriptionStatus?.status ?? "FREE"],
+        credits: STARTING_CL_CREDITS[status],
       })
       .execute();
   }
@@ -155,7 +155,7 @@ export async function checkAndInsertCredits(userId: string) {
       .insert(schema.imgCredit)
       .values({
         userId,
-        credits: STARTING_IMG_CREDITS[subscriptionStatus?.status ?? "FREE"],
+        credits: STARTING_IMG_CREDITS[status],
       })
       .execute();
   }
@@ -169,7 +169,7 @@ export async function checkAndInsertCredits(userId: string) {
       .insert(schema.openAiCredit)
       .values({
         userId,
-        credits: STARTING_OPENAI_CREDITS[subscriptionStatus?.status ?? "FREE"],
+        credits: STARTING_OPENAI_CREDITS[status],
       })
       .execute();
   }
