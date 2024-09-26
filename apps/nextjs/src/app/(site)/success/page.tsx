@@ -4,16 +4,12 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Confetti from "react-confetti";
 
-import { AspectRatio } from "@voiceai/ui/@/components/ui/aspect-ratio";
-
 import { api } from "~/utils/api";
-import SlideCards from "../components/slide-cards";
-import ThanksCard from "../components/thanksCard";
-import SucessMessage from "./SuccessMessage";
 import CounterData from "../components/herosection/CounterData/CounterData";
-import ServiceSection from "../components/herosection/ServicesSection/servicessection";
 import GoSections from "../components/herosection/GoSections/GoSections";
+import ServiceSection from "../components/herosection/ServicesSection/servicessection";
 import Testimonials from "../components/herosection/Testimonials/Testimonials";
+import SucessMessage from "./SuccessMessage";
 
 enum Plans {
   STUDENT = "Student Plan",
