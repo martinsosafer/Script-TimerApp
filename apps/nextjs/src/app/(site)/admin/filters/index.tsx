@@ -2,16 +2,19 @@ import type { Dispatch, SetStateAction } from "react";
 import { useEffect, useState } from "react";
 
 import type { UserData } from "../dashboard";
+import DownloadData from "../export-csv";
 import { daysSinceCreated, daysWithCurrentPlan } from "../helpers";
 
 interface AdminFiltersProps {
   userList: UserData[];
   setFilteredList: Dispatch<SetStateAction<UserData[]>>;
+  filteredList: UserData[];
 }
 
 export default function AdminFilters({
   setFilteredList,
   userList,
+  filteredList,
 }: AdminFiltersProps) {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [minDaysWithPlanAsc, setMinDaysWithPlanAsc] = useState<number | "">("");
@@ -175,6 +178,9 @@ export default function AdminFilters({
           onChange={handleMinDaysSinceCreationDescChange}
           className="w-full rounded-lg border border-gray-300 px-4 py-2"
         />
+      </div>
+      <div className="mb-4 flex w-full flex-wrap md:mb-0 md:w-1/4">
+        <DownloadData usersData={filteredList} />
       </div>
     </div>
   );
