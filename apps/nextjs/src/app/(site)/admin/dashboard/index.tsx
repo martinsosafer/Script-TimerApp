@@ -27,6 +27,12 @@ export interface UserData {
     | "PAUSED"
     | "FREE"
     | "BUSINESS"
+    | "STUDENTCLMO"
+    | "CREATORCLMO"
+    | "BUSINESSCLMO"
+    | "STUDENTCLYR"
+    | "CREATORCLYR"
+    | "BUSINESSCLYR"
     | null;
   plan_id: string | null;
   cl_credits: number | null;
@@ -96,6 +102,65 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
       console.error("Error giving free trial:", error);
     },
   });
+  const { mutateAsync: updateStudentClMO } =
+    api.user.updateStudentClMO.useMutation({
+      onSuccess(data) {
+        console.log("Student CL Monthly plan updated successfully:", data);
+      },
+      onError(error) {
+        console.error("Error updating Student CL Monthly plan:", error);
+      },
+    });
+
+  const { mutateAsync: updateCreatorClMO } =
+    api.user.updateCreatorClMO.useMutation({
+      onSuccess(data) {
+        console.log("Creator CL Monthly plan updated successfully:", data);
+      },
+      onError(error) {
+        console.error("Error updating Creator CL Monthly plan:", error);
+      },
+    });
+
+  const { mutateAsync: updateBusinessClMO } =
+    api.user.updateBusinessClMO.useMutation({
+      onSuccess(data) {
+        console.log("Business CL Monthly plan updated successfully:", data);
+      },
+      onError(error) {
+        console.error("Error updating Business CL Monthly plan:", error);
+      },
+    });
+
+  const { mutateAsync: updateStudentClYR } =
+    api.user.updateStudentClYR.useMutation({
+      onSuccess(data) {
+        console.log("Student CL Yearly plan updated successfully:", data);
+      },
+      onError(error) {
+        console.error("Error updating Student CL Yearly plan:", error);
+      },
+    });
+
+  const { mutateAsync: updateCreatorClYR } =
+    api.user.updateCreatorClYR.useMutation({
+      onSuccess(data) {
+        console.log("Creator CL Yearly plan updated successfully:", data);
+      },
+      onError(error) {
+        console.error("Error updating Creator CL Yearly plan:", error);
+      },
+    });
+
+  const { mutateAsync: updateBusinessClYR } =
+    api.user.updateBusinessClYR.useMutation({
+      onSuccess(data) {
+        console.log("Business CL Yearly plan updated successfully:", data);
+      },
+      onError(error) {
+        console.error("Error updating Business CL Yearly plan:", error);
+      },
+    });
 
   const { mutateAsync: cancelSubscription } =
     api.user.cancelSubscription.useMutation({
@@ -119,6 +184,18 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
         await updateBusiness({ userId });
       } else if (selectedStatus === "FREE") {
         await cancelSubscription({ userId });
+      } else if (selectedStatus === "STUDENT_CL_MO") {
+        await updateStudentClMO({ userId });
+      } else if (selectedStatus === "CREATOR_CL_MO") {
+        await updateCreatorClMO({ userId });
+      } else if (selectedStatus === "BUSINESS_CL_MO") {
+        await updateBusinessClMO({ userId });
+      } else if (selectedStatus === "STUDENT_CL_YR") {
+        await updateStudentClYR({ userId });
+      } else if (selectedStatus === "CREATOR_CL_YR") {
+        await updateCreatorClYR({ userId });
+      } else if (selectedStatus === "BUSINESS_CL_YR") {
+        await updateBusinessClYR({ userId });
       }
       refetch();
     } catch (error) {
@@ -306,6 +383,18 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
                     <option value="CREATOR">Creator</option>
                     <option value="BUSINESS">Business</option>
                     <option value="EXTEND">Extend Free Trial 14</option>
+                    <option value="STUDENT_CL_MO">Student (Monthly)</option>
+                    <option value="CREATOR_CL_MO">
+                      Creator plag (Monthly)
+                    </option>
+                    <option value="BUSINESS_CL_MO">
+                      Business plag(Monthly)
+                    </option>
+                    <option value="STUDENT_CL_YR">Student plag(Yearly)</option>
+                    <option value="CREATOR_CL_YR">Creator plag(Yearly)</option>
+                    <option value="BUSINESS_CL_YR">
+                      Business plag(Yearly)
+                    </option>
                   </select>
                 </div>
                 <button

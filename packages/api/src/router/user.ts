@@ -580,7 +580,7 @@ export const userRouter = createTRPCRouter({
         const planCredits = {
           elevenLabsCredits: 125000,
           openAiCredits: 1000000,
-          clCredits: 60,
+          clCredits: 80,
           images: 100,
         };
         await updateUserCredits(input.userId, planCredits);
