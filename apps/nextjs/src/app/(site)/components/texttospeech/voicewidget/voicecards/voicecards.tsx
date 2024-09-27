@@ -160,7 +160,7 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({
             )}
           </button>
           <div className="flex items-center p-4">
-            <div className="mr-2 h-10 w-10 flex-shrink-0 overflow-hidden rounded-full">
+            <div className="mr-2 h-12 w-12 flex-shrink-0 overflow-hidden rounded-full">
               <img
                 src={voice.picture}
                 alt={voice.name}
