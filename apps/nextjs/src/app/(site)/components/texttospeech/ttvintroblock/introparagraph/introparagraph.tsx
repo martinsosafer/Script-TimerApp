@@ -20,7 +20,7 @@ const getTotalCredits = (status: string | undefined): number => {
 
   switch (status) {
     case "FREE":
-      return 1000;
+      return 10000;
     case "FREE_TRIAL":
       return 10000;
     case "STUDENT":
