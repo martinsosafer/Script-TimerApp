@@ -44,12 +44,17 @@ export const voiceCustomRouter = createTRPCRouter({
         // Add logging to verify the plan value
         console.log("User subscription plan:", subscription.plan);
 
-        const customVoiceLimit =
-          subscription.status === "CREATOR"
-            ? 3
-            : subscription.status === "BUSINESS"
-              ? 5
-              : 0;
+        const customVoiceLimit = [
+          "CREATOR",
+          "CREATORCLMO",
+          "CREATORCLYR",
+        ].includes(subscription.status)
+          ? 3
+          : ["BUSINESS", "BUSINESSCLMO", "BUSINESSCLYR"].includes(
+                subscription.status,
+              )
+            ? 5
+            : 0;
 
         // Log the custom voice limit for debugging
         console.log("Custom voice limit for the user:", customVoiceLimit);
