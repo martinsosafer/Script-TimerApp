@@ -18,6 +18,14 @@ export default function VoiceCloningForm({
   setOpenNoSessionModal,
 }) {
   const router = useRouter();
+  const allowedStatuses = [
+    "CREATOR",
+    "BUSINESS",
+    "CREATORCLMO",
+    "BUSINESSCLMO",
+    "CREATORCLYR",
+    "BUSINESSCLYR",
+  ];
   const { mutateAsync: newCustomVoice } =
     api.voiceCustom.newCustomVoice.useMutation({
       onSuccess(data) {
@@ -88,7 +96,7 @@ export default function VoiceCloningForm({
       return;
     }
 
-    if (subData.status !== "CREATOR" && subData.status !== "BUSINESS") {
+    if (!allowedStatuses.includes(subData.status)) {
       setShowFreeModal(true);
       return;
     }
@@ -147,14 +155,7 @@ export default function VoiceCloningForm({
       setOpenNoSessionModal();
       return;
     }
-    const allowedStatuses = [
-      "CREATOR",
-      "BUSINESS",
-      "CREATORCLMO",
-      "BUSINESSCLMO",
-      "CREATORCLYR",
-      "BUSINESSCLYR",
-    ];
+
     if (!allowedStatuses.includes(subData.status)) {
       e.preventDefault();
       setShowFreeModal(true);
