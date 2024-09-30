@@ -147,8 +147,15 @@ export default function VoiceCloningForm({
       setOpenNoSessionModal();
       return;
     }
-
-    if (subData.status !== "CREATOR" && subData.status !== "BUSINESS") {
+    const allowedStatuses = [
+      "CREATOR",
+      "BUSINESS",
+      "CREATORCLMO",
+      "BUSINESSCLMO",
+      "CREATORCLYR",
+      "BUSINESSCLYR",
+    ];
+    if (!allowedStatuses.includes(subData.status)) {
       e.preventDefault();
       setShowFreeModal(true);
       return;
