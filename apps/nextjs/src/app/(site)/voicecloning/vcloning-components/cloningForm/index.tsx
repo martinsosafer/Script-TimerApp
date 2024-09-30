@@ -280,7 +280,7 @@ export default function VoiceCloningForm({
               return;
             }
 
-            if (subData.status !== "CREATOR" && subData.status !== "BUSINESS") {
+            if (!allowedStatuses.includes(subData.status)) {
               e.preventDefault();
               setShowFreeModal(true);
               return;
