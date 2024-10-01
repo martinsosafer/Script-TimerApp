@@ -11,14 +11,15 @@ const poppins = Poppins({
   subsets: ["latin"],
   style: "normal",
   variable: "--poppins",
-  weight: ["400", "700"], // Include weights for Poppins (normal and bold)
+  weight: ["400", "700"],
 });
 
 const roboto = Roboto({
   subsets: ["latin"],
   variable: "--roboto",
-  weight: ["400", "700"], // Include weights for Roboto (normal and bold)
+  weight: ["400", "700"],
 });
+
 /**
  * Since we're passing `headers()` to the `TRPCReactProvider` we need to
  * make the entire app dynamic. You can move the `TRPCReactProvider` further
@@ -40,30 +41,25 @@ export const metadata: Metadata = {
     site: "@gerryg",
     creator: "@gerryg",
   },
+  // Add the referrer meta tag here
+  other: {
+    referrer: "origin",
+  },
 };
 
-export default function Layout(props: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en" className="h-full">
-      <GoogleAnalytics />
-      <head>
-        <meta name="referrer" content="origin" />
-      </head>
-      <body
-        className={[
-          "font-poppins",
-          "font-roboto",
-          "theme-blue",
-          "h-screen bg-background",
-          poppins.variable,
-          roboto.variable,
-        ].join(" ")}
-      >
-        {props.children}
+    <html lang="en" className={`h-full ${poppins.variable} ${roboto.variable}`}>
+      <body className="theme-blue h-screen bg-background font-poppins font-roboto">
+        <GoogleAnalytics />
+        {children}
         <HotJar />
+        <PageAnalytics />
       </body>
-
-      <PageAnalytics />
     </html>
   );
 }
