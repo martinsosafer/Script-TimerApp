@@ -38,7 +38,7 @@ export default function CounterData() {
   }, []);
   return (
     <MotionTransition className="mx-auto max-w-5xl py-20">
-      <div className=" justify-between  border  border-black md:flex">
+      <div className=" justify-between  rounded-lg  border border-black md:flex">
         {counterNumbers.map(({ id, startNumber, endNumber, text }) => (
           <div
             key={id}

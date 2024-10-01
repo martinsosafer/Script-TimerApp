@@ -1,5 +1,4 @@
 import type { Dispatch, SetStateAction } from "react";
-import { useState } from "react";
 
 import {
   BOOST_YOUR_VIDEO_SCRIPT_PROMPTS,
@@ -45,16 +44,20 @@ const cards = {
 interface PromptsSelectorProps {
   selectedCard: Prompt | undefined;
   setSelectedCard: Dispatch<SetStateAction<Prompt | undefined>>;
+  selectedTab: PromptType;
+  setSelectedTab: Dispatch<SetStateAction<PromptType>>;
+  selectedPill: PromptSubType;
+  setSelectedPill: Dispatch<SetStateAction<PromptSubType>>;
 }
 
 export default function PromptsSelector({
   selectedCard,
   setSelectedCard,
+  selectedTab,
+  setSelectedTab,
+  selectedPill,
+  setSelectedPill,
 }: PromptsSelectorProps) {
-  const [selectedTab, setSelectedTab] = useState<PromptType>(tabs[3]);
-  const [selectedPill, setSelectedPill] = useState<PromptSubType>(
-    boostYourVideoScriptSubtypes[0],
-  );
   return (
     <div className="mt-10 flex w-[1024px] flex-col items-center justify-center">
       <div className="z-10 flex w-full justify-center gap-1">

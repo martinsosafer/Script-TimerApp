@@ -38,7 +38,7 @@ function CheckoutButton({ productId, hasPlan, session }: CheckoutButtonProps) {
 
               window.location.href = url as string;
             }
-          : () => router.push("/signin")
+          : () => router.push("/register")
       }
     >
       {hasPlan ? "Current Plan" : "Get Started"}
