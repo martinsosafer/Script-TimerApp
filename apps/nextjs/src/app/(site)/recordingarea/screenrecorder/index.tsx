@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { oembed } from "@loomhq/loom-embed";
-import type { SetupFunction } from "@loomhq/record-sdk";
 import { createInstance } from "@loomhq/record-sdk";
 import { isSupported } from "@loomhq/record-sdk/is-supported";
 
