@@ -54,7 +54,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`h-full ${poppins.variable} ${roboto.variable}`}>
-      <body className="theme-blue h-screen bg-background font-poppins font-roboto">
+      <head>
+        <meta name="referrer" content="origin" />
+      </head>
+      <body
+        className={[
+          "font-poppins",
+          "font-roboto",
+          "theme-blue",
+          "h-screen bg-background",
+        ].join(" ")}
+      >
         <GoogleAnalytics />
         {children}
         <HotJar />
