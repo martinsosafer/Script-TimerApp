@@ -46,6 +46,9 @@ export default function Layout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" className="h-full">
       <GoogleAnalytics />
+      <head>
+        <meta name="referrer" content="origin" />
+      </head>
       <body
         className={[
           "font-poppins",

@@ -35,12 +35,6 @@ export const metadata: Metadata = {
     site: "@gerryg",
     creator: "@gerryg",
   },
-  meta: [
-    {
-      name: "referrer",
-      content: "origin",
-    },
-  ],
 };
 
 export default async function Layout(props: { children: React.ReactNode }) {
