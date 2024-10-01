@@ -51,8 +51,8 @@ const ScreenRecorder = () => {
           setIsLoomSupported(true);
 
           const sdk = await createInstance({
-            publicAppId: "YOUR_PUBLIC_APP_ID", // Replace with your actual Public App ID
-            jws: token,
+            mode: "custom",
+            jws: token, // Use the fetched token
           });
 
           sdkRef.current = sdk;
