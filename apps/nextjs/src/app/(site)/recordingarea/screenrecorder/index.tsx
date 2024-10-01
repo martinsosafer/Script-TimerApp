@@ -1,16 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { oembed } from "@loomhq/loom-embed";
-import { createInstance } from "@loomhq/record-sdk";
+import { createInstance, RecordingStatus } from "@loomhq/record-sdk";
 import { isSupported } from "@loomhq/record-sdk/is-supported";
 
 const ScreenRecorder = () => {
   const [token, setToken] = useState<string | null>(null);
   const [isLoomSupported, setIsLoomSupported] = useState(false);
   const [recording, setRecording] = useState(false);
+  const [recordingStatus, setRecordingStatus] =
+    useState<RecordingStatus | null>(null);
+  const sdkRef = useRef<any>(null);
 
-  // Fetch the JWT from the server
   useEffect(() => {
     async function fetchToken() {
       try {
@@ -21,7 +23,7 @@ const ScreenRecorder = () => {
         const data = await response.json();
         console.log("Token fetched from server:", data?.token);
         if (data?.token) {
-          setToken(data.token); // Store the token in the state
+          setToken(data.token);
         } else {
           console.error("No token returned from server");
         }
@@ -33,7 +35,6 @@ const ScreenRecorder = () => {
     fetchToken();
   }, []);
 
-  // Setup Loom SDK after token is fetched
   useEffect(() => {
     async function initializeLoom() {
       if (token) {
@@ -49,62 +50,33 @@ const ScreenRecorder = () => {
 
           setIsLoomSupported(true);
 
-          // Use the SetupFunction instead of createInstance
           const sdk = await createInstance({
-            mode: "custom",
-            jws: token, // Use the fetched token
+            publicAppId: "YOUR_PUBLIC_APP_ID", // Replace with your actual Public App ID
+            jws: token,
           });
+
+          sdkRef.current = sdk;
 
           console.log("SDK initialized successfully");
 
-          // Get the button element
-          const buttonElement = document.getElementById("record-button");
-
-          // Ensure the button element is not null before passing it
-          if (buttonElement) {
-            // Configure the button
-            const recordButton = sdk.configureButton({
-              element: buttonElement, // Pass the element
-            });
-
-            // Listen for the button's state changes
-            recordButton.on("start", () => {
-              console.log("Recording started");
+          sdk.on("recording-status-change", (status: RecordingStatus) => {
+            setRecordingStatus(status);
+            if (status === RecordingStatus.RECORDING) {
               setRecording(true);
-            });
-
-            recordButton.on("stop", () => {
-              console.log("Recording stopped");
+            } else if (status === RecordingStatus.IDLE) {
               setRecording(false);
-            });
+            }
+          });
 
-            // Event listeners for recording stages
-            recordButton.on("recording-start", () => {
-              console.log("Video capture has begun.");
-            });
-
-            recordButton.on("recording-complete", async (video) => {
-              console.log("Recording complete:", video.sharedUrl);
-              setRecording(false);
-              try {
-                const { html } = await oembed(video.sharedUrl, { width: 400 });
-                insertEmbedPlayer(html);
-              } catch (error) {
-                console.error("Error embedding video:", error);
-              }
-            });
-
-            recordButton.on("upload-complete", (video) => {
-              console.log("Video upload complete:", video.sharedUrl);
-            });
-
-            recordButton.on("cancel", () => {
-              console.log("Recording canceled.");
-              setRecording(false);
-            });
-          } else {
-            console.error("Record button element not found.");
-          }
+          sdk.on("recording-complete", async (video) => {
+            console.log("Recording complete:", video.sharedUrl);
+            try {
+              const { html } = await oembed(video.sharedUrl, { width: 400 });
+              insertEmbedPlayer(html);
+            } catch (error) {
+              console.error("Error embedding video:", error);
+            }
+          });
         } catch (error) {
           console.error("SDK failed to initialize:", error);
         }
@@ -116,7 +88,6 @@ const ScreenRecorder = () => {
     initializeLoom();
   }, [token]);
 
-  // Helper function to embed the video in the DOM
   function insertEmbedPlayer(html: string) {
     const target = document.getElementById("target");
     if (target) {
@@ -124,22 +95,51 @@ const ScreenRecorder = () => {
     }
   }
 
+  const startRecording = async () => {
+    if (sdkRef.current) {
+      try {
+        await sdkRef.current.start();
+      } catch (error) {
+        console.error("Failed to start recording:", error);
+      }
+    }
+  };
+
+  const stopRecording = async () => {
+    if (sdkRef.current) {
+      try {
+        await sdkRef.current.stop();
+      } catch (error) {
+        console.error("Failed to stop recording:", error);
+      }
+    }
+  };
+
   return (
-    <div className="bg-blue-500">
+    <div className="bg-blue-500 p-4">
       {isLoomSupported ? (
         <>
           <button
-            id="record-button"
-            className="rounded-lg bg-gray-500 px-2 py-2"
-            disabled={recording} // Disable button during recording
+            onClick={recording ? stopRecording : startRecording}
+            className={`rounded-lg px-4 py-2 ${
+              recording
+                ? "bg-red-500 hover:bg-red-600"
+                : "bg-green-500 hover:bg-green-600"
+            } font-bold text-white transition-colors`}
+            disabled={
+              !sdkRef.current ||
+              recordingStatus === RecordingStatus.REQUESTING_PERMISSION
+            }
           >
-            {recording ? "Recording..." : "Record"}
+            {recording ? "Stop Recording" : "Start Recording"}
           </button>
-          <div id="target" className="mt-4"></div>{" "}
-          {/* Video will be embedded here */}
+          {recordingStatus === RecordingStatus.REQUESTING_PERMISSION && (
+            <p className="mt-2 text-yellow-300">Requesting permissions...</p>
+          )}
+          <div id="target" className="mt-4"></div>
         </>
       ) : (
-        <p>Loom is not supported on this browser.</p>
+        <p className="text-white">Loom is not supported on this browser.</p>
       )}
     </div>
   );
