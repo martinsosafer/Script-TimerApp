@@ -1,17 +1,31 @@
 import type { Metadata } from "next";
 
+
+
 import { auth, signIn, signOut } from "@voiceai/auth";
+
+
+
+
+
 
 import "~/styles/globals.css";
 
+
+
 import { headers } from "next/headers";
 
+
+
 import { Toaster } from "@voiceai/ui/@/components/ui/toaster";
+
+
 
 import { IdentifyAnalytics } from "../analytics";
 import { TRPCReactProvider } from "../providers";
 import Footer from "./components/Footer/Footer";
 import Newnavbar from "./components/navbar";
+
 
 /**
  * Since we're passing `headers()` to the `TRPCReactProvider` we need to
@@ -34,6 +48,7 @@ export const metadata: Metadata = {
     site: "@gerryg",
     creator: "@gerryg",
   },
+  meta: [{ name: "referrer", content: "origin" }],
 };
 
 export default async function Layout(props: { children: React.ReactNode }) {
