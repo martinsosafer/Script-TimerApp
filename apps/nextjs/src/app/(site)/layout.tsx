@@ -56,8 +56,10 @@ export default async function Layout(props: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-screen w-full flex-col justify-between bg-background">
-      <TRPCReactProvider headers={headers()}>
+      <Head>
         <meta name="referrer" content="origin" />
+      </Head>
+      <TRPCReactProvider headers={headers()}>
         <Newnavbar
           signOut={signOutServer}
           signIn={signInServer}
