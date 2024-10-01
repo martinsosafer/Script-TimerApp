@@ -38,18 +38,18 @@ const ScreenRecorder = () => {
     async function initializeLoom() {
       if (token) {
         try {
-          const { supported } = await isSupported(); // Add 'await' here to ensure correct resolution
+          const { supported } = await isSupported();
           console.log("Loom SDK supported:", supported);
 
           if (!supported) {
             console.log("Loom is not supported on this browser.");
-            setIsLoomSupported(false); // Update state for unsupported browser
+            setIsLoomSupported(false);
             return;
           }
 
-          setIsLoomSupported(true); // Browser is supported
+          setIsLoomSupported(true);
 
-          // Setup SDK with custom mode, JWS token, and environment
+          // Use the SetupFunction instead of createInstance
           const sdk = await createInstance({
             mode: "custom",
             jws: token, // Use the fetched token
@@ -57,51 +57,54 @@ const ScreenRecorder = () => {
 
           console.log("SDK initialized successfully");
 
-          // Configure the button
-          const recordButton = sdk.configureButton({
-            element: document.getElementById("record-button"),
-          });
+          // Get the button element
+          const buttonElement = document.getElementById("record-button");
 
-          // Listen for the button's state changes
-          recordButton.on("start", () => {
-            console.log("Recording started");
-            setRecording(true);
-          });
+          // Ensure the button element is not null before passing it
+          if (buttonElement) {
+            // Configure the button
+            const recordButton = sdk.configureButton({
+              element: buttonElement, // Pass the element
+            });
 
-          recordButton.on("stop", () => {
-            console.log("Recording stopped");
-            setRecording(false);
-          });
+            // Listen for the button's state changes
+            recordButton.on("start", () => {
+              console.log("Recording started");
+              setRecording(true);
+            });
 
-          // Event listeners for recording stages
-          recordButton.on("start", () => {
-            console.log("Recording started");
-            setRecording(true);
-          });
+            recordButton.on("stop", () => {
+              console.log("Recording stopped");
+              setRecording(false);
+            });
 
-          recordButton.on("recording-start", () => {
-            console.log("Video capture has begun.");
-          });
+            // Event listeners for recording stages
+            recordButton.on("recording-start", () => {
+              console.log("Video capture has begun.");
+            });
 
-          recordButton.on("recording-complete", async (video) => {
-            console.log("Recording complete:", video.sharedUrl);
-            setRecording(false);
-            try {
-              const { html } = await oembed(video.sharedUrl, { width: 400 });
-              insertEmbedPlayer(html); // Embed the video in the DOM
-            } catch (error) {
-              console.error("Error embedding video:", error);
-            }
-          });
+            recordButton.on("recording-complete", async (video) => {
+              console.log("Recording complete:", video.sharedUrl);
+              setRecording(false);
+              try {
+                const { html } = await oembed(video.sharedUrl, { width: 400 });
+                insertEmbedPlayer(html);
+              } catch (error) {
+                console.error("Error embedding video:", error);
+              }
+            });
 
-          recordButton.on("upload-complete", (video) => {
-            console.log("Video upload complete:", video.sharedUrl);
-          });
+            recordButton.on("upload-complete", (video) => {
+              console.log("Video upload complete:", video.sharedUrl);
+            });
 
-          recordButton.on("cancel", () => {
-            console.log("Recording canceled.");
-            setRecording(false);
-          });
+            recordButton.on("cancel", () => {
+              console.log("Recording canceled.");
+              setRecording(false);
+            });
+          } else {
+            console.error("Record button element not found.");
+          }
         } catch (error) {
           console.error("SDK failed to initialize:", error);
         }
