@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { auth } from "@voiceai/auth";
 
 import Recorder from "./recorder";
+import ScreenRecorder from "./screenrecorder";
 
 export const metadata: Metadata = {
   title: "Recording Area",
@@ -14,7 +15,7 @@ export default async function indexPage() {
 
   return (
     <div className="flex min-h-screen w-full items-center ">
-      <Recorder />
+      <ScreenRecorder />
     </div>
   );
 }

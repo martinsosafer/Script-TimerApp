@@ -150,6 +150,12 @@ importers:
       '@ffmpeg/ffmpeg':
         specifier: ^0.12.10
         version: 0.12.10
+      '@loomhq/loom-embed':
+        specifier: ^1.7.0
+        version: 1.7.0
+      '@loomhq/record-sdk':
+        specifier: ^3.8.2
+        version: 3.8.2(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
       '@next/font':
         specifier: ^14.2.1
         version: 14.2.5(next@14.2.5)
@@ -252,6 +258,9 @@ importers:
       html2pdf.js:
         specifier: ^0.10.2
         version: 0.10.2
+      jose:
+        specifier: ^5.9.3
+        version: 5.9.3
       jspdf:
         specifier: ^2.5.1
         version: 2.5.1
@@ -3587,6 +3596,21 @@ packages:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
     dev: true
+
+  /@loomhq/loom-embed@1.7.0:
+    resolution: {integrity: sha512-HJE+N/iUWLHpLhdo3afp9I9jbMo00JecaHRdXlhN2JXVbaaRR0Kcf+bN+KvdeQqfSIDI0a2I4UOs3zX2bgUI5g==}
+    dev: false
+
+  /@loomhq/record-sdk@3.8.2(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-a5xkmLzUCt5uPsl1ErUgEz920i0hNeCaRzgztbpX8Xj9ruMWeY6SpwGU09mLzE7fNPQYzPc6OmluADONY3IzxA==}
+    dependencies:
+      react-hotkeys-hook: 3.4.7(react-dom@18.2.0)(react@18.2.0)
+      react-type-animation: 3.2.0(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
+    transitivePeerDependencies:
+      - prop-types
+      - react
+      - react-dom
+    dev: false
 
   /@lukeed/csprng@1.1.0:
     resolution: {integrity: sha512-Z7C/xXCiGWsg0KuKsHTKJxbWhpI3Vs5GwLfOean7MGyVFGqdRgBbAjOCh6u4bbjPc/8MJ2pZmK/0DLdCbivLDA==}
@@ -10412,6 +10436,10 @@ packages:
       lru-cache: 6.0.0
     dev: false
 
+  /hotkeys-js@3.9.4:
+    resolution: {integrity: sha512-2zuLt85Ta+gIyvs4N88pCYskNrxf1TFv3LR9t5mdAZIX8BcgQQ48F2opUptvHa6m8zsy5v/a0i9mWzTrlNWU0Q==}
+    dev: false
+
   /html-to-text@9.0.5:
     resolution: {integrity: sha512-qY60FjREgVZL03vJU6IfMV4GDjGBIoOyvuFdpBDIX9yTlDw0TjxVBQp+P8NvpdIXNJvfWBTNul7fsAQJq2FNpg==}
     engines: {node: '>=14'}
@@ -11193,6 +11221,10 @@ packages:
 
   /jose@4.15.9:
     resolution: {integrity: sha512-1vUQX+IdDMVPj4k8kOxgUqlcK518yluMuGZwqlr44FS1ppZB/5GWh4rZG89erpOBOJjU/OBsnCVFfapsRz6nEA==}
+    dev: false
+
+  /jose@5.9.3:
+    resolution: {integrity: sha512-egLIoYSpcd+QUF+UHgobt5YzI2Pkw/H39ou9suW687MY6PmCwPmkNV/4TNjn1p2tX5xO3j0d0sq5hiYE24bSlg==}
     dev: false
 
   /js-beautify@1.15.1:
@@ -15124,6 +15156,17 @@ packages:
       shallowequal: 1.1.0
     dev: false
 
+  /react-hotkeys-hook@3.4.7(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-+bbPmhPAl6ns9VkXkNNyxlmCAIyDAcWbB76O4I0ntr3uWCRuIQf/aRLartUahe9chVMPj+OEzzfk3CQSjclUEQ==}
+    peerDependencies:
+      react: '>=16.8.1'
+      react-dom: '>=16.8.1'
+    dependencies:
+      hotkeys-js: 3.9.4
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
   /react-intersection-observer@9.13.0(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-y0UvBfjDiXqC8h0EWccyaj4dVBWMxgEx0t5RGNzQsvkfvZwugnKwxpu70StY4ivzYuMajavwUDjH4LJyIki9Lw==}
     peerDependencies:
@@ -15451,6 +15494,18 @@ packages:
       react-dom: '>=16'
     dependencies:
       clsx: 1.2.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /react-type-animation@3.2.0(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-WXTe0i3rRNKjmggPvT5ntye1QBt0ATGbijeW6V3cQe2W0jaMABXXlPPEdtofnS9tM7wSRHchEvI9SUw+0kUohw==}
+    peerDependencies:
+      prop-types: ^15.5.4
+      react: '>= 15.0.0'
+      react-dom: '>= 15.0.0'
+    dependencies:
+      prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false

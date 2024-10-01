@@ -15,6 +15,8 @@
   "dependencies": {
     "@ai-sdk/openai": "^0.0.36",
     "@ffmpeg/ffmpeg": "^0.12.10",
+    "@loomhq/loom-embed": "^1.7.0",
+    "@loomhq/record-sdk": "^3.8.2",
     "@next/font": "^14.2.1",
     "@next/third-parties": "^14.2.4",
     "@segment/analytics-next": "^1.62.0",
@@ -49,6 +51,7 @@
     "framer-motion": "^11.0.3",
     "html2canvas": "^1.4.1",
     "html2pdf.js": "^0.10.2",
+    "jose": "^5.9.3",
     "jspdf": "^2.5.1",
     "lottie-react": "^2.4.0",
     "next": "^14.0.1",
