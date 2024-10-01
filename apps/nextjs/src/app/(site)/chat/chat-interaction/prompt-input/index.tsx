@@ -16,6 +16,7 @@ interface PromptInputProps {
   isEnabled: boolean;
   setOpenMopdal: () => void;
   userId: string | undefined;
+  selectedCardName: string | undefined;
 }
 
 export default function PromptInput({
@@ -26,7 +27,15 @@ export default function PromptInput({
   isEnabled,
   setOpenMopdal,
   userId,
+  selectedCardName,
 }: PromptInputProps) {
+  function placeholderText() {
+    if (selectedCardName === "Add Your Own Prompt") {
+      return `Enter your prompt here, with important details.`;
+    }
+    return "Topic, Audience, Goals, Problems solved, or current script.  I will help you improve it.";
+  }
+
   return (
     <div className="flex w-full flex-col items-center">
       <form
@@ -34,7 +43,7 @@ export default function PromptInput({
         className="mt-4 flex w-full items-center gap-4 rounded-md border border-gray-400 bg-white p-3"
       >
         <textarea
-          placeholder="Topic, Audience, Goals, Problems solved, or current script.  I will help you improve it."
+          placeholder={placeholderText()}
           className="w-full resize-none p-4 outline-none placeholder:text-lg"
           rows={6}
           value={value}
