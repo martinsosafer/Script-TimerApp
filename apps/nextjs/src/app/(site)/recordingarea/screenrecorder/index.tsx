@@ -135,8 +135,7 @@ const ScreenRecorder = () => {
           >
             {recording ? "Recording..." : "Record"}
           </button>
-          <div id="target" className="mt-4"></div>{" "}
-          {/* Video will be embedded here */}
+          <div id="target" className="mt-4"></div>
         </>
       ) : (
         <p>Loom is not supported on this browser.</p>
