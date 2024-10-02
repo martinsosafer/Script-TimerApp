@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { oembed } from "@loomhq/loom-embed";
 import { createInstance } from "@loomhq/record-sdk";
 import { isSupported } from "@loomhq/record-sdk/is-supported";
 
@@ -9,6 +8,7 @@ const ScreenRecorder = () => {
   const [token, setToken] = useState<string | null>(null);
   const [isLoomSupported, setIsLoomSupported] = useState(false);
   const [recording, setRecording] = useState(false);
+  const [videoUrl, setVideoUrl] = useState<string | null>(null); // Store the video URL
 
   // Fetch the JWT from the server
   useEffect(() => {
@@ -20,11 +20,7 @@ const ScreenRecorder = () => {
         }
         const data = await response.json();
         console.log("Token fetched from server:", data?.token);
-        if (data?.token) {
-          setToken(data.token); // Store the token in the state
-        } else {
-          console.error("No token returned from server");
-        }
+        setToken(data?.token || null); // Store the token in the state
       } catch (error) {
         console.error("Error fetching token:", error);
       }
@@ -39,20 +35,17 @@ const ScreenRecorder = () => {
       if (token) {
         try {
           const { supported } = await isSupported();
-          console.log("Loom SDK supported:", supported);
+          setIsLoomSupported(supported);
 
           if (!supported) {
             console.log("Loom is not supported on this browser.");
-            setIsLoomSupported(false);
             return;
           }
 
-          setIsLoomSupported(true);
-
-          // Use the SetupFunction instead of createInstance
+          // Initialize Loom SDK instance with token
           const sdk = await createInstance({
             mode: "custom",
-            jws: token, // Use the fetched token
+            jws: token,
           });
 
           console.log("SDK initialized successfully");
@@ -60,14 +53,13 @@ const ScreenRecorder = () => {
           // Get the button element
           const buttonElement = document.getElementById("record-button");
 
-          // Ensure the button element is not null before passing it
           if (buttonElement) {
-            // Configure the button
+            // Configure the record button
             const recordButton = sdk.configureButton({
-              element: buttonElement, // Pass the element
+              element: buttonElement,
             });
 
-            // Listen for the button's state changes
+            // Set up event listeners for button
             recordButton.on("start", () => {
               console.log("Recording started");
               setRecording(true);
@@ -78,24 +70,10 @@ const ScreenRecorder = () => {
               setRecording(false);
             });
 
-            // Event listeners for recording stages
-            recordButton.on("recording-start", () => {
-              console.log("Video capture has begun.");
-            });
-
-            recordButton.on("recording-complete", async (video) => {
+            recordButton.on("recording-complete", (video) => {
               console.log("Recording complete:", video.sharedUrl);
               setRecording(false);
-              try {
-                const { html } = await oembed(video.sharedUrl, { width: 400 });
-                insertEmbedPlayer(html);
-              } catch (error) {
-                console.error("Error embedding video:", error);
-              }
-            });
-
-            recordButton.on("upload-complete", (video) => {
-              console.log("Video upload complete:", video.sharedUrl);
+              setVideoUrl(video.sharedUrl); // Save the video URL
             });
 
             recordButton.on("cancel", () => {
@@ -106,40 +84,38 @@ const ScreenRecorder = () => {
             console.error("Record button element not found.");
           }
         } catch (error) {
-          console.error("SDK failed to initialize:", error);
+          console.error("SDK initialization error:", error);
         }
       } else {
-        console.log("Token is null, cannot initialize Loom SDK");
+        console.log("No token available, cannot initialize Loom SDK");
       }
     }
 
     initializeLoom();
   }, [token]);
 
-  // Helper function to embed the video in the DOM
-  function insertEmbedPlayer(html: string) {
-    const target = document.getElementById("target");
-    if (target) {
-      target.innerHTML = html;
-    }
-  }
-
   return (
-    <div className="bg-blue-500">
+    <div className="bg-blue-500 p-4">
       {isLoomSupported ? (
         <>
           <button
             id="record-button"
-            className="rounded-lg bg-gray-500 px-2 py-2"
-            disabled={recording} // Disable button during recording
+            className="rounded-lg bg-gray-500 px-4 py-2 text-white"
+            disabled={recording}
           >
             {recording ? "Recording..." : "Record"}
           </button>
-          <div id="target" className="mt-4"></div>{" "}
-          {/* Video will be embedded here */}
+          {videoUrl && (
+            <div className="mt-4">
+              <p>Recording complete! Watch your video below:</p>
+              <a href={videoUrl} target="_blank" rel="noopener noreferrer">
+                {videoUrl}
+              </a>
+            </div>
+          )}
         </>
       ) : (
-        <p>Loom is not supported on this browser.</p>
+        <p className="text-white">Loom is not supported on this browser.</p>
       )}
     </div>
   );
