@@ -1,146 +1,162 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import {
-  createInstance,
-  Environment,
-  RecordingType,
-  SDKConfig,
-  SetupFunction,
-} from "@loomhq/record-sdk";
-import { isSupported } from "@loomhq/record-sdk/is-supported";
+import React, { useEffect, useRef, useState } from "react";
+import { useReactMediaRecorder } from "react-media-recorder";
+import Webcam from "react-webcam";
+
+import { useCountdown } from "~/app/hooks/useCountDown";
 
 const ScreenRecorder = () => {
-  const [token, setToken] = useState<string | null>(null);
-  const [isLoomSupported, setIsLoomSupported] = useState(false);
-  const [recording, setRecording] = useState(false);
-  const [videoUrl, setVideoUrl] = useState<string | null>(null); // Store the video URL
+  const {
+    status,
+    startRecording,
+    stopRecording,
+    pauseRecording,
+    resumeRecording,
+    muteAudio,
+    unmuteAudio,
+    mediaBlobUrl,
+    previewStream,
+    isMuted,
+    clearBlobUrl,
+  } = useReactMediaRecorder({ screen: true, video: true });
 
-  // Fetch the JWT from the server
+  const [countdown, setCountdown] = useState(3);
+  const { startCountdown } = useCountdown(setCountdown);
+  const [isRecordingStarted, setIsRecordingStarted] = useState(false);
+
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const webcamRef = useRef<Webcam | null>(null);
+
   useEffect(() => {
-    async function fetchToken() {
-      try {
-        const response = await fetch("/api/screen-recorder-token");
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        console.log("Token fetched from server:", data?.token);
-        setToken(data?.token || null); // Store the token in the state
-      } catch (error) {
-        console.error("Error fetching token:", error);
-      }
+    if (previewStream && videoRef.current) {
+      videoRef.current.srcObject = previewStream;
     }
+  }, [previewStream]);
 
-    fetchToken();
-  }, []);
+  const handleStartRecording = () => {
+    setIsRecordingStarted(true);
+    startCountdown(); // Start the countdown
+    setTimeout(() => {
+      startRecording(); // Start recording after countdown ends
+      setIsRecordingStarted(false);
+    }, 3000); // Start recording after 3 seconds (countdown)
+  };
 
-  // Setup Loom SDK after token is fetched
-  useEffect(() => {
-    async function initializeLoom() {
-      if (token) {
-        try {
-          const { supported } = await isSupported();
-          setIsLoomSupported(supported);
-
-          if (!supported) {
-            console.log("Loom is not supported on this browser.");
-            return;
-          }
-
-          // Initialize Loom SDK instance with token
-          const sdk = await createInstance({
-            mode: "custom",
-            jws: token,
-            config: {
-              insertButtonText: "Start Recording",
-              styles: {
-                recordButtonColor: "#FF5733", // Customize button color
-                recordButtonHoverColor: "#FF4500", // Customize hover color
-                primaryColor: "#0056b3", // Change primary color
-                primaryHoverColor: "#003d99", // Change hover color
-                primaryActiveColor: "#003366", // Change active color
-                fontFamily: "'Roboto', sans-serif", // Change font
-              },
-
-              // Use RecordingType enum for allowed recording types
-              allowedRecordingTypes: [
-                RecordingType.ScreenAndCamera, // Record screen and camera
-                RecordingType.Screen, // Record screen only
-              ],
-            },
-          });
-
-          console.log("SDK initialized successfully");
-
-          // Get the button element
-          const buttonElement = document.getElementById("record-button");
-
-          if (buttonElement) {
-            // Configure the record button
-            const recordButton = sdk.configureButton({
-              element: buttonElement,
-            });
-
-            // Set up event listeners for button
-            recordButton.on("start", () => {
-              console.log("Recording started");
-              setRecording(true);
-            });
-
-            recordButton.on("stop", () => {
-              console.log("Recording stopped");
-              setRecording(false);
-            });
-
-            recordButton.on("recording-complete", (video) => {
-              console.log("Recording complete:", video.sharedUrl);
-              setRecording(false);
-              setVideoUrl(video.sharedUrl); // Save the video URL
-            });
-
-            recordButton.on("cancel", () => {
-              console.log("Recording canceled.");
-              setRecording(false);
-            });
-          } else {
-            console.error("Record button element not found.");
-          }
-        } catch (error) {
-          console.error("SDK initialization error:", error);
-        }
-      } else {
-        console.log("No token available, cannot initialize Loom SDK");
-      }
+  const downloadRecording = () => {
+    if (mediaBlobUrl) {
+      const a = document.createElement("a");
+      a.href = mediaBlobUrl;
+      a.download = "recording.mp4";
+      a.click();
     }
+  };
 
-    initializeLoom();
-  }, [token]);
+  // For webcam drag position
+  const [webcamPos, setWebcamPos] = useState({ x: 0, y: 0 });
+  const handleDrag = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    setWebcamPos({
+      x: e.clientX - 50, // Offset to center the webcam bubble
+      y: e.clientY - 50,
+    });
+  };
 
   return (
-    <div className="bg-blue-500 p-4">
-      {isLoomSupported ? (
-        <>
-          <button
-            id="record-button"
-            className={`rounded-lg px-4 py-2 text-white 
-              ${recording ? "cursor-not-allowed bg-gray-400" : "bg-gray-500 hover:bg-gray-600"}`}
-            disabled={recording}
-          >
-            {recording ? "Recording..." : "Record"}
-          </button>
-          {videoUrl && (
-            <div className="mt-4">
-              <p>Recording complete! Watch your video below:</p>
-              <a href={videoUrl} target="_blank" rel="noopener noreferrer">
-                {videoUrl}
-              </a>
-            </div>
-          )}
-        </>
-      ) : (
-        <p className="text-white">Loom is not supported on this browser.</p>
+    <div className="relative mx-auto flex h-screen max-w-xl flex-col items-center rounded-lg bg-gray-100 p-6 shadow-lg">
+      <h2 className="mb-4 text-center text-2xl font-semibold">
+        Screen Recorder
+      </h2>
+      <p className="mb-4 text-lg">
+        Status: <span className="font-bold">{status}</span>
+      </p>
+
+      {countdown > 0 && isRecordingStarted && (
+        <div className="absolute left-0 right-0 top-16 mx-auto rounded-lg bg-gray-800 p-4 text-center text-4xl font-bold text-white">
+          {countdown}
+        </div>
       )}
+
+      <div className="mb-4 flex space-x-3">
+        <button
+          onClick={handleStartRecording}
+          className="rounded-lg bg-green-500 px-4 py-2 text-white shadow transition hover:bg-green-600"
+        >
+          Start
+        </button>
+        <button
+          onClick={stopRecording}
+          className="rounded-lg bg-red-500 px-4 py-2 text-white shadow transition hover:bg-red-600"
+        >
+          Stop
+        </button>
+        <button
+          onClick={pauseRecording}
+          className="rounded-lg bg-yellow-500 px-4 py-2 text-white shadow transition hover:bg-yellow-600"
+        >
+          Pause
+        </button>
+        <button
+          onClick={resumeRecording}
+          className="rounded-lg bg-blue-500 px-4 py-2 text-white shadow transition hover:bg-blue-600"
+        >
+          Resume
+        </button>
+      </div>
+
+      <div className="mb-4 flex space-x-3">
+        <button
+          onClick={isMuted ? unmuteAudio : muteAudio}
+          className={`px-4 py-2 ${isMuted ? "bg-gray-600" : "bg-gray-800"} rounded-lg text-white shadow transition hover:opacity-75`}
+        >
+          {isMuted ? "Unmute" : "Mute"}
+        </button>
+        <button
+          onClick={clearBlobUrl}
+          className="rounded-lg bg-purple-500 px-4 py-2 text-white shadow transition hover:bg-purple-600"
+        >
+          Clear Recording
+        </button>
+        {mediaBlobUrl && (
+          <button
+            onClick={downloadRecording}
+            className="rounded-lg bg-indigo-500 px-4 py-2 text-white shadow transition hover:bg-indigo-600"
+          >
+            Download
+          </button>
+        )}
+      </div>
+
+      {previewStream && (
+        <div className="mb-4 w-full">
+          <video
+            ref={videoRef}
+            className="h-auto w-full rounded-lg border shadow-lg"
+            autoPlay
+            muted
+          />
+        </div>
+      )}
+
+      {mediaBlobUrl && (
+        <div className="w-full">
+          <video
+            src={mediaBlobUrl}
+            controls
+            autoPlay
+            loop
+            className="h-auto w-full rounded-lg border shadow-lg"
+          />
+        </div>
+      )}
+
+      {/* Webcam Bubble */}
+      <div
+        className="fixed bottom-4 right-4 h-28 w-28 cursor-move overflow-hidden rounded-full border-4 border-white shadow-lg"
+        style={{ transform: `translate(${webcamPos.x}px, ${webcamPos.y}px)` }}
+        onMouseDown={handleDrag}
+      >
+        <Webcam ref={webcamRef} className="h-full w-full object-cover" />
+      </div>
     </div>
   );
 };

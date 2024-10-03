@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
     const jws = await new jose.SignJWT({})
       .setProtectedHeader({ alg: "RS256" })
       .setIssuedAt()
-      .setIssuer("ad4319dd-d2fa-442f-bd8c-b24ac5d901aa")
+      .setIssuer("af991921-2741-47e3-a47d-e36b5691f639")
       .setExpirationTime("2m")
       .sign(privateKey);
 

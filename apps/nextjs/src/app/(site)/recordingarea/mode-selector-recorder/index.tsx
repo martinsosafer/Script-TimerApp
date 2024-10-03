@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import MicrophoneComponent from "../recorder";
+import ScreenRecorder from "../screenrecorder";
 import WebcamRecorder from "../webcamrecorder";
 
 interface SelectorProps {
@@ -27,7 +28,7 @@ export default function ModeSelectorRecorder({
       case "screen":
         return <ScreenRecorder />;
       default:
-        return <AudioRecorder />;
+        return <MicrophoneComponent />;
     }
   };
 
@@ -75,14 +76,3 @@ export default function ModeSelectorRecorder({
     </div>
   );
 }
-
-// Placeholder components for demonstration
-const AudioRecorder = () => (
-  <div className="animate-fade-in opacity-0">Audio Recorder Component</div>
-);
-const VideoRecorder = () => (
-  <div className="animate-fade-in opacity-0">Video Recorder Component</div>
-);
-const ScreenRecorder = () => (
-  <div className="animate-fade-in opacity-0">Screen Recorder Component</div>
-);
