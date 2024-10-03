@@ -8,19 +8,23 @@ declare global {
   }
 }
 
-export default function MicrophoneComponent() {
+export default function MicrophoneAndWebcamComponent() {
   const [isRecording, setIsRecording] = useState(false);
   const [transcript, setTranscript] = useState("");
   const [completeTranscript, setCompleteTranscript] = useState(""); // Persisted transcript
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [isPaused, setIsPaused] = useState(false); // Track if paused
+  const [videoUrl, setVideoUrl] = useState<string | null>(null); // Video URL for download and playback
 
   const recognitionRef = useRef<any>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null); // Reference to video element for webcam preview
+  const recordedVideoRef = useRef<HTMLVideoElement | null>(null); // Ref for recorded video playback
   const audioChunksRef = useRef<Blob[]>([]);
+  const streamRef = useRef<MediaStream | null>(null); // Save media stream
 
-  // Start recording process
+  // Start recording process (audio + video)
   const startRecording = () => {
     setTranscript(""); // This ensures the text area starts fresh for each recording
     setCompleteTranscript(""); // Clear only at the start of a new recording
@@ -63,42 +67,60 @@ export default function MicrophoneComponent() {
       return;
     }
 
-    // Start audio recording
+    // Start video + audio recording
     navigator.mediaDevices
-      .getUserMedia({ audio: true })
+      .getUserMedia({ video: { width: 640, height: 480 }, audio: true }) // Set lower resolution
       .then((stream) => {
-        mediaRecorderRef.current = new MediaRecorder(stream);
+        streamRef.current = stream;
+        mediaRecorderRef.current = new MediaRecorder(stream, {
+          mimeType: "video/webm; codecs=vp8", // Use VP8 codec for better compression
+          videoBitsPerSecond: 2500000, // Lower bitrate for smaller file size
+        });
         audioChunksRef.current = [];
+
+        // Set video stream to video element for preview
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          videoRef.current.play(); // Start playing the webcam feed
+        }
 
         mediaRecorderRef.current.ondataavailable = (event) => {
           audioChunksRef.current.push(event.data);
         };
 
         mediaRecorderRef.current.onstop = () => {
-          const audioBlob = new Blob(audioChunksRef.current, {
-            type: "audio/wav",
+          const videoBlob = new Blob(audioChunksRef.current, {
+            type: "video/webm",
           });
-          setAudioBlob(audioBlob);
-          const audioUrl = URL.createObjectURL(audioBlob);
-          setAudioUrl(audioUrl);
+          setAudioBlob(videoBlob);
+          const videoUrl = URL.createObjectURL(videoBlob);
+          setVideoUrl(videoUrl); // Set video for download and playback
+
+          // Set the recorded video for playback
+          if (recordedVideoRef.current) {
+            recordedVideoRef.current.src = videoUrl;
+          }
         };
 
         mediaRecorderRef.current.start();
       })
       .catch((error) => {
-        console.error("Microphone access error: ", error);
-        alert("Microphone access is required to record audio.");
+        console.error("Webcam or microphone access error: ", error);
+        alert("Access to webcam and microphone is required.");
         setIsRecording(false);
       });
   };
 
-  // Stop recording process
+  // Stop recording process (audio + video)
   const stopRecording = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
     }
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
+    }
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((track) => track.stop()); // Stop all media streams (audio + video)
     }
     setIsRecording(false);
     setIsPaused(true); // Set to paused when stopped
@@ -116,7 +138,7 @@ export default function MicrophoneComponent() {
     if (audioBlob) {
       const link = document.createElement("a");
       link.href = URL.createObjectURL(audioBlob);
-      link.download = "recording.wav";
+      link.download = "recording.webm";
       link.click();
     }
   };
@@ -128,7 +150,7 @@ export default function MicrophoneComponent() {
 
   return (
     <div className="mb-20 flex h-screen w-full items-center justify-center bg-gray-100">
-      <div className="w-2/3 space-y-2">
+      <div className="w-2/3 space-y-4">
         <div className="m-auto w-full rounded-md border bg-white p-4">
           <div className="flex w-full justify-between space-y-1">
             <div>
@@ -153,6 +175,34 @@ export default function MicrophoneComponent() {
             />
           </div>
         </div>
+
+        {/* Video preview while recording */}
+        {isRecording && (
+          <div className="flex justify-center">
+            <video
+              ref={videoRef}
+              className="rounded-lg border border-gray-300"
+              width="480" // Increased width for better preview
+              height="360" // Increased height for better preview
+              muted
+              playsInline // Ensures no audio plays from the preview
+            />
+          </div>
+        )}
+
+        {/* Playback recorded video after stopping */}
+        {videoUrl && (
+          <div className="mt-4 flex justify-center">
+            <video
+              ref={recordedVideoRef}
+              className="rounded-lg border border-gray-300"
+              width="480" // Matches the preview size
+              height="360"
+              controls
+            />
+          </div>
+        )}
+
         <div className="flex w-full justify-center">
           <div className="flex items-center justify-center rounded-lg bg-gray-200 p-6">
             {isRecording ? (
@@ -174,38 +224,39 @@ export default function MicrophoneComponent() {
                 className="m-auto flex h-16 w-16 items-center justify-center rounded-full bg-blue-400 hover:bg-blue-500 focus:outline-none"
               >
                 <svg
-                  viewBox="0 0 256 256"
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-10 w-10 text-white"
+                  className="h-10 w-10"
+                  viewBox="0 0 20 20"
                 >
                   <path
                     fill="currentColor"
-                    d="M128 176a48.05 48.05 0 0 0 48-48V64a48 48 0 0 0-96 0v64a48.05 48.05 0 0 0 48 48ZM96 64a32 32 0 0 1 64 0v64a32 32 0 0 1-64 0Zm40 143.6V232a8 8 0 0 1-16 0v-24.4A80.11 80.11 0 0 1 48 128a8 8 0 0 1 16 0a64 64 0 0 0 128 0a8 8 0 0 1 16 0a80.11 80.11 0 0 1-72 79.6Z"
+                    d="M0 4c0-1.1.9-2 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm6 0v12h8V4H6zM2 5v2h2V5H2zm0 4v2h2V9H2zm0 4v2h2v-2H2zm14-8v2h2V5h-2zm0 4v2h2V9h-2zm0 4v2h2v-2h-2z"
                   />
                 </svg>
               </button>
             )}
           </div>
         </div>
-        {audioUrl && (
-          <div className="mt-6 text-center">
-            <audio controls src={audioUrl} className="w-full" />
-            <div className="mt-4 flex justify-center space-x-4">
-              <button
-                onClick={handleDownload}
-                className="rounded-md bg-primary px-4 py-2 text-white hover:bg-blue-400"
-              >
-                Download Recording
-              </button>
-              <button
-                onClick={handleCopyTranscript}
-                className="rounded-md bg-primary px-4 py-2 text-white hover:bg-gray-600"
-              >
-                Copy Transcript
-              </button>
-            </div>
-          </div>
-        )}
+
+        <div className="flex w-full justify-center space-x-4">
+          {audioBlob && (
+            <button
+              onClick={handleDownload}
+              className="rounded-lg bg-primary px-4 py-2 text-white hover:bg-blue-400"
+            >
+              Download Video
+            </button>
+          )}
+
+          {completeTranscript && (
+            <button
+              onClick={handleCopyTranscript}
+              className="rounded-lg bg-primary px-4 py-2 text-white hover:bg-blue-400"
+            >
+              Copy Transcript
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

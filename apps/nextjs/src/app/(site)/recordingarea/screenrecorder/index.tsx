@@ -1,7 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createInstance } from "@loomhq/record-sdk";
+import {
+  createInstance,
+  Environment,
+  RecordingType,
+  SDKConfig,
+  SetupFunction,
+} from "@loomhq/record-sdk";
 import { isSupported } from "@loomhq/record-sdk/is-supported";
 
 const ScreenRecorder = () => {
@@ -46,6 +52,23 @@ const ScreenRecorder = () => {
           const sdk = await createInstance({
             mode: "custom",
             jws: token,
+            config: {
+              insertButtonText: "Start Recording",
+              styles: {
+                recordButtonColor: "#FF5733", // Customize button color
+                recordButtonHoverColor: "#FF4500", // Customize hover color
+                primaryColor: "#0056b3", // Change primary color
+                primaryHoverColor: "#003d99", // Change hover color
+                primaryActiveColor: "#003366", // Change active color
+                fontFamily: "'Roboto', sans-serif", // Change font
+              },
+
+              // Use RecordingType enum for allowed recording types
+              allowedRecordingTypes: [
+                RecordingType.ScreenAndCamera, // Record screen and camera
+                RecordingType.Screen, // Record screen only
+              ],
+            },
           });
 
           console.log("SDK initialized successfully");
@@ -100,7 +123,8 @@ const ScreenRecorder = () => {
         <>
           <button
             id="record-button"
-            className="rounded-lg bg-gray-500 px-4 py-2 text-white"
+            className={`rounded-lg px-4 py-2 text-white 
+              ${recording ? "cursor-not-allowed bg-gray-400" : "bg-gray-500 hover:bg-gray-600"}`}
             disabled={recording}
           >
             {recording ? "Recording..." : "Record"}
