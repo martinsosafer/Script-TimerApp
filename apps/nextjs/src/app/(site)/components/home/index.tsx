@@ -18,7 +18,7 @@ export default function Home({
   trialExpiration: boolean;
 }) {
   const [openModal, setOpenModal] = useState(user ? false : true);
-  const [openTrialModal, setOpenTrialModal] = useState(trialExpiration);
+  const [openTrialModal, setOpenTrialModal] = useState(true);
 
   return (
     <>
