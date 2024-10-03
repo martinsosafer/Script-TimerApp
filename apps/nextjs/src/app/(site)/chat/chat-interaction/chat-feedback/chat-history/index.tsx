@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Image from "next/image";
 
+import { Tooltip, TooltipContent, TooltipTrigger } from "@voiceai/ui";
 import {
   IconPencilLine,
   IconSpinner,
@@ -36,12 +37,12 @@ export default function ChatHistory({
       <div className="flex h-full w-full flex-col justify-between">
         <>
           <p className="p-2 text-start text-lg font-semibold text-gray-900">
-            Chat History
+            Your recent scripts.
           </p>
           <div className="flex h-full w-full flex-col overflow-y-auto ">
             {chatHistory?.length === 0 ? (
               <p className="mt-4 text-center text-gray-500">
-                Chat History Empty
+                Recent script history is empty.
               </p>
             ) : (
               <>
@@ -76,15 +77,23 @@ export default function ChatHistory({
                         <p className="w-full">{item.title}</p>
                       </div>
                       <div className="flex gap-1">
-                        <button
-                          className="flex h-6 w-6 items-center justify-center"
-                          onClick={() => {
-                            setIsEditingChatSubject(true);
-                            setSelectedChatHistory(item);
-                          }}
-                        >
-                          <IconPencilLine className="invisible h-5 w-5 cursor-pointer text-green-800 hover:text-green-400 group-hover:visible" />
-                        </button>
+                        <Tooltip>
+                          <TooltipTrigger asChild className="mb-17">
+                            <button
+                              className="flex h-6 w-6 items-center justify-center"
+                              onClick={() => {
+                                setIsEditingChatSubject(true);
+                                setSelectedChatHistory(item);
+                              }}
+                            >
+                              <IconPencilLine className="invisible h-5 w-5 cursor-pointer text-green-800 hover:text-green-400 group-hover:visible" />
+                            </button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            Add or edit the name/title.
+                          </TooltipContent>
+                        </Tooltip>
+
                         <button
                           className="flex h-6 w-6 items-center justify-center"
                           onClick={async () => {
