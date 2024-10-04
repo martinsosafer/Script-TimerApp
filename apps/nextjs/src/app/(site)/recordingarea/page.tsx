@@ -22,7 +22,7 @@ export default async function indexPage() {
             Record and Transcribe
           </h2>
           <p className="text-center text-gray-900">
-            Capture your voice, video, and/or screen record.
+            Capture your voice, video, and/or screen record
           </p>
         </div>
         <ModeSelectorRecorder />
