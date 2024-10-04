@@ -19,10 +19,10 @@ export default async function indexPage() {
       <div className="flex w-[1024px] flex-col py-10">
         <div className="flex flex-col items-center">
           <h2 className="font-poppins  text-3xl text-[#0066FF]">
-            Plagiarism and Ai Detection
+            Record and Transcribe
           </h2>
           <p className="text-center text-gray-900">
-            Check plagiarism and detect possible AI-generated content.
+            Capture your voice, video, and/or screen record.
           </p>
         </div>
         <ModeSelectorRecorder />
