@@ -188,7 +188,16 @@ interface EntryPayload {
   YoureWorkingOn: string;
 }
 
-export async function CreateCognitoEntry(payload: EntryPayload) {
+export async function CreateCognitoEntry(
+  payload: EntryPayload,
+  userId: string,
+) {
+  await db
+    .update(schema.users)
+    .set({ cognito_entry: true })
+    .where(eq(schema.users.id, userId))
+    .execute();
+
   await fetch("https://www.cognitoforms.com/api/forms/37/entries", {
     method: "POST",
     headers: {
@@ -197,6 +206,7 @@ export async function CreateCognitoEntry(payload: EntryPayload) {
     body: JSON.stringify(payload),
   });
 
-  await db.update(schema.users).set({ cognito_entry: true }).execute();
+  console.log("Creating cognito entry for user", userId);
+
   return;
 }

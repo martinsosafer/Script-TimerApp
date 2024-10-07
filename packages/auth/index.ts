@@ -127,7 +127,7 @@ export const {
           EnterYourEmail: dbUser?.email,
           YoureWorkingOn: "",
         };
-        await CreateCognitoEntry(payload);
+        await CreateCognitoEntry(payload, userId);
       }
 
       const subscription = {
