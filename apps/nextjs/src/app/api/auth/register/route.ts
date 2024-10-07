@@ -17,14 +17,6 @@ interface User {
   password: string;
   workingOn?: string;
 }
-interface EntryPayload {
-  YourName: {
-    First: string;
-    Last: string;
-  };
-  EnterYourEmail: string;
-  YoureWorkingOn: string;
-}
 
 function uuid() {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
@@ -33,19 +25,6 @@ function uuid() {
     return v.toString(16);
   });
 }
-
-// async function CreateCognitoEntry(payload: EntryPayload) {
-//   await fetch("https://www.cognitoforms.com/api/forms/37/entries", {
-//     method: "POST",
-//     headers: {
-//       Authorization: `Bearer ${process.env.COGNITO_KEY}`,
-//     },
-//     body: JSON.stringify(payload),
-//   });
-
-//   await db.update(schema.users).set({ cognito_entry: true }).execute();
-//   return;
-// }
 
 export async function POST(request: Request) {
   try {
@@ -114,7 +93,7 @@ export async function POST(request: Request) {
       })
       .execute();
 
-    await CreateCognitoEntry(cognitoPayload);
+    await CreateCognitoEntry(cognitoPayload, id);
 
     return new Response(JSON.stringify(newUser));
   } catch (error) {
