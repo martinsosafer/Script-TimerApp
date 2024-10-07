@@ -178,3 +178,25 @@ export async function checkAndInsertCredits(userId: string) {
       .execute();
   }
 }
+
+interface EntryPayload {
+  YourName: {
+    First: string;
+    Last: string;
+  };
+  EnterYourEmail: string;
+  YoureWorkingOn: string;
+}
+
+export async function CreateCognitoEntry(payload: EntryPayload) {
+  await fetch("https://www.cognitoforms.com/api/forms/37/entries", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${process.env.COGNITO_KEY}`,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  await db.update(schema.users).set({ cognito_entry: true }).execute();
+  return;
+}
