@@ -1,5 +1,11 @@
 import type { AdapterAccount } from "@auth/core/adapters";
-import { integer, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
+import {
+  boolean,
+  integer,
+  primaryKey,
+  text,
+  timestamp,
+} from "drizzle-orm/pg-core";
 
 import { pgTable } from "./_table";
 
@@ -12,6 +18,7 @@ export const users = pgTable("user", {
   image: text("image"),
   reset_token: text("reset_token"),
   reset_token_expires: timestamp("reset_token_expires", { mode: "date" }),
+  cognito_entry: boolean("cognito_entry").default(false),
   created_at: timestamp("created_at").notNull().defaultNow(),
   updated_at: timestamp("updated_at").notNull().defaultNow(),
 });

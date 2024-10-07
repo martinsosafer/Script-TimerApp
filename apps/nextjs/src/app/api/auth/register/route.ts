@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 
+import { CreateCognitoEntry } from "@voiceai/auth/actions";
 import { db, schema } from "@voiceai/db";
 
 import {
@@ -14,6 +15,15 @@ interface User {
   name: string;
   email: string;
   password: string;
+  workingOn?: string;
+}
+interface EntryPayload {
+  YourName: {
+    First: string;
+    Last: string;
+  };
+  EnterYourEmail: string;
+  YoureWorkingOn: string;
 }
 
 function uuid() {
@@ -24,13 +34,35 @@ function uuid() {
   });
 }
 
+// async function CreateCognitoEntry(payload: EntryPayload) {
+//   await fetch("https://www.cognitoforms.com/api/forms/37/entries", {
+//     method: "POST",
+//     headers: {
+//       Authorization: `Bearer ${process.env.COGNITO_KEY}`,
+//     },
+//     body: JSON.stringify(payload),
+//   });
+
+//   await db.update(schema.users).set({ cognito_entry: true }).execute();
+//   return;
+// }
+
 export async function POST(request: Request) {
   try {
     const {
       name,
       email,
       password: userPassword,
+      workingOn,
     } = (await request.json()) as User;
+
+    const fistName = name?.toString().split(" ")[0];
+    const lastName = name?.toString().split(" ")[1];
+    const cognitoPayload = {
+      YourName: { First: fistName ?? "", Last: lastName ?? "" },
+      EnterYourEmail: email,
+      YoureWorkingOn: workingOn ?? "",
+    };
 
     const password = await bcrypt.hash(userPassword, 10);
     const id = uuid();
@@ -81,6 +113,8 @@ export async function POST(request: Request) {
         credits: STARTING_11CL_CREDITS.FREE_TRIAL,
       })
       .execute();
+
+    await CreateCognitoEntry(cognitoPayload);
 
     return new Response(JSON.stringify(newUser));
   } catch (error) {

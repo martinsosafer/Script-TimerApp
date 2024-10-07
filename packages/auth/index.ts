@@ -12,6 +12,7 @@ import { db, tableCreator } from "@voiceai/db";
 
 import {
   checkAndInsertCredits,
+  CreateCognitoEntry,
   insertSubscription,
   moveToFreeOrAddExpiration,
 } from "./actions";
@@ -96,9 +97,6 @@ export const {
         throw new Error("User ID is missing");
       }
 
-      // Debugging: log the user ID
-      console.log("User ID:", userId);
-
       const subscriptionStatus = await db.query.subscriptions.findFirst({
         where: (subscriptions, { eq }) => eq(subscriptions.userId, userId),
       });
@@ -115,6 +113,22 @@ export const {
 
       // We check if the user has credits and insert them if they don't depending on the plan they are on.
       await checkAndInsertCredits(userId);
+
+      const dbUser = await db.query.users.findFirst({
+        where: (users, { eq }) => eq(users.id, userId),
+      });
+
+      if (dbUser?.cognito_entry === false) {
+        const payload = {
+          YourName: {
+            First: dbUser?.name?.split(" ")[0] ?? "",
+            Last: dbUser?.name?.split(" ")[1] ?? "",
+          },
+          EnterYourEmail: dbUser?.email,
+          YoureWorkingOn: "",
+        };
+        await CreateCognitoEntry(payload);
+      }
 
       const subscription = {
         userId,
