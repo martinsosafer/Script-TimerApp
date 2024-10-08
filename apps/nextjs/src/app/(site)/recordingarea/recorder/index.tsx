@@ -2,6 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 
+import AudioActions from "./audioactions";
+import ControlPanel from "./controlpanel";
+import RecorderPanel from "./recordpanel";
+import TelegraphComponent from "./telegrapher";
+import TextCorrectionComponent from "./textcorrection";
+
 declare global {
   interface Window {
     webkitSpeechRecognition: any;
@@ -11,114 +17,101 @@ declare global {
 export default function MicrophoneComponent() {
   const [isRecording, setIsRecording] = useState(false);
   const [transcript, setTranscript] = useState("");
-  const [completeTranscript, setCompleteTranscript] = useState(""); // Persisted transcript
+  const [completeTranscript, setCompleteTranscript] = useState("");
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
-  const [isPaused, setIsPaused] = useState(false); // Track if paused
+  const [isPaused, setIsPaused] = useState(false);
+  const [showTextCorrection, setShowTextCorrection] = useState(false);
 
   const recognitionRef = useRef<any>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
 
-  // Start recording process
-  const startRecording = () => {
-    setTranscript(""); // This ensures the text area starts fresh for each recording
-    setCompleteTranscript(""); // Clear only at the start of a new recording
-
-    setIsRecording(true);
-    setIsPaused(false); // Reset paused state
-
-    try {
-      // Start speech recognition
-      recognitionRef.current = new window.webkitSpeechRecognition();
-      recognitionRef.current.continuous = true;
-      recognitionRef.current.interimResults = true;
-
-      recognitionRef.current.onresult = (event: any) => {
-        let interimTranscript = ""; // Temporary transcript for the current speech
-
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          const currentTranscript = event.results[i][0].transcript;
-
-          if (event.results[i].isFinal) {
-            // If the result is final, append it to the complete transcript
-            setCompleteTranscript((prev) => prev + currentTranscript + " ");
-          } else {
-            // Otherwise, it's an interim result
-            interimTranscript += currentTranscript;
-          }
-        }
-
-        // Update interim transcript to show real-time results
-        setTranscript(interimTranscript);
-      };
-
-      recognitionRef.current.start();
-    } catch (error) {
-      console.error("Speech recognition error: ", error);
+  useEffect(() => {
+    if (!window.webkitSpeechRecognition) {
       alert(
         "Your browser does not support speech recognition. Please use Chrome.",
       );
-      setIsRecording(false);
-      return;
     }
+  }, []);
 
-    // Start audio recording
-    navigator.mediaDevices
-      .getUserMedia({ audio: true })
-      .then((stream) => {
-        mediaRecorderRef.current = new MediaRecorder(stream);
-        audioChunksRef.current = [];
+  const setupSpeechRecognition = () => {
+    const recognition = new window.webkitSpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
 
-        mediaRecorderRef.current.ondataavailable = (event) => {
-          audioChunksRef.current.push(event.data);
-        };
+    recognition.onresult = (event: any) => {
+      let interimTranscript = "";
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const currentTranscript = event.results[i][0].transcript;
+        if (event.results[i].isFinal) {
+          setCompleteTranscript((prev) => prev + currentTranscript + " ");
+        } else {
+          interimTranscript += currentTranscript;
+        }
+      }
+      setTranscript(interimTranscript);
+    };
 
-        mediaRecorderRef.current.onstop = () => {
-          const audioBlob = new Blob(audioChunksRef.current, {
-            type: "audio/wav",
-          });
-          setAudioBlob(audioBlob);
-          const audioUrl = URL.createObjectURL(audioBlob);
-          setAudioUrl(audioUrl);
-        };
+    recognition.onend = () => setIsPaused(true); // Set paused when recognition stops
 
-        mediaRecorderRef.current.start();
-      })
-      .catch((error) => {
-        console.error("Microphone access error: ", error);
-        alert("Microphone access is required to record audio.");
-        setIsRecording(false);
-      });
+    return recognition;
   };
 
-  // Stop recording process
+  const startRecording = async () => {
+    setTranscript("");
+    setCompleteTranscript("");
+    setIsRecording(true);
+    setIsPaused(false);
+
+    // Initialize speech recognition
+    recognitionRef.current = setupSpeechRecognition();
+    recognitionRef.current.start();
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      startAudioRecording(stream);
+    } catch (error) {
+      console.error("Microphone access error:", error);
+      alert("Microphone access is required to record audio.");
+      setIsRecording(false);
+    }
+  };
+
+  const startAudioRecording = (stream: MediaStream) => {
+    mediaRecorderRef.current = new MediaRecorder(stream);
+    audioChunksRef.current = [];
+
+    mediaRecorderRef.current.ondataavailable = (event) => {
+      audioChunksRef.current.push(event.data);
+    };
+
+    mediaRecorderRef.current.onstop = () => {
+      const audioBlob = new Blob(audioChunksRef.current, { type: "audio/wav" });
+      const audioUrl = URL.createObjectURL(audioBlob);
+      setAudioBlob(audioBlob);
+      setAudioUrl(audioUrl);
+    };
+
+    mediaRecorderRef.current.start();
+  };
+
   const stopRecording = () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-    }
-    if (mediaRecorderRef.current) {
-      mediaRecorderRef.current.stop();
-    }
+    recognitionRef.current?.stop();
+    mediaRecorderRef.current?.stop();
     setIsRecording(false);
-    setIsPaused(true); // Set to paused when stopped
   };
 
   const handleToggleRecording = () => {
-    if (!isRecording) {
-      startRecording();
-    } else {
-      stopRecording();
-    }
+    isRecording ? stopRecording() : startRecording();
   };
 
   const handleDownload = () => {
-    if (audioBlob) {
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(audioBlob);
-      link.download = "recording.wav";
-      link.click();
-    }
+    if (!audioBlob) return;
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(audioBlob);
+    link.download = "recording.wav";
+    link.click();
   };
 
   const handleCopyTranscript = () => {
@@ -126,85 +119,53 @@ export default function MicrophoneComponent() {
     alert("Transcript copied to clipboard!");
   };
 
-  return (
-    <div className="mb-20 flex h-screen w-full items-center justify-center bg-gray-100">
-      <div className="w-2/3 space-y-2">
-        <div className="m-auto w-full rounded-md border bg-white p-4">
-          <div className="flex w-full justify-between space-y-1">
-            <div>
-              <p className="text-sm font-medium leading-none">Recorder</p>
-              <p className="text-sm text-muted-foreground">
-                {isRecording
-                  ? "Recording..."
-                  : "Press the button to record something!"}
-              </p>
-            </div>
-            {isRecording && (
-              <div className="h-4 w-4 animate-pulse rounded-full bg-red-400" />
-            )}
-          </div>
+  // Show text correction component when user clicks a button
+  const handleShowTextCorrection = () => {
+    setShowTextCorrection(true);
+  };
 
-          <div className="mt-4 h-full rounded-md border p-2">
-            <textarea
-              className="h-40 w-full border p-2"
-              value={completeTranscript + transcript} // Show both final and interim results
-              readOnly
-              placeholder="Transcript will appear here..."
-            />
-          </div>
-        </div>
-        <div className="flex w-full justify-center">
-          <div className="flex items-center justify-center rounded-lg bg-gray-200 p-6">
-            {isRecording ? (
-              <button
-                onClick={handleToggleRecording}
-                className="m-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-400 hover:bg-red-500 focus:outline-none"
-              >
-                <svg
-                  className="h-10 w-10"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path fill="white" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-                </svg>
-              </button>
-            ) : (
-              <button
-                onClick={handleToggleRecording}
-                className="m-auto flex h-16 w-16 items-center justify-center rounded-full bg-blue-400 hover:bg-blue-500 focus:outline-none"
-              >
-                <svg
-                  viewBox="0 0 256 256"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-10 w-10 text-white"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M128 176a48.05 48.05 0 0 0 48-48V64a48 48 0 0 0-96 0v64a48.05 48.05 0 0 0 48 48ZM96 64a32 32 0 0 1 64 0v64a32 32 0 0 1-64 0Zm40 143.6V232a8 8 0 0 1-16 0v-24.4A80.11 80.11 0 0 1 48 128a8 8 0 0 1 16 0a64 64 0 0 0 128 0a8 8 0 0 1 16 0a80.11 80.11 0 0 1-72 79.6Z"
-                  />
-                </svg>
-              </button>
-            )}
-          </div>
-        </div>
+  return (
+    <div className="mb-20 flex w-full justify-center bg-gray-100 py-10">
+      <div className="w-full max-w-3xl space-y-4">
+        <TelegraphComponent />
+        <RecorderPanel
+          isRecording={isRecording}
+          transcript={completeTranscript + transcript}
+        />
+        <ControlPanel
+          isRecording={isRecording}
+          handleToggleRecording={handleToggleRecording}
+        />
         {audioUrl && (
-          <div className="mt-6 text-center">
-            <audio controls src={audioUrl} className="w-full" />
-            <div className="mt-4 flex justify-center space-x-4">
-              <button
-                onClick={handleDownload}
-                className="rounded-md bg-primary px-4 py-2 text-white hover:bg-blue-400"
-              >
-                Download Recording
-              </button>
-              <button
-                onClick={handleCopyTranscript}
-                className="rounded-md bg-primary px-4 py-2 text-white hover:bg-gray-600"
-              >
-                Copy Transcript
-              </button>
-            </div>
+          <AudioActions
+            audioUrl={audioUrl}
+            handleDownload={handleDownload}
+            handleCopyTranscript={handleCopyTranscript}
+          />
+        )}
+
+        {/* Display Buttons First and Then TextCorrectionComponent */}
+        {!showTextCorrection && (
+          <div className="mt-4 space-x-4">
+            <button
+              onClick={handleShowTextCorrection}
+              className="rounded bg-green-500 px-4 py-2 text-white"
+            >
+              Correct Text
+            </button>
+            <button
+              onClick={handleShowTextCorrection}
+              className="rounded bg-blue-500 px-4 py-2 text-white"
+            >
+              Summarize Text
+            </button>
           </div>
+        )}
+
+        {showTextCorrection && (
+          <TextCorrectionComponent
+            transcript={completeTranscript + transcript}
+          />
         )}
       </div>
     </div>
