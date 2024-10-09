@@ -77,30 +77,33 @@ export default function AIVoiceLandingPage() {
     setError(null);
 
     try {
-      // Call your API to generate the voice
+      // Call the API endpoint to generate the voice
       const response = await fetch("/api/voicegpt", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ text: inputText, actorId: selectedActor }),
+        body: JSON.stringify({ text: inputText }),
       });
 
       if (!response.ok) {
         throw new Error("Failed to generate voice.");
       }
 
-      const data = await response.json();
-      console.log("Voice generated: ", data);
+      // Create an audio element and play the streamed audio
+      const audioBlob = await response.blob();
+      const audioUrl = URL.createObjectURL(audioBlob);
 
-      // Optionally handle the generated voice data here (e.g., play the audio)
+      const audio = new Audio(audioUrl);
+      audio.play();
+
+      // Optionally handle the generated voice data here (e.g., save audio URL)
     } catch (error) {
       setError(error.message || "Something went wrong.");
     } finally {
       setLoading(false);
     }
   };
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-100 to-gray-200">
       <motion.div
