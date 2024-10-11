@@ -1,5 +1,6 @@
-import type { FormEvent } from "react";
+import type { Dispatch, FormEvent, SetStateAction } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 import {
   HoverCard,
@@ -17,6 +18,8 @@ interface PromptInputProps {
   setOpenMopdal: () => void;
   userId: string | undefined;
   selectedCardName: string | undefined;
+  isInputMinimized: boolean;
+  setIsInputMinimized: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function PromptInput({
@@ -28,24 +31,35 @@ export default function PromptInput({
   setOpenMopdal,
   userId,
   selectedCardName,
+  isInputMinimized,
+  setIsInputMinimized,
 }: PromptInputProps) {
   function placeholderText() {
+    if (isInputMinimized) {
+      return "We are procesing your entry, please see the response below.";
+    }
     if (selectedCardName === "Add Your Own Prompt") {
       return `Enter your prompt here, with important details.`;
     }
     return "Topic, Audience, Goals, Problems solved, or current script.  I will help you improve it.";
   }
 
+  const router = useRouter();
+
   return (
     <div className="flex w-full flex-col items-center">
       <form
-        onSubmit={(e) => onSubmit(e)}
+        onSubmit={(e) => {
+          setIsInputMinimized(true);
+          router.push(`#chatFeedback`);
+          onSubmit(e);
+        }}
         className="mt-4 flex w-full items-center gap-4 rounded-md border border-gray-400 bg-white p-3"
       >
         <textarea
           placeholder={placeholderText()}
           className="w-full resize-none p-4 outline-none placeholder:text-lg"
-          rows={6}
+          rows={isInputMinimized ? 1 : 6}
           value={value}
           onChange={(e) => onChange(e.target.value)}
         />

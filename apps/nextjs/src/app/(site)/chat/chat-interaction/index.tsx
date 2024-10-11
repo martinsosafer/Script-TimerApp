@@ -67,6 +67,8 @@ export default function ChatInteraction({ userId, openAiCredits }: ChatProps) {
     boostYourVideoScriptSubtypes[0],
   );
 
+  const [isInputMinimized, setIsInputMinimized] = useState(false);
+
   useEffect(() => {
     setPromptInput("");
     setMessages([]);
@@ -151,6 +153,7 @@ export default function ChatInteraction({ userId, openAiCredits }: ChatProps) {
         setSelectedPill={setSelectedPill}
         selectedTab={selectedTab}
         setSelectedTab={setSelectedTab}
+        setIsInputMinimized={setIsInputMinimized}
       />
       <Prompter uiPrompt={selectedCard?.prompt_display} />
       <PromptInput
@@ -167,6 +170,8 @@ export default function ChatInteraction({ userId, openAiCredits }: ChatProps) {
         isEnabled={Boolean(selectedCard) && promptInput.length > 0}
         setOpenMopdal={() => setNoSessionModalOpen(true)}
         userId={userId}
+        isInputMinimized={isInputMinimized}
+        setIsInputMinimized={setIsInputMinimized}
       />
       <ChatFeedback
         chat={messages}

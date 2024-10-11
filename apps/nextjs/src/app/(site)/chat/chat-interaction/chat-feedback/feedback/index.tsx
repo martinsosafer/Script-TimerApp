@@ -48,28 +48,34 @@ export default function Feedback({
     scrollToBottom();
   }, [filteredChats]);
 
+  console.log("CHAT", chat);
+
   return (
     <div className="relative flex h-[900px] w-[70%] flex-col justify-between gap-2">
-      <Tooltip>
-        <TooltipTrigger asChild className="mb-17">
-          <button
-            className="absolute -top-8 right-2 h-6 w-6"
-            onClick={() => {
-              void window.navigator.clipboard.writeText(
-                filteredChats.map((chatItem) => chatItem.content).join("\n"),
-              );
-              toast({
-                title: "Copied to clipboard",
-                description:
-                  "The conversation has been copied to the clipboard",
-              });
-            }}
-          >
-            <IconCopy className="h-6 w-6 text-primary hover:text-blue-400" />
-          </button>
-        </TooltipTrigger>
-        <TooltipContent>Copy the conversation to the clipboard</TooltipContent>
-      </Tooltip>
+      {chat.length > 0 && (
+        <Tooltip>
+          <TooltipTrigger asChild className="mb-17">
+            <button
+              className="absolute -top-8 right-2 h-6 w-6"
+              onClick={() => {
+                void window.navigator.clipboard.writeText(
+                  filteredChats.map((chatItem) => chatItem.content).join("\n"),
+                );
+                toast({
+                  title: "Copied to clipboard",
+                  description:
+                    "The conversation has been copied to the clipboard",
+                });
+              }}
+            >
+              <IconCopy className="h-6 w-6 text-primary hover:text-blue-400" />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent>
+            Copy the conversation to the clipboard
+          </TooltipContent>
+        </Tooltip>
+      )}
 
       <div
         className="flex h-full w-full  flex-col items-start gap-6 overflow-y-auto rounded-md border border-gray-400 bg-white p-6"
