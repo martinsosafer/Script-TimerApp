@@ -15,7 +15,6 @@ interface PromptInputProps {
   onSubmit: (e: FormEvent<HTMLFormElement>) => void;
   loadingMessages: boolean;
   isEnabled: boolean;
-  setOpenMopdal: () => void;
   userId: string | undefined;
   selectedCardName: string | undefined;
   isInputMinimized: boolean;
@@ -28,8 +27,6 @@ export default function PromptInput({
   onSubmit,
   loadingMessages,
   isEnabled,
-  setOpenMopdal,
-  userId,
   selectedCardName,
   isInputMinimized,
   setIsInputMinimized,
@@ -69,9 +66,6 @@ export default function PromptInput({
               className={`flex h-8 w-8 items-center justify-center rounded-md ${isEnabled ? "bg-[#0066FF]" : "bg-gray-400"}  p-2`}
               disabled={!isEnabled}
               type="submit"
-              onClick={() => {
-                userId ? null : setOpenMopdal();
-              }}
             >
               {loadingMessages ? (
                 <IconSpinner className="animate-spin text-white" />
