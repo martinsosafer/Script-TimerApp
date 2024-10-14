@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 
 import { Button } from "@voiceai/ui";
@@ -8,39 +8,59 @@ import { Card } from "@voiceai/ui/@/components/ui/card";
 import { Textarea } from "@voiceai/ui/@/components/ui/textarea";
 import { PlayIcon as Play } from "@voiceai/ui/@/icons/icons";
 
+import { api } from "~/utils/api";
 import VoiceGeneratorMockup from "../mockwidget";
-
-// Simulated voice data
-const voices = Array(100)
-  .fill(null)
-  .map((_, i) => ({
-    id: i + 1,
-    name: `Voice ${i + 1}`,
-    sample: "/path-to-audio-sample.mp3",
-  }));
 
 const ITEMS_PER_PAGE = 20;
 
 export default function AIVoiceLandingPage() {
-  const [selectedActor, setSelectedActor] = useState<number | null>(null);
+  const { data: allVoices, refetch } = api.voice.publicVoices.useQuery();
+  console.log("ALLVOICES", allVoices);
+
   const [selectedVoice, setSelectedVoice] = useState<number | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [inputText, setInputText] = useState<string>(""); // To track user text input
   const [loading, setLoading] = useState<boolean>(false); // To show loading state
   const [error, setError] = useState<string | null>(null); // To track any errors
+  const [currentlyPlaying, setCurrentlyPlaying] = useState<number | null>(null); // Track currently playing audio
 
-  const totalPages = Math.ceil(voices.length / ITEMS_PER_PAGE);
-  const paginatedVoices = voices.slice(
+  const audioRef = useRef<HTMLAudioElement | null>(null); // Ref to store the Audio instance
+
+  const totalPages = Math.ceil(allVoices?.length / ITEMS_PER_PAGE);
+  const paginatedVoices = allVoices?.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE,
   );
 
-  const handleActorSelection = (id: number) => {
-    setSelectedActor((prev) => (prev === id ? null : id));
-  };
-
   const handleVoiceSelection = (id: number) => {
     setSelectedVoice((prev) => (prev === id ? null : id));
+  };
+
+  // Function to play voice sample
+  const playVoiceSample = (previewUrl: string, voiceId: number) => {
+    // Stop the currently playing audio if another voice is selected
+    if (audioRef.current && currentlyPlaying !== voiceId) {
+      audioRef.current.pause();
+      audioRef.current = null;
+    }
+
+    // If no audio is currently playing, create a new Audio instance and play it
+    if (!audioRef.current || currentlyPlaying !== voiceId) {
+      const newAudio = new Audio(previewUrl);
+      audioRef.current = newAudio;
+      setCurrentlyPlaying(voiceId);
+      newAudio.play();
+
+      // When the audio ends, reset the currently playing state
+      newAudio.onended = () => {
+        setCurrentlyPlaying(null);
+        audioRef.current = null;
+      };
+    } else {
+      // Pause the audio if it's playing
+      audioRef.current.pause();
+      setCurrentlyPlaying(null);
+    }
   };
 
   return (
@@ -75,8 +95,9 @@ export default function AIVoiceLandingPage() {
         </motion.p>
         {/* Mock Widget */}
         <VoiceGeneratorMockup />
+
         {/* Voice Selection */}
-        <h2 className="mb-8 text-center text-3xl font-bold">
+        <h2 className="mb-10 mt-10 text-center text-3xl font-bold">
           Choose Your Voice
         </h2>
 
@@ -96,7 +117,7 @@ export default function AIVoiceLandingPage() {
           }}
         >
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-            {paginatedVoices.map((voice) => (
+            {paginatedVoices?.map((voice) => (
               <Card
                 key={voice.id}
                 className={`cursor-pointer p-2 ${
@@ -105,22 +126,26 @@ export default function AIVoiceLandingPage() {
                 onClick={() => handleVoiceSelection(voice.id)}
               >
                 <div className="flex items-center space-x-2">
+                  {/* Display the voice's picture */}
                   <img
-                    src={voice.image}
+                    src={voice.picture || "https://via.placeholder.com/100"}
                     alt={voice.name}
                     className="h-10 w-10 rounded-full"
                   />
                   <div className="flex-grow">
+                    {/* Display the voice's name */}
                     <h3 className="text-sm font-semibold">{voice.name}</h3>
-                    <p className="text-xs text-gray-500">{voice.modelName}</p>
+                    <p className="text-xs text-gray-500">{voice.description}</p>
                   </div>
+
+                  {/* Play button to play the preview audio */}
                   <Button
                     variant="outline"
                     size="sm"
                     className="ml-auto"
                     onClick={(e) => {
                       e.stopPropagation();
-                      playVoiceSample(voice.sample);
+                      playVoiceSample(voice.metadata.preview_url, voice.id);
                     }}
                   >
                     <Play className="h-3 w-3" />
