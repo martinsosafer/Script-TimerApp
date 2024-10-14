@@ -8,27 +8,7 @@ import { Card } from "@voiceai/ui/@/components/ui/card";
 import { Textarea } from "@voiceai/ui/@/components/ui/textarea";
 import { PlayIcon as Play } from "@voiceai/ui/@/icons/icons";
 
-// Simulated actor data
-const actors = [
-  { id: 1, name: "John Doe", image: "/placeholder.svg?height=100&width=100" },
-  { id: 2, name: "Jane Smith", image: "/placeholder.svg?height=100&width=100" },
-  {
-    id: 3,
-    name: "Mike Johnson",
-    image: "/placeholder.svg?height=100&width=100",
-  },
-  {
-    id: 4,
-    name: "Emily Brown",
-    image: "/placeholder.svg?height=100&width=100",
-  },
-  { id: 5, name: "Chris Lee", image: "/placeholder.svg?height=100&width=100" },
-  {
-    id: 6,
-    name: "Sarah Wilson",
-    image: "/placeholder.svg?height=100&width=100",
-  },
-];
+import VoiceGeneratorMockup from "../mockwidget";
 
 // Simulated voice data
 const voices = Array(100)
@@ -63,47 +43,6 @@ export default function AIVoiceLandingPage() {
     setSelectedVoice((prev) => (prev === id ? null : id));
   };
 
-  const playVoiceSample = (sample: string) => {
-    console.log(`Playing sample: ${sample}`);
-  };
-
-  const handleCreateVoice = async () => {
-    if (!inputText) {
-      setError("Please enter some text.");
-      return;
-    }
-
-    setLoading(true);
-    setError(null);
-
-    try {
-      // Call the API endpoint to generate the voice
-      const response = await fetch("/api/voicegpt", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ text: inputText }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to generate voice.");
-      }
-
-      // Create an audio element and play the streamed audio
-      const audioBlob = await response.blob();
-      const audioUrl = URL.createObjectURL(audioBlob);
-
-      const audio = new Audio(audioUrl);
-      audio.play();
-
-      // Optionally handle the generated voice data here (e.g., save audio URL)
-    } catch (error) {
-      setError(error.message || "Something went wrong.");
-    } finally {
-      setLoading(false);
-    }
-  };
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-100 to-gray-200">
       <motion.div
@@ -134,53 +73,8 @@ export default function AIVoiceLandingPage() {
         >
           Create amazing AI-powered voices for your projects
         </motion.p>
-
-        {/* Actor Selection */}
-        <div className="mb-12 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
-          {actors.map((actor, index) => (
-            <motion.div
-              key={actor.id}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: index * 0.1, duration: 0.3 }}
-            >
-              <Card
-                className={`cursor-pointer p-4 text-center transition-all duration-300 ${
-                  selectedActor === actor.id
-                    ? "border-2 border-orange-500 shadow-lg"
-                    : ""
-                }`}
-                onClick={() => handleActorSelection(actor.id)}
-              >
-                <img
-                  src={actor.image}
-                  alt={actor.name}
-                  className="mx-auto mb-2 rounded-full"
-                />
-                <h3 className="font-semibold">{actor.name}</h3>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Text Area and Create Button */}
-        <div className="mx-auto mb-8 max-w-2xl">
-          <Textarea
-            placeholder="Enter your text here"
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-            className="mb-4"
-          />
-          {error && <p className="mb-4 text-red-500">{error}</p>}
-          <Button
-            className="w-full bg-blue-600 text-white hover:bg-blue-700"
-            onClick={handleCreateVoice}
-            disabled={loading}
-          >
-            {loading ? "Creating..." : "Create"}
-          </Button>
-        </div>
-
+        {/* Mock Widget */}
+        <VoiceGeneratorMockup />
         {/* Voice Selection */}
         <h2 className="mb-8 text-center text-3xl font-bold">
           Choose Your Voice
