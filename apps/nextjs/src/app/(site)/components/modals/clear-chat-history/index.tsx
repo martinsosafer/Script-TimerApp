@@ -1,4 +1,7 @@
+import { useState } from "react";
 import Image from "next/image";
+
+import { IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 
 interface ModalProps {
   onConfirm: () => void;
@@ -9,6 +12,12 @@ export default function ClearChatHistoryModal({
   onConfirm,
   onClose,
 }: ModalProps) {
+  const [isLoading, setIsLoading] = useState(false);
+
+  function handleConfirm() {
+    onConfirm();
+  }
+
   return (
     <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center overflow-auto bg-black bg-opacity-50 backdrop-blur">
       <div className="flex w-[600px] flex-col items-center justify-between rounded-lg bg-white p-4">
@@ -28,16 +37,23 @@ export default function ClearChatHistoryModal({
         </p>
         <div className="flex w-full items-center justify-end gap-4">
           <button
-            className="rounded-md bg-gray-400 px-4 py-3 hover:bg-gray-300"
+            className="h-12 rounded-md bg-gray-400 px-4 py-3 hover:bg-gray-300"
             onClick={onClose}
           >
             Cancel
           </button>
           <button
-            className="rounded-md bg-red-700 px-4 py-3 text-white hover:bg-red-500"
-            onClick={onConfirm}
+            className="flex h-12 w-52 items-center justify-center rounded-md bg-red-700 px-2 py-3 text-white hover:bg-red-500"
+            onClick={() => {
+              setIsLoading(true);
+              handleConfirm();
+            }}
           >
-            DELETE CHAT HISTORY
+            {isLoading ? (
+              <IconSpinner className="h-6 w-6" />
+            ) : (
+              "DELETE CHAT HISTORY"
+            )}
           </button>
         </div>
       </div>
