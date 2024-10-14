@@ -32,7 +32,7 @@ export default function ChatFeedback({
   setIsEditingChatSubject,
 }: ChatFeedbackProps) {
   return (
-    <div className="mt-14 w-full">
+    <div className="mt-14 w-full" id="chatFeedback">
       <p className="p-2 text-center text-lg font-semibold text-primary">
         I made this for you:
       </p>
