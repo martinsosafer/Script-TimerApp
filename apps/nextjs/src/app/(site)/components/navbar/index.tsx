@@ -9,7 +9,6 @@ import { useTheme } from "next-themes";
 import { Button } from "@voiceai/ui";
 import {
   HoverCard,
-  HoverCardContent,
   HoverCardTrigger,
 } from "@voiceai/ui/@/components/ui/hover-card";
 import {
@@ -19,9 +18,7 @@ import {
 } from "@voiceai/ui/@/components/ui/icons";
 
 import { RevealText } from "~/app/animations/RevealText";
-import { hasValidPlan } from "../../siteUtils";
 import MobileNavBar from "../mobile-navbar";
-import ExperimentalNavItem from "./experimental";
 import ImagesNavItem from "./imaimages-nav-item";
 import MasterclassesNavItem from "./masterclass-nav-item";
 import PlagNavItem from "./plagiarism-nav-item";
@@ -30,6 +27,7 @@ import ProfileNavItem from "./profile-nav-item";
 import SignInOut from "./profile-nav-item/sign-in-out";
 import ScriptCoachNavItem from "./script-coach-nav-item";
 import TextToVoiceNavItem from "./text-to-voice-nav-item";
+import ToolsNavItem from "./tools-nav-item";
 import UpgradeNavItem from "./upgrade-nav-item";
 
 export interface NavBarProps {
@@ -96,6 +94,9 @@ export default function NewNavBar({ signOut, signIn, session }: NavBarProps) {
           </li>
           <li className="group relative px-3 py-2 text-primary-foreground hover:cursor-default">
             <PlansNavItem />
+          </li>
+          <li className="group relative px-3 py-2 text-primary-foreground hover:cursor-default">
+            <ToolsNavItem />
           </li>
         </ul>
       </nav>

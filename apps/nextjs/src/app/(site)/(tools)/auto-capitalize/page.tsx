@@ -1,18 +1,18 @@
-import Counter from "./counter";
-
-export default function WordsCounter() {
+export default function AutoCapitalize() {
   return (
     <div className="flex w-[1000px] flex-col items-center">
       <div className="my-8 flex w-full flex-col items-center">
         <h2 className="text-4xl font-bold text-primary">
-          Word & Character Counter
+          Auto capitalize Sentences
         </h2>
         <p className="mt-2 w-[600px] text-center text-lg">
-          Get an accurate word count of your text with our easy-to-use word
-          counter tool. Perfect for writers, students, and professionals.
+          Script timer instantly estimates your script time in minutes and
+          seconds. But there is more: Use a specialized Ai to listen, edit,
+          rewrite, and improve your scripts. Character, word, & page count. Word
+          density & sorting. Hemingway grading. Try them all.
         </p>
       </div>
-      <Counter />
+
       <div className="mb-20 p-4">
         <p className="mt-4">
           Word & Character Counter tool is a simple, yet powerful, online
