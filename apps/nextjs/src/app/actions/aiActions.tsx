@@ -10,6 +10,19 @@ import { auth } from "@voiceai/auth";
 
 import type { Chat } from "~/app/(site)/chat/chat-interaction/types";
 
+function formatDate(date: Date): string {
+  const pad = (num: number) => num.toString().padStart(2, "0");
+
+  const month = pad(date.getMonth() + 1);
+  const day = pad(date.getDate());
+  const year = date.getFullYear();
+
+  const hours = pad(date.getHours());
+  const minutes = pad(date.getMinutes());
+
+  return `${month}/${day}/${year} - ${hours}:${minutes}`;
+}
+
 async function saveChat({
   messages,
   selectedChatHistory,
@@ -29,7 +42,8 @@ async function saveChat({
     }
 
     const id = selectedChatHistory?.id ?? feedbackChatId;
-    const title = selectedChatHistory?.title ?? "New Chat";
+    const title =
+      selectedChatHistory?.title ?? `New Chat - ${formatDate(new Date())}`;
     const userId = session.user.id;
     const createdAt = Date.now();
 

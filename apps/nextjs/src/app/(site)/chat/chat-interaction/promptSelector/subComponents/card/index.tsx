@@ -7,6 +7,7 @@ interface PromptCardProps {
   card: Prompt;
   isSelected: boolean;
   setSelectedCard: Dispatch<SetStateAction<Prompt | undefined>>;
+  setIsInputMinimized: Dispatch<SetStateAction<boolean>>;
   isAddYourOwn?: boolean;
 }
 
@@ -39,13 +40,17 @@ export default function PromptCard({
   card,
   isSelected,
   setSelectedCard,
+  setIsInputMinimized,
   isAddYourOwn = false,
 }: PromptCardProps) {
   const { icon, name } = card;
   return (
     <button
       className={handleStyle(isSelected, isAddYourOwn).card}
-      onClick={() => setSelectedCard(card)}
+      onClick={() => {
+        setSelectedCard(card);
+        setIsInputMinimized(false);
+      }}
     >
       <div className={handleStyle(isSelected, isAddYourOwn).icon}>
         <Image src={icon} alt="manito" width={24} height={24} />

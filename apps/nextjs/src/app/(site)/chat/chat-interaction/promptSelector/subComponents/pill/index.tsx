@@ -10,6 +10,7 @@ interface SpeechPillProps {
   isSelected: boolean;
   setSelectedPill: Dispatch<SetStateAction<PromptSubType>>;
   setSelectedCard: Dispatch<SetStateAction<Prompt | undefined>>;
+  setIsInputMinimized: Dispatch<SetStateAction<boolean>>;
 }
 
 const pillStyles = {
@@ -23,6 +24,7 @@ export default function Pill({
   isSelected,
   setSelectedPill,
   setSelectedCard,
+  setIsInputMinimized,
 }: SpeechPillProps) {
   return (
     <button
@@ -30,6 +32,7 @@ export default function Pill({
       onClick={() => {
         setSelectedPill(speechPill);
         setSelectedCard(undefined);
+        setIsInputMinimized(false);
       }}
     >
       {speechPill}
