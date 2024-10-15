@@ -75,13 +75,13 @@ export default function NewNavBar({ signOut, signIn, session }: NavBarProps) {
 
       <nav className="mt-4 hidden md:block lg:block xl:block">
         <ul className="flex items-center justify-center font-semibold">
-          <li className="group relative items-center px-3 py-2 text-primary-foreground">
-            <TextToVoiceNavItem />
-          </li>
           <HoverCard>
             <HoverCardTrigger asChild>
               <li className="group relative px-3 py-2 text-primary-foreground">
                 <ScriptCoachNavItem />
+              </li>
+              <li className="group relative items-center px-3 py-2 text-primary-foreground">
+                <TextToVoiceNavItem />
               </li>
             </HoverCardTrigger>
           </HoverCard>
