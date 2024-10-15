@@ -15,7 +15,7 @@ const PlagiarismTable = forwardRef(
         yearlyMonthlyPrice: "",
         yearlyPrice: "",
 
-        color: "bg-blue-400",
+        color: "bg-gradient-to-br from-cyan-300 via-blue-300 to-blue-400",
         rowColor: "bg-white",
         features: {
           "Included words per month": { value: "1,250" },
@@ -35,7 +35,7 @@ const PlagiarismTable = forwardRef(
         yearlyPrice: 93,
         productIdMonth: "prod_QsC2gen4V6MFdx",
         productIdYear: "prod_QsC2uouKNghxvv",
-        color: "bg-blue-500",
+        color: "bg-gradient-to-br from-blue-300 via-blue-400 to-blue-500",
         rowColor: "bg-white",
         features: {
           "Included words per month": { value: "10,000" },
@@ -55,7 +55,7 @@ const PlagiarismTable = forwardRef(
         yearlyPrice: 132,
         productIdMonth: "prod_QsC286urBJ7Von",
         productIdYear: "prod_QsC2PGXx7AIB9Q",
-        color: "bg-blue-600",
+        color: "bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600",
         rowColor: "bg-white",
         label: "Most Popular",
         features: {
@@ -76,7 +76,7 @@ const PlagiarismTable = forwardRef(
         yearlyPrice: 197,
         productIdMonth: "prod_QsC2n4FMuspdNO",
         productIdYear: "prod_QsC2dmRjqQqtlZ",
-        color: "bg-blue-700",
+        color: "bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700",
         rowColor: "bg-white",
 
         features: {
@@ -225,7 +225,7 @@ const PlagiarismTable = forwardRef(
                     )}
 
                     <div
-                      className={`${tier.color} relative  rounded-lg p-1 py-6 text-center text-white`}
+                      className={`${tier.color} relative  w-[213px] rounded-lg p-1 py-6 text-center text-white`}
                     >
                       <div className="font-poppins text-xl">{tier.name}</div>
                       <div className="text-sm font-medium text-white">

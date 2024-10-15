@@ -16,7 +16,7 @@ function CheckoutButton2({ productId, hasPlan, session }: CheckoutButtonProps) {
   console.log("session", session);
   return (
     <button
-      className={`mt-1 block w-[85%] ${hasPlan ? "bg-gray-400" : "bg-white hover:bg-slate-300"}  px-1 py-2 text-center text-lg font-semibold leading-4 text-primary shadow-md transition duration-300 ease-in-out`}
+      className={`mt-1 block w-[50%] ${hasPlan ? "bg-gray-400" : "bg-white hover:bg-slate-300"}  px-1 py-2 text-center text-lg font-semibold leading-4 text-primary shadow-md transition duration-300 ease-in-out`}
       style={{ borderRadius: "1rem" }}
       disabled={hasPlan}
       onClick={

@@ -23,7 +23,7 @@ const PricingTable = ({
       price: "Free",
       yearlyPrice: "Free",
       yearlyMonthlyPrice: "",
-      color: "bg-blue-400",
+      color: "bg-gradient-to-br from-cyan-300 via-blue-300 to-blue-400",
       // rowColor: "bg-blue-100",
       rowColor: "bg-white",
       features: {
@@ -86,7 +86,7 @@ const PricingTable = ({
       yearlyPrice: 79,
       monthlyId: "prod_Q6wRBImx4i9jIV",
       yearlyId: "prod_Q6wRBImx4i9jIV",
-      color: "bg-blue-500",
+      color: "bg-gradient-to-br from-blue-300 via-blue-400 to-blue-500 ",
       // rowColor: "bg-blue-200",
       rowColor: "bg-white",
       features: {
@@ -148,7 +148,7 @@ const PricingTable = ({
       yearlyPrice: 177,
       monthlyId: "prod_Q6wRA3CPKOd872",
       yearlyId: "prod_Q6wR4wC3Y5Yili",
-      color: "bg-blue-600",
+      color: "bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600",
       // rowColor: "bg-blue-300",
       rowColor: "bg-white",
       label: "Most Popular",
@@ -211,7 +211,7 @@ const PricingTable = ({
       yearlyPrice: 297,
       monthlyId: "prod_Q6wRdg67cs52NR",
       yearlyId: "prod_Q6wAIfC2x07sMV",
-      color: "bg-blue-700",
+      color: "bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700",
       // rowColor: "bg-blue-400",
       rowColor: "bg-white",
       features: {
@@ -395,7 +395,7 @@ const PricingTable = ({
         <h1 className="mb-4 text-4xl font-bold text-primary lg:text-4xl">
           Co-Producer Plans
         </h1>
-        <p className="text-black-700 text-base lg:text-xl font-poppins">
+        <p className="text-black-700 font-poppins text-base lg:text-xl">
           Transform your ideas into
           <br /> perfect scripts, voice overs, and images
           <br /> in every language. ﻿
@@ -475,7 +475,7 @@ const PricingTable = ({
                   )}
 
                   <div
-                    className={`${tier.color} relative rounded-lg p-1 py-6 text-center text-white`}
+                    className={`${tier.color} relative w-[213px] rounded-lg p-1 py-6 text-center text-white`}
                   >
                     <div className="font-poppins text-xl">{tier.name}</div>
                     <div className="text-sm font-medium text-white">
@@ -506,7 +506,7 @@ const PricingTable = ({
                         {tier.name === "FREE" ? (
                           // Render 'Start Free Trial' button if the plan is free
                           <button
-                            className={`mt-[7px] block w-[85%] ${
+                            className={`mt-[7px] block w-[50%] ${
                               hasPlan(tier.name)
                                 ? "bg-gray-400"
                                 : "bg-white hover:bg-slate-300"

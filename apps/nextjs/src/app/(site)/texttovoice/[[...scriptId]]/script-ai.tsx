@@ -46,7 +46,7 @@ export function ScriptAI({
   const [script, setScript] = React.useState("");
   const [richContent, setRichContent] = React.useState("");
   const [selectedModel, setSelectedModel] = React.useState(null);
-  const [similarity, setSimilarity] = React.useState([0.8]);
+  const [similarity, setSimilarity] = React.useState([0.5]);
   const [stability, setStability] = React.useState([0.5]);
   const [loading, setLoading] = React.useState(false);
   // If script is selected from URL path parameter, load in state from db
@@ -178,6 +178,8 @@ export function ScriptAI({
                 subData={subData}
                 stability={stability}
                 setStability={setStability}
+                similarity={similarity}
+                setSimilarity={setSimilarity}
               />
               <TabTwo
                 script={script}

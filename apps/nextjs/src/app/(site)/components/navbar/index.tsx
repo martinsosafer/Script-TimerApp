@@ -86,10 +86,10 @@ export default function NewNavBar({ signOut, signIn, session }: NavBarProps) {
             </HoverCardTrigger>
           </HoverCard>
           <li className="group relative px-3 py-2 text-primary-foreground hover:cursor-default">
-            <PlagNavItem />
+            <ImagesNavItem />
           </li>
           <li className="group relative px-3 py-2 text-primary-foreground hover:cursor-default">
-            <ImagesNavItem />
+            <PlagNavItem />
           </li>
           <li className="group relative px-3 py-2 text-primary-foreground hover:cursor-default">
             <MasterclassesNavItem />
