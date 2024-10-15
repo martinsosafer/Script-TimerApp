@@ -80,11 +80,12 @@ export default function NewNavBar({ signOut, signIn, session }: NavBarProps) {
               <li className="group relative px-3 py-2 text-primary-foreground">
                 <ScriptCoachNavItem />
               </li>
-              <li className="group relative items-center px-3 py-2 text-primary-foreground">
-                <TextToVoiceNavItem />
-              </li>
             </HoverCardTrigger>
           </HoverCard>
+          <li className="group relative items-center px-3 py-2 text-primary-foreground">
+            <TextToVoiceNavItem />
+          </li>
+
           <li className="group relative px-3 py-2 text-primary-foreground hover:cursor-default">
             <ImagesNavItem />
           </li>
