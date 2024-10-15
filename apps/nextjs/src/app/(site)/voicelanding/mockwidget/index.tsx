@@ -69,39 +69,41 @@ export default function VoiceGeneratorMockup() {
       </div>
 
       <AnimatePresence mode="wait">
-        <motion.div
-          key={activeTab}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.3 }}
-        >
-          {activeTab === "Text to speech" && (
-            <TTSMock
-              text={text}
-              setText={setText}
-              languages={languages}
-              selectedLanguage={selectedLanguage}
-              setSelectedLanguage={setSelectedLanguage}
-              tasks={tasks}
-              selectedTask={selectedTask}
-              handleTaskChange={handleTaskChange}
-              voices={voices}
-              selectedVoice={selectedVoice}
-              setSelectedVoice={setSelectedVoice}
-              handlePlay={handlePlay}
-              maxLength={500} // Optional: Can be omitted if default is fine
-            />
-          )}
+        <div>
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            {activeTab === "Text to speech" && (
+              <TTSMock
+                text={text}
+                setText={setText}
+                languages={languages}
+                selectedLanguage={selectedLanguage}
+                setSelectedLanguage={setSelectedLanguage}
+                tasks={tasks}
+                selectedTask={selectedTask}
+                handleTaskChange={handleTaskChange}
+                voices={voices}
+                selectedVoice={selectedVoice}
+                setSelectedVoice={setSelectedVoice}
+                handlePlay={handlePlay}
+                maxLength={500} // Optional: Can be omitted if default is fine
+              />
+            )}
 
-          {activeTab === "Voice Cloning" && <CloneMock />}
+            {activeTab === "Voice Cloning" && <CloneMock />}
 
-          {activeTab === "Script Ai" && <ScriptAiMock />}
+            {activeTab === "Script Ai" && <ScriptAiMock />}
 
-          {activeTab === "Images" && <ImageGenerationMock />}
+            {activeTab === "Images" && <ImageGenerationMock />}
 
-          {activeTab === "Plagiarism/Ai Check" && <PlagiarismCheckMock />}
-        </motion.div>
+            {activeTab === "Plagiarism/Ai Check" && <PlagiarismCheckMock />}
+          </motion.div>
+        </div>
       </AnimatePresence>
 
       <Button className="mt-6 w-full bg-blue-600 text-white hover:bg-blue-700">

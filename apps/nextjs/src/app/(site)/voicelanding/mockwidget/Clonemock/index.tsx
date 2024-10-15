@@ -62,13 +62,16 @@ export default function CloneMock() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-3xl space-y-8 rounded-lg bg-white p-6 shadow">
+    <div
+      className="mx-auto w-full max-w-3xl  rounded-lg bg-white  shadow"
+      style={{ minHeight: "250px" }}
+    >
       {voiceData.map((voice) => (
         <div
           key={voice.name}
-          className="flex flex-col items-center justify-between rounded-lg bg-gray-50 p-6 sm:flex-row"
+          className="flex flex-col items-center justify-between rounded-lg bg-gray-50 p-3 sm:flex-row"
         >
-          <div className="mb-4 flex items-center space-x-4 sm:mb-0">
+          <div className="mb-1 flex items-center space-x-4 sm:mb-0">
             <Avatar className="h-16 w-16">
               <AvatarImage src={voice.avatar} alt={voice.name} />
               <AvatarFallback>{voice.name[0]}</AvatarFallback>

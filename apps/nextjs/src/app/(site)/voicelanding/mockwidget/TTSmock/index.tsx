@@ -33,7 +33,7 @@ const TTSMock = ({
   maxLength = 500, // Default maxLength if not provided
 }) => {
   return (
-    <div>
+    <div style={{ minHeight: "250px" }}>
       <textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
