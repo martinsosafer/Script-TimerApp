@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 
-import { counterHelper, wordsFrecuency } from "./utils";
+import { counterHelper, wordsFrecuency } from "../../utils";
+import type { CounterValues } from "../../utils";
 
 export default function Counter() {
-  const [counterValues, setCounterValues] = useState({
+  const [counterValues, setCounterValues] = useState<CounterValues>({
     words: 0,
     characters: 0,
     allCharacters: 0,
@@ -39,11 +40,11 @@ export default function Counter() {
       </p>
       <p className="text-lg font-semibold text-gray-700">
         Characters (including spaces):{" "}
-        <span className="font-normal">{counterValues.characters}</span>
+        <span className="font-normal">{counterValues.allCharacters}</span>
       </p>
       <p className="text-lg font-semibold text-gray-700">
         Characters (excluding spaces):{" "}
-        <span className="font-normal">{counterValues.allCharacters}</span>
+        <span className="font-normal">{counterValues.characters}</span>
       </p>
       <p className="text-lg font-semibold text-gray-700">
         Sentences:{" "}

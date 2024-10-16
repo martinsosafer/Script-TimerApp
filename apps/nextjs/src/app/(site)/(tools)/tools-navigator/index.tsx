@@ -7,6 +7,8 @@ const tools = [
   { label: "Words Counter", href: "/words-counter" },
   { label: "Words to Time", href: "/words-to-time" },
   { label: "Auto Capitalize", href: "/auto-capitalize" },
+  { label: "Grade Level", href: "/grade-level" },
+  { label: "Words Sorter", href: "/words-sorter" },
 ];
 
 export default function ToolsNavigator() {

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { calculateTime, defineTimeText } from "./utils";
+import { calculateTime, defineTimeText } from "../../utils";
 
 type SpeedValues = 1.5 | 2 | 2.5 | 3 | 3.5;
 interface Result {
@@ -44,16 +44,16 @@ export default function TimeCalculator() {
       />
       <div className="min-h-20 relative mt-2 flex w-full flex-col items-center justify-center rounded-md bg-primary p-4">
         {result && (
-          <article className="mb-2 mt-2 flex flex-col items-center gap-2 text-white">
-            <h4 className="text-2xl font-semibold">{result.title}</h4>
-            <p>
+          <article className="mb-3 mt-2 flex flex-col items-center gap-2 text-white">
+            <h4 className="text-3xl font-semibold">{result.title}</h4>
+            <p className="text-center text-xl">
               {`Your script has ${result.words} ${result.words === 1 ? "word" : "words"}.  We estimate a recording of
                 it would be ${defineTimeText(result.seconds, result.minutes)}, if you average ${result.speed} words per second.`}
             </p>
           </article>
         )}
 
-        <div className="relative mt-2 mt-2 flex w-full items-center justify-between">
+        <div className="relative mt-2 flex w-full items-center justify-between">
           {speedValues.map((value) => {
             return (
               <button
