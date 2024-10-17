@@ -72,7 +72,7 @@ export default function NewNavBar({ signOut, signIn, session }: NavBarProps) {
       </Link>
 
       <nav className="mt-4 hidden md:block lg:block xl:block">
-        <ul className="flex items-center justify-center font-semibold">
+        <ul className="mt-1 flex items-start justify-center font-semibold">
           <li className="group relative items-center px-3 py-2 text-primary-foreground">
             <TextToVoiceNavItem />
           </li>
