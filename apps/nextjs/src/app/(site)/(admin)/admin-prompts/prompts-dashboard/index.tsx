@@ -36,7 +36,8 @@ export default function PromptsDashboard() {
         <div className="mt-8">
           {isLoading && <div>Loading...</div>}
           {isError && <div>Error fetching data</div>}
-          {allPrompts && (
+          {allPrompts && allPrompts.length === 0 && <div>No prompts found</div>}
+          {allPrompts && allPrompts.length > 0 && (
             <div>
               <div className="mb-2 flex w-full text-lg">
                 <div className="w-[20%] p-1 font-bold">Name</div>
