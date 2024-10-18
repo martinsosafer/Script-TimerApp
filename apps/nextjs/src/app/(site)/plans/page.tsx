@@ -146,7 +146,8 @@ async function PlansPage() {
   if (session) {
     subscription = await getSubscription(session?.user.subscription?.planId);
   }
-
+  console.log("MONTH", monthlyPlans);
+  console.log("Yearly", yearlyPlans);
   return (
     <div className="flex w-full flex-col items-center">
       <PlansSections

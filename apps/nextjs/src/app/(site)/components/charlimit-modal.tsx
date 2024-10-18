@@ -9,6 +9,12 @@ const CHAR_LIMITS: Record<string, number> = {
   STUDENT: 2000,
   CREATOR: 5000,
   BUSINESS: 10000,
+  STUDENTCLMO: 2000,
+  CREATORCLMO: 5000,
+  BUSINESSCLMO: 10000,
+  STUDENTCLYR: 2000,
+  CREATORCLYR: 5000,
+  BUSINESSCLYR: 10000,
 };
 
 interface ModalProps {
@@ -21,33 +27,34 @@ const CharLimitModal = ({ onClose, subData }: ModalProps) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="rounded-lg border border-4  border-primary bg-white p-6 shadow-lg">
-        <h2 className="mb-4 font-poppins text-lg font-bold">
-          <span className="font-poppins   font-bold  text-red-500">
-            Warning:{" "}
-          </span>
-          Character Limit Exceeded
-        </h2>
-        <p>
-          You have exceeded the{" "}
-          <span className="font-semibold text-primary">
-            {planCharacterLimit}
-          </span>{" "}
-          character limit for this plan.
-        </p>
-        <div className="mt-6 flex justify-end space-x-4">
-          <button className="rounded bg-blue-500 px-4 py-2 transition-colors duration-200 hover:bg-blue-600">
-            <Link href="/plans" className="flex items-center gap-2 text-white">
-              <span className="font-poppins">Upgrade</span>
-              <IconUpgrades className="text-white" />
+      <div className="w-full max-w-md rounded-lg border-4 border-blue-500 bg-white shadow-lg">
+        <div className="flex flex-col items-center p-6">
+          <h2 className="mb-4 text-center text-2xl font-bold text-primary">
+            Character limit exceeded
+          </h2>
+          <p className="mb-8 max-w-[80%] text-center">
+            You have exceeded the character limit
+            <br />
+            <span className="font-bold text-primary">
+              {planCharacterLimit} characters
+            </span>
+            <br />
+            for this plan
+          </p>
+          <div className="flex w-full justify-center space-x-4">
+            <button
+              onClick={onClose}
+              className="text- rounded-md border-2 border-primary px-6 py-2 font-semibold transition-colors duration-200 hover:bg-blue-50"
+            >
+              Close
+            </button>
+            <Link
+              href="/plans"
+              className="rounded-md bg-primary px-6 py-2 font-semibold text-white transition-colors duration-200 hover:bg-blue-600"
+            >
+              Upgrade
             </Link>
-          </button>
-          <button
-            className="rounded border-2 border-black px-4 py-2 text-black transition-colors duration-200 hover:bg-gray-100"
-            onClick={onClose}
-          >
-            Close
-          </button>
+          </div>
         </div>
       </div>
     </div>

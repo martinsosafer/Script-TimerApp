@@ -1,14 +1,9 @@
 import type { Metadata } from "next";
 
-
-
 import { auth } from "@voiceai/auth";
-
-
 
 import { monthlyCreditsReset } from "../actions/monthlyCreditsReset";
 import Home from "./components/home";
-
 
 export const metadata: Metadata = {
   title: "Script Timer",
@@ -34,6 +29,8 @@ export default async function LandingPage() {
     : null;
 
   const trialNextToExpire = daysToExpire ? daysToExpire <= 2 : false;
-
-  return <Home user={userId} trialExpiration={trialNextToExpire} />;
+  const session = await auth();
+  return (
+    <Home user={userId} trialExpiration={trialNextToExpire} session={session} />
+  );
 }
