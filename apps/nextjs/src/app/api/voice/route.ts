@@ -82,7 +82,7 @@ export async function POST(req: { json: () => any }) {
       ![
         "BUSINESS",
         "STUDENT",
-        "CREATOR,STUDENTCLMO,STUDENTCLMO,CREATORCLMO,BUSINESSCLMO,STUDENTCLYR,CREATORCLYR,BUSINESSCLYR",
+        "CREATOR","STUDENTCLMO","STUDENTCLMO","CREATORCLMO","BUSINESSCLMO","STUDENTCLYR","CREATORCLYR","BUSINESSCLYR",
       ].includes(subscription?.status)
     ) {
       message = addWatermark(message);
