@@ -1,5 +1,6 @@
 import React from "react";
 
+import { SimilaritySelector } from "../../similarity-selector";
 import { StabilitySelector } from "../../stability-selector";
 import VoiceWidget from "../voicewidget/voicewidget";
 
@@ -10,6 +11,8 @@ const TabOne = ({
   subData,
   stability,
   setStability,
+  similarity,
+  setSimilarity,
 }) => {
   return (
     <div className="flex flex-col space-y-4 md:order-1">
@@ -22,6 +25,7 @@ const TabOne = ({
         />
 
         <StabilitySelector value={stability} onValueChange={setStability} />
+        <SimilaritySelector value={similarity} onValueChange={setSimilarity} />
       </div>
     </div>
   );

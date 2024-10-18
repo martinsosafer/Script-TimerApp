@@ -78,7 +78,13 @@ export async function POST(req: { json: () => any }) {
       .where(eq(elevenLabsCredit.userId, userId));
 
     let message = body.text;
-    if (!["BUSINESS", "STUDENT", "CREATOR"].includes(subscription?.status)) {
+    if (
+      ![
+        "BUSINESS",
+        "STUDENT",
+        "CREATOR,STUDENTCLMO,STUDENTCLMO,CREATORCLMO,BUSINESSCLMO,STUDENTCLYR,CREATORCLYR,BUSINESSCLYR",
+      ].includes(subscription?.status)
+    ) {
       message = addWatermark(message);
     }
 

@@ -75,9 +75,6 @@ export default function NewNavBar({ signOut, signIn, session }: NavBarProps) {
 
       <nav className="mt-4 hidden md:block lg:block xl:block">
         <ul className="flex items-center justify-center font-semibold">
-          <li className="group relative items-center px-3 py-2 text-primary-foreground">
-            <TextToVoiceNavItem />
-          </li>
           <HoverCard>
             <HoverCardTrigger asChild>
               <li className="group relative px-3 py-2 text-primary-foreground">
@@ -85,11 +82,15 @@ export default function NewNavBar({ signOut, signIn, session }: NavBarProps) {
               </li>
             </HoverCardTrigger>
           </HoverCard>
-          <li className="group relative px-3 py-2 text-primary-foreground hover:cursor-default">
-            <PlagNavItem />
+          <li className="group relative items-center px-3 py-2 text-primary-foreground">
+            <TextToVoiceNavItem />
           </li>
+
           <li className="group relative px-3 py-2 text-primary-foreground hover:cursor-default">
             <ImagesNavItem />
+          </li>
+          <li className="group relative px-3 py-2 text-primary-foreground hover:cursor-default">
+            <PlagNavItem />
           </li>
           <li className="group relative px-3 py-2 text-primary-foreground hover:cursor-default">
             <MasterclassesNavItem />

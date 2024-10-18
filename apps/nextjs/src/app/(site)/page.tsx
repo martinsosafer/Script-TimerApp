@@ -1,14 +1,9 @@
 import type { Metadata } from "next";
 
-
-
 import { auth } from "@voiceai/auth";
-
-
 
 import { monthlyCreditsReset } from "../actions/monthlyCreditsReset";
 import Home from "./components/home";
-
 
 export const metadata: Metadata = {
   title: "Script Timer",
