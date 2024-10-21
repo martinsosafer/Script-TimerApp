@@ -44,7 +44,7 @@ const CharLimitModal = ({ onClose, subData }: ModalProps) => {
           <div className="flex w-full justify-center space-x-4">
             <button
               onClick={onClose}
-              className="text- rounded-md border-2 border-primary px-6 py-2 font-semibold transition-colors duration-200 hover:bg-blue-50"
+              className="text- rounded-md border-2 border-primary px-6 py-2 font-semibold text-primary transition-colors duration-200 hover:bg-blue-50"
             >
               Close
             </button>
