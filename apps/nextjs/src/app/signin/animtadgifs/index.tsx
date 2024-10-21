@@ -22,7 +22,7 @@ export default function AnimatedGifs() {
   }, []);
 
   return (
-    <div className="relative flex h-screen w-full items-center justify-center bg-gradient-to-r from-black to-blue-600 p-10 text-white">
+    <div className="relative flex h-screen w-full items-center justify-center bg-gradient-to-tr from-black to-blue-500 p-10 text-white">
       <div className="relative h-[530px] w-[365px]">
         {/* AI Hollywood GIF */}
         <motion.div
