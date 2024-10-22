@@ -1,0 +1,166 @@
+import Image from "next/image";
+
+import { roboto } from "~/app/fonts";
+import CheckoutButton from "./checkout-button";
+
+const description: Record<string, string> = {
+  FREE: "Good for hobbyist",
+  EDUCATION: "Discounted for .edu emails",
+  CREATOR: "Ideal for creatives professionals",
+  BUSINESS: "Best for brand marketers",
+};
+
+interface Price {
+  monthly: string;
+  yearly: string;
+}
+
+const price: Record<string, Price> = {
+  FREE: { monthly: "Free", yearly: "Free" },
+  EDUCATION: { monthly: "$9", yearly: "$6.58" },
+  CREATOR: { monthly: "$19", yearly: "$14.75" },
+  BUSINESS: { monthly: "$39", yearly: "$24.75" },
+};
+
+interface ProductId {
+  monthly: string | null;
+  yearly: string | null;
+}
+
+const productIds: Record<string, ProductId> = {
+  FREE: { monthly: null, yearly: null },
+  EDUCATION: { monthly: "prod_Q6wRBImx4i9jIV", yearly: "$prod_Q6wRBImx4i9jIV" },
+  CREATOR: { monthly: "prod_Q6wRA3CPKOd872", yearly: "prod_Q6wR4wC3Y5Yili" },
+  BUSINESS: { monthly: "prod_Q6wRdg67cs52NR", yearly: "prod_Q6wAIfC2x07sMV" },
+};
+
+function RegularCard({
+  type,
+  period,
+  session,
+  interval,
+}: {
+  type: "FREE" | "EDUCATION" | "CREATOR" | "BUSINESS";
+  period: "monthly" | "yearly";
+}) {
+  console.log("Session", session);
+  console.log("Interval", interval);
+  return (
+    <>
+      {type === "CREATOR" ? (
+        <div className="relative shadow-md">
+          <Image
+            alt="Crown Icon"
+            src="/icons/Crown.svg"
+            width={65}
+            height={65}
+            className="absolute -right-6 -top-11 z-10"
+          />
+          <div className="bg-cp-primary relative flex h-[318px] w-[195px] flex-col items-center justify-between overflow-hidden rounded-md text-white shadow-md">
+            <span className="bg-cp-accent flex h-[21px] w-full items-center justify-center text-[11px] font-semibold text-black">
+              MOST POPULAR
+            </span>
+            <div className="flex h-full flex-col items-center justify-between p-4">
+              <div className="flex flex-col items-center">
+                <h3 className="text-center text-[24px] font-semibold text-white">
+                  {type}
+                </h3>
+                <p
+                  className={`${roboto.className} mt-[4px] text-center text-[14px]`}
+                >
+                  {description[type]}
+                </p>
+                <span className="mt-[20px] text-center text-[34px] font-bold">
+                  {price[type]?.[period]}
+                  <span
+                    className={`${roboto.className} text-[14px] font-light`}
+                  >
+                    /month
+                  </span>
+                </span>
+              </div>
+              <CheckoutButton
+                type="accent"
+                productId={productIds[type]?.[period]}
+                session={session}
+                hasPlan={session?.user.subscription?.status === type}
+              />
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="flex h-[281px] w-[195px] flex-col items-center justify-between rounded-md bg-white p-4 shadow-md">
+          <div className="flex flex-col items-center">
+            <h3 className="text-cp-primary text-center text-[24px] font-semibold">
+              {type}
+            </h3>
+            <p
+              className={`${roboto.className} mt-[4px] h-[40px] px-6 text-center text-[14px]`}
+            >
+              {description[type]}
+            </p>
+            <span className="mt-[20px] text-center text-[34px] font-bold">
+              {price[type]?.[period]}
+              <span className={`${roboto.className} text-[14px] font-light`}>
+                {type !== "FREE" && "/month"}
+              </span>
+            </span>
+            {type === "FREE" && (
+              <span
+                className={`${roboto.className} mt-[10px] text-center text-[16px] font-light`}
+              >
+                No cart needed
+              </span>
+            )}
+          </div>
+          <CheckoutButton
+            type="primary"
+            productId={productIds[type]?.[period]}
+            session={session}
+            hasPlan={
+              session?.user.subscription?.status === type ||
+              session?.user.subscription?.status === "FREE_TRIAL"
+            }
+          />
+        </div>
+      )}
+    </>
+  );
+}
+
+export default function PlansCards({
+  period,
+  session,
+  interval,
+}: {
+  period: "monthly" | "yearly";
+}) {
+  return (
+    <section className="mt-[52px] flex w-[1024px] items-center justify-center gap-4">
+      <RegularCard
+        type="FREE"
+        period={period}
+        session={session}
+        interval={interval}
+      />
+      <RegularCard
+        type="EDUCATION"
+        period={period}
+        session={session}
+        interval={interval}
+      />
+      <RegularCard
+        type="CREATOR"
+        period={period}
+        session={session}
+        interval={interval}
+      />
+      <RegularCard
+        type="BUSINESS"
+        period={period}
+        session={session}
+        interval={interval}
+      />
+    </section>
+  );
+}

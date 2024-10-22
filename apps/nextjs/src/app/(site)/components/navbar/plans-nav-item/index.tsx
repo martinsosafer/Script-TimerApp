@@ -5,7 +5,7 @@ import { IconHandshake, IconWallet } from "@voiceai/ui/@/components/ui/icons";
 export default function PlansNavItem() {
   return (
     <Link
-      href="/plans"
+      href="/new-plans"
       className="mb-3 flex cursor-pointer flex-col items-center"
     >
       <div className="mb-1">
