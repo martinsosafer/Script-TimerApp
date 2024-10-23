@@ -34,7 +34,7 @@ export default function LanguagesRows() {
   return (
     <>
       <p className="mt-[100px] text-center text-[24px] font-bold">
-        Our ai supports the following languages
+        Our AI supports the following languages
       </p>
 
       <div className="mt-[48px] grid grid-cols-2 gap-x-8 gap-y-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5">

@@ -18,7 +18,7 @@ export default function Compare() {
         replaces
       </p>
       <div className="relative mt-[48px] h-[720px] w-[740px]">
-        <Image alt="Compare" src="/Compare-table.png" fill />
+        <Image alt="Compare" src="/Compare-table.png" fill quality={100} />
       </div>
       <div className="flex w-[740px]">
         <div className="w-[300px]" />
