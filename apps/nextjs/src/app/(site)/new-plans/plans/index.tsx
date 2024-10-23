@@ -20,7 +20,7 @@ interface PlansProps {
 }
 
 export default function Plans({ session, subscription }: PlansProps) {
-  const [period, setPeriod] = useState<"monthly" | "yearly">("monthly");
+  const [period, setPeriod] = useState<"monthly" | "yearly">("yearly");
 
   return (
     <>

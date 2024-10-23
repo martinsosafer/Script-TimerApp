@@ -13,13 +13,14 @@ const description: Record<string, string> = {
 interface Price {
   monthly: string;
   yearly: string;
+  total?: string;
 }
 
 const price: Record<string, Price> = {
   FREE: { monthly: "Free", yearly: "Free" },
-  EDUCATION: { monthly: "$9", yearly: "$6.58" },
-  CREATOR: { monthly: "$19", yearly: "$14.75" },
-  BUSINESS: { monthly: "$39", yearly: "$24.75" },
+  EDUCATION: { monthly: "$9", yearly: "$6.58", total: "$79/year" },
+  CREATOR: { monthly: "$19", yearly: "$14.75", total: "$177/year" },
+  BUSINESS: { monthly: "$39", yearly: "$24.75", total: "$297/year" },
 };
 
 interface ProductId {
@@ -56,7 +57,7 @@ function RegularCard({
             height={65}
             className="absolute -right-6 -top-11 z-10"
           />
-          <div className="bg-cp-primary relative flex h-[318px] w-[195px] flex-col items-center justify-between overflow-hidden rounded-md text-white shadow-md">
+          <div className="bg-cp-primary relative flex h-[441px] w-[195px] flex-col items-center justify-between overflow-hidden rounded-md text-white shadow-md">
             <span className="bg-cp-accent flex h-[21px] w-full items-center justify-center text-[11px] font-semibold text-black">
               MOST POPULAR
             </span>
@@ -70,7 +71,16 @@ function RegularCard({
                 >
                   {description[type]}
                 </p>
-                <span className="mt-[20px] text-center text-[34px] font-bold">
+                <div
+                  className={`${roboto.className} mt-[10px] flex flex-col items-center p-2 text-[14px]`}
+                >
+                  <span>Voice AI</span>
+                  <span>Script Writing</span>
+                  <span>Image Creation</span>
+                  <span>Plagiarism Detection</span>
+                  <span>Training</span>
+                </div>
+                <span className="mt-[10px] text-center text-[34px] font-bold">
                   {price[type]?.[period]}
                   <span
                     className={`${roboto.className} text-[14px] font-light`}
@@ -78,6 +88,13 @@ function RegularCard({
                     /month
                   </span>
                 </span>
+                {period === "yearly" && (
+                  <span
+                    className={`${roboto.className} mb-[10px] mt-[2px] text-center text-[16px] font-light`}
+                  >
+                    {price[type]?.total}
+                  </span>
+                )}
               </div>
               <CheckoutButton
                 type="accent"
@@ -89,7 +106,7 @@ function RegularCard({
           </div>
         </div>
       ) : (
-        <div className="flex h-[281px] w-[195px] flex-col items-center justify-between rounded-md bg-white p-4 shadow-md">
+        <div className="flex h-[390px] w-[195px] flex-col items-center justify-between rounded-md bg-white p-4 shadow-md">
           <div className="flex flex-col items-center">
             <h3 className="text-cp-primary text-center text-[24px] font-semibold">
               {type}
@@ -99,7 +116,16 @@ function RegularCard({
             >
               {description[type]}
             </p>
-            <span className="mt-[20px] text-center text-[34px] font-bold">
+            <div
+              className={`${roboto.className} mt-[10px] flex flex-col items-center p-2 text-[14px]`}
+            >
+              <span>Voice AI</span>
+              <span>Script Writing</span>
+              <span>Image Creation</span>
+              <span>Plagiarism Detection</span>
+              <span>Training</span>
+            </div>
+            <span className="mt-[10px] text-center text-[34px] font-bold">
               {price[type]?.[period]}
               <span className={`${roboto.className} text-[14px] font-light`}>
                 {type !== "FREE" && "/month"}
@@ -107,9 +133,16 @@ function RegularCard({
             </span>
             {type === "FREE" && (
               <span
-                className={`${roboto.className} mt-[10px] text-center text-[16px] font-light`}
+                className={`${roboto.className} mb-[10px] mt-[2px] text-center text-[16px] font-light`}
               >
-                No cart needed
+                No card needed
+              </span>
+            )}
+            {period === "yearly" && type !== "FREE" && (
+              <span
+                className={`${roboto.className} mb-[10px] mt-[2px] text-center text-[16px] font-light`}
+              >
+                {price[type]?.total}
               </span>
             )}
           </div>
