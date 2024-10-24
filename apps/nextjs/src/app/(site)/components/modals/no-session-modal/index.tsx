@@ -12,6 +12,7 @@ import { Card, CardContent } from "@voiceai/ui/@/components/ui/card";
 import { IconStop } from "@voiceai/ui/@/components/ui/icons";
 import { PlayIcon } from "@voiceai/ui/@/icons/icons";
 
+import { poppins } from "~/app/fonts";
 import type { SubscriptionData } from "~/lib/types";
 import ScriptCoachImg from "../modalimgs/DirectorImg.png";
 import HeroAvatar from "../modalimgs/HeroAvatar.png";
@@ -63,8 +64,8 @@ const pageData: Record<
       "Export audio files for use in projects",
       "Clone voices with just an example audio",
     ],
-    message: "Listen To Your Script",
-    subMessage: "",
+    message: "Almost there ! ",
+    subMessage: "Please , create an account to listen to your script!",
   },
   chat: {
     image: ScriptCoachImg,
@@ -152,80 +153,102 @@ export default function NoSessionModal({
   };
   const currentPage = pageData[page];
   return (
-    <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50 p-4 backdrop-blur">
-      <div className="w-full max-w-4xl overflow-hidden rounded-lg border border-primary bg-white shadow-xl">
-        <div className="flex flex-col md:flex-row">
+    <div
+      className={`fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50 p-4 backdrop-blur ${poppins.className}`}
+    >
+      <div className="h-[545px] w-[925px] overflow-hidden rounded-xl border border-primary bg-white shadow-xl">
+        <div className="flex  flex-col md:flex-row">
           {/* Left section */}
-          <div className="w-full items-center bg-gray-100 p-6 pt-[60px] md:w-1/2">
+          <div className="flex h-[545px] w-[400px] flex-col items-center justify-center bg-gray-100 md:w-1/2">
             {/* Conditionally render this section only on the home page */}
-            {page === "home" && (
-              <div className="flex items-center justify-center">
-                <Card className="mb-6 w-72 border-2 border-black">
-                  <CardContent className="flex items-center justify-between p-2">
-                    <div className="flex items-center space-x-4">
-                      <Avatar>
-                        <AvatarImage src={HeroAvatar.src} alt="David" />
-                        <AvatarFallback>DM</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <p className="font-semibold">David (Male)</p>
-                        <p className="text-sm text-gray-500">
-                          English Male Voice
-                        </p>
+            {page === "home" ||
+              ("voice" && (
+                <div className="flex h-[442px] w-[328px] flex-col items-center justify-center px-[36px] pt-[52px]">
+                  <Card className=" h-[79px] w-[241px] rounded-lg border border-black ">
+                    <CardContent className="flex h-full w-full items-center justify-between px-[12px] py-[18px]">
+                      <div className="flex items-center space-x-[10px]">
+                        <Avatar className="h-[42px] w-[39px]">
+                          <AvatarImage src={HeroAvatar.src} alt="David" />
+                          <AvatarFallback>DM</AvatarFallback>
+                        </Avatar>
+                        <div className="h-[38px] w-[128px]">
+                          <p className="mb-[3px] text-[13px] font-bold leading-[18px]">
+                            David (Male)
+                          </p>
+                          <p className="text-[12px] font-normal leading-[17px] text-gray-500">
+                            English Male Voice
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                    <button
-                      onClick={toggleAudio}
-                      className="rounded-full bg-tertiary p-2 text-white hover:bg-orange-600 focus:outline-none"
-                      aria-label={isPlaying ? "Stop audio" : "Play audio"}
-                    >
-                      {isPlaying ? (
-                        <IconStop className="h-6 w-6" />
-                      ) : (
-                        <PlayIcon className="h-6 w-6" />
-                      )}
-                    </button>
-                  </CardContent>
-                </Card>
-              </div>
-            )}
+                      <div className="flex h-[43px] w-[43px] items-center ">
+                        <button
+                          onClick={toggleAudio}
+                          className="border-cp-secondary text-cp-secondary hover:bg-cp-secondary flex h-[36px] w-[36px] items-center justify-center rounded-full border transition-colors duration-300 ease-in-out hover:text-white focus:outline-none"
+                          aria-label={isPlaying ? "Stop audio" : "Play audio"}
+                        >
+                          {isPlaying ? (
+                            <IconStop className=" h-[14px] w-[14px] " />
+                          ) : (
+                            <PlayIcon className=" h-[14px] w-[14px]" />
+                          )}
+                        </button>
+                      </div>
+                    </CardContent>
+                  </Card>
 
-            <div className="flex items-center justify-center">
-              <Image
-                src={currentPage?.image}
-                alt="Cartoon character ,hero of co-producer!"
-                width={350}
-                height={350}
-              />
-            </div>
+                  {/* Image Section */}
+                  <div className="mb-[52px] mt-[33px]">
+                    <div className="relative h-[330px] w-[330px]  px-[35px]  ">
+                      <Image
+                        src={currentPage?.image}
+                        alt="Cartoon character, hero of co-producer!"
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
           </div>
 
           {/* Right section */}
-          <div className="r w-full bg-primary p-6 pt-[60px] text-white md:w-1/2">
-            <div className=" mb-11">
-              <h2 className="mb-2 text-center text-4xl font-bold">
-                {currentPage?.message}
-              </h2>
-              {currentPage?.subMessage && (
-                <p className=" text-center text-lg font-semibold">
-                  {currentPage.subMessage}
+          <div className="bg-cp-primary flex w-full flex-col items-center text-white">
+            {/* Content */}
+
+            <div className="flex h-[322px] w-[375px] flex-col items-center justify-start px-[75px] pt-[60px]">
+              <div className="mb-[44px] h-[85px] w-[375px] items-center">
+                <h2 className="mb-2 text-center text-[24px] font-bold leading-[33.6px]">
+                  {currentPage?.message}
+                </h2>
+                {currentPage?.subMessage && (
+                  <p className="text-center text-[16px] font-bold leading-[22px]">
+                    {currentPage.subMessage}
+                  </p>
+                )}
+              </div>
+              <div className="h-[192px] w-[375px]">
+                <p className="mb-2 text-left text-[20px] font-bold leading-[28px]">
+                  Start Creating:
                 </p>
-              )}
+                <div className=" h-[149px] w-[374px]">
+                  <ul className="list-inside list-disc font-roboto text-lg">
+                    {currentPage?.list.map((item, index) => (
+                      <li key={index} className="mb-2 ml-3">
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-[30px] h-[73px] w-[375px] ">
+                    <button className="bg-cp-secondary mb-[8px] h-[45px] w-[375px] rounded-md px-[24px] py-[2px]  font-bold uppercase leading-[20px] text-white hover:bg-orange-500">
+                      <Link href="/signin">LOGIN-FREE</Link>
+                    </button>
+                    <p className=" text-center font-poppins text-[14px] font-normal leading-5">
+                      Free trial. No credit card needed.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <p className="mb-6 ml-6 text-lg font-bold">Don't Miss Out</p>
-            <ul className="text-md mb-8 ml-6 list-inside list-disc space-y-4">
-              {currentPage?.list.map((item, index) => (
-                <li key={index}>{item}</li>
-              ))}
-            </ul>
-            <Link href="/signin">
-              <button className="w-full rounded-md bg-tertiary px-2 py-4 text-xs font-bold uppercase tracking-wide text-white hover:bg-orange-600">
-                LOGIN AND START YOUR SCRIPTS, VOICES AND CLASSES
-              </button>
-            </Link>
-            <p className="mt-4 text-center font-poppins text-lg font-medium">
-              Free trial. No credit card needed.
-            </p>
           </div>
         </div>
       </div>
