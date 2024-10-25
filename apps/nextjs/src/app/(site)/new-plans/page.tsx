@@ -1,13 +1,13 @@
 import { auth } from "@voiceai/auth";
 
 import { poppins } from "~/app/fonts";
-import type { Plan } from "../plans/types";
 import Compare from "./compare";
 import Explore from "./explore";
 import FAQs from "./faqs";
 import LanguagesRows from "./languages-rows";
 import Plans from "./plans";
 import PricingTestimonials from "./testimonials";
+import type { Plan } from "./types";
 import { getSubscription } from "./utils";
 import Welcome from "./welcome";
 
@@ -18,9 +18,6 @@ export default async function NewPlansPage() {
   if (session) {
     subscription = await getSubscription(session?.user.subscription?.planId);
   }
-
-  console.log("subscription", subscription);
-  console.log("session", session);
 
   return (
     <div
