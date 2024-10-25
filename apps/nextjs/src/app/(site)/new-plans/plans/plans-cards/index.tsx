@@ -36,12 +36,12 @@ const productIds: Record<string, ProductId> = {
   BUSINESS: { monthly: "prod_Q6wRdg67cs52NR", yearly: "prod_Q6wAIfC2x07sMV" },
 };
 
-const testProductIds: Record<string, ProductId> = {
-  FREE: { monthly: null, yearly: null },
-  EDUCATION: { monthly: "prod_PwYfAY9nKwQ9iV", yearly: "prod_PwaJpA8vUeG6Wv" },
-  CREATOR: { monthly: "prod_PwYzKaNnHflnUj", yearly: "prod_PwaNjdYvuqa5Io" },
-  BUSINESS: { monthly: "prod_PwZAZujl0DVkgR", yearly: "prod_PwaRtUe2crIFlW" },
-};
+// const testProductIds: Record<string, ProductId> = {
+//   FREE: { monthly: null, yearly: null },
+//   EDUCATION: { monthly: "prod_PwYfAY9nKwQ9iV", yearly: "prod_PwaJpA8vUeG6Wv" },
+//   CREATOR: { monthly: "prod_PwYzKaNnHflnUj", yearly: "prod_PwaNjdYvuqa5Io" },
+//   BUSINESS: { monthly: "prod_PwZAZujl0DVkgR", yearly: "prod_PwaRtUe2crIFlW" },
+// };
 
 function RegularCard({
   type,
@@ -119,11 +119,7 @@ function RegularCard({
               </div>
               <CheckoutButton
                 type="accent"
-                productId={
-                  process.env.NODE_ENV === "production"
-                    ? productIds[type]?.[period]
-                    : testProductIds[type]?.[period]
-                }
+                productId={productIds[type]?.[period]}
                 session={session}
                 hasPlan={setHasPlan()}
               />
@@ -173,11 +169,7 @@ function RegularCard({
           </div>
           <CheckoutButton
             type="primary"
-            productId={
-              process.env.NODE_ENV === "production"
-                ? productIds[type]?.[period]
-                : testProductIds[type]?.[period]
-            }
+            productId={productIds[type]?.[period]}
             session={session}
             hasPlan={setHasPlan()}
           />
