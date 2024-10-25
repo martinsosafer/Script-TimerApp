@@ -53,7 +53,7 @@ export default function NewNavBar({ signOut, signIn, session }: NavBarProps) {
   const subscriptionData = session?.user.subscription?.status;
 
   return (
-    <header className="sticky top-0 z-50 mb-8 flex h-16 w-full items-center justify-between bg-primary px-8 py-14">
+    <header className="bg-cp-primary sticky top-0 z-50 flex h-16 w-full items-center justify-between px-8 py-14">
       <Link
         href="/"
         className="flex flex-col font-poppins text-primary-foreground"
