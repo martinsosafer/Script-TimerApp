@@ -29,19 +29,19 @@ interface ProductId {
   yearly: string | null;
 }
 
+// const productIds: Record<string, ProductId> = {
+//   FREE: { monthly: null, yearly: null },
+//   EDUCATION: { monthly: "prod_Q6wRBImx4i9jIV", yearly: "prod_Q6wRaa010Ja2QI" },
+//   CREATOR: { monthly: "prod_Q6wRA3CPKOd872", yearly: "prod_Q6wR4wC3Y5Yili" },
+//   BUSINESS: { monthly: "prod_Q6wRdg67cs52NR", yearly: "prod_Q6wAIfC2x07sMV" },
+// };
+
 const productIds: Record<string, ProductId> = {
   FREE: { monthly: null, yearly: null },
-  EDUCATION: { monthly: "prod_Q6wRBImx4i9jIV", yearly: "prod_Q6wRaa010Ja2QI" },
-  CREATOR: { monthly: "prod_Q6wRA3CPKOd872", yearly: "prod_Q6wR4wC3Y5Yili" },
-  BUSINESS: { monthly: "prod_Q6wRdg67cs52NR", yearly: "prod_Q6wAIfC2x07sMV" },
+  EDUCATION: { monthly: "prod_PwYfAY9nKwQ9iV", yearly: "prod_PwaJpA8vUeG6Wv" },
+  CREATOR: { monthly: "prod_PwYzKaNnHflnUj", yearly: "prod_PwaNjdYvuqa5Io" },
+  BUSINESS: { monthly: "prod_PwZAZujl0DVkgR", yearly: "prod_PwaRtUe2crIFlW" },
 };
-
-// const testProductIds: Record<string, ProductId> = {
-//   FREE: { monthly: null, yearly: null },
-//   EDUCATION: { monthly: "prod_PwYfAY9nKwQ9iV", yearly: "prod_PwaJpA8vUeG6Wv" },
-//   CREATOR: { monthly: "prod_PwYzKaNnHflnUj", yearly: "prod_PwaNjdYvuqa5Io" },
-//   BUSINESS: { monthly: "prod_PwZAZujl0DVkgR", yearly: "prod_PwaRtUe2crIFlW" },
-// };
 
 function RegularCard({
   type,
