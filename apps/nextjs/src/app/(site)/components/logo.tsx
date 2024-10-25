@@ -2,13 +2,19 @@ import React from "react";
 
 const Logo = ({ className = "" }) => {
   return (
-    <div className={`flex items-center ${className}`}>
-      <span className="font-poppins font-bold text-black">
-        C<span className="relative -top-[2px]">o</span>
+    <div className={`flex items-center `}>
+      <span className="font-poppins text-5xl font-bold text-black">
+        C
+        <span className="relative -top-[6px] font-poppins text-4xl  font-bold">
+          o
+        </span>
         {/* Move "o" a bit higher */}
       </span>
       <span className="mx-1 text-black">-</span>
-      <span className="font-poppins font-bold text-primary">Producer</span>
+      <span className="font-poppins text-5xl font-bold text-primary">P</span>
+      <span className="relative -top-[5px] font-poppins text-4xl font-bold text-primary">
+        roducer
+      </span>
     </div>
   );
 };

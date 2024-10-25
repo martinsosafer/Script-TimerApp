@@ -31,10 +31,10 @@ export default async function SignIn() {
       {/* Form moved to the right */}
       <div className="p-4">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-          <div className="flex flex-col space-y-2 text-center">
-            <Logo className="text-5xl" />
-            <div className="mr-10">
-              <h3 className="  font-poppins text-2xl font-normal text-tertiary">
+          <div className="flex flex-col items-center justify-center space-y-2 text-center">
+            <Logo />
+            <div className="justify-center text-center">
+              <h3 className="text-cp-secondary justify-center text-center font-poppins text-[20px] font-normal leading-[28px]">
                 Bring your projects to life
               </h3>
             </div>
