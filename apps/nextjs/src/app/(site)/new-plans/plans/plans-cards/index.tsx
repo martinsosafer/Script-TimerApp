@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { Session } from "next-auth";
 
 import { roboto } from "~/app/fonts";
 import CheckoutButton from "./checkout-button";
@@ -30,9 +31,16 @@ interface ProductId {
 
 const productIds: Record<string, ProductId> = {
   FREE: { monthly: null, yearly: null },
-  EDUCATION: { monthly: "prod_Q6wRBImx4i9jIV", yearly: "$prod_Q6wRBImx4i9jIV" },
+  EDUCATION: { monthly: "prod_Q6wRBImx4i9jIV", yearly: "prod_Q6wRaa010Ja2QI" },
   CREATOR: { monthly: "prod_Q6wRA3CPKOd872", yearly: "prod_Q6wR4wC3Y5Yili" },
   BUSINESS: { monthly: "prod_Q6wRdg67cs52NR", yearly: "prod_Q6wAIfC2x07sMV" },
+};
+
+const testProductIds: Record<string, ProductId> = {
+  FREE: { monthly: null, yearly: null },
+  EDUCATION: { monthly: "prod_PwYfAY9nKwQ9iV", yearly: "prod_PwaJpA8vUeG6Wv" },
+  CREATOR: { monthly: "prod_PwYzKaNnHflnUj", yearly: "prod_PwaNjdYvuqa5Io" },
+  BUSINESS: { monthly: "prod_PwZAZujl0DVkgR", yearly: "prod_PwaRtUe2crIFlW" },
 };
 
 function RegularCard({
@@ -43,9 +51,22 @@ function RegularCard({
 }: {
   type: "FREE" | "EDUCATION" | "CREATOR" | "BUSINESS";
   period: "monthly" | "yearly";
+  session: Session | null;
+  interval: string | undefined;
 }) {
-  console.log("Session", session);
-  console.log("Interval", interval);
+  function setHasPlan() {
+    if (period === "monthly" && interval === "month")
+      return (
+        session?.user.subscription?.status === type ||
+        session?.user.subscription?.status === "FREE_TRIAL"
+      );
+    if (period === "yearly" && interval === "year")
+      return (
+        session?.user.subscription?.status === type ||
+        session?.user.subscription?.status === "FREE_TRIAL"
+      );
+    return false;
+  }
   return (
     <>
       {type === "CREATOR" ? (
@@ -98,9 +119,13 @@ function RegularCard({
               </div>
               <CheckoutButton
                 type="accent"
-                productId={productIds[type]?.[period]}
+                productId={
+                  process.env.NODE_ENV === "production"
+                    ? productIds[type]?.[period]
+                    : testProductIds[type]?.[period]
+                }
                 session={session}
-                hasPlan={session?.user.subscription?.status === type}
+                hasPlan={setHasPlan()}
               />
             </div>
           </div>
@@ -148,12 +173,13 @@ function RegularCard({
           </div>
           <CheckoutButton
             type="primary"
-            productId={productIds[type]?.[period]}
-            session={session}
-            hasPlan={
-              session?.user.subscription?.status === type ||
-              session?.user.subscription?.status === "FREE_TRIAL"
+            productId={
+              process.env.NODE_ENV === "production"
+                ? productIds[type]?.[period]
+                : testProductIds[type]?.[period]
             }
+            session={session}
+            hasPlan={setHasPlan()}
           />
         </div>
       )}
@@ -167,6 +193,8 @@ export default function PlansCards({
   interval,
 }: {
   period: "monthly" | "yearly";
+  session: Session | null;
+  interval: string | undefined;
 }) {
   return (
     <section className="mt-[52px] flex w-[1024px] items-center justify-center gap-4">
