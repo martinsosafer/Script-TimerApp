@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import type { Session } from "@voiceai/auth";
 import { IconCheck, IconClose } from "@voiceai/ui/@/components/ui/icons";
 
 import { roboto } from "~/app/fonts";
@@ -8,7 +9,7 @@ import PlansCards from "./plans-card";
 
 interface AddOnModalProps {
   onClose: () => void;
-
+  session: Session | null;
   plan: "EDUCATION" | "CREATOR" | "BUSINESS";
 }
 
@@ -18,7 +19,11 @@ const plans: Record<string, string> = {
   BUSINESS: "20,000",
 };
 
-export default function AddOnModal({ onClose, plan }: AddOnModalProps) {
+export default function AddOnModal({
+  onClose,
+  plan,
+  session,
+}: AddOnModalProps) {
   const [period, setPeriod] = useState<"monthly" | "yearly">("monthly");
 
   return (
@@ -29,7 +34,7 @@ export default function AddOnModal({ onClose, plan }: AddOnModalProps) {
         </button>
         <article className="bg-cp-background flex h-full w-[399px] flex-col items-center justify-center">
           <MonthlyYearlyToogle period={period} setPeriod={setPeriod} />
-          <PlansCards type={plan} period={period} session={null} />
+          <PlansCards type={plan} period={period} session={session} />
         </article>
         <article className="mt-[60px] flex w-[544px] flex-col items-center">
           <h2 className="text-center text-[34px] font-bold text-white">

@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import type { Session } from "next-auth";
 
 import { roboto } from "~/app/fonts";
 import AddOnModal from "../../components/modals/add-ons";
 
-export default function Explore() {
+export default function Explore({ session }: { session: Session | null }) {
   const [addOnType, setAddOnType] = useState<
     "EDUCATION" | "CREATOR" | "BUSINESS" | null
   >(null);
@@ -73,7 +74,11 @@ export default function Explore() {
         </div>
       </section>
       {addOnType && (
-        <AddOnModal onClose={() => setAddOnType(null)} plan={addOnType} />
+        <AddOnModal
+          onClose={() => setAddOnType(null)}
+          plan={addOnType}
+          session={session}
+        />
       )}
     </>
   );

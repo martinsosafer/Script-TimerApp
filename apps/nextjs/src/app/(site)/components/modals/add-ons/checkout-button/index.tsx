@@ -21,6 +21,7 @@ function CheckoutButton({
   type,
 }: CheckoutButtonProps) {
   const router = useRouter();
+
   return (
     <Button
       label={hasPlan ? "Current Plan" : "Get Started"}

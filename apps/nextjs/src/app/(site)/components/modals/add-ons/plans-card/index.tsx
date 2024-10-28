@@ -28,11 +28,20 @@ interface ProductId {
   yearly: string | null;
 }
 
+//Live product Ids
+// const productIds: Record<string, ProductId> = {
+//   FREE: { monthly: null, yearly: null },
+//   EDUCATION: { monthly: "prod_QsC2gen4V6MFdx", yearly: "prod_QsC2uouKNghxvv" },
+//   CREATOR: { monthly: "prod_QsC286urBJ7Von", yearly: "prod_QsC2PGXx7AIB9Q" },
+//   BUSINESS: { monthly: "prod_QsC2n4FMuspdNO", yearly: "prod_QsC2dmRjqQqtlZ" },
+// };
+
+//Test product Ids
 const productIds: Record<string, ProductId> = {
   FREE: { monthly: null, yearly: null },
-  EDUCATION: { monthly: "prod_Q6wRBImx4i9jIV", yearly: "$prod_Q6wRBImx4i9jIV" },
-  CREATOR: { monthly: "prod_Q6wRA3CPKOd872", yearly: "prod_Q6wR4wC3Y5Yili" },
-  BUSINESS: { monthly: "prod_Q6wRdg67cs52NR", yearly: "prod_Q6wAIfC2x07sMV" },
+  EDUCATION: { monthly: "prod_Qpsuj4pfwigoce", yearly: "prod_QpsuGyXva9dKLW" },
+  CREATOR: { monthly: "prod_QpsrhfYRpJokHB", yearly: "prod_QpspBNC8085JtD" },
+  BUSINESS: { monthly: "prod_QpstEY5wQbjQb8", yearly: "prod_Qpst51UXUqyaUQ" },
 };
 
 export default function PlansCards({
