@@ -2,10 +2,13 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { F } from "formdata-node/lib/File-cfd9c54a";
 import type { Session } from "next-auth";
 
 import { roboto } from "~/app/fonts";
 import AddOnModal from "../../components/modals/add-ons";
+import { productIds } from "../data";
+import CheckoutButton from "../plans/plans-cards/checkout-button";
 
 export default function Explore({ session }: { session: Session | null }) {
   const [addOnType, setAddOnType] = useState<
@@ -19,7 +22,7 @@ export default function Explore({ session }: { session: Session | null }) {
           Explore all the capabilities to become a better and faster creator
         </p>
         <div
-          className={`${roboto.className} mt-[48px] flex w-[893px] justify-around gap-2 text-[18px] font-bold`}
+          className={`${roboto.className} mb-0 mt-[48px] flex w-[893px] justify-around gap-2 text-[18px] font-bold`}
         >
           <div className="w-[205px]" />
           <span className="w-[122px] text-center">FREE</span>
@@ -71,6 +74,46 @@ export default function Explore({ session }: { session: Session | null }) {
         </div>
         <div className="relative mt-[48px] h-[345px] w-[893px]">
           <Image alt="Voice Ai" src="/Masterclasses.png" fill />
+        </div>
+        <div
+          className={`${roboto.className} mb-0 mt-[8px] flex w-[893px] justify-around gap-1 text-[18px] font-bold`}
+        >
+          <div className="w-[220px]" />
+          <span className="w-[140px] text-center">
+            <CheckoutButton
+              hasPlan={
+                session?.user.subscription?.status === "FREE_TRIAL" ||
+                session?.user.subscription?.status === "FREE"
+              }
+              productId={null}
+              session={session}
+              type="primary"
+            />
+          </span>
+          <span className="w-[140px] text-center">
+            <CheckoutButton
+              hasPlan={session?.user.subscription?.status === "EDUCATION"}
+              productId={productIds.EDUCATION!.monthly}
+              session={session}
+              type="primary"
+            />
+          </span>
+          <span className="w-[140px] text-center">
+            <CheckoutButton
+              hasPlan={session?.user.subscription?.status === "CREATOR"}
+              productId={productIds.CREATOR!.monthly}
+              session={session}
+              type="accent"
+            />
+          </span>
+          <span className="w-[140px] text-center">
+            <CheckoutButton
+              hasPlan={session?.user.subscription?.status === "BUSINESS"}
+              productId={productIds.BUSINESS!.monthly}
+              session={session}
+              type="primary"
+            />
+          </span>
         </div>
       </section>
       {addOnType && (

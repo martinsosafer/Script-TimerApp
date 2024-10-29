@@ -34,9 +34,15 @@ export default function AddOnModal({
         </button>
         <article className="bg-cp-background flex h-full w-[399px] flex-col items-center justify-center">
           <MonthlyYearlyToogle period={period} setPeriod={setPeriod} />
-          <PlansCards type={plan} period={period} session={session} />
+          <PlansCards
+            type={plan}
+            period={period}
+            session={session}
+            onClose={onClose}
+          />
         </article>
-        <article className="mt-[60px] flex w-[544px] flex-col items-center">
+        <article className="flex w-[544px] flex-col items-center justify-center">
+          <h2 className="text-center text-[28px] font-bold text-white">Add</h2>
           <h2 className="text-center text-[34px] font-bold text-white">
             Plagiarism & AI Detection
           </h2>

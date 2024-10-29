@@ -12,6 +12,7 @@ interface CheckoutButtonProps {
   hasPlan: boolean;
   session: Session | null;
   type: "primary" | "secondary" | "accent";
+  onClose: () => void;
 }
 
 function CheckoutButton({
@@ -19,6 +20,7 @@ function CheckoutButton({
   hasPlan,
   session,
   type,
+  onClose,
 }: CheckoutButtonProps) {
   const router = useRouter();
 
@@ -31,23 +33,29 @@ function CheckoutButton({
       disabled={hasPlan}
       onClick={
         session
-          ? async () => {
-              const res = await fetch("/api/checkout", {
-                method: "POST",
-                body: JSON.stringify({
-                  productId,
-                }),
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              });
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-              const {
-                session: { url },
-              } = await res.json();
+          ? session.user.subscription?.status === "FREE_TRIAL" ||
+            session.user.subscription?.status === "FREE"
+            ? () => {
+                router.push("/new-plans#plans");
+                onClose();
+              }
+            : async () => {
+                const res = await fetch("/api/checkout", {
+                  method: "POST",
+                  body: JSON.stringify({
+                    productId,
+                  }),
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                });
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                const {
+                  session: { url },
+                } = await res.json();
 
-              window.location.href = url as string;
-            }
+                window.location.href = url as string;
+              }
           : () => router.push("/register")
       }
     />

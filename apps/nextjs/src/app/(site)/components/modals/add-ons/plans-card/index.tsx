@@ -2,57 +2,19 @@ import type { Session } from "next-auth";
 
 import { roboto } from "~/app/fonts";
 import CheckoutButton from "../checkout-button";
-
-const description: Record<string, string> = {
-  FREE: "Good for hobbyist",
-  EDUCATION: "Discounted for .edu emails",
-  CREATOR: "Ideal for creatives professionals",
-  BUSINESS: "Best for brand marketers",
-};
-
-interface Price {
-  monthly: string;
-  yearly: string;
-  total?: string;
-}
-
-const price: Record<string, Price> = {
-  FREE: { monthly: "Free", yearly: "Free" },
-  EDUCATION: { monthly: "$9", yearly: "$6.58", total: "$79/year" },
-  CREATOR: { monthly: "$19", yearly: "$14.75", total: "$177/year" },
-  BUSINESS: { monthly: "$39", yearly: "$24.75", total: "$297/year" },
-};
-
-interface ProductId {
-  monthly: string | null;
-  yearly: string | null;
-}
-
-//Live product Ids
-// const productIds: Record<string, ProductId> = {
-//   FREE: { monthly: null, yearly: null },
-//   EDUCATION: { monthly: "prod_QsC2gen4V6MFdx", yearly: "prod_QsC2uouKNghxvv" },
-//   CREATOR: { monthly: "prod_QsC286urBJ7Von", yearly: "prod_QsC2PGXx7AIB9Q" },
-//   BUSINESS: { monthly: "prod_QsC2n4FMuspdNO", yearly: "prod_QsC2dmRjqQqtlZ" },
-// };
-
-//Test product Ids
-const productIds: Record<string, ProductId> = {
-  FREE: { monthly: null, yearly: null },
-  EDUCATION: { monthly: "prod_Qpsuj4pfwigoce", yearly: "prod_QpsuGyXva9dKLW" },
-  CREATOR: { monthly: "prod_QpsrhfYRpJokHB", yearly: "prod_QpspBNC8085JtD" },
-  BUSINESS: { monthly: "prod_QpstEY5wQbjQb8", yearly: "prod_Qpst51UXUqyaUQ" },
-};
+import { description, price, testPoductIds as productIds } from "../data";
 
 export default function PlansCards({
   type,
   period,
   session,
   interval,
+  onClose,
 }: {
   type: "FREE" | "EDUCATION" | "CREATOR" | "BUSINESS";
   period: "monthly" | "yearly";
   session: Session | null;
+  onClose: () => void;
 }) {
   return (
     <div className="bg-cp-primary mt-[24px] flex h-[281px] w-[195px] flex-col items-center justify-between rounded-md p-4 shadow-md">
@@ -87,6 +49,7 @@ export default function PlansCards({
           session?.user.subscription?.status === type ||
           session?.user.subscription?.status === "FREE_TRIAL"
         }
+        onClose={onClose}
       />
     </div>
   );

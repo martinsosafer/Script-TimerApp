@@ -2,46 +2,8 @@ import Image from "next/image";
 import type { Session } from "next-auth";
 
 import { roboto } from "~/app/fonts";
+import { description, price, testProductIds as productIds } from "../../data";
 import CheckoutButton from "./checkout-button";
-
-const description: Record<string, string> = {
-  FREE: "Good for hobbyist",
-  EDUCATION: "Discounted for .edu emails",
-  CREATOR: "Ideal for creatives professionals",
-  BUSINESS: "Best for brand marketers",
-};
-
-interface Price {
-  monthly: string;
-  yearly: string;
-  total?: string;
-}
-
-const price: Record<string, Price> = {
-  FREE: { monthly: "Free", yearly: "Free" },
-  EDUCATION: { monthly: "$9", yearly: "$6.58", total: "$79/year" },
-  CREATOR: { monthly: "$19", yearly: "$14.75", total: "$177/year" },
-  BUSINESS: { monthly: "$39", yearly: "$24.75", total: "$297/year" },
-};
-
-interface ProductId {
-  monthly: string | null;
-  yearly: string | null;
-}
-
-// const productIds: Record<string, ProductId> = {
-//   FREE: { monthly: null, yearly: null },
-//   EDUCATION: { monthly: "prod_Q6wRBImx4i9jIV", yearly: "prod_Q6wRaa010Ja2QI" },
-//   CREATOR: { monthly: "prod_Q6wRA3CPKOd872", yearly: "prod_Q6wR4wC3Y5Yili" },
-//   BUSINESS: { monthly: "prod_Q6wRdg67cs52NR", yearly: "prod_Q6wAIfC2x07sMV" },
-// };
-
-const productIds: Record<string, ProductId> = {
-  FREE: { monthly: null, yearly: null },
-  EDUCATION: { monthly: "prod_PwYfAY9nKwQ9iV", yearly: "prod_PwaJpA8vUeG6Wv" },
-  CREATOR: { monthly: "prod_PwYzKaNnHflnUj", yearly: "prod_PwaNjdYvuqa5Io" },
-  BUSINESS: { monthly: "prod_PwZAZujl0DVkgR", yearly: "prod_PwaRtUe2crIFlW" },
-};
 
 function RegularCard({
   type,
@@ -55,16 +17,16 @@ function RegularCard({
   interval: string | undefined;
 }) {
   function setHasPlan() {
+    if (
+      type === "FREE" &&
+      (session?.user.subscription?.status === "FREE_TRIAL" ||
+        session?.user.subscription?.status === "FREE")
+    )
+      return true;
     if (period === "monthly" && interval === "month")
-      return (
-        session?.user.subscription?.status === type ||
-        session?.user.subscription?.status === "FREE_TRIAL"
-      );
+      return session?.user.subscription?.status === type;
     if (period === "yearly" && interval === "year")
-      return (
-        session?.user.subscription?.status === type ||
-        session?.user.subscription?.status === "FREE_TRIAL"
-      );
+      return session?.user.subscription?.status === type;
     return false;
   }
   return (
