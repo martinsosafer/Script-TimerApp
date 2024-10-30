@@ -29,7 +29,7 @@ export default async function LandingPage() {
     : null;
 
   const trialNextToExpire = daysToExpire ? daysToExpire <= 2 : false;
-  const session = await auth();
+
   return (
     <Home user={userId} trialExpiration={trialNextToExpire} session={session} />
   );

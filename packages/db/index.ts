@@ -9,6 +9,7 @@ import * as generation from "./schema/generation";
 import * as imgCredit from "./schema/imgCredit";
 import * as openAiCredit from "./schema/openAiCredit";
 import * as plagiarism from "./schema/plagiarism";
+import * as prompts from "./schema/prompts";
 import * as script from "./schema/script";
 import * as subscription from "./schema/subscription";
 import * as voice from "./schema/voice";
@@ -27,6 +28,7 @@ export const schema = {
   ...elevenLabsCredit,
   ...imgCredit,
   ...openAiCredit,
+  ...prompts,
 };
 
 export { pgTable as tableCreator } from "./schema/_table";
