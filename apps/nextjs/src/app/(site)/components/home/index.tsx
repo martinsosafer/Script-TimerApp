@@ -20,7 +20,7 @@ export default function Home({
   trialExpiration: boolean;
   session: SubscriptionData | null | undefined;
 }) {
-  const [openTrialModal, setOpenTrialModal] = useState(trialExpiration);
+  const [openTrialModal, setOpenTrialModal] = useState(true);
   const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {

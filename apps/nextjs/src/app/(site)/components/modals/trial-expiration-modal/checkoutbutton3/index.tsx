@@ -18,7 +18,7 @@ function CheckoutButton3({ productId, session }: CheckoutButtonProps) {
   return (
     <Button
       variant="secondary"
-      className="mt-2 bg-tertiary px-2 text-black hover:bg-orange-600"
+      className=" h-[27px] w-[155px] rounded bg-tertiary px-2 text-[12px] font-semibold leading-[16-px] text-white hover:bg-orange-600"
       onClick={
         session
           ? async () => {

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@voiceai/ui";
 import { Input } from "@voiceai/ui/@/components/ui/input";
 
+import { poppins } from "~/app/fonts";
 import type { SubscriptionData } from "~/lib/types";
 import TrialImg from "../modalimgs/TrialExpireImg.png";
 import CheckoutButton3 from "./checkoutbutton3";
@@ -32,12 +33,14 @@ export default function TrialExpirationModal({
   const businessYearlyId = "prod_Q6wAIfC2x07sMV";
 
   return (
-    <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50 p-4 backdrop-blur">
-      <div className="w-full max-w-4xl overflow-hidden rounded-lg border border-primary bg-white shadow-xl">
-        <div className="flex flex-col md:flex-row">
+    <div
+      className={`fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50 p-4 backdrop-blur ${poppins.className}`}
+    >
+      <div className="h-[545px] w-[925px] overflow-hidden rounded-xl border border-primary bg-white shadow-xl">
+        <div className="flex h-full">
           {/* Left section */}
-          <div className="w-full items-center bg-gray-100 p-6 pt-[60px] md:w-1/2">
-            <div className="flex items-center justify-center">
+          <div className="flex h-full w-[400px] flex-col items-center justify-center bg-gray-100">
+            <div className="relative flex h-[330px] w-[330px] items-center justify-center">
               <Image
                 src={TrialImg}
                 alt="Trial is about to expire image"
@@ -48,83 +51,98 @@ export default function TrialExpirationModal({
           </div>
 
           {/* Right section */}
-          <div className=" w-full bg-primary p-6 pt-[60px] text-white md:w-1/2">
-            <div className=" mb-7">
-              <h2 className="mb-2 text-center text-4xl font-bold">
-                Upgrade now
-              </h2>
-              <p className=" text-center text-lg font-semibold">
-                with a special one-time-only 70% discount on the monthly plans
-                (We know it's ridiculous!)
-              </p>
-            </div>
-
-            <div className="mb-2 grid grid-cols-3 gap-4">
-              <div className="col-span-1"></div>
-              <div className="text-center font-semibold">Monthly</div>
-              <div className="text-center font-semibold">Yearly</div>
-            </div>
-
-            <div className="mb-6 grid grid-cols-3 gap-4">
-              <div className="col-span-1 flex flex-col items-center justify-center">
-                <h2 className="mb-1 text-2xl font-bold">Creator</h2>
-                <span className="rounded-xl bg-teal-400 px-3 py-1 font-poppins text-xs font-bold text-black">
-                  MOST POPULAR
-                </span>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold">$19</div>
-                <div className="text-sm">month</div>
-                {/* Pass the Creator Monthly productId */}
-                <CheckoutButton3
-                  productId={creatorMonthlyId}
-                  session={session}
-                />
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold">$14.75</div>
-                <div className="text-sm">month</div>
-                {/* Pass the Creator Yearly productId */}
-                <CheckoutButton3
-                  productId={creatorYearlyId}
-                  session={session}
-                />
+          <div className="bg-cp-primary flex w-[525px] flex-col items-center pb-[60px] text-white">
+            <div className="flex w-[375px] flex-grow flex-col items-center justify-start px-[75px] pt-[60px]">
+              <div className="mb-[44px] h-[85px] w-[375px] items-center">
+                <h2 className="mb-[12px] text-center text-[20px] font-normal leading-[28px]">
+                  Don't miss out <br />
+                  <span className=" text-[28px] font-bold leading-[33-6px]">
+                    First month special
+                  </span>
+                </h2>
+                <p className="text-center text-[16px] font-bold leading-[22px]">
+                  Let's make it simple with a one-time offer for a monthly plan
+                  (We know it's ridiculous!)
+                </p>
               </div>
             </div>
+            <div className="  flex flex-col items-center justify-center">
+              <div className="mb-6 grid grid-cols-2 gap-4">
+                <div className="col-span-1 flex flex-col items-center justify-center">
+                  <h2 className="mb-1 text-[28px]  font-bold leading-[33.6px]">
+                    Creator
+                  </h2>
+                  <span className="rounded-xl bg-teal-400 px-3 py-1 font-poppins text-[11px] font-semibold leading-[15.4px] text-black">
+                    MOST POPULAR
+                  </span>
+                </div>
+                <div className="text-center">
+                  <div className=" flex items-center justify-center gap-[24px]">
+                    <div className="relative px-2 py-1 text-[24px] font-bold text-white">
+                      <span className="relative z-10">$19</span>
+                      {/* Orange line */}
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="h-[2px] w-full rotate-[-12deg] bg-orange-500"></div>
+                      </div>
+                    </div>
+                    <div className="text-[24px] font-bold text-white">
+                      $5.70
+                    </div>
+                  </div>
+                  {/* Pass the Creator Monthly productId */}
+                  <CheckoutButton3
+                    productId={creatorMonthlyId}
+                    session={session}
+                  />
+                </div>
+              </div>
 
-            <div className="mb-6 grid grid-cols-3 gap-4">
-              <div className="col-span-1">
-                <h2 className="text-2xl font-bold">Business</h2>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold">$39</div>
-                <div className="text-sm">month</div>
-                {/* Pass the Business Monthly productId */}
-                <CheckoutButton3
-                  productId={businessMonthlyId}
-                  session={session}
-                />
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold">$24.75</div>
-                <div className="text-sm">month</div>
-                {/* Pass the Business Yearly productId */}
-                <CheckoutButton3
-                  productId={businessYearlyId}
-                  session={session}
-                />
+              <div className="mb-6 grid grid-cols-2 items-center justify-center gap-4">
+                <div className="col-span-1 flex flex-col items-center justify-center">
+                  <h2 className="mb-1 text-[28px]  font-bold leading-[33.6px]">
+                    Business
+                  </h2>
+                  <span className="bg-cp-primary text-cp-primary rounded-xl px-3 py-1 font-poppins text-[11px] font-semibold leading-[15.4px]">
+                    MOST POPULAR
+                  </span>
+                </div>
+                <div className="text-center">
+                  <div className="flex items-center justify-center gap-[24px]">
+                    <div className="relative px-2 py-1 text-[24px] font-bold text-white">
+                      <span className="relative z-10">$39</span>
+                      {/* Orange line */}
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="h-[2px] w-full rotate-[-12deg] bg-orange-500"></div>
+                      </div>
+                    </div>
+                    <div className="text-[24px] font-bold text-white">
+                      $11.70
+                    </div>
+                  </div>
+                  {/* Pass the Business Monthly productId */}
+                  <CheckoutButton3
+                    productId={businessMonthlyId}
+                    session={session}
+                  />
+                </div>
               </div>
             </div>
+            <div className="relative mt-[44px]">
+              <div className="mb-4 text-center">
+                <Link
+                  href="/plans"
+                  className="text-[14px] font-bold leading-[16.8px]  underline"
+                >
+                  See all Plans
+                </Link>
+              </div>
 
-            <div className="mb-4 text-center">
-              <Link href="/plans" className="font-semibold underline">
-                See all Plans
-              </Link>
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <p className="font-semibold ">Add one-time-promotion code</p>
-              <span className="text-teal-400"> AIPRODUCER</span>
+              <div className="flex items-center ">
+                <p className="space-x-1 text-[14px]  font-bold leading-[19.6px] ">
+                  Add this one-time-promotion code:
+                </p>
+                <span className="text-teal-400"> AIPRODUCER</span>
+              </div>
             </div>
           </div>
         </div>
