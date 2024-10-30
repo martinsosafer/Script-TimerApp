@@ -13,7 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@voiceai/ui/@/components/ui/dialog";
-import { EditIcon, Icons } from "@voiceai/ui/@/components/ui/icons";
+import { EditIcon, Icons, PencilIcon } from "@voiceai/ui/@/components/ui/icons";
 import { Input } from "@voiceai/ui/@/components/ui/input";
 import { Label } from "@voiceai/ui/@/components/ui/label";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
@@ -108,26 +108,36 @@ export function SaveScript({
             <h3>{scriptDetails ? "Save" : "Save"}</h3>
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[475px]">
-          <DialogHeader>
-            <DialogTitle>{scriptDetails ? "Save" : "Save"} script</DialogTitle>
-            <DialogDescription>
+        <DialogContent className="border-2 border-primary sm:max-w-[475px] ">
+          <DialogHeader className="flex items-center  text-xl  font-semibold ">
+            <DialogTitle className="flex items-center space-x-2 text-primary">
+              <PencilIcon className="mr-2 h-5 w-5 text-primary" />
+              <span className="text-2xl font-bold">
+                {scriptDetails ? "Save" : "Save"} script
+              </span>
+            </DialogTitle>
+            {/* <DialogDescription>
               {scriptDetails
                 ? `This will update the current script.`
                 : `This will save the current console state as a preset which you can access later.`}
-            </DialogDescription>
+            </DialogDescription> */}
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="name" id="name">
-                Name
+              <Label
+                htmlFor="name"
+                id="name"
+                className="text-lg font-medium text-black"
+              >
+                {scriptDetails ? "Edit your title" : "Enter your title"}
               </Label>
               <Input
-                id="name"
+                id="Enter your title"
                 autoFocus
                 value={name}
                 maxLength={20}
                 onChange={(e) => setName(e.target.value)}
+                className="border border-black "
               />
             </div>
             {/* <div className="grid gap-2">
@@ -135,36 +145,48 @@ export function SaveScript({
             <Input id="description" />
           </div> */}
           </div>
-          <DialogFooter>
-            <Button
-              disabled={name.length === 0}
-              onClick={async () => {
-                setLoading(true);
-                try {
-                  console.log("creating", name, script);
-                  scriptDetails
-                    ? await updateScript({
-                        id: scriptDetails.id,
-                        name: name,
-                        script: script,
-                        richText: richContent,
-                      })
-                    : await createScript({
-                        name: name,
-                        script: script.length > 1 ? script : undefined,
-                        richText:
-                          richContent.length > 1 ? richContent : undefined,
-                      });
-                  setLoading(false);
-                } catch {}
-              }}
-            >
-              {loading ? (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                <>{scriptDetails ? "Update" : "Create"}</>
-              )}
-            </Button>
+          <DialogFooter className="flex justify-center">
+            <div className="flex space-x-4">
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-2 border-primary font-poppins font-semibold text-primary"
+                onClick={() => setOpen(false)} // Close the dialog when Cancel is clicked
+              >
+                Cancel
+              </Button>
+              <Button
+                className="border-2 border-primary font-poppins font-semibold text-primary-foreground"
+                size="lg"
+                disabled={name.length === 0}
+                onClick={async () => {
+                  setLoading(true);
+                  try {
+                    console.log("creating", name, script);
+                    scriptDetails
+                      ? await updateScript({
+                          id: scriptDetails.id,
+                          name: name,
+                          script: script,
+                          richText: richContent,
+                        })
+                      : await createScript({
+                          name: name,
+                          script: script.length > 1 ? script : undefined,
+                          richText:
+                            richContent.length > 1 ? richContent : undefined,
+                        });
+                    setLoading(false);
+                  } catch {}
+                }}
+              >
+                {loading ? (
+                  <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <>{scriptDetails ? "Update" : "Create"}</>
+                )}
+              </Button>
+            </div>
           </DialogFooter>
         </DialogContent>
       </Dialog>

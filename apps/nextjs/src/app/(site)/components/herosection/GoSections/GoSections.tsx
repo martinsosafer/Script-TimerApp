@@ -12,7 +12,7 @@ import MotionTransition from "../MotionTransition/MotionTransition";
 
 export default function GoSection() {
   return (
-    <div className="min-h-screen bg-gradient-to-r from-cyan-400 to-blue-500 p-8 text-white">
+    <div className="min-h-screen bg-gradient-to-r from-blue-500 via-blue-600 to-black p-8 text-white">
       <MotionTransition>
         <h1 className="mb-12 text-center font-poppins text-5xl font-bold">
           It Used To Take Weeks to Deliver Content That Built an Audience

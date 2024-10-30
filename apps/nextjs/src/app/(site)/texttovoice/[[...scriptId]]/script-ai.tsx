@@ -122,7 +122,7 @@ export function ScriptAI({
     justifyContent: "space-between",
     padding: "10px",
     borderRadius: "8px",
-    zIndex: 1000,
+    zIndex: 0,
     opacity: 1, // Always fully visible
     transition: "opacity 0.5s ease-in-out",
     border: "1px solid black",
