@@ -3,10 +3,12 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
+import type { Session } from "@voiceai/auth";
+
 import { roboto } from "~/app/fonts";
 import Button from "../../components/button";
 
-export default function Compare() {
+export default function Compare({ session }: { session: Session | null }) {
   const router = useRouter();
   return (
     <section className="mt-[100px] flex flex-col items-center">
@@ -25,7 +27,12 @@ export default function Compare() {
         <div className="w-[220px]">
           <Button
             label="Get Started"
-            onClick={() => router.push("#plans")}
+            onClick={() => {
+              if (!session) {
+                return router.push("/register");
+              }
+              router.push("#plans");
+            }}
             type="accent"
             fit
           />

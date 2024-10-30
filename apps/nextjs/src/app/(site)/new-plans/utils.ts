@@ -26,7 +26,6 @@ export async function getSubscription(planId: string | null | undefined) {
       days_until_due: subscription.days_until_due,
       plan: subscription.items.data[0]?.plan,
     };
-    console.log("SUBS DATA", subscriptionData);
     return subscriptionData;
   } catch (e) {
     console.error(e);

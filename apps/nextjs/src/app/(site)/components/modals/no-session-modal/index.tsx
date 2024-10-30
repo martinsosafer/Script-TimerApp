@@ -239,7 +239,7 @@ export default function NoSessionModal({
               </div>
               <div className="h-[192px] w-[375px]">
                 <p className="mb-2 text-left text-[20px] font-bold leading-[28px]">
-                  Start Creating:
+                  Let's do it!:
                 </p>
                 <div className="h-[149px] w-[374px]">
                   <ul className="list-inside list-disc font-roboto text-lg">
