@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { Session } from "next-auth";
 
+import type { SubscriptionData } from "~/lib/types";
 import CounterData from "../herosection/CounterData/CounterData";
 import GoSections from "../herosection/GoSections/GoSections";
 import HeroSection from "../herosection/HeroBlock/herosection";
@@ -18,7 +18,7 @@ export default function Home({
 }: {
   user: string;
   trialExpiration: boolean;
-  session: Session | null | undefined;
+  session: SubscriptionData | null | undefined;
 }) {
   const [openTrialModal, setOpenTrialModal] = useState(trialExpiration);
   const [openModal, setOpenModal] = useState(false);
