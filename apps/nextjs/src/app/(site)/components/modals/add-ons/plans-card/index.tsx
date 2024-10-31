@@ -2,7 +2,12 @@ import type { Session } from "next-auth";
 
 import { roboto } from "~/app/fonts";
 import CheckoutButton from "../checkout-button";
-import { description, price, testPoductIds as productIds } from "../data";
+import {
+  description,
+  price,
+  testPriceIds as priceIds,
+  testPoductIds as productIds,
+} from "../data";
 
 export default function PlansCards({
   type,
@@ -43,7 +48,7 @@ export default function PlansCards({
       </div>
       <CheckoutButton
         type="accent"
-        productId={productIds[type]?.[period]}
+        productId={priceIds[type]?.[period]}
         session={session}
         hasPlan={
           session?.user.subscription?.status === type ||

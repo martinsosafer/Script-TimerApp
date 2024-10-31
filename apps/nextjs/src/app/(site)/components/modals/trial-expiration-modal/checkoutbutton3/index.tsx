@@ -9,7 +9,7 @@ import { Button } from "@voiceai/ui";
 interface CheckoutButtonProps {
   productId: string; // Changed from priceId to productId to match the product ID
 
-  session: Session | null;
+  session: Session | null | undefined;
 }
 
 function CheckoutButton3({ productId, session }: CheckoutButtonProps) {

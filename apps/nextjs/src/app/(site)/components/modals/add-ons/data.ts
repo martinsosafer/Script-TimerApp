@@ -23,7 +23,7 @@ interface ProductId {
   yearly: string | null;
 }
 
-//Live product Ids
+// Full Access Live product Ids
 export const productIds: Record<string, ProductId> = {
   FREE: { monthly: null, yearly: null },
   EDUCATION: { monthly: "prod_QsC2gen4V6MFdx", yearly: "prod_QsC2uouKNghxvv" },
@@ -31,10 +31,26 @@ export const productIds: Record<string, ProductId> = {
   BUSINESS: { monthly: "prod_QsC2n4FMuspdNO", yearly: "prod_QsC2dmRjqQqtlZ" },
 };
 
-//Test product Ids
+//Fulll Access Test product Ids
 export const testPoductIds: Record<string, ProductId> = {
   FREE: { monthly: null, yearly: null },
-  EDUCATION: { monthly: "prod_Qpsuj4pfwigoce", yearly: "prod_QpsuGyXva9dKLW" },
-  CREATOR: { monthly: "prod_QpsrhfYRpJokHB", yearly: "prod_QpspBNC8085JtD" },
-  BUSINESS: { monthly: "prod_QpstEY5wQbjQb8", yearly: "prod_Qpst51UXUqyaUQ" },
+  EDUCATION: { monthly: "prod_R7eLyo9NiyMoSC", yearly: "prod_R7eOoL49lvZ36p" },
+  CREATOR: { monthly: "prod_R7eMnM5Xj4xpCg", yearly: "prod_R7eQCBgTzm1V4y" },
+  BUSINESS: { monthly: "prod_R7eOycLIUDvxPy", yearly: "prod_R7eRxmJZG3zMZk" },
+};
+
+export const testPriceIds: Record<string, ProductId> = {
+  FREE: { monthly: null, yearly: null },
+  EDUCATION: {
+    monthly: "price_1QFP34K0GRmjhtz7BlRXtxRH",
+    yearly: "price_1QFP6BK0GRmjhtz7H81xEAA1",
+  },
+  CREATOR: {
+    monthly: "price_1QFP45K0GRmjhtz7BTdsW45M",
+    yearly: "price_1QFP7BK0GRmjhtz7Z5TdFlEj",
+  },
+  BUSINESS: {
+    monthly: "price_1QFP5HK0GRmjhtz72Wywo9kG",
+    yearly: "price_1QFP8IK0GRmjhtz7CcApemxP",
+  },
 };

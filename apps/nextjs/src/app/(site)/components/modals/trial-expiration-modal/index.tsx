@@ -2,8 +2,7 @@ import type { Dispatch, SetStateAction } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { Button } from "@voiceai/ui";
-import { Input } from "@voiceai/ui/@/components/ui/input";
+import type { Session } from "@voiceai/auth";
 
 import { poppins } from "~/app/fonts";
 import type { SubscriptionData } from "~/lib/types";
@@ -14,7 +13,7 @@ interface FreeModalProps {
   subData?: SubscriptionData | null | undefined;
   openModal: boolean;
   setOpenModal: Dispatch<SetStateAction<boolean>>;
-  session?: SubscriptionData | null | undefined;
+  session?: Session | null | undefined;
 }
 
 export default function TrialExpirationModal({
