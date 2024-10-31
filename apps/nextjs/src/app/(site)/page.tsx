@@ -11,14 +11,13 @@ export const metadata: Metadata = {
 };
 
 export default async function LandingPage() {
-  const userData = await auth();
-  const userId = userData?.user.id ?? "";
-  console.log("USER", userData);
+  const session = await auth();
+  const userId = session?.user.id ?? "";
   await monthlyCreditsReset(userId);
   const trialExpiration =
-    userData?.user.subscription?.trialExpiration &&
-    userData?.user.subscription?.status === "FREE_TRIAL"
-      ? userData.user.subscription.trialExpiration
+    session?.user.subscription?.trialExpiration &&
+    session?.user.subscription?.status === "FREE_TRIAL"
+      ? session.user.subscription.trialExpiration
       : null;
 
   const currentTime = new Date().getTime();
@@ -29,7 +28,7 @@ export default async function LandingPage() {
     : null;
 
   const trialNextToExpire = daysToExpire ? daysToExpire <= 2 : false;
-  const session = await auth();
+
   return (
     <Home user={userId} trialExpiration={trialNextToExpire} session={session} />
   );

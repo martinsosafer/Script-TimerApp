@@ -6,8 +6,8 @@ import { IconCopy } from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 import { api } from "~/utils/api";
-import AddPlanIdModal from "../../components/modals/add-plan-id";
-import ExtendFreeTrialModal from "../../components/modals/extend-free-trial";
+import AddPlanIdModal from "../../../components/modals/add-plan-id";
+import ExtendFreeTrialModal from "../../../components/modals/extend-free-trial";
 import { addPlanId, extendFreeTrial } from "../actions";
 import AdminFilters from "../filters";
 import { daysSinceCreated, daysWithCurrentPlan, sortHandler } from "../helpers";
