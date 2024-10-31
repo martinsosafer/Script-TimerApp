@@ -28,9 +28,9 @@ export default function TrialExpirationModal({
 
   // Define the product IDs for Creator and Business plans
   const creatorMonthlyId = "prod_Q6wRA3CPKOd872";
-  const creatorYearlyId = "prod_Q6wR4wC3Y5Yili";
+  
   const businessMonthlyId = "prod_Q6wRdg67cs52NR";
-  const businessYearlyId = "prod_Q6wAIfC2x07sMV";
+  
 
   return (
     <div

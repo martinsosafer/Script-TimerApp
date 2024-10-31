@@ -254,7 +254,7 @@ export default function NoSessionModal({
             </div>
 
             {/* Placed the button at the bottom with padding alignment */}
-            <div className="flex w-[375px] flex-col items-center">
+            <div className="mt-10 flex w-[375px] flex-col items-center">
               <button className="bg-cp-secondary mb-[8px] h-[45px] w-[375px] rounded-md px-[24px] py-[2px] font-bold uppercase leading-[20px] text-white hover:bg-orange-500">
                 <Link href="/signin">LOGIN-FREE</Link>
               </button>
