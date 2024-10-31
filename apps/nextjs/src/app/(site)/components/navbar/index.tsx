@@ -27,7 +27,6 @@ import ProfileNavItem from "./profile-nav-item";
 import SignInOut from "./profile-nav-item/sign-in-out";
 import ScriptCoachNavItem from "./script-coach-nav-item";
 import TextToVoiceNavItem from "./text-to-voice-nav-item";
-import ToolsNavItem from "./tools-nav-item";
 import UpgradeNavItem from "./upgrade-nav-item";
 
 export interface NavBarProps {
@@ -51,7 +50,7 @@ export default function NewNavBar({ signOut, signIn, session }: NavBarProps) {
   const subscriptionData = session?.user.subscription?.status;
 
   return (
-    <header className="sticky top-0 z-50 mb-8 flex h-16 w-full items-center justify-between bg-primary px-8 py-14">
+    <header className="bg-cp-primary sticky top-0 z-50 flex h-16 w-full items-center justify-between px-8 py-14">
       <Link
         href="/"
         className="flex flex-col font-poppins text-primary-foreground"
@@ -72,10 +71,7 @@ export default function NewNavBar({ signOut, signIn, session }: NavBarProps) {
       </Link>
 
       <nav className="mt-4 hidden md:block lg:block xl:block">
-        <ul className="mt-1 flex items-start justify-center font-semibold">
-          <li className="group relative items-center px-3 py-2 text-primary-foreground">
-            <TextToVoiceNavItem />
-          </li>
+        <ul className="flex items-center justify-center font-semibold">
           <HoverCard>
             <HoverCardTrigger asChild>
               <li className="group relative px-3 py-2 text-primary-foreground">
@@ -83,20 +79,21 @@ export default function NewNavBar({ signOut, signIn, session }: NavBarProps) {
               </li>
             </HoverCardTrigger>
           </HoverCard>
-          <li className="group relative px-3 py-2 text-primary-foreground hover:cursor-default">
-            <PlagNavItem />
+          <li className="group relative items-center px-3 py-2 text-primary-foreground">
+            <TextToVoiceNavItem />
           </li>
+
           <li className="group relative px-3 py-2 text-primary-foreground hover:cursor-default">
             <ImagesNavItem />
+          </li>
+          <li className="group relative px-3 py-2 text-primary-foreground hover:cursor-default">
+            <PlagNavItem />
           </li>
           <li className="group relative px-3 py-2 text-primary-foreground hover:cursor-default">
             <MasterclassesNavItem />
           </li>
           <li className="group relative px-3 py-2 text-primary-foreground hover:cursor-default">
             <PlansNavItem />
-          </li>
-          <li className="group relative px-3 py-2 text-primary-foreground hover:cursor-default">
-            <ToolsNavItem />
           </li>
         </ul>
       </nav>

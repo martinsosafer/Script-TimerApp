@@ -67,6 +67,8 @@ export default function ChatInteraction({ userId, openAiCredits }: ChatProps) {
     boostYourVideoScriptSubtypes[0],
   );
 
+  const [isInputMinimized, setIsInputMinimized] = useState(false);
+
   useEffect(() => {
     setPromptInput("");
     setMessages([]);
@@ -84,6 +86,10 @@ export default function ChatInteraction({ userId, openAiCredits }: ChatProps) {
   async function handleSubmitChat(e: FormEvent, chatId?: string) {
     setIsLoading(true);
     const tokens = promptInput.length + (feedbackInput?.length ?? 0);
+    if (!userId) {
+      setIsLoading(false);
+      return setNoSessionModalOpen(true);
+    }
 
     if (tokens > credits) {
       toast({
@@ -151,6 +157,7 @@ export default function ChatInteraction({ userId, openAiCredits }: ChatProps) {
         setSelectedPill={setSelectedPill}
         selectedTab={selectedTab}
         setSelectedTab={setSelectedTab}
+        setIsInputMinimized={setIsInputMinimized}
       />
       <Prompter uiPrompt={selectedCard?.prompt_display} />
       <PromptInput
@@ -165,8 +172,9 @@ export default function ChatInteraction({ userId, openAiCredits }: ChatProps) {
         }}
         loadingMessages={isLoading}
         isEnabled={Boolean(selectedCard) && promptInput.length > 0}
-        setOpenMopdal={() => setNoSessionModalOpen(true)}
         userId={userId}
+        isInputMinimized={isInputMinimized}
+        setIsInputMinimized={setIsInputMinimized}
       />
       <ChatFeedback
         chat={messages}

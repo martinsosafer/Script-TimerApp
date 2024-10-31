@@ -12,7 +12,7 @@ export default function GoogleForm() {
       action={handleSignUp}
       className="mx-auto flex w-full max-w-md flex-col space-y-4"
     >
-      <button className="flex items-center justify-center gap-3 rounded-md bg-[#24292F]  px-3 py-2  text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F]">
+      <button className="flex w-full items-center justify-center gap-3 rounded-md bg-slate-100 px-3 py-1.5 text-black shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] ">
         <svg
           className="h-5 w-5"
           xmlns="http://www.w3.org/2000/svg"
@@ -38,7 +38,9 @@ export default function GoogleForm() {
           />
           <path d="M1 1h22v22H1z" fill="none" />
         </svg>
-        <span className="text-sm font-semibold leading-6">Google</span>
+        <span className="text-sm font-semibold leading-6">
+          Sign up with Google
+        </span>
       </button>
     </form>
   );

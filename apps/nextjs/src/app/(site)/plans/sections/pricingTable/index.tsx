@@ -395,7 +395,7 @@ const PricingTable = ({
         <h1 className="mb-4 text-4xl font-bold text-primary lg:text-4xl">
           Co-Producer Plans
         </h1>
-        <p className="text-black-700 text-base lg:text-xl font-poppins">
+        <p className="text-black-700 font-poppins text-base lg:text-xl">
           Transform your ideas into
           <br /> perfect scripts, voice overs, and images
           <br /> in every language. ﻿
@@ -475,7 +475,7 @@ const PricingTable = ({
                   )}
 
                   <div
-                    className={`${tier.color} relative rounded-lg p-1 py-6 text-center text-white`}
+                    className={`${tier.color} relative w-[213px] rounded-lg p-1 py-6 text-center text-white`}
                   >
                     <div className="font-poppins text-xl">{tier.name}</div>
                     <div className="text-sm font-medium text-white">
@@ -506,7 +506,7 @@ const PricingTable = ({
                         {tier.name === "FREE" ? (
                           // Render 'Start Free Trial' button if the plan is free
                           <button
-                            className={`mt-[7px] block w-[85%] ${
+                            className={`mt-[7px] block w-[50%] ${
                               hasPlan(tier.name)
                                 ? "bg-gray-400"
                                 : "bg-white hover:bg-slate-300"

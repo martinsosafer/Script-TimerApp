@@ -1,4 +1,8 @@
+import { useState } from "react";
 import Image from "next/image";
+
+import { Button } from "@voiceai/ui";
+import { IconSpinner, IconTrash } from "@voiceai/ui/@/components/ui/icons";
 
 interface ModalProps {
   onConfirm: () => void;
@@ -9,36 +13,44 @@ export default function ClearChatHistoryModal({
   onConfirm,
   onClose,
 }: ModalProps) {
+  const [isLoading, setIsLoading] = useState(false);
+
+  function handleConfirm() {
+    onConfirm();
+  }
+
   return (
-    <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center overflow-auto bg-black bg-opacity-50 backdrop-blur">
-      <div className="flex w-[600px] flex-col items-center justify-between rounded-lg bg-white p-4">
-        <h2 className="flex w-full items-center gap-2 text-xl font-semibold text-gray-800">
-          {" "}
-          <Image
-            src="/icons/trash.svg"
-            alt="delete history"
-            width={20}
-            height={20}
-          />{" "}
-          Clear Chat History
-        </h2>
-        <p className="w-400 my-6 text-center text-lg text-gray-800">
-          If you click <strong>DELETE CHAT HISTORY</strong> all your chats will
-          be deleted. Are you sure you want to proceed?
-        </p>
-        <div className="flex w-full items-center justify-end gap-4">
-          <button
-            className="rounded-md bg-gray-400 px-4 py-3 hover:bg-gray-300"
-            onClick={onClose}
-          >
-            Cancel
-          </button>
-          <button
-            className="rounded-md bg-red-700 px-4 py-3 text-white hover:bg-red-500"
-            onClick={onConfirm}
-          >
-            DELETE CHAT HISTORY
-          </button>
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur">
+      <div className="w-full max-w-md rounded-lg border-4 border-blue-500 bg-white shadow-lg">
+        <div className="flex flex-col items-center p-6">
+          <h2 className="mb-6 flex items-center gap-2 text-2xl font-bold text-primary">
+            <IconTrash className="h-6 w-6 text-primary" />
+            Clear Chat History
+          </h2>
+          <p className="mb-8 max-w-[80%] text-center">
+            If you click <strong>DELETE</strong>, all your chats will be
+            deleted. Are you sure you want to proceed?
+          </p>
+          <div className="flex w-full justify-center space-x-4">
+            <Button
+              size="lg"
+              onClick={onClose}
+              variant="outline"
+              className="border-2 border-red-500 font-poppins text-lg font-semibold text-red-500"
+            >
+              Cancel
+            </Button>
+            <Button
+              size="lg"
+              className="bg-red-500 font-poppins text-lg font-semibold hover:bg-red-300"
+              onClick={() => {
+                setIsLoading(true);
+                handleConfirm();
+              }}
+            >
+              {isLoading ? <IconSpinner className="h-6 w-6" /> : "DELETE "}
+            </Button>
+          </div>
         </div>
       </div>
     </div>

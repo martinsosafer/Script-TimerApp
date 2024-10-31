@@ -15,7 +15,7 @@ const PlagiarismTable = forwardRef(
         yearlyMonthlyPrice: "",
         yearlyPrice: "",
 
-        color: "bg-blue-400",
+        color: "bg-gradient-to-br from-cyan-300 via-blue-300 to-blue-400",
         rowColor: "bg-white",
         features: {
           "Included words per month": { value: "1,250" },
@@ -225,7 +225,7 @@ const PlagiarismTable = forwardRef(
                     )}
 
                     <div
-                      className={`${tier.color} relative  rounded-lg p-1 py-6 text-center text-white`}
+                      className={`${tier.color} relative  w-[213px] rounded-lg p-1 py-6 text-center text-white`}
                     >
                       <div className="font-poppins text-xl">{tier.name}</div>
                       <div className="text-sm font-medium text-white">

@@ -46,7 +46,7 @@ export default function RegisterForm() {
   return (
     <form
       onSubmit={handleSignUp}
-      className="mx-auto flex w-full max-w-md flex-col space-y-4"
+      className="mx-auto flex w-full max-w-md flex-col space-y-2"
     >
       <div className="flex flex-col space-y-2">
         <label htmlFor="email" className="text-sm font-semibold">
