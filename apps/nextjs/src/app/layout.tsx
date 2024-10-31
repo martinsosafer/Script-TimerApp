@@ -3,9 +3,11 @@ import { Poppins, Roboto } from "next/font/google";
 
 import { PageAnalytics } from "./analytics";
 import GoogleAnalytics from "./GoogleAnalytics";
-import HotJar from "./HotJar";
+import HotJar from "./Squid";
 
 import "~/styles/globals.css";
+
+import Squid from "./Squid";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -57,7 +59,7 @@ export default function Layout(props: { children: React.ReactNode }) {
         ].join(" ")}
       >
         {props.children}
-        <HotJar />
+        <Squid />
       </body>
 
       <PageAnalytics />
