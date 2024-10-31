@@ -18,5 +18,5 @@ const Logo = ({ className = "" }) => {
     </div>
   );
 };
-
+// this is not updating
 export default Logo;
