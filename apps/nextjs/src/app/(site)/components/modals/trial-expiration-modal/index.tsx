@@ -1,9 +1,7 @@
 import type { Dispatch, SetStateAction } from "react";
 import Image from "next/image";
 import Link from "next/link";
-
-import { Button } from "@voiceai/ui";
-import { Input } from "@voiceai/ui/@/components/ui/input";
+import type { Session } from "next-auth";
 
 import { poppins } from "~/app/fonts";
 import type { SubscriptionData } from "~/lib/types";
@@ -14,7 +12,7 @@ interface FreeModalProps {
   subData?: SubscriptionData | null | undefined;
   openModal: boolean;
   setOpenModal: Dispatch<SetStateAction<boolean>>;
-  session?: SubscriptionData | null | undefined;
+  session?: Session | null | undefined;
 }
 
 export default function TrialExpirationModal({
@@ -28,9 +26,9 @@ export default function TrialExpirationModal({
 
   // Define the product IDs for Creator and Business plans
   const creatorMonthlyId = "prod_Q6wRA3CPKOd872";
-  const creatorYearlyId = "prod_Q6wR4wC3Y5Yili";
+  
   const businessMonthlyId = "prod_Q6wRdg67cs52NR";
-  const businessYearlyId = "prod_Q6wAIfC2x07sMV";
+  
 
   return (
     <div

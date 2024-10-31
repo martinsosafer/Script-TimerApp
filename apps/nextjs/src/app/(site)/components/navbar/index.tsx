@@ -9,7 +9,6 @@ import { useTheme } from "next-themes";
 import { Button } from "@voiceai/ui";
 import {
   HoverCard,
-  HoverCardContent,
   HoverCardTrigger,
 } from "@voiceai/ui/@/components/ui/hover-card";
 import {
@@ -19,9 +18,7 @@ import {
 } from "@voiceai/ui/@/components/ui/icons";
 
 import { RevealText } from "~/app/animations/RevealText";
-import { hasValidPlan } from "../../siteUtils";
 import MobileNavBar from "../mobile-navbar";
-import ExperimentalNavItem from "./experimental";
 import ImagesNavItem from "./imaimages-nav-item";
 import MasterclassesNavItem from "./masterclass-nav-item";
 import PlagNavItem from "./plagiarism-nav-item";

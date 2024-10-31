@@ -3,11 +3,10 @@ import { Poppins, Roboto } from "next/font/google";
 
 import { PageAnalytics } from "./analytics";
 import GoogleAnalytics from "./GoogleAnalytics";
-import HotJar from "./Squid";
 
 import "~/styles/globals.css";
 
-import Squid from "./Squid";
+import Squid from "./SquidAnalitycs";
 
 const poppins = Poppins({
   subsets: ["latin"],

@@ -1579,9 +1579,9 @@ function IconUpgrades({ className, ...props }: React.ComponentProps<"svg">) {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       className={className}
       {...props}
     >
@@ -1600,9 +1600,9 @@ function IconCaretDown({ className, ...props }: React.ComponentProps<"svg">) {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       className={cn("h-6 w-6", className)}
       {...props}
     >
@@ -1644,9 +1644,9 @@ function IconEye({ className, ...props }: React.ComponentProps<"svg">) {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       className={cn("h-6 w-6", className)}
       {...props}
     >
@@ -1816,9 +1816,9 @@ function IconNoImage({ className, ...props }: React.ComponentProps<"svg">) {
       viewBox="0 0 24 24"
       fill="none"
       stroke="#000000"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       className={cn("h-6 w-6", className)}
       {...props}
     >
@@ -1844,9 +1844,9 @@ function IconTestTubeDiagonal({
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       className={cn("h-6 w-6", className)}
       {...props}
     >
@@ -1866,9 +1866,9 @@ function IconTestTube({ className, ...props }: React.ComponentProps<"svg">) {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       className={cn("h-6 w-6", className)}
       {...props}
     >
@@ -1888,9 +1888,9 @@ function IconImage({ className, ...props }: React.ComponentProps<"svg">) {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       className={cn("h-6 w-6", className)}
       {...props}
     >
@@ -1910,9 +1910,9 @@ function IconFlask({ className, ...props }: React.ComponentProps<"svg">) {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       className={cn("h-6 w-6", className)}
       {...props}
     >
@@ -1932,9 +1932,9 @@ function IconNoAi({ className, ...props }: React.ComponentProps<"svg">) {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       className={cn("h-6 w-6", className)}
       {...props}
     >
@@ -1957,9 +1957,9 @@ function StarIcon({ className, ...props }: React.ComponentProps<"svg">) {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       className={cn("h-6 w-6", className)}
       {...props}
     >
@@ -1976,9 +1976,9 @@ function MapPinIcon({ className, ...props }: React.ComponentProps<"svg">) {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       className={cn("h-6 w-6", className)}
       {...props}
     >
@@ -1996,9 +1996,9 @@ function FileImageIcon({ className, ...props }: React.ComponentProps<"svg">) {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       className={cn("lucide lucide-file-image", className)}
       {...props}
     >
@@ -2022,9 +2022,9 @@ function ImageDownloadIcon({
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       className={cn("lucide lucide-image-down", className)}
       {...props}
     >
@@ -2044,9 +2044,9 @@ function SirenIcon({ className, ...props }: React.ComponentProps<"svg">) {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       className={cn("lucide lucide-siren", className)}
       {...props}
     >
@@ -2071,9 +2071,9 @@ function IconClipboard({ className, ...props }: React.ComponentProps<"svg">) {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       className={cn("lucide lucide-siren", className)}
       {...props}
     >
@@ -2124,6 +2124,30 @@ function IconCrowm({ className, ...props }: React.ComponentProps<"svg">) {
         d="M48.8868 43.1201C55.2977 44.7447 57.0885 44.5136 59.7048 45.4426C59.8502 45.4995 60.0042 45.4672 60.1344 45.3525C60.2647 45.2378 60.3611 45.0497 60.4034 44.8276C60.4458 44.6054 60.4307 44.3667 60.3614 44.1614C60.2921 43.956 60.174 43.8001 60.0319 43.7264C58.2544 42.7383 56.4088 42.0718 54.5319 41.7402C52.6863 41.4381 50.8285 41.3534 48.9746 41.4866C48.8418 41.4887 48.7142 41.5672 48.6169 41.7068C48.5196 41.8465 48.4596 42.0372 48.4486 42.2416C48.4376 42.446 48.4764 42.6494 48.5575 42.8119C48.6386 42.9744 48.756 43.0843 48.8868 43.1201Z"
         fill="#FF9900"
       />
+    </svg>
+  );
+}
+
+function IconPocketKnife({ className, ...props }: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cn("lucide lucide-siren", className)}
+      {...props}
+    >
+      <path d="M3 2v1c0 1 2 1 2 2S3 6 3 7s2 1 2 2-2 1-2 2 2 1 2 2" />
+      <path d="M18 6h.01" />
+      <path d="M6 18h.01" />
+      <path d="M20.83 8.83a4 4 0 0 0-5.66-5.66l-12 12a4 4 0 1 0 5.66 5.66Z" />
+      <path d="M18 11.66V22a4 4 0 0 0 4-4V6" />
     </svg>
   );
 }
@@ -2218,5 +2242,6 @@ export {
   ImageDownloadIcon,
   SirenIcon,
   IconClipboard,
+  IconPocketKnife,
   IconCrowm,
 };
