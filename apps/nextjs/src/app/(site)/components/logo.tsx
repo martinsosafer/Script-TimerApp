@@ -12,11 +12,11 @@ const Logo = ({ className = "" }) => {
       </span>
       <span className="mx-1 text-black">-</span>
       <span className="font-poppins text-5xl font-bold text-primary">P</span>
-      <span className="relative -top-[4px] font-poppins text-4xl font-bold text-primary">
+      <span className="relative -top-[2.5px] font-poppins text-4xl font-bold text-primary">
         roducer
       </span>
     </div>
   );
 };
-
+// this is not updating
 export default Logo;
