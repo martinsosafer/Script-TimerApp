@@ -2,81 +2,105 @@
 
 import { Stripe } from "stripe";
 
+import { db, eq, schema } from "@voiceai/db";
+
+import {
+  STARTING_11CL_CREDITS,
+  STARTING_CL_CREDITS,
+  STARTING_IMG_CREDITS,
+  STARTING_OPENAI_CREDITS,
+} from "~/constants/credits";
+import { plans } from "~/constants/plans";
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
-export async function upgrade(priceId: string, subscriptionId: string) {
+export async function upgrade(
+  priceId: string,
+  subscriptionId: string,
+  userId: string,
+) {
   try {
     const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-    console.log("SUBSCRIPTION", subscription);
-    //console.log("SUBSCRIPTION", subscription.items.data[0]);
 
     if (!subscription.items.data[0]) {
       throw new Error("Subscription not found");
     }
 
-    // const updatedSubscription = await stripe.subscriptions.update(
-    //   subscriptionId,
-    //   {
-    //     items: [
-    //       {
-    //         id: subscription.items.data[0].id,
-    //         price: priceId,
-    //       },
-    //     ],
-    //   },
-    // );
+    const updatedSubscription = await stripe.subscriptions.update(
+      subscriptionId,
+      {
+        items: [
+          {
+            id: subscription.items.data[0].id,
+            price: priceId,
+          },
+        ],
+      },
+    );
+
+    if (!updatedSubscription) {
+      throw new Error("Failed to update subscription");
+    }
 
     const product = await stripe.products.retrieve(
-      subscription.items.data[0].price.product as string,
+      updatedSubscription.items.data[0]?.price.product as string,
     );
 
     if (!product) {
       throw new Error("Product not found");
     }
 
-    const newProductName = product.name;
+    const updgradedPlan = product.name;
 
-    //console.log("UPDATED SUBSCRIPTION", updatedSubscription);
+    const newPlan = plans[updgradedPlan];
+
+    await db
+      .update(schema.subscriptions)
+      .set({
+        plan: "CUSTOM",
+        status: newPlan,
+      })
+      .where(eq(schema.subscriptions.userId, userId))
+      .execute();
+
+    await db
+      .update(schema.clCredits)
+      .set({
+        credits:
+          STARTING_CL_CREDITS[newPlan as keyof typeof STARTING_CL_CREDITS],
+      })
+      .where(eq(schema.clCredits.userId, userId))
+      .execute();
+
+    await db
+      .update(schema.elevenLabsCredit)
+      .set({
+        credits:
+          STARTING_11CL_CREDITS[newPlan as keyof typeof STARTING_11CL_CREDITS],
+      })
+      .where(eq(schema.elevenLabsCredit.userId, userId))
+      .execute();
+
+    await db
+      .update(schema.openAiCredit)
+      .set({
+        credits:
+          STARTING_OPENAI_CREDITS[
+            newPlan as keyof typeof STARTING_OPENAI_CREDITS
+          ],
+      })
+      .where(eq(schema.openAiCredit.userId, userId))
+      .execute();
+
+    await db
+      .update(schema.imgCredit)
+      .set({
+        credits:
+          STARTING_IMG_CREDITS[newPlan as keyof typeof STARTING_IMG_CREDITS],
+      })
+      .where(eq(schema.imgCredit.userId, userId))
+      .execute();
   } catch (error) {
     console.error(error);
   }
-
-  //   const response = await fetch("/api/upgrade", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       productId,
-  //       subscriptionId,
-  //     }),
-  //   });
-
-  //   if (!response.ok) {
-  //     throw new Error("Failed to upgrade subscription");
-  //   }
-
-  //   return response.json();
 }
-
-// onClick={
-//     session
-//       ? async () => {
-//           const res = await fetch("/api/checkout", {
-//             method: "POST",
-//             body: JSON.stringify({
-//               productId,
-//             }),
-//             headers: {
-//               "Content-Type": "application/json",
-//             },
-//           });
-//           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-//           const {
-//             session: { url },
-//           } = await res.json();
-
-//           window.location.href = url as string;
-//         }
-//       : () => router.push("/register")
-//   }

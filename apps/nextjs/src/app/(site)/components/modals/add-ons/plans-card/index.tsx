@@ -21,6 +21,8 @@ export default function PlansCards({
   session: Session | null;
   onClose: () => void;
 }) {
+  const currentPlan = session?.user.subscription?.status;
+
   return (
     <div className="bg-cp-primary mt-[24px] flex h-[281px] w-[195px] flex-col items-center justify-between rounded-md p-4 shadow-md">
       <div className="items-cente flex flex-col text-white">
@@ -55,6 +57,7 @@ export default function PlansCards({
           session?.user.subscription?.status === "FREE_TRIAL"
         }
         onClose={onClose}
+        currentPlan={currentPlan}
       />
     </div>
   );

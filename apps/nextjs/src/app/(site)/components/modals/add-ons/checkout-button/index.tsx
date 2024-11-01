@@ -1,9 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { set } from "zod";
 
 import type { Session } from "@voiceai/auth";
+import { is } from "@voiceai/db";
 
 import Button from "~/app/(site)/components/button";
 import { upgrade } from "~/app/actions/checkoutActions";
@@ -14,7 +16,17 @@ interface CheckoutButtonProps {
   session: Session | null;
   type: "primary" | "secondary" | "accent";
   onClose: () => void;
+  currentPlan: string | null | undefined;
 }
+
+const clPlans = [
+  "STUDENTCLMO",
+  "CREATORCLMO",
+  "BUSINESSCLMO",
+  "STUDENTCLYR",
+  "CREATORCLYR",
+  "BUSINESSCLYR",
+];
 
 function CheckoutButton({
   productId,
@@ -22,45 +34,47 @@ function CheckoutButton({
   session,
   type,
   onClose,
+  currentPlan,
 }: CheckoutButtonProps) {
   const router = useRouter();
+  const userId = session?.user.id ?? "";
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  function getLabel() {
+    if (isLoading) return "Upgrading...";
+    if (clPlans.includes(currentPlan!)) {
+      return "Upgraded";
+    }
+    return "Get Started";
+  }
 
   return (
     <Button
-      label={hasPlan ? "Current Plan" : "Get Started"}
+      label={getLabel()}
       type={type}
       fit
       hight="h-[42px]"
-      disabled={hasPlan}
+      disabled={!hasPlan || clPlans.includes(currentPlan!)}
       onClick={
-        async () =>
-          await upgrade(productId!, session!.user.subscription!.planId!)
-
-        // session
-        //   ? session.user.subscription?.status === "FREE_TRIAL" ||
-        //     session.user.subscription?.status === "FREE"
-        //     ? () => {
-        //         router.push("/new-plans#plans");
-        //         onClose();
-        //       }
-        //     : async () => {
-        //         const res = await fetch("/api/checkout", {
-        //           method: "POST",
-        //           body: JSON.stringify({
-        //             productId,
-        //           }),
-        //           headers: {
-        //             "Content-Type": "application/json",
-        //           },
-        //         });
-        //         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        //         const {
-        //           session: { url },
-        //         } = await res.json();
-
-        //         window.location.href = url as string;
-        //       }
-        //   : () => router.push("/register")
+        session
+          ? session.user.subscription?.status === "FREE_TRIAL" ||
+            session.user.subscription?.status === "FREE"
+            ? () => {
+                router.push("/new-plans#plans");
+                onClose();
+              }
+            : async () => {
+                setIsLoading(true);
+                await upgrade(
+                  productId!,
+                  session.user.subscription!.planId!,
+                  userId,
+                );
+                setIsLoading(false);
+                onClose();
+              }
+          : () => router.push("/register")
       }
     />
   );
