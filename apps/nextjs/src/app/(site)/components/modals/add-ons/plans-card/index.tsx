@@ -2,7 +2,7 @@ import type { Session } from "next-auth";
 
 import { roboto } from "~/app/fonts";
 import CheckoutButton from "../checkout-button";
-import { description, price, testPoductIds as productIds } from "../data";
+import { description, price, priceIds } from "../data";
 
 export default function PlansCards({
   type,
@@ -16,6 +16,8 @@ export default function PlansCards({
   session: Session | null;
   onClose: () => void;
 }) {
+  const currentPlan = session?.user.subscription?.status;
+
   return (
     <div className="bg-cp-primary mt-[24px] flex h-[281px] w-[195px] flex-col items-center justify-between rounded-md p-4 shadow-md">
       <div className="items-cente flex flex-col text-white">
@@ -43,13 +45,14 @@ export default function PlansCards({
       </div>
       <CheckoutButton
         type="accent"
-        productId={productIds[type]?.[period]}
+        productId={priceIds[type]?.[period]}
         session={session}
         hasPlan={
           session?.user.subscription?.status === type ||
           session?.user.subscription?.status === "FREE_TRIAL"
         }
         onClose={onClose}
+        currentPlan={currentPlan}
       />
     </div>
   );
