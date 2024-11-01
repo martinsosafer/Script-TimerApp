@@ -2,12 +2,7 @@ import type { Session } from "next-auth";
 
 import { roboto } from "~/app/fonts";
 import CheckoutButton from "../checkout-button";
-import {
-  description,
-  price,
-  testPriceIds as priceIds,
-  testPoductIds as productIds,
-} from "../data";
+import { description, price, priceIds } from "../data";
 
 export default function PlansCards({
   type,

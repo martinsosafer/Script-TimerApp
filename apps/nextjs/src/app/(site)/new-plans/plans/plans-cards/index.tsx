@@ -2,7 +2,7 @@ import Image from "next/image";
 import type { Session } from "next-auth";
 
 import { roboto } from "~/app/fonts";
-import { description, price, testProductIds as productIds } from "../../data";
+import { description, price, productIds } from "../../data";
 import CheckoutButton from "./checkout-button";
 
 function RegularCard({
