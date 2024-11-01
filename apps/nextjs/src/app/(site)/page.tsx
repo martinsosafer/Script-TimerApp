@@ -13,7 +13,6 @@ export const metadata: Metadata = {
 export default async function LandingPage() {
   const session = await auth();
   const userId = session?.user.id ?? "";
-
   await monthlyCreditsReset(userId);
   const trialExpiration =
     session?.user.subscription?.trialExpiration &&
