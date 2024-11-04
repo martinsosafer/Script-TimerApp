@@ -70,6 +70,7 @@ function CheckoutButton({
                   userId,
                 );
                 setIsLoading(false);
+                window.location.reload();
                 onClose();
               }
           : () => router.push("/register")

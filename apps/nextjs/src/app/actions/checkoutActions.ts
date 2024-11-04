@@ -26,6 +26,8 @@ export async function upgrade(
       throw new Error("Subscription not found");
     }
 
+    console.log("priceId", priceId);
+    console.log("subscription", subscription.items.data[0]);
     const updatedSubscription = await stripe.subscriptions.update(
       subscriptionId,
       {
@@ -45,6 +47,8 @@ export async function upgrade(
     const product = await stripe.products.retrieve(
       updatedSubscription.items.data[0]?.price.product as string,
     );
+
+    console.log("product", product);
 
     if (!product) {
       throw new Error("Product not found");
