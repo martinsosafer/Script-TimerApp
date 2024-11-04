@@ -1,5 +1,7 @@
 import { Stripe } from "stripe";
 
+import type { Session } from "@voiceai/auth";
+
 export async function getSubscription(planId: string | null | undefined) {
   const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 
@@ -31,4 +33,56 @@ export async function getSubscription(planId: string | null | undefined) {
     console.error(e);
     return undefined;
   }
+}
+
+export function setHasPlan(
+  session: Session | null,
+  type: "FREE" | "EDUCATION" | "CREATOR" | "BUSINESS",
+  interval: string | undefined,
+  period: "monthly" | "yearly",
+) {
+  if (
+    type === "FREE" &&
+    (session?.user.subscription?.status === "FREE_TRIAL" ||
+      session?.user.subscription?.status === "FREE")
+  )
+    return true;
+  if (period === "monthly" && interval === "month") {
+    if (session?.user.subscription?.status === type) return true;
+    else if (
+      session?.user.subscription?.status === "STUDENTCLMO" &&
+      type === "EDUCATION"
+    )
+      return true;
+    else if (
+      session?.user.subscription?.status === "CREATORCLMO" &&
+      type === "CREATOR"
+    )
+      return true;
+    else if (
+      session?.user.subscription?.status === "BUSINESSCLMO" &&
+      type === "BUSINESS"
+    )
+      return true;
+  }
+  if (period === "yearly" && interval === "year") {
+    if (session?.user.subscription?.status === type) return true;
+    else if (
+      session?.user.subscription?.status === "STUDENTCLYR" &&
+      type === "EDUCATION"
+    )
+      return true;
+    else if (
+      session?.user.subscription?.status === "CREATORCLYR" &&
+      type === "CREATOR"
+    )
+      return true;
+    else if (
+      session?.user.subscription?.status === "BUSINESSCLYR" &&
+      type === "BUSINESS"
+    )
+      return true;
+  }
+
+  return false;
 }

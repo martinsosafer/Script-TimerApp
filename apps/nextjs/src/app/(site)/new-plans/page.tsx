@@ -28,7 +28,6 @@ export default async function NewPlansPage() {
         session={session}
         subscription={(subscription?.plan as Plan) ?? null}
       />
-      <Explore session={session} />
       <Compare session={session} />
       <LanguagesRows />
       <PricingTestimonials />

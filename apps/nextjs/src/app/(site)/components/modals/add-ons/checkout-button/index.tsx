@@ -2,10 +2,8 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { set } from "zod";
 
 import type { Session } from "@voiceai/auth";
-import { is } from "@voiceai/db";
 
 import Button from "~/app/(site)/components/button";
 import { upgrade } from "~/app/actions/checkoutActions";
