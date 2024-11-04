@@ -2,15 +2,23 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { F } from "formdata-node/lib/File-cfd9c54a";
 import type { Session } from "next-auth";
 
 import { roboto } from "~/app/fonts";
+import { TEST_PRICES_ID, TEST_PRODUCTS_ID } from "~/constants/products";
 import AddOnModal from "../../components/modals/add-ons";
-import { productIds } from "../data";
 import CheckoutButton from "../plans/plans-cards/checkout-button";
+import { setHasPlan } from "../utils";
 
-export default function Explore({ session }: { session: Session | null }) {
+export default function Explore({
+  session,
+  period,
+  interval,
+}: {
+  session: Session | null;
+  period: "monthly" | "yearly";
+  interval: string | undefined;
+}) {
   const [addOnType, setAddOnType] = useState<
     "EDUCATION" | "CREATOR" | "BUSINESS" | null
   >(null);
@@ -86,30 +94,34 @@ export default function Explore({ session }: { session: Session | null }) {
                 session?.user.subscription?.status === "FREE"
               }
               productId={null}
+              priceId={null}
               session={session}
               type="primary"
             />
           </span>
           <span className="w-[140px] text-center">
             <CheckoutButton
-              hasPlan={session?.user.subscription?.status === "EDUCATION"}
-              productId={productIds.EDUCATION!.monthly}
+              hasPlan={setHasPlan(session, "EDUCATION", interval, period)}
+              productId={TEST_PRODUCTS_ID.EDUCATION![period]}
+              priceId={TEST_PRICES_ID.EDUCATION![period]}
               session={session}
               type="primary"
             />
           </span>
           <span className="w-[140px] text-center">
             <CheckoutButton
-              hasPlan={session?.user.subscription?.status === "CREATOR"}
-              productId={productIds.CREATOR!.monthly}
+              hasPlan={setHasPlan(session, "CREATOR", interval, period)}
+              productId={TEST_PRODUCTS_ID.CREATOR![period]}
+              priceId={TEST_PRICES_ID.CREATOR![period]}
               session={session}
               type="accent"
             />
           </span>
           <span className="w-[140px] text-center">
             <CheckoutButton
-              hasPlan={session?.user.subscription?.status === "BUSINESS"}
-              productId={productIds.BUSINESS!.monthly}
+              hasPlan={setHasPlan(session, "BUSINESS", interval, period)}
+              productId={TEST_PRODUCTS_ID.BUSINESS![period]}
+              priceId={TEST_PRICES_ID.BUSINESS![period]}
               session={session}
               type="primary"
             />
