@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 
 import { api } from "~/utils/api";
-import type { I_Subscription } from "../../plans/types";
+import type { I_Subscription } from "../../new-plans/types";
 import CreditRow from "../credits-row";
 
 type Credits = Record<
