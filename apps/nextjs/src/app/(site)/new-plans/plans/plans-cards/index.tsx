@@ -2,7 +2,12 @@ import Image from "next/image";
 import type { Session } from "next-auth";
 
 import { roboto } from "~/app/fonts";
-import { description, price, productIds } from "../../data";
+import {
+  DESCRIPTION,
+  PRICE,
+  PRICES_ID,
+  PRODUCTS_ID,
+} from "~/constants/products";
 import CheckoutButton from "./checkout-button";
 
 function RegularCard({
@@ -23,10 +28,43 @@ function RegularCard({
         session?.user.subscription?.status === "FREE")
     )
       return true;
-    if (period === "monthly" && interval === "month")
-      return session?.user.subscription?.status === type;
-    if (period === "yearly" && interval === "year")
-      return session?.user.subscription?.status === type;
+    if (period === "monthly" && interval === "month") {
+      if (session?.user.subscription?.status === type) return true;
+      else if (
+        session?.user.subscription?.status === "STUDENTCLMO" &&
+        type === "EDUCATION"
+      )
+        return true;
+      else if (
+        session?.user.subscription?.status === "CREATORCLMO" &&
+        type === "CREATOR"
+      )
+        return true;
+      else if (
+        session?.user.subscription?.status === "BUSINESSCLMO" &&
+        type === "BUSINESS"
+      )
+        return true;
+    }
+    if (period === "yearly" && interval === "year") {
+      if (session?.user.subscription?.status === type) return true;
+      else if (
+        session?.user.subscription?.status === "STUDENTCLYR" &&
+        type === "EDUCATION"
+      )
+        return true;
+      else if (
+        session?.user.subscription?.status === "CREATORCLYR" &&
+        type === "CREATOR"
+      )
+        return true;
+      else if (
+        session?.user.subscription?.status === "BUSINESSCLYR" &&
+        type === "BUSINESS"
+      )
+        return true;
+    }
+
     return false;
   }
   return (
@@ -52,7 +90,7 @@ function RegularCard({
                 <p
                   className={`${roboto.className} mt-[4px] text-center text-[14px]`}
                 >
-                  {description[type]}
+                  {DESCRIPTION[type]}
                 </p>
                 <div
                   className={`${roboto.className} mt-[10px] flex flex-col items-center p-2 text-[14px]`}
@@ -64,7 +102,7 @@ function RegularCard({
                   <span>Training</span>
                 </div>
                 <span className="mt-[10px] text-center text-[34px] font-bold">
-                  {price[type]?.[period]}
+                  {PRICE[type]?.[period]}
                   <span
                     className={`${roboto.className} text-[14px] font-light`}
                   >
@@ -75,13 +113,14 @@ function RegularCard({
                   <span
                     className={`${roboto.className} mb-[10px] mt-[2px] text-center text-[16px] font-light`}
                   >
-                    {price[type]?.total}
+                    {PRICE[type]?.total}
                   </span>
                 )}
               </div>
               <CheckoutButton
                 type="accent"
-                productId={productIds[type]?.[period]}
+                productId={PRODUCTS_ID[type]?.[period]}
+                priceId={PRICES_ID[type]?.[period]}
                 session={session}
                 hasPlan={setHasPlan()}
               />
@@ -97,7 +136,7 @@ function RegularCard({
             <p
               className={`${roboto.className} mt-[4px] h-[40px] px-6 text-center text-[14px]`}
             >
-              {description[type]}
+              {DESCRIPTION[type]}
             </p>
             <div
               className={`${roboto.className} mt-[10px] flex flex-col items-center p-2 text-[14px]`}
@@ -109,7 +148,7 @@ function RegularCard({
               <span>Training</span>
             </div>
             <span className="mt-[10px] text-center text-[34px] font-bold">
-              {price[type]?.[period]}
+              {PRICE[type]?.[period]}
               <span className={`${roboto.className} text-[14px] font-light`}>
                 {type !== "FREE" && "/month"}
               </span>
@@ -125,13 +164,14 @@ function RegularCard({
               <span
                 className={`${roboto.className} mb-[10px] mt-[2px] text-center text-[16px] font-light`}
               >
-                {price[type]?.total}
+                {PRICE[type]?.total}
               </span>
             )}
           </div>
           <CheckoutButton
             type="primary"
-            productId={productIds[type]?.[period]}
+            productId={PRODUCTS_ID[type]?.[period]}
+            priceId={PRICES_ID[type]?.[period]}
             session={session}
             hasPlan={setHasPlan()}
           />
