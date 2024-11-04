@@ -2,13 +2,13 @@ import Image from "next/image";
 import type { Session } from "next-auth";
 
 import { roboto } from "~/app/fonts";
+
 import {
   DESCRIPTION,
   PRICE,
   PRICES_ID,
   PRODUCTS_ID,
 } from "~/constants/products";
-import CheckoutButton from "./checkout-button";
 
 function RegularCard({
   type,
