@@ -13,7 +13,7 @@ export default function SpecialsDashboard() {
   const [selectedSpecial, setSelectedSpecial] = useState<
     MonthlySpecial | undefined
   >(undefined);
-  const [promptModalOpen, setPromptModalOpen] = useState(false);
+  const [specialModalOpen, setSpecialModalOpen] = useState(false);
   const [isDeletingPrompt, setIsDeletingPrompt] = useState(false);
 
   const {
@@ -32,7 +32,7 @@ export default function SpecialsDashboard() {
 
         <button
           className="mt-8 rounded-sm bg-primary p-2 text-lg text-white"
-          onClick={() => setPromptModalOpen(true)}
+          onClick={() => setSpecialModalOpen(true)}
         >
           <span className="text-xl">+</span> Add a New Special
         </button>
@@ -90,11 +90,11 @@ export default function SpecialsDashboard() {
           ))}
         </div>
       </div>
-      {promptModalOpen && (
+      {specialModalOpen && (
         <AdminSpecialModal
           onClose={() => {
-            // setSelectedPrompt(undefined);
-            // setPromptModalOpen(false);
+            setSelectedSpecial(undefined);
+            setSpecialModalOpen(false);
           }}
           special={selectedSpecial}
           refetch={refetch}

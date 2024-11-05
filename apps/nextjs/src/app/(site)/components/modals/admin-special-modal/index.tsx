@@ -48,7 +48,7 @@ export default function AdminSpecialModal({
       <div className="flex flex-col items-center justify-between rounded-lg bg-white p-4">
         <h2 className="flex w-full items-center gap-2 text-xl font-semibold text-gray-800">
           {" "}
-          <IconPencilLine /> Add or Edit Prompt
+          <IconPencilLine /> Add or Edit Monthly Special
         </h2>
         <form className="flex flex-col gap-2 p-2" onSubmit={handleSubmit}>
           <div className="flex w-full gap-2">
