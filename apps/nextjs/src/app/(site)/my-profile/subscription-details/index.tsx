@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 
 import { api } from "~/utils/api";
-import type { I_Subscription } from "../../plans/types";
+import type { I_Subscription } from "../../new-plans/types";
 import CreditRow from "../credits-row";
 
 type Credits = Record<
@@ -112,7 +112,7 @@ export default function SubscriptionDetails({
         </div>
         <button
           className="mt-10 flex h-[40px] w-[200px] items-center justify-center rounded-lg bg-blue-200 p-4 text-primary hover:bg-blue-300 hover:font-semibold"
-          onClick={() => router.push("/plans")}
+          onClick={() => router.push("/new-plans")}
         >
           Manage Subscription
         </button>

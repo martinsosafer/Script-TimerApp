@@ -1,7 +1,8 @@
 import type { Dispatch, SetStateAction } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import type { Session } from "next-auth";
+
+import type { Session } from "@voiceai/auth";
 
 import { poppins } from "~/app/fonts";
 import type { SubscriptionData } from "~/lib/types";
@@ -26,9 +27,8 @@ export default function TrialExpirationModal({
 
   // Define the product IDs for Creator and Business plans
   const creatorMonthlyId = "prod_Q6wRA3CPKOd872";
-  
+
   const businessMonthlyId = "prod_Q6wRdg67cs52NR";
-  
 
   return (
     <div

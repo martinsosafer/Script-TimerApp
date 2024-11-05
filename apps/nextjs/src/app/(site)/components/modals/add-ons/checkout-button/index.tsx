@@ -1,11 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import type { Session } from "@voiceai/auth";
 
 import Button from "~/app/(site)/components/button";
+import { upgrade } from "~/app/actions/checkoutActions";
 
 interface CheckoutButtonProps {
   productId: string | null | undefined; // Changed from priceId to productId to match the product ID
@@ -13,7 +14,17 @@ interface CheckoutButtonProps {
   session: Session | null;
   type: "primary" | "secondary" | "accent";
   onClose: () => void;
+  currentPlan: string | null | undefined;
 }
+
+const clPlans = [
+  "STUDENTCLMO",
+  "CREATORCLMO",
+  "BUSINESSCLMO",
+  "STUDENTCLYR",
+  "CREATORCLYR",
+  "BUSINESSCLYR",
+];
 
 function CheckoutButton({
   productId,
@@ -21,16 +32,28 @@ function CheckoutButton({
   session,
   type,
   onClose,
+  currentPlan,
 }: CheckoutButtonProps) {
   const router = useRouter();
+  const userId = session?.user.id ?? "";
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  function getLabel() {
+    if (isLoading) return "Upgrading...";
+    if (clPlans.includes(currentPlan!)) {
+      return "Upgraded";
+    }
+    return "Get Started";
+  }
 
   return (
     <Button
-      label={hasPlan ? "Current Plan" : "Get Started"}
+      label={getLabel()}
       type={type}
       fit
       hight="h-[42px]"
-      disabled={hasPlan}
+      disabled={!hasPlan || clPlans.includes(currentPlan!)}
       onClick={
         session
           ? session.user.subscription?.status === "FREE_TRIAL" ||
@@ -40,21 +63,15 @@ function CheckoutButton({
                 onClose();
               }
             : async () => {
-                const res = await fetch("/api/checkout", {
-                  method: "POST",
-                  body: JSON.stringify({
-                    productId,
-                  }),
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                });
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                const {
-                  session: { url },
-                } = await res.json();
-
-                window.location.href = url as string;
+                setIsLoading(true);
+                await upgrade(
+                  productId!,
+                  session.user.subscription!.planId!,
+                  userId,
+                );
+                setIsLoading(false);
+                window.location.reload();
+                onClose();
               }
           : () => router.push("/register")
       }

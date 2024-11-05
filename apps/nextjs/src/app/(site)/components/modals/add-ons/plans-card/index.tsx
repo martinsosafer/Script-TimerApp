@@ -1,8 +1,12 @@
 import type { Session } from "next-auth";
 
 import { roboto } from "~/app/fonts";
+import {
+  ADD_ON_PRICE,
+  ADD_ON_TEST_PRICES_ID,
+  DESCRIPTION,
+} from "~/constants/products";
 import CheckoutButton from "../checkout-button";
-import { description, price, testPoductIds as productIds } from "../data";
 
 export default function PlansCards({
   type,
@@ -16,6 +20,8 @@ export default function PlansCards({
   session: Session | null;
   onClose: () => void;
 }) {
+  const currentPlan = session?.user.subscription?.status;
+
   return (
     <div className="bg-cp-primary mt-[24px] flex h-[281px] w-[195px] flex-col items-center justify-between rounded-md p-4 shadow-md">
       <div className="items-cente flex flex-col text-white">
@@ -23,11 +29,11 @@ export default function PlansCards({
         <p
           className={`${roboto.className} mt-[4px] h-[40px] px-6 text-center text-[14px]`}
         >
-          {description[type]}
+          {DESCRIPTION[type]}
         </p>
 
         <span className="mt-[21px] text-center text-[34px] font-bold">
-          {price[type]?.[period]}
+          {ADD_ON_PRICE[type]?.[period]}
           <span className={`${roboto.className} text-[14px] font-light`}>
             {type !== "FREE" && "/month"}
           </span>
@@ -37,19 +43,20 @@ export default function PlansCards({
           <span
             className={`${roboto.className} mb-[10px] mt-[2px] text-center text-[16px] font-light`}
           >
-            {price[type]?.total}
+            {ADD_ON_PRICE[type]?.total}
           </span>
         )}
       </div>
       <CheckoutButton
         type="accent"
-        productId={productIds[type]?.[period]}
+        productId={ADD_ON_TEST_PRICES_ID[type]?.[period]}
         session={session}
         hasPlan={
           session?.user.subscription?.status === type ||
           session?.user.subscription?.status === "FREE_TRIAL"
         }
         onClose={onClose}
+        currentPlan={currentPlan}
       />
     </div>
   );
