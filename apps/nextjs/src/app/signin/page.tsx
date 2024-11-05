@@ -24,11 +24,12 @@ export default async function SignIn() {
 
   return (
     <div className="container relative min-h-full flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
-      {/* Gradient div moved to the left */}
+      {/* Show AnimatedGifs only on medium and larger screens */}
+      <div className="flex hidden h-full w-full items-center justify-center lg:block">
+        <AnimatedGifs />
+      </div>
 
-      <AnimatedGifs />
-
-      {/* Form moved to the right */}
+      {/* Form visible on all screen sizes */}
       <div className="p-4">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
           <div className="flex flex-col items-center justify-center space-y-2 text-center">
@@ -44,7 +45,7 @@ export default async function SignIn() {
               <FormSwitcher highlightSignUp={true} highlightRegister={false} />
             </div>
             <div className="mb-5 flex items-center justify-center text-center font-semibold">
-              <p>Your voice matters , let's get started</p>
+              <p>Your voice matters, let's get started</p>
             </div>
             <SignUpForm />
             <div className="mt-5">
