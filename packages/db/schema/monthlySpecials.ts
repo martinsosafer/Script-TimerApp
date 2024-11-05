@@ -22,7 +22,6 @@ export const monthlySpecials = pgTable("monthly_specials", {
   start_date: timestamp("start_date").notNull(),
   end_date: timestamp("end_date").notNull(),
   is_active: boolean("is_active").notNull().default(true),
-  prompt_ai: text("prompt_ai").notNull(),
   prompt_display: text("prompt_display").notNull(),
   created_at: timestamp("created_at").notNull().defaultNow(),
   updated_at: timestamp("updated_at").notNull().defaultNow(),
