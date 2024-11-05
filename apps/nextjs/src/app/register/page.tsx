@@ -21,7 +21,9 @@ export default async function Register() {
   return (
     <div className="container relative min-h-full flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
       {/* Gradient div moved to the left */}
-      <AnimatedGifs />
+      <div className="flex hidden h-full w-full items-center justify-center lg:block">
+        <AnimatedGifs />
+      </div>
 
       {/* Form moved to the right */}
       <div className="p-4">
