@@ -49,12 +49,6 @@ export async function updateSpecial(formData: FormData, id: string) {
   const end_date = formData.get("end_date") as string;
   const is_active = formData.get("is_active") as "active" | "inactive";
 
-  console.log("raw start date", formData.get("start_date"));
-  console.log("IS ACTIVE", is_active);
-
-  // console.log("start_date", start_date);
-  // console.log("end_date", end_date);
-
   const special = await db
     .update(schema.monthlySpecials)
     .set({

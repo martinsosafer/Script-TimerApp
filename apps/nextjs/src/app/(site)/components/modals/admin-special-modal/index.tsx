@@ -122,7 +122,7 @@ export default function AdminSpecialModal({
               <input
                 type="text"
                 name="link"
-                defaultValue={special?.link}
+                defaultValue={special?.link ?? undefined}
                 placeholder={"Link"}
                 className="w-full rounded-md border-2 border-primary p-2"
               />
