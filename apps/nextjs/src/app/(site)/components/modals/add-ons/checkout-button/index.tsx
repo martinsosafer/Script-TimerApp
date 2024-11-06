@@ -59,7 +59,7 @@ function CheckoutButton({
           ? session.user.subscription?.status === "FREE_TRIAL" ||
             session.user.subscription?.status === "FREE"
             ? () => {
-                router.push("/new-plans#plans");
+                router.push("/plans#plans");
                 onClose();
               }
             : async () => {
