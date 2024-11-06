@@ -3,11 +3,7 @@ import type { Session } from "next-auth";
 import { roboto } from "~/app/fonts";
 import {
   ADD_ON_PRICE,
-<<<<<<< HEAD
-  ADD_ON_TEST_PRICES_ID,
-=======
   ADD_ON_PRICES_ID,
->>>>>>> 138d5bf6e9210be38e688127ff6ae90a1c1b28b7
   DESCRIPTION,
 } from "~/constants/products";
 import CheckoutButton from "../checkout-button";
@@ -53,11 +49,7 @@ export default function PlansCards({
       </div>
       <CheckoutButton
         type="accent"
-<<<<<<< HEAD
-        productId={ADD_ON_TEST_PRICES_ID[type]?.[period]}
-=======
         productId={ADD_ON_PRICES_ID[type]?.[period]}
->>>>>>> 138d5bf6e9210be38e688127ff6ae90a1c1b28b7
         session={session}
         hasPlan={
           session?.user.subscription?.status === type ||

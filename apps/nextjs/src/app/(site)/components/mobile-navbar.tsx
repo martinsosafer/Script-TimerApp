@@ -268,7 +268,7 @@ export default function MobileNavBar({ toggle }) {
               variants={mobileLinkVars}
               className=" mt-2 text-secondary-foreground"
             >
-              <Link href={`/new-plans`} onClick={toggle}>
+              <Link href={`/plans`} onClick={toggle}>
                 <h2 className="flex items-center text-2xl underline ">
                   <IconHandshake className="mr-2 mt-2 h-7 w-7 underline" />
                   Plans
