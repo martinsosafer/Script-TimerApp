@@ -9,6 +9,7 @@ import CounterData from "../components/herosection/CounterData/CounterData";
 import GoSections from "../components/herosection/GoSections/GoSections";
 import ServiceSection from "../components/herosection/ServicesSection/servicessection";
 import Testimonials from "../components/herosection/Testimonials/Testimonials";
+import AddOnSucess from "./addOnSuccess";
 import SucessMessage from "./SuccessMessage";
 
 enum Plans {
@@ -245,7 +246,7 @@ function SuccessPage() {
   }, [id, setSession, isSuccess]);
 
   return (
-    <div className=" flex min-h-screen flex-col items-center   py-5  text-center">
+    <div className=" flex min-h-screen flex-col items-center  text-center">
       <Confetti
         width={window.innerWidth}
         height={window.innerHeight}
@@ -257,10 +258,7 @@ function SuccessPage() {
         colors={["#0123e7", "#eb8806"]}
       />
       <SucessMessage />
-      <CounterData />
-      <ServiceSection />
-      <GoSections />
-      <Testimonials />
+      <AddOnSucess />
     </div>
   );
 }
