@@ -33,7 +33,8 @@ function VoiceWidget({
   const [showFavorites, setShowFavorites] = useState(false);
   const [showCelebrities, setShowCelebrities] = useState(false);
   const [showCustom, setShowCustom] = useState(false);
-  const pageSize = 8;
+  const isGenderFiltered = filter === "MALE" || filter === "FEMALE";
+  const pageSize = isGenderFiltered ? 8 : 8;
 
   const filteredVoices = allVoices?.filter((voice) => {
     const matchesSearchQuery = voice.name
@@ -330,6 +331,7 @@ function VoiceWidget({
             favoriteVoices={favoriteVoices}
             subData={subData}
             currentPage={currentPage}
+            isGenderFiltered={isGenderFiltered}
           />
           <div className="mt-4">
             {renderPagination(currentPage, totalPages, handlePageChange)}
