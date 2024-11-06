@@ -5,7 +5,7 @@ import { IconUpgrades } from "@voiceai/ui/@/components/ui/icons";
 export default function UpgradeNavItem() {
   return (
     <Link
-      href="/new-plans"
+      href="/plans"
       className="group flex cursor-pointer items-center gap-2"
     >
       <span className=" font-poppins text-white group-hover:text-white/80 ">

@@ -17,7 +17,7 @@ const paths: Record<string, string> = {
   IMAGES: "/image-generator",
   PLAGIARISM: "/plagiarism-detector",
   UNIVERSITY: "/masterclasses",
-  PLANS: "/new-plans",
+  PLANS: "/plans",
 };
 
 export default function MonthlySpecialProvider({
