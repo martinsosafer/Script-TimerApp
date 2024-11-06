@@ -1,5 +1,5 @@
 export interface MonthlySpecial {
-  id?: string;
+  id: string;
   name: string;
   description: string;
   pages_display:
@@ -11,8 +11,8 @@ export interface MonthlySpecial {
     | "UNIVERSITY"
     | "PLANS";
   promo_code: string;
-  link: string;
+  link?: string | null;
   start_date: string;
   end_date: string;
-  is_active: boolean;
+  is_active: "active" | "inactive";
 }

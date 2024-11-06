@@ -5,8 +5,9 @@ import { useState } from "react";
 import { IconPencilLine, IconTrash } from "@voiceai/ui/@/components/ui/icons";
 
 import AdminSpecialModal from "~/app/(site)/components/modals/admin-special-modal";
-import DeletePromptModal from "~/app/(site)/components/modals/delete-prompt";
+import DeleteSpecialModal from "~/app/(site)/components/modals/delete-special";
 import { api } from "~/utils/api";
+import { deleteSpecial } from "../actions";
 import type { MonthlySpecial } from "../types";
 
 export default function SpecialsDashboard() {
@@ -14,14 +15,14 @@ export default function SpecialsDashboard() {
     MonthlySpecial | undefined
   >(undefined);
   const [specialModalOpen, setSpecialModalOpen] = useState(false);
-  const [isDeletingPrompt, setIsDeletingPrompt] = useState(false);
+  const [isDeletingSpecial, setIsDeletingSpecial] = useState(false);
 
   const {
-    data: allPrompts,
+    data: allSpecials,
     isLoading,
     isError,
     refetch,
-  } = api.prompts.listAllPrompts.useQuery();
+  } = api.specials.listAllSpecials.useQuery();
 
   return (
     <>
@@ -36,41 +37,49 @@ export default function SpecialsDashboard() {
         >
           <span className="text-xl">+</span> Add a New Special
         </button>
-        <div className="mt-8">
+        <div className="mt-8 w-full">
           {isLoading && <div>Loading...</div>}
           {isError && <div>Error fetching data</div>}
-          {allPrompts && allPrompts.length === 0 && <div>No prompts found</div>}
-          {allPrompts && allPrompts.length > 0 && (
-            <div>
-              <div className="mb-2 flex w-full text-lg">
-                <div className="w-[20%] p-1 font-bold">Name</div>
-                <div className="w-[40%] p-1 font-bold">Description</div>
-                <div className="w-[20%] p-1 font-bold">Type</div>
-                <div className="w-[10%] p-1 font-bold">AI Type</div>
-                <div className="w-[10%] p-1 text-center font-bold">Actions</div>
-              </div>
+          {allSpecials && allSpecials.length === 0 && (
+            <div>No specials found</div>
+          )}
+          {allSpecials && allSpecials.length > 0 && (
+            <div className="mb-2 flex w-full text-lg">
+              <div className="w-[20%] p-1 font-bold">Name</div>
+              <div className="w-[30%] p-1 font-bold">Description</div>
+              <div className="w-[10%] p-1 font-bold">Pages</div>
+              <div className="w-[10%] p-1 font-bold">Promo code</div>
+              <div className="w-[10%] p-1 font-bold">Start Date</div>
+              <div className="w-[10%] p-1 font-bold">End Date</div>
+              <div className="w-[10%] p-1 text-center font-bold">Actions</div>
             </div>
           )}
 
-          {allPrompts?.map((prompt) => (
-            <div key={prompt.id} className="flex w-full">
-              <div className="w-[20%] border border-gray-300 p-1">
-                {prompt.name}
+          {allSpecials?.map((special) => (
+            <div key={special.id} className="flex w-full">
+              <div className="w-[20%] border border-gray-300 p-2">
+                {special.name}
               </div>
-              <div className="w-[40%] border border-gray-300 p-1">
-                {prompt.description}
+              <div className="w-[30%] border border-gray-300 p-2">
+                {special.description}
               </div>
-              <div className="w-[20%] border border-gray-300 p-1">
-                {prompt.type}
+              <div className="w-[10%] border border-gray-300 p-2">
+                {special.pages_display}
               </div>
-              <div className="w-[10%] border border-gray-300 p-1">
-                {prompt.ai_model_type}
+              <div className="w-[10%] border border-gray-300 p-2">
+                {special.promo_code}
+              </div>
+              <div className="w-[10%] border border-gray-300 p-2">
+                {special.start_date}
+              </div>
+              <div className="w-[10%] border border-gray-300 p-2">
+                {special.end_date}
               </div>
               <div className="flex w-[10%] justify-around p-2">
                 <button
                   onClick={() => {
-                    // setSelectedPrompt(prompt as Prompt);
-                    // setPromptModalOpen(true);
+                    setSelectedSpecial(special as MonthlySpecial);
+                    setSpecialModalOpen(true);
                   }}
                   className="flex h-10 w-10 items-center justify-center rounded-md bg-primary text-white"
                 >
@@ -78,8 +87,8 @@ export default function SpecialsDashboard() {
                 </button>
                 <button
                   onClick={() => {
-                    // setSelectedPrompt(prompt as Prompt);
-                    // setIsDeletingPrompt(true);
+                    setSelectedSpecial(special as MonthlySpecial);
+                    setIsDeletingSpecial(true);
                   }}
                   className="flex h-10 w-10 items-center justify-center rounded-md bg-red-500 text-white"
                 >
@@ -100,15 +109,15 @@ export default function SpecialsDashboard() {
           refetch={refetch}
         />
       )}
-      {isDeletingPrompt && (
-        <DeletePromptModal
-          onClose={() => setIsDeletingPrompt(false)}
+      {isDeletingSpecial && (
+        <DeleteSpecialModal
+          onClose={() => setIsDeletingSpecial(false)}
           onConfirm={async () => {
-            // if (selectedPrompt) {
-            //   await deletePrompt(selectedPrompt.id);
-            //   await refetch();
-            //   setIsDeletingPrompt(false);
-            // }
+            if (selectedSpecial) {
+              await deleteSpecial(selectedSpecial.id);
+              await refetch();
+              setIsDeletingSpecial(false);
+            }
           }}
         />
       )}

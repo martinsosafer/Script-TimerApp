@@ -2,6 +2,10 @@ import { useState } from "react";
 
 import { IconPencilLine, IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 
+import {
+  addSpecial,
+  updateSpecial,
+} from "~/app/(site)/(admin)/admin-specials/actions";
 import type { MonthlySpecial } from "~/app/(site)/(admin)/admin-specials/types";
 
 interface ModalProps {
@@ -30,17 +34,27 @@ export default function AdminSpecialModal({
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     setIsLoading(true);
     e.preventDefault();
-    // const form = new FormData(e.currentTarget);
-    // if (prompt) {
-    //   await updatePrompt(form, prompt.id);
-    //   refetch();
-    //   return onClose();
-    // }
-    // const newPrompt = await addPrompt(form);
-    // console.log("newPrompt", newPrompt);
+    const form = new FormData(e.currentTarget);
+    if (special) {
+      await updateSpecial(form, special.id);
+      refetch();
+      return onClose();
+    }
+    await addSpecial(form);
     refetch();
     onClose();
     setIsLoading(false);
+  }
+
+  const [isActive, setIsActive] = useState(
+    special ? special.is_active : "active",
+  );
+
+  if (special) {
+    console.log(
+      new Date(special.start_date).toISOString() <=
+        new Date(special.end_date).toISOString(),
+    );
   }
 
   return (
@@ -80,18 +94,13 @@ export default function AdminSpecialModal({
                 name="pages_display"
                 defaultValue={special?.pages_display}
                 className="w-full rounded-md border-2 border-primary p-2"
-                onChange={() => {
-                  // setSelectedAiType(e.target.value);
-                  // setSelectedType(undefined);
-                  // setSelectedSubType(undefined);
-                }}
               >
                 <option value="" hidden>
                   Select a page to display
                 </option>
-                {pages.map((type) => (
-                  <option key={type} value={type}>
-                    {type}
+                {pages.map((page) => (
+                  <option key={page} value={page}>
+                    {page}
                   </option>
                 ))}
               </select>
@@ -137,6 +146,21 @@ export default function AdminSpecialModal({
                 placeholder={"Promo End Date"}
                 className="w-full rounded-md border-2 border-primary p-2"
               />
+              <div className="mt-2 flex items-center gap-2">
+                <label htmlFor="name" className="text-sm font-semibold">
+                  Is Active
+                </label>
+                <input
+                  type="checkbox"
+                  name="is_active"
+                  value={isActive}
+                  onChange={(e) =>
+                    setIsActive(e.target.checked ? "active" : "inactive")
+                  }
+                  checked={isActive === "active"}
+                  className="rounded-md border-2 border-primary p-2"
+                />
+              </div>
             </div>
           </div>
 
