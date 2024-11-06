@@ -29,7 +29,7 @@ export default function MonthlySpecialProvider({
   const [closeSpecial, setCloseSpecial] = useState(false);
   const isVisible =
     monthlySpecial?.pages_display === "ALL" ||
-    path === paths[monthlySpecial!.pages_display];
+    (monthlySpecial && path === paths[monthlySpecial.pages_display]);
 
   return (
     <div>
