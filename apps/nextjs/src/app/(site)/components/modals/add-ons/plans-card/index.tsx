@@ -4,6 +4,7 @@ import { roboto } from "~/app/fonts";
 import {
   ADD_ON_PRICE,
   ADD_ON_PRICES_ID,
+  ADD_ON_TEST_PRICES_ID,
   DESCRIPTION,
 } from "~/constants/products";
 import CheckoutButton from "../checkout-button";

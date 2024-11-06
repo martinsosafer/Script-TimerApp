@@ -16,7 +16,7 @@ const TabOne = ({
 }) => {
   return (
     <div className="flex flex-col space-y-4 md:order-1">
-      <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-slate-400">
+      <div className="h-[718px] rounded-lg bg-gray-100 p-6 shadow-md  dark:bg-slate-400">
         <VoiceWidget
           onModelSelect={setSelectedModel}
           favoriteVoices={favoriteVoices}

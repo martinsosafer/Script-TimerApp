@@ -8,8 +8,10 @@ import { headers } from "next/headers";
 
 import { Toaster } from "@voiceai/ui/@/components/ui/toaster";
 
+import getSpecials from "../actions/monthlySpecialActions";
 import { IdentifyAnalytics } from "../analytics";
 import { TRPCReactProvider } from "../providers";
+import MonthlySpecialProvider from "../providers/monthly-special-provider";
 import Footer from "./components/Footer/Footer";
 import Newnavbar from "./components/navbar";
 
@@ -47,6 +49,7 @@ export default async function Layout(props: { children: React.ReactNode }) {
     await signIn();
   }
   const session = await auth();
+  const monthlySpecial = await getSpecials();
 
   return (
     <div className="flex min-h-screen w-full flex-col justify-between bg-background">
@@ -56,9 +59,10 @@ export default async function Layout(props: { children: React.ReactNode }) {
           signIn={signInServer}
           session={session}
         />
-        <div>
+        <MonthlySpecialProvider monthlySpecial={monthlySpecial}>
           <div>{props.children}</div>
-        </div>
+        </MonthlySpecialProvider>
+
         <Toaster />
         <Footer />
         <IdentifyAnalytics />
