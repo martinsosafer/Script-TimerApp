@@ -1,16 +1,6 @@
-import { pgEnum, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { jsonb, pgEnum, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
 import { pgTable } from "./_table";
-
-export const pages_display = pgEnum("pages_display", [
-  "ALL",
-  "VOICE",
-  "CHAT",
-  "IMAGES",
-  "PLAGIARISM",
-  "UNIVERSITY",
-  "PLANS",
-]);
 
 export const is_active = pgEnum("is_active", ["active", "inactive"]);
 
@@ -18,7 +8,7 @@ export const monthlySpecials = pgTable("monthly_specials", {
   id: uuid("id").notNull().primaryKey().defaultRandom(),
   name: text("name").notNull(),
   description: text("description").notNull(),
-  pages_display: pages_display("pages_display").notNull().default("ALL"),
+  pages_display: jsonb("pages_display").notNull().default([]),
   promo_code: text("promo_code").notNull(),
   link: text("link"),
   start_date: text("start_date").notNull(),

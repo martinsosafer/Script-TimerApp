@@ -9,6 +9,6 @@ export default async function getSpecials() {
   if (session?.user.id) {
     const special = await db.query.monthlySpecials.findMany();
 
-    return special[0];
+    return special;
   }
 }

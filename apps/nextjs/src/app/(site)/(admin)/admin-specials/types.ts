@@ -1,15 +1,17 @@
+export type Page =
+  | "ALL"
+  | "VOICE"
+  | "CHAT"
+  | "IMAGES"
+  | "PLAGIARISM"
+  | "UNIVERSITY"
+  | "PLANS";
+
 export interface MonthlySpecial {
-  id: string;
+  id?: string;
   name: string;
   description: string;
-  pages_display:
-    | "ALL"
-    | "VOICE"
-    | "CHAT"
-    | "IMAGES"
-    | "PLAGIARISM"
-    | "UNIVERSITY"
-    | "PLANS";
+  pages_display: Page[];
   promo_code: string;
   link?: string | null;
   start_date: string;
