@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const tools = [
-  { label: "Words Counter", href: "/words-counter" },
+  { label: "Word Counter", href: "/word-counter" },
   { label: "Words to Time", href: "/words-to-time" },
   { label: "Auto Capitalize", href: "/auto-capitalize" },
   { label: "Words Sorter", href: "/words-sorter" },

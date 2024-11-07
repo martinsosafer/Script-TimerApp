@@ -46,7 +46,7 @@ export default function Capitalizer() {
         placeholder="Type or paste your text here..."
       />
       <select
-        className="mt-2 w-full rounded-md p-3"
+        className="mt-2 w-full rounded-md border border-gray-400 bg-gray-100 p-3"
         name="trasnformer"
         onChange={(e) => setOption(e.currentTarget.value)}
       >

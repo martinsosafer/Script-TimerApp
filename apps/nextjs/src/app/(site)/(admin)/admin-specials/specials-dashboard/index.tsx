@@ -46,8 +46,8 @@ export default function SpecialsDashboard() {
           {allSpecials && allSpecials.length > 0 && (
             <div className="mb-2 flex w-full text-lg">
               <div className="w-[20%] p-1 font-bold">Name</div>
-              <div className="w-[30%] p-1 font-bold">Description</div>
-              <div className="w-[10%] p-1 font-bold">Pages</div>
+              <div className="w-[25%] p-1 font-bold">Description</div>
+              <div className="w-[15%] p-1 font-bold">Pages</div>
               <div className="w-[10%] p-1 font-bold">Promo code</div>
               <div className="w-[10%] p-1 font-bold">Start Date</div>
               <div className="w-[10%] p-1 font-bold">End Date</div>
@@ -60,11 +60,15 @@ export default function SpecialsDashboard() {
               <div className="w-[20%] border border-gray-300 p-2">
                 {special.name}
               </div>
-              <div className="w-[30%] border border-gray-300 p-2">
+              <div className="w-[25%] border border-gray-300 p-2">
                 {special.description}
               </div>
-              <div className="w-[10%] border border-gray-300 p-2">
-                {special.pages_display}
+              <div className="w-[15%] border border-gray-300 p-2">
+                {(special.pages_display as string[]).map((page) => (
+                  <span key={page} className="pr-1">
+                    - {page}
+                  </span>
+                ))}
               </div>
               <div className="w-[10%] border border-gray-300 p-2">
                 {special.promo_code}
@@ -114,7 +118,7 @@ export default function SpecialsDashboard() {
           onClose={() => setIsDeletingSpecial(false)}
           onConfirm={async () => {
             if (selectedSpecial) {
-              await deleteSpecial(selectedSpecial.id);
+              await deleteSpecial(selectedSpecial.id!);
               await refetch();
               setIsDeletingSpecial(false);
             }
