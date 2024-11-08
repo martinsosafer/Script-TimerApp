@@ -13,6 +13,7 @@ export async function addSpecial(payload: MonthlySpecial) {
     .values({
       name: payload.name,
       description: payload.description,
+      type: payload.type,
       pages_display: payload.pages_display,
       promo_code: payload.promo_code,
       link: payload.link,
@@ -31,6 +32,7 @@ export async function updateSpecial(payload: MonthlySpecial, id: string) {
     .set({
       name: payload.name,
       description: payload.description,
+      type: payload.type,
       pages_display: payload.pages_display,
       promo_code: payload.promo_code,
       link: payload.link,

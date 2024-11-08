@@ -26,7 +26,7 @@ export default function SpecialsDashboard() {
 
   return (
     <>
-      <div className="mb-20 flex w-[1200px] flex-col items-center">
+      <div className="mb-20 flex w-[1240px] flex-col items-center">
         <h2 className="mt-10 text-2xl font-bold text-primary">
           Monthly Specials Dashboard
         </h2>
@@ -45,8 +45,9 @@ export default function SpecialsDashboard() {
           )}
           {allSpecials && allSpecials.length > 0 && (
             <div className="mb-2 flex w-full text-lg">
-              <div className="w-[20%] p-1 font-bold">Name</div>
-              <div className="w-[25%] p-1 font-bold">Description</div>
+              <div className="w-[15%] p-1 font-bold">Name</div>
+              <div className="w-[20%] p-1 font-bold">Description</div>
+              <div className="w-[10%] p-1 font-bold">Type</div>
               <div className="w-[15%] p-1 font-bold">Pages</div>
               <div className="w-[10%] p-1 font-bold">Promo code</div>
               <div className="w-[10%] p-1 font-bold">Start Date</div>
@@ -56,12 +57,18 @@ export default function SpecialsDashboard() {
           )}
 
           {allSpecials?.map((special) => (
-            <div key={special.id} className="flex w-full">
-              <div className="w-[20%] border border-gray-300 p-2">
+            <div
+              key={special.id}
+              className={`flex w-full ${special.is_active === "inactive" && "bg-gray-200"}`}
+            >
+              <div className="w-[15%] border border-gray-300 p-2">
                 {special.name}
               </div>
-              <div className="w-[25%] border border-gray-300 p-2">
+              <div className="w-[20%] border border-gray-300 p-2">
                 {special.description}
+              </div>
+              <div className="w-[10%] border border-gray-300 p-2">
+                {special.type}
               </div>
               <div className="w-[15%] border border-gray-300 p-2">
                 {(special.pages_display as string[]).map((page) => (

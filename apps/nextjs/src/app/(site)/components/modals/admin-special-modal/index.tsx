@@ -35,6 +35,9 @@ export default function AdminSpecialModal({
 }: ModalProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [pages, setPages] = useState<Page[]>(special?.pages_display ?? []);
+  const [type, setType] = useState<"promo" | "announcement">(
+    special?.type ?? "promo",
+  );
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     setIsLoading(true);
@@ -43,6 +46,7 @@ export default function AdminSpecialModal({
     const payload = {
       name: form.get("name") as string,
       description: form.get("description") as string,
+      type,
       pages_display: pages,
       promo_code: form.get("promo_code") as string,
       link: form.get("link") as string,
@@ -66,13 +70,6 @@ export default function AdminSpecialModal({
     special ? special.is_active : "active",
   );
 
-  if (special) {
-    console.log(
-      new Date(special.start_date).toISOString() <=
-        new Date(special.end_date).toISOString(),
-    );
-  }
-
   return (
     <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center overflow-auto bg-black bg-opacity-50 backdrop-blur">
       <div className="flex flex-col items-center justify-between rounded-lg bg-white p-4">
@@ -83,6 +80,19 @@ export default function AdminSpecialModal({
         <form className="flex flex-col gap-2 p-2" onSubmit={handleSubmit}>
           <div className="flex w-full gap-2">
             <div className="flex w-[300px] flex-col gap-2">
+              <label htmlFor="type" className="text-sm font-semibold">
+                Special Type
+              </label>
+              <select
+                value={type}
+                onChange={(e) =>
+                  setType(e.target.value as "promo" | "announcement")
+                }
+                className="rounded-md border border-gray-300 p-2"
+              >
+                <option value="promo">Promo</option>
+                <option value="announcement">Announcement</option>
+              </select>
               <label htmlFor="name" className="text-sm font-semibold">
                 Monthly special name
               </label>
@@ -124,16 +134,21 @@ export default function AdminSpecialModal({
               />
             </div>
             <div className="flex w-[500px] flex-col gap-2">
-              <label htmlFor="promo_code" className="text-sm font-semibold">
-                Promo Code
-              </label>
-              <input
-                type="text"
-                name="promo_code"
-                defaultValue={special?.promo_code}
-                placeholder={"Promo Code"}
-                className="w-full rounded-md border-2 border-primary p-2"
-              />
+              {type === "promo" && (
+                <>
+                  <label htmlFor="promo_code" className="text-sm font-semibold">
+                    Promo Code
+                  </label>
+                  <input
+                    type="text"
+                    name="promo_code"
+                    defaultValue={special?.promo_code ?? undefined}
+                    placeholder={"Promo Code"}
+                    className="w-full rounded-md border-2 border-primary p-2"
+                  />
+                </>
+              )}
+
               <label htmlFor="link" className="text-sm font-semibold">
                 Link
               </label>

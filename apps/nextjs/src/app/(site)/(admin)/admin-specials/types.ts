@@ -10,9 +10,10 @@ export type Page =
 export interface MonthlySpecial {
   id?: string;
   name: string;
+  type: "promo" | "announcement";
   description: string;
   pages_display: Page[];
-  promo_code: string;
+  promo_code: string | null;
   link?: string | null;
   start_date: string;
   end_date: string;

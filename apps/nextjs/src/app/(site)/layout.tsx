@@ -51,6 +51,8 @@ export default async function Layout(props: { children: React.ReactNode }) {
   const session = await auth();
   const monthlySpecials = await getSpecials();
 
+  console.log("monthly active", monthlySpecials);
+
   return (
     <div className="flex min-h-screen w-full flex-col justify-between bg-background">
       <TRPCReactProvider headers={headers()}>

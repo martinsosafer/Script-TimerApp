@@ -30,8 +30,6 @@ export default function MonthlySpecialProvider({
   const path = usePathname();
   const displayPage = paths[path]!;
 
-  console.log(monthlySpecials);
-
   const pageSpecial = monthlySpecials?.find((special) => {
     return (
       special.pages_display.includes(displayPage) ??
@@ -43,9 +41,6 @@ export default function MonthlySpecialProvider({
 
   const today = new Date().toISOString().split("T")[0]!;
 
-  console.log("today", today);
-  console.log("start date", pageSpecial?.start_date);
-  console.log("end date", pageSpecial?.end_date);
   const isVisible =
     pageSpecial &&
     pageSpecial?.start_date <= today &&
@@ -60,6 +55,7 @@ export default function MonthlySpecialProvider({
           promo_code={pageSpecial?.promo_code ?? ""}
           link={pageSpecial?.link ?? ""}
           onClose={() => setCloseSpecial(true)}
+          type={pageSpecial.type}
         />
       )}
       {children}
