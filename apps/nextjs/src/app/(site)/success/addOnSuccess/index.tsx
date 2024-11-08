@@ -1,98 +1,160 @@
-import { Button } from "@voiceai/ui";
 import { CheckIcon as Check } from "@voiceai/ui/@/icons/icons";
 
-export default function Component() {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-600 to-blue-900 p-6 text-white">
-      <div className="relative mx-auto max-w-5xl">
-        {/* Triangle Banner */}
-        <div className="absolute -right-6 -top-6 h-32 w-32">
-          <div
-            className="absolute h-full w-full bg-orange-400 shadow-lg"
-            style={{ clipPath: "polygon(100% 0, 0 0, 100% 100%)" }}
-          >
-            <span className="absolute right-8 top-12 -rotate-45 transform text-sm font-bold text-white">
-              TODAY ONLY
-            </span>
-          </div>
-        </div>
+import { poppins, roboto } from "~/app/fonts";
+import Button from "../../components/button/index";
+import MotionTransition from "../../components/herosection/MotionTransition/MotionTransition";
 
-        <div className="space-y-6 p-6">
-          {/* Header */}
-          <div>
-            <h2 className="text-2xl font-bold text-orange-300">
+export default function UpgradeBannerSuccess() {
+  return (
+    <div
+      className={`relative h-[600px] w-full ${poppins.className} bg-gradient-to-br from-[#0066FF] to-[#000000] text-white`}
+    >
+      {/* Triangle Banner */}
+      <div className="absolute right-0 top-0 h-[233px] w-[245px]">
+        <div
+          className="absolute h-full w-full "
+          style={{ clipPath: "polygon(100% 0, 0 0, 100% 100%)" }}
+        ></div>
+
+        <div
+          className="absolute flex h-[97%] w-[98%] items-center justify-center shadow-lg"
+          style={{
+            clipPath: "polygon(100% 0, 0 0, 100% 100%)",
+            top: "1%",
+            right: "1%",
+            background: "linear-gradient(to bottom left, #FF9900, #FFFFFF)",
+          }}
+        >
+          <span className="-translate-y-8 translate-x-10 rotate-45 transform text-[28px] font-bold text-white">
+            TODAY ONLY
+          </span>
+        </div>
+      </div>
+
+      <div className="relative">
+        <MotionTransition>
+          <div className="mb-[24px] mt-[60px] pl-[215px] pr-[260px]">
+            <h2 className="text-[24px] font-bold leading-[37px] text-[#FFCB7F]">
               Ensure originality with this powerful add-on!
             </h2>
-            <h1 className="text-4xl font-bold">Plagiarism & AI Detection</h1>
-            <p className="mt-2 text-blue-100">
-              For professionals focused on SEO, professors, students and anyone
-              that needs original and clean copy.
-            </p>
           </div>
+          <div>
+            {/* Centered Content with Fixed Size */}
+            <div className="flex h-screen justify-center">
+              <div className="h-[414px] w-[610px]">
+                {/* tabla */}
+                <div className="mb-[32px] flex flex-col items-start gap-[12px]">
+                  <h1 className="w-full text-start text-[34px] font-bold leading-[41px]">
+                    Plagiarism & AI Detection
+                  </h1>
+                  <p
+                    className={`${roboto.className} mt-2 text-start text-[14px] leading-[20px] text-blue-100`}
+                  >
+                    For professionals focused on SEO, professors, students{" "}
+                    <br /> and anyone that needs original and clean copy.
+                    <br />
+                  </p>
+                </div>
+                {/* Main Content */}
+                <div className="grid gap-8 lg:grid-cols-[1fr,auto]">
+                  {/* Features Table */}
+                  <div className="overflow-hidden rounded-lg">
+                    <div
+                      className={`grid h-[288px] w-[393px] text-left text-[16px] font-normal leading-[22px] ${roboto.className} `}
+                    >
+                      <div className="grid h-[48px] w-[393px] grid-cols-2 items-center rounded-lg bg-[#0552C5] px-[12px]">
+                        <span className="whitespace-nowrap">
+                          Included words per month
+                        </span>
+                        <span className="mr-[28px] text-right">15,000</span>
+                      </div>
+                      <div className="grid h-[48px] w-[393px] grid-cols-2 items-center rounded-lg bg-[#0066FF] px-[12px]">
+                        <span className="whitespace-nowrap">
+                          Plagiarism & AI detection
+                        </span>
+                        <div className="mr-[45px]">
+                          <Check className="ml-auto h-5 w-5 text-cyan-300" />
+                        </div>
+                      </div>
+                      <div className="grid h-[48px] w-[393px] grid-cols-2 items-center rounded-lg bg-[#0552C5] px-[12px]">
+                        <span className="whitespace-nowrap">
+                          Source links to original
+                        </span>
+                        <div className="mr-[45px]">
+                          <Check className="ml-auto h-5 w-5 text-cyan-300" />
+                        </div>
+                      </div>
+                      <div className="grid h-[48px] w-[393px] grid-cols-2 items-center rounded-lg bg-[#0066FF] px-[12px]">
+                        <span>GPT, Claude, Gemini</span>
+                        <div className="mr-[45px]">
+                          <Check className="ml-auto h-5 w-5 text-cyan-300" />
+                        </div>
+                      </div>
+                      <div className="grid h-[48px] w-[393px] grid-cols-2 items-center rounded-lg bg-[#0552C5] px-[12px]">
+                        <span>Over 100 languages</span>
+                        <div className="mr-[45px]">
+                          <Check className="ml-auto h-5 w-5 text-cyan-300" />
+                        </div>
+                      </div>
+                      <div className="grid h-[48px] w-[393px] grid-cols-2 items-center rounded-lg bg-[#0066FF] px-[12px]">
+                        <span>Paraphrasing detection</span>
+                        <div className="mr-[45px]">
+                          <Check className="ml-auto h-5 w-5 text-cyan-300" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
-          {/* Main Content */}
-          <div className="grid gap-8 lg:grid-cols-[1fr,auto]">
-            {/* Features Table */}
-            <div className="overflow-hidden rounded-lg">
-              <div className="grid">
-                <div className="grid grid-cols-2 bg-blue-600/40 p-4">
-                  <span>Included words per month</span>
-                  <span className="text-right">15,000</span>
-                </div>
-                <div className="grid grid-cols-2 bg-blue-500/20 p-4">
-                  <span>Plagiarism & AI detection</span>
-                  <Check className="ml-auto h-5 w-5 text-cyan-300" />
-                </div>
-                <div className="grid grid-cols-2 bg-blue-600/40 p-4">
-                  <span>Source links to original</span>
-                  <Check className="ml-auto h-5 w-5 text-cyan-300" />
-                </div>
-                <div className="grid grid-cols-2 bg-blue-500/20 p-4">
-                  <span>GPT, Claude, Gemini</span>
-                  <Check className="ml-auto h-5 w-5 text-cyan-300" />
-                </div>
-                <div className="grid grid-cols-2 bg-blue-600/40 p-4">
-                  <span>Over 100 languages</span>
-                  <Check className="ml-auto h-5 w-5 text-cyan-300" />
-                </div>
-                <div className="grid grid-cols-2 bg-blue-500/20 p-4">
-                  <span>Paraphrasing detection</span>
-                  <Check className="ml-auto h-5 w-5 text-cyan-300" />
+                  {/* Pricing Plans */}
+                  <div className="-mt-[22px] flex flex-col  justify-center">
+                    <div className=" mb-6">
+                      <h3 className="mb-2 text-[20px]  font-bold leading-[28px] text-emerald-300">
+                        Yearly Plan
+                      </h3>
+                      <div className="flex items-baseline justify-center  gap-1">
+                        <span className="text-[34px] font-bold leading-[41px]">
+                          $11
+                        </span>
+                        <span className="text-[14px] font-normal leading-[20px]   text-gray-300">
+                          /month
+                        </span>
+                      </div>
+                      <div className="text-[18px] font-normal leading-[25px]   text-gray-300">
+                        $132/year
+                      </div>
+                      <Button
+                        label="BUY NOW"
+                        type="accent"
+                        onClick={() => console.log("ola")}
+                        className="mt-2 h-[48px] w-[152px] "
+                      ></Button>
+                    </div>
+
+                    <div className="">
+                      <h3 className="mb-2 text-[20px]  font-bold leading-[28px] text-emerald-300">
+                        Monthly Plan
+                      </h3>
+                      <div className="flex items-baseline justify-center  gap-1">
+                        <span className="text-[34px] font-bold leading-[41px]">
+                          $14
+                        </span>
+                        <span className="text-[14px] font-normal leading-[20px]   text-gray-300">
+                          /month
+                        </span>
+                      </div>
+                      <Button
+                        label="BUY NOW"
+                        type="accent"
+                        onClick={() => console.log("ola")}
+                        className="h-[48px] w-[152px]"
+                      ></Button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-
-            {/* Pricing Plans */}
-            <div className="flex flex-col justify-center gap-8">
-              <div className="space-y-2">
-                <h3 className="text-xl font-medium text-emerald-300">
-                  Yearly Plan
-                </h3>
-                <div className="flex items-baseline gap-1">
-                  <span className="text-4xl font-bold">$11</span>
-                  <span className="text-gray-300">/month</span>
-                </div>
-                <div className="text-gray-300">$132/year</div>
-                <Button className="w-full bg-orange-500 hover:bg-orange-600">
-                  BUY NOW
-                </Button>
-              </div>
-
-              <div className="space-y-2">
-                <h3 className="text-xl font-medium text-emerald-300">
-                  Monthly Plan
-                </h3>
-                <div className="flex items-baseline gap-1">
-                  <span className="text-4xl font-bold">$14</span>
-                  <span className="text-gray-300">/month</span>
-                </div>
-                <Button className="w-full bg-orange-500 hover:bg-orange-600">
-                  BUY NOW
-                </Button>
-              </div>
-            </div>
           </div>
-        </div>
+        </MotionTransition>
       </div>
     </div>
   );

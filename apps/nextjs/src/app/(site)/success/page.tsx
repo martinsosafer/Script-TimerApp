@@ -246,7 +246,7 @@ function SuccessPage() {
   }, [id, setSession, isSuccess]);
 
   return (
-    <div className=" flex min-h-screen flex-col items-center  text-center">
+    <div className=" flex h-full flex-col items-center  text-center">
       <Confetti
         width={window.innerWidth}
         height={window.innerHeight}
@@ -258,6 +258,7 @@ function SuccessPage() {
         colors={["#0123e7", "#eb8806"]}
       />
       <SucessMessage />
+
       <AddOnSucess />
     </div>
   );
