@@ -9,7 +9,7 @@ import {
   PRODUCTS_ID,
   TEST_PRICES_ID,
   TEST_PRODUCTS_ID,
-} from "~/constants/products";
+} from "../../../../../constants/products";
 import CheckoutButton from "./checkout-button";
 
 function RegularCard({
