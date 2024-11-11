@@ -34,7 +34,7 @@ export default function PlansCards({
         </p>
 
         <span className="mt-[21px] text-center text-[34px] font-bold">
-          {ADD_ON_PRICE[type]?.[period]}
+          {ADD_ON_TEST_PRICES_ID[type]?.[period]}
           <span className={`${roboto.className} text-[14px] font-light`}>
             {type !== "FREE" && "/month"}
           </span>
