@@ -25,7 +25,6 @@ import NoSessionModal from "../../components/modals/no-session-modal";
 import TabOne from "../../components/texttospeech/Tab1";
 import TabTwo from "../../components/texttospeech/Tab2";
 import { SpeedButton } from "../../components/texttospeech/Tab2/buttonmenu.tsx/speedbutton";
-import TTVIntroBlock from "../../components/texttospeech/ttvintroblock";
 
 export function ScriptAI({
   subData,
@@ -165,9 +164,7 @@ export function ScriptAI({
   };
   return (
     <>
-      <div className="  mb-32 h-full   flex-col md:flex">
-        <TTVIntroBlock subscriptionData={subscriptionData} credits={credits} />
-
+      <div className=" mb-32 h-full   flex-col md:flex">
         <Tabs defaultValue="complete" className="flex-1">
           <div className="container mb-4 h-full ">
             <div className="grid h-full items-stretch gap-6 md:grid-cols-[400px_1fr]">
