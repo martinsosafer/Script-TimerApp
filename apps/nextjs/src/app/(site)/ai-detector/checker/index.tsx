@@ -9,8 +9,8 @@ import { toast } from "@voiceai/ui/@/components/ui/toast";
 import NoSessionModal from "../../components/modals/no-session-modal";
 import ModeSelector from "../../components/mode-selector";
 import PercentageBar from "../../components/percentage-bar";
+import Tabs from "../../components/tabs";
 import { consumedCreditsWarning, transformResults } from "./utils";
-import WelcomeMessage from "./welcome-message";
 
 interface CheckerProps {
   userId: string | undefined;
@@ -80,11 +80,28 @@ export default function AiChecker({ userId, credits }: CheckerProps) {
     }
   }
 
+  const options = [
+    {
+      label: "AI Scan",
+      active: true,
+      action: () => {
+        return;
+      },
+    },
+    {
+      label: "Plagiarism Scan",
+      active: false,
+      action: () => {
+        window.location.href = "/plagiarism-detector";
+      },
+    },
+  ];
+
   return (
     <>
-      <div className="flex w-[1024px] flex-col py-10">
-        <WelcomeMessage />
-        <ModeSelector aiCheck={true} />
+      <div className="flex w-[1024px] flex-col items-center pb-10">
+        {/* <ModeSelector aiCheck={true} /> */}
+        <Tabs options={options} />
         <div className="mt-10 flex w-full gap-2">
           <form
             onSubmit={

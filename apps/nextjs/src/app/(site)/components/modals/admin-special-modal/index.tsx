@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Select from "react-select";
 
 import { IconPencilLine, IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 
@@ -6,7 +7,10 @@ import {
   addSpecial,
   updateSpecial,
 } from "~/app/(site)/(admin)/admin-specials/actions";
-import type { MonthlySpecial } from "~/app/(site)/(admin)/admin-specials/types";
+import type {
+  MonthlySpecial,
+  Page,
+} from "~/app/(site)/(admin)/admin-specials/types";
 
 interface ModalProps {
   onClose: () => void;
@@ -14,14 +18,14 @@ interface ModalProps {
   refetch: () => void;
 }
 
-const pages = [
-  "ALL",
-  "VOICE",
-  "CHAT",
-  "IMAGES",
-  "PLAGIARISM",
-  "UNIVERSITY",
-  "PLANS",
+const pageOptions = [
+  { value: "ALL", label: "ALL" },
+  { value: "VOICE", label: "VOICE" },
+  { value: "CHAT", label: "CHAT" },
+  { value: "IMAGES", label: "IMAGES" },
+  { value: "PLAGIARISM", label: "PLAGIARISM" },
+  { value: "UNIVERSITY", label: "UNIVERSITY" },
+  { value: "PLANS", label: "PLANS" },
 ];
 
 export default function AdminSpecialModal({
@@ -30,17 +34,33 @@ export default function AdminSpecialModal({
   refetch,
 }: ModalProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [pages, setPages] = useState<Page[]>(special?.pages_display ?? []);
+  const [type, setType] = useState<"promo" | "announcement">(
+    special?.type ?? "promo",
+  );
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     setIsLoading(true);
     e.preventDefault();
     const form = new FormData(e.currentTarget);
+    const payload = {
+      name: form.get("name") as string,
+      description: form.get("description") as string,
+      type,
+      pages_display: pages,
+      promo_code: form.get("promo_code") as string,
+      link: form.get("link") as string,
+      start_date: form.get("start_date") as string,
+      end_date: form.get("end_date") as string,
+      is_active: isActive,
+    };
+
     if (special) {
-      await updateSpecial(form, special.id);
+      await updateSpecial(payload, special.id!);
       refetch();
       return onClose();
     }
-    await addSpecial(form);
+    await addSpecial(payload);
     refetch();
     onClose();
     setIsLoading(false);
@@ -49,13 +69,6 @@ export default function AdminSpecialModal({
   const [isActive, setIsActive] = useState(
     special ? special.is_active : "active",
   );
-
-  if (special) {
-    console.log(
-      new Date(special.start_date).toISOString() <=
-        new Date(special.end_date).toISOString(),
-    );
-  }
 
   return (
     <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center overflow-auto bg-black bg-opacity-50 backdrop-blur">
@@ -67,6 +80,19 @@ export default function AdminSpecialModal({
         <form className="flex flex-col gap-2 p-2" onSubmit={handleSubmit}>
           <div className="flex w-full gap-2">
             <div className="flex w-[300px] flex-col gap-2">
+              <label htmlFor="type" className="text-sm font-semibold">
+                Special Type
+              </label>
+              <select
+                value={type}
+                onChange={(e) =>
+                  setType(e.target.value as "promo" | "announcement")
+                }
+                className="rounded-md border border-gray-300 p-2"
+              >
+                <option value="promo">Promo</option>
+                <option value="announcement">Announcement</option>
+              </select>
               <label htmlFor="name" className="text-sm font-semibold">
                 Monthly special name
               </label>
@@ -90,32 +116,39 @@ export default function AdminSpecialModal({
               <label htmlFor="pages_diplay" className="text-sm font-semibold">
                 Display on pages:
               </label>
-              <select
-                name="pages_display"
-                defaultValue={special?.pages_display}
-                className="w-full rounded-md border-2 border-primary p-2"
-              >
-                <option value="" hidden>
-                  Select a page to display
-                </option>
-                {pages.map((page) => (
-                  <option key={page} value={page}>
-                    {page}
-                  </option>
-                ))}
-              </select>
+              <Select
+                options={pageOptions as any}
+                isMulti
+                defaultValue={() =>
+                  special
+                    ? special.pages_display.map((page) => ({
+                        value: page,
+                        label: page,
+                      }))
+                    : []
+                }
+                onChange={(option) => {
+                  const selectedPages = option.map((opt) => opt.value);
+                  setPages(selectedPages);
+                }}
+              />
             </div>
             <div className="flex w-[500px] flex-col gap-2">
-              <label htmlFor="promo_code" className="text-sm font-semibold">
-                Promo Code
-              </label>
-              <input
-                type="text"
-                name="promo_code"
-                defaultValue={special?.promo_code}
-                placeholder={"Promo Code"}
-                className="w-full rounded-md border-2 border-primary p-2"
-              />
+              {type === "promo" && (
+                <>
+                  <label htmlFor="promo_code" className="text-sm font-semibold">
+                    Promo Code
+                  </label>
+                  <input
+                    type="text"
+                    name="promo_code"
+                    defaultValue={special?.promo_code ?? undefined}
+                    placeholder={"Promo Code"}
+                    className="w-full rounded-md border-2 border-primary p-2"
+                  />
+                </>
+              )}
+
               <label htmlFor="link" className="text-sm font-semibold">
                 Link
               </label>

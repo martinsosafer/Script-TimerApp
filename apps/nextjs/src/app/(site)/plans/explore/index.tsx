@@ -5,7 +5,12 @@ import Image from "next/image";
 import type { Session } from "next-auth";
 
 import { roboto } from "~/app/fonts";
-import { TEST_PRICES_ID, TEST_PRODUCTS_ID } from "~/constants/products";
+import {
+  PRICES_ID,
+  PRODUCTS_ID,
+  TEST_PRICES_ID,
+  TEST_PRODUCTS_ID,
+} from "~/constants/products";
 import AddOnModal from "../../components/modals/add-ons";
 import CheckoutButton from "../plans/plans-cards/checkout-button";
 import { setHasPlan } from "../utils";
@@ -102,8 +107,8 @@ export default function Explore({
           <span className="w-[140px] text-center">
             <CheckoutButton
               hasPlan={setHasPlan(session, "EDUCATION", interval, period)}
-              productId={TEST_PRODUCTS_ID.EDUCATION![period]}
-              priceId={TEST_PRICES_ID.EDUCATION![period]}
+              productId={PRODUCTS_ID.EDUCATION![period]}
+              priceId={PRICES_ID.EDUCATION![period]}
               session={session}
               type="primary"
             />
@@ -111,8 +116,8 @@ export default function Explore({
           <span className="w-[140px] text-center">
             <CheckoutButton
               hasPlan={setHasPlan(session, "CREATOR", interval, period)}
-              productId={TEST_PRODUCTS_ID.CREATOR![period]}
-              priceId={TEST_PRICES_ID.CREATOR![period]}
+              productId={PRODUCTS_ID.CREATOR![period]}
+              priceId={PRICES_ID.CREATOR![period]}
               session={session}
               type="accent"
             />
@@ -120,8 +125,8 @@ export default function Explore({
           <span className="w-[140px] text-center">
             <CheckoutButton
               hasPlan={setHasPlan(session, "BUSINESS", interval, period)}
-              productId={TEST_PRODUCTS_ID.BUSINESS![period]}
-              priceId={TEST_PRICES_ID.BUSINESS![period]}
+              productId={PRODUCTS_ID.BUSINESS![period]}
+              priceId={PRICES_ID.BUSINESS![period]}
               session={session}
               type="primary"
             />

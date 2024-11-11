@@ -1,15 +1,14 @@
 import { auth } from "@voiceai/auth";
 
 import { poppins } from "~/app/fonts";
+import PageHeader from "../components/page-header";
 import Compare from "./compare";
-import Explore from "./explore";
 import FAQs from "./faqs";
 import LanguagesRows from "./languages-rows";
 import Plans from "./plans";
 import PricingTestimonials from "./testimonials";
 import type { Plan } from "./types";
 import { getSubscription } from "./utils";
-import Welcome from "./welcome";
 
 export default async function NewPlansPage() {
   const session = await auth();
@@ -23,7 +22,10 @@ export default async function NewPlansPage() {
     <div
       className={`bg-cp-background flex w-full flex-col items-center ${poppins.className}`}
     >
-      <Welcome />
+      <PageHeader
+        title="Choose a plan"
+        subtitle="Transform your ideas into perfect scripts, voice overs, and images in any language."
+      />
       <Plans
         session={session}
         subscription={(subscription?.plan as Plan) ?? null}

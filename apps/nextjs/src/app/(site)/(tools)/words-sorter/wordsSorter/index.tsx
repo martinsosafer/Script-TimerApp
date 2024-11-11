@@ -50,7 +50,7 @@ export default function WordsSorter() {
         onChange={(e) => setText(e.currentTarget.value)}
       />
       <select
-        className="mt-2 w-full rounded-md p-3"
+        className="mt-2 w-full rounded-md border  border-gray-400 bg-gray-100 p-3"
         name="separator"
         onChange={(e) => setSeparator(e.currentTarget.value)}
       >
@@ -60,7 +60,7 @@ export default function WordsSorter() {
         <option value="space">Space 4</option>
       </select>
       <select
-        className="mt-2 w-full rounded-md p-3"
+        className="mt-2 w-full rounded-md border border-gray-400 bg-gray-100 p-3"
         name="sortType"
         onChange={(e) => setSortType(e.currentTarget.value)}
       >
