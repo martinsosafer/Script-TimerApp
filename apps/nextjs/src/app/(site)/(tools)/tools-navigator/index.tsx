@@ -13,7 +13,7 @@ const tools = [
 export default function ToolsNavigator() {
   const pathname = usePathname();
   return (
-    <div className="mt-10 flex items-center justify-center gap-4">
+    <div className="flex items-center justify-center gap-4">
       {tools.map((tool) => {
         return (
           <Link

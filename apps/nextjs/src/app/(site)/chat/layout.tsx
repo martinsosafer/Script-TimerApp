@@ -4,7 +4,7 @@ interface ChatLayoutProps {
 
 export default function ChatLayout({ children }: ChatLayoutProps) {
   return (
-    <div className="relative flex h-full w-full justify-center overflow-hidden bg-[#FAFAFA] py-10">
+    <div className="relative flex h-full w-full justify-center overflow-hidden bg-[#FAFAFA]">
       {children}
     </div>
   );

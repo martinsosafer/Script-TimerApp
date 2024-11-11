@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 
 import { auth } from "@voiceai/auth";
 
+import PageHeader from "../components/page-header";
 import { getCredits } from "./actions";
 import ImageGenerator from "./image-generator";
 
@@ -17,7 +18,11 @@ export default async function indexPage() {
   const credits = await getCredits(userId ?? "");
 
   return (
-    <div className="flex justify-center">
+    <div className="flex flex-col items-center">
+      <PageHeader
+        title="I am your Image Generator"
+        subtitle="I am specially designed for storyboards, but you can create any image you like"
+      />
       <ImageGenerator credits={credits?.credits ?? 0} userId={userId} />
     </div>
   );
