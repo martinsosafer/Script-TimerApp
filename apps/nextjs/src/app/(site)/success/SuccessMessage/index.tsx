@@ -112,7 +112,7 @@ export default function SuccessMessage() {
               onClick={toggleModal}
             />
             <motion.div
-              className="bg-cp-primary relative h-[80vh] w-[60vw] overflow-hidden rounded-lg p-[15px]"
+              className="relative h-[80vh] w-[60vw] overflow-hidden rounded-lg bg-gradient-to-br from-[#0066FF] to-[#000000] px-[40px]"
               variants={modalVariants}
               onClick={(e) => e.stopPropagation()}
             >
@@ -123,14 +123,14 @@ export default function SuccessMessage() {
                 title="Script-Timer Ai Onboarding video"
               />
               <motion.button
-                className="absolute right-4 top-4 rounded-full bg-black bg-opacity-50 p-2 text-white"
+                className="absolute right-1 top-1 rounded-full bg-black bg-opacity-50 p-2 text-white"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={toggleModal}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
+                  className="h-4 w-4"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"

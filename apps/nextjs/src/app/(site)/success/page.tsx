@@ -4,11 +4,9 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Confetti from "react-confetti";
 
+import { auth } from "@voiceai/auth";
+
 import { api } from "~/utils/api";
-import CounterData from "../components/herosection/CounterData/CounterData";
-import GoSections from "../components/herosection/GoSections/GoSections";
-import ServiceSection from "../components/herosection/ServicesSection/servicessection";
-import Testimonials from "../components/herosection/Testimonials/Testimonials";
 import AddOnSucess from "./addOnSuccess";
 import SucessMessage from "./SuccessMessage";
 
@@ -48,7 +46,7 @@ function SuccessPage() {
   const id = searchParams.get("sessionId");
 
   const { data: userData, isSuccess } = api.auth.getSession.useQuery();
-
+  const userPlan = userData?.user.subscription?.status;
   const { mutateAsync: updateStudent } = api.user.updateStudent.useMutation({
     onSuccess(data) {
       console.log("Subscription updated successfully:", data);
@@ -259,7 +257,7 @@ function SuccessPage() {
       />
       <SucessMessage />
 
-      <AddOnSucess />
+      <AddOnSucess userPlan={userPlan} />
     </div>
   );
 }

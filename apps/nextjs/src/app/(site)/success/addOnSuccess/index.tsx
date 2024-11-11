@@ -1,10 +1,45 @@
+/* eslint-disable react/display-name */
+
 import { CheckIcon as Check } from "@voiceai/ui/@/icons/icons";
 
 import { poppins, roboto } from "~/app/fonts";
 import Button from "../../components/button/index";
 import MotionTransition from "../../components/herosection/MotionTransition/MotionTransition";
 
-export default function UpgradeBannerSuccess() {
+interface AddOnSuccessProps {
+  userPlan: keyof typeof plans;
+}
+export const plans = {
+  STUDENT: {
+    name: "STUDENT",
+    yearlymonthlyPrice: 7.75,
+    yearlyPrice: 93, // Discounted for annual payment
+    monthlyPrice: 9,
+    includedWords: 10000,
+  },
+  CREATOR: {
+    name: "CREATOR",
+    yearlymonthlyPrice: 11,
+    yearlyPrice: 132, // Discounted for annual payment
+    monthlyPrice: 14,
+    includedWords: 15000,
+  },
+  BUSINESS: {
+    name: "BUSINESS",
+    yearlymonthlyPrice: 16.41,
+    yearlyPrice: 197, // Discounted for annual payment
+    monthlyPrice: 9,
+    includedWords: 20000,
+  },
+};
+const placeholderPlan = {
+  yearlymonthlyPrice: "--",
+  yearlyPrice: "--",
+  monthlyPrice: "--",
+  includedWords: "--",
+};
+export default function ({ userPlan }: AddOnSuccessProps) {
+  const plan = plans[userPlan] || placeholderPlan;
   return (
     <div
       className={`relative h-[600px] w-full ${poppins.className} bg-gradient-to-br from-[#0066FF] to-[#000000] text-white`}
@@ -66,7 +101,9 @@ export default function UpgradeBannerSuccess() {
                         <span className="whitespace-nowrap">
                           Included words per month
                         </span>
-                        <span className="mr-[28px] text-right">15,000</span>
+                        <span className="mr-[28px] text-right">
+                          {plan.includedWords}
+                        </span>
                       </div>
                       <div className="grid h-[48px] w-[393px] grid-cols-2 items-center rounded-lg bg-[#0066FF] px-[12px]">
                         <span className="whitespace-nowrap">
@@ -113,14 +150,14 @@ export default function UpgradeBannerSuccess() {
                       </h3>
                       <div className="flex items-baseline justify-center  gap-1">
                         <span className="text-[34px] font-bold leading-[41px]">
-                          $11
+                          ${plan.yearlymonthlyPrice}
                         </span>
                         <span className="text-[14px] font-normal leading-[20px]   text-gray-300">
                           /month
                         </span>
                       </div>
                       <div className="text-[18px] font-normal leading-[25px]   text-gray-300">
-                        $132/year
+                        ${plan.yearlyPrice}/year
                       </div>
                       <Button
                         label="BUY NOW"
@@ -136,7 +173,7 @@ export default function UpgradeBannerSuccess() {
                       </h3>
                       <div className="flex items-baseline justify-center  gap-1">
                         <span className="text-[34px] font-bold leading-[41px]">
-                          $14
+                          ${plan.monthlyPrice}
                         </span>
                         <span className="text-[14px] font-normal leading-[20px]   text-gray-300">
                           /month
