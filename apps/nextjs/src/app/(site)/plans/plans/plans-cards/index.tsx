@@ -5,10 +5,21 @@ import { roboto } from "~/app/fonts";
 import {
   DESCRIPTION,
   PRICE,
+  PRICES_ID,
+  PRODUCTS_ID,
   TEST_PRICES_ID,
   TEST_PRODUCTS_ID,
-} from "~/constants/products";
+} from "../../../../../constants/products";
 import CheckoutButton from "./checkout-button";
+
+const productIds =
+  process.env.NEXT_PUBLIC_ENVIRONMENT === "production"
+    ? PRODUCTS_ID
+    : TEST_PRODUCTS_ID;
+const priceIds =
+  process.env.NEXT_PUBLIC_ENVIRONMENT === "production"
+    ? PRICES_ID
+    : TEST_PRICES_ID;
 
 function RegularCard({
   type,
@@ -119,8 +130,8 @@ function RegularCard({
               </div>
               <CheckoutButton
                 type="accent"
-                productId={TEST_PRODUCTS_ID[type]?.[period]}
-                priceId={TEST_PRICES_ID[type]?.[period]}
+                productId={productIds[type]?.[period]}
+                priceId={priceIds[type]?.[period]}
                 session={session}
                 hasPlan={setHasPlan()}
               />
@@ -170,8 +181,8 @@ function RegularCard({
           </div>
           <CheckoutButton
             type="primary"
-            productId={TEST_PRODUCTS_ID[type]?.[period]}
-            priceId={TEST_PRICES_ID[type]?.[period]}
+            productId={productIds[type]?.[period]}
+            priceId={priceIds[type]?.[period]}
             session={session}
             hasPlan={setHasPlan()}
           />

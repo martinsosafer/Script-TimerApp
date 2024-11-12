@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { auth } from "@voiceai/auth";
 
+import PageHeader from "../components/page-header";
 import getOpenAiCredits from "./actions";
 import ChatInteraction from "./chat-interaction";
 
@@ -16,8 +17,19 @@ export default async function indexPage() {
   const userId = session?.user.id; // Ensure userId is always a string
   const openAiCredits = await getOpenAiCredits(userId ?? "");
 
+  const subtitle = (
+    <span className="flex flex-col items-center">
+      <span>An Ai SUPERHERO, ‘model‘ designed to help you.</span>
+      <span>
+        I am specially made for presentations, speeches, videos, and can do
+        much, much more.
+      </span>
+    </span>
+  );
+
   return (
     <div className="flex w-[1024px] flex-col items-center ">
+      <PageHeader title="I am your Script Coach" subtitle={subtitle} />
       <ChatInteraction userId={userId} openAiCredits={openAiCredits} />
     </div>
   );

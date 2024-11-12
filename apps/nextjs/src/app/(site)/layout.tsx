@@ -49,7 +49,9 @@ export default async function Layout(props: { children: React.ReactNode }) {
     await signIn();
   }
   const session = await auth();
-  const monthlySpecial = await getSpecials();
+  const monthlySpecials = await getSpecials();
+
+  console.log("monthly active", monthlySpecials);
 
   return (
     <div className="flex min-h-screen w-full flex-col justify-between bg-background">
@@ -59,7 +61,7 @@ export default async function Layout(props: { children: React.ReactNode }) {
           signIn={signInServer}
           session={session}
         />
-        <MonthlySpecialProvider monthlySpecial={monthlySpecial}>
+        <MonthlySpecialProvider monthlySpecials={monthlySpecials}>
           <div>{props.children}</div>
         </MonthlySpecialProvider>
 

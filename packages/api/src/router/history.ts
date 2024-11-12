@@ -12,18 +12,17 @@ export const historyRouter = createTRPCRouter({
         history_id: schema.generations.id,
         type: schema.credits.type,
         credits: schema.credits.credits,
-        created_at: schema.credits.created_at,
+        created_at: schema.generations.created_at,
         prompt: schema.generations.prompt,
         metadata: schema.generations.metadata,
-        // file: schema.generations.response,
       })
-      .from(schema.credits)
-      .fullJoin(
-        schema.generations,
+      .from(schema.generations) // Start from generations table
+      .leftJoin(
+        schema.credits,
         eq(schema.credits.generationId, schema.generations.id),
       )
-      .where(and(eq(schema.credits.userId, ctx.session.user.id)))
-      .orderBy(desc(schema.credits.created_at))
+      .where(eq(schema.generations.userId, ctx.session.user.id))
+      .orderBy(desc(schema.generations.created_at)) // Order by generations' created_at only
       .limit(100);
   }),
   download: protectedProcedure

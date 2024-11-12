@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import PageHeader from "../components/page-header";
 import ToolsNavigator from "./tools-navigator";
 
 export const metadata: Metadata = {
@@ -10,6 +11,10 @@ export const metadata: Metadata = {
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex w-full flex-col items-center">
+      <PageHeader
+        title="Free tools"
+        subtitle="Easy to use to help you with your script"
+      />
       <ToolsNavigator />
       {children}
     </div>
