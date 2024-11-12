@@ -9,6 +9,11 @@ import {
 } from "~/constants/products";
 import CheckoutButton from "../checkout-button";
 
+const addOnPriceIds =
+  process.env.NEXT_PUBLIC_ENVIRONMENT === "production"
+    ? ADD_ON_PRICES_ID
+    : ADD_ON_TEST_PRICES_ID;
+
 export default function PlansCards({
   type,
   period,
@@ -34,7 +39,7 @@ export default function PlansCards({
         </p>
 
         <span className="mt-[21px] text-center text-[34px] font-bold">
-          {ADD_ON_TEST_PRICES_ID[type]?.[period]}
+          {ADD_ON_PRICE[type]?.[period]}
           <span className={`${roboto.className} text-[14px] font-light`}>
             {type !== "FREE" && "/month"}
           </span>
@@ -50,7 +55,7 @@ export default function PlansCards({
       </div>
       <CheckoutButton
         type="accent"
-        productId={ADD_ON_PRICES_ID[type]?.[period]}
+        productId={addOnPriceIds[type]?.[period]}
         session={session}
         hasPlan={
           session?.user.subscription?.status === type ||
