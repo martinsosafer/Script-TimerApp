@@ -1,14 +1,31 @@
-/* eslint-disable react/display-name */
+import type { Session } from "next-auth";
 
 import { CheckIcon as Check } from "@voiceai/ui/@/icons/icons";
 
 import { poppins, roboto } from "~/app/fonts";
+import {
+  ADD_ON_PRICES_ID,
+  ADD_ON_PRODUCTS_ID,
+  ADD_ON_TEST_PRICES_ID,
+  ADD_ON_TEST_PRODUCTS_ID,
+} from "~/constants/products";
 import Button from "../../components/button/index";
 import MotionTransition from "../../components/herosection/MotionTransition/MotionTransition";
+import CheckoutButton from "../../plans/plans/plans-cards/checkout-button";
 
 interface AddOnSuccessProps {
   userPlan: keyof typeof plans;
 }
+
+const productIds =
+  process.env.NEXT_PUBLIC_ENVIRONMENT === "production"
+    ? ADD_ON_PRODUCTS_ID
+    : ADD_ON_TEST_PRODUCTS_ID;
+const priceIds =
+  process.env.NEXT_PUBLIC_ENVIRONMENT === "production"
+    ? ADD_ON_PRICES_ID
+    : ADD_ON_TEST_PRICES_ID;
+
 export const plans = {
   STUDENT: {
     name: "STUDENT",
@@ -32,14 +49,29 @@ export const plans = {
     includedWords: 20000,
   },
 };
+
 const placeholderPlan = {
   yearlymonthlyPrice: "--",
   yearlyPrice: "--",
   monthlyPrice: "--",
   includedWords: "--",
 };
-export default function ({ userPlan }: AddOnSuccessProps) {
+
+export default function AddOnSuccess({
+  type,
+  period,
+  userSession,
+  interval,
+  userPlan,
+}: {
+  type: "FREE" | "EDUCATION" | "CREATOR" | "BUSINESS";
+  period: "monthly" | "yearly";
+  userSession: Session | null;
+  interval: string | undefined;
+  userPlan: AddOnSuccessProps;
+}) {
   const plan = plans[userPlan] || placeholderPlan;
+
   return (
     <div
       className={`relative h-[600px] w-full ${poppins.className} bg-gradient-to-br from-[#0066FF] to-[#000000] text-white`}
@@ -68,34 +100,25 @@ export default function ({ userPlan }: AddOnSuccessProps) {
 
       <div className="relative">
         <MotionTransition>
-          <div className="mb-[24px] mt-[60px] pl-[215px] pr-[260px]">
-            <h2 className="text-[24px] font-bold leading-[37px] text-[#FFCB7F]">
-              Ensure originality with this powerful add-on!
-            </h2>
-          </div>
           <div>
-            {/* Centered Content with Fixed Size */}
             <div className="flex h-screen justify-center">
               <div className="h-[414px] w-[610px]">
-                {/* tabla */}
-                <div className="mb-[32px] flex flex-col items-start gap-[12px]">
+                <div className="mb-[32px] mt-[45px] flex flex-col items-start gap-[12px]">
                   <h1 className="w-full text-start text-[34px] font-bold leading-[41px]">
                     Plagiarism & AI Detection
                   </h1>
                   <p
                     className={`${roboto.className} mt-2 text-start text-[14px] leading-[20px] text-blue-100`}
                   >
-                    For professionals focused on SEO, professors, students{" "}
+                    For professionals focused on SEO, professors, students
                     <br /> and anyone that needs original and clean copy.
                     <br />
                   </p>
                 </div>
-                {/* Main Content */}
                 <div className="grid gap-8 lg:grid-cols-[1fr,auto]">
-                  {/* Features Table */}
                   <div className="overflow-hidden rounded-lg">
                     <div
-                      className={`grid h-[288px] w-[393px] text-left text-[16px] font-normal leading-[22px] ${roboto.className} `}
+                      className={`grid h-[288px] w-[393px] text-left text-[16px] font-normal leading-[22px] ${roboto.className}`}
                     >
                       <div className="grid h-[48px] w-[393px] grid-cols-2 items-center rounded-lg bg-[#0552C5] px-[12px]">
                         <span className="whitespace-nowrap">
@@ -143,48 +166,48 @@ export default function ({ userPlan }: AddOnSuccessProps) {
                   </div>
 
                   {/* Pricing Plans */}
-                  <div className="-mt-[22px] flex flex-col  justify-center">
+                  <div className="mt-[2px] flex flex-col justify-center">
                     <div className=" mb-6">
-                      <h3 className="mb-2 text-[20px]  font-bold leading-[28px] text-emerald-300">
+                      <h3 className="mb-2 text-[20px] font-bold leading-[28px] text-emerald-300">
                         Yearly Plan
                       </h3>
-                      <div className="flex items-baseline justify-center  gap-1">
+                      <div className="flex items-baseline justify-center gap-1">
                         <span className="text-[34px] font-bold leading-[41px]">
                           ${plan.yearlymonthlyPrice}
                         </span>
-                        <span className="text-[14px] font-normal leading-[20px]   text-gray-300">
+                        <span className="text-[14px] font-normal leading-[20px] text-gray-300">
                           /month
                         </span>
                       </div>
-                      <div className="text-[18px] font-normal leading-[25px]   text-gray-300">
+                      <div className="text-[18px] font-normal leading-[25px] text-gray-300">
                         ${plan.yearlyPrice}/year
                       </div>
-                      <Button
-                        label="BUY NOW"
+                      <CheckoutButton
                         type="accent"
-                        onClick={() => console.log("ola")}
-                        className="mt-2 h-[48px] w-[152px] "
-                      ></Button>
+                        productId={productIds[type]?.[period]}
+                        priceId={priceIds[type]?.[period]}
+                        session={userSession}
+                      />
                     </div>
 
                     <div className="">
-                      <h3 className="mb-2 text-[20px]  font-bold leading-[28px] text-emerald-300">
+                      <h3 className="mb-2 text-[20px] font-bold leading-[28px] text-emerald-300">
                         Monthly Plan
                       </h3>
-                      <div className="flex items-baseline justify-center  gap-1">
+                      <div className="flex items-baseline justify-center gap-1">
                         <span className="text-[34px] font-bold leading-[41px]">
                           ${plan.monthlyPrice}
                         </span>
-                        <span className="text-[14px] font-normal leading-[20px]   text-gray-300">
+                        <span className="text-[14px] font-normal leading-[20px] text-gray-300">
                           /month
                         </span>
                       </div>
-                      <Button
-                        label="BUY NOW"
+                      <CheckoutButton
                         type="accent"
-                        onClick={() => console.log("ola")}
-                        className="h-[48px] w-[152px]"
-                      ></Button>
+                        productId={productIds[type]?.[period]}
+                        priceId={priceIds[type]?.[period]}
+                        session={userSession}
+                      />
                     </div>
                   </div>
                 </div>

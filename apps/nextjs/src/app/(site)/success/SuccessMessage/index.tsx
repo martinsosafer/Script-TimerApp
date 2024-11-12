@@ -92,8 +92,8 @@ export default function SuccessMessage() {
       </div>
       <div className="mx-auto mb-10 flex w-full justify-center text-center">
         <RevealText>
-          <h2 className="text-cp-secondary text-[50px] font-bold leading-[60px]">
-            Thank you for joining us!
+          <h2 className="text-cp-secondary mt-8 text-[34px] font-bold leading-[40px]">
+            Ensure originality with this powerful add-on...
           </h2>
         </RevealText>
       </div>
