@@ -8,13 +8,14 @@ import {
   updateSpecial,
 } from "~/app/(site)/(admin)/admin-specials/actions";
 import type {
-  MonthlySpecial,
   Page,
+  MonthlySpecial as Special,
 } from "~/app/(site)/(admin)/admin-specials/types";
+import MonthlySpecial from "../../monthySpecial";
 
 interface ModalProps {
   onClose: () => void;
-  special?: MonthlySpecial;
+  special?: Special;
   refetch: () => void;
 }
 
@@ -38,6 +39,15 @@ export default function AdminSpecialModal({
   const [type, setType] = useState<"promo" | "announcement">(
     special?.type ?? "promo",
   );
+
+  const [previewValues, setPreviewValues] = useState({
+    name: special?.name ?? "",
+    description: special?.description ?? "",
+    type: special?.type ?? "promo",
+    promoCode: special?.promo_code ?? "",
+    link: special?.link ?? "",
+  });
+  const [previewSpecial, setPreviewSpecial] = useState(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     setIsLoading(true);
@@ -71,8 +81,8 @@ export default function AdminSpecialModal({
   );
 
   return (
-    <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center overflow-auto bg-black bg-opacity-50 backdrop-blur">
-      <div className="flex flex-col items-center justify-between rounded-lg bg-white p-4">
+    <div className="fixed left-0 top-0 z-50 flex h-full w-full flex-col items-center justify-center overflow-auto bg-black bg-opacity-50 backdrop-blur">
+      <div className="relative flex flex-col items-center justify-between rounded-lg bg-white p-4">
         <h2 className="flex w-full items-center gap-2 text-xl font-semibold text-gray-800">
           {" "}
           <IconPencilLine /> Add or Edit Monthly Special
@@ -85,9 +95,13 @@ export default function AdminSpecialModal({
               </label>
               <select
                 value={type}
-                onChange={(e) =>
-                  setType(e.target.value as "promo" | "announcement")
-                }
+                onChange={(e) => {
+                  setType(e.target.value as "promo" | "announcement");
+                  setPreviewValues({
+                    ...previewValues,
+                    type: e.target.value as "promo" | "announcement",
+                  });
+                }}
                 className="rounded-md border border-gray-300 p-2"
               >
                 <option value="promo">Promo</option>
@@ -102,6 +116,10 @@ export default function AdminSpecialModal({
                 defaultValue={special?.name}
                 placeholder={"Monthly Special Name"}
                 className="w-full rounded-md border-2 border-primary p-2"
+                maxLength={30}
+                onChange={(e) =>
+                  setPreviewValues({ ...previewValues, name: e.target.value })
+                }
               />
               <label htmlFor="description" className="text-sm font-semibold">
                 Special description
@@ -112,6 +130,13 @@ export default function AdminSpecialModal({
                 placeholder={"Special Description"}
                 rows={4}
                 className="w-full rounded-md border-2 border-primary p-2"
+                maxLength={50}
+                onChange={(e) =>
+                  setPreviewValues({
+                    ...previewValues,
+                    description: e.target.value,
+                  })
+                }
               />
               <label htmlFor="pages_diplay" className="text-sm font-semibold">
                 Display on pages:
@@ -145,6 +170,13 @@ export default function AdminSpecialModal({
                     defaultValue={special?.promo_code ?? undefined}
                     placeholder={"Promo Code"}
                     className="w-full rounded-md border-2 border-primary p-2"
+                    maxLength={8}
+                    onChange={(e) =>
+                      setPreviewValues({
+                        ...previewValues,
+                        promoCode: e.target.value,
+                      })
+                    }
                   />
                 </>
               )}
@@ -158,6 +190,9 @@ export default function AdminSpecialModal({
                 defaultValue={special?.link ?? undefined}
                 placeholder={"Link"}
                 className="w-full rounded-md border-2 border-primary p-2"
+                onChange={(e) =>
+                  setPreviewValues({ ...previewValues, link: e.target.value })
+                }
               />
               <label htmlFor="name" className="text-sm font-semibold">
                 Start Date
@@ -218,7 +253,28 @@ export default function AdminSpecialModal({
             </button>
           </div>
         </form>
+        <button
+          className="text-cp-primary border-cp-primary absolute bottom-5 rounded-md border bg-white px-4 py-3 hover:opacity-80"
+          onClick={() => {
+            setPreviewSpecial(true);
+          }}
+        >
+          Preview
+        </button>
       </div>
+
+      {previewSpecial && (
+        <div className="mt-4 w-full">
+          <MonthlySpecial
+            description={previewValues.description}
+            name={previewValues.name}
+            link={previewValues.link}
+            onClose={() => setPreviewSpecial(false)}
+            promo_code={previewValues.promoCode}
+            type={previewValues.type as "promo" | "announcement"}
+          />
+        </div>
+      )}
     </div>
   );
 }
