@@ -19,7 +19,7 @@ export default function MonthlyYearlyToogle({
   return (
     <div
       className={
-        "border-cp-primary mt-[68px] flex h-[48px] w-[314px] rounded-md border-2 bg-white p-1 text-[16px]"
+        "border-cp-primary mt-[28px] flex h-[48px] w-[314px] rounded-md border-2 bg-white p-1 text-[16px]"
       }
     >
       <button

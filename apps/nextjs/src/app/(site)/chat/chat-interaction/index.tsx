@@ -144,7 +144,6 @@ export default function ChatInteraction({ userId, openAiCredits }: ChatProps) {
 
   return (
     <div className="flex w-full flex-col items-center">
-      <WelcomeMessage />
       <SearchPrompts
         setSelectedCard={setSelectedCard}
         setSelectedPill={setSelectedPill}
