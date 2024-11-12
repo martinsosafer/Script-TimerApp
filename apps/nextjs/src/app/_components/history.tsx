@@ -34,7 +34,6 @@ import {
 import { toast, ToastAction } from "@voiceai/ui/@/components/ui/toast";
 
 import { api } from "~/utils/api";
-import IntroParagraph from "../(site)/components/texttospeech/ttvintroblock/introparagraph/introparagraph";
 
 export const History = ({ ...rest }) => {
   const [loadingDownload, setLoadingDownload] = React.useState({});
@@ -155,164 +154,154 @@ export const History = ({ ...rest }) => {
   };
 
   return (
-    <div>
-      <div className="mb-6 mt-6 flex items-center justify-center">
-        <div>
-          <h1 className="mb-3 text-center font-poppins text-3xl font-bold text-secondary-foreground">
-            History
-          </h1>
-          <IntroParagraph status={subscriptionData?.status} />
-        </div>
-      </div>
-      <Table>
-        <TableCaption>A list of your history.</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Scripts</TableHead>
-            <TableHead>Characters used</TableHead>
-            <TableHead>Date</TableHead>
-            <TableHead>Actor</TableHead>
-            <TableHead>Copy Script</TableHead>
-            <TableHead>Download Document</TableHead>
-            <TableHead>Download Audio</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {!isLoading &&
-            data?.map((history, index) => (
-              <TableRow key={history.credit_id}>
-                <TableCell>{history.prompt}</TableCell>
-                <TableCell>{history.credits}</TableCell>
-                <TableCell>{history.created_at!.toDateString()}</TableCell>
+    <Table>
+      <TableCaption>A list of your history.</TableCaption>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Scripts</TableHead>
+          <TableHead>Characters used</TableHead>
+          <TableHead>Date</TableHead>
+          <TableHead>Actor</TableHead>
+          <TableHead>Copy Script</TableHead>
+          <TableHead>Download Document</TableHead>
+          <TableHead>Download Audio</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {!isLoading &&
+          data?.map((history, index) => (
+            <TableRow key={history.credit_id}>
+              <TableCell>{history.prompt}</TableCell>
+              <TableCell>{history.credits}</TableCell>
+              <TableCell>{history.created_at!.toDateString()}</TableCell>
 
-                <TableCell>{history.metadata.voice_actor ?? ""}</TableCell>
-                <TableCell>
-                  <button
-                    type="button"
-                    onClick={() => copyTextToClipboard(history.prompt)}
-                  >
-                    <IconCopy width={30} className="stroke-black" />
-                  </button>
-                </TableCell>
+              <TableCell>{history.metadata.voice_actor ?? ""}</TableCell>
+              <TableCell>
+                <button
+                  type="button"
+                  onClick={() => copyTextToClipboard(history.prompt)}
+                >
+                  <IconCopy width={30} className="stroke-black" />
+                </button>
+              </TableCell>
 
-                <TableCell>
-                  <div className="relative">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon">
-                          <ArrowDownOnSquareIcon
-                            width={30}
-                            className="stroke-black"
-                          />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent className="w-20">
-                        <DropdownMenuLabel>Dowload</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuGroup>
-                          <DropdownMenuItem className="focus:bg-slate-200">
-                            <button
-                              onClick={() => saveAsPDF(history.prompt)}
-                              className="ml-10"
-                            >
-                              as .PDF
-                            </button>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="focus:bg-slate-200">
-                            <button
-                              onClick={() => saveAsDOCX(history.prompt)}
-                              className="ml-10"
-                            >
-                              as .DOCX
-                            </button>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="focus:bg-slate-200">
-                            <button
-                              onClick={() => saveAsSRT(history.prompt)}
-                              className="ml-10"
-                            >
-                              {" "}
-                              as .SRT
-                            </button>
-                          </DropdownMenuItem>
-                        </DropdownMenuGroup>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-                </TableCell>
+              <TableCell>
+                <div className="relative">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon">
+                        <ArrowDownOnSquareIcon
+                          width={30}
+                          className="stroke-black"
+                        />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-20">
+                      <DropdownMenuLabel>Dowload</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuGroup>
+                        <DropdownMenuItem className="focus:bg-slate-200">
+                          <button
+                            onClick={() => saveAsPDF(history.prompt)}
+                            className="ml-10"
+                          >
+                            as .PDF
+                          </button>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="focus:bg-slate-200">
+                          <button
+                            onClick={() => saveAsDOCX(history.prompt)}
+                            className="ml-10"
+                          >
+                            as .DOCX
+                          </button>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="focus:bg-slate-200">
+                          <button
+                            onClick={() => saveAsSRT(history.prompt)}
+                            className="ml-10"
+                          >
+                            {" "}
+                            as .SRT
+                          </button>
+                        </DropdownMenuItem>
+                      </DropdownMenuGroup>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              </TableCell>
 
-                <TableCell>
-                  <HoverCard>
-                    <HoverCardTrigger asChild>
-                      <div>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          disabled={
-                            !isSubscriptionActive || loadingDownload[index]
-                          }
-                          onClick={async () => {
-                            setLoadingDownload((prevState) => ({
-                              ...prevState,
-                              [index]: true,
-                            }));
-                            try {
-                              console.log(
-                                "Downloading history ID:",
-                                history.history_id,
-                              );
-                              const data = await downloadGeneration({
-                                id: history.history_id ?? "",
-                              });
-                              if (!data) {
-                                toast({
-                                  title: "Something went wrong",
-                                  description: "Please try again later",
-                                });
-                              }
-                            } catch (error) {
+              <TableCell>
+                <HoverCard>
+                  <HoverCardTrigger asChild>
+                    <div>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        disabled={
+                          !isSubscriptionActive || loadingDownload[index]
+                        }
+                        onClick={async () => {
+                          setLoadingDownload((prevState) => ({
+                            ...prevState,
+                            [index]: true,
+                          }));
+                          try {
+                            console.log(
+                              "Downloading history ID:",
+                              history.history_id,
+                            );
+                            const data = await downloadGeneration({
+                              id: history.history_id ?? "",
+                            });
+                            if (!data) {
                               toast({
                                 title: "Something went wrong",
                                 description: "Please try again later",
                               });
-                            } finally {
-                              setLoadingDownload((prevState) => ({
-                                ...prevState,
-                                [index]: false,
-                              }));
                             }
-                          }}
-                        >
-                          {loadingDownload[index] ? (
-                            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                          ) : (
-                            <ArrowDownOnSquareIcon
-                              width={30}
-                              className="stroke-black"
-                            />
-                          )}
-                        </Button>
-                      </div>
-                    </HoverCardTrigger>
-                    <HoverCardContent className="w-[320px] text-sm" side="left">
-                      Free users can't download their scripts
-                    </HoverCardContent>
-                  </HoverCard>
-                </TableCell>
-              </TableRow>
-            ))}
-          {isLoading && (
-            <TableRow>
-              <TableCell colSpan={4}>Loading...</TableCell>
+                          } catch (error) {
+                            toast({
+                              title: "Something went wrong",
+                              description: "Please try again later",
+                            });
+                          } finally {
+                            setLoadingDownload((prevState) => ({
+                              ...prevState,
+                              [index]: false,
+                            }));
+                          }
+                        }}
+                      >
+                        {loadingDownload[index] ? (
+                          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                        ) : (
+                          <ArrowDownOnSquareIcon
+                            width={30}
+                            className="stroke-black"
+                          />
+                        )}
+                      </Button>
+                    </div>
+                  </HoverCardTrigger>
+                  <HoverCardContent className="w-[320px] text-sm" side="left">
+                    Free users can't download their scripts
+                  </HoverCardContent>
+                </HoverCard>
+              </TableCell>
             </TableRow>
-          )}
-          {!isLoading && !data && (
-            <TableRow>
-              <TableCell colSpan={4}>No data available.</TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </div>
+          ))}
+        {isLoading && (
+          <TableRow>
+            <TableCell colSpan={4}>Loading...</TableCell>
+          </TableRow>
+        )}
+        {!isLoading && !data && (
+          <TableRow>
+            <TableCell colSpan={4}>No data available.</TableCell>
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
   );
 };

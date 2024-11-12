@@ -13,10 +13,10 @@ import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 import JokesLoader from "../../components/jokes-loader";
 import NoSessionModal from "../../components/modals/no-session-modal";
+import Tabs from "../../components/tabs";
 import { magicPrompt } from "../prompt";
 import PromptSelector from "../prompt-type-selector";
 import { downloadImage } from "../utils";
-import WelcomeMessage from "./welcome-message/welcome-message";
 
 export default function ImageGenerator({
   credits,
@@ -82,13 +82,26 @@ export default function ImageGenerator({
     }
   }
 
+  const options = [
+    {
+      label: "User Our Magic Prompt",
+      active: isMagicPrompt,
+      action: () => setIsMagicPrompt(true),
+    },
+    {
+      label: "Use your Own Prompt",
+      active: !isMagicPrompt,
+      action: () => setIsMagicPrompt(false),
+    },
+  ];
+
   return (
-    <div className="mt-20 flex w-[1024px] flex-col items-center">
-      <WelcomeMessage />
-      <PromptSelector
+    <div className="flex w-[1024px] flex-col items-center">
+      <Tabs options={options} />
+      {/* <PromptSelector
         isMagicPrompt={isMagicPrompt}
         setIsMagicPrompt={setIsMagicPrompt}
-      />
+      /> */}
       <form
         onSubmit={
           userId

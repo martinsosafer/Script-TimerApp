@@ -58,7 +58,7 @@ export default function SearchPrompts({
   }
 
   return (
-    <div className="relative mt-8 flex w-96 items-center justify-between gap-2 rounded-md border border-gray-400 bg-white p-2">
+    <div className="relative flex w-96 items-center justify-between gap-2 rounded-md border border-gray-400 bg-white p-2">
       <IconSearch className="h-6 w-6 text-gray-400" />
       <input
         type="text"

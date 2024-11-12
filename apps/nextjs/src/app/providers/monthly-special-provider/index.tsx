@@ -3,43 +3,59 @@
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 
-import type { MonthlySpecial as Specials } from "~/app/(site)/(admin)/admin-specials/types";
+import type {
+  Page,
+  MonthlySpecial as Specials,
+} from "~/app/(site)/(admin)/admin-specials/types";
 import MonthlySpecial from "~/app/(site)/components/monthySpecial";
 
 interface MonthlySpecialProviderProps {
-  monthlySpecial?: Specials;
+  monthlySpecials?: Specials[];
   children: React.ReactNode;
 }
 
-const paths: Record<string, string> = {
-  VOICE: "/texttovoice",
-  CHAT: "/chat",
-  IMAGES: "/image-generator",
-  PLAGIARISM: "/plagiarism-detector",
-  UNIVERSITY: "/masterclasses",
-  PLANS: "/plans",
+const paths: Record<string, Page> = {
+  "/texttovoice": "VOICE",
+  "/chat": "CHAT",
+  "/image-generator": "IMAGES",
+  "/plagiarism-detector": "PLAGIARISM",
+  "/masterclasses": "UNIVERSITY",
+  "/plans": "PLANS",
 };
 
 export default function MonthlySpecialProvider({
   children,
-  monthlySpecial,
+  monthlySpecials,
 }: MonthlySpecialProviderProps) {
   const path = usePathname();
+  const displayPage = paths[path]!;
+
+  const pageSpecial = monthlySpecials?.find((special) => {
+    return (
+      special.pages_display.includes(displayPage) ??
+      special.pages_display.includes("ALL")
+    );
+  });
 
   const [closeSpecial, setCloseSpecial] = useState(false);
+
+  const today = new Date().toISOString().split("T")[0]!;
+
   const isVisible =
-    monthlySpecial?.pages_display === "ALL" ||
-    (monthlySpecial && path === paths[monthlySpecial.pages_display]);
+    pageSpecial &&
+    pageSpecial?.start_date <= today &&
+    today <= pageSpecial?.end_date;
 
   return (
     <div>
-      {isVisible && monthlySpecial && !closeSpecial && (
+      {isVisible && pageSpecial && !closeSpecial && (
         <MonthlySpecial
-          name={monthlySpecial?.name ?? ""}
-          description={monthlySpecial?.description ?? ""}
-          promo_code={monthlySpecial?.promo_code ?? ""}
-          link={monthlySpecial?.link ?? ""}
+          name={pageSpecial?.name ?? ""}
+          description={pageSpecial?.description ?? ""}
+          promo_code={pageSpecial?.promo_code ?? ""}
+          link={pageSpecial?.link ?? ""}
           onClose={() => setCloseSpecial(true)}
+          type={pageSpecial.type}
         />
       )}
       {children}
