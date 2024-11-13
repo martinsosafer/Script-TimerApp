@@ -41,7 +41,13 @@ export const History = ({ ...rest }) => {
   const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
   const isSubscriptionActive =
     subscriptionData &&
-    (subscriptionData.status === "CREATOR" ||
+    (subscriptionData.status === "CREATORCLMO" ||
+      subscriptionData.status === "STUDENTCLMO" ||
+      subscriptionData.status === "BUSINESSCLMO" ||
+      subscriptionData.status === "STUDENTCLYR" ||
+      subscriptionData.status === "CREATORCLYR" ||
+      subscriptionData.status === "BUSINESSCLYR" ||
+      subscriptionData.status === "CREATOR" ||
       subscriptionData.status === "STUDENT" ||
       subscriptionData.status === "BUSINESS");
 
@@ -173,7 +179,7 @@ export const History = ({ ...rest }) => {
             <TableRow key={history.credit_id}>
               <TableCell>{history.prompt}</TableCell>
               <TableCell>{history.credits}</TableCell>
-              <TableCell>{history.created_at!.toDateString()}</TableCell>
+              <TableCell>{history.created_at.toDateString()}</TableCell>
 
               <TableCell>{history.metadata.voice_actor ?? ""}</TableCell>
               <TableCell>
