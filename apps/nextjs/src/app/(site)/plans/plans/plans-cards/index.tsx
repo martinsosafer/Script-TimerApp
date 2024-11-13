@@ -9,8 +9,17 @@ import {
   PRODUCTS_ID,
   TEST_PRICES_ID,
   TEST_PRODUCTS_ID,
-} from "~/constants/products";
+} from "../../../../../constants/products";
 import CheckoutButton from "./checkout-button";
+
+const productIds =
+  process.env.NEXT_PUBLIC_ENVIRONMENT === "production"
+    ? PRODUCTS_ID
+    : TEST_PRODUCTS_ID;
+const priceIds =
+  process.env.NEXT_PUBLIC_ENVIRONMENT === "production"
+    ? PRICES_ID
+    : TEST_PRICES_ID;
 
 function RegularCard({
   type,
@@ -121,8 +130,8 @@ function RegularCard({
               </div>
               <CheckoutButton
                 type="accent"
-                productId={PRODUCTS_ID[type]?.[period]}
-                priceId={PRICES_ID[type]?.[period]}
+                productId={productIds[type]?.[period]}
+                priceId={priceIds[type]?.[period]}
                 session={session}
                 hasPlan={setHasPlan()}
               />
@@ -172,8 +181,8 @@ function RegularCard({
           </div>
           <CheckoutButton
             type="primary"
-            productId={PRODUCTS_ID[type]?.[period]}
-            priceId={PRICES_ID[type]?.[period]}
+            productId={productIds[type]?.[period]}
+            priceId={priceIds[type]?.[period]}
             session={session}
             hasPlan={setHasPlan()}
           />
