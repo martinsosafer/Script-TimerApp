@@ -40,7 +40,7 @@ const iconComponents = {
 };
 export default function ServiceSection() {
   return (
-    <div className="relative bg-slate-200 px-6 py-10 md:py-16">
+    <div className="relative mb-12 bg-slate-200 px-6 py-10 md:py-16">
       <div className="mx-auto max-w-6xl">
         <RevealText>
           <div className=" justify-center text-center align-middle">

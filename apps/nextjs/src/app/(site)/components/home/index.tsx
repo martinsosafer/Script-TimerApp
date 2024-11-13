@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import type { Session } from "@voiceai/auth";
 
 import CounterData from "../herosection/CounterData/CounterData";
 import GoSections from "../herosection/GoSections/GoSections";
@@ -13,12 +15,25 @@ import TrialExpirationModal from "../modals/trial-expiration-modal";
 export default function Home({
   user,
   trialExpiration,
+  session,
 }: {
   user: string;
   trialExpiration: boolean;
+  session: Session | null | undefined;
 }) {
-  const [openModal, setOpenModal] = useState(user ? false : true);
   const [openTrialModal, setOpenTrialModal] = useState(trialExpiration);
+  const [openModal, setOpenModal] = useState(false);
+
+  useEffect(() => {
+    if (!user) {
+      const timer = setTimeout(() => {
+        setOpenModal(true);
+      }, 15000); // 15 seconds
+
+      // Clean up the timer if component unmounts or modal is closed
+      return () => clearTimeout(timer);
+    }
+  }, [user]);
 
   return (
     <>
@@ -27,6 +42,7 @@ export default function Home({
       <ServiceSection />
       <GoSections />
       <Testimonials />
+      {/* on home page appear after 15 seconds */}
       <NoSessionModal
         openModal={openModal}
         setOpenModal={setOpenModal}
@@ -35,6 +51,7 @@ export default function Home({
       <TrialExpirationModal
         openModal={openTrialModal}
         setOpenModal={setOpenTrialModal}
+        session={session}
       />
     </>
   );

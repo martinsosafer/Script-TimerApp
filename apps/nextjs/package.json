@@ -67,7 +67,11 @@
     "react-countup": "^6.5.3",
     "react-dom": "18.2.0",
     "react-lottie": "^1.2.4",
+<<<<<<< HEAD
     "react-media-recorder": "^1.7.1",
+=======
+    "react-select": "^5.8.2",
+>>>>>>> 6cfcc09fb3e1630a9180181ff4eb2aa978c23723
     "react-toastify": "^9.1.3",
     "react-use-intercom": "^5.1.4",
     "react-webcam": "^7.2.0",

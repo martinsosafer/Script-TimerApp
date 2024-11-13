@@ -25,7 +25,6 @@ import NoSessionModal from "../../components/modals/no-session-modal";
 import TabOne from "../../components/texttospeech/Tab1";
 import TabTwo from "../../components/texttospeech/Tab2";
 import { SpeedButton } from "../../components/texttospeech/Tab2/buttonmenu.tsx/speedbutton";
-import TTVIntroBlock from "../../components/texttospeech/ttvintroblock";
 
 export function ScriptAI({
   subData,
@@ -46,7 +45,7 @@ export function ScriptAI({
   const [script, setScript] = React.useState("");
   const [richContent, setRichContent] = React.useState("");
   const [selectedModel, setSelectedModel] = React.useState(null);
-  const [similarity, setSimilarity] = React.useState([0.8]);
+  const [similarity, setSimilarity] = React.useState([0.5]);
   const [stability, setStability] = React.useState([0.5]);
   const [loading, setLoading] = React.useState(false);
   // If script is selected from URL path parameter, load in state from db
@@ -122,7 +121,7 @@ export function ScriptAI({
     justifyContent: "space-between",
     padding: "10px",
     borderRadius: "8px",
-    zIndex: 1000,
+    zIndex: 0,
     opacity: 1, // Always fully visible
     transition: "opacity 0.5s ease-in-out",
     border: "1px solid black",
@@ -165,9 +164,7 @@ export function ScriptAI({
   };
   return (
     <>
-      <div className="  mb-32 h-full   flex-col md:flex">
-        <TTVIntroBlock subscriptionData={subscriptionData} credits={credits} />
-
+      <div className=" mb-32 h-full   flex-col md:flex">
         <Tabs defaultValue="complete" className="flex-1">
           <div className="container mb-4 h-full ">
             <div className="grid h-full items-stretch gap-6 md:grid-cols-[400px_1fr]">
@@ -178,6 +175,8 @@ export function ScriptAI({
                 subData={subData}
                 stability={stability}
                 setStability={setStability}
+                similarity={similarity}
+                setSimilarity={setSimilarity}
               />
               <TabTwo
                 script={script}

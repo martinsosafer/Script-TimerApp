@@ -78,7 +78,20 @@ export async function POST(req: { json: () => any }) {
       .where(eq(elevenLabsCredit.userId, userId));
 
     let message = body.text;
-    if (!["BUSINESS", "STUDENT", "CREATOR"].includes(subscription?.status)) {
+    if (
+      ![
+        "BUSINESS",
+        "STUDENT",
+        "CREATOR",
+        "STUDENTCLMO",
+        "STUDENTCLMO",
+        "CREATORCLMO",
+        "BUSINESSCLMO",
+        "STUDENTCLYR",
+        "CREATORCLYR",
+        "BUSINESSCLYR",
+      ].includes(subscription?.status)
+    ) {
       message = addWatermark(message);
     }
 
@@ -172,6 +185,19 @@ export async function POST(req: { json: () => any }) {
           .then((res) => res?.[0]?.generationId);
 
         if (!generationId) throw new Error("Error creating voice");
+        const creditsUsed = body.text.length; // Assuming each character equals one credit
+        await db.insert(schema.credits).values({
+          userId: userId,
+          generationId: generationId, // Link to the generation ID
+          type: "11LABS", // Specify the type based on your enum
+          credits: -creditsUsed, // Negative value to show deduction
+          metadata: {
+            length: body.text.length,
+            description: "Voice generation credit usage",
+          },
+          created_at: new Date(), // Automatically handles timestamp
+          updated_at: new Date(), // Automatically handles timestamp
+        });
       },
       cancel() {
         reader.cancel();

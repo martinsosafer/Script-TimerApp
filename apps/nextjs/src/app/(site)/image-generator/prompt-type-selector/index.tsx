@@ -10,7 +10,7 @@ export default function PromptSelector({
   setIsMagicPrompt,
 }: SelectorProps) {
   return (
-    <div className="mt-8 flex justify-center space-x-4">
+    <div className="flex justify-center space-x-4">
       <div className="flex gap-2 rounded-full border-2 border-gray-500 p-2">
         <button
           className={`${

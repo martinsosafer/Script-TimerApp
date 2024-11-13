@@ -13,6 +13,7 @@ interface TabProps {
   setSelectedPill: Dispatch<SetStateAction<PromptSubType>>;
   setSelectedCard: Dispatch<SetStateAction<Prompt | undefined>>;
   isSelected: boolean;
+  setIsInputMinimized: Dispatch<SetStateAction<boolean>>;
 }
 
 const tabStyles = {
@@ -28,6 +29,7 @@ export default function Tab({
   setSelectedPill,
   setSelectedCard,
   isSelected,
+  setIsInputMinimized,
 }: TabProps) {
   return (
     <button
@@ -36,6 +38,7 @@ export default function Tab({
         setSelectedTab(tab);
         setSelectedPill(pills[tab][0]);
         setSelectedCard(undefined);
+        setIsInputMinimized(false);
       }}
     >
       {tab}

@@ -49,6 +49,16 @@ export default function SubscriptionDetails({
     }).format(amount / 100);
   }
 
+  function getDaysLeftInMonth() {
+    const now = new Date();
+    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    const differenceInMilliseconds = endOfMonth.getTime() - now.getTime();
+    const daysLeft = Math.ceil(
+      differenceInMilliseconds / (1000 * 60 * 60 * 24),
+    );
+    return daysLeft;
+  }
+
   return (
     <div className="mt-6 flex w-full flex-col">
       <div className="flex items-center gap-3">
@@ -137,7 +147,7 @@ export default function SubscriptionDetails({
         <div className="flex flex-col">
           <span className="px-2 text-xs text-gray-400">Reset In</span>
           <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
-            Reset In
+            {`Reset In ${getDaysLeftInMonth()} ${getDaysLeftInMonth() === 1 ? "day" : "days"}`}
           </div>
         </div>
       </div>

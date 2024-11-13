@@ -3,9 +3,10 @@ import { Poppins, Roboto } from "next/font/google";
 
 import { PageAnalytics } from "./analytics";
 import GoogleAnalytics from "./GoogleAnalytics";
-import HotJar from "./HotJar";
 
 import "~/styles/globals.css";
+
+import Squid from "./SquidAnalitycs";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -65,10 +66,15 @@ export default function RootLayout({
           "h-screen bg-background",
         ].join(" ")}
       >
+<<<<<<< HEAD
         <GoogleAnalytics />
         {children}
         <HotJar />
         <PageAnalytics />
+=======
+        {props.children}
+        <Squid />
+>>>>>>> 6cfcc09fb3e1630a9180181ff4eb2aa978c23723
       </body>
     </html>
   );

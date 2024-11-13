@@ -63,8 +63,13 @@ const CHAR_LIMITS: Record<string, number> = {
   STUDENT: 2000,
   CREATOR: 5000,
   BUSINESS: 10000,
+  STUDENTCLMO: 2000,
+  CREATORCLMO: 5000,
+  BUSINESSCLMO: 10000,
+  STUDENTCLYR: 2000,
+  CREATORCLYR: 5000,
+  BUSINESSCLYR: 10000,
 };
-
 function TextEditor({
   onChange,
   className,

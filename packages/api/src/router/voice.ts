@@ -97,7 +97,13 @@ export const voiceRouter = createTRPCRouter({
         subscription?.status === "STUDENT" ||
         subscription?.status === "CREATOR" ||
         subscription?.status === "BUSINESS" ||
-        subscription?.status === "FREE_TRIAL"
+        subscription?.status === "FREE_TRIAL" ||
+        subscription?.status === "STUDENTCLMO" ||
+        subscription?.status === "CREATORCLMO" ||
+        subscription?.status === "BUSINESSCLMO" ||
+        subscription?.status === "STUDENTCLYR" ||
+        subscription?.status === "CREATORCLYR" ||
+        subscription?.status === "BUSINESSCLYR"
       ) {
         // If user has an active subscription, set maximum voices to a higher value
         maxVoices = Number.MAX_SAFE_INTEGER; // Set to a very large number

@@ -16,17 +16,9 @@ export default function AudioTranslatorPage({
     React.useState<boolean>(false);
 
   return (
-    <div className="mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center py-2">
+    <div className="mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center">
       <main className="mb-8 flex w-full flex-1 flex-col items-center justify-start px-4 text-center sm:mt-10">
-        <h1 className="max-w-2xl font-poppins text-3xl font-bold text-primary sm:text-3xl">
-          Let's Translate
-        </h1>
-        <p className="sm:text-md text-md mt-5 max-w-md font-poppins font-bold text-black">
-          Using Script Timer AI, you can translate text
-          <br />
-          into multiple languages.
-        </p>
-        <p className="sm:text-md text-md mt-2 max-w-md font-poppins font-bold text-black">
+        <p className="sm:text-md text-md max-w-md font-poppins font-bold text-black">
           Upload a file with the audio you want to translate:
         </p>
 
