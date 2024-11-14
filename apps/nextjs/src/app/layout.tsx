@@ -1,12 +1,19 @@
 import type { Metadata } from "next";
 import { Poppins, Roboto } from "next/font/google";
 
+
+
 import { PageAnalytics } from "./analytics";
 import GoogleAnalytics from "./GoogleAnalytics";
 
+
+
 import "~/styles/globals.css";
 
+
+
 import Squid from "./SquidAnalitycs";
+
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -48,27 +55,25 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Layout(props: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`h-full ${poppins.variable} ${roboto.variable}`}>
-      <head>
-        <meta name="referrer" content="origin" />
-      </head>
+    <html lang="en" className="h-full">
+      <GoogleAnalytics />
       <body
         className={[
           "font-poppins",
           "font-roboto",
           "theme-blue",
           "h-screen bg-background",
+          poppins.variable,
+          roboto.variable,
         ].join(" ")}
       >
-        {children}
+        {props.children}
         <Squid />
       </body>
+
+      <PageAnalytics />
     </html>
   );
 }
