@@ -66,15 +66,8 @@ export default function RootLayout({
           "h-screen bg-background",
         ].join(" ")}
       >
-<<<<<<< HEAD
-        <GoogleAnalytics />
         {children}
-        <HotJar />
-        <PageAnalytics />
-=======
-        {props.children}
         <Squid />
->>>>>>> 6cfcc09fb3e1630a9180181ff4eb2aa978c23723
       </body>
     </html>
   );
