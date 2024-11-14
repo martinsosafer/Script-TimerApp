@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Poppins, Roboto } from "next/font/google";
 
+import { PageAnalytics } from "./analytics";
+import GoogleAnalytics from "./GoogleAnalytics";
+
 import "~/styles/globals.css";
 
 import Squid from "./SquidAnalitycs";
@@ -9,15 +12,14 @@ const poppins = Poppins({
   subsets: ["latin"],
   style: "normal",
   variable: "--poppins",
-  weight: ["400", "700"],
+  weight: ["400", "700"], // Include weights for Poppins (normal and bold)
 });
 
 const roboto = Roboto({
   subsets: ["latin"],
   variable: "--roboto",
-  weight: ["400", "700"],
+  weight: ["400", "700"], // Include weights for Roboto (normal and bold)
 });
-
 /**
  * Since we're passing `headers()` to the `TRPCReactProvider` we need to
  * make the entire app dynamic. You can move the `TRPCReactProvider` further
@@ -39,33 +41,27 @@ export const metadata: Metadata = {
     site: "@gerryg",
     creator: "@gerryg",
   },
-  // Add the referrer meta tag here
-  other: {
-    referrer: "origin",
-  },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Layout(props: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`h-full ${poppins.variable} ${roboto.variable}`}>
-      <head>
-        <meta name="referrer" content="origin" />
-      </head>
+    <html lang="en" className="h-full">
+      <GoogleAnalytics />
       <body
         className={[
           "font-poppins",
           "font-roboto",
           "theme-blue",
           "h-screen bg-background",
+          poppins.variable,
+          roboto.variable,
         ].join(" ")}
       >
         {props.children}
         <Squid />
       </body>
+
+      <PageAnalytics />
     </html>
   );
 }
