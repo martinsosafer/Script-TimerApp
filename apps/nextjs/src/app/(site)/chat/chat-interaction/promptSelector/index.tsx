@@ -48,6 +48,7 @@ interface PromptsSelectorProps {
   setSelectedTab: Dispatch<SetStateAction<PromptType>>;
   selectedPill: PromptSubType;
   setSelectedPill: Dispatch<SetStateAction<PromptSubType>>;
+  setIsInputMinimized: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function PromptsSelector({
@@ -57,6 +58,7 @@ export default function PromptsSelector({
   setSelectedTab,
   selectedPill,
   setSelectedPill,
+  setIsInputMinimized,
 }: PromptsSelectorProps) {
   return (
     <div className="mt-10 flex w-[1024px] flex-col items-center justify-center">
@@ -71,6 +73,7 @@ export default function PromptsSelector({
               setSelectedTab={setSelectedTab}
               setSelectedPill={setSelectedPill}
               setSelectedCard={setSelectedCard}
+              setIsInputMinimized={setIsInputMinimized}
             />
           );
         })}
@@ -86,6 +89,7 @@ export default function PromptsSelector({
                 speechPill={pill}
                 setSelectedPill={setSelectedPill}
                 setSelectedCard={setSelectedCard}
+                setIsInputMinimized={setIsInputMinimized}
               />
             );
           })}
@@ -104,6 +108,7 @@ export default function PromptsSelector({
                   isSelected={isSelected}
                   card={card}
                   setSelectedCard={setSelectedCard}
+                  setIsInputMinimized={setIsInputMinimized}
                 />
               );
             })}
@@ -111,6 +116,7 @@ export default function PromptsSelector({
             isSelected={selectedCard?.id === YOUR_OWN_PROMPT.id}
             card={YOUR_OWN_PROMPT}
             setSelectedCard={setSelectedCard}
+            setIsInputMinimized={setIsInputMinimized}
             isAddYourOwn
           />
         </div>

@@ -92,15 +92,15 @@ export const displayData = {
   STUDENTCLMO: {
     cl_credit: {
       label: "Plagiarism and AI detector",
-      credits: 60,
+      credits: 40,
     },
     "11labs_credit": {
       label: "Voice",
-      credits: 10000,
+      credits: 40000,
     },
     img_credit: {
       label: "Images",
-      credits: 10,
+      credits: 25,
     },
     openai_credit: {
       label: "Script coach",
@@ -115,15 +115,15 @@ export const displayData = {
     },
     "11labs_credit": {
       label: "Voice",
-      credits: 10000, // Adjust the credits accordingly
+      credits: 80000,
     },
     img_credit: {
       label: "Images",
-      credits: 10, // Adjust the credits accordingly
+      credits: 50,
     },
     openai_credit: {
       label: "Script coach",
-      credits: 600000, // Adjust the credits accordingly
+      credits: 400000,
     },
   },
 
@@ -134,11 +134,11 @@ export const displayData = {
     },
     "11labs_credit": {
       label: "Voice",
-      credits: 10000,
+      credits: 125000,
     },
     img_credit: {
       label: "Images",
-      credits: 10,
+      credits: 100,
     },
     openai_credit: {
       label: "Script coach",
@@ -149,38 +149,38 @@ export const displayData = {
   STUDENTCLYR: {
     cl_credit: {
       label: "Plagiarism and AI detector",
-      credits: 40, // Adjust the credits accordingly
+      credits: 40,
     },
     "11labs_credit": {
       label: "Voice",
-      credits: 10000, // Adjust the credits accordingly
+      credits: 40000,
     },
     img_credit: {
       label: "Images",
-      credits: 10, // Adjust the credits accordingly
+      credits: 25,
     },
     openai_credit: {
       label: "Script coach",
-      credits: 200000, // Adjust the credits accordingly
+      credits: 200000,
     },
   },
 
   CREATORCLYR: {
     cl_credit: {
       label: "Plagiarism and AI detector",
-      credits: 60, // Adjust the credits accordingly
+      credits: 60,
     },
     "11labs_credit": {
       label: "Voice",
-      credits: 10000, // Adjust the credits accordingly
+      credits: 80000,
     },
     img_credit: {
       label: "Images",
-      credits: 10, // Adjust the credits accordingly
+      credits: 50,
     },
     openai_credit: {
       label: "Script coach",
-      credits: 400000, // Adjust the credits accordingly
+      credits: 400000,
     },
   },
 
@@ -191,11 +191,11 @@ export const displayData = {
     },
     "11labs_credit": {
       label: "Voice",
-      credits: 10000,
+      credits: 125000,
     },
     img_credit: {
       label: "Images",
-      credits: 10,
+      credits: 100,
     },
     openai_credit: {
       label: "Script coach",

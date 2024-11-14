@@ -1,4 +1,20 @@
-export const STARTING_CL_CREDITS = {
+type Plan =
+  | "INACTIVE"
+  | "PAUSED"
+  | "ACTIVE"
+  | "FREE"
+  | "FREE_TRIAL"
+  | "STUDENT"
+  | "CREATOR"
+  | "BUSINESS"
+  | "STUDENTCLMO"
+  | "CREATORCLMO"
+  | "BUSINESSCLMO"
+  | "STUDENTCLYR"
+  | "CREATORCLYR"
+  | "BUSINESSCLYR";
+
+export const STARTING_CL_CREDITS: Record<Plan, number> = {
   INACTIVE: 0,
   PAUSED: 0,
   ACTIVE: 5,
