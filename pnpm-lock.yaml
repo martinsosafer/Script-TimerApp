@@ -150,9 +150,6 @@ importers:
       '@ffmpeg/ffmpeg':
         specifier: ^0.12.10
         version: 0.12.10
-      '@next/font':
-        specifier: ^14.2.1
-        version: 14.2.5(next@14.2.5)
       '@next/third-parties':
         specifier: ^14.2.4
         version: 14.2.5(next@14.2.5)(react@18.2.0)
@@ -3728,14 +3725,6 @@ packages:
     resolution: {integrity: sha512-LY3btOpPh+OTIpviNojDpUdIbHW9j0JBYBjsIp8IxtDFfYFyORvw3yNq6N231FVqQA7n7lwaf7xHbVJlA1ED7g==}
     dependencies:
       glob: 10.3.10
-    dev: false
-
-  /@next/font@14.2.5(next@14.2.5):
-    resolution: {integrity: sha512-e2f3M+tAuJPUyXwWtEPKlPfpPEKODiQvPjdxOWBZC+zgdGv18KfjTkEmopfkfpZ016yCvw5BmMPeuEU/uiDf9g==}
-    peerDependencies:
-      next: '*'
-    dependencies:
-      next: 14.2.5(react-dom@18.2.0)(react@18.2.0)
     dev: false
 
   /@next/swc-darwin-arm64@14.2.5:

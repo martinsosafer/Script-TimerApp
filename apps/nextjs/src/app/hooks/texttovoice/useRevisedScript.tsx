@@ -1,6 +1,5 @@
 import { useCallback, useState } from "react";
-import { useCompletion } from "ai/react";
-
+import { useCompletion } from "ai/react" 
 export function useReviseScript(setLoading) {
   const [revisedScript, setRevisedScript] = useState("");
   const { complete } = useCompletion({
