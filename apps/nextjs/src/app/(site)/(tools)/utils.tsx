@@ -1,8 +1,3 @@
-import type { Dispatch, SetStateAction } from "react";
-import { set } from "zod";
-
-import { getLyWords } from "./grade-level/grader/utils";
-
 function getRandomCheer() {
   const cheers = [
     "Great job Shakespeare!",
@@ -247,21 +242,74 @@ export function calculateLevel(
   return level < 0 ? 0 : level;
 }
 
+const preWords = ["is", "are", "was", "were", "be", "been", "being"];
+
 export function getAdverbs(text: string) {
   const paragraphs = text.split("\n");
 
-  let counter = 0;
+  let adverbs = 0;
+  let passiveVoice = 0;
+  let hardSentences = 0;
+  let veryHardSentences = 0;
+  let passivePreWordIndex: number;
+  const newParagraphs = paragraphs.map((paragraph) => {
+    const sentences = paragraph.split(".").map((sentence) => {
+      const words = sentence.split(/\s+/);
+      const letters = sentence.replace(/[\s.]/g, "").length;
+      const level = calculateLevel(letters, words.length, 1);
+      if (words.length < 14) {
+        let changedPassive;
+        const newWords = words.map((word, idx) => {
+          const preIndex: number = idx - 1;
+          if (
+            word.endsWith("ed") &&
+            preIndex >= 0 &&
+            preWords.includes(words[preIndex]!)
+          ) {
+            passivePreWordIndex = preIndex;
+            passiveVoice++;
+            changedPassive = `${words[passivePreWordIndex]}-*-${word}::passive`;
+            return changedPassive;
+          }
+          if (word.endsWith("ly")) {
+            adverbs++;
+            return `${word}::adverb`;
+          }
+          return word;
+        });
+        if (changedPassive) {
+          newWords.splice(passivePreWordIndex, 1);
+          return newWords.join(" ");
+        }
+        return newWords.join(" ");
+      }
+      if (level >= 10 && level < 14) {
+        hardSentences++;
+        return `::hard-*-${sentence}`;
+      }
+      if (level >= 14) {
+        veryHardSentences++;
+        return `::veryHard-*-${sentence}`;
+      }
+    });
+    return sentences.join(". ");
+  });
+  return { adverbsText: newParagraphs.join("\n"), adverbs, passiveVoice };
+}
+
+export function getPassiveVoice(text: string) {
+  const paragraphs = text.split("\n");
+
   const newParagraphs = paragraphs.map((paragraph) => {
     const newWords = paragraph.split(/\s+/).map((word) => {
       if (word.endsWith("ly")) {
-        counter++;
         return `${word}::adverb`;
       }
       return word;
     });
     return newWords.join(" ");
   });
-  return { adverbsText: newParagraphs.join("\n"), counter };
+  return { adverbsText: newParagraphs.join("\n") };
 }
 
 function checkWords(words: string[]) {

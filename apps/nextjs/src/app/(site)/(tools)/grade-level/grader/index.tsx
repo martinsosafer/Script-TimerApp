@@ -28,7 +28,7 @@ export default function Grader() {
     const readingTime = simpleTimeCalculator(text, 3.5);
     const adverbs = getAdverbs(text);
 
-    setHighlightedText(adverbs.adverbsText as string);
+    setHighlightedText(adverbs.adverbsText);
 
     setReadingTime(readingTime);
     setCountResult(countResult);
@@ -40,16 +40,44 @@ export default function Grader() {
     const paragraphs = text?.split("\n") ?? [];
 
     const newText = paragraphs.map((paragraph, idx) => {
-      const newParagraph = paragraph.split(/\s+/).map((word, idx) => {
-        if (word.includes("::adverb")) {
+      const sentences = paragraph.split(".");
+      const newParagraph = sentences.map((sentence, idx) => {
+        if (sentence.includes("::hard")) {
           return (
-            <span key={idx + word} className="bg-blue-300 p-1">
-              {" "}
-              {word.split("::")[0]}
+            <span key={idx + sentence} className="bg-yellow-200 p-1">
+              {sentence.split("-*-")[1]}
             </span>
           );
         }
-        return ` ${word}`;
+        if (sentence.includes("::veryHard")) {
+          return (
+            <span key={idx + sentence} className="bg-orange-400 p-1">
+              {sentence.split("-*-")[1]}
+            </span>
+          );
+        }
+        const newSentence = sentence.split(/\s+/).map((word, idx) => {
+          if (word.includes("::passive")) {
+            const pre = word.split("-*-")[0];
+            const post = word.split("-*-")[1]?.split("::")[0];
+            return (
+              <span key={idx + word} className="bg-green-300 p-1">
+                {" "}
+                {pre} {post}
+              </span>
+            );
+          }
+          if (word.includes("::adverb")) {
+            return (
+              <span key={idx + word} className="bg-blue-300 p-1">
+                {" "}
+                {word.split("::")[0]}
+              </span>
+            );
+          }
+          return ` ${word}`;
+        });
+        return newSentence;
       });
       return newParagraph;
     });
