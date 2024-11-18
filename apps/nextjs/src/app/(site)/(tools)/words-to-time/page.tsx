@@ -1,17 +1,18 @@
+import { poppins, roboto } from "~/app/fonts";
 import TimeCalculator from "./timeCalculator";
 
 export default function Page() {
   return (
-    <div className="flex w-[1000px] flex-col items-center">
-      <div className="my-8 flex w-full flex-col items-center">
-        <h2 className="text-4xl font-bold text-primary">
-          Words to Time Calculator
+    <div className="flex w-[1024px] flex-col items-center px-[40px]">
+      <div className="my-[40px] flex w-full flex-col items-start">
+        <h2
+          className={`${poppins.className} text-cp-primary text-[28px] font-bold`}
+        >
+          Script Timer
         </h2>
-        <p className="mt-2 w-[600px] text-center text-lg">
-          Script timer instantly estimates your script time in minutes and
-          seconds. But there is more: Use a specialized Ai to listen, edit,
-          rewrite, and improve your scripts. Character, word, & page count. Word
-          density & sorting. Hemingway grading. Try them all.
+        <p className={`${roboto.className} mt-[8px] text-[18px] font-normal`}>
+          Co-Producer instantly estimates your script time in minutes and
+          seconds
         </p>
       </div>
       <TimeCalculator />

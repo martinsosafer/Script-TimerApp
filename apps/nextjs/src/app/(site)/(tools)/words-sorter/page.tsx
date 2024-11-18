@@ -2,7 +2,7 @@ import WordsSorter from "./wordsSorter";
 
 export default function WordsSorterPage() {
   return (
-    <div className="flex w-[1000px] flex-col items-center">
+    <div className="flex w-[1024px] flex-col items-center">
       <div className="my-8 flex w-full flex-col items-center">
         <h2 className="text-4xl font-bold text-primary">
           Sort Words in Alphabetical Order

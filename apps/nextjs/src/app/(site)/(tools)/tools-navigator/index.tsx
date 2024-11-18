@@ -1,30 +1,44 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
-const tools = [
-  { label: "Word Counter", href: "/word-counter" },
-  { label: "Words to Time", href: "/words-to-time" },
-  { label: "Auto Capitalize", href: "/auto-capitalize" },
-  { label: "Words Sorter", href: "/words-sorter" },
-];
+import Tabs from "../../components/tabs";
 
 export default function ToolsNavigator() {
   const pathname = usePathname();
+  const router = useRouter();
+
+  const tools = [
+    {
+      label: "Word Counter",
+      active: pathname === "/word-counter",
+      action: () => router.push("/word-counter"),
+    },
+    {
+      label: "Words to Time",
+      active: pathname === "/words-to-time",
+      action: () => router.push("/words-to-time"),
+    },
+    {
+      label: "Auto Capitalize",
+      active: pathname === "/auto-capitalize",
+      action: () => router.push("/auto-capitalize"),
+    },
+    {
+      label: "Words Sorter",
+      active: pathname === "/words-sorter",
+      action: () => router.push("/words-sorter"),
+    },
+    {
+      label: "Hemingway",
+      active: pathname === "/grade-level",
+      action: () => router.push("/grade-level"),
+    },
+  ];
+
   return (
     <div className="flex items-center justify-center gap-4">
-      {tools.map((tool) => {
-        return (
-          <Link
-            href={tool.href}
-            key={tool.href}
-            className={`rounded-full px-4 py-2 font-semibold ${pathname.includes(tool.href) ? "bg-tertiary text-white" : "text-tertiary hover:bg-tertiary/10"}`}
-          >
-            {tool.label}
-          </Link>
-        );
-      })}
+      <Tabs options={tools} />
     </div>
   );
 }
