@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import ReactDOM from "react-dom";
+import React, { useRef, useState } from "react";
 import Draggable from "react-draggable";
 import { useReactMediaRecorder } from "react-media-recorder";
 import Webcam from "react-webcam";
@@ -22,15 +21,20 @@ export default function ScreenRecorder() {
     stopRecording,
     pauseRecording,
     resumeRecording,
-    muteAudio,
-    unmuteAudio,
     mediaBlobUrl,
-    previewStream,
-    isMuted,
-    clearBlobUrl,
   } = useReactMediaRecorder({ screen: true });
 
   const webcamRef = useRef<Webcam | null>(null);
+  const [isPaused, setIsPaused] = useState(false);
+
+  const handlePauseResume = () => {
+    if (isPaused) {
+      resumeRecording();
+    } else {
+      pauseRecording();
+    }
+    setIsPaused(!isPaused);
+  };
 
   const enablePictureInPicture = async () => {
     try {
@@ -74,6 +78,10 @@ export default function ScreenRecorder() {
         <Button onClick={startRecording} variant="default">
           <IconCameraVideo className="mr-2 h-4 w-4" />
           Start Screen Recorder
+        </Button>
+        <Button onClick={handlePauseResume} variant="default">
+          <IconStop className="mr-2 h-4 w-4" />
+          {isPaused ? "Resume Recording" : "Pause Recording"}
         </Button>
         <Button onClick={stopRecording} variant="destructive">
           <IconCircleStop className="mr-2 h-4 w-4" />
