@@ -7,10 +7,13 @@ import { useRouter } from "next/navigation";
 
 import { IconEye, IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 
+import { useSharedState } from "~/app/context/state";
 import { credentialsLogin } from "../actions";
 
 export default function LoginForm() {
   const router = useRouter();
+
+  const { productId } = useSharedState();
   const [loading, setLoading] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
 
@@ -21,6 +24,23 @@ export default function LoginForm() {
       const formData = new FormData(event.currentTarget);
       const result = await credentialsLogin(formData);
       if (!result.error) {
+        if (productId) {
+          const res = await fetch("api/checkout", {
+            method: "POST",
+            body: JSON.stringify({
+              productId,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          const {
+            session: { url },
+          } = await res.json();
+
+          return (window.location.href = url as string);
+        }
         router.push("/");
         router.refresh();
       }

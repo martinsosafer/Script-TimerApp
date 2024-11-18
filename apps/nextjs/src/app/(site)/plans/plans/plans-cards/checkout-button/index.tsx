@@ -15,6 +15,7 @@ interface CheckoutButtonProps {
   session: Session | null;
   type: "primary" | "secondary" | "accent";
   upgradeAction?: () => void;
+  noSessionCheckout?: () => void;
 }
 
 function CheckoutButton({
@@ -24,6 +25,7 @@ function CheckoutButton({
   session,
   type,
   upgradeAction,
+  noSessionCheckout,
 }: CheckoutButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -82,7 +84,9 @@ function CheckoutButton({
                 productId!,
                 priceId!,
               )
-          : () => router.push("/register")
+          : () => {
+              return noSessionCheckout!();
+            }
       }
     />
   );
