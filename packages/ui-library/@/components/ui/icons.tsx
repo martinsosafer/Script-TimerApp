@@ -2151,7 +2151,70 @@ function IconPocketKnife({ className, ...props }: React.ComponentProps<"svg">) {
     </svg>
   );
 }
-
+function IconCircleStop({ className, ...props }: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cn("lucide lucide-circle-stop", className)}
+      {...props}
+    >
+      <circle cx="12" cy="12" r="10" />
+      <rect x="9" y="9" width="6" height="6" rx="1" />
+    </svg>
+  );
+}
+function IconSilence({ className, ...props }: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cn("lucide lucide-message-circle-off", className)}
+      {...props}
+    >
+      <path d="M20.5 14.9A9 9 0 0 0 9.1 3.5" />
+      <path d="m2 2 20 20" />
+      <path d="M5.6 5.6C3 8.3 2.2 12.5 4 16l-2 6 6-2c3.4 1.8 7.6 1.1 10.3-1.7" />
+    </svg>
+  );
+}
+function IconCameraVideo({ className, ...props }: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cn("lucide lucide-cctv", className)}
+      {...props}
+    >
+      <path d="M16.75 12h3.632a1 1 0 0 1 .894 1.447l-2.034 4.069a1 1 0 0 1-1.708.134l-2.124-2.97" />
+      <path d="M17.106 9.053a1 1 0 0 1 .447 1.341l-3.106 6.211a1 1 0 0 1-1.342.447L3.61 12.3a2.92 2.92 0 0 1-1.3-3.91L3.69 5.6a2.92 2.92 0 0 1 3.92-1.3z" />
+      <path d="M2 19h3.76a2 2 0 0 0 1.8-1.1L9 15" />
+      <path d="M2 21v-4" />
+      <path d="M7 9h.01" />
+    </svg>
+  );
+}
 export {
   IconEdit,
   IconNextChat,
@@ -2244,4 +2307,7 @@ export {
   IconClipboard,
   IconPocketKnife,
   IconCrowm,
+  IconCircleStop,
+  IconSilence,
+  IconCameraVideo,
 };

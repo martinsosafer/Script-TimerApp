@@ -1,12 +1,21 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import ReactDOM from "react-dom";
+import Draggable from "react-draggable";
 import { useReactMediaRecorder } from "react-media-recorder";
 import Webcam from "react-webcam";
 
-import { useCountdown } from "~/app/hooks/useCountDown";
+import { Button } from "@voiceai/ui";
+import {
+  IconCameraVideo,
+  IconCircleStop,
+  IconSilence,
+  IconStop,
+} from "@voiceai/ui/@/components/ui/icons";
+import { PlayIcon } from "@voiceai/ui/@/icons/icons";
 
-const ScreenRecorder = () => {
+export default function ScreenRecorder() {
   const {
     status,
     startRecording,
@@ -19,46 +28,37 @@ const ScreenRecorder = () => {
     previewStream,
     isMuted,
     clearBlobUrl,
-  } = useReactMediaRecorder({ screen: true, video: true });
+  } = useReactMediaRecorder({ screen: true });
 
-  const [countdown, setCountdown] = useState(3);
-  const { startCountdown } = useCountdown(setCountdown);
-  const [isRecordingStarted, setIsRecordingStarted] = useState(false);
-
-  const videoRef = useRef<HTMLVideoElement | null>(null);
   const webcamRef = useRef<Webcam | null>(null);
 
-  useEffect(() => {
-    if (previewStream && videoRef.current) {
-      videoRef.current.srcObject = previewStream;
+  const enablePictureInPicture = async () => {
+    try {
+      if (webcamRef.current && webcamRef.current.video) {
+        await webcamRef.current.video.requestPictureInPicture();
+      }
+    } catch (error) {
+      console.error("Failed to enable Picture-in-Picture:", error);
     }
-  }, [previewStream]);
+  };
 
-  const handleStartRecording = () => {
-    setIsRecordingStarted(true);
-    startCountdown(); // Start the countdown
-    setTimeout(() => {
-      startRecording(); // Start recording after countdown ends
-      setIsRecordingStarted(false);
-    }, 3000); // Start recording after 3 seconds (countdown)
+  const disablePictureInPicture = async () => {
+    try {
+      if (document.pictureInPictureElement) {
+        await document.exitPictureInPicture();
+      }
+    } catch (error) {
+      console.error("Failed to disable Picture-in-Picture:", error);
+    }
   };
 
   const downloadRecording = () => {
     if (mediaBlobUrl) {
       const a = document.createElement("a");
       a.href = mediaBlobUrl;
-      a.download = "recording.mp4";
+      a.download = "screen-recording.mp4";
       a.click();
     }
-  };
-
-  // For webcam drag position
-  const [webcamPos, setWebcamPos] = useState({ x: 0, y: 0 });
-  const handleDrag = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    setWebcamPos({
-      x: e.clientX - 50, // Offset to center the webcam bubble
-      y: e.clientY - 50,
-    });
   };
 
   return (
@@ -70,75 +70,36 @@ const ScreenRecorder = () => {
         Status: <span className="font-bold">{status}</span>
       </p>
 
-      {countdown > 0 && isRecordingStarted && (
-        <div className="absolute left-0 right-0 top-16 mx-auto rounded-lg bg-gray-800 p-4 text-center text-4xl font-bold text-white">
-          {countdown}
-        </div>
-      )}
-
-      <div className="mb-4 flex space-x-3">
-        <button
-          onClick={handleStartRecording}
-          className="rounded-lg bg-green-500 px-4 py-2 text-white shadow transition hover:bg-green-600"
-        >
-          Start
-        </button>
-        <button
-          onClick={stopRecording}
-          className="rounded-lg bg-red-500 px-4 py-2 text-white shadow transition hover:bg-red-600"
-        >
-          Stop
-        </button>
-        <button
-          onClick={pauseRecording}
-          className="rounded-lg bg-yellow-500 px-4 py-2 text-white shadow transition hover:bg-yellow-600"
-        >
-          Pause
-        </button>
-        <button
-          onClick={resumeRecording}
-          className="rounded-lg bg-blue-500 px-4 py-2 text-white shadow transition hover:bg-blue-600"
-        >
-          Resume
-        </button>
-      </div>
-
-      <div className="mb-4 flex space-x-3">
-        <button
-          onClick={isMuted ? unmuteAudio : muteAudio}
-          className={`px-4 py-2 ${isMuted ? "bg-gray-600" : "bg-gray-800"} rounded-lg text-white shadow transition hover:opacity-75`}
-        >
-          {isMuted ? "Unmute" : "Mute"}
-        </button>
-        <button
-          onClick={clearBlobUrl}
-          className="rounded-lg bg-purple-500 px-4 py-2 text-white shadow transition hover:bg-purple-600"
-        >
-          Clear Recording
-        </button>
+      <div className="mb-4 flex flex-wrap justify-center space-x-3">
+        <Button onClick={startRecording} variant="default">
+          <IconCameraVideo className="mr-2 h-4 w-4" />
+          Start Screen Recorder
+        </Button>
+        <Button onClick={stopRecording} variant="destructive">
+          <IconCircleStop className="mr-2 h-4 w-4" />
+          Stop Recording
+        </Button>
         {mediaBlobUrl && (
-          <button
-            onClick={downloadRecording}
-            className="rounded-lg bg-indigo-500 px-4 py-2 text-white shadow transition hover:bg-indigo-600"
-          >
-            Download
-          </button>
+          <Button onClick={downloadRecording} variant="default">
+            <PlayIcon className="mr-2 h-4 w-4" />
+            Download Recording
+          </Button>
         )}
       </div>
 
-      {previewStream && (
-        <div className="mb-4 w-full">
-          <video
-            ref={videoRef}
-            className="h-auto w-full rounded-lg border shadow-lg"
-            autoPlay
-            muted
-          />
-        </div>
-      )}
+      <div className="mb-4 flex flex-wrap justify-center space-x-3">
+        <Button onClick={enablePictureInPicture} variant="default">
+          <IconCameraVideo className="mr-2 h-4 w-4" />
+          Enable Webcam (PiP)
+        </Button>
+        <Button onClick={disablePictureInPicture} variant="outline">
+          <IconStop className="mr-2 h-4 w-4" />
+          Exit Webcam (PiP)
+        </Button>
+      </div>
 
       {mediaBlobUrl && (
-        <div className="w-full">
+        <div className="mt-6 w-full">
           <video
             src={mediaBlobUrl}
             controls
@@ -149,16 +110,17 @@ const ScreenRecorder = () => {
         </div>
       )}
 
-      {/* Webcam Bubble */}
       <div
-        className="fixed bottom-4 right-4 h-28 w-28 cursor-move overflow-hidden rounded-full border-4 border-white shadow-lg"
-        style={{ transform: `translate(${webcamPos.x}px, ${webcamPos.y}px)` }}
-        onMouseDown={handleDrag}
+        className="fixed bottom-4 right-4 h-28 w-28 overflow-hidden rounded-full border-4 border-white shadow-lg"
+        style={{ zIndex: 9999 }}
       >
-        <Webcam ref={webcamRef} className="h-full w-full object-cover" />
+        <Draggable>
+          <Webcam
+            ref={webcamRef}
+            className="h-full w-full rounded-full object-cover"
+          />
+        </Draggable>
       </div>
     </div>
   );
-};
-
-export default ScreenRecorder;
+}
