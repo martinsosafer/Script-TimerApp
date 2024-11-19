@@ -1,61 +1,161 @@
 "use client";
 
-import React from "react";
-import Link from "next/link";
+import React, { useState } from "react";
+import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
 
-import { TextToVoiceClick } from "~/app/_components/googleAnalytics/LandingEvents/LandingEvents";
 import { RevealText } from "~/app/animations/RevealText";
-import PrimaryButton from "../../primary-button";
+import { poppins } from "~/app/fonts";
+import HeroImg from "../../../../../../public/HeroImg.png";
 import MotionTransition from "../MotionTransition/MotionTransition";
 
 export default function HeroSection() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const toggleModal = () => setIsModalOpen(!isModalOpen);
+
+  const modalVariants = {
+    hidden: { opacity: 0, scale: 0.8, y: 50 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        damping: 25,
+        stiffness: 300,
+        duration: 0.5,
+      },
+    },
+    exit: {
+      opacity: 0,
+      scale: 0.8,
+      y: 50,
+      transition: {
+        duration: 0.3,
+      },
+    },
+  };
+
+  const overlayVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 0.3 } },
+    exit: { opacity: 0, transition: { duration: 0.3, delay: 0.1 } },
+  };
+
   return (
     <div>
-      <div className="relative px-6 py-10 ">
-        <div className=" mx-auto mt-2 grid max-w-5xl items-start  md:grid-cols-2">
-          <div className="mt-8">
+      <div
+        className={`from-cp-primary relative bg-gradient-to-br to-[#000000] px-6 py-1 ${poppins.className}`}
+      >
+        <div className="grid items-start gap-[82px] px-[208px] md:grid-cols-2">
+          <div className="mt-[68px] h-[414px] w-[409px]">
             <RevealText>
-              <h1 className=" font-poppins text-4xl font-semibold sm:text-4xl xl:text-4xl/none">
-                Idea to Script to Voice
-                <span className="mt-1 block text-primary">in Seconds</span>
+              <h1 className="text-[58px] font-bold leading-[60px] text-white">
+                <span className="text-cyan-300">Automate</span>
+                <br />
+                content <br />
+                production
               </h1>
             </RevealText>
             <RevealText>
-              <p className="mt-6 max-w-md">
-                Only our custom built Ai and classes support every area of your
-                work. Multiple Ai models will save you hours of work and extra
-                expenses - guaranteed. What do you want to create?
+              <p className="mt-4 text-[20px] font-normal leading-[20px] text-white">
+                The tools supported by AI will automate
+                <br /> your creative process: Writing viral posts,
+                <br /> presos, promos, voice overs, images,
+                <br /> and much more.
               </p>
             </RevealText>
             <RevealText>
-              <div className="mt-10 flex justify-center gap-7">
-                <PrimaryButton onClick={TextToVoiceClick}>
-                  <Link href="/texttovoice">Text to Voice</Link>
-                </PrimaryButton>
-                <PrimaryButton>
-                  <Link href="/chat">Script Writer</Link>
-                </PrimaryButton>
-                <PrimaryButton>
-                  <Link href="/masterclasses" target="_blank">
-                    University
-                  </Link>
-                </PrimaryButton>
+              <div className="mt-[17px] flex justify-center">
+                <p className="text-cp-secondary-lightest text-[20px] font-bold leading-[28px]">
+                  What do you want to create?
+                </p>
               </div>
             </RevealText>
           </div>
 
-          <MotionTransition className="flex items-start justify-center">
-            <div className="ml-3 mt-8 h-[280px] w-[95%]   overflow-hidden rounded-lg bg-blue-700   py-2">
-              <iframe
-                src="https://player.vimeo.com/video/1020211350?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                className="h-full w-full  rounded-lg"
-                allow="autoplay; fullscreen; picture-in-picture"
-                title="Script-Timer Ai Onboarding video"
-              />
+          <MotionTransition className="mt-[60px] flex flex-col justify-center">
+            <Image
+              src={HeroImg}
+              alt="Picture of the author"
+              className="h-[300px] w-[550px] flex-shrink-0 rounded-lg"
+            />
+            <div className="border-cp-secondary mt-[22px] flex items-center justify-center rounded-md border-2">
+              <span
+                className="text-cp-secondary flex cursor-pointer items-center py-[13px] text-[16px] font-semibold leading-[22px]"
+                onClick={toggleModal}
+              >
+                Speed your results with this video
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="ml-2 h-4 w-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#F59E0B"
+                  strokeWidth="3"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M7 17L17 7M7 7h10v10"
+                  />
+                </svg>
+              </span>
             </div>
           </MotionTransition>
         </div>
       </div>
+
+      <AnimatePresence>
+        {isModalOpen && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center"
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            variants={overlayVariants}
+          >
+            <motion.div
+              className="fixed inset-0 bg-black bg-opacity-50"
+              onClick={toggleModal}
+            />
+            <motion.div
+              className="relative h-[80vh] w-[60vw] overflow-hidden rounded-lg bg-gradient-to-br from-[#0066FF] to-[#000000] px-[40px]"
+              variants={modalVariants}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <iframe
+                src="https://player.vimeo.com/video/1020211350?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                className="h-full w-full rounded-lg"
+                allow="autoplay; fullscreen; picture-in-picture"
+                title="Script-Timer Ai Onboarding video"
+              />
+              <motion.button
+                className="absolute right-1 top-1 rounded-full bg-black bg-opacity-50 p-2 text-white"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={toggleModal}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </motion.button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

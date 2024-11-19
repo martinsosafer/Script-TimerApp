@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import type { Session } from "@voiceai/auth";
 
+import MarqueeLogos from "../herosection/MarqueeLogos";
 import CounterData from "../herosection/CounterData/CounterData";
 import GoSections from "../herosection/GoSections/GoSections";
 import HeroSection from "../herosection/HeroBlock/herosection";
@@ -38,6 +39,7 @@ export default function Home({
   return (
     <>
       <HeroSection />
+      <MarqueeLogos />
       <CounterData />
       <ServiceSection />
       <GoSections />
