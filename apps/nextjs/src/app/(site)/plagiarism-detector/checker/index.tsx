@@ -139,7 +139,7 @@ export default function Checker({ userId, scans, credits }: CheckerProps) {
       <div className="mb-10 flex w-[1024px] flex-col items-center">
         {/* <ModeSelector aiCheck={false} /> */}
         <Tabs options={options} />
-        <div className="mt-10 flex h-[580px] w-full gap-2">
+        <div className="mt-10 flex w-full gap-2">
           <ScansHistory
             scanHistory={scansHistory}
             setScansHistory={setScansHistory}

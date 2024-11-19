@@ -14,6 +14,8 @@ interface CheckoutButtonProps {
   hasPlan: boolean;
   session: Session | null;
   type: "primary" | "secondary" | "accent";
+  upgradeAction?: () => void;
+  noSessionCheckout?: () => void;
 }
 
 function CheckoutButton({
@@ -22,6 +24,8 @@ function CheckoutButton({
   hasPlan,
   session,
   type,
+  upgradeAction,
+  noSessionCheckout,
 }: CheckoutButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -47,6 +51,11 @@ function CheckoutButton({
 
       return (window.location.href = url as string);
     }
+
+    if (upgradeAction) {
+      return upgradeAction();
+    }
+
     setIsLoading(true);
     await upgrade(
       priceId,
@@ -75,7 +84,9 @@ function CheckoutButton({
                 productId!,
                 priceId!,
               )
-          : () => router.push("/register")
+          : () => {
+              return noSessionCheckout!();
+            }
       }
     />
   );

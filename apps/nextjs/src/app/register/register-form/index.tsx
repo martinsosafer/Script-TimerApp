@@ -8,6 +8,7 @@ import { IconEye, IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 
 export default function RegisterForm() {
   const router = useRouter();
+
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
