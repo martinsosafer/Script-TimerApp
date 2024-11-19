@@ -146,10 +146,15 @@ const VoiceCards: React.FC<VoiceCardsProps> = ({
     }
   };
 
+  function getIsFreeOrNoSession(status: string | undefined) {
+    if (!status) return true;
+    return status === "FREE";
+  }
+
   return (
     <div className="grid grid-cols-2 gap-4">
       {voices?.map((voice, index) => {
-        const isFreePlan = subData.status === "FREE";
+        const isFreePlan = getIsFreeOrNoSession(subData?.status);
         const isOnFirstPage = currentPage === 1;
         const isBeyondFirstPage = currentPage > 1;
         const shouldDisableCard =
