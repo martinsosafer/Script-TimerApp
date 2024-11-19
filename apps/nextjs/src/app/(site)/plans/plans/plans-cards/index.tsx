@@ -277,11 +277,7 @@ export default function PlansCards({
         />
       )}
       {isCheckingOut && (
-        <CheckoutLoginModal
-          onClose={() => setIsUpgrading(false)}
-          session={session}
-          priceId={priceId}
-        />
+        <CheckoutLoginModal onClose={() => setIsCheckingOut(false)} />
       )}
     </section>
   );
