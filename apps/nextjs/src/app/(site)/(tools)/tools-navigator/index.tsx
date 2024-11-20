@@ -10,24 +10,24 @@ export default function ToolsNavigator() {
 
   const tools = [
     {
+      label: "Script Timer",
+      active: pathname === "/script-timer",
+      action: () => router.push("/script-timer"),
+    },
+    {
       label: "Word Counter",
       active: pathname === "/word-counter",
       action: () => router.push("/word-counter"),
     },
     {
-      label: "Words to Time",
-      active: pathname === "/words-to-time",
-      action: () => router.push("/words-to-time"),
+      label: "Autocapitalize",
+      active: pathname === "/autocapitalize",
+      action: () => router.push("/autocapitalize"),
     },
     {
-      label: "Auto Capitalize",
-      active: pathname === "/auto-capitalize",
-      action: () => router.push("/auto-capitalize"),
-    },
-    {
-      label: "Words Sorter",
-      active: pathname === "/words-sorter",
-      action: () => router.push("/words-sorter"),
+      label: "Word Sorter",
+      active: pathname === "/word-sorter",
+      action: () => router.push("/word-sorter"),
     },
     {
       label: "Hemingway",
