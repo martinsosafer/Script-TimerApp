@@ -66,7 +66,7 @@ const pageData: Record<
       "Clone voices with just an example audio",
     ],
     message: "Almost there ! ",
-    subMessage: "Please create an account to listen \nto your script!",
+    subMessage: "Please create a free account to listen \nto your script!",
   },
   chat: {
     image: ScriptCoachImg,
