@@ -48,8 +48,8 @@ export default function HeroSection() {
       <div
         className={`from-cp-primary relative bg-gradient-to-br to-[#000000] px-6 py-1 ${poppins.className}`}
       >
-        <div className="grid items-start gap-[82px] px-[208px] md:grid-cols-2">
-          <div className="mt-[68px] h-[414px] w-[409px]">
+        <div className="grid items-start gap-[82px] px-[200px] md:grid-cols-2">
+          <div className="mt-[68px] h-[414px] ">
             <RevealText>
               <h1 className="text-[58px] font-bold leading-[60px] text-white">
                 <span className="text-cyan-300">Automate</span>
@@ -76,33 +76,37 @@ export default function HeroSection() {
           </div>
 
           <MotionTransition className="mt-[60px] flex flex-col justify-center">
-            <Image
-              src={HeroImg}
-              alt="Picture of the author"
-              className="h-[300px] w-[550px] flex-shrink-0 rounded-lg"
-            />
-            <div className="border-cp-secondary mt-[22px] flex items-center justify-center rounded-md border-2">
-              <span
-                className="text-cp-secondary flex cursor-pointer items-center py-[13px] text-[16px] font-semibold leading-[22px]"
-                onClick={toggleModal}
-              >
-                Speed your results with this video
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="ml-2 h-4 w-4"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#F59E0B"
-                  strokeWidth="3"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M7 17L17 7M7 7h10v10"
-                  />
-                </svg>
-              </span>
-            </div>
+            <button onClick={toggleModal}>
+              <div className="flex flex-col items-center">
+                <Image
+                  src={HeroImg}
+                  alt="Picture of the author"
+                  className="h-[300px] w-[550px] flex-shrink-0 rounded-lg"
+                />
+                <div className="border-cp-secondary mt-[22px] flex w-full items-center justify-center rounded-md border-2">
+                  <span
+                    className="text-cp-secondary flex cursor-pointer items-center py-[13px] text-[16px] font-semibold leading-[22px]"
+                    onClick={toggleModal}
+                  >
+                    Speed your results with this video
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="ml-2 h-4 w-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="#F59E0B"
+                      strokeWidth="3"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M7 17L17 7M7 7h10v10"
+                      />
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </button>
           </MotionTransition>
         </div>
       </div>
@@ -116,10 +120,7 @@ export default function HeroSection() {
             exit="exit"
             variants={overlayVariants}
           >
-            <motion.div
-              className="fixed inset-0 bg-black bg-opacity-50"
-              onClick={toggleModal}
-            />
+            <motion.div className="fixed inset-0 bg-black bg-opacity-50" />
             <motion.div
               className="relative h-[80vh] w-[60vw] overflow-hidden rounded-lg bg-gradient-to-br from-[#0066FF] to-[#000000] px-[40px]"
               variants={modalVariants}

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import type { Session } from "@voiceai/auth";
 
 import CounterData from "../herosection/CounterData/CounterData";
+import FAQAccordion from "../herosection/FaqAccordion";
 import GoSections from "../herosection/GoSections/GoSections";
 import HeroSection from "../herosection/HeroBlock/herosection";
 import MarqueeLogos from "../herosection/MarqueeLogos";
@@ -45,6 +46,7 @@ export default function Home({
       <GoSections />
       <Testimonials />
       {/* on home page appear after 15 seconds */}
+      <FAQAccordion />
       <NoSessionModal
         openModal={openModal}
         setOpenModal={setOpenModal}
