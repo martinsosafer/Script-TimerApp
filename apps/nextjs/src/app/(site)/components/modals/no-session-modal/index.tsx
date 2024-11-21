@@ -66,7 +66,7 @@ const pageData: Record<
       "Clone voices with just an example audio",
     ],
     message: "Almost there ! ",
-    subMessage: "Please , create an account to listen \nto your script!",
+    subMessage: "Please create an account to listen \nto your script!",
   },
   chat: {
     image: ScriptCoachImg,
@@ -105,12 +105,12 @@ const pageData: Record<
       "Translate into audio and text",
     ],
     message: "Happy to translate that for you!",
-    subMessage: "Please log in, so i can deliver that with a smile",
+    subMessage: "Please log in, so I can deliver that with a smile",
   },
   clone: {
     image: HeroImage,
     list: [
-      "Listen to your scripts with  over 120 different voices",
+      "Listen to your scripts with over 120 different voices",
       "Customize voice tones and accents",
       "Export audio files for use in projects",
       "Clone voices with just an example audio",
