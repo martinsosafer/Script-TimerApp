@@ -37,12 +37,12 @@ export default function CounterData() {
     };
   }, []);
   return (
-    <MotionTransition className="mx-auto max-w-5xl py-20">
-      <div className=" justify-between  rounded-lg  border border-black md:flex">
+    <MotionTransition className="mx-auto max-w-5xl bg-[#F5F5F7]  py-20">
+      <div className=" justify-between  rounded-2xl border-none shadow-md   transition-shadow hover:shadow-lg md:flex">
         {counterNumbers.map(({ id, startNumber, endNumber, text }) => (
           <div
             key={id}
-            className="rounded-lg  px-7  py-7 text-center font-poppins  text-2xl font-bold text-black md:text-left "
+            className="flex  flex-col  rounded-lg px-7 py-7  text-center font-poppins text-2xl font-bold  text-black md:text-left"
             ref={counterRef}
           >
             {isVisible && ( // Render count-up only when visible
@@ -53,7 +53,7 @@ export default function CounterData() {
                   duration={4}
                   enableScrollSpy
                 />{" "}
-                <span className=" ml-3  text-lg font-bold text-tertiary">
+                <span className="   text-lg font-bold text-tertiary">
                   {text}
                 </span>
               </>

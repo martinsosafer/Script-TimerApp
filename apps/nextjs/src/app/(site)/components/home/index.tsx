@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 
 import type { Session } from "@voiceai/auth";
 
-import MarqueeLogos from "../herosection/MarqueeLogos";
 import CounterData from "../herosection/CounterData/CounterData";
 import GoSections from "../herosection/GoSections/GoSections";
 import HeroSection from "../herosection/HeroBlock/herosection";
+import MarqueeLogos from "../herosection/MarqueeLogos";
 import ServiceSection from "../herosection/ServicesSection/servicessection";
 import Testimonials from "../herosection/Testimonials/Testimonials";
 import NoSessionModal from "../modals/no-session-modal";
@@ -40,8 +40,8 @@ export default function Home({
     <>
       <HeroSection />
       <MarqueeLogos />
-      <CounterData />
       <ServiceSection />
+      <CounterData />
       <GoSections />
       <Testimonials />
       {/* on home page appear after 15 seconds */}
