@@ -5,8 +5,10 @@ import { db, eq, schema } from "@voiceai/db";
 import { elevenLabsCredit } from "@voiceai/db/schema/11LabsCredits";
 
 function addWatermark(message: string) {
-  const watermark = "created by script timer";
-  return `${message} - ${watermark}`;
+  const prefix = "Voice test by Co-Producer";
+  const suffix = "Thank you for testing Co-Producer";
+
+  return `${prefix} - ${message} -  - ${suffix}`;
 }
 
 export async function POST(req: { json: () => any }) {
@@ -32,10 +34,10 @@ export async function POST(req: { json: () => any }) {
     });
 
     // Determine max message length based on subscription
-    let maxMessageLength = 500; // Default maximum message length for free users
+    let maxMessageLength = 1000; // Default maximum message length for free users
 
     if (subscription?.status === "FREE_TRIAL") {
-      maxMessageLength = 1000; // Updated maximum message length for free trials
+      maxMessageLength = 1600; // Updated maximum message length for free trials
     } else if (subscription?.status === "STUDENT") {
       maxMessageLength = 2000;
     } else if (subscription?.status === "CREATOR") {
@@ -78,7 +80,20 @@ export async function POST(req: { json: () => any }) {
       .where(eq(elevenLabsCredit.userId, userId));
 
     let message = body.text;
-    if (!["BUSINESS", "STUDENT", "CREATOR"].includes(subscription?.status)) {
+    if (
+      ![
+        "BUSINESS",
+        "STUDENT",
+        "CREATOR",
+        "STUDENTCLMO",
+        "STUDENTCLMO",
+        "CREATORCLMO",
+        "BUSINESSCLMO",
+        "STUDENTCLYR",
+        "CREATORCLYR",
+        "BUSINESSCLYR",
+      ].includes(subscription?.status)
+    ) {
       message = addWatermark(message);
     }
 
@@ -172,6 +187,19 @@ export async function POST(req: { json: () => any }) {
           .then((res) => res?.[0]?.generationId);
 
         if (!generationId) throw new Error("Error creating voice");
+        const creditsUsed = body.text.length; // Assuming each character equals one credit
+        await db.insert(schema.credits).values({
+          userId: userId,
+          generationId: generationId, // Link to the generation ID
+          type: "11LABS", // Specify the type based on your enum
+          credits: -creditsUsed, // Negative value to show deduction
+          metadata: {
+            length: body.text.length,
+            description: "Voice generation credit usage",
+          },
+          created_at: new Date(), // Automatically handles timestamp
+          updated_at: new Date(), // Automatically handles timestamp
+        });
       },
       cancel() {
         reader.cancel();

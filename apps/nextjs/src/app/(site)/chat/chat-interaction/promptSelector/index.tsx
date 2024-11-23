@@ -1,5 +1,4 @@
 import type { Dispatch, SetStateAction } from "react";
-import { useState } from "react";
 
 import {
   BOOST_YOUR_VIDEO_SCRIPT_PROMPTS,
@@ -45,16 +44,22 @@ const cards = {
 interface PromptsSelectorProps {
   selectedCard: Prompt | undefined;
   setSelectedCard: Dispatch<SetStateAction<Prompt | undefined>>;
+  selectedTab: PromptType;
+  setSelectedTab: Dispatch<SetStateAction<PromptType>>;
+  selectedPill: PromptSubType;
+  setSelectedPill: Dispatch<SetStateAction<PromptSubType>>;
+  setIsInputMinimized: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function PromptsSelector({
   selectedCard,
   setSelectedCard,
+  selectedTab,
+  setSelectedTab,
+  selectedPill,
+  setSelectedPill,
+  setIsInputMinimized,
 }: PromptsSelectorProps) {
-  const [selectedTab, setSelectedTab] = useState<PromptType>(tabs[3]);
-  const [selectedPill, setSelectedPill] = useState<PromptSubType>(
-    boostYourVideoScriptSubtypes[0],
-  );
   return (
     <div className="mt-10 flex w-[1024px] flex-col items-center justify-center">
       <div className="z-10 flex w-full justify-center gap-1">
@@ -68,6 +73,7 @@ export default function PromptsSelector({
               setSelectedTab={setSelectedTab}
               setSelectedPill={setSelectedPill}
               setSelectedCard={setSelectedCard}
+              setIsInputMinimized={setIsInputMinimized}
             />
           );
         })}
@@ -83,6 +89,7 @@ export default function PromptsSelector({
                 speechPill={pill}
                 setSelectedPill={setSelectedPill}
                 setSelectedCard={setSelectedCard}
+                setIsInputMinimized={setIsInputMinimized}
               />
             );
           })}
@@ -101,6 +108,7 @@ export default function PromptsSelector({
                   isSelected={isSelected}
                   card={card}
                   setSelectedCard={setSelectedCard}
+                  setIsInputMinimized={setIsInputMinimized}
                 />
               );
             })}
@@ -108,6 +116,7 @@ export default function PromptsSelector({
             isSelected={selectedCard?.id === YOUR_OWN_PROMPT.id}
             card={YOUR_OWN_PROMPT}
             setSelectedCard={setSelectedCard}
+            setIsInputMinimized={setIsInputMinimized}
             isAddYourOwn
           />
         </div>

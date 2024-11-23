@@ -13,7 +13,6 @@ import { TooltipProvider } from "@voiceai/ui";
 
 import { env } from "~/env.mjs";
 import { api } from "~/utils/api";
-import { ContextWrapper } from "./context/state";
 import { SidebarProvider } from "./hooks/useSideBar";
 import { PlayerProvider } from "./providers/player-context";
 
@@ -78,9 +77,7 @@ export function TRPCReactProvider(props: {
             >
               <SidebarProvider>
                 <TooltipProvider>
-                  <ContextWrapper>
-                    <PlayerProvider>{props.children}</PlayerProvider>
-                  </ContextWrapper>
+                  <PlayerProvider>{props.children}</PlayerProvider>
                 </TooltipProvider>
               </SidebarProvider>
             </ThemeProvider>

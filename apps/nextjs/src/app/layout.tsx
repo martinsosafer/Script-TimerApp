@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import { Poppins, Roboto } from "next/font/google";
 
 import { PageAnalytics } from "./analytics";
+import { ContextWrapper } from "./context/state";
 import GoogleAnalytics from "./GoogleAnalytics";
-import HotJar from "./HotJar";
 
 import "~/styles/globals.css";
+
+import Squid from "./SquidAnalitycs";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -43,6 +45,7 @@ export const metadata: Metadata = {
 };
 
 export default function Layout(props: { children: React.ReactNode }) {
+  const { children } = props;
   return (
     <html lang="en" className="h-full">
       <GoogleAnalytics />
@@ -56,8 +59,8 @@ export default function Layout(props: { children: React.ReactNode }) {
           roboto.variable,
         ].join(" ")}
       >
-        {props.children}
-        <HotJar />
+        <ContextWrapper>{children}</ContextWrapper>
+        <Squid />
       </body>
 
       <PageAnalytics />

@@ -8,6 +8,7 @@ import { IconEye, IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 
 export default function RegisterForm() {
   const router = useRouter();
+
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -19,8 +20,9 @@ export default function RegisterForm() {
   async function handleSignUp(event: FormEvent<HTMLFormElement>) {
     setLoading(true);
     event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+
     try {
-      const formData = new FormData(event.currentTarget);
       const response = await fetch("/api/auth/register", {
         method: "POST",
         body: JSON.stringify({
@@ -45,7 +47,7 @@ export default function RegisterForm() {
   return (
     <form
       onSubmit={handleSignUp}
-      className="mx-auto flex w-full max-w-md flex-col space-y-4"
+      className="mx-auto flex w-full max-w-md flex-col space-y-2"
     >
       <div className="flex flex-col space-y-2">
         <label htmlFor="email" className="text-sm font-semibold">

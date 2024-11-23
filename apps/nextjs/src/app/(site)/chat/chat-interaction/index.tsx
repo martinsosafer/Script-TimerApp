@@ -7,7 +7,15 @@ import { readStreamableValue } from "ai/rsc";
 
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
-import type { Prompt } from "~/app/(site)/data/chat-prompts/types";
+import type {
+  Prompt,
+  PromptSubType,
+  PromptType,
+} from "~/app/(site)/data/chat-prompts/types";
+import {
+  boostYourVideoScriptSubtypes,
+  types as tabs,
+} from "~/app/(site)/data/chat-prompts/types";
 import { clearChats } from "~/app/actions/newChatActions";
 import deductOpenAiCredits from "~/app/actions/openAiCredits";
 import { nanoid } from "~/utils/helpers";
@@ -20,6 +28,7 @@ import GoToOldChat from "./go-to-old-chat";
 import PromptInput from "./prompt-input";
 import Prompter from "./prompter";
 import PromptsSelector from "./promptSelector";
+import SearchPrompts from "./seach-prompts";
 import type { Chat, ChatMessage } from "./types";
 import { getChatHistory } from "./utils";
 import WelcomeMessage from "./welcome-message/welcome-message";
@@ -53,6 +62,13 @@ export default function ChatInteraction({ userId, openAiCredits }: ChatProps) {
 
   const [credits, setCredits] = useState(openAiCredits);
 
+  const [selectedTab, setSelectedTab] = useState<PromptType>(tabs[3]);
+  const [selectedPill, setSelectedPill] = useState<PromptSubType>(
+    boostYourVideoScriptSubtypes[0],
+  );
+
+  const [isInputMinimized, setIsInputMinimized] = useState(false);
+
   useEffect(() => {
     setPromptInput("");
     setMessages([]);
@@ -70,6 +86,10 @@ export default function ChatInteraction({ userId, openAiCredits }: ChatProps) {
   async function handleSubmitChat(e: FormEvent, chatId?: string) {
     setIsLoading(true);
     const tokens = promptInput.length + (feedbackInput?.length ?? 0);
+    if (!userId) {
+      setIsLoading(false);
+      return setNoSessionModalOpen(true);
+    }
 
     if (tokens > credits) {
       toast({
@@ -124,15 +144,25 @@ export default function ChatInteraction({ userId, openAiCredits }: ChatProps) {
 
   return (
     <div className="flex w-full flex-col items-center">
-      <WelcomeMessage />
+      <SearchPrompts
+        setSelectedCard={setSelectedCard}
+        setSelectedPill={setSelectedPill}
+        setSelectedTab={setSelectedTab}
+      />
       <PromptsSelector
         selectedCard={selectedCard}
         setSelectedCard={setSelectedCard}
+        selectedPill={selectedPill}
+        setSelectedPill={setSelectedPill}
+        selectedTab={selectedTab}
+        setSelectedTab={setSelectedTab}
+        setIsInputMinimized={setIsInputMinimized}
       />
       <Prompter uiPrompt={selectedCard?.prompt_display} />
       <PromptInput
         value={promptInput}
         onChange={setPromptInput}
+        selectedCardName={selectedCard?.name}
         onSubmit={async (e) => {
           const chatId = feedbackChatId ?? nanoid();
           await handleSubmitChat(e, chatId);
@@ -141,8 +171,9 @@ export default function ChatInteraction({ userId, openAiCredits }: ChatProps) {
         }}
         loadingMessages={isLoading}
         isEnabled={Boolean(selectedCard) && promptInput.length > 0}
-        setOpenMopdal={() => setNoSessionModalOpen(true)}
         userId={userId}
+        isInputMinimized={isInputMinimized}
+        setIsInputMinimized={setIsInputMinimized}
       />
       <ChatFeedback
         chat={messages}

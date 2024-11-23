@@ -2,8 +2,6 @@
 
 import * as React from "react";
 
-import { IconInfo } from "@voiceai/ui/@/components/ui/icons";
-
 import NoSessionModal from "~/app/(site)/components/modals/no-session-modal";
 import { api } from "~/utils/api";
 import CustomVoiceCards from "../cloningCard";
@@ -21,20 +19,11 @@ export default function VoiceCloningPage({
     });
   const [openNoSessionModal, setOpenNoSessionModal] =
     React.useState<boolean>(false);
-  console.log("CUSTOMVOICE==", customVoices);
+
   return (
     <div className="mx-auto flex max-w-5xl flex-col items-center">
-      <main className="mt-10 flex w-full flex-col items-center px-4 text-center">
-        <h1 className="max-w-2xl font-poppins text-4xl font-bold text-primary sm:text-5xl">
-          Voice Cloning
-        </h1>
-        <p className="sm:text-md text-md mt-5 max-w-md font-poppins font-bold text-black">
-          You can add your own voices by recording or
-          <br />
-          uploading sound files below.
-        </p>
-
-        <hr className="border-1 my-5 h-px bg-gray-700 dark:bg-gray-700" />
+      <main className="flex w-full flex-col items-center px-4 text-center">
+        <hr className="border-1 mb-4 bg-gray-700 dark:bg-gray-700" />
         <VoiceCloningForm
           onVoiceCreated={refetch}
           subData={subData}

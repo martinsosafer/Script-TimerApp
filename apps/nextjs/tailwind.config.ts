@@ -12,4 +12,16 @@ export default {
   ],
   safelist: [...withsArray],
   presets: [baseConfig],
+  theme: {
+    extend: {
+      colors: {
+        "cp-background": "#F5F5F7",
+        "cp-primary": "#0066FF",
+        "cp-secondary": "#FF9900",
+        "cp-secondary-light": "#FFAD33",
+        "cp-secondary-lightest": "#FFCB7F",
+        "cp-accent": "#13EBDC",
+      },
+    },
+  },
 } satisfies Config;

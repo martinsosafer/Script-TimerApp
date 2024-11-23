@@ -37,13 +37,18 @@ const useStreamingAudio = () => {
     }
 
     setLoading(true);
-
     const charLimit: Record<string, number> = {
       FREE: 500,
-      FREE_TRIAL: 1000,
+      FREE_TRIAL: 1600,
       STUDENT: 2000,
+      STUDENTCLMONTHLY: 2000,
+      STUDENTCLYEARLY: 2000,
       CREATOR: 5000,
+      CREATORCLMO: 5000,
+      CREATORCLYR: 5000,
       BUSINESS: 10000,
+      BUSINESSCLMO: 10000,
+      BUSINESSCLYR: 10000,
     };
 
     if (message.length > charLimit[userPlan]) {
@@ -51,8 +56,14 @@ const useStreamingAudio = () => {
         FREE: "Free plan only supports up to 300 characters",
         FREE_TRIAL: "Your plan only supports up to 2000 characters",
         STUDENT: "Your plan only supports up to 2000 characters",
+        STUDENTCLMONTHLY: "Your plan only supports up to 2000 characters",
+        STUDENTCLYEARLY: "Your plan only supports up to 2000 characters",
         CREATOR: "Your plan only supports up to 5000 characters",
+        CREATORCLMO: "Your plan only supports up to 5000 characters",
+        CREATORCLYR: "Your plan only supports up to 5000 characters",
         BUSINESS: "Your plan only supports up to 10000 characters",
+        BUSINESSCLMO: "Your plan only supports up to 10000 characters",
+        BUSINESSCLYR: "Your plan only supports up to 10000 characters",
       };
 
       setLoading(false);

@@ -13,11 +13,11 @@ import EditScanTitleModal from "../../components/modals/edit-scan-title";
 import NoSessionModal from "../../components/modals/no-session-modal";
 import ModeSelector from "../../components/mode-selector";
 import PercentageBar from "../../components/percentage-bar";
+import Tabs from "../../components/tabs";
 import { addContentToScan } from "../actions";
 import { consumedCreditsWarning } from "../utils";
 import PlagiarismResult from "./plagiarism-result";
 import ScansHistory from "./scans-history";
-import WelcomeMessage from "./welcome-message";
 
 interface CheckerProps {
   userId: string | undefined;
@@ -116,11 +116,28 @@ export default function Checker({ userId, scans, credits }: CheckerProps) {
     }
   }, [scanCheckId]);
 
+  const options = [
+    {
+      label: "AI Scan",
+      active: false,
+      action: () => {
+        window.location.href = "/ai-detector";
+      },
+    },
+    {
+      label: "Plagiarism Scan",
+      active: true,
+      action: () => {
+        return;
+      },
+    },
+  ];
+
   return (
     <>
-      <div className="flex w-[1024px] flex-col py-10">
-        <WelcomeMessage />
-        <ModeSelector aiCheck={false} />
+      <div className="mb-10 flex w-[1024px] flex-col items-center">
+        {/* <ModeSelector aiCheck={false} /> */}
+        <Tabs options={options} />
         <div className="mt-10 flex w-full gap-2">
           <ScansHistory
             scanHistory={scansHistory}

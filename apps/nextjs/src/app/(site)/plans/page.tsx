@@ -1,181 +1,39 @@
-import React from "react";
-import type { Metadata } from "next";
-import { Stripe } from "stripe";
-
 import { auth } from "@voiceai/auth";
 
-import PlansSections from "./sections";
-import ComparativeBoard from "./sections/comparativeboard";
-import PricingTable from "./sections/pricingTable";
-import type { Product } from "./types";
+import { poppins } from "~/app/fonts";
+import PageHeader from "../components/page-header";
+import Compare from "./compare";
+import FAQs from "./faqs";
+import LanguagesRows from "./languages-rows";
+import Plans from "./plans";
+import PricingTestimonials from "./testimonials";
+import type { Plan } from "./types";
+import { getSubscription } from "./utils";
 
-export const metadata: Metadata = {
-  title: "Plans",
-  description: "List of all our current pay plans",
-};
-
-async function loadProducts() {
-  const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
-
-  if (!stripeSecretKey) {
-    throw new Error("Stripe secret key is not defined.");
-  }
-
-  const stripe = new Stripe(stripeSecretKey);
-  const stripeProducts = await stripe.products.list();
-
-  const products = stripeProducts.data.map((stripeProduct) => {
-    return {
-      id: stripeProduct.id,
-      name: stripeProduct.name,
-      description: stripeProduct.description ?? "",
-      metadata: {
-        carddescription: stripeProduct.metadata.carddescription ?? "",
-        mostpopular: stripeProduct.metadata.mostpopular ?? "",
-        price: stripeProduct.metadata.price
-          ? parseFloat(stripeProduct.metadata.price)
-          : 0,
-        notincluded1: stripeProduct.metadata.notincluded1 ?? "",
-        notincluded2: stripeProduct.metadata.notincluded2 ?? "",
-        notincluded3: stripeProduct.metadata.notincluded3 ?? "",
-        notincluded4: stripeProduct.metadata.notincluded4 ?? "",
-      },
-      marketing_features: stripeProduct.features.map((feature) => ({
-        name: feature.name,
-      })),
-    };
-  }) as Product[];
-
-  enum Plans {
-    STUDENT = "Student Plan",
-    CREATOR = "Creator Plan",
-    BUSINESS = "Business Plan",
-    STUDENTCLMO = "Plagiarism + Ai Detection: Edu / Mo",
-    CREATORCLMO = "Plagiarism + Ai Detection: Creator / Mo",
-    BUSINESSCLMO = "Plagiarism + Ai Detection: Business / Mo",
-    STUDENTCLYR = "Plagiarism + Ai Detection: Edu / Yr",
-    CREATORCLYR = "Plagiarism + Ai Detection: Creator / Yr",
-    BUSINESSCLYR = "Plagiarism + Ai Detection: Business / Yr",
-  }
-  const plans: Plans[] = [Plans.STUDENT, Plans.CREATOR, Plans.BUSINESS];
-
-  // Sort all products by price
-  products.sort((a, b) => a.metadata.price - b.metadata.price);
-
-  const originalPlans = products.filter((product) =>
-    plans.includes(product.name as Plans),
-  );
-
-  const plagiarismProducts = products.filter((product) =>
-    product.name.includes("Plagiarism + Ai Detection"),
-  );
-
-  const monthlyPlans = originalPlans.filter((product) =>
-    product.name.toLowerCase().includes("/ mo"),
-  );
-  const yearlyPlans = originalPlans.filter((product) =>
-    product.name.toLowerCase().includes("/ yr"),
-  );
-
-  const plagiarismMonthlyPlans = plagiarismProducts.filter((product) =>
-    product.name.toLowerCase().includes("/ mo"),
-  );
-  const plagiarismYearlyPlans = plagiarismProducts.filter((product) =>
-    product.name.toLowerCase().includes("/ yr"),
-  );
-
-  const orderedMonthlyPlans = monthlyPlans.sort(
-    (a, b) => a.metadata.price - b.metadata.price,
-  );
-  const orderedYearlyPlans = yearlyPlans.sort(
-    (a, b) => a.metadata.price - b.metadata.price,
-  );
-  const orderedPlagiarismMonthlyPlans = plagiarismMonthlyPlans.sort(
-    (a, b) => a.metadata.price - b.metadata.price,
-  );
-  const orderedPlagiarismYearlyPlans = plagiarismYearlyPlans.sort(
-    (a, b) => a.metadata.price - b.metadata.price,
-  );
-
-  return {
-    monthlyPlans: orderedMonthlyPlans,
-    yearlyPlans: orderedYearlyPlans,
-    plagiarismMonthlyPlans: orderedPlagiarismMonthlyPlans,
-    plagiarismYearlyPlans: orderedPlagiarismYearlyPlans,
-  };
-}
-
-async function getSubscription(planId: string | null | undefined) {
-  const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
-
-  if (!stripeSecretKey) {
-    throw new Error("Stripe secret key is not defined.");
-  }
-
-  if (!planId || planId === "initial_plan_id") {
-    return undefined;
-  }
-
-  const stripe = new Stripe(stripeSecretKey);
-
-  try {
-    const subscription = await stripe.subscriptions.retrieve(planId);
-
-    const subscriptionData = {
-      billing_cycle_anchor: subscription.billing_cycle_anchor,
-      current_period_end: subscription.current_period_end,
-      current_period_start: subscription.current_period_start,
-      days_until_due: subscription.days_until_due,
-      plan: subscription.items.data[0]?.plan,
-    };
-
-    return subscriptionData;
-  } catch (e) {
-    console.error(e);
-    return undefined;
-  }
-}
-
-async function PlansPage() {
-  const {
-    monthlyPlans,
-    yearlyPlans,
-    plagiarismMonthlyPlans,
-    plagiarismYearlyPlans,
-  } = await loadProducts();
+export default async function NewPlansPage() {
   const session = await auth();
   let subscription;
+
   if (session) {
     subscription = await getSubscription(session?.user.subscription?.planId);
   }
 
   return (
-    <div className="flex w-full flex-col items-center">
-      <div className="mb-12 flex w-full flex-col items-center bg-white px-4 pt-16 text-center xl:w-[1000px]">
-        <h1 className="mb-14 text-center font-poppins text-5xl font-bold leading-tight tracking-tight text-primary xl:text-5xl xl:font-extrabold">
-          <span>The Most Valuable Software For Creators</span>
-        </h1>
-        <p className="text-black-700 mb-3 font-poppins text-base lg:text-xl xl:w-[800px]">
-          Compare the benefits your Co-Producer gives you <br /> compared to the
-          tools it replaces.
-        </p>
-        <p className="text-black-700  font-poppins text-base lg:text-xl xl:w-[800px]">
-          Then start below to choose your plan to save time, <br /> expense, and
-          increase your productivity - guaranteed.
-        </p>
-      </div>
-      <ComparativeBoard />
-      <PlansSections
-        monthlyPlans={monthlyPlans}
-        yearlyPlans={yearlyPlans}
-        planInterval={subscription?.plan?.interval}
-        session={session}
-        plagiarismMonthlyPlans={plagiarismMonthlyPlans}
-        plagiarismYearlyPlans={plagiarismYearlyPlans}
+    <div
+      className={`bg-cp-background flex w-full flex-col items-center ${poppins.className}`}
+    >
+      <PageHeader
+        title="Choose a plan"
+        subtitle="Transform your ideas into perfect scripts, voice overs, and images in any language."
       />
-      {/* <PricingTable /> */}
+      <Plans
+        session={session}
+        subscription={(subscription?.plan as Plan) ?? null}
+      />
+      <Compare session={session} />
+      <LanguagesRows />
+      <PricingTestimonials />
+      <FAQs />
     </div>
   );
 }
-
-export default PlansPage;

@@ -41,37 +41,37 @@ export default function EditChatSubjectModal({
   }
   return (
     <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center overflow-auto bg-black bg-opacity-50 backdrop-blur">
-      <div className="flex w-[600px] flex-col items-center justify-between rounded-lg bg-white p-4">
-        <h2 className="flex w-full items-center gap-2 text-xl font-semibold text-gray-800">
-          {" "}
-          <IconPencilLine /> Edit Chat Subject
+      <div className="w-full max-w-lg rounded-lg border-4 border-blue-500 bg-white p-6 shadow-lg">
+        <h2 className="mb-4 flex w-full items-center justify-center gap-2 text-2xl font-bold text-primary">
+          <IconPencilLine className="h-6 w-6 text-primary" /> Edit Chat Subject
         </h2>
-        <div className="my-6 flex gap-2">
-          <form className="flex gap-2" onSubmit={handleSubmit}>
+        <div className="my-6 w-full">
+          <form className="flex flex-col items-center" onSubmit={handleSubmit}>
             <input
               type="text"
               name="title"
               placeholder={selectedChat?.title}
-              className="rounded-md border-2 border-primary p-2"
+              className="mb-4 w-full rounded-md border-2 border-primary p-3 font-poppins text-lg"
             />
-
-            <button
-              className="flex w-[120px] items-center justify-center rounded-md bg-primary px-4 py-3 text-white hover:opacity-80"
-              type="submit"
-            >
-              {isLoading ? (
-                <IconSpinner className="h-6 w-6 animate-spin" />
-              ) : (
-                "Edit Subject"
-              )}
-            </button>
+            <div className="flex justify-center space-x-4">
+              <button
+                className="flex w-[130px] items-center justify-center rounded-md border-2 border-red-500 px-6 py-3 font-poppins text-lg font-semibold text-red-500 hover:bg-red-100"
+                onClick={onClose}
+              >
+                Cancel
+              </button>
+              <button
+                className="flex w-[130px] items-center justify-center rounded-md bg-primary px-6 py-3 font-poppins text-lg font-semibold text-white hover:bg-opacity-80"
+                type="submit"
+              >
+                {isLoading ? (
+                  <IconSpinner className="h-6 w-6 animate-spin" />
+                ) : (
+                  "Save"
+                )}
+              </button>
+            </div>
           </form>
-          <button
-            className="rounded-md bg-gray-500 px-4 py-3 text-white hover:opacity-80"
-            onClick={onClose}
-          >
-            Cancel
-          </button>
         </div>
       </div>
     </div>

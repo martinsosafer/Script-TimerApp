@@ -2,7 +2,15 @@
 
 import * as React from "react";
 import { useParams } from "next/navigation";
+import ArrowDownOnSquareIcon from "@heroicons/react/24/outline/ArrowDownOnSquareIcon";
+import ReactConfetti from "react-confetti";
 
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@voiceai/ui/@/components/ui/hover-card";
+import { IconClose, Icons } from "@voiceai/ui/@/components/ui/icons";
 import { Tabs } from "@voiceai/ui/@/components/ui/tabs";
 import { useCopyToClipboard } from "@voiceai/ui/@/hooks/use-copy-to-clipboard";
 
@@ -16,7 +24,7 @@ import { fetchUserCredits } from "~/lib/get11LabsCredits";
 import NoSessionModal from "../../components/modals/no-session-modal";
 import TabOne from "../../components/texttospeech/Tab1";
 import TabTwo from "../../components/texttospeech/Tab2";
-import TTVIntroBlock from "../../components/texttospeech/ttvintroblock";
+import { SpeedButton } from "../../components/texttospeech/Tab2/buttonmenu.tsx/speedbutton";
 
 export function ScriptAI({
   subData,
@@ -37,7 +45,7 @@ export function ScriptAI({
   const [script, setScript] = React.useState("");
   const [richContent, setRichContent] = React.useState("");
   const [selectedModel, setSelectedModel] = React.useState(null);
-  const [similarity, setSimilarity] = React.useState([0.8]);
+  const [similarity, setSimilarity] = React.useState([0.5]);
   const [stability, setStability] = React.useState([0.5]);
   const [loading, setLoading] = React.useState(false);
   // If script is selected from URL path parameter, load in state from db
@@ -98,11 +106,65 @@ export function ScriptAI({
       refetchCredits();
     }
   }, [subData]);
+  const containerStyle = {
+    position: "relative",
+    bottom: "40px",
+    left: "65%",
+    transform: "translateX(-50%)",
+    maxWidth: "570px",
+    width: "100%",
+    height: "80px",
+    backgroundColor: "#3B82F6",
+    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: "10px",
+    borderRadius: "8px",
+    zIndex: 0,
+    opacity: 1, // Always fully visible
+    transition: "opacity 0.5s ease-in-out",
+    border: "1px solid black",
+  };
+
+  const audioStyle = {
+    flex: 1,
+    height: "50px", // Slightly smaller height
+    backgroundColor: "transparent",
+    border: "none",
+  };
+
+  const buttonStyle = {
+    backgroundColor: "#F97316",
+    border: "1px solid black", // Subtle black border
+    borderRadius: "4px", // Square corners
+    color: "white",
+    padding: "8px", // Padding around the icon
+    cursor: "pointer",
+    fontFamily: "Poppins, sans-serif",
+    fontWeight: "bold",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    transition: "background-color 0.3s",
+    width: "40px", // Square size
+    height: "40px", // Square size
+    marginLeft: "4px",
+  };
+
+  const buttonHoverStyle = {
+    ...buttonStyle,
+    backgroundColor: "#e76f00", // Darker on hover
+  };
+  const disabledButtonStyle = {
+    ...buttonStyle,
+    backgroundColor: "#f7a07a", // Lighter orange
+    cursor: "not-allowed",
+    opacity: 0.6,
+  };
   return (
     <>
-      <div className="  mb-32 h-full   flex-col md:flex">
-        <TTVIntroBlock subscriptionData={subscriptionData} credits={credits} />
-
+      <div className=" mb-32 h-full   flex-col md:flex">
         <Tabs defaultValue="complete" className="flex-1">
           <div className="container mb-4 h-full ">
             <div className="grid h-full items-stretch gap-6 md:grid-cols-[400px_1fr]">
@@ -113,6 +175,8 @@ export function ScriptAI({
                 subData={subData}
                 stability={stability}
                 setStability={setStability}
+                similarity={similarity}
+                setSimilarity={setSimilarity}
               />
               <TabTwo
                 script={script}
@@ -152,6 +216,101 @@ export function ScriptAI({
             </div>
           </div>
         </Tabs>
+        <div style={containerStyle} className="mt-14">
+          <audio ref={audioRef} controls="controls" style={audioStyle} />
+
+          {/* Controls container */}
+          <div
+            className="controls-container"
+            style={{ display: "flex", gap: "10px" }}
+          >
+            <SpeedButton
+              audioRef={audioRef}
+              buttonStyle={buttonStyle}
+              buttonHoverStyle={buttonHoverStyle}
+              disabledButtonStyle={disabledButtonStyle}
+            />
+
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <button
+                  onClick={() => {
+                    if (downloadLink) {
+                      const anchor = document.createElement("a");
+                      anchor.href = downloadLink;
+                      anchor.download = "audio.mp3";
+                      anchor.click();
+                      URL.revokeObjectURL(downloadLink);
+                      setShowConfetti(true);
+                    }
+                  }}
+                  disabled={loading || !downloadLink}
+                  style={
+                    !downloadLink || loading ? disabledButtonStyle : buttonStyle
+                  }
+                  onMouseOver={(e) =>
+                    !downloadLink || loading
+                      ? null
+                      : (e.currentTarget.style.backgroundColor =
+                          buttonHoverStyle.backgroundColor)
+                  }
+                  onMouseOut={(e) =>
+                    !downloadLink || loading
+                      ? null
+                      : (e.currentTarget.style.backgroundColor =
+                          buttonStyle.backgroundColor)
+                  }
+                >
+                  {loading ? (
+                    <Icons.spinner
+                      className="h-6 w-6"
+                      style={{ color: "white" }}
+                    />
+                  ) : (
+                    <ArrowDownOnSquareIcon
+                      width={24}
+                      style={{ color: "white" }}
+                    />
+                  )}
+                </button>
+              </HoverCardTrigger>
+              {!isSubscriptionActive && (
+                <HoverCardContent className="w-[200px] text-sm" side="left">
+                  Download audio file.
+                </HoverCardContent>
+              )}
+            </HoverCard>
+
+            {/* Close Button */}
+            <button
+              onClick={handleCloseAudio}
+              style={buttonStyle}
+              onMouseOver={(e) =>
+                (e.currentTarget.style.backgroundColor =
+                  buttonHoverStyle.backgroundColor)
+              }
+              onMouseOut={(e) =>
+                (e.currentTarget.style.backgroundColor =
+                  buttonStyle.backgroundColor)
+              }
+            >
+              <IconClose width={24} style={{ color: "white" }} />
+            </button>
+          </div>
+
+          {showConfetti && (
+            <ReactConfetti
+              width={window.innerWidth}
+              height={window.innerHeight}
+              numberOfPieces={1000}
+              recycle={false}
+              gravity={0.1}
+              initialVelocityX={2}
+              initialVelocityY={10}
+              colors={["#0123e7", "#eb8806"]}
+            />
+          )}
+        </div>
       </div>
       <NoSessionModal
         subData={subData}

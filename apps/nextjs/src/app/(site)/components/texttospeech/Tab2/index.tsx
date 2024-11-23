@@ -46,7 +46,7 @@ const TabTwo = ({
 }) => {
   return (
     <div className="md:order-2">
-      <div className="rounded-lg bg-gray-100 p-4 shadow-md dark:bg-slate-400">
+      <div className="rounded-lg bg-gray-100 p-[31px] shadow-md dark:bg-slate-400">
         <ButtonsMenu
           script={script}
           subData={subData}
@@ -74,7 +74,7 @@ const TabTwo = ({
               isSubscriptionActive={true}
             />
 
-            <div className=" mb-4 flex flex-col items-center justify-center">
+            <div className=" mb-4 mt-6 flex flex-col items-center justify-center">
               <ScriptInfoBadge
                 wordCount={wordCount}
                 minutes={minutes}
