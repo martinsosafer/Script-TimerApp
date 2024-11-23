@@ -78,11 +78,16 @@ export default function HeroSection() {
           <MotionTransition className="mt-[60px] flex flex-col justify-center">
             <button onClick={toggleModal}>
               <div className="flex flex-col items-center">
-                <Image
-                  src={HeroImg}
-                  alt="Picture of the author"
-                  className="h-[300px] w-[550px] flex-shrink-0 rounded-lg"
-                />
+                <div className="relative h-[300px] w-full max-w-[550px]">
+                  <Image
+                    src={HeroImg}
+                    alt="Hero image"
+                    fill
+                    sizes="(max-width: 550px) 100vw, 550px"
+                    className="rounded-lg object-cover"
+                    priority
+                  />
+                </div>
                 <div className="border-cp-secondary mt-[22px] flex w-full items-center justify-center rounded-md border-2">
                   <span
                     className="text-cp-secondary flex cursor-pointer items-center py-[13px] text-[16px] font-semibold leading-[22px]"
@@ -122,7 +127,7 @@ export default function HeroSection() {
           >
             <motion.div className="fixed inset-0 bg-black bg-opacity-50" />
             <motion.div
-              className="relative h-[80vh] w-[60vw] overflow-hidden rounded-lg bg-gradient-to-br from-[#0066FF] to-[#000000] px-[40px]"
+              className="relative h-[80vh] w-[60vw] overflow-hidden rounded-lg bg-gradient-to-br from-[#000000] to-[#0066FF] px-[40px]"
               variants={modalVariants}
               onClick={(e) => e.stopPropagation()}
             >

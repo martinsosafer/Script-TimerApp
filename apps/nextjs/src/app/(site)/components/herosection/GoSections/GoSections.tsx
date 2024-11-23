@@ -22,6 +22,7 @@ export default function GoSection() {
           It Used To Take Weeks to Deliver Content That Built <br /> an
           Audience.
           <span className="text-[28px] font-bold leading-[33.6px]">
+            {" "}
             No More
           </span>
         </h1>

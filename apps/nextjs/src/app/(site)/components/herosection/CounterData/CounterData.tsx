@@ -37,30 +37,32 @@ export default function CounterData() {
     };
   }, []);
   return (
-    <MotionTransition className="mx-auto max-w-5xl bg-[#F5F5F7]  py-20">
-      <div className=" justify-between  rounded-2xl border-none shadow-md   transition-shadow hover:shadow-lg md:flex">
-        {counterNumbers.map(({ id, startNumber, endNumber, text }) => (
-          <div
-            key={id}
-            className="flex  flex-col  rounded-lg px-7 py-7  text-center font-poppins text-2xl font-bold  text-black md:text-left"
-            ref={counterRef}
-          >
-            {isVisible && ( // Render count-up only when visible
-              <>
-                <CountUp
-                  start={startNumber}
-                  end={endNumber}
-                  duration={4}
-                  enableScrollSpy
-                />{" "}
-                <span className="   text-lg font-bold text-tertiary">
-                  {text}
-                </span>
-              </>
-            )}
-          </div>
-        ))}
-      </div>
-    </MotionTransition>
+    <div className="h-full w-full bg-[#F5F5F7]">
+      <MotionTransition className="mx-[248px] max-w-5xl bg-[#FFFFF]  py-20">
+        <div className=" justify-between  rounded-2xl border-none shadow-md   transition-shadow hover:shadow-lg md:flex">
+          {counterNumbers.map(({ id, startNumber, endNumber, text }) => (
+            <div
+              key={id}
+              className="flex  flex-col  items-center justify-center rounded-lg  px-7 py-7 text-center font-poppins  text-2xl font-bold text-black md:text-left"
+              ref={counterRef}
+            >
+              {isVisible && ( // Render count-up only when visible
+                <>
+                  <CountUp
+                    start={startNumber}
+                    end={endNumber}
+                    duration={4}
+                    enableScrollSpy
+                  />{" "}
+                  <span className="   text-lg font-bold text-tertiary">
+                    {text}
+                  </span>
+                </>
+              )}
+            </div>
+          ))}
+        </div>
+      </MotionTransition>
+    </div>
   );
 }
