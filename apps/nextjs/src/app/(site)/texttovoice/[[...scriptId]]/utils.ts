@@ -1,6 +1,6 @@
 export const characters: Record<string, string> = {
   FREE: "500 characters",
-  FREE_TRIAL: "1000 characters",
+  FREE_TRIAL: "1600 characters",
   STUDENT: "2000 characters",
   CREATOR: "5000 characters",
   BUSINESS: "10000 characters",

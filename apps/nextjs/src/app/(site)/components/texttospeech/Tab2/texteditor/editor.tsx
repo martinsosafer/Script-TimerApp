@@ -59,7 +59,7 @@ interface TextEditorProps {
 
 const CHAR_LIMITS: Record<string, number> = {
   FREE: 500,
-  FREE_TRIAL: 1000,
+  FREE_TRIAL: 1600,
   STUDENT: 2000,
   CREATOR: 5000,
   BUSINESS: 10000,

@@ -1,14 +1,11 @@
-import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { auth } from "@voiceai/auth";
 
-import coverImg from "../../../public/login_photo.png";
 import Logo from "../(site)/components/logo";
 import AnimatedGifs from "../signin/animtadgifs";
 import FormSwitcher from "../signin/formswitcher";
-import SignUpForm from "../signin/signupform";
 import GoogleForm from "./google-form";
 import RegisterForm from "./register-form";
 
@@ -21,7 +18,7 @@ export default async function Register() {
   return (
     <div className="container relative min-h-full flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
       {/* Gradient div moved to the left */}
-      <div className="flex hidden h-full w-full items-center justify-center lg:block">
+      <div className="hidden h-full w-full items-center justify-center lg:block">
         <AnimatedGifs />
       </div>
 
