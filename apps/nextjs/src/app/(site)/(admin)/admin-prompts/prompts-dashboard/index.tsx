@@ -31,7 +31,7 @@ export default function PromptsDashboard() {
           className="mt-8 rounded-sm bg-primary p-2 text-lg text-white"
           onClick={() => setPromptModalOpen(true)}
         >
-          <span className="text-xl">+</span> Add a New Promt
+          <span className="text-xl">+</span> Add a New Prompt
         </button>
         <div className="mt-8">
           {isLoading && <div>Loading...</div>}

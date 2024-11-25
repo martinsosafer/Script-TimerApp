@@ -1,30 +1,44 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
-const tools = [
-  { label: "Users", href: "/admin" },
-  { label: "Prompts", href: "/admin-prompts" },
-  { label: "Spetcials and announcements", href: "/auto-capitalize" },
-  { label: "Words Sorter", href: "/words-sorter" },
-];
+import Tabs from "../../components/tabs";
 
-export default function AdminNavigator() {
+export default function ToolsNavigator() {
   const pathname = usePathname();
+  const router = useRouter();
+
+  const tools = [
+    {
+      label: "Users",
+      active: pathname === "/admin",
+      action: () => router.push("/admin"),
+    },
+    {
+      label: "Prompts",
+      active: pathname === "/admin-prompts",
+      action: () => router.push("/admin-prompts"),
+    },
+    {
+      label: "Specials and announcements",
+      active: pathname === "/admin-specials",
+      action: () => router.push("/admin-specials"),
+    },
+    {
+      label: "Voice Clone",
+      active: pathname === "/adminclone",
+      action: () => router.push("/adminclone"),
+    },
+    {
+      label: "Voices",
+      active: pathname === "/adminvoices",
+      action: () => router.push("/adminvoices"),
+    },
+  ];
+
   return (
-    <div className="flex items-center justify-center gap-4">
-      {tools.map((tool) => {
-        return (
-          <Link
-            href={tool.href}
-            key={tool.href}
-            className={`rounded-full px-4 py-2 font-semibold ${pathname.includes(tool.href) ? "bg-tertiary text-white" : "text-tertiary hover:bg-tertiary/10"}`}
-          >
-            {tool.label}
-          </Link>
-        );
-      })}
+    <div className="my-10 flex items-center justify-center gap-4">
+      <Tabs options={tools} />
     </div>
   );
 }
