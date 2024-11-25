@@ -55,7 +55,7 @@ export default function HeroSection() {
                 <span className="text-cyan-300">Automate</span>
                 <br />
                 content <br />
-                production
+                producti
               </h1>
             </RevealText>
             <RevealText>
