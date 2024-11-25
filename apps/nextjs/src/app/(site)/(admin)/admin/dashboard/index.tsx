@@ -205,7 +205,9 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
 
   return (
     <div className="mb-12 flex flex-col items-center p-4">
-      <h1 className="mb-4 text-2xl font-bold">User Dashboard</h1>
+      <h1 className="text-cp-primary mb-4 text-2xl font-bold">
+        User Dashboard
+      </h1>
       <AdminFilters
         setFilteredList={setFilteredList}
         userList={userList}
