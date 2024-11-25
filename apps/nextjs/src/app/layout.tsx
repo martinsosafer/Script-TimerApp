@@ -47,14 +47,16 @@ export const metadata: Metadata = {
 export default function Layout(props: { children: React.ReactNode }) {
   const { children } = props;
   return (
-    <html lang="en" className="h-full">
+    <html lang="en" className="h-full w-full">
       <GoogleAnalytics />
       <body
         className={[
           "font-poppins",
           "font-roboto",
           "theme-blue",
-          "h-screen bg-background",
+          "h-full",
+          "bg-background",
+          "w-full",
           poppins.variable,
           roboto.variable,
         ].join(" ")}

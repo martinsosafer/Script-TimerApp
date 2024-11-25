@@ -6,12 +6,12 @@ import Slide from "./slide";
 
 export default function Testimonials() {
   return (
-    <div className=" relative py-[80px]">
-      <div className="mx-auto   grid h-[500px]  max-w-5xl  items-start md:grid-cols-3">
+    <div className="relative py-[80px]">
+      <div className="mx-[200px] grid h-[300px] max-w-5xl items-start gap-x-[50px] md:grid-cols-[269px_650px]">
         {/* First column */}
-        <div className=" md:col-span-1">
+        <div>
           <RevealText>
-            <h2 className="text-cp-primary mb-5 font-poppins text-[34px]  font-bold leading-[41px]">
+            <h2 className="text-cp-primary mb-5 mt-5 font-poppins text-[34px] font-bold leading-[41px]">
               What our <br />
               members have <br />
               to say
@@ -27,10 +27,8 @@ export default function Testimonials() {
           </RevealText>
         </div>
 
-        {/* Carousel column with additional margin */}
-        <div className=" md:col-span-2 md:ml-14">
-          {" "}
-          {/* Add margin left for separation */}
+        {/* Second column */}
+        <div>
           <Slide />
         </div>
       </div>

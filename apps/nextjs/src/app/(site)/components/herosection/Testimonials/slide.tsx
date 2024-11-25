@@ -75,7 +75,7 @@ export default function Slide() {
         320: { slidesPerView: 1, spaceBetween: 15 }, // For smaller screens
         768: {
           slidesPerView: 2, // Show 2 testimonials on medium and larger screens
-          spaceBetween: 20,
+          spaceBetween: 0,
         },
       }}
       freeMode={true}

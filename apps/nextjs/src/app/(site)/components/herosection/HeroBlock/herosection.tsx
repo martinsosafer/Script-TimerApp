@@ -46,106 +46,115 @@ export default function HeroSection() {
   return (
     <div>
       <div
-        className={`from-cp-primary relative bg-gradient-to-br to-[#000000] px-6 py-1 ${poppins.className}`}
+        className={`from-cp-primary relative bg-gradient-to-br to-[#000000] px-4 py-8 sm:px-6 lg:px-8 ${poppins.className}`}
       >
-        <div className="grid items-start gap-[82px] px-[200px] md:grid-cols-2">
-          <div className="mt-[68px] h-[414px] ">
-            <RevealText>
-              <h1 className="text-[58px] font-bold leading-[60px] text-white">
-                <span className="text-cyan-300">Automate</span>
-                <br />
-                content <br />
-                production
-              </h1>
-            </RevealText>
-            <RevealText>
-              <p className="mt-4 text-[20px] font-normal leading-[20px] text-white">
-                The tools supported by AI will automate
-                <br /> your creative process: Writing viral posts,
-                <br /> presos, promos, voice overs, images,
-                <br /> and much more.
-              </p>
-            </RevealText>
-            <RevealText>
-              <div className="mt-[17px] flex justify-center">
-                <p className="text-cp-secondary-lightest text-[20px] font-bold leading-[28px]">
-                  What do you want to create?
+        <div className="mx-auto max-w-7xl">
+          <div className="grid items-start gap-8 lg:grid-cols-2 lg:gap-16">
+            <div className="mt-8 lg:mt-16">
+              <RevealText>
+                <h1 className="text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-[58px] lg:leading-[60px]">
+                  <span className="text-cyan-300">Automate</span>
+                  <br />
+                  content <br />
+                  production
+                </h1>
+              </RevealText>
+              <RevealText>
+                <p className="mt-4 text-base font-normal leading-relaxed text-white sm:text-lg lg:text-[20px] lg:leading-[20px]">
+                  The tools supported by AI will automate
+                  <br className="hidden sm:inline" /> your creative process:
+                  Writing viral posts,
+                  <br className="hidden sm:inline" /> presos, promos, voice
+                  overs, images,
+                  <br className="hidden sm:inline" /> and much more.
                 </p>
-              </div>
-            </RevealText>
-          </div>
+              </RevealText>
+              <RevealText>
+                <div className="mt-6 flex justify-center lg:justify-start">
+                  <p className="text-cp-secondary-lightest text-lg font-bold leading-7 sm:text-xl lg:text-[20px] lg:leading-[28px]">
+                    What do you want to create?
+                  </p>
+                </div>
+              </RevealText>
+            </div>
 
-          <MotionTransition className="mt-[60px] flex flex-col justify-center">
-            <button onClick={toggleModal}>
-              <div className="flex flex-col items-center">
-                <div className="relative h-[300px] w-full max-w-[550px]">
-                  <Image
-                    src={HeroImg}
-                    alt="Hero image"
-                    fill
-                    sizes="(max-width: 550px) 100vw, 550px"
-                    className="rounded-lg object-cover"
-                    priority
-                  />
-                </div>
-                <div className="border-cp-secondary mt-[22px] flex w-full items-center justify-center rounded-md border-2">
-                  <span
-                    className="text-cp-secondary flex cursor-pointer items-center py-[13px] text-[16px] font-semibold leading-[22px]"
-                    onClick={toggleModal}
-                  >
-                    Speed your results with this video
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="ml-2 h-4 w-4"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="#F59E0B"
-                      strokeWidth="3"
+            <MotionTransition className="mt-8 flex flex-col items-center justify-center lg:mt-16">
+              <button onClick={toggleModal} className="w-full max-w-[550px]">
+                <div className="flex flex-col items-center">
+                  <div className="relative aspect-video w-full overflow-hidden rounded-lg">
+                    <Image
+                      src={HeroImg}
+                      alt="Hero image"
+                      fill
+                      sizes="(max-width: 550px) 100vw, 550px"
+                      className="object-cover"
+                      priority
+                    />
+                  </div>
+                  <div className="border-cp-secondary mt-4 flex w-full items-center justify-center rounded-md border-2 sm:mt-6">
+                    <span
+                      className="text-cp-secondary flex cursor-pointer items-center py-3 text-sm font-semibold leading-5 sm:py-4 sm:text-base lg:text-[16px] lg:leading-[22px]"
+                      onClick={toggleModal}
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M7 17L17 7M7 7h10v10"
-                      />
-                    </svg>
-                  </span>
+                      Speed your results with this video
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="ml-2 h-4 w-4"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#F59E0B"
+                        strokeWidth="3"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M7 17L17 7M7 7h10v10"
+                        />
+                      </svg>
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </button>
-          </MotionTransition>
+              </button>
+            </MotionTransition>
+          </div>
         </div>
       </div>
 
       <AnimatePresence>
         {isModalOpen && (
           <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center"
+            className="fixed inset-0 z-50 flex items-center justify-center px-4 py-6 sm:p-0"
             initial="hidden"
             animate="visible"
             exit="exit"
             variants={overlayVariants}
           >
-            <motion.div className="fixed inset-0 bg-black bg-opacity-50" />
             <motion.div
-              className="relative h-[80vh] w-[60vw] overflow-hidden rounded-lg bg-gradient-to-br from-[#000000] to-[#0066FF] px-[40px]"
+              className="fixed inset-0 bg-black bg-opacity-50"
+              onClick={toggleModal}
+            />
+            <motion.div
+              className="relative mx-auto w-full max-w-lg overflow-hidden rounded-lg bg-gradient-to-br from-[#000000] to-[#0066FF] sm:max-w-xl md:max-w-2xl lg:max-w-4xl xl:max-w-5xl"
               variants={modalVariants}
               onClick={(e) => e.stopPropagation()}
             >
-              <iframe
-                src="https://player.vimeo.com/video/1020211350?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                className="h-full w-full rounded-lg"
-                allow="autoplay; fullscreen; picture-in-picture"
-                title="Script-Timer Ai Onboarding video"
-              />
+              <div className="relative aspect-video w-full">
+                <iframe
+                  src="https://player.vimeo.com/video/1020211350?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                  className="absolute inset-0 h-full w-full rounded-lg"
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  title="Script-Timer Ai Onboarding video"
+                />
+              </div>
               <motion.button
-                className="absolute right-1 top-1 rounded-full bg-black bg-opacity-50 p-2 text-white"
+                className="absolute right-2 top-2 rounded-full bg-black bg-opacity-50 p-2 text-white sm:right-3 sm:top-3"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={toggleModal}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4"
+                  className="h-4 w-4 sm:h-5 sm:w-5"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"

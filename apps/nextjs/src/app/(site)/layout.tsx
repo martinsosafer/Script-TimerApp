@@ -55,7 +55,7 @@ export default async function Layout(props: { children: React.ReactNode }) {
   console.log("monthly active", monthlySpecials);
 
   return (
-    <div className="flex min-h-screen w-full flex-col justify-between bg-background">
+    <div className="flex h-full w-full flex-col justify-between bg-background">
       <TRPCReactProvider headers={headers()}>
         <Head>
           <meta name="referrer" content="origin" />

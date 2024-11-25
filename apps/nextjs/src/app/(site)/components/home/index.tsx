@@ -11,6 +11,7 @@ import HeroSection from "../herosection/HeroBlock/herosection";
 import MarqueeLogos from "../herosection/MarqueeLogos";
 import ServiceSection from "../herosection/ServicesSection/servicessection";
 import Testimonials from "../herosection/Testimonials/Testimonials";
+import VideoBlock from "../herosection/VideoBlock";
 import NoSessionModal from "../modals/no-session-modal";
 import TrialExpirationModal from "../modals/trial-expiration-modal";
 
@@ -45,7 +46,7 @@ export default function Home({
       <CounterData />
       <GoSections />
       <Testimonials />
-      {/* on home page appear after 15 seconds */}
+      <VideoBlock />
       <FAQAccordion />
       <NoSessionModal
         openModal={openModal}
