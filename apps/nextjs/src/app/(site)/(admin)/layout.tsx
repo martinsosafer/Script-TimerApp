@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import ToolsNavigator from "./admin-navigator";
+import AdminNavigator from "./admin-navigator";
 
 export const metadata: Metadata = {
   title: "Scipt Timer Tools",
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex w-full flex-col items-center">
-      <ToolsNavigator />
+      <AdminNavigator />
       {children}
     </div>
   );
