@@ -32,7 +32,7 @@ export default function MonthlySpecialProvider({
 
   const pageSpecial = monthlySpecials?.find((special) => {
     return (
-      special.pages_display.includes(displayPage) ??
+      special.pages_display.includes(displayPage) ||
       special.pages_display.includes("ALL")
     );
   });
