@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 
@@ -15,26 +15,27 @@ import MotionTransition from "../MotionTransition/MotionTransition";
 export default function GoSection() {
   return (
     <div
-      className={`flex min-h-screen flex-col items-center bg-gradient-to-r from-blue-500 via-blue-600 to-black  text-white ${poppins.className}`}
+      className={`flex min-h-screen flex-col items-center bg-gradient-to-r from-blue-500 via-blue-600 to-black text-white ${poppins.className}`}
     >
-      <MotionTransition className="mt-[60px]">
-        <h1 className="text-cp-secondary-lightest text-center text-[28px] font-normal leading-[33.6px]">
-          It Used To Take Weeks to Deliver Content That Built <br /> an
-          Audience.
-          <span className="text-[28px] font-bold leading-[33.6px]">
+      <MotionTransition className="mt-[60px] sm:mt-[30px]">
+        <h1 className="text-cp-secondary-lightest text-center text-[20px] leading-[24px] sm:text-[28px] sm:leading-[33.6px]">
+          It Used To Take Weeks to Deliver Content That Built{" "}
+          <br className="hidden sm:inline" /> an Audience.
+          <span className="text-[20px] font-bold leading-[24px] sm:text-[28px] sm:leading-[33.6px]">
             {" "}
             No More
           </span>
         </h1>
-        <p className="mt-[40px] justify-center text-center text-[34px] font-bold leading-[40.1px]">
+        <p className="mt-[20px] justify-center text-center text-[24px] font-bold leading-[28px] sm:mt-[40px] sm:text-[34px] sm:leading-[40.1px]">
           Improve your pitch, speeches,
-          <br /> presentations, and video with the best
-          <br />
+          <br className="hidden sm:inline" /> presentations, and video with the
+          best
+          <br className="hidden sm:inline" />
           writers, voices, and AI available.
         </p>
       </MotionTransition>
 
-      <div className="mx-auto mb-[60px] mt-[60px] max-w-6xl space-y-[32px]">
+      <div className="mx-auto mb-[30px] mt-[30px] max-w-6xl space-y-[16px] sm:mb-[60px] sm:mt-[60px] sm:space-y-[32px]">
         <Section
           title="Text to Voice"
           description="Tailor-made voices, celebrity sound alike, cloning, translating: Deliver your best."
@@ -63,14 +64,27 @@ export default function GoSection() {
     </div>
   );
 }
+
 function Section({ title, description, imageUrl, imagePosition }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, threshold: 0.1 });
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 640);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const sectionVariants = {
     hidden: {
       opacity: 0,
-      x: imagePosition === "left" ? -100 : 100, // Slide in from left or right
+      x: imagePosition === "left" ? -100 : 100,
     },
     visible: {
       opacity: 1,
@@ -81,26 +95,26 @@ function Section({ title, description, imageUrl, imagePosition }) {
   return (
     <motion.div
       ref={ref}
-      className={`${poppins.className} mx-auto flex h-[340px] w-[862px] flex-col ${
+      className={`${poppins.className} mx-auto flex h-auto w-full flex-col sm:w-[862px] ${
         imagePosition === "left"
-          ? "ml-20 md:flex-row-reverse"
-          : "mr-20 md:flex-row"
-      } items-center justify-between gap-12 rounded-2xl border border-blue-500 bg-white p-6 shadow-lg`}
+          ? "sm:ml-20 sm:flex-row-reverse"
+          : "sm:mr-20 sm:flex-row"
+      } items-center justify-between gap-6 rounded-2xl border border-blue-500 bg-white p-4 shadow-lg sm:gap-12 sm:p-6`}
       initial="hidden"
-      animate={isInView ? "visible" : "hidden"}
+      animate={isInView && !isMobile ? "visible" : "hidden"}
       variants={sectionVariants}
       transition={{ duration: 0.8, delay: 0.5 }}
     >
       <div
-        className={`flex-1 space-y-6 pl-[69px] ${
-          imagePosition === "left" ? "ml-16" : "mr-16"
+        className={`flex-1 space-y-3 sm:space-y-6 sm:pl-[69px] ${
+          imagePosition === "left" ? "sm:ml-16" : "sm:mr-16"
         }`}
       >
-        <div className="flex items-center gap-6  ">
-          <span className="bg-cp-secondary flex h-10 w-10 items-center justify-center rounded-full font-bold text-white">
+        <div className="flex items-center gap-3 sm:gap-6">
+          <span className="bg-cp-secondary flex h-8 w-8 items-center justify-center rounded-full font-bold text-white sm:h-10 sm:w-10">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="ml-2 h-4 w-4"
+              className="ml-2 h-3 w-3 sm:h-4 sm:w-4"
               viewBox="0 0 24 24"
               fill="none"
               stroke="#FFFFFF"
@@ -113,16 +127,16 @@ function Section({ title, description, imageUrl, imagePosition }) {
               />
             </svg>
           </span>
-          <h2 className="text-cp-primary text-[34px] font-bold leading-[41px]">
+          <h2 className="text-cp-primary text-[24px] font-bold leading-[28px] sm:text-[34px] sm:leading-[41px]">
             {title}
           </h2>
         </div>
-        <p className="text-cp-primary text-[20px] font-normal leading-[28px]">
+        <p className="text-cp-primary text-[16px] font-normal leading-[22px] sm:text-[20px] sm:leading-[28px]">
           {description}
         </p>
       </div>
 
-      <div className="flex h-[250px] w-[250px] items-center justify-center rounded-lg bg-white p-2">
+      <div className="flex h-[200px] w-[200px] items-center justify-center rounded-lg bg-white p-2 sm:h-[250px] sm:w-[250px]">
         <div className="relative h-full w-full overflow-hidden rounded-md">
           <Image
             src={imageUrl}

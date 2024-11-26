@@ -12,16 +12,16 @@ export default function CounterData() {
 
   useEffect(() => {
     const options = {
-      root: null,
-      rootMargin: "0px",
-      threshold: 0.5,
+      root: null, // Use the viewport as the root
+      rootMargin: "0px", // No margin
+      threshold: 0.5, // 50% visibility needed to trigger
     };
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          observer.unobserve(entry.target);
+          observer.unobserve(entry.target); // Stop observing once visible
         }
       });
     }, options);
@@ -38,25 +38,25 @@ export default function CounterData() {
   }, []);
 
   return (
-    <div className="w-full bg-[#F5F5F7]">
-      <MotionTransition className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 md:py-20 lg:px-8">
-        <div className="grid grid-cols-1 gap-6 rounded-2xl bg-white p-6 shadow-md transition-shadow hover:shadow-lg sm:grid-cols-2 lg:grid-cols-4">
+    <div className="h-full w-full bg-[#F5F5F7]">
+      <MotionTransition className="mx-[248px] max-w-5xl bg-white py-20 max-sm:mx-4 max-sm:py-10">
+        <div className="justify-between rounded-2xl shadow-md transition-shadow hover:shadow-lg max-sm:flex-col max-sm:space-y-6 md:flex">
           {counterNumbers.map(({ id, startNumber, endNumber, text }) => (
             <div
               key={id}
-              className="flex flex-col items-center justify-center rounded-lg px-4 py-6 text-center font-poppins"
+              className="flex flex-col items-center justify-center rounded-lg px-7 py-7 text-center font-poppins text-2xl font-bold text-black max-sm:px-4 max-sm:py-4 max-sm:text-xl md:text-left"
               ref={counterRef}
             >
               {isVisible && (
+                // Render count-up only when visible
                 <>
                   <CountUp
                     start={startNumber}
                     end={endNumber}
                     duration={4}
                     enableScrollSpy
-                    className="text-2xl font-bold text-black sm:text-3xl md:text-4xl"
                   />
-                  <span className="mt-2 text-sm font-bold text-tertiary sm:text-base md:text-lg">
+                  <span className="text-lg font-bold text-tertiary max-sm:text-base">
                     {text}
                   </span>
                 </>
