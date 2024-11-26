@@ -4,11 +4,11 @@ import { usePathname, useRouter } from "next/navigation";
 
 import Tabs from "../../components/tabs";
 
-export default function ToolsNavigator() {
+export default function AdminNavigator() {
   const pathname = usePathname();
   const router = useRouter();
 
-  const tools = [
+  const adminPages = [
     {
       label: "Users",
       active: pathname === "/admin",
@@ -38,7 +38,7 @@ export default function ToolsNavigator() {
 
   return (
     <div className="my-10 flex items-center justify-center gap-4">
-      <Tabs options={tools} />
+      <Tabs options={adminPages} />
     </div>
   );
 }

@@ -1,7 +1,4 @@
-import type { Dispatch, SetStateAction } from "react";
-import { set } from "zod";
-
-import { getLyWords } from "./grade-level/grader/utils";
+import { getComplexWords } from "./grade-level/grader/utils";
 
 function getRandomCheer() {
   const cheers = [
@@ -247,21 +244,95 @@ export function calculateLevel(
   return level < 0 ? 0 : level;
 }
 
+const preWords = ["is", "are", "was", "were", "be", "been", "being"];
+
 export function getAdverbs(text: string) {
   const paragraphs = text.split("\n");
 
-  let counter = 0;
+  let adverbs = 0;
+  let passiveVoice = 0;
+  let hardSentences = 0;
+  let veryHardSentences = 0;
+  let simplifyWords = 0;
+  let passivePreWordIndex: number;
+  const newParagraphs = paragraphs.map((paragraph) => {
+    const sentences = paragraph.split(".").map((sentence) => {
+      const simplify = Object.keys(getComplexWords).find((word) => {
+        if (sentence.includes(word)) return word;
+      });
+      const words = sentence.split(/\s+/);
+      const letters = sentence.replace(/[\s.]/g, "").length;
+      const level = calculateLevel(letters, words.length, 1);
+      if (words.length < 14) {
+        let changedPassive;
+        const newWords = words.map((word, idx) => {
+          const preIndex: number = idx - 1;
+          if (
+            word.endsWith("ed") &&
+            preIndex >= 0 &&
+            preWords.includes(words[preIndex]!)
+          ) {
+            passivePreWordIndex = preIndex;
+            passiveVoice++;
+            changedPassive = `${words[passivePreWordIndex]}-*-${word}::passive`;
+            return changedPassive;
+          }
+          if (word.endsWith("ly")) {
+            adverbs++;
+            return `${word}::adverb`;
+          }
+          return word;
+        });
+        if (changedPassive) {
+          newWords.splice(passivePreWordIndex, 1);
+          return newWords.join(" ");
+        }
+        if (simplify) {
+          simplifyWords++;
+          const joined = simplify.replace(" ", "-*-");
+          const newSentence = sentence.replace(
+            simplify,
+            `::simplify-*-${joined}`,
+          );
+          console.log("joined", newSentence);
+          return newSentence;
+        }
+        return newWords.join(" ");
+      }
+      if (level >= 10 && level < 14) {
+        hardSentences++;
+        return `::hard-*-${sentence}`;
+      }
+      if (level >= 14) {
+        veryHardSentences++;
+        return `::veryHard-*-${sentence}`;
+      }
+    });
+    return sentences.join(". ");
+  });
+  return {
+    adverbsText: newParagraphs.join("\n"),
+    adverbs,
+    passiveVoice,
+    hardSentences,
+    veryHardSentences,
+    simplifyWords,
+  };
+}
+
+export function getPassiveVoice(text: string) {
+  const paragraphs = text.split("\n");
+
   const newParagraphs = paragraphs.map((paragraph) => {
     const newWords = paragraph.split(/\s+/).map((word) => {
       if (word.endsWith("ly")) {
-        counter++;
         return `${word}::adverb`;
       }
       return word;
     });
     return newWords.join(" ");
   });
-  return { adverbsText: newParagraphs.join("\n"), counter };
+  return { adverbsText: newParagraphs.join("\n") };
 }
 
 function checkWords(words: string[]) {
@@ -286,45 +357,3 @@ export function getPassive(text: string) {
   });
   return { adverbsText: newParagraphs.join("\n") };
 }
-
-// export function getDifficultSentences(text: string) {
-//   // Assuming `data` is a global object
-//   let charactersCount = text.length;
-
-//   const sentences = getSentenceFromParagraph(p + " ");
-//   data.sentences += sentences.length;
-
-//   const hardOrNot = sentences.map(sent => {
-//     // Clean the sentence
-//     let cleanSentence = sent.replace(/[^a-z0-9. ]/gi, "") + ".";
-//     cleanSentence = cleanSentence.replace(/\s+/g, " ").trim();
-
-//     const words = cleanSentence.replace(".", "").split(" ").length;
-//     const letters = cleanSentence.replace(/[\s.]/g, "").length;
-
-//     data.letters += letters;
-//     data.words += words;
-
-//     // Process the sentence
-//     sent = getAdverbs(sent);
-//     sent = getComplex(sent);
-//     sent = getPassive(sent);
-//     sent = getQualifier(sent);
-
-//     const level = calculateLevel(letters, words, 1);
-
-//     if (words < 14) {
-//       return sent;
-//     } else if (level >= 10 && level < 14) {
-//       data.hardSentences += 1;
-//       return `<span class="hardSentence">${sent}</span>`;
-//     } else if (level >= 14) {
-//       data.veryHardSentences += 1;
-//       return `<span class="veryHardSentence">${sent}</span>`;
-//     } else {
-//       return sent;
-//     }
-//   });
-
-//   return hardOrNot.join(" ");
-// }

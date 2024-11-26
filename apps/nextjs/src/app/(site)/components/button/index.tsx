@@ -1,28 +1,37 @@
+import type { SVGProps } from "react";
+
+import { poppins } from "~/app/fonts";
+
 interface ButtonProps {
   label: string;
   type: "primary" | "secondary" | "accent";
   onClick: () => void;
-  icon?: React.ReactNode;
+  icon?: ({
+    className,
+    ...props
+  }: SVGProps<SVGSVGElement>) => React.JSX.Element;
   fit?: boolean;
   hight?: string;
   disabled?: boolean;
   className?: string; // Add className prop here
 }
 
+const defaultStyle = `${poppins.className} rounded-md py-[12px] px-[24px] flex items-center justify-center text-center text-[16px] font-semibold`;
+
 const style: Record<string, string> = {
   primary:
-    "bg-cp-primary rounded-md py-[12px] px-[24px] text-white flex items-center justify-center text-center text-[16px] font-medium hover:bg-cp-primary/80 hover:shadow-md transition-all duration-300 disabled:bg-cp-primary/50 disabled:cursor-default",
+    "bg-cp-primary text-white f hover:bg-cp-primary/80 hover:shadow-md transition-all duration-300 disabled:bg-cp-primary/50 disabled:cursor-default",
   secondary:
-    "bg-white border-2 border-cp-primary text-cp-primary rounded-md py-[12px] px-[24px] flex items-center justify-center text-center text-[16px] font-medium hover:border-cp-primary/80 hover:text-cp-primary/80 hover:shadow-md transition-all duration-300 disabled:border-cp-primary/50 disabled:text-cp-primary/50 disabled:cursor-default",
+    "bg-white border-2 border-cp-primary text-cp-primary hover:border-cp-primary/80 hover:text-cp-primary/80 hover:shadow-md transition-all duration-300 disabled:border-cp-primary/50 disabled:text-cp-primary/50 disabled:cursor-default",
   accent:
-    "bg-cp-secondary rounded-md py-[12px] px-[24px] text-white flex items-center text-center justify-center text-[16px] font-medium hover:bg-cp-secondary-light hover:shadow-md transition-all duration-300 disabled:bg-cp-secondary-lightest disabled:cursor-default disabled:hover:shadow-none",
+    "bg-cp-secondary text-white hover:bg-cp-secondary-light hover:shadow-md transition-all duration-300 disabled:bg-cp-secondary-lightest disabled:cursor-default disabled:hover:shadow-none",
 };
 
 export default function Button({
   label,
   type,
   onClick,
-  icon,
+  icon: Icon,
   fit = false,
   hight = "h-[48px]",
   disabled = false,
@@ -30,11 +39,16 @@ export default function Button({
 }: ButtonProps) {
   return (
     <button
-      className={`${style[type]} ${fit ? "w-full" : ""} ${hight} ${className}`}
+      className={`${defaultStyle} ${style[type]} ${fit ? "w-full" : ""} ${hight} ${className}`}
       onClick={onClick}
       disabled={disabled}
     >
-      {label} {icon}
+      {label}{" "}
+      {Icon && (
+        <Icon
+          className={`ml-2 h-[20px] w-[20px] ${type === "secondary" ? "text-cp-primary" : "text-white"}`}
+        />
+      )}
     </button>
   );
 }
