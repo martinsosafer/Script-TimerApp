@@ -2,15 +2,16 @@
 
 import type { FormEvent } from "react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 import NoSessionModal from "../../components/modals/no-session-modal";
-import ModeSelector from "../../components/mode-selector";
 import PercentageBar from "../../components/percentage-bar";
 import Tabs from "../../components/tabs";
 import { consumedCreditsWarning, transformResults } from "./utils";
+import type { Results } from "./utils";
 
 interface CheckerProps {
   userId: string | undefined;
@@ -19,11 +20,12 @@ interface CheckerProps {
 
 export interface CheckResult {
   scannedDocument: { actualCredits: number };
-  results: { probability: number; classification: number }[];
+  results: Results[];
   summary: { ai: number };
 }
 
 export default function AiChecker({ userId, credits }: CheckerProps) {
+  const router = useRouter();
   const [aiCheckResult, setAiCheckResult] = useState<CheckResult | null>(null);
 
   const [loading, setLoading] = useState(false);
@@ -92,7 +94,7 @@ export default function AiChecker({ userId, credits }: CheckerProps) {
       label: "Plagiarism Scan",
       active: false,
       action: () => {
-        window.location.href = "/plagiarism-detector";
+        router.push("/plagiarism-detector");
       },
     },
   ];
