@@ -13,7 +13,7 @@ export default function DemoHero() {
       {/* Left section */}
       <div className="relative flex h-full flex-col items-start justify-center pb-[160px] pt-[160px]">
         <div className="w-full">
-          <div className="flex flex-col pl-[200px] pr-[81px]">
+          <div className="flex flex-col pl-[180px] pr-[60px]">
             <div className={`text-start ${poppins.className}`}>
               <p className="text-cp-primary mb-[20px] text-[24px] font-bold leading-[34px]">
                 You're not just creating content.
@@ -42,7 +42,7 @@ export default function DemoHero() {
 
       {/* Right section - AnimatedGifs */}
       <div className="hidden h-full min-h-screen w-full items-center justify-center lg:block">
-        <AnimatedGifs marginTop={70} />
+        <AnimatedGifs marginTop={-25} />
       </div>
     </div>
   );
