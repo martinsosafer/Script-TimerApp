@@ -19,7 +19,7 @@ export default function DemoHero() {
                 You're not just creating content.
               </p>
               <h1 className="text-cp-primary text-[58px] font-bold leading-[70px]">
-                You're creating{" "}
+                You're creating <br />
                 <span className="text-cp-secondary">an experience</span>.
               </h1>
               <p className="text-cp-primary mt-[31px] text-[20px] font-normal leading-[28px]">
