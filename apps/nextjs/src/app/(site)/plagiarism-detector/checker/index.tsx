@@ -2,6 +2,7 @@
 
 import type { FormEvent } from "react";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
@@ -11,7 +12,6 @@ import type { PlagiarismPayload } from "~/app/api/webhook/plagiarism-result/[sta
 import { pusherClient } from "~/lib/pusher";
 import EditScanTitleModal from "../../components/modals/edit-scan-title";
 import NoSessionModal from "../../components/modals/no-session-modal";
-import ModeSelector from "../../components/mode-selector";
 import PercentageBar from "../../components/percentage-bar";
 import Tabs from "../../components/tabs";
 import { addContentToScan } from "../actions";
@@ -31,6 +31,7 @@ export interface CheckResult {
 }
 
 export default function Checker({ userId, scans, credits }: CheckerProps) {
+  const router = useRouter();
   const [scansHistory, setScansHistory] = useState<PlagiarismPayload[] | []>(
     scans,
   );
@@ -121,7 +122,7 @@ export default function Checker({ userId, scans, credits }: CheckerProps) {
       label: "AI Scan",
       active: false,
       action: () => {
-        window.location.href = "/ai-detector";
+        router.push("/ai-detector");
       },
     },
     {
@@ -138,7 +139,7 @@ export default function Checker({ userId, scans, credits }: CheckerProps) {
       <div className="mb-10 flex w-[1024px] flex-col items-center">
         {/* <ModeSelector aiCheck={false} /> */}
         <Tabs options={options} />
-        <div className="mt-10 flex h-[580px] w-full gap-2">
+        <div className="mt-10 flex w-full gap-2">
           <ScansHistory
             scanHistory={scansHistory}
             setScansHistory={setScansHistory}

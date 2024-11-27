@@ -4,6 +4,7 @@ import { Poppins, Roboto } from "next/font/google";
 
 
 import { PageAnalytics } from "./analytics";
+import { ContextWrapper } from "./context/state";
 import GoogleAnalytics from "./GoogleAnalytics";
 
 
@@ -56,6 +57,7 @@ export const metadata: Metadata = {
 };
 
 export default function Layout(props: { children: React.ReactNode }) {
+  const { children } = props;
   return (
     <html lang="en" className="h-full">
       <GoogleAnalytics />
@@ -69,7 +71,7 @@ export default function Layout(props: { children: React.ReactNode }) {
           roboto.variable,
         ].join(" ")}
       >
-        {props.children}
+        <ContextWrapper>{children}</ContextWrapper>
         <Squid />
       </body>
 
