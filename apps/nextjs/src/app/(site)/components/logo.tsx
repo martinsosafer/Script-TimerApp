@@ -1,22 +1,40 @@
 import React from "react";
 
-const Logo = ({ className = "" }) => {
+import { poppins } from "~/app/fonts";
+
+const Logo = ({
+  className = "",
+  coColor = "black",
+  producerColor = "primary",
+}) => {
   return (
-    <div className={`flex items-center `}>
-      <span className="font-poppins text-5xl font-bold text-black">
-        C
-        <span className="relative -top-[5px] font-poppins text-4xl  font-bold">
-          o
+    <div className="flex flex-col items-start">
+      <div className={`flex items-center ${poppins.className}`}>
+        <span className={`font-poppins text-5xl font-bold text-${coColor}`}>
+          C
+          <span
+            className={`relative -top-[5px] font-poppins text-4xl font-bold text-whitetext-${coColor}`}
+          >
+            o
+          </span>
         </span>
-        {/* Move "o" a bit higher */}
-      </span>
-      <span className="mx-1 text-black">-</span>
-      <span className="font-poppins text-5xl font-bold text-primary">P</span>
-      <span className="relative -top-[2.5px] font-poppins text-4xl font-bold text-primary">
-        roducer
+        <span className="mx-1 text-black">-</span>
+        <span
+          className={`font-poppins text-5xl font-bold text-${producerColor}`}
+        >
+          P
+        </span>
+        <span
+          className={`relative -top-[2.5px] font-poppins text-4xl font-bold text-${producerColor}`}
+        >
+          roducer
+        </span>
+      </div>
+      <span className="-mt-1 w-full text-right font-poppins  text-sm font-medium text-white">
+        Created by Script-Timer
       </span>
     </div>
   );
 };
-// this is not updating
+
 export default Logo;
