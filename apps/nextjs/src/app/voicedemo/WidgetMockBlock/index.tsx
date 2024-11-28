@@ -16,7 +16,7 @@ export default function MockUpBlock() {
             Create the highest <br /> quality scripts, voice <br /> overs and
             images
           </h2>
-          <p className="text-[24px] font-bold leading-[34px] text-black">
+          <p className="text-cp-primary text-[24px] font-bold leading-[34px]">
             This is your home for content. Explore <br /> what's inside
           </p>
         </div>

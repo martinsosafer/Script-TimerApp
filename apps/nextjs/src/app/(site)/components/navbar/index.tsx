@@ -62,9 +62,6 @@ export default function NewNavBar({ signOut, signIn, session }: NavBarProps) {
             {/* Main title */}
             <Logo coColor="white" producerColor="black" />
             {/* Subtitle positioned directly below the main title */}
-            <span className="text-left text-sm text-white">
-              Created by Script-Timer
-            </span>
           </div>
         </RevealText>
       </Link>
