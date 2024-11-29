@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 
-import { Button } from "@voiceai/ui";
 import { Card } from "@voiceai/ui/@/components/ui/card";
+import { ClapperboardIcon } from "@voiceai/ui/@/components/ui/icons";
+
+import Button from "~/app/(site)/components/button";
+import { roboto } from "~/app/fonts";
 
 export default function ScriptAiMock() {
   const [selectedStyle, setSelectedStyle] = useState("");
@@ -9,7 +12,7 @@ export default function ScriptAiMock() {
   const [isTyping, setIsTyping] = useState(false);
 
   const baseText =
-    "Thank you for having me today. It's an honor to be here with you. My name is Sofia, and, I want to start today with a story about a girl that grew up in Kansas…";
+    "Can you help me deliver a better speech? This is my opening:<br />Thank you for having me today. It's an honor to be here with you. My name is Sofia and I want to start today with a story about a girl that grew up in Kansas…";
 
   const storyStyles = {
     "Ted Talk":
@@ -23,45 +26,75 @@ export default function ScriptAiMock() {
   useEffect(() => {
     if (selectedStyle && !isTyping) {
       setIsTyping(true);
-      setDisplayText("");
-      let i = 0;
-      const intervalId = setInterval(() => {
-        setDisplayText((prev) => prev + storyStyles[selectedStyle][i]);
-        i++;
-        if (i === storyStyles[selectedStyle].length) {
-          clearInterval(intervalId);
+      setDisplayText(""); // Clear the display text initially
+
+      // Use the full text for the selected style
+      const fullText = storyStyles[selectedStyle];
+
+      // Use a different approach to typing
+      let currentText = "";
+      let index = 0;
+
+      const typeCharacter = () => {
+        if (index < fullText.length) {
+          currentText += fullText[index];
+          setDisplayText(currentText);
+          index++;
+
+          // Use setTimeout instead of setInterval for more precise control
+          setTimeout(typeCharacter, 20);
+        } else {
           setIsTyping(false);
         }
-      }, 20);
-      return () => clearInterval(intervalId);
+      };
+
+      // Start typing
+      typeCharacter();
+
+      // Cleanup function
+      return () => {
+        setIsTyping(false);
+      };
     }
   }, [selectedStyle]);
 
   return (
-    <Card className="mx-auto max-w-2xl p-6">
-      <h2 className="mb-4 text-2xl font-bold">Story Rewrite Widget</h2>
-      <p className="mb-4">{baseText}</p>
-      <div className="mb-4 flex space-x-4">
-        <Button
-          onClick={() => setSelectedStyle("Ted Talk")}
-          disabled={isTyping}
-        >
-          Ted Talk Style
-        </Button>
-        <Button onClick={() => setSelectedStyle("Novel")} disabled={isTyping}>
-          Novel Style
-        </Button>
-        <Button
-          onClick={() => setSelectedStyle("Blog Post")}
-          disabled={isTyping}
-        >
-          Blog Post Style
-        </Button>
+    <div style={{ minHeight: "250px" }}>
+      <h3 className="text-[14px] font-normal leading-[19.6px]">
+        In the app, enter your text here. This is our sample:
+      </h3>
+      <Card className=" mb-4 mt-2 h-[94px] w-[860px] rounded-lg border border-slate-300 bg-white">
+        <p
+          className="px-[24px] py-[14px]"
+          dangerouslySetInnerHTML={{ __html: baseText }}
+        ></p>
+      </Card>
+      <h4 className="text-[14px] font-normal leading-[20px]">
+        Choose a style for this rewrite:
+      </h4>
+      <div className="mb-4 mt-2 flex space-x-4">
+        {Object.keys(storyStyles).map((style) => (
+          <Button
+            key={style}
+            onClick={() => setSelectedStyle(style)}
+            label={`${style} Style`}
+            className={`border-cp-primary rounded-full border px-4 py-4 ${roboto.className} text-sm font-normal ${
+              selectedStyle === style
+                ? "bg-cp-primary text-white"
+                : "bg-white text-black"
+            }`}
+            disabled={isTyping}
+            type="custom"
+            icon={ClapperboardIcon}
+            iconPosition="left"
+            iconColor={`${selectedStyle === style ? "#FFCB7F" : "#0066FF"}`}
+          />
+        ))}
       </div>
-      <Card className="h-48 overflow-y-auto p-4">
-        <p>{displayText}</p>
+      <Card className="mt-3 h-[120px] w-[860px] rounded-lg border border-slate-300 bg-white">
+        <p className="px-[24px] py-[14px]">{displayText}</p>
         {isTyping && <span className="animate-pulse">|</span>}
       </Card>
-    </Card>
+    </div>
   );
 }

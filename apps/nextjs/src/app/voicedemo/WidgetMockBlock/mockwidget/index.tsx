@@ -51,7 +51,9 @@ export default function VoiceGeneratorMockup() {
   ];
 
   return (
-    <div className="mx-auto flex h-[640px] w-[944px] flex-col items-center rounded-lg bg-white shadow-lg">
+    <div
+      className={`mx-auto flex ${activeTab === "Check for Plagiarism" ? "h-[926px]" : "h-[640px]"} w-[944px] flex-col items-center rounded-lg bg-[#F5F5F7] shadow-lg`}
+    >
       <div className="h-[610px] w-[860px]">
         <div className="mb-3 w-[780px] border-b  ">
           <div className="mt-10 flex w-[800px] justify-center  space-x-10  ">
@@ -128,7 +130,9 @@ export default function VoiceGeneratorMockup() {
             </motion.div>
           </div>
         </AnimatePresence>
-        <div className="mt-10 flex items-end justify-end">
+        <div
+          className={`mt-${activeTab === "Create Images" ? "2" : "10"} flex items-end justify-end`}
+        >
           <Link href="/register">
             <Button
               type="accent"

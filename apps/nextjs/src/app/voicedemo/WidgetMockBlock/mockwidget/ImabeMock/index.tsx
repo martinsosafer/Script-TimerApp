@@ -1,9 +1,17 @@
+"use client";
+
 import React, { useState } from "react";
 import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { Button } from "@voiceai/ui";
 import { Card } from "@voiceai/ui/@/components/ui/card";
+import {
+  FileImageIcon,
+  IconArrowLeft,
+} from "@voiceai/ui/@/components/ui/icons";
 
+import { roboto } from "~/app/fonts";
 // Importing images
 import PulpFictionImg1 from "./images/Plup Fiction single shot.png";
 import PulpFictionImg2 from "./images/storyboard pulp fiction 1.png";
@@ -14,6 +22,7 @@ export default function ImageGenerationMock() {
   const [selectedPrompt, setSelectedPrompt] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [images, setImages] = useState<any[]>([]);
+  const [showImages, setShowImages] = useState(false);
 
   // Mapping of prompts to imported image variables
   const imageMapping = {
@@ -29,48 +38,114 @@ export default function ImageGenerationMock() {
     setSelectedPrompt(prompt);
     setIsLoading(true);
     setImages([]);
+    setShowImages(false);
 
     // Simulate image generation loading
     setTimeout(() => {
       setIsLoading(false);
       setImages(imageMapping[prompt] || []);
+      setShowImages(true);
     }, 1000); // Reduced timeout for faster testing
   };
 
+  const handleGoBack = () => {
+    setSelectedPrompt("");
+    setImages([]);
+    setShowImages(false);
+  };
+
   return (
-    <Card className="mx-auto max-w-4xl p-6">
-      <h2 className="mb-4 text-2xl font-bold">Image Generation Widget</h2>
-      <div className="mb-6 space-y-4">
-        {Object.keys(imageMapping).map((prompt, index) => (
-          <Button
-            key={index}
-            onClick={() => handlePromptClick(prompt)}
-            className="h-auto w-full whitespace-normal text-left"
-            disabled={isLoading}
+    <div style={{ minHeight: "250px" }}>
+      <h3 className="mb-4 text-[14px] font-normal leading-[19.6px] ">
+        In the app, enter your text here. This is our sample:
+      </h3>
+
+      <AnimatePresence>
+        {!selectedPrompt && (
+          <motion.div
+            className="space-y-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
           >
-            {prompt}
-          </Button>
-        ))}
-      </div>
+            {Object.keys(imageMapping).map((prompt, index) => (
+              <Card
+                key={index}
+                onClick={() => handlePromptClick(prompt)}
+                className={`border-cp-primary cursor-pointer border p-4 ${
+                  selectedPrompt === prompt
+                    ? "bg-cp-primary text-white"
+                    : "bg-white text-black"
+                } hover:bg-cp-primary transition-all hover:text-white ${
+                  roboto.className
+                } text-sm font-normal`}
+              >
+                <div className="flex items-center">
+                  <FileImageIcon
+                    className="mr-2"
+                    color={selectedPrompt === prompt ? "#FFCB7F" : "#0066FF"}
+                  />
+                  <span>{prompt}</span>
+                </div>
+              </Card>
+            ))}
+          </motion.div>
+        )}
+
+        {selectedPrompt && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="mb-4"
+          >
+            <Card className="border-cp-primary bg-cp-primary border p-4 text-white">
+              <div className="flex items-center">
+                <FileImageIcon className="mr-2" color="#FFCB7F" />
+                <span>{selectedPrompt}</span>
+              </div>
+            </Card>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {isLoading && (
-        <div className="flex h-64 items-center justify-center">
+        <div className="flex h-[180px] items-center justify-center">
           <div className="loader"></div>
         </div>
       )}
-      {!isLoading && images.length > 0 && (
-        <div className="grid grid-cols-2 gap-4">
-          {images.map((image, index) => (
-            <Image
-              key={index}
-              src={image}
-              alt={`Generated image ${index + 1}`}
-              width={400}
-              height={300}
-              className="rounded-lg shadow-md"
-            />
-          ))}
-        </div>
-      )}
+
+      <AnimatePresence>
+        {!isLoading && showImages && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="space-y-4"
+          >
+            <div className="grid h-[210px] grid-cols-2 gap-4">
+              {images.map((image, index) => (
+                <Card
+                  key={index}
+                  className="overflow-hidden rounded-lg border-slate-200 shadow-md"
+                >
+                  <Image
+                    src={image}
+                    alt={`Generated image ${index + 1}`}
+                    width={400}
+                    height={300}
+                    className="object-cover"
+                  />
+                </Card>
+              ))}
+            </div>
+            <Button onClick={handleGoBack} className="w-full">
+              <IconArrowLeft className="mr-2 h-4 w-4" /> Try other Prompt
+            </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <style jsx>{`
         .loader {
           border: 5px solid #f3f3f3;
@@ -89,6 +164,6 @@ export default function ImageGenerationMock() {
           }
         }
       `}</style>
-    </Card>
+    </div>
   );
 }

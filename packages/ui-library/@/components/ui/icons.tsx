@@ -2189,6 +2189,55 @@ function TalkIcon({ color = "#0066FF", className, ...props }: TalkIconProps) {
     </svg>
   );
 }
+interface ClapperboardIconProps extends React.ComponentProps<"svg"> {
+  color?: string; // New prop for color
+}
+
+function ClapperboardIcon({
+  color = "currentColor", // Default color
+  className,
+  ...props
+}: ClapperboardIconProps) {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color} // Use dynamic color
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={`h-4 w-4 ${className}`}
+      {...props}
+    >
+      <path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3Z" />
+      <path d="m6.2 5.3 3.1 3.9" />
+      <path d="m12.4 3.4 3.1 4" />
+      <path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" />
+    </svg>
+  );
+}
+function IconArrowLeft({ className, ...props }: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cn("lucide lucide-arrow-left", className)}
+      {...props}
+    >
+      <path d="m12 19-7-7 7-7" />
+      <path d="M19 12H5" />
+    </svg>
+  );
+}
 
 export {
   IconEdit,
@@ -2283,4 +2332,6 @@ export {
   IconPocketKnife,
   IconCrowm,
   TalkIcon,
+  ClapperboardIcon,
+  IconArrowLeft,
 };

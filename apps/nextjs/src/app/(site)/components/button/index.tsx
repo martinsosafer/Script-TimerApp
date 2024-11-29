@@ -16,7 +16,7 @@ interface ButtonProps {
   className?: string;
 }
 
-const defaultStyle = `${poppins.className} rounded-md py-[12px] px-[24px] flex items-center justify-center text-center text-[16px] font-semibold`;
+const defaultStyle = `${poppins.className} rounded-md py-[12px] px-[24px] flex items-center justify-center text-center text-[16px]`;
 
 const style: Record<string, string> = {
   primary:
@@ -42,10 +42,11 @@ export default function Button({
   className = "",
 }: ButtonProps) {
   const appliedIconColor = type === "custom" && iconColor ? iconColor : "";
+  const fontWeight = type !== "custom" ? "font-semibold" : "";
 
   return (
     <button
-      className={`${defaultStyle} ${style[type]} ${fit ? "w-full" : width} ${hight} ${className}`}
+      className={`${defaultStyle} ${fontWeight} ${style[type]} ${fit ? "w-full" : width} ${hight} ${className}`}
       onClick={onClick}
       disabled={disabled}
     >

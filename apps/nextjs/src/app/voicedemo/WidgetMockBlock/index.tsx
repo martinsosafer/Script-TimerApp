@@ -6,7 +6,7 @@ import VoiceGeneratorMockup from "./mockwidget";
 
 export default function MockUpBlock() {
   return (
-    <div className="h-[1140px] w-full bg-gradient-to-t from-[#0066FF] via-[#55a0e2] to-[#125FF133]">
+    <div className="h-full w-full bg-gradient-to-t from-[#0066FF] via-[#55a0e2] to-[#125FF133]">
       <div
         className={`flex flex-row items-center justify-center ${poppins.className}`}
       >
@@ -32,7 +32,7 @@ export default function MockUpBlock() {
           />
         </div>
       </div>
-      <div>
+      <div className=" pb-[160px]">
         <VoiceGeneratorMockup />
       </div>
     </div>

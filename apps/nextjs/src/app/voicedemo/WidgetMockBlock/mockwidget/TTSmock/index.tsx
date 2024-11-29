@@ -15,6 +15,7 @@ import {
 } from "@voiceai/ui/@/components/ui/select";
 
 import Button from "~/app/(site)/components/button";
+import { roboto } from "~/app/fonts";
 
 // Adjust path as needed
 
@@ -42,7 +43,7 @@ const TTSMock = ({
         {tasks.map((task) => (
           <Button
             label={task}
-            className={`border-cp-primary rounded-full border px-4 py-4 font-roboto text-sm font-normal ${
+            className={`border-cp-primary rounded-full border px-4 py-4 ${roboto.className} text-sm font-normal ${
               selectedTask === task
                 ? "bg-cp-primary text-white"
                 : "bg-white text-black"
@@ -103,7 +104,6 @@ const TTSMock = ({
             icon={Play}
             iconPosition="right"
             label="Play"
-            iconColor=""
           />
         </div>
       </div>
