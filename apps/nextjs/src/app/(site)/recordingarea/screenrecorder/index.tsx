@@ -1,68 +1,192 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import Draggable from "react-draggable";
 import { useReactMediaRecorder } from "react-media-recorder";
 import Webcam from "react-webcam";
 
-import { useCountdown } from "~/app/hooks/useCountDown";
+import { Button } from "@voiceai/ui";
+import {
+  IconCameraVideo,
+  IconCircleStop,
+  IconSilence,
+  IconStop,
+} from "@voiceai/ui/@/components/ui/icons";
+import { PlayIcon } from "@voiceai/ui/@/icons/icons";
 
-const ScreenRecorder = () => {
+declare global {
+  interface Window {
+    webkitSpeechRecognition: any;
+  }
+}
+
+export default function ScreenRecorder() {
   const {
     status,
     startRecording,
     stopRecording,
     pauseRecording,
     resumeRecording,
-    muteAudio,
-    unmuteAudio,
     mediaBlobUrl,
-    previewStream,
-    isMuted,
-    clearBlobUrl,
-  } = useReactMediaRecorder({ screen: true, video: true });
+  } = useReactMediaRecorder({ screen: true, audio: true });
 
-  const [countdown, setCountdown] = useState(3);
-  const { startCountdown } = useCountdown(setCountdown);
-  const [isRecordingStarted, setIsRecordingStarted] = useState(false);
-
-  const videoRef = useRef<HTMLVideoElement | null>(null);
   const webcamRef = useRef<Webcam | null>(null);
+  const [isPaused, setIsPaused] = useState(false);
+  const [transcript, setTranscript] = useState("");
+  const [completeTranscript, setCompleteTranscript] = useState("");
+  const [summary, setSummary] = useState("");
+  const [bulletPoints, setBulletPoints] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    if (previewStream && videoRef.current) {
-      videoRef.current.srcObject = previewStream;
-    }
-  }, [previewStream]);
+  const recognitionRef = useRef<any>(null);
 
   const handleStartRecording = () => {
-    setIsRecordingStarted(true);
-    startCountdown(); // Start the countdown
-    setTimeout(() => {
-      startRecording(); // Start recording after countdown ends
-      setIsRecordingStarted(false);
-    }, 3000); // Start recording after 3 seconds (countdown)
+    startRecording();
+    startSpeechRecognition();
+  };
+
+  const handleStopRecording = () => {
+    stopRecording();
+    stopSpeechRecognition();
+  };
+
+  const handlePauseResume = () => {
+    if (isPaused) {
+      resumeRecording();
+      resumeSpeechRecognition();
+    } else {
+      pauseRecording();
+      pauseSpeechRecognition();
+    }
+    setIsPaused(!isPaused);
+  };
+
+  const startSpeechRecognition = () => {
+    try {
+      recognitionRef.current = new window.webkitSpeechRecognition();
+      recognitionRef.current.continuous = true;
+      recognitionRef.current.interimResults = true;
+
+      recognitionRef.current.onresult = (event: any) => {
+        let interimTranscript = "";
+
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const currentTranscript = event.results[i][0].transcript;
+
+          if (event.results[i].isFinal) {
+            setCompleteTranscript((prev) => prev + currentTranscript + " ");
+          } else {
+            interimTranscript += currentTranscript;
+          }
+        }
+
+        setTranscript(interimTranscript);
+      };
+
+      recognitionRef.current.start();
+    } catch (error) {
+      console.error("Speech recognition error: ", error);
+      alert(
+        "Your browser does not support speech recognition. Please use Chrome.",
+      );
+    }
+  };
+
+  const stopSpeechRecognition = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+    }
+  };
+
+  const pauseSpeechRecognition = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+    }
+  };
+
+  const resumeSpeechRecognition = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.start();
+    }
+  };
+
+  const enablePictureInPicture = async () => {
+    try {
+      if (webcamRef.current?.video) {
+        await webcamRef.current.video.requestPictureInPicture();
+      }
+    } catch (error) {
+      console.error("Failed to enable Picture-in-Picture:", error);
+    }
+  };
+
+  const disablePictureInPicture = async () => {
+    try {
+      if (document.pictureInPictureElement) {
+        await document.exitPictureInPicture();
+      }
+    } catch (error) {
+      console.error("Failed to disable Picture-in-Picture:", error);
+    }
   };
 
   const downloadRecording = () => {
     if (mediaBlobUrl) {
       const a = document.createElement("a");
       a.href = mediaBlobUrl;
-      a.download = "recording.mp4";
+      a.download = "screen-recording.mp4";
       a.click();
     }
   };
 
-  // For webcam drag position
-  const [webcamPos, setWebcamPos] = useState({ x: 0, y: 0 });
-  const handleDrag = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    setWebcamPos({
-      x: e.clientX - 50, // Offset to center the webcam bubble
-      y: e.clientY - 50,
-    });
+  const handleGenerateSummary = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/getSummary", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          transcript: completeTranscript,
+          type: "summary",
+        }),
+      });
+      const data = await response.json();
+      setSummary(data.content);
+    } catch (error) {
+      console.error("Error generating summary:", error);
+      alert("Failed to generate summary. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGenerateBulletPoints = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/getSummary", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          transcript: completeTranscript,
+          type: "bullet-points",
+        }),
+      });
+      const data = await response.json();
+      setBulletPoints(data.content);
+    } catch (error) {
+      console.error("Error generating bullet points:", error);
+      alert("Failed to generate bullet points. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <div className="relative mx-auto flex h-screen max-w-xl flex-col items-center rounded-lg bg-gray-100 p-6 shadow-lg">
+    <div className="relative mx-auto flex h-full max-w-xl flex-col items-center rounded-lg bg-gray-100 p-6 shadow-lg">
       <h2 className="mb-4 text-center text-2xl font-semibold">
         Screen Recorder
       </h2>
@@ -70,75 +194,43 @@ const ScreenRecorder = () => {
         Status: <span className="font-bold">{status}</span>
       </p>
 
-      {countdown > 0 && isRecordingStarted && (
-        <div className="absolute left-0 right-0 top-16 mx-auto rounded-lg bg-gray-800 p-4 text-center text-4xl font-bold text-white">
-          {countdown}
-        </div>
-      )}
-
-      <div className="mb-4 flex space-x-3">
-        <button
-          onClick={handleStartRecording}
-          className="rounded-lg bg-green-500 px-4 py-2 text-white shadow transition hover:bg-green-600"
-        >
-          Start
-        </button>
-        <button
-          onClick={stopRecording}
-          className="rounded-lg bg-red-500 px-4 py-2 text-white shadow transition hover:bg-red-600"
-        >
-          Stop
-        </button>
-        <button
-          onClick={pauseRecording}
-          className="rounded-lg bg-yellow-500 px-4 py-2 text-white shadow transition hover:bg-yellow-600"
-        >
-          Pause
-        </button>
-        <button
-          onClick={resumeRecording}
-          className="rounded-lg bg-blue-500 px-4 py-2 text-white shadow transition hover:bg-blue-600"
-        >
-          Resume
-        </button>
-      </div>
-
-      <div className="mb-4 flex space-x-3">
-        <button
-          onClick={isMuted ? unmuteAudio : muteAudio}
-          className={`px-4 py-2 ${isMuted ? "bg-gray-600" : "bg-gray-800"} rounded-lg text-white shadow transition hover:opacity-75`}
-        >
-          {isMuted ? "Unmute" : "Mute"}
-        </button>
-        <button
-          onClick={clearBlobUrl}
-          className="rounded-lg bg-purple-500 px-4 py-2 text-white shadow transition hover:bg-purple-600"
-        >
-          Clear Recording
-        </button>
+      {/* Controls */}
+      <div className="mb-4 flex flex-wrap justify-center space-x-3">
+        <Button onClick={handleStartRecording} variant="default">
+          <IconCameraVideo className="mr-2 h-4 w-4" />
+          Start Screen Recorder
+        </Button>
+        <Button onClick={handlePauseResume} variant="default">
+          <IconStop className="mr-2 h-4 w-4" />
+          {isPaused ? "Resume Recording" : "Pause Recording"}
+        </Button>
+        <Button onClick={handleStopRecording} variant="destructive">
+          <IconCircleStop className="mr-2 h-4 w-4" />
+          Stop Recording
+        </Button>
         {mediaBlobUrl && (
-          <button
-            onClick={downloadRecording}
-            className="rounded-lg bg-indigo-500 px-4 py-2 text-white shadow transition hover:bg-indigo-600"
-          >
-            Download
-          </button>
+          <Button onClick={downloadRecording} variant="default">
+            <PlayIcon className="mr-2 h-4 w-4" />
+            Download Recording
+          </Button>
         )}
       </div>
 
-      {previewStream && (
-        <div className="mb-4 w-full">
-          <video
-            ref={videoRef}
-            className="h-auto w-full rounded-lg border shadow-lg"
-            autoPlay
-            muted
-          />
-        </div>
-      )}
+      {/* PiP Controls */}
+      <div className="mb-4 flex flex-wrap justify-center space-x-3">
+        <Button onClick={enablePictureInPicture} variant="default">
+          <IconCameraVideo className="mr-2 h-4 w-4" />
+          Enable Webcam (PiP)
+        </Button>
+        <Button onClick={disablePictureInPicture} variant="outline">
+          <IconStop className="mr-2 h-4 w-4" />
+          Exit Webcam (PiP)
+        </Button>
+      </div>
 
+      {/* Video Display */}
       {mediaBlobUrl && (
-        <div className="w-full">
+        <div className="mt-6 w-full">
           <video
             src={mediaBlobUrl}
             controls
@@ -149,16 +241,54 @@ const ScreenRecorder = () => {
         </div>
       )}
 
-      {/* Webcam Bubble */}
+      {/* Transcript */}
+      <div className="mt-6 w-full">
+        <h3 className="mb-2 text-lg font-semibold">Transcript</h3>
+        <textarea
+          className="h-32 w-full rounded border p-2"
+          value={completeTranscript + transcript}
+          readOnly
+          placeholder="Transcript will appear here..."
+        />
+        <div className="mt-4 flex space-x-4">
+          <Button onClick={handleGenerateSummary} disabled={isLoading}>
+            Generate Summary
+          </Button>
+          <Button onClick={handleGenerateBulletPoints} disabled={isLoading}>
+            Generate Bullet Points
+          </Button>
+        </div>
+        {isLoading && <p className="mt-2 text-gray-500">Processing...</p>}
+        {summary && (
+          <div className="mt-4">
+            <h4 className="font-semibold">Summary:</h4>
+            <p>{summary}</p>
+          </div>
+        )}
+        {bulletPoints.length > 0 && (
+          <div className="mt-4">
+            <h4 className="font-semibold">Bullet Points:</h4>
+            <ul className="list-disc pl-5">
+              {bulletPoints.map((point, index) => (
+                <li key={index}>{point}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+
+      {/* Webcam Display */}
       <div
-        className="fixed bottom-4 right-4 h-28 w-28 cursor-move overflow-hidden rounded-full border-4 border-white shadow-lg"
-        style={{ transform: `translate(${webcamPos.x}px, ${webcamPos.y}px)` }}
-        onMouseDown={handleDrag}
+        className="fixed bottom-4 right-4 h-28 w-28 overflow-hidden rounded-full border-4 border-white shadow-lg"
+        style={{ zIndex: 9999 }}
       >
-        <Webcam ref={webcamRef} className="h-full w-full object-cover" />
+        <Draggable>
+          <Webcam
+            ref={webcamRef}
+            className="h-full w-full rounded-full object-cover"
+          />
+        </Draggable>
       </div>
     </div>
   );
-};
-
-export default ScreenRecorder;
+}

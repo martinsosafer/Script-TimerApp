@@ -2,6 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 
+import { poppins } from "~/app/fonts";
+import { formatTime } from "~/lib/formattime";
+
 declare global {
   interface Window {
     webkitSpeechRecognition: any;
@@ -11,252 +14,241 @@ declare global {
 export default function MicrophoneAndWebcamComponent() {
   const [isRecording, setIsRecording] = useState(false);
   const [transcript, setTranscript] = useState("");
-  const [completeTranscript, setCompleteTranscript] = useState(""); // Persisted transcript
+  const [completeTranscript, setCompleteTranscript] = useState("");
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
-  const [isPaused, setIsPaused] = useState(false); // Track if paused
-  const [videoUrl, setVideoUrl] = useState<string | null>(null); // Video URL for download and playback
+  const [isPaused, setIsPaused] = useState(false);
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [timer, setTimer] = useState(0);
+  const [summary, setSummary] = useState("");
+  const [bulletPoints, setBulletPoints] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const recognitionRef = useRef<any>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const videoRef = useRef<HTMLVideoElement | null>(null); // Reference to video element for webcam preview
-  const recordedVideoRef = useRef<HTMLVideoElement | null>(null); // Ref for recorded video playback
   const audioChunksRef = useRef<Blob[]>([]);
-  const streamRef = useRef<MediaStream | null>(null); // Save media stream
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  // Start recording process (audio + video)
   const startRecording = () => {
-    setTranscript(""); // This ensures the text area starts fresh for each recording
-    setCompleteTranscript(""); // Clear only at the start of a new recording
-
+    setTranscript("");
+    setCompleteTranscript("");
     setIsRecording(true);
-    setIsPaused(false); // Reset paused state
+    setIsPaused(false);
+    timerRef.current = setInterval(() => setTimer((prev) => prev + 1), 1000);
 
     try {
-      // Start speech recognition
       recognitionRef.current = new window.webkitSpeechRecognition();
       recognitionRef.current.continuous = true;
       recognitionRef.current.interimResults = true;
-
       recognitionRef.current.onresult = (event: any) => {
-        let interimTranscript = ""; // Temporary transcript for the current speech
-
+        let interimTranscript = "";
         for (let i = event.resultIndex; i < event.results.length; i++) {
           const currentTranscript = event.results[i][0].transcript;
-
           if (event.results[i].isFinal) {
-            // If the result is final, append it to the complete transcript
             setCompleteTranscript((prev) => prev + currentTranscript + " ");
           } else {
-            // Otherwise, it's an interim result
             interimTranscript += currentTranscript;
           }
         }
-
-        // Update interim transcript to show real-time results
         setTranscript(interimTranscript);
       };
-
       recognitionRef.current.start();
     } catch (error) {
-      console.error("Speech recognition error: ", error);
-      alert(
-        "Your browser does not support speech recognition. Please use Chrome.",
-      );
+      alert("Your browser does not support speech recognition. Use Chrome.");
       setIsRecording(false);
       return;
     }
 
-    // Start video + audio recording
     navigator.mediaDevices
-      .getUserMedia({ video: { width: 640, height: 480 }, audio: true }) // Set lower resolution
+      .getUserMedia({ audio: true, video: true })
       .then((stream) => {
-        streamRef.current = stream;
-        mediaRecorderRef.current = new MediaRecorder(stream, {
-          mimeType: "video/webm; codecs=vp8", // Use VP8 codec for better compression
-          videoBitsPerSecond: 2500000, // Lower bitrate for smaller file size
-        });
+        if (videoRef.current) videoRef.current.srcObject = stream;
+        mediaRecorderRef.current = new MediaRecorder(stream);
         audioChunksRef.current = [];
-
-        // Set video stream to video element for preview
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          videoRef.current.play(); // Start playing the webcam feed
-        }
-
         mediaRecorderRef.current.ondataavailable = (event) => {
           audioChunksRef.current.push(event.data);
         };
-
         mediaRecorderRef.current.onstop = () => {
+          const audioBlob = new Blob(audioChunksRef.current, {
+            type: "audio/wav",
+          });
+          setAudioBlob(audioBlob);
+          const audioUrl = URL.createObjectURL(audioBlob);
+          setAudioUrl(audioUrl);
           const videoBlob = new Blob(audioChunksRef.current, {
             type: "video/webm",
           });
-          setAudioBlob(videoBlob);
-          const videoUrl = URL.createObjectURL(videoBlob);
-          setVideoUrl(videoUrl); // Set video for download and playback
-
-          // Set the recorded video for playback
-          if (recordedVideoRef.current) {
-            recordedVideoRef.current.src = videoUrl;
-          }
+          setVideoUrl(URL.createObjectURL(videoBlob));
         };
-
         mediaRecorderRef.current.start();
       })
-      .catch((error) => {
-        console.error("Webcam or microphone access error: ", error);
-        alert("Access to webcam and microphone is required.");
+      .catch(() => {
+        alert("Microphone and camera access are required to record.");
         setIsRecording(false);
       });
   };
 
-  // Stop recording process (audio + video)
   const stopRecording = () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-    }
-    if (mediaRecorderRef.current) {
-      mediaRecorderRef.current.stop();
-    }
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach((track) => track.stop()); // Stop all media streams (audio + video)
-    }
+    if (recognitionRef.current) recognitionRef.current.stop();
+    if (mediaRecorderRef.current) mediaRecorderRef.current.stop();
     setIsRecording(false);
-    setIsPaused(true); // Set to paused when stopped
+    setIsPaused(true);
+    clearInterval(timerRef.current!);
+    setTimer(0);
   };
 
   const handleToggleRecording = () => {
-    if (!isRecording) {
-      startRecording();
-    } else {
-      stopRecording();
-    }
+    if (!isRecording) startRecording();
+    else stopRecording();
   };
 
-  const handleDownload = () => {
-    if (audioBlob) {
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(audioBlob);
-      link.download = "recording.webm";
-      link.click();
+  const handleGenerateSummary = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/getSummary", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          transcript: completeTranscript,
+          type: "summary",
+        }),
+      });
+      const data = await response.json();
+      setSummary(data.content);
+    } catch {
+      alert("Failed to generate summary.");
     }
+    setIsLoading(false);
+  };
+
+  const handleGenerateBulletPoints = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/getSummary", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          transcript: completeTranscript,
+          type: "bullet-points",
+        }),
+      });
+      const data = await response.json();
+      setBulletPoints(data.content);
+    } catch {
+      alert("Failed to generate bullet points.");
+    }
+    setIsLoading(false);
   };
 
   const handleCopyTranscript = () => {
-    navigator.clipboard.writeText(completeTranscript);
+    navigator.clipboard.writeText(completeTranscript + transcript);
     alert("Transcript copied to clipboard!");
   };
 
   return (
-    <div className="mb-20 flex h-screen w-full items-center justify-center bg-gray-100">
-      <div className="w-2/3 space-y-4">
-        <div className="m-auto w-full rounded-md border bg-white p-4">
-          <div className="flex w-full justify-between space-y-1">
-            <div>
-              <p className="text-sm font-medium leading-none">Recorder</p>
-              <p className="text-sm text-muted-foreground">
-                {isRecording
-                  ? "Recording..."
-                  : "Press the button to record something!"}
-              </p>
-            </div>
+    <div
+      className={`mb-20 flex h-full w-full items-center justify-center bg-gray-100 ${poppins.className}`}
+    >
+      <div className="w-2/3 space-y-4 rounded-lg bg-white p-6 shadow-md">
+        <div className="flex flex-col items-center">
+          <h2 className="text-xl font-bold">Record with Video!</h2>
+          <p className="text-sm text-gray-500">
+            Ensure good audio and lighting quality.
+          </p>
+        </div>
+
+        <div className="flex flex-col items-center space-y-4">
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            className="h-40 w-full rounded-md border"
+          />
+          <div className="text-center">
+            <p className="text-sm font-medium">Recorder</p>
+            <p className="text-sm text-gray-500">
+              {isRecording
+                ? "Recording..."
+                : "Press the button to start recording!"}
+            </p>
             {isRecording && (
-              <div className="h-4 w-4 animate-pulse rounded-full bg-red-400" />
-            )}
-          </div>
-
-          <div className="mt-4 h-full rounded-md border p-2">
-            <textarea
-              className="h-40 w-full border p-2"
-              value={completeTranscript + transcript} // Show both final and interim results
-              readOnly
-              placeholder="Transcript will appear here..."
-            />
-          </div>
-        </div>
-
-        {/* Video preview while recording */}
-        {isRecording && (
-          <div className="flex justify-center">
-            <video
-              ref={videoRef}
-              className="rounded-lg border border-gray-300"
-              width="480" // Increased width for better preview
-              height="360" // Increased height for better preview
-              muted
-              playsInline // Ensures no audio plays from the preview
-            />
-          </div>
-        )}
-
-        {/* Playback recorded video after stopping */}
-        {videoUrl && (
-          <div className="mt-4 flex justify-center">
-            <video
-              ref={recordedVideoRef}
-              className="rounded-lg border border-gray-300"
-              width="480" // Matches the preview size
-              height="360"
-              controls
-            />
-          </div>
-        )}
-
-        <div className="flex w-full justify-center">
-          <div className="flex items-center justify-center rounded-lg bg-gray-200 p-6">
-            {isRecording ? (
-              <button
-                onClick={handleToggleRecording}
-                className="m-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-400 hover:bg-red-500 focus:outline-none"
-              >
-                <svg
-                  className="h-10 w-10"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path fill="white" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-                </svg>
-              </button>
-            ) : (
-              <button
-                onClick={handleToggleRecording}
-                className="m-auto flex h-16 w-16 items-center justify-center rounded-full bg-blue-400 hover:bg-blue-500 focus:outline-none"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-10 w-10"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M0 4c0-1.1.9-2 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm6 0v12h8V4H6zM2 5v2h2V5H2zm0 4v2h2V9H2zm0 4v2h2v-2H2zm14-8v2h2V5h-2zm0 4v2h2V9h-2zm0 4v2h2v-2h-2z"
-                  />
-                </svg>
-              </button>
+              <div className="mt-2 h-4 w-4 animate-pulse rounded-full bg-red-400" />
             )}
           </div>
         </div>
 
-        <div className="flex w-full justify-center space-x-4">
-          {audioBlob && (
-            <button
-              onClick={handleDownload}
-              className="rounded-lg bg-primary px-4 py-2 text-white hover:bg-blue-400"
+        <div className="mt-4 flex justify-center">
+          <button
+            onClick={handleToggleRecording}
+            className="hover:bg-primary-dark flex w-full items-center justify-center rounded-md bg-primary py-2 font-semibold text-white focus:outline-none"
+          >
+            {isRecording ? "Stop Recording" : "Start Recording"}
+          </button>
+        </div>
+
+        <div className="mt-4 text-center text-gray-700">
+          {isRecording && `Recording... ${formatTime(timer)}`}
+        </div>
+
+        <div className="mt-4 rounded-md border p-2">
+          <textarea
+            className="h-40 w-full p-2"
+            value={completeTranscript + transcript}
+            readOnly
+            placeholder="Transcript will appear here..."
+          />
+        </div>
+
+        <div className="mt-6 flex justify-center space-x-4">
+          <button
+            onClick={handleGenerateSummary}
+            className="rounded-md bg-green-500 px-4 py-2 text-white hover:bg-green-400"
+            disabled={isLoading}
+          >
+            Generate Summary
+          </button>
+          <button
+            onClick={handleGenerateBulletPoints}
+            className="rounded-md bg-purple-500 px-4 py-2 text-white hover:bg-purple-400"
+            disabled={isLoading}
+          >
+            Generate Bullet Points
+          </button>
+          <button
+            onClick={handleCopyTranscript}
+            className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-400"
+          >
+            Copy Transcript
+          </button>
+          {videoUrl && (
+            <a
+              href={videoUrl}
+              download="recording.webm"
+              className="rounded-md bg-orange-500 px-4 py-2 text-white hover:bg-orange-400"
             >
               Download Video
-            </button>
-          )}
-
-          {completeTranscript && (
-            <button
-              onClick={handleCopyTranscript}
-              className="rounded-lg bg-primary px-4 py-2 text-white hover:bg-blue-400"
-            >
-              Copy Transcript
-            </button>
+            </a>
           )}
         </div>
+
+        {summary && (
+          <div className="mt-4">
+            <h3 className="text-lg font-semibold">Summary:</h3>
+            <p className="mt-2">{summary}</p>
+          </div>
+        )}
+
+        {bulletPoints.length > 0 && (
+          <div className="mt-4">
+            <h3 className="text-lg font-semibold">Key Points:</h3>
+            <ul className="mt-2 list-disc pl-5">
+              {bulletPoints.map((point, index) => (
+                <li key={index}>{point}</li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ import { poppins } from "~/app/fonts";
 interface ButtonProps {
   label: string;
   type: "primary" | "secondary" | "accent" | "custom";
-  onClick: () => void;
+  onClick?: () => void;
   icon?: (props: SVGProps<SVGSVGElement>) => React.JSX.Element;
   iconPosition?: "left" | "right";
   iconColor?: string;
