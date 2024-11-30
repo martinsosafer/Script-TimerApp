@@ -61,7 +61,10 @@ export default async function Layout(props: { children: React.ReactNode }) {
           signIn={signInServer}
           session={session}
         />
-        <MonthlySpecialProvider monthlySpecials={monthlySpecials}>
+        <MonthlySpecialProvider
+          monthlySpecials={monthlySpecials}
+          session={session}
+        >
           <div>{props.children}</div>
         </MonthlySpecialProvider>
 
