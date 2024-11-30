@@ -7,6 +7,7 @@ import * as clCredit from "./schema/copyLeaksCredit";
 import * as credit from "./schema/credit";
 import * as generation from "./schema/generation";
 import * as imgCredit from "./schema/imgCredit";
+import * as landingPage from "./schema/landingPage";
 import * as monthlySpecials from "./schema/monthlySpecials";
 import * as openAiCredit from "./schema/openAiCredit";
 import * as plagiarism from "./schema/plagiarism";
@@ -31,6 +32,7 @@ export const schema = {
   ...openAiCredit,
   ...prompts,
   ...monthlySpecials,
+  ...landingPage,
 };
 
 export { pgTable as tableCreator } from "./schema/_table";
