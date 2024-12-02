@@ -1,11 +1,17 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
+import { IconArrowRight } from "@voiceai/ui/@/components/ui/icons";
+
+import Button from "~/app/(site)/components/button";
+import { roboto } from "~/app/fonts";
 import { counterHelper, wordsFrecuency } from "../../utils";
 import type { CounterValues } from "../../utils";
 
 export default function Counter() {
+  const router = useRouter();
   const [counterValues, setCounterValues] = useState<CounterValues>({
     words: 0,
     characters: 0,
@@ -27,60 +33,75 @@ export default function Counter() {
   }
 
   return (
-    <section className="mb-10 flex w-full flex-col rounded-md border border-gray-300 p-4">
-      <textarea
-        name="counter"
-        rows={10}
-        className="w-full rounded-md border border-gray-300 bg-gray-50 p-4 outline-none"
-        onChange={handleCounterValues}
-        placeholder="Type or paste your text here..."
+    <main className="mb-[100px] w-full">
+      <section
+        className={`${roboto.className} border-cp-primary-lightest flex w-full flex-col rounded-lg border bg-white p-4`}
+      >
+        <textarea
+          name="counter"
+          rows={20}
+          className="w-full rounded-2xl bg-[#F2F2F5] p-4 outline-none"
+          onChange={handleCounterValues}
+          placeholder="Type or paste your text here..."
+        />
+        <p className="mt-4 text-base font-bold text-[#212121]">
+          Words: <span className="font-normal">{counterValues.words}</span>
+        </p>
+        <p className="text-base font-bold text-[#212121]">
+          Characters (including spaces):{" "}
+          <span className="font-normal">{counterValues.allCharacters}</span>
+        </p>
+        <p className="text-base font-bold text-[#212121]">
+          Characters (excluding spaces):{" "}
+          <span className="font-normal">{counterValues.characters}</span>
+        </p>
+        <p className="text-base font-bold text-[#212121]">
+          Sentences:{" "}
+          <span className="font-normal">{counterValues.sentences}</span>
+        </p>
+        <p className="text-base font-bold text-[#212121]">
+          Paragraphs:{" "}
+          <span className="font-normal">{counterValues.paragraphs}</span>
+        </p>
+        {text.trim().length > 0 && (
+          <article className="mt-4 flex w-full flex-col">
+            <div className="flex w-full">
+              <div className="bg-cp-primary-lightest border-cp-primary-lightest h-[38px] w-1/2 border p-2 font-bold text-white">
+                Words
+              </div>
+              <div className="bg-cp-primary-lightest border-cp-primary-lightest h-[38px] w-1/2 border p-2 font-bold text-white">
+                Count
+              </div>
+            </div>
+            {Object.entries(wordsFrecuency(text))
+              .sort((a, b) => b[1] - a[1])
+              .slice(0, 10)
+              .map(([word, count], idx) => {
+                return (
+                  <div
+                    className="flex w-full text-base font-normal text-black"
+                    key={word + idx}
+                  >
+                    <div className="border-cp-primary-lightest w-1/2 border p-2">
+                      {word}
+                    </div>
+                    <div className="border-cp-primary-lightest w-1/2 border p-2">
+                      {count}
+                    </div>
+                  </div>
+                );
+              })}
+          </article>
+        )}
+      </section>
+      <Button
+        label="Listen to your script"
+        type="accent"
+        fit
+        icon={IconArrowRight}
+        onClick={() => router.push("/texttovoice")}
+        className="mt-[12px]"
       />
-      <p className="mt-4 text-lg font-semibold text-gray-700">
-        Words: <span className="font-normal">{counterValues.words}</span>
-      </p>
-      <p className="text-lg font-semibold text-gray-700">
-        Characters (including spaces):{" "}
-        <span className="font-normal">{counterValues.allCharacters}</span>
-      </p>
-      <p className="text-lg font-semibold text-gray-700">
-        Characters (excluding spaces):{" "}
-        <span className="font-normal">{counterValues.characters}</span>
-      </p>
-      <p className="text-lg font-semibold text-gray-700">
-        Sentences:{" "}
-        <span className="font-normal">{counterValues.sentences}</span>
-      </p>
-      <p className="text-lg font-semibold text-gray-700">
-        Paragraphs:{" "}
-        <span className="font-normal">{counterValues.paragraphs}</span>
-      </p>
-      {text.trim().length > 0 && (
-        <article className="mt-4 flex w-full flex-col">
-          <div className="flex w-full">
-            <div className="w-1/2 border border-gray-300 bg-green-600 p-1.5 font-bold text-white">
-              Words
-            </div>
-            <div className="w-1/2 border border-gray-300 bg-green-600 p-1.5 font-bold text-white">
-              Count
-            </div>
-          </div>
-          {Object.entries(wordsFrecuency(text))
-            .sort((a, b) => b[1] - a[1])
-            .slice(0, 10)
-            .map(([word, count], idx) => {
-              return (
-                <div className="flex w-full text-gray-800" key={word + idx}>
-                  <div className="w-1/2 border border-gray-300 p-1.5">
-                    {word}
-                  </div>
-                  <div className="w-1/2 border border-gray-300 p-1.5">
-                    {count}
-                  </div>
-                </div>
-              );
-            })}
-        </article>
-      )}
-    </section>
+    </main>
   );
 }

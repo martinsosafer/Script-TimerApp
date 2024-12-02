@@ -39,7 +39,7 @@ const useStreamingAudio = () => {
     setLoading(true);
     const charLimit: Record<string, number> = {
       FREE: 500,
-      FREE_TRIAL: 1000,
+      FREE_TRIAL: 1600,
       STUDENT: 2000,
       STUDENTCLMONTHLY: 2000,
       STUDENTCLYEARLY: 2000,

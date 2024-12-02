@@ -17,6 +17,7 @@ export default {
       colors: {
         "cp-background": "#F5F5F7",
         "cp-primary": "#0066FF",
+        "cp-primary-lightest": "#7FB2FF",
         "cp-secondary": "#FF9900",
         "cp-secondary-light": "#FFAD33",
         "cp-secondary-lightest": "#FFCB7F",
