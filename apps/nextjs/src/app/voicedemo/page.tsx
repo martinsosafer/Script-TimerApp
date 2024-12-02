@@ -1,5 +1,8 @@
+import FAQAccordion from "../(site)/components/herosection/FaqAccordion";
+import GoSection from "../(site)/components/herosection/GoSections/GoSections";
 import MarqueeLogos from "../(site)/components/herosection/MarqueeLogos";
 import Testimonials from "../(site)/components/herosection/Testimonials/Testimonials";
+import VideoBlock from "../(site)/components/herosection/VideoBlock";
 import AwardsBlock from "./AwardsBlock";
 import ClassesBlock from "./ClassesBlock";
 import DemoHero from "./DemoHero/demohero";
@@ -18,6 +21,9 @@ export default function VoiceDemo() {
       <AwardsBlock />
       <ClassesBlock />
       <LearnMoreBlock />
+      <FAQAccordion />
+      <VideoBlock />
+      <GoSection />
     </div>
   );
 }
