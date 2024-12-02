@@ -1,25 +1,35 @@
 "use client";
 
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import { poppins } from "~/app/fonts";
 import { api } from "~/utils/api";
-import Button from "../../components/button";
+import Button from "../../(site)/components/button";
 
 export default function Landing() {
   const pathname = usePathname();
+  const router = useRouter();
   const segment = pathname.split("/").pop()!;
 
   const {
     data: landing,
     isLoading,
     isError,
-    refetch,
   } = api.landings.getLanding.useQuery({ segment });
 
   return (
     <main className="w-full">
+      <nav className="bg-cp-primary flex h-[138px] w-full items-center justify-between p-10">
+        <div className="relative h-[57px] w-[253px]">
+          <Image src="/cp-logo.png" alt="Co-Producer logo" fill />
+        </div>
+        <Button
+          label="Try it free"
+          type="accent"
+          onClick={() => router.push("/")}
+        />
+      </nav>
       <div>
         {isLoading && <div>Loading...</div>}
         {isError && <div>Error fetching data</div>}
@@ -33,7 +43,7 @@ export default function Landing() {
             <div className="flex w-full justify-between">
               <div className="w-[409px]">
                 <h1 className="text-[58px] font-bold leading-[70px] text-white">
-                  {landing.title}
+                  {landing.title as string}
                 </h1>
                 <h3 className="text-cp-accent mt-5 text-xl font-normal">
                   {landing.description}
@@ -54,20 +64,20 @@ export default function Landing() {
                   <Button
                     label="Text to Voice"
                     type="secondary-accent"
-                    onClick={() => {}}
-                    className="w-[142px] px-[10px]"
+                    onClick={() => router.push("/texttovoice")}
+                    className="w-[142px] px-[8px]"
                   />
                   <Button
                     label="Script Writer"
                     type="secondary-accent"
-                    onClick={() => {}}
-                    className="w-[142px] px-[10px]"
+                    onClick={() => router.push("/chat")}
+                    className="w-[142px] px-[8px]"
                   />
                   <Button
                     label="University"
                     type="secondary-accent"
-                    onClick={() => {}}
-                    className="w-[142px] px-[10px]"
+                    onClick={() => router.push("/masterclasses")}
+                    className="w-[142px] px-[8px]"
                   />
                 </div>
               </div>
