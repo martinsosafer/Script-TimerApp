@@ -27,7 +27,6 @@ const style: Record<string, string> = {
     "bg-cp-secondary text-white hover:bg-cp-secondary-light hover:shadow-md transition-all duration-300 disabled:bg-cp-secondary-lightest disabled:cursor-default disabled:hover:shadow-none",
   custom: "",
 };
-
 export default function Button({
   label,
   type,
@@ -46,7 +45,9 @@ export default function Button({
 
   return (
     <button
-      className={`${defaultStyle} ${fontWeight} ${style[type]} ${fit ? "w-full" : width} ${hight} ${className}`}
+      className={`${defaultStyle} ${fontWeight} ${style[type]} ${hight} ${
+        fit ? "w-full" : ""
+      } ${className} ${!fit && !className?.includes("w-") ? width : ""}`}
       onClick={onClick}
       disabled={disabled}
     >
