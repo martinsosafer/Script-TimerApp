@@ -54,9 +54,12 @@ export default function MonthlySpecialProvider({
     (session && session.user?.subscription?.status !== "FREE") ??
     (session && session?.user?.subscription?.status !== "FREE_TRIAL");
 
+  const isAnnouncement = pageSpecial?.type === "announcement";
+
   return (
     <div>
-      {!isPayingCustomer && isVisible && pageSpecial && !closeSpecial && (
+      {(isAnnouncement ||
+        (!isPayingCustomer && isVisible && pageSpecial && !closeSpecial)) && (
         <MonthlySpecial
           name={pageSpecial?.name ?? ""}
           description={pageSpecial?.description ?? ""}
