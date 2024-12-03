@@ -38,13 +38,14 @@ export default function CounterData() {
   }, []);
 
   return (
-    <div className="h-full w-full bg-[#F5F5F7]">
-      <MotionTransition className="mx-[248px] max-w-5xl bg-white py-20 max-sm:mx-4 max-sm:py-10">
-        <div className="justify-between rounded-2xl shadow-md transition-shadow hover:shadow-lg max-sm:flex-col max-sm:space-y-6 md:flex">
+    <div className="flex h-full w-full items-center justify-center bg-[#F5F5F7]">
+      <MotionTransition className="mx-[248px] max-w-3xl py-10 max-sm:mx-4 max-sm:py-5">
+        {/* Add gap-x-6 for spacing between columns */}
+        <div className="justify-between gap-x-28 rounded-2xl bg-white shadow-md transition-shadow hover:shadow-lg max-sm:flex-col max-sm:space-y-6 md:flex">
           {counterNumbers.map(({ id, startNumber, endNumber, text }) => (
             <div
               key={id}
-              className="flex flex-col items-center justify-center rounded-lg px-7 py-7 text-center font-poppins text-2xl font-bold text-black max-sm:px-4 max-sm:py-4 max-sm:text-xl md:text-left"
+              className="flex flex-col items-center justify-center rounded-lg  px-7 py-7 text-center font-poppins text-2xl font-bold text-black max-sm:px-4 max-sm:py-4 max-sm:text-xl md:text-left"
               ref={counterRef}
             >
               {isVisible && (

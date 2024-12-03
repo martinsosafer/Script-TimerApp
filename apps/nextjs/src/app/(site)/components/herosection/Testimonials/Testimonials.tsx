@@ -11,7 +11,7 @@ export default function Testimonials() {
         {/* First column */}
         <div className="text-center sm:text-left">
           <RevealText>
-            <h2 className="text-cp-primary mb-3 mt-3 font-poppins text-[28px] font-bold leading-[34px] sm:mb-5 sm:mt-5 sm:text-[34px] sm:leading-[41px]">
+            <h2 className="text-cp-primary xs:text-[28px] xs:leading-[34px] mb-3 mt-3 font-poppins text-[24px] font-bold leading-[30px] sm:mb-5 sm:mt-5 sm:text-[34px] sm:leading-[41px]">
               What our <br className="hidden sm:inline" />
               members have <br className="hidden sm:inline" />
               to say
@@ -19,17 +19,18 @@ export default function Testimonials() {
           </RevealText>
           <RevealText>
             <p
-              className={`${roboto.className} text-[14px] font-normal leading-[20px] sm:text-[16px] sm:leading-[22.4px]`}
+              className={`${roboto.className} xs:text-[14px] xs:leading-[20px] text-[12px] font-normal leading-[18px] sm:text-[16px] sm:leading-[22.4px]`}
             >
-              Our members have witnessed a<br className="hidden sm:inline" />{" "}
-              marked improvement in their skills for{" "}
-              <br className="hidden sm:inline" /> speech and content creation.
+              Our members have witnessed a
+              <br className="hidden sm:inline" /> marked improvement in their
+              skills for <br className="hidden sm:inline" /> speech and content
+              creation.
             </p>
           </RevealText>
         </div>
 
         {/* Second column */}
-        <div className="w-full sm:w-auto">
+        <div className="xs:w-auto w-full">
           <Slide />
         </div>
       </div>

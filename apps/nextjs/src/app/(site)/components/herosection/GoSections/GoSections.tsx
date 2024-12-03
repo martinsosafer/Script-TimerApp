@@ -2,10 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { motion, useInView } from "framer-motion";
+import { motion, useAnimation, useInView } from "framer-motion";
 
 import { poppins } from "~/app/fonts";
-//imgs
+// Images
 import Directorimg from "../../modals/modalimgs/DirectorImg.png";
 import TextToVoiceimg from "../../modals/modalimgs/HeroImage.png";
 import MasterClassesImg from "../../modals/modalimgs/MastarclassesImg.png";
@@ -67,8 +67,9 @@ export default function GoSection() {
 
 function Section({ title, description, imageUrl, imagePosition }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, threshold: 0.1 });
-  const [isMobile, setIsMobile] = useState(false);
+  const isInView = useInView(ref, { once: true, threshold: 0.01 });
+  const controls = useAnimation();
+  const [isMobile, setIsMobile] = useState(true);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -81,6 +82,16 @@ function Section({ title, description, imageUrl, imagePosition }) {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  useEffect(() => {
+    if (isMobile) {
+      controls.start("visible"); // Always visible on mobile
+    } else if (isInView) {
+      controls.start("visible");
+    } else {
+      controls.start("hidden");
+    }
+  }, [isInView, isMobile, controls]);
+
   const sectionVariants = {
     hidden: {
       opacity: 0,
@@ -89,6 +100,10 @@ function Section({ title, description, imageUrl, imagePosition }) {
     visible: {
       opacity: 1,
       x: 0,
+      transition: {
+        duration: 0.8,
+        delay: 0.2,
+      },
     },
   };
 
@@ -101,12 +116,11 @@ function Section({ title, description, imageUrl, imagePosition }) {
           : "sm:mr-20 sm:flex-row"
       } items-center justify-between gap-6 rounded-2xl border border-blue-500 bg-white p-4 shadow-lg sm:gap-12 sm:p-6`}
       initial="hidden"
-      animate={isInView && !isMobile ? "visible" : "hidden"}
+      animate={controls}
       variants={sectionVariants}
-      transition={{ duration: 0.8, delay: 0.5 }}
     >
       <div
-        className={`flex-1 space-y-3 sm:space-y-6 sm:pl-[69px] ${
+        className={`flex-1 space-y-3 sm:space-y-6 ${
           imagePosition === "left" ? "sm:ml-16" : "sm:mr-16"
         }`}
       >

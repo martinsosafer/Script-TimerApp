@@ -67,7 +67,6 @@ const testimonialsData = [
     image: RandomPerson6,
   },
 ];
-
 export default function Slide() {
   return (
     <div className="w-full overflow-hidden">
@@ -77,7 +76,13 @@ export default function Slide() {
           640: { slidesPerView: 2, spaceBetween: 20 },
           1024: { slidesPerView: 2, spaceBetween: 30 },
         }}
-        freeMode={true}
+        freeMode={{
+          enabled: true,
+          momentum: true,
+          momentumRatio: 0.3,
+        }}
+        centeredSlides={false} // Optional: Set to true if you want slides to center
+        touchReleaseOnEdges={true}
         pagination={{
           clickable: true,
         }}
