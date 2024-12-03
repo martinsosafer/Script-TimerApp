@@ -4,6 +4,7 @@ import Button from "~/app/(site)/components/button";
 import Logo from "~/app/(site)/components/logo";
 import { poppins } from "~/app/fonts";
 import AnimatedGifs from "~/app/signin/animtadgifs";
+import AnimatedGifs2 from "~/app/signin/animtadgifs/animation2";
 import FormSwitcher from "~/app/signin/formswitcher";
 import SignUpForm from "~/app/signin/signupform";
 
@@ -42,7 +43,7 @@ export default function DemoHero() {
 
       {/* Right section - AnimatedGifs */}
       <div className="hidden h-full min-h-screen w-full items-center justify-center lg:block">
-        <AnimatedGifs marginTop={-25} />
+        <AnimatedGifs2 marginTop={-25} />
       </div>
     </div>
   );
