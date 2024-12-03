@@ -44,7 +44,7 @@ export default function AnimatedGifs2({
         <motion.div
           key={currentGifIndex}
           className="absolute overflow-hidden rounded-2xl shadow-xl"
-          initial={{ opacity: 0, x: "100%" }}
+          initial={{ opacity: 0, x: "30%" }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: "-30%" }}
           transition={{ duration: 1, ease: "easeInOut" }}
