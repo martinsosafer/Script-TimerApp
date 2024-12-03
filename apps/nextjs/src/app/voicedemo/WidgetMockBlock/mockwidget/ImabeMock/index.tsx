@@ -14,9 +14,11 @@ import {
 import { roboto } from "~/app/fonts";
 // Importing images
 import PulpFictionImg1 from "./images/Plup Fiction single shot.png";
+import TechlabImg2 from "./images/Screenshot 2024-12-02 at 5.02.30 PM.png";
 import PulpFictionImg2 from "./images/storyboard pulp fiction 1.png";
-import StoryBoardImg2 from "./images/storyboard2 bio.png";
-import StoryBoardImg1 from "./images/Storyboarda.png";
+import StoryBoardImg1 from "./images/storyboard2 bio.png";
+import TechLabImg1 from "./images/Storyboarda.png";
+import StoryBoardImg2 from "./images/storyboardb .webp";
 
 export default function ImageGenerationMock() {
   const [selectedPrompt, setSelectedPrompt] = useState("");
@@ -29,9 +31,9 @@ export default function ImageGenerationMock() {
     "Show me 2 samples of what the opening scene in Pulp Fiction would look like if it were filmed today":
       [PulpFictionImg1, PulpFictionImg2],
     "Show me a network support center with people at work, with large screens like a NASA launch, use the style of Isometric Perspective (with no vanishing)":
-      [StoryBoardImg1, StoryBoardImg2],
+      [TechLabImg1, StoryBoardImg2],
     "Storyboard Show me a biotech lab focused on DNA sequencing, with a lead scientist, female, asian, 30 years old and support staff in a vast computer supported lab":
-      [StoryBoardImg1, StoryBoardImg2],
+      [StoryBoardImg1, TechlabImg2],
   };
 
   const handlePromptClick = (prompt: string) => {
@@ -132,7 +134,7 @@ export default function ImageGenerationMock() {
                   <Image
                     src={image}
                     alt={`Generated image ${index + 1}`}
-                    width={400}
+                    width={420}
                     height={300}
                     className="object-cover"
                   />
