@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 
-import { poppins } from "~/app/fonts";
+import { poppins, roboto } from "~/app/fonts";
 import { api } from "~/utils/api";
 import Button from "../../(site)/components/button";
 
@@ -37,13 +37,13 @@ export default function Landing() {
       </div>
       {landing && (
         <section
-          className={`bg-cp-background from-cp-primary flex w-full flex-col items-center bg-gradient-to-br to-black ${poppins.className}`}
+          className={`bg-cp-background from-cp-primary flex w-full flex-col items-center bg-gradient-to-br to-black ${poppins.className} py-[60px]`}
         >
-          <div className="mt-[60px] flex w-[1024px] flex-col items-center px-10">
+          <div className="flex w-[1024px] flex-col items-center px-10">
             <div className="flex w-full justify-between">
               <div className="w-[409px]">
                 <h1 className="text-[58px] font-bold leading-[70px] text-white">
-                  {landing.title as string}
+                  {landing.title}
                 </h1>
                 <h3 className="text-cp-accent mt-5 text-xl font-normal">
                   {landing.description}
@@ -97,6 +97,15 @@ export default function Landing() {
                   title="Script-Timer Ai Onboarding video"
                 />
               </div>
+              <Button
+                label="Take me there"
+                type="accent"
+                onClick={() => router.push("/")}
+                className="mt-[24px] w-[311px]"
+              />
+              <p className={`${roboto.className} mt-2 text-sm text-white`}>
+                Free trial. No card needed.
+              </p>
             </div>
           </div>
         </section>
