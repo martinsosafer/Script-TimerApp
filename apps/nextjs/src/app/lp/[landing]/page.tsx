@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { poppins, roboto } from "~/app/fonts";
 import { api } from "~/utils/api";
 import Button from "../../(site)/components/button";
+import MarqueeLogos from "../sections/MarqueeLogos";
 
 export default function Landing() {
   const pathname = usePathname();
@@ -110,6 +111,7 @@ export default function Landing() {
           </div>
         </section>
       )}
+      <MarqueeLogos />
     </main>
   );
 }
