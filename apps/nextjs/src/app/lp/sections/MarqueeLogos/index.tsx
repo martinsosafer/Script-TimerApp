@@ -1,14 +1,13 @@
 "use client";
 
 import Image from "next/image";
+import BmwImg from "@public/Bmw Foundation.webp";
+import CbsImg from "@public/cbs.webp";
+import StarbucksImg from "@public/Starbucks4.webp";
+import TommyHilfigerImg from "@public/TommyHilfiger.webp";
+import UniversalImg from "@public/universal.webp";
+import WbImg from "@public/WB.jpeg";
 import { motion } from "framer-motion";
-
-import BmwImg from "../../../../../../public/Bmw Foundation.webp";
-import CbsImg from "../../../../../../public/cbs.webp";
-import StarbucksImg from "../../../../../../public/Starbucks4.webp";
-import TommyHilfigerImg from "../../../../../../public/TommyHilfiger.webp";
-import UniversalImg from "../../../../../../public/universal.webp";
-import WbImg from "../../../../../../public/WB.jpeg";
 
 const logos = [
   { src: BmwImg, alt: "BMW Foundation" },
