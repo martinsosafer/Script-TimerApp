@@ -43,7 +43,7 @@ export default function DemoHero() {
 
       {/* Right section - AnimatedGifs */}
       <div className="hidden h-full min-h-screen w-full items-center justify-center lg:block">
-        <AnimatedGifs2 marginTop={-25} />
+        <AnimatedGifs2 marginTop={-80} />
       </div>
     </div>
   );

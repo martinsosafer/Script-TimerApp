@@ -36,14 +36,12 @@ export default function AnimatedGifs2({
   }, []);
 
   return (
-    <div
-      className="relative flex h-full w-full items-center justify-center bg-gradient-to-tr from-black to-blue-500 text-white"
-      style={{ marginTop }}
-    >
+    <div className="relative flex h-full w-full items-center justify-center bg-gradient-to-tr from-black to-blue-500 text-white">
       <AnimatePresence mode="wait">
         <motion.div
           key={currentGifIndex}
           className="absolute overflow-hidden rounded-2xl shadow-xl"
+          style={{ marginTop }}
           initial={{ opacity: 0, x: "30%" }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: "-30%" }}
