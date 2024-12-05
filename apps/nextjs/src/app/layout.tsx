@@ -7,6 +7,9 @@ import GoogleAnalytics from "./GoogleAnalytics";
 
 import "~/styles/globals.css";
 
+import { headers } from "next/headers";
+
+import { TRPCReactProvider } from "./providers";
 import Squid from "./SquidAnalitycs";
 
 const poppins = Poppins({
@@ -61,7 +64,9 @@ export default function Layout(props: { children: React.ReactNode }) {
           roboto.variable,
         ].join(" ")}
       >
-        <ContextWrapper>{children}</ContextWrapper>
+        <TRPCReactProvider headers={headers()}>
+          <ContextWrapper>{children}</ContextWrapper>
+        </TRPCReactProvider>
         <Squid />
       </body>
 
