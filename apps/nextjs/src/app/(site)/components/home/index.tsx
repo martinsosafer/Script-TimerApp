@@ -5,10 +5,13 @@ import { useEffect, useState } from "react";
 import type { Session } from "@voiceai/auth";
 
 import CounterData from "../herosection/CounterData/CounterData";
+import FAQAccordion from "../herosection/FaqAccordion";
 import GoSections from "../herosection/GoSections/GoSections";
 import HeroSection from "../herosection/HeroBlock/herosection";
+import MarqueeLogos from "../herosection/MarqueeLogos";
 import ServiceSection from "../herosection/ServicesSection/servicessection";
 import Testimonials from "../herosection/Testimonials/Testimonials";
+import VideoBlock from "../herosection/VideoBlock";
 import NoSessionModal from "../modals/no-session-modal";
 import TrialExpirationModal from "../modals/trial-expiration-modal";
 
@@ -38,11 +41,13 @@ export default function Home({
   return (
     <>
       <HeroSection />
-      <CounterData />
+      <MarqueeLogos />
       <ServiceSection />
+      <CounterData />
       <GoSections />
       <Testimonials />
-      {/* on home page appear after 15 seconds */}
+      <VideoBlock />
+      <FAQAccordion />
       <NoSessionModal
         openModal={openModal}
         setOpenModal={setOpenModal}

@@ -12,8 +12,8 @@ export default function CounterData() {
 
   useEffect(() => {
     const options = {
-      root: null, // use the viewport as the root
-      rootMargin: "0px", // no margin
+      root: null, // Use the viewport as the root
+      rootMargin: "0px", // No margin
       threshold: 0.5, // 50% visibility needed to trigger
     };
 
@@ -21,7 +21,7 @@ export default function CounterData() {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          observer.unobserve(entry.target); // stop observing once visible
+          observer.unobserve(entry.target); // Stop observing once visible
         }
       });
     }, options);
@@ -36,31 +36,36 @@ export default function CounterData() {
       }
     };
   }, []);
+
   return (
-    <MotionTransition className="mx-auto max-w-5xl py-20">
-      <div className=" justify-between  rounded-lg  border border-black md:flex">
-        {counterNumbers.map(({ id, startNumber, endNumber, text }) => (
-          <div
-            key={id}
-            className="rounded-lg  px-7  py-7 text-center font-poppins  text-2xl font-bold text-black md:text-left "
-            ref={counterRef}
-          >
-            {isVisible && ( // Render count-up only when visible
-              <>
-                <CountUp
-                  start={startNumber}
-                  end={endNumber}
-                  duration={4}
-                  enableScrollSpy
-                />{" "}
-                <span className=" ml-3  text-lg font-bold text-tertiary">
-                  {text}
-                </span>
-              </>
-            )}
-          </div>
-        ))}
-      </div>
-    </MotionTransition>
+    <div className="flex h-full w-full items-center justify-center bg-[#F5F5F7]">
+      <MotionTransition className="mx-[248px] max-w-3xl py-10 max-sm:mx-4 max-sm:py-5">
+        {/* Add gap-x-6 for spacing between columns */}
+        <div className="justify-between gap-x-28 rounded-2xl bg-white shadow-md transition-shadow hover:shadow-lg max-sm:flex-col max-sm:space-y-6 md:flex">
+          {counterNumbers.map(({ id, startNumber, endNumber, text }) => (
+            <div
+              key={id}
+              className="flex flex-col items-center justify-center rounded-lg  px-7 py-7 text-center font-poppins text-2xl font-bold text-black max-sm:px-4 max-sm:py-4 max-sm:text-xl md:text-left"
+              ref={counterRef}
+            >
+              {isVisible && (
+                // Render count-up only when visible
+                <>
+                  <CountUp
+                    start={startNumber}
+                    end={endNumber}
+                    duration={4}
+                    enableScrollSpy
+                  />
+                  <span className="text-lg font-bold text-tertiary max-sm:text-base">
+                    {text}
+                  </span>
+                </>
+              )}
+            </div>
+          ))}
+        </div>
+      </MotionTransition>
+    </div>
   );
 }

@@ -1,35 +1,36 @@
 import React from "react";
 
 import { RevealText } from "~/app/animations/RevealText";
+import { roboto } from "~/app/fonts";
 import Slide from "./slide";
 
 export default function Testimonials() {
   return (
-    <div className="lg:py-15 relative mb-10 md:py-10 xl:py-20">
-      <div className="mx-auto mt-10   grid h-[500px]  max-w-5xl  items-start md:grid-cols-3">
+    <div className="relative py-[40px] sm:py-[80px]">
+      <div className="mx-4 grid max-w-5xl items-start gap-y-8 sm:mx-[200px] sm:grid-cols-[1fr] sm:gap-x-[50px] sm:gap-y-0 md:grid-cols-[269px_650px]">
         {/* First column */}
-        <div className="mt-20 md:col-span-1">
+        <div className="text-center sm:text-left">
           <RevealText>
-            <h2 className="mb-5 font-poppins text-3xl font-semibold">
-              What our <br />
-              students have <br />
+            <h2 className="text-cp-primary xs:text-[28px] xs:leading-[34px] mb-3 mt-3 font-poppins text-[24px] font-bold leading-[30px] sm:mb-5 sm:mt-5 sm:text-[34px] sm:leading-[41px]">
+              What our <br className="hidden sm:inline" />
+              members have <br className="hidden sm:inline" />
               to say
             </h2>
           </RevealText>
           <RevealText>
-            <p className=" font-poppins text-base font-bold text-primary">
-              Our students have witnessed a marked <br />
-              improvement in their skills for speech
-              <br />
-              and content creation.
+            <p
+              className={`${roboto.className} xs:text-[14px] xs:leading-[20px] text-[12px] font-normal leading-[18px] sm:text-[16px] sm:leading-[22.4px]`}
+            >
+              Our members have witnessed a
+              <br className="hidden sm:inline" /> marked improvement in their
+              skills for <br className="hidden sm:inline" /> speech and content
+              creation.
             </p>
           </RevealText>
         </div>
 
-        {/* Carousel column with additional margin */}
-        <div className="mt-20 md:col-span-2 md:ml-14">
-          {" "}
-          {/* Add margin left for separation */}
+        {/* Second column */}
+        <div className="xs:w-auto w-full">
           <Slide />
         </div>
       </div>
