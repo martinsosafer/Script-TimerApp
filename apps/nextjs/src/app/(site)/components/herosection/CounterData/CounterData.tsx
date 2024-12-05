@@ -39,17 +39,15 @@ export default function CounterData() {
 
   return (
     <div className="flex h-full w-full items-center justify-center bg-[#F5F5F7]">
-      <MotionTransition className="mx-[248px] max-w-3xl py-10 max-sm:mx-4 max-sm:py-5">
+      <MotionTransition className="w-full max-w-3xl px-4 py-5 lg:px-0 lg:py-10">
         {/* Add gap-x-6 for spacing between columns */}
-        <div className="justify-between gap-x-28 rounded-2xl bg-white shadow-md transition-shadow hover:shadow-lg max-sm:flex-col max-sm:space-y-6 md:flex">
+        <div className="flex flex-col justify-between gap-6 rounded-2xl bg-white p-4 shadow-md transition-shadow hover:shadow-lg lg:flex-row lg:gap-x-28 lg:p-7">
           {counterNumbers.map(({ id, startNumber, endNumber, text }) => (
             <div
               key={id}
-              className="flex flex-col items-center justify-center rounded-lg  px-7 py-7 text-center font-poppins text-2xl font-bold text-black max-sm:px-4 max-sm:py-4 max-sm:text-xl md:text-left"
-              ref={counterRef}
+              className="flex flex-col items-center justify-center rounded-lg text-center font-poppins text-xl font-bold text-black lg:text-2xl"
             >
               {isVisible && (
-                // Render count-up only when visible
                 <>
                   <CountUp
                     start={startNumber}
@@ -57,7 +55,7 @@ export default function CounterData() {
                     duration={4}
                     enableScrollSpy
                   />
-                  <span className="text-lg font-bold text-tertiary max-sm:text-base">
+                  <span className="mt-2 text-base font-bold text-tertiary lg:text-lg">
                     {text}
                   </span>
                 </>

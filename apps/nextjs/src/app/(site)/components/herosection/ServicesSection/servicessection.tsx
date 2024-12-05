@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
 import { Button } from "@voiceai/ui";
@@ -44,16 +44,26 @@ const iconComponents = {
 export default function ServiceSection() {
   const [currentPage, setCurrentPage] = useState(0);
   const [fade, setFade] = useState(false);
+  const [itemsPerPage, setItemsPerPage] = useState(3);
 
-  const itemsPerPage = 6;
+  useEffect(() => {
+    const handleResize = () => {
+      setItemsPerPage(window.innerWidth >= 1040 ? 6 : 3);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const totalPages = Math.ceil(servicesData.length / itemsPerPage);
 
   const handlePageChange = (index: number) => {
-    setFade(true); // Trigger fade-out
+    setFade(true);
     setTimeout(() => {
       setCurrentPage(index);
-      setFade(false); // Trigger fade-in
-    }, 300); // Match this with the fade-out duration
+      setFade(false);
+    }, 300);
   };
 
   const currentServices = servicesData.slice(
@@ -63,14 +73,14 @@ export default function ServiceSection() {
 
   return (
     <div className={`${poppins.className} w-full bg-[#E2E8F0]`}>
-      <div className="flex flex-col items-center justify-center px-4 py-8 sm:px-6 sm:py-12 md:px-8 md:py-16 lg:px-[83px] lg:py-[60px]">
-        <h2 className="text-cp-primary text-center text-2xl font-bold leading-tight sm:text-3xl md:text-4xl lg:text-[42px] lg:leading-[50px]">
+      <div className="flex flex-col items-center justify-center px-4 py-8 lg:px-[83px] lg:py-[60px]">
+        <h2 className="text-cp-primary text-center text-2xl font-bold leading-tight lg:text-[42px] lg:leading-[50px]">
           Bring Your Ideas to Life
         </h2>
 
         <div
           className={cn(
-            "mt-8 grid grid-cols-1 gap-4 sm:mt-12 sm:gap-6 md:grid-cols-2 lg:mt-[48px]",
+            "mt-8 grid grid-cols-1 gap-4 lg:mt-[48px] lg:grid-cols-2 lg:gap-6",
             fade ? "opacity-0 transition-opacity duration-300" : "opacity-100",
           )}
         >
@@ -82,14 +92,14 @@ export default function ServiceSection() {
                 key={service.id}
                 className="rounded-lg border-none shadow-sm transition-shadow hover:shadow-md"
               >
-                <CardContent className="flex items-center p-4 sm:p-6 md:p-[15px] lg:p-[40px]">
-                  <div className="flex flex-row items-center space-y-2 text-left sm:space-y-4">
-                    <Icon className="text-cp-secondary h-12 w-12 flex-shrink-0 sm:h-16 sm:w-16 lg:h-[70px] lg:w-[70px]" />
+                <CardContent className="flex items-center p-4 lg:p-[40px]">
+                  <div className="flex flex-row items-center space-y-2 text-left lg:space-y-4">
+                    <Icon className="text-cp-secondary h-12 w-12 flex-shrink-0 lg:h-[70px] lg:w-[70px]" />
                     <div className="ml-3 flex flex-col items-start">
-                      <h3 className="text-cp-primary text-lg font-bold leading-tight sm:text-xl md:text-[20px] md:leading-[28px]">
+                      <h3 className="text-cp-primary text-lg font-bold leading-tight lg:text-[20px] lg:leading-[28px]">
                         {service.title}
                       </h3>
-                      <p className="mt-1 text-sm font-normal leading-snug text-black sm:text-base md:text-[16px] md:leading-[22.5px]">
+                      <p className="mt-1 text-sm font-normal leading-snug text-black lg:text-[16px] lg:leading-[22.5px]">
                         {service.description}
                       </p>
                     </div>
@@ -100,7 +110,7 @@ export default function ServiceSection() {
           })}
         </div>
 
-        <div className="mt-6 flex justify-center gap-4 sm:mt-8 lg:mt-[16px]">
+        <div className="mt-6 flex justify-center gap-4 lg:mt-[16px]">
           {Array.from({ length: totalPages }).map((_, index) => (
             <Button
               key={index}

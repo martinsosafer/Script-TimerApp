@@ -110,25 +110,25 @@ function Section({ title, description, imageUrl, imagePosition }) {
   return (
     <motion.div
       ref={ref}
-      className={`${poppins.className} mx-auto flex h-auto w-full flex-col sm:w-[862px] ${
+      className={`${poppins.className} mx-auto flex h-auto w-full flex-col items-center justify-between gap-6 rounded-2xl border border-blue-500 bg-white p-4 shadow-lg lg:w-[862px] lg:gap-12 lg:p-6 ${
         imagePosition === "left"
-          ? "sm:ml-20 sm:flex-row-reverse"
-          : "sm:mr-20 sm:flex-row"
-      } items-center justify-between gap-6 rounded-2xl border border-blue-500 bg-white p-4 shadow-lg sm:gap-12 sm:p-6`}
+          ? "lg:ml-20 lg:flex-row-reverse"
+          : "lg:mr-20 lg:flex-row"
+      }`}
       initial="hidden"
       animate={controls}
       variants={sectionVariants}
     >
       <div
-        className={`flex-1 space-y-3 sm:space-y-6 ${
-          imagePosition === "left" ? "sm:ml-16" : "sm:mr-16"
+        className={`flex-1 space-y-3 lg:space-y-6 ${
+          imagePosition === "left" ? "lg:ml-16" : "lg:mr-16"
         }`}
       >
-        <div className="flex items-center gap-3 sm:gap-6">
-          <span className="bg-cp-secondary flex h-8 w-8 items-center justify-center rounded-full font-bold text-white sm:h-10 sm:w-10">
+        <div className="flex items-center gap-3 lg:gap-6">
+          <span className="bg-cp-secondary flex h-8 w-8 items-center justify-center rounded-full font-bold text-white lg:h-10 lg:w-10">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="ml-2 h-3 w-3 sm:h-4 sm:w-4"
+              className="ml-2 h-3 w-3 lg:h-4 lg:w-4"
               viewBox="0 0 24 24"
               fill="none"
               stroke="#FFFFFF"
@@ -141,16 +141,16 @@ function Section({ title, description, imageUrl, imagePosition }) {
               />
             </svg>
           </span>
-          <h2 className="text-cp-primary text-[24px] font-bold leading-[28px] sm:text-[34px] sm:leading-[41px]">
+          <h2 className="text-cp-primary text-[24px] font-bold leading-[28px] lg:text-[34px] lg:leading-[41px]">
             {title}
           </h2>
         </div>
-        <p className="text-cp-primary text-[16px] font-normal leading-[22px] sm:text-[20px] sm:leading-[28px]">
+        <p className="text-cp-primary text-[16px] font-normal leading-[22px] lg:text-[20px] lg:leading-[28px]">
           {description}
         </p>
       </div>
 
-      <div className="flex h-[200px] w-[200px] items-center justify-center rounded-lg bg-white p-2 sm:h-[250px] sm:w-[250px]">
+      <div className="flex h-[200px] w-[200px] items-center justify-center rounded-lg bg-white p-2 lg:h-[250px] lg:w-[250px]">
         <div className="relative h-full w-full overflow-hidden rounded-md">
           <Image
             src={imageUrl}
