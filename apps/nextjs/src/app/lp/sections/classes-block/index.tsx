@@ -1,9 +1,9 @@
 import Image from "next/image";
+import AtlassianImg from "@public/AtlassianImg.png";
+import GoogleImg from "@public/GoogleImg.png";
+import NotionImg from "@public/NotionImg.png";
 
 import { poppins } from "~/app/fonts";
-import AtlassianImg from "../../../../public/AtlassianImg.png";
-import GoogleImg from "../../../../public/GoogleImg.png";
-import NotionImg from "../../../../public/NotionImg.png";
 
 export default function ClassesBlock() {
   return (
