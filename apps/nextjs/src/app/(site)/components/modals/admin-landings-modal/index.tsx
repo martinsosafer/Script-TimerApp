@@ -7,6 +7,8 @@ import {
   updateLanding,
 } from "~/app/(site)/(admin)/admin-landings/actions";
 import type { LandingPage } from "~/app/(site)/(admin)/admin-landings/types";
+import RegularHero from "~/app/lp/sections/hero";
+import Button from "../../button";
 
 interface ModalProps {
   onClose: () => void;
@@ -205,18 +207,20 @@ export default function AdminLandingModal({
         </button>
       </div>
 
-      {/* {previewLanding && (
-        <div className="mt-4 w-full">
-          <MonthlySpecial
+      {previewLanding && previewValues.type === "regular" && (
+        <div className="-mt-20 flex w-full scale-75 flex-col items-center gap-4">
+          <Button
+            label="Close preview"
+            type="accent"
+            onClick={() => setPreviewLanding(false)}
+          />
+          <RegularHero
             description={previewValues.description}
-            name={previewValues.name}
-            link={previewValues.link}
-            onClose={() => setPreviewSpecial(false)}
-            promo_code={previewValues.promoCode}
-            type={previewValues.type as "promo" | "announcement"}
+            title={previewValues.title}
+            video_url={previewValues.videoUrl}
           />
         </div>
-      )} */}
+      )}
     </div>
   );
 }

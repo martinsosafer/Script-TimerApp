@@ -1,12 +1,14 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import Button from "~/app/(site)/components/button";
+import DirectorImg from "~/app/(site)/components/modals/modalimgs/CameraImg.png";
 import { poppins } from "~/app/fonts";
-import DirectorImg from "../../(site)/components/modals/modalimgs/CameraImg.png";
 
 export default function DirectorBlock() {
+  const router = useRouter();
   return (
     <div
       className={`bg-cp-primary flex h-full w-full flex-row  justify-center gap-x-[100px] ${poppins.className}`}
@@ -37,6 +39,7 @@ export default function DirectorBlock() {
               label="Start Now"
               type="accent"
               className="h-[48px] w-[158px]"
+              onClick={() => router.push("/")}
             />
           </Link>
         </div>
