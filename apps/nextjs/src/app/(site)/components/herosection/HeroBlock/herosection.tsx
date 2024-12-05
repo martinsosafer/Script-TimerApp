@@ -51,7 +51,7 @@ export default function HeroSection() {
           {/* Text Content */}
           <div className="mt-8 h-auto sm:mt-[68px] sm:h-[414px]">
             <RevealText>
-              <h1 className="text-[58px] font-bold leading-[60px] text-white max-sm:text-3xl max-sm:leading-tight">
+              <h1 className="mb-[24px] text-[58px] font-bold leading-[60px] text-white max-sm:text-3xl max-sm:leading-tight">
                 <span className="text-cyan-300">Automate</span>
                 <br /> content <br /> production
               </h1>
@@ -128,7 +128,7 @@ export default function HeroSection() {
             exit="exit"
             variants={overlayVariants}
           >
-            <motion.div className="fixed inset-0 bg-black bg-opacity-50"/>
+            <motion.div className="fixed inset-0 bg-black bg-opacity-50" />
             <motion.div
               className="relative h-[50vh] w-[90vw] max-w-[600px] overflow-hidden rounded-lg bg-gradient-to-br from-[#000000] to-[#0066FF] px-[20px] md:h-[50vh]"
               variants={modalVariants}
