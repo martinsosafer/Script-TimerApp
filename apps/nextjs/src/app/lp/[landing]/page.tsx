@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 
 import { api } from "~/utils/api";
 import Button from "../../(site)/components/button";
+import AwardsBlock from "../sections/awards-block";
 import DirectorBlock from "../sections/director-block";
 import RegularHero from "../sections/hero";
 import MarqueeLogos from "../sections/marquee-logos";
@@ -48,6 +49,7 @@ export default function Landing() {
       <MarqueeLogos />
       <Testimonials />
       <DirectorBlock />
+      <AwardsBlock />
     </main>
   );
 }

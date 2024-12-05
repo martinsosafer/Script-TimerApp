@@ -1,9 +1,9 @@
 import Image from "next/image";
+import AwardImg1 from "@public/AwardsBlockImg1.png";
+import AwardImg2 from "@public/AwardsBlockImg2.png";
+import AwardImg3 from "@public/AwardsBlockImg3.png";
 
 import { poppins } from "~/app/fonts";
-import AwardImg1 from "../../../../public/AwardsBlockImg1.png";
-import AwardImg2 from "../../../../public/AwardsBlockImg2.png";
-import AwardImg3 from "../../../../public/AwardsBlockImg3.png";
 
 export default function AwardsBlock() {
   return (

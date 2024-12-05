@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import Button from "~/app/(site)/components/button";
@@ -11,38 +10,25 @@ export default function DirectorBlock() {
   const router = useRouter();
   return (
     <div
-      className={`bg-cp-primary flex h-full w-full flex-row  justify-center gap-x-[100px] ${poppins.className}`}
+      className={`bg-cp-primary flex h-full w-full flex-row justify-center ${poppins.className} gap-10 p-10`}
     >
-      <div className="py-[51px]">
-        <div className=" flex h-[337px] w-[324px]  ">
-          <Image
-            src={DirectorImg}
-            alt="Alternate content image"
-            className="h-full w-full object-cover"
-          />
-        </div>
+      <div className="relative h-[370px] w-[360px]  ">
+        <Image src={DirectorImg} alt="Alternate content image" fill />
       </div>
-      <div className="pt-[75px]">
-        <div className="flex flex-col ">
-          <h3 className="text-[34px] font-bold  leading-[41px]  text-white">
-            Boost your video and
-            <br />
-            content production
-          </h3>
-          <p className="mb-10  mt-4 text-[28px] font-normal leading-[34px]  text-[#13EBDC]">
-            Save money and time:
-            <br /> up to 85% per video
-            <br /> produced
-          </p>
-          <Link href="/register">
-            <Button
-              label="Start Now"
-              type="accent"
-              className="h-[48px] w-[158px]"
-              onClick={() => router.push("/")}
-            />
-          </Link>
-        </div>
+
+      <div className="flex h-[360px] w-[368px] flex-col justify-center">
+        <h3 className="text-[34px] font-bold leading-[41px] text-white">
+          Boost your video and content production
+        </h3>
+        <p className="text-cp-accent mb-10 mt-4 w-[327px] text-[28px] font-normal leading-[34px]">
+          Save money and time: up to 85% per video produced
+        </p>
+        <Button
+          label="Start Now"
+          type="accent"
+          className="w-[158px]"
+          onClick={() => router.push("/")}
+        />
       </div>
     </div>
   );
