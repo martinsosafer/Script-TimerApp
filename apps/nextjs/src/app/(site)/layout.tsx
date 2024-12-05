@@ -52,7 +52,10 @@ export default async function Layout(props: { children: React.ReactNode }) {
   const monthlySpecials = await getSpecials();
 
   return (
-    <div className="flex min-h-screen w-full flex-col justify-between bg-background">
+    <div className="flex h-full w-full flex-col justify-between bg-background">
+      <Head>
+        <meta name="referrer" content="origin" />
+      </Head>
       <Newnavbar
         signOut={signOutServer}
         signIn={signInServer}
@@ -64,22 +67,6 @@ export default async function Layout(props: { children: React.ReactNode }) {
       >
         <div>{props.children}</div>
       </MonthlySpecialProvider>
-    <div className="flex h-full w-full flex-col justify-between bg-background">
-      <TRPCReactProvider headers={headers()}>
-        <Head>
-          <meta name="referrer" content="origin" />
-        </Head>
-        <Newnavbar
-          signOut={signOutServer}
-          signIn={signInServer}
-          session={session}
-        />
-        <MonthlySpecialProvider
-          monthlySpecials={monthlySpecials}
-          session={session}
-        >
-          <div>{props.children}</div>
-        </MonthlySpecialProvider>
       <Toaster />
       <Footer />
       <IdentifyAnalytics />
