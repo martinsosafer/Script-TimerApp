@@ -14,6 +14,7 @@ import LearnMoreBlock from "../sections/learn-more-block";
 import MarqueeLogos from "../sections/marquee-logos";
 import Testimonials from "../sections/Testimonials";
 import VideoBlock from "../sections/video-block";
+import LpFooter from "./footer";
 
 export default function Landing() {
   const pathname = usePathname();
@@ -58,6 +59,7 @@ export default function Landing() {
       <LearnMoreBlock />
       <FAQAccordion />
       <VideoBlock />
+      <LpFooter />
     </main>
   );
 }
