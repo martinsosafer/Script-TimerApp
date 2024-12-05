@@ -14,11 +14,11 @@ export default function FAQAccordion() {
     <div className="bg-slate-200 px-4 py-16">
       <div className="mx-auto max-w-2xl">
         <h2
-          className={`text-cp-primary mb-8 text-center text-[34px]  ${poppins.className} font-bold leading-[41px]`}
+          className={`text-cp-primary mb-8 text-center text-[34px] ${poppins.className} font-bold leading-[41px]`}
         >
           FAQ
         </h2>
-        <Accordion type="multiple" className="space-y-4">
+        <Accordion type="multiple" className="space-y-3">
           <AccordionItem value="item-1">
             <AccordionTrigger className="mr-3 rounded-lg border-none  bg-white px-6 shadow-sm">
               <span className=" text-left font-bold text-black">

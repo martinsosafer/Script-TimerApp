@@ -8,9 +8,12 @@ import Button from "../../(site)/components/button";
 import AwardsBlock from "../sections/awards-block";
 import ClassesBlock from "../sections/classes-block";
 import DirectorBlock from "../sections/director-block";
+import FAQAccordion from "../sections/faq-accordion";
 import RegularHero from "../sections/hero";
+import LearnMoreBlock from "../sections/learn-more-block";
 import MarqueeLogos from "../sections/marquee-logos";
 import Testimonials from "../sections/Testimonials";
+import VideoBlock from "../sections/video-block";
 
 export default function Landing() {
   const pathname = usePathname();
@@ -52,6 +55,9 @@ export default function Landing() {
       <DirectorBlock />
       <AwardsBlock />
       <ClassesBlock />
+      <LearnMoreBlock />
+      <FAQAccordion />
+      <VideoBlock />
     </main>
   );
 }
