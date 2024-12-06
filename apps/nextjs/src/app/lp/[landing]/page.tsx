@@ -1,5 +1,7 @@
 "use client";
 
+import "~/styles/globals.css";
+
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -8,6 +10,7 @@ import Button from "../../(site)/components/button";
 import AwardsBlock from "../sections/awards-block";
 import ClassesBlock from "../sections/classes-block";
 import DirectorBlock from "../sections/director-block";
+import EmailLoginSection from "../sections/email-login-section";
 import FAQAccordion from "../sections/faq-accordion";
 import RegularHero from "../sections/hero";
 import LearnMoreBlock from "../sections/learn-more-block";
@@ -26,6 +29,9 @@ export default function Landing() {
     isLoading,
     isError,
   } = api.landings.getLanding.useQuery({ segment });
+
+  const { data: session, isLoading: isSessionLoading } =
+    api.auth.getSession.useQuery();
 
   return (
     <main className="w-full">
@@ -51,6 +57,7 @@ export default function Landing() {
           video_url={landing.video_url}
         />
       )}
+      {!session && !isSessionLoading && <EmailLoginSection />}
       <MarqueeLogos />
       <Testimonials />
       <DirectorBlock />

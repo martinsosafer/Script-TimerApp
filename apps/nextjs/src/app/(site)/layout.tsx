@@ -5,7 +5,6 @@ import { auth, signIn, signOut } from "@voiceai/auth";
 import "~/styles/globals.css";
 
 import Head from "next/head";
-import { headers } from "next/headers";
 
 import { Toaster } from "@voiceai/ui/@/components/ui/toaster";
 

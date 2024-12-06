@@ -74,55 +74,63 @@ export default function Slide() {
         breakpoints={{
           320: { slidesPerView: 1, spaceBetween: 15 },
           640: { slidesPerView: 2, spaceBetween: 20 },
-          1024: { slidesPerView: 2, spaceBetween: 10 },
+          1024: { slidesPerView: 2, spaceBetween: 30 },
         }}
-        freeMode={true}
+        freeMode={{
+          enabled: true,
+          momentum: true,
+          momentumRatio: 0.3,
+        }}
+        centeredSlides={false} // Optional: Set to true if you want slides to center
+        touchReleaseOnEdges={true}
         pagination={{
           clickable: true,
         }}
         modules={[Navigation, Pagination, Mousewheel, Keyboard]}
-        className="h-[320px] w-full py-10"
+        className="h-auto w-full !overflow-visible py-5 sm:h-[320px] sm:py-10 md:max-w-5xl"
       >
         {testimonialsData.map(({ id, name, work, testimonial, image }) => (
           <SwiperSlide
             key={id}
-            className="mb-2 h-[250px] w-[288px] cursor-pointer px-2"
+            className="!w-[85vw] cursor-pointer px-2 sm:!w-auto sm:px-5"
           >
-            <div className="h-auto w-full bg-white sm:h-[300px] sm:w-[300px]">
-              <div className="flex h-full w-full flex-col items-start rounded-2xl p-4 shadow-xl">
-                <div className="flex w-full items-center">
-                  <div className="mr-4 flex-shrink-0">
-                    <Image
-                      src={image}
-                      alt={name}
-                      width={50}
-                      height={50}
-                      className="h-[50px] w-[50px] rounded-full sm:h-[60px] sm:w-[60px]"
-                    />
+            <RevealText>
+              <div className="h-auto w-full bg-white sm:h-[300px] sm:w-[300px]">
+                <div className="flex h-full w-full flex-col items-start rounded-2xl p-4 shadow-xl">
+                  <div className="flex w-full items-center">
+                    <div className="mr-4 flex-shrink-0">
+                      <Image
+                        src={image}
+                        alt={name}
+                        width={50}
+                        height={50}
+                        className="h-[50px] w-[50px] rounded-full sm:h-[60px] sm:w-[60px]"
+                      />
+                    </div>
+                    <div className="flex-grow">
+                      <h4 className="text-cp-primary font-poppins text-[18px] font-bold leading-[24px] sm:text-[20px] sm:leading-[28px]">
+                        {name}
+                      </h4>
+                      <p
+                        className={`${roboto.className} text-[11px] font-normal leading-[14px] sm:text-[12px] sm:leading-[16.8px]`}
+                      >
+                        {work}
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex-grow">
-                    <h4 className="text-cp-primary font-poppins text-[18px] font-bold leading-[24px] sm:text-[20px] sm:leading-[28px]">
-                      {name}
-                    </h4>
-                    <p
-                      className={`${roboto.className} text-[11px] font-normal leading-[14px] sm:text-[12px] sm:leading-[16.8px]`}
-                    >
-                      {work}
-                    </p>
-                  </div>
+                  <p
+                    className={`${roboto.className} mt-3 w-full overflow-hidden overflow-ellipsis font-poppins text-xs leading-relaxed text-black sm:mt-4 sm:text-sm`}
+                  >
+                    {testimonial}
+                  </p>
+                  <p
+                    className={`ml-auto mt-2 font-poppins text-xs text-gray-500 sm:text-sm ${roboto.className}`}
+                  >
+                    November 2024
+                  </p>
                 </div>
-                <p
-                  className={`${roboto.className} mt-3 w-full overflow-hidden overflow-ellipsis font-poppins text-xs leading-relaxed text-black sm:mt-4 sm:text-sm`}
-                >
-                  {testimonial}
-                </p>
-                <p
-                  className={`ml-auto mt-2 font-poppins text-xs text-gray-500 sm:text-sm ${roboto.className}`}
-                >
-                  November 2024
-                </p>
               </div>
-            </div>
+            </RevealText>
           </SwiperSlide>
         ))}
       </Swiper>
