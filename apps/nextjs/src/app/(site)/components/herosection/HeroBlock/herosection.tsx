@@ -42,34 +42,37 @@ export default function HeroSection() {
   };
 
   return (
-    <div>
-      {/* Hero Section */}
+    <div className={`${poppins.className}`}>
       <div
-        className={`from-cp-primary relative bg-gradient-to-br to-[#000000] px-6 py-1 lg:px-6 lg:py-1 ${poppins.className}`}
+        className={`from-cp-primary relative mx-auto bg-gradient-to-br to-[#000000]   lg:px-6  lg:py-1`}
       >
-        <div className="grid items-start gap-[82px] px-4 lg:grid-cols-2 lg:gap-[82px] lg:px-[200px]">
+        <div className="grid items-center justify-center   gap-[24px] lg:grid-cols-2 lg:gap-[82px] lg:px-[200px]">
           {/* Text Content */}
-          <div className="mt-8 h-auto lg:mt-[68px] lg:h-[414px]">
+          <div className="mt-6  h-[266px]  w-[312px] lg:mt-[68px] lg:h-[414px]">
             <RevealText>
-              <h1 className="mb-[24px] text-3xl font-bold leading-tight text-white lg:text-[58px] lg:leading-[60px]">
-                <span className="text-cyan-300">Automate</span>
-                <br /> content <br /> production
-              </h1>
+              <div className="h-[76px] lg:h-[210px] lg:w-[409px]">
+                <h1 className="mb-[16px] text-[32px]  font-bold leading-[38.3px] text-white lg:text-[58px] lg:leading-[60px]">
+                  <span className="text-cyan-300">Automate </span>
+                  {""}content production
+                </h1>
+              </div>
             </RevealText>
             <RevealText>
-              <p className="text-base font-normal leading-snug text-white lg:text-[20px] lg:leading-[20px]">
-                The tools supported by AI will automate{" "}
-                <br className="hidden lg:block" />
-                your creative process: Writing viral posts,{" "}
-                <br className="hidden lg:block" />
-                presos, promos, voice overs, images,{" "}
-                <br className="hidden lg:block" />
-                and much more.
-              </p>
+              <div className="h-[125px]   ">
+                <p className="text-[18px] font-normal leading-[25px] text-white lg:text-[20px] lg:leading-[20px]">
+                  The tools supported by AI will automate{" "}
+                  <br className="hidden lg:block" />
+                  your creative process: Writing viral posts,{" "}
+                  <br className="hidden lg:block" />
+                  presos, promos, voice overs, images,{" "}
+                  <br className="hidden lg:block" />
+                  and much more.
+                </p>
+              </div>
             </RevealText>
             <RevealText>
-              <div className="mt-6 flex justify-center lg:mt-[17px]">
-                <p className="text-cp-secondary-lightest text-center text-lg font-bold leading-[28px] lg:text-[20px]">
+              <div className="flex justify-center lg:mt-[17px]">
+                <p className="text-cp-secondary-lightest text-center text-[18px]  font-bold leading-[25px] lg:text-[20px]">
                   What do you want to create?
                 </p>
               </div>
@@ -77,10 +80,10 @@ export default function HeroSection() {
           </div>
 
           {/* Hero Image & Button */}
-          <MotionTransition className="mt-8 flex flex-col justify-center lg:mt-[60px]">
+          <MotionTransition className="flex flex-col justify-start lg:mt-[60px]">
             <button onClick={toggleModal} className="w-full">
-              <div className="flex flex-col items-center">
-                <div className="relative h-[200px] w-full max-w-[550px] lg:h-[300px]">
+              <div className="flex h-[391px] w-[312px] flex-col items-center pb-6">
+                <div className="relative h-[331px] w-[312px] max-w-[550px] lg:h-[300px]">
                   <Image
                     src={HeroImg}
                     alt="Hero image"
@@ -90,7 +93,7 @@ export default function HeroSection() {
                     priority
                   />
                 </div>
-                <div className="border-cp-secondary mt-4 flex w-full items-center justify-center rounded-md border-2 lg:mt-[22px]">
+                <div className="border-cp-secondary mt-4 flex w-full  items-center justify-center rounded-md border-2 lg:mt-[22px]">
                   <span
                     className="text-cp-secondary flex cursor-pointer items-center px-2 py-3 text-center text-sm font-semibold leading-[22px] lg:py-[13px] lg:text-[16px]"
                     onClick={toggleModal}

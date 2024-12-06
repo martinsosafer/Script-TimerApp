@@ -41,6 +41,7 @@ const VideoComponent: React.FC<VideoComponentProps> = ({
   previousVideo,
   nextVideo,
 }) => {
+  console.log("data", data);
   return (
     <MotionTransition className="mb-16 flex items-center justify-center">
       <div className="relative mx-auto max-w-4xl">

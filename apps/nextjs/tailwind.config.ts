@@ -13,9 +13,6 @@ export default {
   safelist: [...withsArray],
   presets: [baseConfig],
   theme: {
-    screens: {
-      lg: "1040px",
-    },
     extend: {
       colors: {
         "cp-background": "#F5F5F7",
