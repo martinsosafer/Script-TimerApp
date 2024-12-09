@@ -18,6 +18,7 @@ import {
 } from "@voiceai/ui/@/components/ui/icons";
 
 import { RevealText } from "~/app/animations/RevealText";
+import Logo from "../logo";
 import MobileNavBar from "../mobile-navbar";
 import ImagesNavItem from "./imaimages-nav-item";
 import MasterclassesNavItem from "./masterclass-nav-item";
@@ -59,13 +60,8 @@ export default function NewNavBar({ signOut, signIn, session }: NavBarProps) {
           {/* Container for better alignment */}
           <div className="flex flex-col items-start">
             {/* Main title */}
-            <span className="text-left font-poppins text-4xl font-bold">
-              Co-Producer
-            </span>
+            <Logo coColor="white" producerColor="black" />
             {/* Subtitle positioned directly below the main title */}
-            <span className="text-left text-sm text-white">
-              Created by Script-Timer
-            </span>
           </div>
         </RevealText>
       </Link>

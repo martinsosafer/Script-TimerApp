@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
 import { Poppins, Roboto } from "next/font/google";
 
+
+
 import { PageAnalytics } from "./analytics";
 import { ContextWrapper } from "./context/state";
 import GoogleAnalytics from "./GoogleAnalytics";
+
+
 
 import "~/styles/globals.css";
 
@@ -11,6 +15,7 @@ import { headers } from "next/headers";
 
 import { TRPCReactProvider } from "./providers";
 import Squid from "./SquidAnalitycs";
+
 
 const poppins = Poppins({
   subsets: ["latin"],

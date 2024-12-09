@@ -2235,7 +2235,6 @@ function IconFooterLocation({
   );
 }
 
-
 function IconCircleStop({ className, ...props }: React.ComponentProps<"svg">) {
   return (
     <svg
@@ -2248,55 +2247,50 @@ function IconCircleStop({ className, ...props }: React.ComponentProps<"svg">) {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className={cn("lucide lucide-circle-stop", className)}
+      className={cn("lucide lucide-arrow-left", className)}
       {...props}
     >
-      <circle cx="12" cy="12" r="10" />
-      <rect x="9" y="9" width="6" height="6" rx="1" />
+      <path d="m12 19-7-7 7-7" />
+      <path d="M19 12H5" />
     </svg>
   );
 }
-function IconSilence({ className, ...props }: React.ComponentProps<"svg">) {
+function TalkIcon({
+  color = "#0066FF",
+  className,
+  ...props
+}: React.ComponentProps<"svg">) {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
       width="24"
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={cn("lucide lucide-message-circle-off", className)}
-      {...props}
-    >
-      <path d="M20.5 14.9A9 9 0 0 0 9.1 3.5" />
-      <path d="m2 2 20 20" />
-      <path d="M5.6 5.6C3 8.3 2.2 12.5 4 16l-2 6 6-2c3.4 1.8 7.6 1.1 10.3-1.7" />
-    </svg>
-  );
-}
-function IconCameraVideo({ className, ...props }: React.ComponentProps<"svg">) {
-  return (
-    <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={cn("lucide lucide-cctv", className)}
+      className={`h-4 w-4 ${className}`}
       {...props}
     >
-      <path d="M16.75 12h3.632a1 1 0 0 1 .894 1.447l-2.034 4.069a1 1 0 0 1-1.708.134l-2.124-2.97" />
-      <path d="M17.106 9.053a1 1 0 0 1 .447 1.341l-3.106 6.211a1 1 0 0 1-1.342.447L3.61 12.3a2.92 2.92 0 0 1-1.3-3.91L3.69 5.6a2.92 2.92 0 0 1 3.92-1.3z" />
-      <path d="M2 19h3.76a2 2 0 0 0 1.8-1.1L9 15" />
-      <path d="M2 21v-4" />
-      <path d="M7 9h.01" />
+      <path
+        d="M8.8 20.0008V15.9008L10.7 16.1008C11.2531 16.0701 11.7766 15.8407 12.1742 15.4549C12.5717 15.0691 12.8167 14.5528 12.864 14.0008V8.30081C12.8706 6.86015 12.3047 5.47587 11.2907 4.45248C10.2767 3.4291 8.89766 2.85044 7.457 2.84381C6.01634 2.83718 4.63206 3.40312 3.60867 4.41713C2.58529 5.43114 2.00663 6.81015 2 8.25081C2 11.0508 2.656 11.3048 3 12.8008C3.23248 13.7043 3.24243 14.6506 3.029 15.5588L2 20.0008"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M19.7998 17.8003C21.2056 16.3943 21.9956 14.4876 21.9962 12.4994C21.9968 10.5111 21.2078 8.60404 19.8028 7.19727"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M17.0001 15.0004C17.3273 14.6733 17.5863 14.2846 17.7623 13.8567C17.9383 13.4288 18.0278 12.9703 18.0254 12.5077C18.0231 12.045 17.9291 11.5874 17.7488 11.1614C17.5685 10.7353 17.3055 10.3492 16.9751 10.0254"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
@@ -2397,6 +2391,5 @@ export {
   IconFooterMail,
   IconFooterLocation,
   IconCircleStop,
-  IconSilence,
-  IconCameraVideo,
+  TalkIcon,
 };

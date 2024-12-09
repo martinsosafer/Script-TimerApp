@@ -52,6 +52,7 @@
     "lottie-react": "^2.4.0",
     "next": "^14.0.1",
     "next-themes": "^0.2.1",
+    "openai": "^4.4.0",
     "plagiarism-checker": "^4.0.0",
     "pnpm": "^8.12.0",
     "process": "^0.11.10",
