@@ -77,7 +77,7 @@ export default async function ScriptPage() {
 
   return (
     <>
-      <PageHeader title="Text to voice" subtitle={subtitle} />
+      <PageHeader title="Text to Voice" subtitle={subtitle} />
       <ScriptAI subData={subData} credits={credits} />
     </>
   );

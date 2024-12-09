@@ -12,9 +12,9 @@ export default function CounterData() {
 
   useEffect(() => {
     const options = {
-      root: null, // Use the viewport as the root
-      rootMargin: "0px", // No margin
-      threshold: 0.5, // 50% visibility needed to trigger
+      root: null,
+      rootMargin: "100px", // Increase margin to trigger earlier
+      threshold: 0.1, // Trigger with less visibility
     };
 
     const observer = new IntersectionObserver((entries) => {
@@ -38,17 +38,17 @@ export default function CounterData() {
   }, []);
 
   return (
-    <div className="h-full w-full bg-[#F5F5F7]">
-      <MotionTransition className="mx-[248px] max-w-5xl bg-white py-20 max-sm:mx-4 max-sm:py-10">
-        <div className="justify-between rounded-2xl shadow-md transition-shadow hover:shadow-lg max-sm:flex-col max-sm:space-y-6 md:flex">
+    <div className="flex h-full w-full items-center justify-center bg-[#F5F5F7]">
+      <MotionTransition className=" w-full  py-3 ">
+        {/* Add gap-x-6 for spacing between columns */}
+        <div className="flex h-[218px] w-[312px] flex-col gap-4 rounded-2xl bg-white  py-3 shadow-md transition-shadow hover:shadow-lg ">
           {counterNumbers.map(({ id, startNumber, endNumber, text }) => (
             <div
               key={id}
-              className="flex flex-col items-center justify-center rounded-lg px-7 py-7 text-center font-poppins text-2xl font-bold text-black max-sm:px-4 max-sm:py-4 max-sm:text-xl md:text-left"
+              className="flex flex-col items-center justify-center rounded-lg text-center font-poppins text-[22px] font-bold leading-[27px] text-black"
               ref={counterRef}
             >
               {isVisible && (
-                // Render count-up only when visible
                 <>
                   <CountUp
                     start={startNumber}
@@ -56,7 +56,7 @@ export default function CounterData() {
                     duration={4}
                     enableScrollSpy
                   />
-                  <span className="text-lg font-bold text-tertiary max-sm:text-base">
+                  <span className="text-[20px] font-bold leading-[28px] text-tertiary ">
                     {text}
                   </span>
                 </>

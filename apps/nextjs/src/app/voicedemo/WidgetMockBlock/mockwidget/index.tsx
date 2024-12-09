@@ -1,10 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
+import { Poppins } from "next/font/google";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 
-import Button from "~/app/(site)/components/button";
+import { Button } from "@voiceai/ui";
+import {
+  IconArrowRight,
+  IconChevronLeft,
+} from "@voiceai/ui/@/components/ui/icons";
+
 import { poppins } from "~/app/fonts";
 import CloneMock from "./Clonemock";
 import ImageGenerationMock from "./ImabeMock";
@@ -131,13 +137,15 @@ export default function VoiceGeneratorMockup() {
           </div>
         </AnimatePresence>
         <div
-          className={`mt-${activeTab === "Create Images" ? "2" : "10"} flex items-end justify-end`}
+          className={`mt-${activeTab === "Create Images" ? "2" : "10"} w-full ${poppins.className}`}
         >
-          <Link href="/register">
+          <Link href="/register" className="w-full">
             <Button
-              type="accent"
-              label="Experience the full Co-Producer Experience"
-            />
+              size="lg"
+              className="h-[48px] w-full bg-[#FF8A00] text-base font-semibold text-white hover:bg-[#FF8A00]/90"
+            >
+              Open my Free Access! <IconArrowRight className="ml-2" />
+            </Button>
           </Link>
         </div>
       </div>

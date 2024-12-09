@@ -21,7 +21,7 @@ const logos = [
 
 export default function MarqueeLogos() {
   return (
-    <div className="relative w-full overflow-hidden bg-white px-[200] md:px-16 lg:px-24">
+    <div className="relative h-full w-full overflow-hidden bg-white px-[200] md:px-16 lg:px-24">
       <div className="flex min-w-full">
         <motion.div
           className="flex shrink-0"

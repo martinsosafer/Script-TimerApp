@@ -34,6 +34,11 @@ export default function AdminNavigator() {
       active: pathname === "/adminvoices",
       action: () => router.push("/adminvoices"),
     },
+    {
+      label: "Landing Pages",
+      active: pathname === "/admin-landings",
+      action: () => router.push("/admin-landings"),
+    },
   ];
 
   return (

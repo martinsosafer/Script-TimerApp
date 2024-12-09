@@ -2151,74 +2151,91 @@ function IconPocketKnife({ className, ...props }: React.ComponentProps<"svg">) {
     </svg>
   );
 }
-interface TalkIconProps extends React.ComponentProps<"svg"> {
-  color?: string; // New prop for color
-}
-function TalkIcon({ color = "#0066FF", className, ...props }: TalkIconProps) {
+
+function IconFooterPhone({ className, ...props }: React.ComponentProps<"svg">) {
   return (
     <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
+      width="19"
+      height="20"
+      viewBox="0 0 19 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={`h-4 w-4 ${className}`}
+      className={cn("lucide lucide-siren", className)}
       {...props}
     >
       <path
-        d="M8.8 20.0008V15.9008L10.7 16.1008C11.2531 16.0701 11.7766 15.8407 12.1742 15.4549C12.5717 15.0691 12.8167 14.5528 12.864 14.0008V8.30081C12.8706 6.86015 12.3047 5.47587 11.2907 4.45248C10.2767 3.4291 8.89766 2.85044 7.457 2.84381C6.01634 2.83718 4.63206 3.40312 3.60867 4.41713C2.58529 5.43114 2.00663 6.81015 2 8.25081C2 11.0508 2.656 11.3048 3 12.8008C3.23248 13.7043 3.24243 14.6506 3.029 15.5588L2 20.0008"
-        stroke={color} // Use dynamic color here
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M19.7998 17.8003C21.2056 16.3943 21.9956 14.4876 21.9962 12.4994C21.9968 10.5111 21.2078 8.60404 19.8028 7.19727"
-        stroke={color} // Use dynamic color here
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M17.0001 15.0004C17.3273 14.6733 17.5863 14.2846 17.7623 13.8567C17.9383 13.4288 18.0278 12.9703 18.0254 12.5077C18.0231 12.045 17.9291 11.5874 17.7488 11.1614C17.5685 10.7353 17.3055 10.3492 16.9751 10.0254"
-        stroke={color} // Use dynamic color here
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        d="M17.6669 14.0994V16.5994C17.6679 16.8315 17.6203 17.0612 17.5274 17.2739C17.4344 17.4865 17.298 17.6774 17.127 17.8343C16.956 17.9912 16.7541 18.1107 16.5342 18.185C16.3144 18.2594 16.0814 18.287 15.8503 18.2661C13.286 17.9875 10.8228 17.1112 8.6586 15.7078C6.64513 14.4283 4.93805 12.7212 3.6586 10.7078C2.25025 8.53377 1.37381 6.05859 1.10027 3.48276C1.07945 3.25232 1.10683 3.02006 1.18069 2.80078C1.25454 2.5815 1.37325 2.38 1.52924 2.20911C1.68524 2.03822 1.87511 1.90169 2.08676 1.8082C2.29842 1.71471 2.52722 1.66631 2.7586 1.6661H5.2586C5.66303 1.66212 6.0551 1.80533 6.36174 2.06904C6.66838 2.33275 6.86867 2.69897 6.92527 3.09943C7.03079 3.89949 7.22648 4.68504 7.5086 5.4411C7.62072 5.73937 7.64499 6.06353 7.57853 6.37516C7.51206 6.6868 7.35766 6.97286 7.1336 7.19943L6.07527 8.25776C7.26157 10.3441 8.98898 12.0715 11.0753 13.2578L12.1336 12.1994C12.3602 11.9754 12.6462 11.821 12.9579 11.7545C13.2695 11.688 13.5937 11.7123 13.8919 11.8244C14.648 12.1066 15.4335 12.3022 16.2336 12.4078C16.6384 12.4649 17.0081 12.6688 17.2724 12.9807C17.5367 13.2926 17.6771 13.6907 17.6669 14.0994Z"
+        stroke="white"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
       />
     </svg>
   );
-}
-interface ClapperboardIconProps extends React.ComponentProps<"svg"> {
-  color?: string; // New prop for color
 }
 
-function ClapperboardIcon({
-  color = "currentColor", // Default color
-  className,
-  ...props
-}: ClapperboardIconProps) {
+function IconFooterMail({ className, ...props }: React.ComponentProps<"svg">) {
   return (
     <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
+      width="21"
+      height="20"
+      viewBox="0 0 21 20"
       fill="none"
-      stroke={color} // Use dynamic color
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={`h-4 w-4 ${className}`}
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn("lucide lucide-siren", className)}
       {...props}
     >
-      <path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3Z" />
-      <path d="m6.2 5.3 3.1 3.9" />
-      <path d="m12.4 3.4 3.1 4" />
-      <path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" />
+      <path
+        d="M17.0002 3.33398H3.66691C2.74644 3.33398 2.00024 4.08018 2.00024 5.00065V15.0007C2.00024 15.9211 2.74644 16.6673 3.66691 16.6673H17.0002C17.9207 16.6673 18.6669 15.9211 18.6669 15.0007V5.00065C18.6669 4.08018 17.9207 3.33398 17.0002 3.33398Z"
+        stroke="white"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M18.6669 5.83398L11.1919 10.584C10.9346 10.7452 10.6372 10.8307 10.3336 10.8307C10.03 10.8307 9.73252 10.7452 9.47524 10.584L2.00024 5.83398"
+        stroke="white"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
     </svg>
   );
 }
-function IconArrowLeft({ className, ...props }: React.ComponentProps<"svg">) {
+
+function IconFooterLocation({
+  className,
+  ...props
+}: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      width="21"
+      height="20"
+      viewBox="0 0 21 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn("lucide lucide-siren", className)}
+      {...props}
+    >
+      <path
+        d="M17.0001 8.33268C17.0001 12.4935 12.3842 16.8269 10.8342 18.1652C10.6899 18.2738 10.5141 18.3325 10.3334 18.3325C10.1527 18.3325 9.97698 18.2738 9.83258 18.1652C8.28258 16.8269 3.66675 12.4935 3.66675 8.33268C3.66675 6.56457 4.36913 4.86888 5.61937 3.61864C6.86961 2.36839 8.5653 1.66602 10.3334 1.66602C12.1015 1.66602 13.7972 2.36839 15.0475 3.61864C16.2977 4.86888 17.0001 6.56457 17.0001 8.33268Z"
+        stroke="white"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M10.3335 10.834C11.7142 10.834 12.8335 9.7147 12.8335 8.33398C12.8335 6.95327 11.7142 5.83398 10.3335 5.83398C8.95278 5.83398 7.8335 6.95327 7.8335 8.33398C7.8335 9.7147 8.95278 10.834 10.3335 10.834Z"
+        stroke="white"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+}
+
+function IconCircleStop({ className, ...props }: React.ComponentProps<"svg">) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -2235,6 +2252,45 @@ function IconArrowLeft({ className, ...props }: React.ComponentProps<"svg">) {
     >
       <path d="m12 19-7-7 7-7" />
       <path d="M19 12H5" />
+    </svg>
+  );
+}
+function TalkIcon({
+  color = "#0066FF",
+  className,
+  ...props
+}: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={`h-4 w-4 ${className}`}
+      {...props}
+    >
+      <path
+        d="M8.8 20.0008V15.9008L10.7 16.1008C11.2531 16.0701 11.7766 15.8407 12.1742 15.4549C12.5717 15.0691 12.8167 14.5528 12.864 14.0008V8.30081C12.8706 6.86015 12.3047 5.47587 11.2907 4.45248C10.2767 3.4291 8.89766 2.85044 7.457 2.84381C6.01634 2.83718 4.63206 3.40312 3.60867 4.41713C2.58529 5.43114 2.00663 6.81015 2 8.25081C2 11.0508 2.656 11.3048 3 12.8008C3.23248 13.7043 3.24243 14.6506 3.029 15.5588L2 20.0008"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M19.7998 17.8003C21.2056 16.3943 21.9956 14.4876 21.9962 12.4994C21.9968 10.5111 21.2078 8.60404 19.8028 7.19727"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M17.0001 15.0004C17.3273 14.6733 17.5863 14.2846 17.7623 13.8567C17.9383 13.4288 18.0278 12.9703 18.0254 12.5077C18.0231 12.045 17.9291 11.5874 17.7488 11.1614C17.5685 10.7353 17.3055 10.3492 16.9751 10.0254"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
@@ -2331,7 +2387,9 @@ export {
   IconClipboard,
   IconPocketKnife,
   IconCrowm,
+  IconFooterPhone,
+  IconFooterMail,
+  IconFooterLocation,
+  IconCircleStop,
   TalkIcon,
-  ClapperboardIcon,
-  IconArrowLeft,
 };
