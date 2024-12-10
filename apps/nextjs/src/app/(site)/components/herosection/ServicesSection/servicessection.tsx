@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { useSwipeable } from "react-swipeable";
+import Link from "next/link";
 
 import { Button } from "@voiceai/ui";
 import { Card, CardContent } from "@voiceai/ui/@/components/ui/card";
@@ -11,6 +11,8 @@ import {
   IconAudioLines,
   IconBookPlus,
   IconBrainCog,
+  IconChevronLeft,
+  IconChevronRight,
   IconClone,
   IconCopyright,
   IconEar,
@@ -41,7 +43,6 @@ const iconComponents = {
   FileImageIcon,
   IconCopyright,
 };
-
 export default function ServiceSection() {
   const [currentPage, setCurrentPage] = useState(0);
   const [fade, setFade] = useState(false);
@@ -67,24 +68,20 @@ export default function ServiceSection() {
     }, 300);
   };
 
+  const handleNextPage = () => {
+    const newPage = (currentPage + 1) % totalPages;
+    handlePageChange(newPage);
+  };
+
+  const handlePrevPage = () => {
+    const newPage = (currentPage - 1 + totalPages) % totalPages;
+    handlePageChange(newPage);
+  };
+
   const currentServices = servicesData.slice(
     currentPage * itemsPerPage,
     (currentPage + 1) * itemsPerPage,
   );
-
-  const handlers = useSwipeable({
-    onSwipedLeft: () => {
-      if (currentPage < totalPages - 1) {
-        handlePageChange(currentPage + 1);
-      }
-    },
-    onSwipedRight: () => {
-      if (currentPage > 0) {
-        handlePageChange(currentPage - 1);
-      }
-    },
-    trackMouse: true,
-  });
 
   return (
     <div
@@ -95,10 +92,7 @@ export default function ServiceSection() {
           Bring Your Ideas to Life
         </h2>
       </div>
-      <div
-        {...handlers}
-        className=" mx-auto  mt-6 h-[305px] w-[312px] flex-col items-center justify-center lg:px-[83px] lg:py-[60px]"
-      >
+      <div className=" mx-auto  mt-6 h-[305px] w-[312px] flex-col items-center justify-center lg:px-[83px] lg:py-[60px]">
         <div
           className={cn(
             "mt-8 grid grid-cols-1 gap-4 lg:mt-[48px] lg:grid-cols-2 lg:gap-6",
@@ -113,39 +107,67 @@ export default function ServiceSection() {
                 key={service.id}
                 className=" h-[94px]  w-[312px]  rounded-lg border-none shadow-sm transition-shadow hover:shadow-md"
               >
-                <CardContent className="flex items-center p-[21px] lg:p-[40px]">
-                  <div className="flex flex-row items-center space-y-2 text-left lg:space-y-4">
-                    <Icon className="text-cp-secondary h-[52px] w-[52px] flex-shrink-0 lg:h-[70px] lg:w-[70px]" />
-                    <div className="ml-3 flex flex-col items-start">
-                      <h3 className="text-cp-primary text-[15px] font-bold leading-[21px] lg:text-[20px] lg:leading-[28px]">
-                        {service.title}
-                      </h3>
-                      <p className="mt-1 text-[16px] font-normal leading-[17px] text-black lg:text-[16px] lg:leading-[22.5px]">
-                        {service.description}
-                      </p>
+                <Link href={service.link} target="_blank">
+                  <CardContent className="flex items-center p-[21px] lg:p-[40px]">
+                    <div className="flex flex-row items-center space-y-2 text-left lg:space-y-4">
+                      <Icon className="text-cp-secondary h-[52px] w-[52px] flex-shrink-0 lg:h-[70px] lg:w-[70px]" />
+                      <div className="ml-3 flex flex-col items-start">
+                        <h3 className="text-cp-primary text-[15px] font-bold leading-[21px] lg:text-[20px] lg:leading-[28px]">
+                          {service.title}
+                        </h3>
+                        <p className="mt-1 text-[16px] font-normal leading-[17px] text-black lg:text-[16px] lg:leading-[22.5px]">
+                          {service.description}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </CardContent>
+                  </CardContent>
+                </Link>
               </Card>
             );
           })}
         </div>
       </div>
       <div className="mx-auto mt-6 flex items-center justify-center gap-4 lg:mt-[16px]">
-        {Array.from({ length: totalPages }).map((_, index) => (
+        {/* Mobile navigation with dots */}
+        <div className="flex items-center justify-center gap-4">
           <Button
-            key={index}
-            variant="ghost"
+            variant="outline"
             size="icon"
-            className={cn(
-              "h-2 w-2 rounded-full p-0",
-              currentPage === index ? "bg-blue-600" : "bg-blue-200",
-            )}
-            onClick={() => handlePageChange(index)}
+            className="h-10 w-10 rounded-full"
+            onClick={handlePrevPage}
           >
-            <span className="sr-only">Page {index + 1}</span>
+            <IconChevronLeft className="h-6 w-6" />
+            <span className="sr-only">Previous page</span>
           </Button>
-        ))}
+
+          {/* Pagination dots */}
+          <div className="flex items-center justify-center gap-2">
+            {Array.from({ length: totalPages }).map((_, index) => (
+              <Button
+                key={index}
+                variant="ghost"
+                size="icon"
+                className={cn(
+                  "h-3 w-3 rounded-full p-0",
+                  currentPage === index ? "bg-blue-600" : "bg-blue-200",
+                )}
+                onClick={() => handlePageChange(index)}
+              >
+                <span className="sr-only">Page {index + 1}</span>
+              </Button>
+            ))}
+          </div>
+
+          <Button
+            variant="outline"
+            size="icon"
+            className="h-10 w-10 rounded-full"
+            onClick={handleNextPage}
+          >
+            <IconChevronRight className="h-6 w-6" />
+            <span className="sr-only">Next page</span>
+          </Button>
+        </div>
       </div>
     </div>
   );
