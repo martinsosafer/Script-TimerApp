@@ -45,7 +45,7 @@ export default function Home({
       <ServiceSection />
       <CounterData />
       <GoSections />
-      {/* <Testimonials /> */}
+      <Testimonials />
       <VideoBlock />
       <FAQAccordion />
       <NoSessionModal
