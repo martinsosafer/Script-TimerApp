@@ -44,22 +44,22 @@ export default function HeroSection() {
   return (
     <div className={`${poppins.className}`}>
       <div
-        className={`from-cp-primary relative mx-auto bg-gradient-to-br to-[#000000]   lg:px-6  lg:py-1`}
+        className={`from-cp-primary relative mx-auto bg-gradient-to-br to-[#000000]  `}
       >
-        <div className="grid items-center justify-center   gap-[24px] lg:grid-cols-2 lg:gap-[82px] lg:px-[200px]">
+        <div className="grid items-center justify-center   gap-[24px] lg:grid-cols-2 lg:gap-[82px] lg:px-[248px]">
           {/* Text Content */}
-          <div className="mt-6  h-[266px]  w-[312px] lg:mt-[68px] lg:h-[414px]">
+          <div className="mt-6  h-[266px]  w-[312px] lg:mb-[72px] lg:mt-[68px] lg:h-[414px] lg:w-[409px] lg:text-start">
             <RevealText>
               <div className="h-[76px] lg:h-[210px] lg:w-[409px]">
-                <h1 className="mb-[16px] text-[32px]  font-bold leading-[38.3px] text-white lg:text-[58px] lg:leading-[60px]">
+                <h1 className="mb-[16px] text-[32px]  font-bold leading-[38.3px] text-white lg:mb-6 lg:text-[58px]  lg:leading-[70px]">
                   <span className="text-cyan-300">Automate </span>
                   {""}content production
                 </h1>
               </div>
             </RevealText>
             <RevealText>
-              <div className="h-[125px]   ">
-                <p className="text-[18px] font-normal leading-[25px] text-white lg:text-[20px] lg:leading-[20px]">
+              <div className="  h-[125px] lg:mb-[40px] lg:h-[112px]  lg:w-[409px] ">
+                <p className="text-[18px] font-normal leading-[25px] text-white lg:text-[20px] lg:leading-[28px]">
                   The tools supported by AI will automate{" "}
                   <br className="hidden lg:block" />
                   your creative process: Writing viral posts,{" "}
@@ -71,8 +71,8 @@ export default function HeroSection() {
               </div>
             </RevealText>
             <RevealText>
-              <div className="flex justify-center lg:mt-[17px]">
-                <p className="text-cp-secondary-lightest text-center text-[18px]  font-bold leading-[25px] lg:text-[20px]">
+              <div className="flex justify-center ">
+                <p className="text-cp-secondary-lightest text-center text-[18px]  font-bold leading-[25px] lg:text-[20px] lg:leading-[28px]">
                   What do you want to create?
                 </p>
               </div>
@@ -82,13 +82,12 @@ export default function HeroSection() {
           {/* Hero Image & Button */}
           <MotionTransition className="flex flex-col justify-start lg:mt-[60px]">
             <button onClick={toggleModal} className="w-full">
-              <div className="flex h-[391px] w-[312px] flex-col items-center pb-6">
-                <div className="relative h-[331px] w-[312px] max-w-[550px] lg:h-[300px]">
+              <div className="flex h-[391px] w-[312px] flex-col items-center pb-6  lg:h-[452px] lg:w-[439px]">
+                <div className="relative h-[331px] w-[312px]  lg:h-[368px] lg:w-[452px]">
                   <Image
                     src={HeroImg}
                     alt="Hero image"
                     fill
-                    sizes="(max-width: 1040px) 100vw, 550px"
                     className="rounded-lg object-cover"
                     priority
                   />
@@ -133,7 +132,7 @@ export default function HeroSection() {
           >
             <motion.div className="fixed inset-0 bg-black bg-opacity-50" />
             <motion.div
-              className="relative h-[30vh] w-[60vw]  overflow-hidden rounded-lg bg-gradient-to-br from-[#000000] to-[#0066FF] px-[20px] py-5"
+              className="relative h-[20vh] w-[80vw] overflow-hidden  rounded-lg  bg-gradient-to-br from-[#000000] to-[#0066FF] px-[20px] py-5 lg:h-[50vh] lg:w-[50vh]"
               variants={modalVariants}
               onClick={(e) => e.stopPropagation()}
             >

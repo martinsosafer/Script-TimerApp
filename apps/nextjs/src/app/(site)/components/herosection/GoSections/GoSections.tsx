@@ -17,28 +17,28 @@ export default function GoSection() {
     <div
       className={`flex min-h-screen flex-col items-center bg-gradient-to-r from-blue-500 via-blue-600 to-black text-white ${poppins.className}`}
     >
-      <MotionTransition className="mt-[24px]">
-        <div className="mx-auto flex h-[78px] w-[312px] items-center justify-center">
-          <h1 className="text-cp-secondary-lightest text-center text-[22px] leading-[26px]">
-            <div className="flex h-[78px] w-[312px] items-center justify-center">
-              <h1 className="text-cp-secondary-lightest text-center text-[22px] leading-[26px]">
-                It used to take weeks to deliver content that built <br />
-                <br className="hidden sm:inline" />
-                an audience.
-                <span className="text-[22px] font-bold leading-[26px] ">
-                  {" "}
-                  No More
-                </span>
-              </h1>
-            </div>{" "}
-          </h1>
+      <MotionTransition className="mt-[24px] lg:mt-[60px] ">
+        <div className="flex h-[78px] w-[312px] items-center justify-center  lg:w-[695px] ">
+          <div className="flex h-[78px] w-[312px] items-center justify-center lg:w-full">
+            <h2 className="text-cp-secondary-lightest text-center text-[22px] leading-[26px] lg:text-[28px] lg:leading-[34px]">
+              It used to take weeks to deliver content that built{" "}
+              <br className="lg:hidden" />
+              <br className="hidden sm:inline lg:hidden" />
+              an audience.
+              <span className="text-[22px] font-bold leading-[26px]">
+                {" "}
+                No More
+              </span>
+            </h2>
+          </div>
         </div>
-        <div className="items center mx-auto h-[186px] w-[312px] justify-center">
-          <p className="mt-[20px] justify-center text-center text-[26px] font-bold leading-[31px] ">
-            Improve your pitch, <br /> speeches,
-            <br /> presentations, and <br /> video with the best
+        <div className="items center mx-auto h-[186px] w-[312px] justify-center lg:mx-0 lg:h-[123px] lg:w-full lg:justify-center">
+          <p className="mt-[20px] justify-center text-center text-[26px] font-bold leading-[31px] lg:w-full lg:text-center lg:text-[34px] lg:leading-[41px]  ">
+            Improve your pitch, <br className="lg:hidden" /> speeches,
+            <br /> presentations, and <br className="lg:hidden" /> video with
+            the best
             <br />
-            writers, voices, and AI <br />
+            writers, voices, and AI <br className="lg:hidden" />
             available.
           </p>
         </div>
@@ -61,13 +61,13 @@ export default function GoSection() {
           title="Image Creation"
           description="Get your pitch, storyboard or presentation in shape by 'painting a picture' of your vision. Create your amazing images now!"
           imageUrl={Imagesimg}
-          imagePosition="left"
+          imagePosition="right"
         />
         <Section
           title="Masterclasses"
           description="After Production, and Using AI to build marketing assets are courses that can move you from beginner to 'expert' level storyteller."
           imageUrl={MasterClassesImg}
-          imagePosition="right"
+          imagePosition="left"
         />
       </div>
     </div>
@@ -119,16 +119,16 @@ function Section({ title, description, imageUrl, imagePosition }) {
   return (
     <motion.div
       ref={ref}
-      className={`${poppins.className} mx-auto flex h-[597px] w-[312px] flex-col items-center justify-between gap-6 rounded-2xl border border-blue-500 bg-white p-4 shadow-lg lg:w-[862px] lg:gap-12 lg:p-6 ${
+      className={`${poppins.className} mx-auto flex h-[597px] w-[312px] flex-col items-center justify-between gap-6 rounded-2xl border border-blue-500 bg-white p-4 shadow-lg lg:flex lg:h-[340px] lg:w-[862px] lg:flex-row lg:items-center lg:gap-12  ${
         imagePosition === "left"
-          ? "lg:ml-20 lg:flex-row-reverse"
+          ? "lg:ml-50 lg:flex-row-reverse"
           : "lg:mr-20 lg:flex-row"
       }`}
       initial="hidden"
       animate={controls}
       variants={sectionVariants}
     >
-      <div className="mt-[70px] flex h-[312px] w-[309px] items-center justify-center rounded-lg  bg-white lg:h-[250px] lg:w-[250px]">
+      <div className="mt-[70px] flex h-[312px] w-[309px] items-center justify-center rounded-lg  bg-white lg:mt-[10px] lg:h-[250px] lg:w-[250px] lg:items-center  lg:justify-center">
         <div className="relative h-full w-full overflow-hidden rounded-md">
           <Image
             src={imageUrl}
