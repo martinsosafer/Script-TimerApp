@@ -6,7 +6,7 @@ import Slide from "./slide";
 
 export default function Testimonials() {
   return (
-    <div className="bg-cp-background relative flex w-full justify-center py-[40px] sm:py-[80px]">
+    <div className="relative py-[40px] sm:py-[80px]">
       <div className="mx-4 grid max-w-5xl items-start gap-y-8 sm:mx-[200px] sm:grid-cols-[1fr] sm:gap-x-[50px] sm:gap-y-0 md:grid-cols-[269px_650px]">
         {/* First column */}
         <div className="text-center sm:text-left">
