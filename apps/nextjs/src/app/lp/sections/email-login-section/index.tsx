@@ -34,15 +34,18 @@ export default function EmailLoginSection() {
   }
 
   return (
-    <section className="bg-cp-background flex w-full justify-center">
-      <div className="flex w-[1024px] flex-col items-center p-10">
+    <section
+      className="bg-cp-background flex w-full justify-center"
+      id="loginForm"
+    >
+      <div className="flex w-full flex-col items-center p-6 lg:w-[1024px] lg:p-10">
         <h2
-          className={`${poppins.className} text-cp-primary text-[34px] font-bold`}
+          className={`${poppins.className} text-cp-primary text-[32px] font-bold lg:text-[34px]`}
         >
           Where do we send your free access?
         </h2>
-        <div className="mt-6 flex items-center justify-between gap-4">
-          <div className="flex flex-col">
+        <div className="mt-6 flex w-full flex-col items-center justify-between gap-4 lg:flex-row">
+          <div className="flex w-full flex-col">
             <label
               htmlFor="name"
               className={`${roboto.className} text-[14px] font-bold text-black`}
@@ -55,10 +58,10 @@ export default function EmailLoginSection() {
               value={values.name}
               onChange={handleChange}
               name="name"
-              className="h-[42px] w-[464px] rounded border border-[#898F98] bg-white px-2"
+              className="h-[42px] w-full rounded border border-[#898F98] bg-white px-2 lg:w-[464px]"
             />
           </div>
-          <div className="flex flex-col">
+          <div className="flex w-full flex-col">
             <label
               htmlFor="name"
               className={`${roboto.className} text-[14px] font-bold text-black`}
@@ -71,7 +74,7 @@ export default function EmailLoginSection() {
               value={values.email}
               onChange={handleChange}
               name="email"
-              className="h-[42px] w-[464px] rounded border border-[#898F98] bg-white px-2"
+              className="h-[42px] w-full rounded border border-[#898F98] bg-white px-2 lg:w-[464px]"
             />
           </div>
         </div>
@@ -81,10 +84,10 @@ export default function EmailLoginSection() {
           onClick={async () => await handleLogin()}
           icon={
             loading
-              ? () => <IconSpinner className="animate-spin" />
+              ? () => <IconSpinner className=" animate-spin" />
               : () => <IconArrowRight />
           }
-          className="mt-6"
+          className="mt-6 gap-0.5 px-1 lg:gap-2"
         />
       </div>
     </section>
