@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import { useSwipeable } from "react-swipeable";
 
 import { Button } from "@voiceai/ui";
 import { Card, CardContent } from "@voiceai/ui/@/components/ui/card";
@@ -71,6 +72,20 @@ export default function ServiceSection() {
     (currentPage + 1) * itemsPerPage,
   );
 
+  const handlers = useSwipeable({
+    onSwipedLeft: () => {
+      if (currentPage < totalPages - 1) {
+        handlePageChange(currentPage + 1);
+      }
+    },
+    onSwipedRight: () => {
+      if (currentPage > 0) {
+        handlePageChange(currentPage - 1);
+      }
+    },
+    trackMouse: true,
+  });
+
   return (
     <div
       className={`${poppins.className} h-full w-full items-center justify-center bg-[#E2E8F0] py-[32px] `}
@@ -80,7 +95,10 @@ export default function ServiceSection() {
           Bring Your Ideas to Life
         </h2>
       </div>
-      <div className=" mx-auto  mt-6 h-[305px] w-[312px] flex-col items-center justify-center lg:px-[83px] lg:py-[60px]">
+      <div
+        {...handlers}
+        className=" mx-auto  mt-6 h-[305px] w-[312px] flex-col items-center justify-center lg:px-[83px] lg:py-[60px]"
+      >
         <div
           className={cn(
             "mt-8 grid grid-cols-1 gap-4 lg:mt-[48px] lg:grid-cols-2 lg:gap-6",
