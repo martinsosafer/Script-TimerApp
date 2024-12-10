@@ -15,6 +15,7 @@ import FAQAccordion from "../sections/faq-accordion";
 import RegularHero from "../sections/hero";
 import LearnMoreBlock from "../sections/learn-more-block";
 import MarqueeLogos from "../sections/marquee-logos";
+import ServiceSection from "../sections/services-section";
 import Testimonials from "../sections/Testimonials";
 import VideoBlock from "../sections/video-block";
 import LpFooter from "./footer";
@@ -35,14 +36,17 @@ export default function Landing() {
 
   return (
     <main className="w-full">
-      <nav className="bg-cp-primary flex h-[138px] w-full items-center justify-between p-10">
-        <div className="relative h-[57px] w-[253px]">
+      <nav className="bg-cp-primary flex w-full items-center justify-between px-6 py-3 lg:h-[138px] lg:p-10">
+        <div className="relative hidden h-[57px] w-[253px] lg:flex">
           <Image src="/cp-logo.png" alt="Co-Producer logo" fill />
+        </div>
+        <div className="relative h-[48px] w-[48px] lg:hidden">
+          <Image src="/logo-footer.png" alt="Co-Producer logo" fill />
         </div>
         <Button
           label="Try it free"
           type="accent"
-          onClick={() => router.push("/")}
+          onClick={() => router.push(session ? "/" : `${pathname}/#loginForm`)}
         />
       </nav>
       <div>
@@ -55,18 +59,21 @@ export default function Landing() {
           title={landing.title}
           description={landing.description}
           video_url={landing.video_url}
+          session={session}
+          path={pathname}
         />
       )}
       {!session && !isSessionLoading && <EmailLoginSection />}
       <MarqueeLogos />
-      <Testimonials />
+      {/* <Testimonials /> */}
       <DirectorBlock />
       <AwardsBlock />
       <ClassesBlock />
       <LearnMoreBlock />
       <FAQAccordion />
       <VideoBlock />
-      <LpFooter />
+      <ServiceSection />
+      <LpFooter session={session} path={pathname} />
     </main>
   );
 }

@@ -2,8 +2,8 @@ import React from "react";
 
 export default function VideoBlock() {
   return (
-    <div className="flex items-center justify-center p-10">
-      <div className="h-[530px] w-[944px] overflow-hidden rounded-2xl shadow-lg">
+    <div className="flex items-center justify-center p-6 lg:p-10">
+      <div className="h-[176px] w-[316px] overflow-hidden rounded-2xl shadow-lg lg:h-[530px] lg:w-[944px]">
         <iframe
           className="h-full w-full"
           allowFullScreen

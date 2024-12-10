@@ -10,14 +10,14 @@ export default function ClassesBlock() {
     <div
       className={`h-full w-full bg-white ${poppins.className} flex justify-center`}
     >
-      <div className="flex w-[1024px] items-center gap-10 px-10 py-[74px] ">
-        <div className="w-[452px] text-left text-[28px] font-normal leading-[33.6px] text-black">
+      <div className="flex w-[1024px] flex-col-reverse items-center gap-6 px-6 py-8 lg:flex-row lg:gap-10 lg:px-10 lg:py-[74px] ">
+        <div className="w-full text-center text-[22px] font-normal leading-[26px] text-black lg:w-[452px] lg:text-left lg:text-[28px] lg:leading-[33.6px]">
           Write more engaging scripts with classes taught by Hollywood
           producers.
         </div>
 
         <div className="flex flex-col items-center">
-          <div className="flex w-[452px] items-center justify-between">
+          <div className="flex flex-wrap items-center justify-center gap-5 lg:w-[452px] lg:flex-row lg:justify-between">
             <div className="relative h-10 w-[105px]">
               <Image src={NotionImg} alt="NotionLogo" fill />
             </div>
