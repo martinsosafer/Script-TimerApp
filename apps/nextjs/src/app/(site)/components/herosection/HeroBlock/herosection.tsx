@@ -132,7 +132,7 @@ export default function HeroSection() {
           >
             <motion.div className="fixed inset-0 bg-black bg-opacity-50" />
             <motion.div
-              className="relative h-[20vh] w-[80vw] overflow-hidden  rounded-lg  bg-gradient-to-br from-[#000000] to-[#0066FF] px-[20px] py-5 lg:h-[50vh] lg:w-[50vh]"
+              className="relative h-[30vh] w-[80vw] overflow-hidden  rounded-lg  bg-gradient-to-br from-[#000000] to-[#0066FF] px-[20px] py-5 lg:h-[50vh] lg:w-[80vh]"
               variants={modalVariants}
               onClick={(e) => e.stopPropagation()}
             >
