@@ -56,9 +56,11 @@ export default function MonthlySpecialProvider({
 
   const isAnnouncement = pageSpecial?.type === "announcement";
 
+  console.log("coleSpecial", closeSpecial);
+
   return (
     <div>
-      {(isAnnouncement ||
+      {((isAnnouncement && !closeSpecial) ||
         (!isPayingCustomer && isVisible && pageSpecial && !closeSpecial)) && (
         <MonthlySpecial
           name={pageSpecial?.name ?? ""}
