@@ -15,10 +15,10 @@ export default function PageHeader({
     <header
       className={`mb-[40px] mt-[60px] flex flex-col items-center justify-center ${padding} ${poppins.className}`}
     >
-      <h2 className="text-cp-primary w-[650px] text-center text-[42px] font-bold">
+      <h2 className="w-[650px] text-center text-[42px] font-bold text-black">
         {title}
       </h2>
-      <h4 className="mt-[12px] w-[650px] text-center text-[16px] font-bold">
+      <h4 className="mt-[12px] w-[650px] text-center text-[16px] font-medium">
         {subtitle}
       </h4>
     </header>
