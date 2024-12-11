@@ -25,6 +25,7 @@ const config = {
       "imgur.com",
       "i.imgur.com",
       "images.pexels.com",
+      "8ipgp5xevb8hkgbh.public.blob.vercel-storage.com",
     ],
   },
 

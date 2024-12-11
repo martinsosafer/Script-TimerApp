@@ -61,7 +61,7 @@ import {
 } from "~/assets/masterclasses";
 
 const MauryPic =
-  "https://media.licdn.com/dms/image/D4E03AQEllFdlVv9JvQ/profile-displayphoto-shrink_800_800/0/1710177885632?e=1722470400&v=beta&t=ZytZa0Mnwzlgci64KNB9kux2hUyhB2iek-RsoF_Tc50";
+  "https://8ipgp5xevb8hkgbh.public.blob.vercel-storage.com/Images/MauryProfile-DQEwqsYnn5Zn6cYJmG4KRghwWCcGMe.jpg";
 
 export interface Video {
   id: number;
