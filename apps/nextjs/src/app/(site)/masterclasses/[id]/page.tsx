@@ -67,7 +67,7 @@ export default async function Page({ searchParams }: PageProps) {
     ...searchParams,
     id: currentVideoId,
   };
-
+ 
   return (
     <>
       <VideoPage
