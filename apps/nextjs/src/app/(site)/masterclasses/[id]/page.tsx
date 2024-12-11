@@ -16,6 +16,7 @@ export const metadata: Metadata = {
 interface PageProps {
   searchParams: {
     id: string;
+    number: string;
     course: string;
     title: string;
     name: string;
@@ -28,6 +29,7 @@ interface PageProps {
 
 interface RelatedVideo {
   id: number;
+  number: string;
   course: string;
   title: string;
   name: string;
@@ -67,7 +69,7 @@ export default async function Page({ searchParams }: PageProps) {
     ...searchParams,
     id: currentVideoId,
   };
- 
+
   return (
     <>
       <VideoPage
