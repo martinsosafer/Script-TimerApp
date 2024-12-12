@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 
+import { IconMonitorPlay } from "@voiceai/ui/@/components/ui/icons";
+
 import { roboto } from "~/app/fonts";
 import TutorialsModal from "../modals/tutorials-modal";
 
@@ -23,11 +25,13 @@ export default function TutorialWidget() {
   return (
     <>
       <button
-        className={`${roboto.className} bg-cp-secondary-light absolute right-0 top-[226px] z-10 flex h-[69px] w-[81px] flex-col items-center justify-center rounded-l-lg font-bold text-white`}
+        className={`${roboto.className} bg-cp-secondary-light absolute right-0 top-[140px] z-10 flex h-10 w-10 flex-col items-center justify-center overflow-hidden rounded-l-lg font-bold text-white lg:top-[226px] lg:h-[69px] lg:w-[81px]`}
         onClick={() => setOpenTutorial(true)}
       >
-        <span className="text-[19.5px]">VIDEO</span>
-        <span className="text-[12px]">TUTORIAL</span>
+        <IconMonitorPlay className="h-6 w-6 lg:hidden" />
+
+        <span className="hidden text-[19.5px] lg:flex">VIDEO</span>
+        <span className="hidden text-[12px] lg:flex">TUTORIAL</span>
       </button>
       {opentutorial && (
         <TutorialsModal
