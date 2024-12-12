@@ -50,7 +50,9 @@ export default function SignUpForm() {
           </span>
         </button>
       </form>
-
+      <div className="text-md flex justify-center">
+        <span className="text-md bg-background px-2 text-black">or</span>
+      </div>
       <LoginWithEmailForm />
     </div>
   );

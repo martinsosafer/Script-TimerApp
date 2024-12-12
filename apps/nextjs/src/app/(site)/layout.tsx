@@ -13,6 +13,7 @@ import { IdentifyAnalytics } from "../analytics";
 import MonthlySpecialProvider from "../providers/monthly-special-provider";
 import Footer from "./components/Footer/Footer";
 import Newnavbar from "./components/navbar";
+import TutorialWidget from "./components/tutorial-widget";
 
 /**
  * Since we're passing `headers()` to the `TRPCReactProvider` we need to
@@ -60,6 +61,7 @@ export default async function Layout(props: { children: React.ReactNode }) {
         signIn={signInServer}
         session={session}
       />
+      <TutorialWidget />
       <MonthlySpecialProvider
         monthlySpecials={monthlySpecials}
         session={session}
