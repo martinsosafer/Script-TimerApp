@@ -49,6 +49,7 @@ export const {
     signIn: "/signin",
     signOut: "/signout",
     error: "/auth/error",
+    verifyRequest: "/checkemail",
   },
   session: {
     strategy: "jwt",
