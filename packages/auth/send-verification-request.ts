@@ -77,7 +77,7 @@ export const sendVerificationRequest = async ({
         }
         .signature {
             margin-top: 20px;
-            text-align: center;
+            text-align: left;
             color: #000000;
         }
         .signature p {
@@ -86,10 +86,13 @@ export const sendVerificationRequest = async ({
         }
         .footer {
             margin-top: 15px;
-            text-align: center;
+            text-align: left; /* Aligned to the left */
             font-size: 11px;
             color: #000000;
             font-family: 'Poppins', sans-serif, Arial, sans-serif;
+        }
+        .left-align {
+            text-align: left;
         }
         p {
             font-weight: 500;
@@ -109,21 +112,21 @@ export const sendVerificationRequest = async ({
 
         <p>We are happy you're here! Co-Producer (by Script-Timer) makes it easy to save time and money creating.</p>
 
-        <a href="${url}" style="
-            display: block;
-            width: 200px;
-            margin: 20px auto;
-            padding: 10px 20px;
-            background-color: #FF9900;
-            color: white; /* Ensuring white text color */
-            text-align: center;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: 700;
-            font-family: 'Poppins', sans-serif, Arial, sans-serif;
-            font-size: 16px;
-        ">
-            Click here to login
+        <!-- Button with inline styles -->
+      <a href="${url}" 
+   style="display: inline-block; 
+          width: auto; 
+          padding: 10px 20px; 
+          background-color: #FF9900; 
+          color: #FFFFFF !important; /* Ensures white text */
+          text-align: center; 
+          text-decoration: none; 
+          border-radius: 5px; 
+          font-weight: 700; 
+          font-family: 'Poppins', sans-serif, Arial, sans-serif; 
+          font-size: 16px; 
+          margin: 20px 0;">
+           Click here to login
         </a>
 
         <div class="features">
@@ -143,23 +146,22 @@ export const sendVerificationRequest = async ({
             </div>
         </div>
 
-        <p>More time and money saving tips & tricks in the coming days, so keep us in your inbox.</p>
+        <p class="left-align">More time and money saving tips & tricks in the coming days, so keep us in your inbox.</p>
 
-        <p>Your voice matters!</p>
+        <p class="left-align">Your voice matters!</p>
 
         <div class="signature">
-            <p>Cheers,<br>
+            <p>Enjoy,<br>
             Maury Rogow<br>
-            <strong>Founder & CEO</strong></p>
+            <strong>Founder</strong></p>
         </div>
 
         <div class="footer">
-            <p>© Script-Timer | Empowering Creators</p>
+            <p>©Co-Producer by Script-Timer | Empowering Creators</p>
         </div>
     </div>
 </body>
 </html>
-
       `,
     });
   } catch (error) {
