@@ -1,4 +1,7 @@
+"use client";
+
 import React from "react";
+import ReactConfetti from "react-confetti"; // Make sure this is imported
 
 import { Card, CardContent } from "@voiceai/ui/@/components/ui/card";
 import { IconCheck } from "@voiceai/ui/@/components/ui/icons";
@@ -10,7 +13,21 @@ export default function CheckEmail() {
     <div
       className={`min-h-screen bg-gradient-to-tr from-black to-blue-500 p-8 ${poppins.className}`}
     >
-      <div className="mx-auto max-w-6xl">
+      {/* Confetti will cover the whole page */}
+      <ReactConfetti
+        width={window.innerWidth}
+        height={window.innerHeight}
+        numberOfPieces={4000}
+        recycle={false}
+        gravity={0.1}
+        initialVelocityX={2}
+        initialVelocityY={10}
+        colors={["#0123e7", "#eb8806"]}
+      />
+
+      <div className="relative z-10 mx-auto max-w-6xl">
+        {" "}
+        {/* Added relative z-10 to ensure content appears above confetti */}
         <div className="flex flex-col items-center justify-center text-center">
           <h1 className="mb-6 text-6xl font-bold leading-tight text-white">
             Your email was sent. Congrats!
