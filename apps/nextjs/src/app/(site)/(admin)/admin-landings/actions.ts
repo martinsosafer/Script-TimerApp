@@ -10,8 +10,9 @@ export async function addLanding(payload: LandingPage) {
     .values({
       title: payload.title,
       description: payload.description,
+      sub_description: payload.sub_description,
       type: payload.type,
-      segment: payload.segment,
+      segment: payload.segment.trim(),
       video_url: payload.video_url,
       is_active: payload.is_active,
     })
@@ -26,8 +27,9 @@ export async function updateLanding(payload: LandingPage, id: string) {
     .set({
       title: payload.title,
       description: payload.description,
+      sub_description: payload.sub_description,
       type: payload.type,
-      segment: payload.segment,
+      segment: payload.segment.trim(),
       video_url: payload.video_url,
       is_active: payload.is_active,
     })

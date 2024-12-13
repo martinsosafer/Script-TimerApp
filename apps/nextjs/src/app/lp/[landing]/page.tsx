@@ -58,6 +58,7 @@ export default function Landing() {
         <RegularHero
           title={landing.title}
           description={landing.description}
+          sub_description={landing.sub_description}
           video_url={landing.video_url}
           session={session}
           path={pathname}

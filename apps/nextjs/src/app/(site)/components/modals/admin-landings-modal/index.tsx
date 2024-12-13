@@ -29,6 +29,7 @@ export default function AdminLandingModal({
   const [previewValues, setPreviewValues] = useState({
     title: landing?.title ?? "",
     description: landing?.description ?? "",
+    subDescription: landing?.sub_description ?? "",
     type: landing?.type ?? "regular",
     segment: landing?.segment ?? "",
     videoUrl: landing?.video_url ?? "",
@@ -44,6 +45,7 @@ export default function AdminLandingModal({
     const payload = {
       title: form.get("title") as string,
       description: form.get("description") as string,
+      sub_description: form.get("subDescription") as string,
       segment: form.get("segment") as string,
       type,
       video_url: form.get("videoUrl") as string,
@@ -126,7 +128,21 @@ export default function AdminLandingModal({
               />
             </div>
             <div className="flex w-[500px] flex-col gap-2">
-              <label htmlFor="voideoUrl" className="text-sm font-semibold">
+              <label htmlFor="subDescription" className="text-sm font-semibold">
+                Sub Description
+              </label>
+              <input
+                type="text"
+                name="subDescription"
+                defaultValue={landing?.title}
+                placeholder="Sub Description"
+                className="w-full rounded-md border-2 border-primary p-2"
+                maxLength={30}
+                onChange={(e) =>
+                  setPreviewValues({ ...previewValues, title: e.target.value })
+                }
+              />
+              <label htmlFor="segment" className="text-sm font-semibold">
                 URL Segment
               </label>
               <input
@@ -216,8 +232,11 @@ export default function AdminLandingModal({
           />
           <RegularHero
             description={previewValues.description}
+            sub_description={previewValues.subDescription}
             title={previewValues.title}
             video_url={previewValues.videoUrl}
+            session={null}
+            path="/"
           />
         </div>
       )}

@@ -11,6 +11,9 @@ export const landingPage = pgTable("landing_page", {
   title: text("title").notNull(),
   type: type("type").notNull().default("regular"),
   description: text("description").notNull(),
+  sub_description: text("sub_description")
+    .notNull()
+    .default("In minutes! - not weeks"),
   video_url: text("video_url").notNull(),
   is_active: is_active("is_active").notNull().default("active"),
   created_at: timestamp("created_at").notNull().defaultNow(),
