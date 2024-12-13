@@ -39,7 +39,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@voiceai/ui/@/components/ui/dropdown-menu";
-import { IconCopy, IconFlag } from "@voiceai/ui/@/components/ui/icons";
+import {
+  IconCopy,
+  IconFlag,
+  IconGlobe,
+} from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 import languages from "~/lib/languages";
@@ -512,7 +516,7 @@ function TextEditor({
                 {isTranslating ? (
                   <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-gray-900"></div>
                 ) : (
-                  <IconFlag className="h-5 w-5" />
+                  <IconGlobe className="h-5 w-5" />
                 )}
               </Button>
             </DropdownMenuTrigger>
