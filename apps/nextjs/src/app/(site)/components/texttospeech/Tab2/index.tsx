@@ -43,6 +43,7 @@ const TabTwo = ({
   onCopy,
   isCopied,
   refetchCredits,
+  openAiCredits,
 }) => {
   return (
     <div className="md:order-2">
@@ -72,6 +73,7 @@ const TabTwo = ({
               setRichContent={setRichContent}
               scriptLoaded={true}
               isSubscriptionActive={true}
+              openAiCredits={openAiCredits}
             />
 
             <div className=" mb-4 mt-6 flex flex-col items-center justify-center">
