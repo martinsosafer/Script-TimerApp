@@ -18,6 +18,7 @@ const VideoCard: React.FC<{
                 query: {
                   course: video.course,
                   id: video.id,
+                  number: video.number,
                   title: video.title,
                   name: video.name,
                   image: video.image,

@@ -12,13 +12,16 @@ import {
   HoverCardTrigger,
 } from "@voiceai/ui/@/components/ui/hover-card";
 import {
+  BurgerIcon,
   IconArrowDown,
   IconMoon,
   IconSun,
+  XIcon,
 } from "@voiceai/ui/@/components/ui/icons";
 
 import { RevealText } from "~/app/animations/RevealText";
-import MobileNavBar from "../mobile-navbar";
+import Logo from "../logo";
+import MobileNavBar, { MobileNav } from "../mobile-navbar";
 import ImagesNavItem from "./imaimages-nav-item";
 import MasterclassesNavItem from "./masterclass-nav-item";
 import PlagNavItem from "./plagiarism-nav-item";
@@ -41,37 +44,28 @@ export default function NewNavBar({ signOut, signIn, session }: NavBarProps) {
     setTheme(theme === "light" ? "dark" : "light");
   };
 
-  const [open, setOpen] = useState(false);
-  const toggleMenu = () => {
-    setOpen((prevOpen) => !prevOpen);
-  };
+  const [isOpen, setIsOpen] = useState(false);
 
+  const toggleMenu = () => setIsOpen(!isOpen);
   // Get subscription info
   const subscriptionData = session?.user.subscription?.status;
 
   return (
-    <header className="bg-cp-primary sticky top-0 z-50 flex h-16 w-full items-center justify-between px-8 py-14">
+    <header className="bg-cp-primary sticky top-0 z-50 flex h-[64px] w-full items-center justify-between lg:h-16 lg:px-8 lg:py-14">
       <Link
         href="/"
         className="flex flex-col font-poppins text-primary-foreground"
       >
         <RevealText>
-          {/* Container for better alignment */}
-          <div className="flex flex-col items-start">
-            {/* Main title */}
-            <span className="text-left font-poppins text-4xl font-bold">
-              Co-Producer
-            </span>
-            {/* Subtitle positioned directly below the main title */}
-            <span className="text-left text-sm text-white">
-              Created by Script-Timer
-            </span>
+          {/* Adjust alignment wrapper */}
+          <div className="ml-3 mt-2  flex items-center justify-center">
+            <Logo coColor="white" producerColor="black" />
           </div>
         </RevealText>
       </Link>
 
-      <nav className="mt-4 hidden md:block lg:block xl:block">
-        <ul className="flex items-center justify-center font-semibold">
+      <nav className="mt-4 hidden  lg:block ">
+        <ul className="flex items-center justify-center gap-[20px] font-semibold">
           <HoverCard>
             <HoverCardTrigger asChild>
               <li className="group relative px-3 py-2 text-primary-foreground">
@@ -82,7 +76,6 @@ export default function NewNavBar({ signOut, signIn, session }: NavBarProps) {
           <li className="group relative items-center px-3 py-2 text-primary-foreground">
             <TextToVoiceNavItem />
           </li>
-
           <li className="group relative px-3 py-2 text-primary-foreground hover:cursor-default">
             <ImagesNavItem />
           </li>
@@ -98,17 +91,22 @@ export default function NewNavBar({ signOut, signIn, session }: NavBarProps) {
         </ul>
       </nav>
 
-      <nav className="sm:block md:hidden lg:hidden xl:hidden">
+      <nav className="mr-4 sm:block md:hidden lg:hidden xl:hidden">
         <button
-          className="inline-flex items-center rounded border-b-4 border-blue-700 bg-blue-500 px-4 py-2 font-bold text-white hover:border-blue-500 hover:bg-blue-400"
+          className="inline-flex items-center px-4 py-2 font-bold text-white hover:text-blue-100"
           onClick={toggleMenu}
+          aria-expanded={isOpen}
+          aria-label="Toggle menu"
         >
-          <IconArrowDown />
-          <span>Menu</span>
+          {isOpen ? (
+            <XIcon className="h-6 w-6" />
+          ) : (
+            <BurgerIcon className="h-6 w-6" />
+          )}
         </button>
       </nav>
 
-      <nav>
+      <nav className="hidden lg:block">
         <ul className="flex items-center">
           {session && (
             <li>
@@ -147,7 +145,16 @@ export default function NewNavBar({ signOut, signIn, session }: NavBarProps) {
       </nav>
 
       <AnimatePresence>
-        {open && <MobileNavBar toggle={toggleMenu} />}
+        {isOpen && (
+          <MobileNav
+            isOpen={isOpen}
+            onClose={() => setIsOpen(false)}
+            signOut={signOut}
+            signIn={signIn}
+            session={session}
+             plan={subscriptionData}
+          />
+        )}
       </AnimatePresence>
     </header>
   );

@@ -1,6 +1,6 @@
 import { schema } from "@voiceai/db";
 
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const promptsRouter = createTRPCRouter({
   listAllPrompts: protectedProcedure.query(async ({ ctx }) => {

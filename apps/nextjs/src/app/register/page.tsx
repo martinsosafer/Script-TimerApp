@@ -5,6 +5,7 @@ import { auth } from "@voiceai/auth";
 
 import Logo from "../(site)/components/logo";
 import AnimatedGifs from "../signin/animtadgifs";
+import { LoginWithEmailForm } from "../signin/email-login";
 import FormSwitcher from "../signin/formswitcher";
 import GoogleForm from "./google-form";
 import RegisterForm from "./register-form";
@@ -45,6 +46,12 @@ export default async function Register() {
               </div>
             </div>
             <GoogleForm />
+            <div className="relative">
+              <div className="text-md relative mb-2 mt-2 flex justify-center">
+                <span className="bg-background px-2 text-black">or</span>
+              </div>
+            </div>
+            <LoginWithEmailForm />
             <div className="mt-5">
               <p className="px-8 text-center text-sm text-black">
                 By signing in, you agree to our{" "}

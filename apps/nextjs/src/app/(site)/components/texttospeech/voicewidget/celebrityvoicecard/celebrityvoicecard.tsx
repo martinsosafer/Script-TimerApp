@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
 
 import { Button } from "@voiceai/ui";
 import { IconStop } from "@voiceai/ui/@/components/ui/icons";
@@ -20,13 +19,11 @@ interface CelebrityVoice {
 }
 
 interface CelebrityVoiceCardsProps {
-  onModelSelect: (voice: CelebrityVoice) => void;
   celebrityVoices: CelebrityVoice[];
   isQueryLoading: boolean;
 }
 
 const CelebrityVoiceCards: React.FC<CelebrityVoiceCardsProps> = ({
-  onModelSelect,
   celebrityVoices,
   isQueryLoading,
 }) => {
@@ -44,11 +41,9 @@ const CelebrityVoiceCards: React.FC<CelebrityVoiceCardsProps> = ({
 
   useEffect(() => {
     if (currentAudioUrl) {
-      // Initialize the audio element with the current URL
       const newAudio = new Audio(currentAudioUrl);
       setAudio(newAudio);
 
-      // Cleanup on unmount
       return () => {
         if (audio) {
           audio.pause();
@@ -72,7 +67,6 @@ const CelebrityVoiceCards: React.FC<CelebrityVoiceCardsProps> = ({
         setIsPlaying(true);
       }
 
-      // Reset the play state when the audio ends
       audio.onended = () => {
         setIsPlaying(false);
       };
@@ -82,7 +76,6 @@ const CelebrityVoiceCards: React.FC<CelebrityVoiceCardsProps> = ({
       newAudio.play();
       setIsPlaying(true);
 
-      // Reset the play state when the audio ends
       newAudio.onended = () => {
         setIsPlaying(false);
       };
@@ -91,18 +84,14 @@ const CelebrityVoiceCards: React.FC<CelebrityVoiceCardsProps> = ({
 
   const handleVoiceCardClick = (voice: CelebrityVoice) => {
     if (selectedVoiceId === voice.id) {
-      // If the same voice is selected, do nothing
       return;
     } else {
-      // Stop the currently playing audio
       if (audio) {
         audio.pause();
         audio.currentTime = 0;
         setIsPlaying(false);
       }
 
-      // Select a new voice
-      onModelSelect(voice);
       setSelectedVoiceId(voice.id);
       setCurrentAudioUrl(voice.metadata?.preview_url || "");
       setIsPlaying(false);
@@ -161,7 +150,7 @@ const CelebrityVoiceCards: React.FC<CelebrityVoiceCardsProps> = ({
                     type="button"
                     className="rounded-full"
                     onClick={(e) => {
-                      e.stopPropagation(); // Prevent triggering the card click event
+                      e.stopPropagation();
                       handlePlayPause(voice.id, voice.metadata?.preview_url);
                     }}
                   >

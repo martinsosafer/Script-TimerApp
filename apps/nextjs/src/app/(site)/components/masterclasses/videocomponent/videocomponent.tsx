@@ -8,7 +8,8 @@ import { RevealText } from "~/app/animations/RevealText";
 import MotionTransition from "../../herosection/MotionTransition/MotionTransition";
 
 interface VideoData {
-  id: number;
+  id: number | string;
+  number: string;
   course: string;
   title: string;
   name: string;
@@ -19,6 +20,7 @@ interface VideoData {
 
 interface RelatedVideo {
   id: number;
+  number: string;
   course: string;
   title: string;
   name: string;
@@ -41,12 +43,14 @@ const VideoComponent: React.FC<VideoComponentProps> = ({
   previousVideo,
   nextVideo,
 }) => {
+  console.log("data", data);
+  console.log("data.id", data.id, "Type:", typeof data.id);
   return (
     <MotionTransition className="mb-16 flex items-center justify-center">
       <div className="relative mx-auto max-w-4xl">
         <RevealText>
           <h1 className="mb-4 mt-4 font-poppins text-3xl font-bold">
-            <span className="text-primary">{data.id}</span>-{data.title}
+            <span className="text-primary">{data.number}</span>-{data.title}
           </h1>
         </RevealText>
         <div className="relative flex items-center justify-center">

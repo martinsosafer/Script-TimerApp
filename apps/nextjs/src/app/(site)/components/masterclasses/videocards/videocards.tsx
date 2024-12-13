@@ -6,6 +6,7 @@ import VideoCard from "../videocard/videocard";
 
 interface Video {
   id: number;
+  number: string;
   course: string;
   image: string;
   title: string;

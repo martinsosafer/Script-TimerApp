@@ -18,7 +18,7 @@ export default function PageHeader({
       <h2 className="text-cp-primary w-[650px] text-center text-[42px] font-bold">
         {title}
       </h2>
-      <h4 className="mt-[12px] w-[650px] text-center text-[16px] font-bold">
+      <h4 className="mt-[12px] w-[650px] text-center text-[16px] font-normal">
         {subtitle}
       </h4>
     </header>

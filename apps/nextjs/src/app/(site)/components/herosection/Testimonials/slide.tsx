@@ -1,15 +1,18 @@
 "use client";
 
-import React from "react";
-
-import "swiper/css";
-import "swiper/css/pagination";
-
 import Image from "next/image";
-import { Keyboard, Mousewheel, Navigation, Pagination } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
+
+import { Card, CardContent } from "@voiceai/ui/@/components/ui/card";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@voiceai/ui/@/components/ui/carousel";
 
 import { RevealText } from "~/app/animations/RevealText";
+import { roboto } from "~/app/fonts";
 import TestimonialsIcon from "../../../../../../public/testimonialIcon.png";
 import David from "../../../components/herosection/Testimonials/Testimonialspic/DavidJoo.jpg";
 import Jill from "../../../components/herosection/Testimonials/Testimonialspic/Jill.png";
@@ -32,7 +35,7 @@ const testimonialsData = [
     name: "David Joo",
     work: "CEO at KnowRe",
     testimonial:
-      "“We are overwhelmed with thanks...Thank you for your support and tools!”",
+      "We are overwhelmed with thanks...Thank you for your support and tools!",
     image: David,
   },
   {
@@ -69,47 +72,51 @@ const testimonialsData = [
 ];
 export default function Slide() {
   return (
-    <Swiper
-      breakpoints={{
-        320: { slidesPerView: 1, spaceBetween: 15 }, // For smaller screens
-        768: {
-          slidesPerView: 2, // Show 2 testimonials on medium and larger screens
-          spaceBetween: 20,
-        },
-      }}
-      freeMode={true}
-      pagination={{
-        clickable: true,
-      }}
-      modules={[Navigation, Pagination, Mousewheel, Keyboard]}
-      className="h-[320px] w-full py-10 md:max-w-5xl "
-    >
-      {testimonialsData.map(({ id, name, work, testimonial, image }) => (
-        <SwiperSlide key={id} className=" cursor-pointer md:px-5">
-          <RevealText>
-            <div className=" h-[270px] max-w-xl rounded-lg border border-tertiary bg-white p-5 shadow-sm">
-              <div className="flex flex-col items-start">
-                <div className="mb-2 flex-shrink-0">
-                  <Image
-                    src={image}
-                    alt={name}
-                    width={50}
-                    height={50}
-                    className="h-12 w-12 rounded-full"
-                  />
-                </div>
-                <h4 className="font-poppins text-lg font-semibold">{name}</h4>
-                <p className="font-poppins text-sm font-medium text-primary">
-                  {work}
-                </p>
-                <p className="max-w-xs overflow-hidden overflow-ellipsis font-poppins text-sm leading-relaxed text-black">
-                  {testimonial}
-                </p>
-              </div>
-            </div>
-          </RevealText>
-        </SwiperSlide>
-      ))}
-    </Swiper>
+    <div className="mx-auto w-full max-w-5xl px-4">
+      <Carousel
+        opts={{
+          align: "start",
+          loop: true,
+        }}
+        className="w-full"
+      >
+        <CarouselContent>
+          {testimonialsData.map((testimonial) => (
+            <CarouselItem
+              key={testimonial.id}
+              className="md:basis-1/2 lg:basis-1/3"
+            >
+              <Card className="border-0 shadow-lg">
+                <CardContent className="p-6">
+                  <div className="mb-4 flex items-start gap-3">
+                    <Image
+                      src={testimonial.image}
+                      alt={testimonial.name}
+                      width={48}
+                      height={48}
+                      className="rounded-full object-cover"
+                    />
+                    <div>
+                      <h3 className="font-semibold text-blue-600">
+                        {testimonial.name}
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        {testimonial.work}
+                      </p>
+                    </div>
+                  </div>
+                  <blockquote className="mb-4 text-gray-700">
+                    &ldquo;{testimonial.testimonial}&rdquo;
+                  </blockquote>
+                  <time className="text-sm text-gray-500">November 2024</time>
+                </CardContent>
+              </Card>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious className="hidden md:flex" />
+        <CarouselNext className="hidden md:flex" />
+      </Carousel>
+    </div>
   );
 }

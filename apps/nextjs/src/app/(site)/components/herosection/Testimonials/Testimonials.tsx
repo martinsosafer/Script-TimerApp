@@ -1,35 +1,33 @@
 import React from "react";
 
 import { RevealText } from "~/app/animations/RevealText";
+import { poppins, roboto } from "~/app/fonts";
 import Slide from "./slide";
 
 export default function Testimonials() {
   return (
-    <div className="lg:py-15 relative mb-10 md:py-10 xl:py-20">
-      <div className="mx-auto mt-10   grid h-[500px]  max-w-5xl  items-start md:grid-cols-3">
-        {/* First column */}
-        <div className="mt-20 md:col-span-1">
+    <div className={`relative py-[32px] ${poppins.className}`}>
+      <div className="mx-auto flex flex-col items-center justify-center">
+        {/* Heading and description */}
+        <div className="mb-6 flex h-[150px] w-[321px] flex-col items-center justify-center text-center">
           <RevealText>
-            <h2 className="mb-5 font-poppins text-3xl font-semibold">
-              What our <br />
-              students have <br />
-              to say
+            <h2 className="text-cp-primary text-[26px] font-bold leading-[31px]">
+              What our members
+              <br /> have to say
             </h2>
           </RevealText>
           <RevealText>
-            <p className=" font-poppins text-base font-bold text-primary">
-              Our students have witnessed a marked <br />
-              improvement in their skills for speech
-              <br />
-              and content creation.
+            <p
+              className={`${roboto.className} text-[14px] font-normal leading-[20px]`}
+            >
+              Our members have witnessed a marked improvement in their skills
+              for speech and content creation.
             </p>
           </RevealText>
         </div>
 
-        {/* Carousel column with additional margin */}
-        <div className="mt-20 md:col-span-2 md:ml-14">
-          {" "}
-          {/* Add margin left for separation */}
+        {/* Slide component */}
+        <div className="w-full">
           <Slide />
         </div>
       </div>
