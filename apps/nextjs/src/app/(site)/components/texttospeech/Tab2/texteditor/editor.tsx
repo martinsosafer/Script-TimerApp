@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import { useParams } from "next/navigation";
 import ArrowDownOnSquareIcon from "@heroicons/react/24/outline/ArrowDownOnSquareIcon";
 import ArrowUTurnLeftIcon from "@heroicons/react/24/outline/ArrowUturnLeftIcon";
@@ -49,6 +50,7 @@ import { toast } from "@voiceai/ui/@/components/ui/toast";
 import languages from "~/lib/languages";
 import type { SubscriptionData } from "~/lib/types";
 import { api } from "~/utils/api";
+import translation from "../../../../../../../public/translation.png";
 import { CharLimitModal } from "../../../charlimit-modal";
 
 interface TextEditorProps {
@@ -516,7 +518,11 @@ function TextEditor({
                 {isTranslating ? (
                   <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-gray-900"></div>
                 ) : (
-                  <IconGlobe className="h-5 w-5" />
+                  <Image
+                    src={translation}
+                    className="h-5 w-5"
+                    alt="translation"
+                  />
                 )}
               </Button>
             </DropdownMenuTrigger>
