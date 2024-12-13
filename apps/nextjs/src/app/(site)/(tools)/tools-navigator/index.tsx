@@ -20,7 +20,7 @@ export default function ToolsNavigator() {
       action: () => router.push("/word-counter"),
     },
     {
-      label: "Autocapitalize",
+      label: "Auto Capitalize/Case",
       active: pathname === "/autocapitalize",
       action: () => router.push("/autocapitalize"),
     },
@@ -30,7 +30,7 @@ export default function ToolsNavigator() {
       action: () => router.push("/word-sorter"),
     },
     {
-      label: "Hemingway",
+      label: "Hemingway App Scorer",
       active: pathname === "/grade-level",
       action: () => router.push("/grade-level"),
     },

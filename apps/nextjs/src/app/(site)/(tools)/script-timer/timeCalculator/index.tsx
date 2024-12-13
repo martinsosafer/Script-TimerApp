@@ -41,6 +41,26 @@ export default function TimeCalculator() {
 
   return (
     <main className="mb-[100px] w-full">
+      <div className="mb-4 flex w-full justify-between gap-4">
+        <Button
+          label="Listen to your script"
+          type="secondary"
+          className="w-[300px]"
+          onClick={() => router.push("/texttovoice")}
+        />
+        <Button
+          label="Specialized AI rewriting"
+          type="secondary"
+          className="w-[300px]"
+          onClick={() => router.push("/chat")}
+        />
+        <Button
+          label="Detect Plagiarism & AI"
+          type="secondary"
+          className="w-[300px]"
+          onClick={() => router.push("/plagiarism-detector")}
+        />
+      </div>
       <section className="border-cp-primary-lightest flex w-full flex-col rounded-lg border bg-white p-4">
         <textarea
           name="text"

@@ -1,7 +1,8 @@
 import { poppins, roboto } from "~/app/fonts";
+import Button from "../../components/button";
 import Grader from "./grader";
 
-export default function GradeLevelge() {
+export default function GradeLevel() {
   return (
     <div className="flex w-[1024px] flex-col items-center px-[40px]">
       <div className="my-[40px] flex w-full flex-col items-start">

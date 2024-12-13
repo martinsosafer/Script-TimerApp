@@ -10,7 +10,7 @@ function getRandomCheer() {
     "Is that Voltaire?? Well done!",
     "T.S. Eliot anyone?? What a script!",
     "How Orwellian of you to input! Nicely done",
-    "Is that a Swiftâ€™s sick beat? So goood!",
+    "Is that a Swift's sick beat? So goood!",
   ];
   return cheers[Math.floor(Math.random() * cheers.length)];
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { IconArrowRight } from "@voiceai/ui/@/components/ui/icons";
@@ -123,6 +123,26 @@ export default function Grader() {
 
   return (
     <main className="mb-[100px] w-full">
+      <div className="mb-4 flex w-full justify-between gap-4">
+        <Button
+          label="Listen to your script"
+          type="secondary"
+          className="w-[300px]"
+          onClick={() => router.push("/texttovoice")}
+        />
+        <Button
+          label="Specialized AI rewriting"
+          type="secondary"
+          className="w-[300px]"
+          onClick={() => router.push("/chat")}
+        />
+        <Button
+          label="Detect Plagiarism & AI"
+          type="secondary"
+          className="w-[300px]"
+          onClick={() => router.push("/plagiarism-detector")}
+        />
+      </div>
       <section
         className={`${roboto.className} border-cp-primary-lightest flex w-full flex-col rounded-lg border bg-white p-4`}
       >
@@ -137,6 +157,7 @@ export default function Grader() {
         <article className="mt-3 flex w-full items-start">
           <div className="w-[20%]">
             <h3 className="text-base font-normal">Readability</h3>
+            <span className="text-xs">Goal: 9th grade</span>
             <h2 className="mt-1 text-[18px] font-bold">
               Grade:{" "}
               {calculateLevel(
@@ -171,41 +192,37 @@ export default function Grader() {
             </p>
           </div>
           <div className="flex w-1/2 flex-col gap-1">
-            {highlightedText.adverbs > 0 && (
-              <div className="flex h-[38px] w-full items-center rounded bg-[#C4E3F3] px-3 text-[16px]">
-                You have used {highlightedText.adverbs} adverbs. Try to use 2 or
-                less.
-              </div>
-            )}
-            {highlightedText.passive > 0 && (
-              <div className="flex h-[38px] w-full items-center rounded bg-[#C4ED9D] px-3 text-[16px]">
-                You have used passive voice {highlightedText.passive} time. Aim
-                for 2 or less.
-              </div>
-            )}
-            {highlightedText.simplify > 0 && (
-              <div className="flex h-[38px] w-full items-center rounded bg-[#E3B7E8] px-3 text-[16px]">
-                {highlightedText.simplify} phrase could be simplified.
-              </div>
-            )}
-            {highlightedText.hard > 0 && (
-              <div className="flex h-[38px] w-full items-center rounded bg-[#F7ECB5] px-3 text-[16px]">
-                {highlightedText.hard} of {countResult.sentences} sentences are
-                hard to read.
-              </div>
-            )}
-            {highlightedText.veryHard > 0 && (
-              <div className="flex h-[38px] w-full items-center rounded bg-[#E4B9B9] px-3 text-[16px]">
-                {highlightedText.hard} of {countResult.sentences} sentences are
-                very hard to read.
-              </div>
-            )}
+            <div className="flex h-[38px] w-full items-center rounded bg-[#C4E3F3] px-3 text-[16px]">
+              You have used {highlightedText.adverbs} adverbs. Try to use 2 or
+              less.
+            </div>
+
+            <div className="flex h-[38px] w-full items-center rounded bg-[#C4ED9D] px-3 text-[16px]">
+              You have used passive voice {highlightedText.passive} time. Aim
+              for 2 or less.
+            </div>
+
+            <div className="flex h-[38px] w-full items-center rounded bg-[#E3B7E8] px-3 text-[16px]">
+              {highlightedText.simplify} phrase could be simplified.
+            </div>
+
+            <div className="flex h-[38px] w-full items-center rounded bg-[#F7ECB5] px-3 text-[16px]">
+              {highlightedText.hard} of {countResult.sentences} sentences are
+              hard to read.
+            </div>
+
+            <div className="flex h-[38px] w-full items-center rounded bg-[#E4B9B9] px-3 text-[16px]">
+              {highlightedText.veryHard} of {countResult.sentences} sentences
+              are very hard to read.
+            </div>
           </div>
         </article>
-        <div className="mt-5">{textMapper(highlightedText.adverbsText)}</div>
+        {highlightedText.adverbsText && (
+          <div className="mt-5">{textMapper(highlightedText.adverbsText)}</div>
+        )}
       </section>
       <Button
-        label="Test me"
+        label="Calculate"
         type="primary"
         fit
         onClick={() => handleTest()}
