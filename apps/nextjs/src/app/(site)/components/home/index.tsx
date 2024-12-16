@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import type { Session } from "@voiceai/auth";
 
+import EmailLoginSection from "~/app/lp/sections/email-login-section";
 import CounterData from "../herosection/CounterData/CounterData";
 import FAQAccordion from "../herosection/FaqAccordion";
 import GoSections from "../herosection/GoSections/GoSections";
@@ -42,6 +43,7 @@ export default function Home({
     <>
       <HeroSection />
       <MarqueeLogos />
+      {!session && <EmailLoginSection />}
       <ServiceSection />
       <CounterData />
       <GoSections />

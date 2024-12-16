@@ -23,13 +23,14 @@ export default function AdminLandingModal({
 }: ModalProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [type, setType] = useState<"regular" | "tools" | "saasy">(
-    landing?.type ?? "regular",
+    landing?.lp_type ?? "regular",
   );
 
   const [previewValues, setPreviewValues] = useState({
     title: landing?.title ?? "",
     description: landing?.description ?? "",
-    type: landing?.type ?? "regular",
+    subDescription: landing?.sub_description ?? "",
+    lpType: landing?.lp_type ?? "regular",
     segment: landing?.segment ?? "",
     videoUrl: landing?.video_url ?? "",
     isActive: landing?.is_active ?? "",
@@ -44,8 +45,9 @@ export default function AdminLandingModal({
     const payload = {
       title: form.get("title") as string,
       description: form.get("description") as string,
+      sub_description: form.get("subDescription") as string,
       segment: form.get("segment") as string,
-      type,
+      lp_type: type,
       video_url: form.get("videoUrl") as string,
       is_active: isActive,
     };
@@ -84,7 +86,7 @@ export default function AdminLandingModal({
                   setType(e.target.value as "regular" | "tools" | "saasy");
                   setPreviewValues({
                     ...previewValues,
-                    type: e.target.value as "regular" | "tools" | "saasy",
+                    lpType: e.target.value as "regular" | "tools" | "saasy",
                   });
                 }}
                 className="rounded-md border border-gray-300 p-2"
@@ -126,7 +128,21 @@ export default function AdminLandingModal({
               />
             </div>
             <div className="flex w-[500px] flex-col gap-2">
-              <label htmlFor="voideoUrl" className="text-sm font-semibold">
+              <label htmlFor="subDescription" className="text-sm font-semibold">
+                Sub Description
+              </label>
+              <input
+                type="text"
+                name="subDescription"
+                defaultValue={landing?.sub_description ?? undefined}
+                placeholder="Sub Description"
+                className="w-full rounded-md border-2 border-primary p-2"
+                maxLength={30}
+                onChange={(e) =>
+                  setPreviewValues({ ...previewValues, title: e.target.value })
+                }
+              />
+              <label htmlFor="segment" className="text-sm font-semibold">
                 URL Segment
               </label>
               <input
@@ -207,7 +223,7 @@ export default function AdminLandingModal({
         </button>
       </div>
 
-      {previewLanding && previewValues.type === "regular" && (
+      {previewLanding && previewValues.lpType === "regular" && (
         <div className="-mt-20 flex w-full scale-75 flex-col items-center gap-4">
           <Button
             label="Close preview"
@@ -216,8 +232,11 @@ export default function AdminLandingModal({
           />
           <RegularHero
             description={previewValues.description}
+            sub_description={previewValues.subDescription}
             title={previewValues.title}
             video_url={previewValues.videoUrl}
+            session={null}
+            path="/"
           />
         </div>
       )}

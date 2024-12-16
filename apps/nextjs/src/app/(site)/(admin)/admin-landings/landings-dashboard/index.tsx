@@ -42,7 +42,7 @@ export default function LandingsDashboard() {
           )}
           {allLandings && allLandings.length > 0 && (
             <div>
-              <div className="mb-2 flex w-full text-lg">
+              <div className="mb-2 flex w-[1024px] text-lg">
                 <div className="w-[20%] p-1 font-bold">Title</div>
                 <div className="w-[40%] p-1 font-bold">Description</div>
                 <div className="w-[20%] p-1 font-bold">Type</div>
@@ -53,7 +53,7 @@ export default function LandingsDashboard() {
           )}
 
           {allLandings?.map((landing) => (
-            <div key={landing.id} className="flex w-full">
+            <div key={landing.id} className="flex w-[1024px]">
               <div className="w-[20%] border border-gray-300 p-1">
                 {landing.title}
               </div>
@@ -61,7 +61,7 @@ export default function LandingsDashboard() {
                 {landing.description}
               </div>
               <div className="w-[20%] border border-gray-300 p-1">
-                {landing.type}
+                {landing.lp_type}
               </div>
               <div className="w-[10%] border border-gray-300 p-1">
                 {landing.segment}

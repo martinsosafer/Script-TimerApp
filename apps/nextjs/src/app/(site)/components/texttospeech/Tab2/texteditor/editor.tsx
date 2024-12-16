@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import { useParams } from "next/navigation";
 import ArrowDownOnSquareIcon from "@heroicons/react/24/outline/ArrowDownOnSquareIcon";
 import ArrowUTurnLeftIcon from "@heroicons/react/24/outline/ArrowUturnLeftIcon";
@@ -39,12 +40,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@voiceai/ui/@/components/ui/dropdown-menu";
-import { IconCopy, IconFlag } from "@voiceai/ui/@/components/ui/icons";
+import {
+  IconCopy,
+  IconFlag,
+  IconGlobe,
+} from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 import languages from "~/lib/languages";
 import type { SubscriptionData } from "~/lib/types";
 import { api } from "~/utils/api";
+import translation from "../../../../../../../public/translation.png";
 import { CharLimitModal } from "../../../charlimit-modal";
 
 interface TextEditorProps {
@@ -57,6 +63,7 @@ interface TextEditorProps {
   setRichContent: (content: string) => void;
   isSubscriptionActive?: boolean;
   subData: SubscriptionData | null | undefined;
+  openAiCredits: number | undefined;
 }
 
 const CHAR_LIMITS: Record<string, number> = {
@@ -82,6 +89,7 @@ function TextEditor({
   subData,
   richContent,
   setRichContent,
+  openAiCredits,
 }: TextEditorProps) {
   const [charCount, setCharCount] = useState(0);
   const [showCharCount, setShowCharCount] = useState(true);
@@ -91,6 +99,7 @@ function TextEditor({
   const [isTranslating, setIsTranslating] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("en");
   const [credits, setCredits] = useState(1000); // Initialize with a default value or fetch from your user data
+  const [aiCredits, setAiCredits] = React.useState(openAiCredits);
   const { scriptId } = useParams();
   const { data: scriptDetails } = api.script.get.useQuery(
     { id: scriptId?.[0] ?? "" },
@@ -348,7 +357,7 @@ function TextEditor({
     const targetLanguage = languages.find((l) => l.value === lang);
     const prompt = `Please translate the following text into ${targetLanguage?.label}, The translation should always be in ${targetLanguage?.label} and should be grammatically correct, only give me the text do not add anything else.\n\nOriginal text:\n"${content}"\n\nPlease provide your translation below:`;
 
-    if (prompt.length > credits) {
+    if (prompt.length > aiCredits) {
       toast({
         title: "Insufficient Credits",
         description: "You do not have enough credits for this translation.",
@@ -379,7 +388,7 @@ function TextEditor({
         throw new Error("Invalid response structure");
       }
 
-      setCredits(credits - prompt.length);
+      setCredits(aiCredits - prompt.length);
       editor.commands.setContent(data.data);
       toast({
         title: "Translation Complete",
@@ -509,13 +518,17 @@ function TextEditor({
                 {isTranslating ? (
                   <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-gray-900"></div>
                 ) : (
-                  <IconFlag className="h-5 w-5" />
+                  <Image
+                    src={translation}
+                    className="h-5 w-5"
+                    alt="translation"
+                  />
                 )}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="max-h-[300px] w-56 overflow-y-auto">
               <DropdownMenuLabel>
-                Translate to ({credits} credits left)
+                Translate to ({aiCredits} credits left)
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <div className="px-1 py-1">

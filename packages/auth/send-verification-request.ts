@@ -12,50 +12,154 @@ export const sendVerificationRequest = async ({
       to: identifier,
       subject: "LogIn to Script Timer",
       html: `
-        <html>
+<html lang="en">
 <head>
- <style>
-    h2, p, a, li, strong {
-      color: #000;
-      font-size: 16px; /* Adjust the font size as needed */
-    }
-    h2 {
-      color: #333;
-    }
-    p {
-      margin-bottom: 10px;
-    }
-    li {
-      margin-bottom: 10px;
-    }
-    ul {
-      color: black;
-    }
-    ul li strong {
-      color: black;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Co-Producer by Script-Timer</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif, Arial, sans-serif;
+            line-height: 1.5;
+            color: #000000;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+            font-weight: 500;
+        }
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        .header {
+            background-color: #0066FF;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 500;
+            font-family: 'Poppins', sans-serif, Arial, sans-serif;
+        }
+        .features {
+            margin-top: 15px;
+        }
+        .feature {
+            background-color: #f8f9fa;
+            border-left: 4px solid #0066FF;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: 0 5px 5px 0;
+        }
+        .feature h3 {
+            margin-top: 0;
+            margin-bottom: 5px;
+            color: #0066FF;
+            font-size: 16px;
+            font-weight: 500;
+            font-family: 'Poppins', sans-serif, Arial, sans-serif;
+        }
+        .feature p {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 500;
+            color: #000000;
+            font-family: 'Poppins', sans-serif, Arial, sans-serif;
+        }
+        .signature {
+            margin-top: 20px;
+            text-align: left;
+            color: #000000;
+        }
+        .signature p {
+            font-weight: 500;
+            font-family: 'Poppins', sans-serif, Arial, sans-serif;
+        }
+        .footer {
+            margin-top: 15px;
+            text-align: left; /* Aligned to the left */
+            font-size: 11px;
+            color: #000000;
+            font-family: 'Poppins', sans-serif, Arial, sans-serif;
+        }
+        .left-align {
+            text-align: left;
+        }
+        p {
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: #000000;
+            font-family: 'Poppins', sans-serif, Arial, sans-serif;
+        }
+    </style>
 </head>
 <body>
-  <h2>Hello, glad you're here. </h2>
-  
-  <p>Script-Timer makes it super easy to turn any idea into a script and give that script a voice.</p>
-  <h2>To get started:</h2>
-  <ul>
-    <li><a href="${url}">Click here to login</a></li>
-    <li><a href="https://script-timer.ai/">Click here to watch our walkthrough video guide</a></li>
-  </ul>
-  <h2>When you're logged in:</h2>
-  <ul>
-    <li><strong>✍️ Write like a Pro:</strong> Our AI-driven writing assistant will help you formulate your ideas into compelling scripts. Whether you're crafting a speech, a marketing video, or a podcast, you'll find your words flowing effortlessly. Need grammar or spelling support - that's in here too!</li>
-    <li><strong>🎙️ Voice-over Magic:</strong> Once your script is penned, you're just a few clicks away from turning text into lifelike speech. Our diverse range of AI voices is designed to captivate your audience, bringing your message to life. Once you hit CREATE, the voice generates. Voila, your voice awaits, and you can edit, change, adjust, and improve.</li>
-  </ul>
-  <p>I'll be sending more tips & tricks over the coming days, so keep an eye out!</p>
-  <p>I'm always here if you have any questions or feedback.</p>
-  <p>Your voice matters!</p>
-  <p>Cheers,</p>
-  <p>Maury Rogow</p>
-  <p>Founder & CEO</p>
+    <div class="container">
+        <div class="header">
+            <h1>Welcome to Co-Producer</h1>
+        </div>
+
+        <p>Hi,</p>
+
+        <p>We are happy you're here! Co-Producer (by Script-Timer) makes it easy to save time and money creating.</p>
+
+        <!-- Button with inline styles -->
+      <a href="${url}" 
+   style="display: inline-block; 
+          width: auto; 
+          padding: 10px 20px; 
+          background-color: #FF9900; 
+          color: #FFFFFF !important; /* Ensures white text */
+          text-align: center; 
+          text-decoration: none; 
+          border-radius: 5px; 
+          font-weight: 700; 
+          font-family: 'Poppins', sans-serif, Arial, sans-serif; 
+          font-size: 16px; 
+          margin: 20px 0;">
+           Click here to login
+        </a>
+
+        <div class="features">
+            <div class="feature">
+                <h3>✍️ Write with a Pro</h3>
+                <p>Our writing assistant will help you formulate your ideas to compelling scripts, checked for plagiarism if you'd like!</p>
+            </div>
+
+            <div class="feature">
+                <h3>🎙️ Voice-over Magic</h3>
+                <p>Bring your message to life with hundreds of voices.</p>
+            </div>
+
+            <div class="feature">
+                <h3>🖼️ Image Creation</h3>
+                <p>Create slides, storyboards, images to share your vision.</p>
+            </div>
+        </div>
+
+        <p class="left-align">More time and money saving tips & tricks in the coming days, so keep us in your inbox.</p>
+
+        <p class="left-align">Your voice matters!</p>
+
+        <div class="signature">
+            <p>Enjoy,<br>
+            Maury Rogow<br>
+            <strong>Founder</strong></p>
+        </div>
+
+        <div class="footer">
+            <p>©Co-Producer by Script-Timer | Empowering Creators</p>
+        </div>
+    </div>
 </body>
 </html>
       `,
