@@ -61,7 +61,7 @@ export default function LandingsDashboard() {
                 {landing.description}
               </div>
               <div className="w-[20%] border border-gray-300 p-1">
-                {landing.type}
+                {landing.lp_type}
               </div>
               <div className="w-[10%] border border-gray-300 p-1">
                 {landing.segment}

@@ -23,14 +23,14 @@ export default function AdminLandingModal({
 }: ModalProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [type, setType] = useState<"regular" | "tools" | "saasy">(
-    landing?.type ?? "regular",
+    landing?.lp_type ?? "regular",
   );
 
   const [previewValues, setPreviewValues] = useState({
     title: landing?.title ?? "",
     description: landing?.description ?? "",
     subDescription: landing?.sub_description ?? "",
-    type: landing?.type ?? "regular",
+    lpType: landing?.lp_type ?? "regular",
     segment: landing?.segment ?? "",
     videoUrl: landing?.video_url ?? "",
     isActive: landing?.is_active ?? "",
@@ -47,7 +47,7 @@ export default function AdminLandingModal({
       description: form.get("description") as string,
       sub_description: form.get("subDescription") as string,
       segment: form.get("segment") as string,
-      type,
+      lp_type: type,
       video_url: form.get("videoUrl") as string,
       is_active: isActive,
     };
@@ -86,7 +86,7 @@ export default function AdminLandingModal({
                   setType(e.target.value as "regular" | "tools" | "saasy");
                   setPreviewValues({
                     ...previewValues,
-                    type: e.target.value as "regular" | "tools" | "saasy",
+                    lpType: e.target.value as "regular" | "tools" | "saasy",
                   });
                 }}
                 className="rounded-md border border-gray-300 p-2"
@@ -223,7 +223,7 @@ export default function AdminLandingModal({
         </button>
       </div>
 
-      {previewLanding && previewValues.type === "regular" && (
+      {previewLanding && previewValues.lpType === "regular" && (
         <div className="-mt-20 flex w-full scale-75 flex-col items-center gap-4">
           <Button
             label="Close preview"
