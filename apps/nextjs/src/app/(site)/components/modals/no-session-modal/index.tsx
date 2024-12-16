@@ -158,46 +158,46 @@ export default function NoSessionModal({
     <div
       className={`fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50 p-4 backdrop-blur ${poppins.className}`}
     >
-      <div className="h-[545px] w-[925px] overflow-hidden rounded-xl border border-primary bg-white shadow-xl">
-        <div className="flex h-full">
+      <div className=" h-[532px] w-[312px]  overflow-hidden rounded-xl border border-primary bg-white  shadow-xl lg:h-[545px] lg:w-[925px]">
+        <div className="flex h-full flex-col lg:flex-row">
           {/* Left section */}
-          <div className="flex h-full w-[400px] flex-col items-center justify-center bg-gray-100">
+          <div className="flex h-[151px] w-full flex-col items-center justify-center bg-[#F5F5F7] lg:h-full lg:w-[400px]">
             {page === "home" || page === "voice" ? (
-              <div className="flex h-[442px] w-[328px] flex-col items-center justify-center px-[36px] pt-[52px]">
-                <Card className="h-[79px] w-[241px] rounded-lg border border-black">
-                  <CardContent className="flex h-full w-full items-center justify-between px-[12px] py-[18px]">
-                    <div className="flex items-center space-x-[10px]">
-                      <Avatar className="h-[42px] w-[39px]">
+              <div className="flex h-full w-full flex-col items-center justify-center px-4 pt-8 lg:h-[442px] lg:w-[328px] lg:px-[36px] lg:pt-[52px]">
+                <Card className="h-[79px] w-full rounded-lg border border-black lg:w-[241px]">
+                  <CardContent className="flex h-full w-full items-center justify-between px-3 py-4 lg:px-[12px] lg:py-[18px]">
+                    <div className="flex items-center space-x-2 lg:space-x-[10px]">
+                      <Avatar className="h-10 w-10 lg:h-[42px] lg:w-[39px]">
                         <AvatarImage src={HeroAvatar.src} alt="David" />
                         <AvatarFallback>DM</AvatarFallback>
                       </Avatar>
-                      <div className="h-[38px] w-[128px]">
-                        <p className="mb-[3px] text-[13px] font-bold leading-[18px]">
+                      <div className="w-28 lg:h-[38px] lg:w-[128px]">
+                        <p className="mb-1 text-xs font-bold leading-tight lg:text-[13px] lg:leading-[18px]">
                           David (Male)
                         </p>
-                        <p className="text-[12px] font-normal leading-[17px] text-gray-500">
+                        <p className="text-xs font-normal leading-tight text-gray-500 lg:text-[12px] lg:leading-[17px]">
                           English Male Voice
                         </p>
                       </div>
                     </div>
-                    <div className="flex h-[43px] w-[43px] items-center">
+                    <div className="flex h-10 w-10 items-center lg:h-[43px] lg:w-[43px]">
                       <button
                         onClick={toggleAudio}
-                        className="border-cp-secondary text-cp-secondary hover:bg-cp-secondary flex h-[36px] w-[36px] items-center justify-center rounded-full border transition-colors duration-300 ease-in-out hover:text-white focus:outline-none"
+                        className="border-cp-secondary text-cp-secondary hover:bg-cp-secondary flex h-8 w-8 items-center justify-center rounded-full border transition-colors duration-300 ease-in-out hover:text-white focus:outline-none lg:h-[36px] lg:w-[36px]"
                         aria-label={isPlaying ? "Stop audio" : "Play audio"}
                       >
                         {isPlaying ? (
-                          <IconStop className="h-[14px] w-[14px]" />
+                          <IconStop className="h-3 w-3 lg:h-[14px] lg:w-[14px]" />
                         ) : (
-                          <PlayIcon className="h-[14px] w-[14px]" />
+                          <PlayIcon className="h-3 w-3 lg:h-[14px] lg:w-[14px]" />
                         )}
                       </button>
                     </div>
                   </CardContent>
                 </Card>
 
-                <div className="mb-[52px] mt-[33px]">
-                  <div className="relative h-[330px] w-[330px] px-[35px]">
+                <div className="mb-8 mt-6 lg:mb-[52px] lg:mt-[33px]">
+                  <div className="relative h-64 w-64 px-6 lg:h-[330px] lg:w-[330px] lg:px-[35px]">
                     <Image
                       src={currentPage?.image}
                       alt="Cartoon character, hero of co-producer!"
@@ -209,7 +209,7 @@ export default function NoSessionModal({
               </div>
             ) : (
               // Render this div with an image if page is not "home" or "voice"
-              <div className="relative flex h-[330px] w-[330px] items-center justify-center">
+              <div className="lh:mt-0 relative mt-16 flex h-64 w-64 items-center justify-center lg:h-[330px] lg:w-[330px]">
                 <Image
                   src={currentPage?.image}
                   alt="Alternate content image"
@@ -220,14 +220,14 @@ export default function NoSessionModal({
           </div>
 
           {/* Right section */}
-          <div className="bg-cp-primary flex w-[525px] flex-col items-center pb-[60px] text-white">
-            <div className="flex w-[375px] flex-grow flex-col items-center justify-start px-[75px] pt-[60px]">
-              <div className="mb-[44px] h-[85px] w-[375px] items-center">
-                <h2 className="mb-2 text-center text-[24px] font-bold leading-[33.6px]">
+          <div className="bg-cp-primary z-10 flex h-[402px] w-full flex-col items-center pb-8 text-white lg:h-full lg:w-[525px] lg:pb-[60px]">
+            <div className="flex w-full flex-grow flex-col items-center justify-start px-4 pt-8 lg:w-[375px] lg:px-[75px] lg:pt-[60px]">
+              <div className="mb-6 w-full items-center lg:mb-[44px] lg:h-[85px] lg:w-[375px]">
+                <h2 className="mb-2 text-center text-xl font-bold leading-tight lg:text-[24px] lg:leading-[33.6px]">
                   {currentPage?.message}
                 </h2>
                 {currentPage?.subMessage && (
-                  <p className="text-center text-[16px] font-bold leading-[22px]">
+                  <p className="text-center text-sm font-bold leading-snug lg:text-[16px] lg:leading-[22px]">
                     {currentPage.subMessage.split("\n").map((line, index) => (
                       <React.Fragment key={index}>
                         {line}
@@ -237,12 +237,12 @@ export default function NoSessionModal({
                   </p>
                 )}
               </div>
-              <div className="h-[192px] w-[375px]">
-                <p className="mb-2 text-left text-[20px] font-bold leading-[28px]">
+              <div className="w-full lg:h-[192px] lg:w-[375px]">
+                <p className="mb-2 text-left text-[16px] font-bold leading-[22.4px] lg:text-[20px] lg:leading-[28px]">
                   Let's do it!:
                 </p>
-                <div className="h-[149px] w-[374px]">
-                  <ul className="list-inside list-disc font-roboto text-lg">
+                <div className="lg:h-[149px] lg:w-[374px]">
+                  <ul className="list-inside list-disc font-roboto text-[14px]  leading-[19px] lg:text-lg">
                     {currentPage?.list.map((item, index) => (
                       <li key={index} className="mb-2 ml-3">
                         {item}
@@ -254,11 +254,11 @@ export default function NoSessionModal({
             </div>
 
             {/* Placed the button at the bottom with padding alignment */}
-            <div className="mt-10 flex w-[375px] flex-col items-center">
-              <button className="bg-cp-secondary mb-[8px] h-[45px] w-[375px] rounded-md px-[24px] py-[2px] font-bold uppercase leading-[20px] text-white hover:bg-orange-500">
+            <div className="mt-6 flex w-full flex-col items-center lg:mt-10 lg:w-[375px]">
+              <button className="bg-cp-secondary mb-2 h-10 w-full rounded-md px-4 py-1 text-sm font-bold uppercase leading-tight text-white hover:bg-orange-500 lg:mb-[8px] lg:h-[45px] lg:w-[375px] lg:px-[24px] lg:py-[2px] lg:text-base lg:leading-[20px]">
                 <Link href="/signin">LOGIN-FREE</Link>
               </button>
-              <p className="text-center font-poppins text-[14px] font-normal leading-5">
+              <p className="text-center font-poppins text-xs font-normal leading-snug lg:text-[14px] lg:leading-5">
                 Free trial. No credit card needed.
               </p>
             </div>
@@ -272,7 +272,7 @@ export default function NoSessionModal({
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-8 w-8"
+          className="h-10 w-10 lg:h-8 lg:w-8"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"

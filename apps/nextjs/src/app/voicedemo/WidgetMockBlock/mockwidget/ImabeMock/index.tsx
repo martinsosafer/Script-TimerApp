@@ -8,7 +8,7 @@ import { Button } from "@voiceai/ui";
 import { Card } from "@voiceai/ui/@/components/ui/card";
 import {
   FileImageIcon,
-  IconArrowLeft,
+  IconChevronLeft,
 } from "@voiceai/ui/@/components/ui/icons";
 
 import { roboto } from "~/app/fonts";
@@ -141,8 +141,21 @@ export default function ImageGenerationMock() {
                 </Card>
               ))}
             </div>
+
             <Button onClick={handleGoBack} className="w-full">
-              <IconArrowLeft className="mr-2 h-4 w-4" /> Try other Prompt
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="mr-2 h-4 w-4"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M15.78 4.22a.75.75 0 0 1 0 1.06L9.31 11h11.19a.75.75 0 0 1 0 1.5H9.31l6.47 5.72a.75.75 0 1 1-1.06 1.06l-7.75-7a.75.75 0 0 1 0-1.06l7.75-7a.75.75 0 0 1 1.06 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              Try other Prompt
             </Button>
           </motion.div>
         )}
