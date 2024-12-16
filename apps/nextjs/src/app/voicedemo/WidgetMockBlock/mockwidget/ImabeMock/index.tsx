@@ -59,7 +59,7 @@ export default function ImageGenerationMock() {
   return (
     <div style={{ minHeight: "250px" }}>
       <h3 className="mb-4 text-[14px] font-normal leading-[19.6px] ">
-        In the app, enter your text here. This is our sample:
+        Click on the samples below to create an image:
       </h3>
 
       <AnimatePresence>
