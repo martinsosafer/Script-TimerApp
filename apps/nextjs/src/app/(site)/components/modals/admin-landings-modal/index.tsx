@@ -134,7 +134,7 @@ export default function AdminLandingModal({
               <input
                 type="text"
                 name="subDescription"
-                defaultValue={landing?.title}
+                defaultValue={landing?.sub_description ?? undefined}
                 placeholder="Sub Description"
                 className="w-full rounded-md border-2 border-primary p-2"
                 maxLength={30}
