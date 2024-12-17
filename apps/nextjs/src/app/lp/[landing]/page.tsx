@@ -5,6 +5,7 @@ import "~/styles/globals.css";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 
+import ToolsWidget from "~/app/(site)/components/tools-widget";
 import { api } from "~/utils/api";
 import Button from "../../(site)/components/button";
 import AwardsBlock from "../sections/awards-block";
@@ -65,6 +66,7 @@ export default function Landing() {
         />
       )}
       {!session && !isSessionLoading && <EmailLoginSection />}
+      <ToolsWidget />
       <MarqueeLogos />
       {/* <Testimonials /> */}
       <DirectorBlock />
