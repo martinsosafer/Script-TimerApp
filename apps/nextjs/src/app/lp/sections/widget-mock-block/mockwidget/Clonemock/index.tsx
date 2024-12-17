@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useRef, useState } from "react";
 
 import { Button } from "@voiceai/ui";
 import {
@@ -6,63 +8,76 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@voiceai/ui/@/components/ui/avatar";
-import { IconPlay as Play } from "@voiceai/ui/@/components/ui/icons";
+import {
+  IconPlay as Play,
+  IconStop as Stop,
+} from "@voiceai/ui/@/components/ui/icons";
 
 import ChrisImg from "./CloneMockImg/chris.png";
 import LauraImg from "./CloneMockImg/Laura.png";
 import LilyImg from "./CloneMockImg/lili.png";
+import RobotIconPng from "./CloneMockImg/Script Coach.png";
 
 const voiceData = [
   {
     name: "Lily",
-    original: "https://example.com/lily-original.mp3",
-    clone: "https://example.com/lily-clone.mp3",
+    original:
+      "https://8ipgp5xevb8hkgbh.public.blob.vercel-storage.com/MockClone/LiliRealVoice-sSAXYX9xfoi5xvh2DWiiFt7dT9FFJF.mp3",
+    clone:
+      "https://8ipgp5xevb8hkgbh.public.blob.vercel-storage.com/MockClone/LilyFakeVoice-w5Y8f2cRsZGBnb6GynND5k7j60m2q7.mp3",
     avatar: LilyImg,
     color: "#10B981", // Green
   },
   {
     name: "Chris",
-    original: "https://example.com/chris-original.mp3",
-    clone: "https://example.com/chris-clone.mp3",
+    original:
+      "https://8ipgp5xevb8hkgbh.public.blob.vercel-storage.com/MockClone/ChrisReallife-cw8b0d1PHVFeEWDdZ3U2VaxRsYFQPy.mp3",
+    clone:
+      "https://8ipgp5xevb8hkgbh.public.blob.vercel-storage.com/MockClone/Chrisfake-ZbIFeBYVtjfZ42ORFdWOJsSSKizuAd.mp3",
     avatar: LauraImg,
     color: "#8B5CF6", // Purple
   },
   {
     name: "Laura",
     original:
-      "https://8ipgp5xevb8hkgbh.public.blob.vercel-storage.com/MockClone/EllaReal-rSKPMfBYc8VTXFe7I8EI1C9MGFFVfQ.mp3",
-    clone: "https://example.com/laura-clone.mp3",
+      "https://8ipgp5xevb8hkgbh.public.blob.vercel-storage.com/MockClone/LauraReal-qPZVH9I8o84NcG0Blh3qvTCLxZbQ40.mp3",
+    clone:
+      "https://8ipgp5xevb8hkgbh.public.blob.vercel-storage.com/MockClone/LauraFake-NFMWGdDa1DwHU5qNNbikkEgnaOzmeh.mp3",
     avatar: ChrisImg,
     color: "#EC4899", // Pink
   },
 ];
 
-const RobotIcon = ({ color }: { color: string }) => (
-  <svg
-    width="52"
-    height="52"
-    viewBox="0 0 40 40"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <circle cx="20" cy="20" r="20" fill={color} />
-    <path d="M12 14h16v12H12V14z" fill="#fff" />
-    <circle cx="16" cy="18" r="2" fill={color} />
-    <circle cx="24" cy="18" r="2" fill={color} />
-    <path d="M15 25h10v2H15v-2z" fill={color} />
-    <path
-      d="M13 11v4m14-4v4M10 28l3-3m17 3l-3-3"
-      stroke="#fff"
-      strokeWidth="2"
-      strokeLinecap="round"
-    />
-  </svg>
-);
-
 export default function CloneMock() {
+  const [playingAudio, setPlayingAudio] = useState<HTMLAudioElement | null>(
+    null,
+  );
+  const [playingUrl, setPlayingUrl] = useState<string | null>(null);
+
   const playAudio = (url: string) => {
-    const audio = new Audio(url);
-    audio.play();
+    if (playingAudio) {
+      playingAudio.pause();
+      playingAudio.currentTime = 0;
+    }
+
+    if (url === playingUrl) {
+      setPlayingAudio(null);
+      setPlayingUrl(null);
+    } else {
+      const audio = new Audio(url);
+      audio.play();
+      setPlayingAudio(audio);
+      setPlayingUrl(url);
+    }
+  };
+
+  const stopAudio = () => {
+    if (playingAudio) {
+      playingAudio.pause();
+      playingAudio.currentTime = 0;
+      setPlayingAudio(null);
+      setPlayingUrl(null);
+    }
   };
 
   return (
@@ -97,7 +112,11 @@ export default function CloneMock() {
                 variant="ghost"
                 onClick={() => playAudio(voice.original)}
               >
-                <Play className="text-cp-primary h-[40px] w-[30px]" />
+                {playingUrl === voice.original ? (
+                  <Stop className="text-cp-primary h-[40px] w-[30px]" />
+                ) : (
+                  <Play className="text-cp-primary h-[40px] w-[30px]" />
+                )}
               </Button>
             </div>
 
@@ -124,8 +143,21 @@ export default function CloneMock() {
                 index === 0 ? "mt-[24px]" : "mt-[12px]"
               }`}
             >
-              <div className="ml-3">
-                <RobotIcon color={voice.color} />
+              <div
+                className="ml-3"
+                style={{
+                  width: "52px",
+                  height: "52px",
+                  borderRadius: "50%",
+                  overflow: "hidden",
+                  backgroundColor: voice.color,
+                }}
+              >
+                <img
+                  src={RobotIconPng.src}
+                  alt="Robot Icon"
+                  className="h-full w-full object-cover"
+                />
               </div>
               <div className="ml-[22px] mr-2 h-[39px] w-[101px]">
                 <p className="text-[16px] font-bold leading-[23px]">
@@ -140,8 +172,14 @@ export default function CloneMock() {
                 variant="ghost"
                 onClick={() => playAudio(voice.clone)}
               >
-                <Play className="text-cp-primary h-[40px] w-[30px]" />
-                <span className="sr-only">Play cloned voice</span>
+                {playingUrl === voice.clone ? (
+                  <Stop className="text-cp-primary h-[40px] w-[30px]" />
+                ) : (
+                  <Play className="text-cp-primary h-[40px] w-[30px]" />
+                )}
+                <span className="sr-only">
+                  {playingUrl === voice.clone ? "Stop" : "Play"} cloned voice
+                </span>
               </Button>
             </div>
           </div>

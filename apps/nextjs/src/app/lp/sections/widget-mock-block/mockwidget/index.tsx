@@ -1,10 +1,17 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
+import { Poppins } from "next/font/google";
+import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 
-import Button from "~/app/(site)/components/button";
+import { Button } from "@voiceai/ui";
+import {
+  IconArrowRight,
+  IconChevronLeft,
+} from "@voiceai/ui/@/components/ui/icons";
+
 import { poppins } from "~/app/fonts";
 import CloneMock from "./Clonemock";
 import ImageGenerationMock from "./ImabeMock";
@@ -25,13 +32,18 @@ export default function VoiceGeneratorMockup() {
   const [selectedTask, setSelectedTask] = useState(tasks[0]);
   const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
   const [text, setText] = useState(taskTexts[selectedTask]);
-
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const handlePlay = () => {
     const audioUrl =
       audioSamples[selectedTask]?.[selectedVoice]?.[selectedLanguage.code];
     if (audioUrl) {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
       const audio = new Audio(audioUrl);
       audio.play();
+      audioRef.current = audio;
     } else {
       console.error("Audio sample not found for the selected combination");
     }
@@ -52,7 +64,7 @@ export default function VoiceGeneratorMockup() {
 
   return (
     <div
-      className={`mx-auto flex ${activeTab === "Check for Plagiarism" ? "h-[926px]" : "h-[640px]"} w-[944px] flex-col items-center rounded-lg bg-[#F5F5F7] shadow-lg`}
+      className={`relative mx-auto flex ${activeTab === "Check for Plagiarism" ? "h-[926px]" : "h-[640px]"} mx-auto flex ${activeTab === "Create Images" ? "h-[700px]" : "h-[640px]"}  z-20 w-[944px] flex-col items-center rounded-lg bg-[#F5F5F7] shadow-lg`}
     >
       <div className="h-[610px] w-[860px]">
         <div className="mb-3 w-[780px] border-b  ">
@@ -131,13 +143,15 @@ export default function VoiceGeneratorMockup() {
           </div>
         </AnimatePresence>
         <div
-          className={`mt-${activeTab === "Create Images" ? "2" : "10"} flex items-end justify-end`}
+          className={`mt-${activeTab === "Create Images" ? "10" : "10"} w-full pb-10 ${poppins.className}`}
         >
-          <Link href="/register">
+          <Link href="/register" className="w-full">
             <Button
-              type="accent"
-              label="Experience the full Co-Producer Experience"
-            />
+              size="lg"
+              className="h-[48px] w-full bg-[#FF8A00] text-base font-semibold text-white hover:bg-[#FF8A00]/90"
+            >
+              Open my Free Access! <IconArrowRight className="ml-2" />
+            </Button>
           </Link>
         </div>
       </div>
