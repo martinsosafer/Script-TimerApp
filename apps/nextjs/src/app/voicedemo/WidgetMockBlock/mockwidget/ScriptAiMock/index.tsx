@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { Card } from "@voiceai/ui/@/components/ui/card";
-import { ClapperboardIcon } from "@voiceai/ui/@/components/ui/icons";
+import { IconClapperboard } from "@voiceai/ui/@/components/ui/icons";
 
 import Button from "~/app/(site)/components/button";
 import { roboto } from "~/app/fonts";
@@ -60,38 +60,38 @@ export default function ScriptAiMock() {
 
   return (
     <div style={{ minHeight: "250px" }}>
-      <h3 className="text-[14px] font-normal leading-[19.6px]">
+      <h3 className="text-[12px] font-normal leading-[16.8px] lg:text-[14px] lg:leading-[19.6px]">
         In the app, enter your text here. This is our sample:
       </h3>
-      <Card className=" mb-4 mt-2 h-[94px] w-[860px] rounded-lg border border-slate-300 bg-white">
+      <Card className="mb-4 mt-3 rounded-lg border border-slate-300 bg-white lg:mb-4 lg:mt-2 lg:h-[94px] lg:w-[860px]">
         <p
-          className="px-[24px] py-[14px]"
+          className="px-3 py-3 lg:px-[24px] lg:py-[14px]"
           dangerouslySetInnerHTML={{ __html: baseText }}
         ></p>
       </Card>
-      <h4 className="text-[14px] font-normal leading-[20px]">
+      <h4 className="text-[12px] font-normal leading-[16.8px] lg:text-[14px] lg:leading-[19.6px]">
         Choose a style for this rewrite:
       </h4>
-      <div className="mb-4 mt-2 flex space-x-4">
+      <div className="mt-2 flex flex-col items-center space-y-2 lg:flex-row lg:justify-start lg:space-x-2 lg:space-y-0">
         {Object.keys(storyStyles).map((style) => (
           <Button
             key={style}
             onClick={() => setSelectedStyle(style)}
             label={`${style} Style`}
-            className={`border-cp-primary rounded-full border px-4 py-4 ${roboto.className} text-sm font-normal ${
+            className={`border-cp-primary h-[56px] w-[238px]  rounded-full border px-4 py-4 ${roboto.className} text-sm font-normal ${
               selectedStyle === style
                 ? "bg-cp-primary text-white"
                 : "bg-white text-black"
             }`}
             disabled={isTyping}
             type="custom"
-            icon={ClapperboardIcon}
+            icon={IconClapperboard}
             iconPosition="left"
             iconColor={`${selectedStyle === style ? "#FFCB7F" : "#0066FF"}`}
           />
         ))}
       </div>
-      <Card className="mt-3 h-[120px] w-[860px] rounded-lg border border-slate-300 bg-white">
+      <Card className="mb-4 mt-3 rounded-lg border border-slate-300 bg-white lg:mb-4 lg:mt-2 lg:h-[120px] lg:w-[860px]">
         <p className="px-[24px] py-[14px]">{displayText}</p>
         {isTyping && <span className="animate-pulse">|</span>}
       </Card>
