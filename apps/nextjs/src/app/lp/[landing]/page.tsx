@@ -13,13 +13,14 @@ import ClassesBlock from "../sections/classes-block";
 import DirectorBlock from "../sections/director-block";
 import EmailLoginSection from "../sections/email-login-section";
 import FAQAccordion from "../sections/faq-accordion";
+import LpFooter from "../sections/footer";
+import FreeDemoHero from "../sections/free-demo-hero";
 import RegularHero from "../sections/hero";
 import LearnMoreBlock from "../sections/learn-more-block";
 import MarqueeLogos from "../sections/marquee-logos";
 import ServiceSection from "../sections/services-section";
 import Testimonials from "../sections/Testimonials";
 import VideoBlock from "../sections/video-block";
-import LpFooter from "./footer";
 
 export default function Landing() {
   const pathname = usePathname();
@@ -34,6 +35,8 @@ export default function Landing() {
 
   const { data: session, isLoading: isSessionLoading } =
     api.auth.getSession.useQuery();
+
+  console.log("Landing page data", segment);
 
   return (
     <main className="w-full">
@@ -50,12 +53,24 @@ export default function Landing() {
           onClick={() => router.push(session ? "/" : `${pathname}/#loginForm`)}
         />
       </nav>
-      <div>
-        {isLoading && <div>Loading...</div>}
-        {isError && <div>Error fetching data</div>}
-        {!isLoading && !landing && <div>No landing page found</div>}
-      </div>
-      {landing && (
+      {segment !== "freeDemo" && (
+        <div>
+          {isLoading && <div>Loading...</div>}
+          {isError && <div>Error fetching data</div>}
+          {!isLoading && !landing && <div>No landing page found</div>}
+        </div>
+      )}
+      {segment === "freeDemo" && (
+        <FreeDemoHero
+          title={landing?.title}
+          description={landing?.description}
+          sub_description={landing?.sub_description}
+          video_url={landing?.video_url}
+          session={session}
+          path={pathname}
+        />
+      )}
+      {segment !== "freeDemo" && landing && (
         <RegularHero
           title={landing.title}
           description={landing.description}
@@ -65,8 +80,10 @@ export default function Landing() {
           path={pathname}
         />
       )}
-      {!session && !isSessionLoading && <EmailLoginSection />}
       <ToolsWidget />
+      {!session && !isSessionLoading && (
+        <EmailLoginSection type={landing?.lp_type} />
+      )}
       <MarqueeLogos />
       {/* <Testimonials /> */}
       <DirectorBlock />

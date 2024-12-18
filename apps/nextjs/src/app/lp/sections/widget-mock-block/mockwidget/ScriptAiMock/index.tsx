@@ -42,7 +42,7 @@ export default function ScriptAiMock() {
           index++;
 
           // Use setTimeout instead of setInterval for more precise control
-          setTimeout(typeCharacter, 20);
+          setTimeout(typeCharacter, 10);
         } else {
           setIsTyping(false);
         }

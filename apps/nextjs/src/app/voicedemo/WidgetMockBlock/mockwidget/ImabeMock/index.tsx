@@ -8,7 +8,7 @@ import { Button } from "@voiceai/ui";
 import { Card } from "@voiceai/ui/@/components/ui/card";
 import {
   FileImageIcon,
-  IconArrowLeft,
+  IconChevronLeft,
 } from "@voiceai/ui/@/components/ui/icons";
 
 import { roboto } from "~/app/fonts";
@@ -59,7 +59,7 @@ export default function ImageGenerationMock() {
   return (
     <div style={{ minHeight: "250px" }}>
       <h3 className="mb-4 text-[14px] font-normal leading-[19.6px] ">
-        In the app, enter your text here. This is our sample:
+        Click on the samples below to create an image:
       </h3>
 
       <AnimatePresence>
@@ -82,12 +82,18 @@ export default function ImageGenerationMock() {
                   roboto.className
                 } text-sm font-normal`}
               >
-                <div className="flex items-center">
+                <div className="flex flex-col items-start">
                   <FileImageIcon
-                    className="mr-2"
+                    className="mb-2 md:hidden"
                     color={selectedPrompt === prompt ? "#FFCB7F" : "#0066FF"}
                   />
-                  <span>{prompt}</span>
+                  <div className="flex items-center">
+                    <FileImageIcon
+                      className="mr-2 hidden md:inline"
+                      color={selectedPrompt === prompt ? "#FFCB7F" : "#0066FF"}
+                    />
+                    <span>{prompt}</span>
+                  </div>
                 </div>
               </Card>
             ))}
@@ -125,24 +131,60 @@ export default function ImageGenerationMock() {
             exit={{ opacity: 0, y: -20 }}
             className="space-y-4"
           >
-            <div className="grid h-[210px] grid-cols-2 gap-4">
-              {images.map((image, index) => (
+            <div className="grid grid-cols-2 gap-4 lg:grid-cols-2">
+              {/* First image - full width on mobile */}
+              <Card className="col-span-2 overflow-hidden rounded-lg border-slate-200 shadow-md lg:col-span-1">
+                <Image
+                  src={images[0]}
+                  alt={`Generated image 1`}
+                  width={420}
+                  height={300}
+                  className="h-[176px] w-full object-cover lg:h-[210px]"
+                />
+              </Card>
+
+              {/* Second image */}
+              <Card className="col-span-2 overflow-hidden rounded-lg border-slate-200 shadow-md  lg:col-span-1">
+                <Image
+                  src={images[1]}
+                  alt="Generated image 2"
+                  width={420}
+                  height={300}
+                  className="h-[176px] w-full object-cover lg:h-[210px]"
+                />
+              </Card>
+
+              {/* Additional images */}
+              {images.slice(2).map((image, index) => (
                 <Card
-                  key={index}
-                  className="overflow-hidden rounded-lg border-slate-200 shadow-md"
+                  key={index + 2}
+                  className="col-span-1 overflow-hidden rounded-lg border-slate-200 shadow-md"
                 >
                   <Image
                     src={image}
-                    alt={`Generated image ${index + 1}`}
+                    alt={`Generated image ${index + 3}`}
                     width={420}
                     height={300}
-                    className="object-cover"
+                    className="h-[176px] w-full object-cover lg:h-[210px]"
                   />
                 </Card>
               ))}
             </div>
+
             <Button onClick={handleGoBack} className="w-full">
-              <IconArrowLeft className="mr-2 h-4 w-4" /> Try other Prompt
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="mr-2 h-4 w-4"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M15.78 4.22a.75.75 0 0 1 0 1.06L9.31 11h11.19a.75.75 0 0 1 0 1.5H9.31l6.47 5.72a.75.75 0 1 1-1.06 1.06l-7.75-7a.75.75 0 0 1 0-1.06l7.75-7a.75.75 0 0 1 1.06 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              Try other Prompt
             </Button>
           </motion.div>
         )}

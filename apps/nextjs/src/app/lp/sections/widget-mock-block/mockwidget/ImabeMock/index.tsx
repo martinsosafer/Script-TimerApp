@@ -8,15 +8,17 @@ import { Button } from "@voiceai/ui";
 import { Card } from "@voiceai/ui/@/components/ui/card";
 import {
   FileImageIcon,
-  IconArrowLeft,
+  IconChevronLeft,
 } from "@voiceai/ui/@/components/ui/icons";
 
 import { roboto } from "~/app/fonts";
 // Importing images
 import PulpFictionImg1 from "./images/Plup Fiction single shot.png";
+import TechlabImg2 from "./images/Screenshot 2024-12-02 at 5.02.30 PM.png";
 import PulpFictionImg2 from "./images/storyboard pulp fiction 1.png";
-import StoryBoardImg2 from "./images/storyboard2 bio.png";
-import StoryBoardImg1 from "./images/Storyboarda.png";
+import StoryBoardImg1 from "./images/storyboard2 bio.png";
+import TechLabImg1 from "./images/Storyboarda.png";
+import StoryBoardImg2 from "./images/storyboardb .webp";
 
 export default function ImageGenerationMock() {
   const [selectedPrompt, setSelectedPrompt] = useState("");
@@ -29,9 +31,9 @@ export default function ImageGenerationMock() {
     "Show me 2 samples of what the opening scene in Pulp Fiction would look like if it were filmed today":
       [PulpFictionImg1, PulpFictionImg2],
     "Show me a network support center with people at work, with large screens like a NASA launch, use the style of Isometric Perspective (with no vanishing)":
-      [StoryBoardImg1, StoryBoardImg2],
+      [TechLabImg1, StoryBoardImg2],
     "Storyboard Show me a biotech lab focused on DNA sequencing, with a lead scientist, female, asian, 30 years old and support staff in a vast computer supported lab":
-      [StoryBoardImg1, StoryBoardImg2],
+      [StoryBoardImg1, TechlabImg2],
   };
 
   const handlePromptClick = (prompt: string) => {
@@ -57,7 +59,7 @@ export default function ImageGenerationMock() {
   return (
     <div style={{ minHeight: "250px" }}>
       <h3 className="mb-4 text-[14px] font-normal leading-[19.6px] ">
-        In the app, enter your text here. This is our sample:
+        Click on the samples below to create an image:
       </h3>
 
       <AnimatePresence>
@@ -132,15 +134,28 @@ export default function ImageGenerationMock() {
                   <Image
                     src={image}
                     alt={`Generated image ${index + 1}`}
-                    width={400}
+                    width={420}
                     height={300}
                     className="object-cover"
                   />
                 </Card>
               ))}
             </div>
+
             <Button onClick={handleGoBack} className="w-full">
-              <IconArrowLeft className="mr-2 h-4 w-4" /> Try other Prompt
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="mr-2 h-4 w-4"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M15.78 4.22a.75.75 0 0 1 0 1.06L9.31 11h11.19a.75.75 0 0 1 0 1.5H9.31l6.47 5.72a.75.75 0 1 1-1.06 1.06l-7.75-7a.75.75 0 0 1 0-1.06l7.75-7a.75.75 0 0 1 1.06 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              Try other Prompt
             </Button>
           </motion.div>
         )}
