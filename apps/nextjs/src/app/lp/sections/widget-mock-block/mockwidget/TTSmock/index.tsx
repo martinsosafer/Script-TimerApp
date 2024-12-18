@@ -15,7 +15,7 @@ import {
 } from "@voiceai/ui/@/components/ui/select";
 
 import Button from "~/app/(site)/components/button";
-import { roboto } from "~/app/fonts";
+import { poppins, roboto } from "~/app/fonts";
 
 // Adjust path as needed
 
@@ -39,11 +39,12 @@ const TTSMock = ({
       <h3 className="text-[14px] font-normal leading-[19.6px]">
         Choose type of script
       </h3>
-      <div className="mt-2 flex space-x-2">
+      <div className="mt-2 flex flex-col items-center space-y-2 lg:flex-row lg:justify-start lg:space-x-2 lg:space-y-0">
         {tasks.map((task) => (
           <Button
+            key={task}
             label={task}
-            className={`border-cp-primary rounded-full border px-4 py-4 ${roboto.className} text-sm font-normal ${
+            className={`border-cp-primary h-[56px] w-[238px]  rounded-full border px-4 py-4 ${roboto.className} text-sm font-normal ${
               selectedTask === task
                 ? "bg-cp-primary text-white"
                 : "bg-white text-black"
@@ -59,11 +60,11 @@ const TTSMock = ({
       <textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
-        className="mb-5 mt-3 h-[142px] w-[860px] rounded border border-gray-300 p-2"
+        className="mb-5 mt-3 h-[176px] w-[280px] rounded border border-gray-300 p-2 lg:h-[142px] lg:w-[860px]"
         maxLength={maxLength}
       />
       <h4> Select the language and voice character and then play it!</h4>
-      <div className="mb-4 mt-2 flex items-center space-x-4">
+      <div className="mb-4 mt-2 items-center space-y-3 lg:flex lg:gap-0 lg:space-x-4 lg:space-y-0">
         <Select
           value={selectedLanguage.code}
           onValueChange={(value) =>
@@ -72,7 +73,7 @@ const TTSMock = ({
             )
           }
         >
-          <SelectTrigger className="h-[49px] w-[239px] px-6">
+          <SelectTrigger className="h-[48px] w-[280px] px-6 lg:h-[49px] lg:w-[239px]">
             <SelectValue placeholder="Select language" />
           </SelectTrigger>
           <SelectContent>
@@ -85,7 +86,7 @@ const TTSMock = ({
         </Select>
 
         <Select value={selectedVoice} onValueChange={setSelectedVoice}>
-          <SelectTrigger className="h-[49px] w-[239px] px-6">
+          <SelectTrigger className="h-[48px] w-[280px] px-6 lg:h-[49px] lg:w-[239px]">
             <SelectValue placeholder="Select voice" />
           </SelectTrigger>
           <SelectContent>
@@ -96,8 +97,17 @@ const TTSMock = ({
             ))}
           </SelectContent>
         </Select>
-
-        <div className="flex items-center space-x-2">
+        <div
+          className={` bg-cp-primary flex h-[48px] w-full flex-col items-center justify-center lg:hidden ${poppins.className} rounded-md text-[16px] font-semibold  leading-[22px] text-white`}
+        >
+          <button
+            className="flex items-center justify-center gap-2  "
+            onClick={handlePlay}
+          >
+            Play <Play />
+          </button>
+        </div>
+        <div className="hidden lg:flex lg:items-center lg:space-x-2">
           <Button
             onClick={handlePlay}
             type="primary"

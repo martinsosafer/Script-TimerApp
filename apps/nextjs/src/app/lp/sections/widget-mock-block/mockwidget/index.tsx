@@ -2,7 +2,6 @@
 
 import React, { useRef, useState } from "react";
 import { Poppins } from "next/font/google";
-import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -15,6 +14,7 @@ import {
 import { poppins } from "~/app/fonts";
 import CloneMock from "./Clonemock";
 import ImageGenerationMock from "./ImabeMock";
+import { MobileTabDropdown } from "./mobiledropdown";
 import {
   audioSamples,
   languages,
@@ -64,38 +64,55 @@ export default function VoiceGeneratorMockup() {
 
   return (
     <div
-      className={`relative mx-auto flex ${activeTab === "Check for Plagiarism" ? "h-[926px]" : "h-[640px]"} mx-auto flex ${activeTab === "Create Images" ? "h-[700px]" : "h-[640px]"}  z-20 w-[944px] flex-col items-center rounded-lg bg-[#F5F5F7] shadow-lg`}
+      className={`mx-auto flex flex-col items-center rounded-lg bg-[#F5F5F7] shadow-lg
+        ${activeTab === "Check for Plagiarism" ? "h-[1100px] lg:h-[926px]" : "h-[879px] lg:h-[640px]"}
+        ${activeTab === "Create Images" ? "h-[930px] lg:h-[710px]" : ""}
+         ${activeTab === "Clone a Voice" ? "h-[1070px] lg:h-[700px]" : ""}
+          ${activeTab === "Write a Script" ? "h-[1030px] lg:h-[700px]" : ""}
+        w-[312px] lg:w-[944px]`}
     >
-      <div className="h-[610px] w-[860px]">
-        <div className="mb-3 w-[780px] border-b  ">
-          <div className="mt-10 flex w-[800px] justify-center  space-x-10  ">
-            {tabs.map((tab) => (
-              <motion.button
-                key={tab}
-                className={`relative px-1 py-4 transition-colors
-            ${
-              activeTab === tab
-                ? "text-cp-primary text-[16px] font-bold  leading-[22px]"
-                : "text-[16px] font-normal leading-[22px] text-gray-600  hover:text-gray-900"
-            }
-          `}
-                onClick={() => setActiveTab(tab)}
-              >
-                {tab}
-                {activeTab === tab && (
-                  <motion.div
-                    className="bg-cp-primary absolute bottom-0 left-0 right-0 h-0.5"
-                    layoutId="activeTab"
-                    initial={false}
-                    transition={{
-                      type: "spring",
-                      stiffness: 500,
-                      damping: 30,
-                    }}
-                  />
-                )}
-              </motion.button>
-            ))}
+      <div className="w-full px-4 lg:h-[610px] lg:w-[860px] lg:px-0">
+        <div className="mb-3 w-full border-b lg:w-[780px]">
+          <div className="mt-5 lg:mt-10 lg:w-[800px]">
+            {/* Mobile Dropdown */}
+            <div className="lg:hidden">
+              <MobileTabDropdown
+                tabs={tabs}
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+              />
+            </div>
+
+            {/* Desktop Tabs */}
+            <div className="hidden justify-center space-x-10 lg:flex">
+              {tabs.map((tab) => (
+                <motion.button
+                  key={tab}
+                  className={`relative px-1 py-4 text-base transition-colors
+                    ${
+                      activeTab === tab
+                        ? "text-cp-primary font-bold"
+                        : "font-normal text-gray-600 hover:text-gray-900"
+                    }
+                  `}
+                  onClick={() => setActiveTab(tab)}
+                >
+                  {tab}
+                  {activeTab === tab && (
+                    <motion.div
+                      className="bg-cp-primary absolute bottom-0 left-0 right-0 h-0.5"
+                      layoutId="activeTab"
+                      initial={false}
+                      transition={{
+                        type: "spring",
+                        stiffness: 500,
+                        damping: 30,
+                      }}
+                    />
+                  )}
+                </motion.button>
+              ))}
+            </div>
           </div>
         </div>
         <AnimatePresence mode="wait">
@@ -107,9 +124,9 @@ export default function VoiceGeneratorMockup() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="mb-[20px]  mt-[35px] justify-start text-start">
+              <div className="mb-4 mt-6 justify-start text-start lg:mb-[20px] lg:mt-[35px]">
                 <h3
-                  className={`text-cp-primary text-[24px]  font-bold leading-[34px] ${poppins.className}`}
+                  className={`text-cp-primary text-xl font-bold lg:text-[24px] lg:leading-[34px] ${poppins.className}`}
                 >
                   {activeTab}
                 </h3>
@@ -143,12 +160,12 @@ export default function VoiceGeneratorMockup() {
           </div>
         </AnimatePresence>
         <div
-          className={`mt-${activeTab === "Create Images" ? "10" : "10"} w-full pb-10 ${poppins.className}`}
+          className={`mt-6 w-full pb-6 lg:mt-10 lg:pb-10 ${poppins.className}`}
         >
           <Link href="/register" className="w-full">
             <Button
               size="lg"
-              className="h-[48px] w-full bg-[#FF8A00] text-base font-semibold text-white hover:bg-[#FF8A00]/90"
+              className="h-[40px] w-full bg-[#FF8A00] text-sm font-semibold text-white hover:bg-[#FF8A00]/90 lg:h-[48px] lg:text-base"
             >
               Open my Free Access! <IconArrowRight className="ml-2" />
             </Button>
