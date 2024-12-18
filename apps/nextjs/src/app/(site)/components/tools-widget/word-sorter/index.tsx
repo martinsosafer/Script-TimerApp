@@ -1,21 +1,20 @@
 import { poppins, roboto } from "~/app/fonts";
-import Button from "../../components/button";
-import Grader from "./grader";
+import WordsSorter from "./wordsSorter";
 
-export default function GradeLevel() {
+export default function WordsSorterPage() {
   return (
     <div className="flex w-[1024px] flex-col items-center px-[40px]">
       <div className="my-[40px] flex w-full flex-col items-start">
         <h2
           className={`${poppins.className} text-cp-primary text-[28px] font-bold`}
         >
-          Hemingway
+          Sort Words in alphabetical order
         </h2>
         <p className={`${roboto.className} mt-[8px] text-[18px] font-normal`}>
-          Your script's grade level
+          Sort your words in alphabetical order quickly and easily
         </p>
       </div>
-      <Grader />
+      <WordsSorter />
     </div>
   );
 }

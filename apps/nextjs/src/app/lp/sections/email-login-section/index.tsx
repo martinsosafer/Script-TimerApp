@@ -43,7 +43,7 @@ export default function EmailLoginSection({
       id="loginForm"
     >
       <div
-        className={`${type === "regular" ? "lg:w-[1024px]" : " rounded-xl bg-[#E2E8F0] shadow-md lg:w-[944px]"} flex w-full flex-col items-center p-6  lg:p-10`}
+        className={`${type === "regular" ? "lg:w-[1024px]" : " rounded-xl bg-[#E2E8F0] shadow-md lg:w-[1024px]"} flex w-full flex-col items-center p-6  lg:p-10`}
       >
         <h2
           className={`${poppins.className} text-cp-primary text-[32px] font-bold lg:text-[34px]`}
@@ -91,7 +91,7 @@ export default function EmailLoginSection({
           </div>
         </div>
         <Button
-          label="Open my inmmediate access!"
+          label="Open my immediate access!"
           type="accent"
           onClick={async () => await handleLogin()}
           icon={

@@ -92,7 +92,7 @@ export default function AdminLandingModal({
                 className="rounded-md border border-gray-300 p-2"
               >
                 <option value="regular">Regular</option>
-                <option value="toole">Tools</option>
+                <option value="tools">Tools</option>
                 <option value="saasy">Saasy</option>
               </select>
               <label htmlFor="name" className="text-sm font-semibold">
@@ -143,7 +143,7 @@ export default function AdminLandingModal({
                 }
               />
               <label htmlFor="segment" className="text-sm font-semibold">
-                URL Segment
+                URL Slug (use only lowercase and)
               </label>
               <input
                 type="text"

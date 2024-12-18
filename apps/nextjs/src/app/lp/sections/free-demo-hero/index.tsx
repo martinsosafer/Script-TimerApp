@@ -42,12 +42,14 @@ export default function FreeDemoHero({
     <section
       className={`from-cp-primary flex w-full flex-col items-center bg-gradient-to-br to-black ${poppins.className} py-[32px] lg:py-[60px]`}
     >
-      <div className="flex w-full flex-col items-center px-6 lg:w-[1024px] lg:px-10">
+      <div className="flex w-full flex-col items-center p-6 lg:w-[1024px] lg:p-10">
         <div className="flex w-full flex-col justify-between lg:flex-row lg:gap-8">
           <div className="lg:w-[452px]">
-            <h3 className="text-cp-accent text-[22px] font-bold lg:text-2xl">
-              {title ?? "You’re not just creating content."}
-            </h3>
+            {title && (
+              <h3 className="text-cp-accent text-[22px] font-bold lg:text-2xl">
+                {title}
+              </h3>
+            )}
             <h2 className="text-[32px] font-bold leading-[38px] text-white lg:mt-5 lg:text-[50px] lg:leading-[60px]">
               {description ? spiltTitle(description).first : "You're creating"}
             </h2>

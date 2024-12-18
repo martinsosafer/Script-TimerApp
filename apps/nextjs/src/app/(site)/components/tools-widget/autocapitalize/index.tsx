@@ -1,21 +1,21 @@
 import { poppins, roboto } from "~/app/fonts";
-import Button from "../../components/button";
-import Grader from "./grader";
+import Capitalizer from "./capitalizer";
 
-export default function GradeLevel() {
+export default function AutoCapitalize() {
   return (
     <div className="flex w-[1024px] flex-col items-center px-[40px]">
       <div className="my-[40px] flex w-full flex-col items-start">
         <h2
           className={`${poppins.className} text-cp-primary text-[28px] font-bold`}
         >
-          Hemingway
+          Autocapitalize Sentences
         </h2>
         <p className={`${roboto.className} mt-[8px] text-[18px] font-normal`}>
-          Your script's grade level
+          Easily capitalize every sentence in your script with our hassle-free
+          tool. No more tedious manual editing!
         </p>
       </div>
-      <Grader />
+      <Capitalizer />
     </div>
   );
 }

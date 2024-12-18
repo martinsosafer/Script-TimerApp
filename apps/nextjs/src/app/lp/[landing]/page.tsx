@@ -5,6 +5,7 @@ import "~/styles/globals.css";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 
+import ToolsWidget from "~/app/(site)/components/tools-widget";
 import { api } from "~/utils/api";
 import Button from "../../(site)/components/button";
 import AwardsBlock from "../sections/awards-block";
@@ -18,7 +19,6 @@ import RegularHero from "../sections/hero";
 import LearnMoreBlock from "../sections/learn-more-block";
 import MarqueeLogos from "../sections/marquee-logos";
 import ServiceSection from "../sections/services-section";
-import Testimonials from "../sections/Testimonials";
 import VideoBlock from "../sections/video-block";
 
 export default function Landing() {
@@ -53,14 +53,12 @@ export default function Landing() {
         />
       </nav>
       {segment !== "freeDemo" && (
-        <div>
-          {isLoading && <div>Loading...</div>}
+        <div className="bg-cp-background flex items-center justify-center">
           {isError && <div>Error fetching data</div>}
           {!isLoading && !landing && <div>No landing page found</div>}
         </div>
       )}
-
-      {segment === "freeDemo" && (
+      {(segment === "freeDemo" || landing?.lp_type === "saasy") && (
         <FreeDemoHero
           title={landing?.title}
           description={landing?.description}
@@ -70,7 +68,7 @@ export default function Landing() {
           path={pathname}
         />
       )}
-      {segment !== "freeDemo" && landing && (
+      {landing && landing.lp_type !== "saasy" && (
         <RegularHero
           title={landing.title}
           description={landing.description}
@@ -80,11 +78,11 @@ export default function Landing() {
           path={pathname}
         />
       )}
+      {landing?.lp_type === "tools" && <ToolsWidget />}
       {!session && !isSessionLoading && (
         <EmailLoginSection type={landing?.lp_type} />
       )}
       <MarqueeLogos />
-      {/* <Testimonials /> */}
       <DirectorBlock />
       <AwardsBlock />
       <ClassesBlock />

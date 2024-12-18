@@ -8,47 +8,40 @@ import { IconArrowRight } from "@voiceai/ui/@/components/ui/icons";
 import Button from "~/app/(site)/components/button";
 import { roboto } from "~/app/fonts";
 
-export default function WordsSorter() {
+export default function Capitalizer() {
   const router = useRouter();
   const [text, setText] = useState("");
-  const [separator, setSeparator] = useState("");
-  const [sortType, setSortType] = useState("");
-  const [sortedText, setSortedText] = useState("");
+  const [option, setOption] = useState("");
 
-  function handleSort() {
-    if (!text) return;
-    const words = text.trim().split(/\s+/);
-
-    if (separator === "line") {
-      const sorted = words
-        .sort((a, b) =>
-          sortType === "asc" ? a.localeCompare(b) : b.localeCompare(a),
-        )
-        .join("\n");
-      setSortedText(sorted);
+  function handleTransformText() {
+    if (option === "capitalize") {
+      const newText = text
+        .split(". ")
+        .map((sentence) => {
+          return sentence.charAt(0).toUpperCase() + sentence.slice(1);
+        })
+        .join(". ");
+      setText(newText);
     }
-
-    if (separator === "comma") {
-      const sorted = words
-        .sort((a, b) =>
-          sortType === "asc" ? a.localeCompare(b) : b.localeCompare(a),
-        )
-        .join(", ");
-      setSortedText(sorted);
+    if (option === "uppercase") {
+      setText(text.toUpperCase());
     }
-
-    if (separator === "space") {
-      const sorted = words
-        .sort((a, b) =>
-          sortType === "asc" ? a.localeCompare(b) : b.localeCompare(a),
-        )
+    if (option === "lowercase") {
+      setText(text.toLowerCase());
+    }
+    if (option === "capitalizeWords") {
+      const newText = text
+        .split(" ")
+        .map((word) => {
+          return word.charAt(0).toUpperCase() + word.slice(1);
+        })
         .join(" ");
-      setSortedText(sorted);
+      setText(newText);
     }
   }
 
   return (
-    <main className="mb-[100px] w-full">
+    <main className="w-full">
       <div className="mb-4 flex w-full justify-between gap-4">
         <Button
           label="Listen to your script"
@@ -76,77 +69,52 @@ export default function WordsSorter() {
           name="text"
           rows={20}
           className="w-full rounded-2xl bg-[#F2F2F5] p-4 outline-none"
-          placeholder="Type or paste your text here..."
           onChange={(e) => setText(e.currentTarget.value)}
+          value={text}
+          placeholder="Type or paste your text here..."
         />
         <select
           className={`${roboto.className} border-cp-primary-lightest bg-cp-background mt-3 h-[57px] w-full rounded-[4px] border px-[24px] py-[10px] text-lg font-bold text-[#212121]`}
-          name="separator"
-          onChange={(e) => setSeparator(e.currentTarget.value)}
+          name="trasnformer"
+          onChange={(e) => setOption(e.currentTarget.value)}
         >
           <option
             className={`${roboto.className} bg-white text-lg font-bold text-[#212121]`}
             value=""
           >
-            Select a separator
+            Select text transformation
           </option>
           <option
             className={`${roboto.className} bg-white text-lg font-bold text-[#212121]`}
-            value="line"
+            value="capitalize"
           >
-            Line Break
+            Capitalize sentences
           </option>
           <option
             className={`${roboto.className} bg-white text-lg font-bold text-[#212121]`}
-            value="comma"
+            value="uppercase"
           >
-            Comma
+            Make all words uppercase
           </option>
           <option
             className={`${roboto.className} bg-white text-lg font-bold text-[#212121]`}
-            value="space"
+            value="lowercase"
           >
-            Space 4
-          </option>
-        </select>
-        <select
-          className={`${roboto.className} border-cp-primary-lightest bg-cp-background mt-3 h-[57px] w-full rounded-[4px] border px-[24px] py-[10px] text-lg font-bold text-[#212121]`}
-          name="sortType"
-          onChange={(e) => setSortType(e.currentTarget.value)}
-        >
-          <option
-            className={`${roboto.className} bg-white text-lg font-bold text-[#212121]`}
-            value=""
-          >
-            Select a Sort order
+            Make all words lowercase
           </option>
           <option
             className={`${roboto.className} bg-white text-lg font-bold text-[#212121]`}
-            value="asc"
+            value="capitalizeWords"
           >
-            A to Z
-          </option>
-          <option
-            className={`${roboto.className} bg-white text-lg font-bold text-[#212121]`}
-            value="desc"
-          >
-            Z to A
+            Capitalize each word
           </option>
         </select>
       </section>
-      {sortedText && (
-        <textarea
-          className={`${roboto.className} bg-cp-primary-lightest mt-[18px] w-full rounded-lg p-[12px]`}
-          readOnly
-          rows={10}
-          value={sortedText}
-        />
-      )}
       <Button
-        label="Sort"
+        label="Transform"
         type="primary"
         fit
-        onClick={() => handleSort()}
+        onClick={() => handleTransformText()}
         className="mt-[18px]"
       />
       <Button
