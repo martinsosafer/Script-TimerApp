@@ -33,7 +33,7 @@ export default function Counter() {
   }
 
   return (
-    <main className="mb-[100px] w-full">
+    <main className="w-full">
       <div className="mb-4 flex w-full justify-between gap-4">
         <Button
           label="Listen to your script"

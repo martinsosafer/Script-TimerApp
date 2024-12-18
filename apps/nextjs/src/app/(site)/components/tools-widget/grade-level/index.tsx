@@ -1,5 +1,4 @@
 import { poppins, roboto } from "~/app/fonts";
-import Button from "../../components/button";
 import Grader from "./grader";
 
 export default function GradeLevel() {

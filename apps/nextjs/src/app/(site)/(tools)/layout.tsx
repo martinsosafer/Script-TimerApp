@@ -13,7 +13,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <div className="bg-cp-background flex w-full flex-col items-center">
       <PageHeader
         title="Free tools"
-        subtitle="Easy to use to help you with your script"
+        subtitle="Easy to use tools to improve your script"
       />
       <ToolsNavigator />
       {children}
