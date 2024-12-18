@@ -82,11 +82,12 @@ export default function CloneMock() {
 
   return (
     <div style={{ minHeight: "250px" }}>
-      <h3 className="text-[14px] font-normal leading-[19.6px]">
+      <h3 className="mb-2 text-[14px] font-normal leading-[19.6px]">
         Choose the delivery and attitude you like and change to another voice
         with the same inflection.
       </h3>
-      <div className="h-[327px] w-[860px] rounded-2xl bg-[#E2E8F0]">
+      {/* DESKTOP */}
+      <div className="hidden bg-[#E2E8F0] lg:block lg:h-[327px] lg:w-[860px] lg:rounded-2xl">
         {voiceData.map((voice, index) => (
           <div
             key={voice.name}
@@ -170,6 +171,106 @@ export default function CloneMock() {
               <Button
                 size="icon"
                 variant="ghost"
+                onClick={() => playAudio(voice.clone)}
+              >
+                {playingUrl === voice.clone ? (
+                  <Stop className="text-cp-primary h-[40px] w-[30px]" />
+                ) : (
+                  <Play className="text-cp-primary h-[40px] w-[30px]" />
+                )}
+                <span className="sr-only">
+                  {playingUrl === voice.clone ? "Stop" : "Play"} cloned voice
+                </span>
+              </Button>
+            </div>
+          </div>
+        ))}
+      </div>
+      {/* MOBILE */}
+      <div className="block space-y-4  lg:hidden">
+        {voiceData.map((voice, index) => (
+          <div
+            key={voice.name}
+            className="space-y-2 rounded-2xl bg-[#E2E8F0] p-4"
+          >
+            {/* Original Voice Card */}
+            <div className="flex h-[85px] w-full items-center rounded-lg bg-white">
+              <Avatar className="ml-3 h-[52px] w-[52px]">
+                <AvatarImage src={voice.avatar.src} alt={voice.name} />
+                <AvatarFallback>{voice.name[0]}</AvatarFallback>
+              </Avatar>
+              <div className="ml-[22px] mr-2 h-[39px] w-[101px]">
+                <p className="text-[16px] font-bold leading-[23px]">
+                  {voice.name}
+                </p>
+                <p className="font-roboto text-[12px] leading-[17px] text-[#636D80]">
+                  Original
+                </p>
+              </div>
+              <Button
+                size="icon"
+                variant="ghost"
+                className="ml-auto mr-3"
+                onClick={() => playAudio(voice.original)}
+              >
+                {playingUrl === voice.original ? (
+                  <Stop className="text-cp-primary h-[40px] w-[30px]" />
+                ) : (
+                  <Play className="text-cp-primary h-[40px] w-[30px]" />
+                )}
+              </Button>
+            </div>
+
+            {/* Arrow */}
+            <div className="flex justify-center py-1">
+              <svg
+                className="h-6 w-6 text-gray-500"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12 5L12 19M12 19L18 13M12 19L6 13"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+
+            {/* Clone Voice Card */}
+            <div className="flex h-[85px] w-full items-center rounded-lg bg-white">
+              <div
+                className="ml-3"
+                style={{
+                  width: "52px",
+                  height: "52px",
+                  borderRadius: "50%",
+                  overflow: "hidden",
+                  backgroundColor: voice.color,
+                }}
+              >
+                <img
+                  src={RobotIconPng.src}
+                  alt="Robot Icon"
+                  className="h-full w-full object-cover"
+                />
+              </div>
+              <div className="ml-[22px] mr-2 h-[39px] w-[101px]">
+                <p className="text-[16px] font-bold leading-[23px]">
+                  {voice.name}
+                </p>
+                <p className="font-roboto text-[12px] leading-[17px] text-[#636D80]">
+                  CLONE
+                </p>
+              </div>
+              <Button
+                size="icon"
+                variant="ghost"
+                className="ml-auto mr-3"
                 onClick={() => playAudio(voice.clone)}
               >
                 {playingUrl === voice.clone ? (

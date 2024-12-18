@@ -82,12 +82,18 @@ export default function ImageGenerationMock() {
                   roboto.className
                 } text-sm font-normal`}
               >
-                <div className="flex items-center">
+                <div className="flex flex-col items-start">
                   <FileImageIcon
-                    className="mr-2"
+                    className="mb-2 md:hidden"
                     color={selectedPrompt === prompt ? "#FFCB7F" : "#0066FF"}
                   />
-                  <span>{prompt}</span>
+                  <div className="flex items-center">
+                    <FileImageIcon
+                      className="mr-2 hidden md:inline"
+                      color={selectedPrompt === prompt ? "#FFCB7F" : "#0066FF"}
+                    />
+                    <span>{prompt}</span>
+                  </div>
                 </div>
               </Card>
             ))}
@@ -125,18 +131,41 @@ export default function ImageGenerationMock() {
             exit={{ opacity: 0, y: -20 }}
             className="space-y-4"
           >
-            <div className="grid h-[210px] grid-cols-2 gap-4">
-              {images.map((image, index) => (
+            <div className="grid grid-cols-2 gap-4 lg:grid-cols-2">
+              {/* First image - full width on mobile */}
+              <Card className="col-span-2 overflow-hidden rounded-lg border-slate-200 shadow-md lg:col-span-1">
+                <Image
+                  src={images[0]}
+                  alt={`Generated image 1`}
+                  width={420}
+                  height={300}
+                  className="h-[176px] w-full object-cover lg:h-[210px]"
+                />
+              </Card>
+
+              {/* Second image */}
+              <Card className="col-span-2 overflow-hidden rounded-lg border-slate-200 shadow-md  lg:col-span-1">
+                <Image
+                  src={images[1]}
+                  alt="Generated image 2"
+                  width={420}
+                  height={300}
+                  className="h-[176px] w-full object-cover lg:h-[210px]"
+                />
+              </Card>
+
+              {/* Additional images */}
+              {images.slice(2).map((image, index) => (
                 <Card
-                  key={index}
-                  className="overflow-hidden rounded-lg border-slate-200 shadow-md"
+                  key={index + 2}
+                  className="col-span-1 overflow-hidden rounded-lg border-slate-200 shadow-md"
                 >
                   <Image
                     src={image}
-                    alt={`Generated image ${index + 1}`}
+                    alt={`Generated image ${index + 3}`}
                     width={420}
                     height={300}
-                    className="object-cover"
+                    className="h-[176px] w-full object-cover lg:h-[210px]"
                   />
                 </Card>
               ))}
