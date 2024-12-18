@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 
 import {
   IconChevronUpDown as ChevronDown,
   IconPlay as Play,
+  IconStop as Stop,
   TalkIcon,
 } from "@voiceai/ui/@/components/ui/icons";
 import {
@@ -16,8 +17,6 @@ import {
 
 import Button from "~/app/(site)/components/button";
 import { poppins, roboto } from "~/app/fonts";
-
-// Adjust path as needed
 
 const TTSMock = ({
   text,
@@ -32,8 +31,21 @@ const TTSMock = ({
   selectedVoice,
   setSelectedVoice,
   handlePlay,
+  handleStop,
   maxLength = 500, // Default maxLength if not provided
 }) => {
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const togglePlayPause = () => {
+    if (isPlaying) {
+      handleStop();
+      setIsPlaying(false);
+    } else {
+      handlePlay();
+      setIsPlaying(true);
+    }
+  };
+
   return (
     <div style={{ minHeight: "250px" }}>
       <h3 className="text-[14px] font-normal leading-[19.6px]">
@@ -98,22 +110,22 @@ const TTSMock = ({
           </SelectContent>
         </Select>
         <div
-          className={` bg-cp-primary flex h-[48px] w-full flex-col items-center justify-center lg:hidden ${poppins.className} rounded-md text-[16px] font-semibold  leading-[22px] text-white`}
+          className={`bg-cp-primary flex h-[48px] w-full flex-col items-center justify-center lg:hidden ${poppins.className} rounded-md text-[16px] font-semibold  leading-[22px] text-white`}
         >
           <button
-            className="flex items-center justify-center gap-2  "
-            onClick={handlePlay}
+            className="flex items-center justify-center gap-2"
+            onClick={togglePlayPause}
           >
-            Play <Play />
+            {isPlaying ? "Pause" : "Play"} {isPlaying ? <Stop /> : <Play />}
           </button>
         </div>
         <div className="hidden lg:flex lg:items-center lg:space-x-2">
           <Button
-            onClick={handlePlay}
+            onClick={togglePlayPause}
             type="primary"
-            icon={Play}
+            icon={isPlaying ? Stop : Play}
             iconPosition="right"
-            label="Play"
+            label={isPlaying ? "Pause" : "Play"}
           />
         </div>
       </div>

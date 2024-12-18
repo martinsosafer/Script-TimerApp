@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { Button } from "@voiceai/ui";
 import {
@@ -48,38 +48,61 @@ const voiceData = [
   },
 ];
 
-export default function CloneMock() {
+interface CloneMockProps {
+  activeTab: string;
+}
+
+export default function CloneMock({ activeTab }: CloneMockProps) {
   const [playingAudio, setPlayingAudio] = useState<HTMLAudioElement | null>(
     null,
   );
   const [playingUrl, setPlayingUrl] = useState<string | null>(null);
 
   const playAudio = (url: string) => {
+    // Stop any currently playing audio
     if (playingAudio) {
       playingAudio.pause();
       playingAudio.currentTime = 0;
     }
 
+    // If the clicked audio is already playing, stop it
     if (url === playingUrl) {
       setPlayingAudio(null);
       setPlayingUrl(null);
-    } else {
-      const audio = new Audio(url);
-      audio.play();
-      setPlayingAudio(audio);
-      setPlayingUrl(url);
+      return;
     }
+
+    // Play new audio
+    const audio = new Audio(url);
+    audio.play();
+    setPlayingAudio(audio);
+    setPlayingUrl(url);
   };
 
   const stopAudio = () => {
+    // Ensure audio is completely stopped and state is reset
     if (playingAudio) {
       playingAudio.pause();
       playingAudio.currentTime = 0;
-      setPlayingAudio(null);
-      setPlayingUrl(null);
     }
+    setPlayingAudio(null);
+    setPlayingUrl(null);
   };
 
+  // Stop audio when tab changes
+  useEffect(() => {
+    stopAudio();
+  }, [activeTab]);
+
+  // Cleanup to stop audio when component unmounts
+  useEffect(() => {
+    return () => {
+      if (playingAudio) {
+        playingAudio.pause();
+        playingAudio.currentTime = 0;
+      }
+    };
+  }, [playingAudio]);
   return (
     <div style={{ minHeight: "250px" }}>
       <h3 className="mb-2 text-[14px] font-normal leading-[19.6px]">

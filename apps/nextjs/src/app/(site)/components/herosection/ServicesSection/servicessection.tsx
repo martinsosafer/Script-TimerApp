@@ -84,6 +84,7 @@ export default function ServiceSection() {
   );
 
   return (
+    
     <div
       className={`${poppins.className} h-full w-full items-center justify-center bg-[#E2E8F0] py-[32px] lg:py-[60px] `}
     >

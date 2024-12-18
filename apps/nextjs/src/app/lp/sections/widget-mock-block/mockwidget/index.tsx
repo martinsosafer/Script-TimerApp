@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Poppins } from "next/font/google";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
@@ -33,14 +33,19 @@ export default function VoiceGeneratorMockup() {
   const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
   const [text, setText] = useState(taskTexts[selectedTask]);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const stopAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+  };
+
   const handlePlay = () => {
+    stopAudio(); // Stop any currently playing audio
     const audioUrl =
       audioSamples[selectedTask]?.[selectedVoice]?.[selectedLanguage.code];
     if (audioUrl) {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
-      }
       const audio = new Audio(audioUrl);
       audio.play();
       audioRef.current = audio;
@@ -53,6 +58,11 @@ export default function VoiceGeneratorMockup() {
     setSelectedTask(task);
     setText(taskTexts[task]);
   };
+
+  // Effect to stop audio when changing tabs
+  useEffect(() => {
+    stopAudio();
+  }, [activeTab]);
 
   const tabs = [
     "Voice Over",
@@ -67,7 +77,7 @@ export default function VoiceGeneratorMockup() {
       className={`mx-auto flex flex-col items-center rounded-lg bg-[#F5F5F7] shadow-lg
         ${activeTab === "Check for Plagiarism" ? "h-[1100px] lg:h-[926px]" : "h-[879px] lg:h-[640px]"}
         ${activeTab === "Create Images" ? "h-[930px] lg:h-[710px]" : ""}
-         ${activeTab === "Clone a Voice" ? "h-[1070px] lg:h-[700px]" : ""}
+         ${activeTab === "Clone a Voice" ? "h-[1110px] lg:h-[700px]" : ""}
           ${activeTab === "Write a Script" ? "h-[1030px] lg:h-[700px]" : ""}
         w-[312px] lg:w-[944px]`}
     >
@@ -145,11 +155,14 @@ export default function VoiceGeneratorMockup() {
                   selectedVoice={selectedVoice}
                   setSelectedVoice={setSelectedVoice}
                   handlePlay={handlePlay}
+                  handleStop={stopAudio}
                   maxLength={500}
                 />
               )}
 
-              {activeTab === "Clone a Voice" && <CloneMock />}
+              {activeTab === "Clone a Voice" && (
+                <CloneMock activeTab={activeTab} />
+              )}
 
               {activeTab === "Write a Script" && <ScriptAiMock />}
 
