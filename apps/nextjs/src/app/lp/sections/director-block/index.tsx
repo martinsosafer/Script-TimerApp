@@ -2,11 +2,19 @@ import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
+import type { Session } from "@voiceai/auth";
+
 import Button from "~/app/(site)/components/button";
 import DirectorImg from "~/app/(site)/components/modals/modalimgs/CameraImg.png";
 import { poppins } from "~/app/fonts";
 
-export default function DirectorBlock() {
+export default function DirectorBlock({
+  session,
+  path,
+}: {
+  session: Session | null | undefined;
+  path: string;
+}) {
   const router = useRouter();
   return (
     <div
@@ -27,7 +35,7 @@ export default function DirectorBlock() {
           label="Start Now"
           type="accent"
           className="w-full lg:w-[158px]"
-          onClick={() => router.push("/")}
+          onClick={() => router.push(session ? "/" : `${path}/#loginForm`)}
         />
       </div>
     </div>
