@@ -23,7 +23,7 @@ export const languages = [
 export const audioSamples = {
   "Value Proposition Story": {
     Bria: {
-      us: "https://8ipgp5xevb8hkgbh.public.blob.vercel-storage.com/MockupVoices/BriaUs1.mp3",
+      us: "https://8ipgp5xevb8hkgbh.public.blob.vercel-storage.com/MockUpVoices/BriaUs1-QF7oDOsNmgkUCKATcV5jvMSUmyAXgb.mp3",
       es: "https://8ipgp5xevb8hkgbh.public.blob.vercel-storage.com/MockUpVoices/BriaEs1-rb4ItHdARcxSYIvKT5GKhzt9SzCo3s.mp3",
       fr: "https://8ipgp5xevb8hkgbh.public.blob.vercel-storage.com/MockUpVoices/BriaFr1-UTIXhNJgSDtpRXswOgCe6inI3F8mJa.mp3",
       "zh-CN":
