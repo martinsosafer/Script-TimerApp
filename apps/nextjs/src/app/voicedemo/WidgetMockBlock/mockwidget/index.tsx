@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Poppins } from "next/font/google";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 
