@@ -3,14 +3,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Poppins } from "next/font/google";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 
-import { Button } from "@voiceai/ui";
+import type { Session } from "@voiceai/auth";
 import {
   IconArrowRight,
   IconChevronLeft,
 } from "@voiceai/ui/@/components/ui/icons";
 
+import Button from "~/app/(site)/components/button";
 import { poppins } from "~/app/fonts";
 import CloneMock from "./Clonemock";
 import ImageGenerationMock from "./ImabeMock";
@@ -26,7 +28,13 @@ import PlagiarismCheckMock from "./PlagiarismMock";
 import ScriptAiMock from "./ScriptAiMock";
 import TTSMock from "./TTSmock";
 
-export default function VoiceGeneratorMockup() {
+export default function VoiceGeneratorMockup({
+  session,
+  path,
+}: {
+  session: Session | null | undefined;
+  path: string;
+}) {
   const [activeTab, setActiveTab] = useState("Voice Over");
   const [selectedVoice, setSelectedVoice] = useState(voices[0]);
   const [selectedTask, setSelectedTask] = useState(tasks[0]);
@@ -71,6 +79,8 @@ export default function VoiceGeneratorMockup() {
     "Create Images",
     "Check for Plagiarism",
   ];
+
+  const router = useRouter();
 
   return (
     <div
@@ -175,14 +185,15 @@ export default function VoiceGeneratorMockup() {
         <div
           className={`mt-6 w-full pb-6 lg:mt-10 lg:pb-10 ${poppins.className}`}
         >
-          <Link href="/register" className="w-full">
-            <Button
-              size="lg"
-              className="h-[40px] w-full bg-[#FF8A00] text-sm font-semibold text-white hover:bg-[#FF8A00]/90 lg:h-[48px] lg:text-base"
-            >
-              Open my Free Access! <IconArrowRight className="ml-2" />
-            </Button>
-          </Link>
+          <Button
+            label="Open my Free Access!"
+            type="accent"
+            fit
+            icon={IconArrowRight}
+            onClick={() =>
+              router.push(session ? "/texttovoice" : `${path}/#loginForm`)
+            }
+          />
         </div>
       </div>
     </div>

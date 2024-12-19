@@ -7,6 +7,7 @@ import {
   updateLanding,
 } from "~/app/(site)/(admin)/admin-landings/actions";
 import type { LandingPage } from "~/app/(site)/(admin)/admin-landings/types";
+import FreeDemoHero from "~/app/lp/sections/free-demo-hero";
 import RegularHero from "~/app/lp/sections/hero";
 import Button from "../../button";
 
@@ -223,7 +224,7 @@ export default function AdminLandingModal({
         </button>
       </div>
 
-      {previewLanding && previewValues.lpType === "regular" && (
+      {previewLanding && previewValues.lpType !== "saasy" && (
         <div className="-mt-20 flex w-full scale-75 flex-col items-center gap-4">
           <Button
             label="Close preview"
@@ -236,7 +237,24 @@ export default function AdminLandingModal({
             title={previewValues.title}
             video_url={previewValues.videoUrl}
             session={null}
-            path="/"
+            path="#"
+          />
+        </div>
+      )}
+      {previewLanding && previewValues.lpType === "saasy" && (
+        <div className="-mt-20 flex w-full scale-75 flex-col items-center gap-4">
+          <Button
+            label="Close preview"
+            type="accent"
+            onClick={() => setPreviewLanding(false)}
+          />
+          <FreeDemoHero
+            description={previewValues.description}
+            sub_description={previewValues.subDescription}
+            title={previewValues.title}
+            video_url={previewValues.videoUrl}
+            session={null}
+            path="#"
           />
         </div>
       )}

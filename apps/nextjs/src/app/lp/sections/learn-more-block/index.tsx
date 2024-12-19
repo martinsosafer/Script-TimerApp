@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
+import type { Session } from "@voiceai/auth";
+
 import Button from "~/app/(site)/components/button";
 import { poppins, roboto } from "~/app/fonts";
 import { cards } from "./utils";
@@ -48,7 +50,13 @@ function LearnMoreCard({
   );
 }
 
-export default function LearnMoreBlock() {
+export default function LearnMoreBlock({
+  session,
+  path,
+}: {
+  session: Session | null | undefined;
+  path: string;
+}) {
   const router = useRouter();
 
   return (
@@ -79,7 +87,7 @@ export default function LearnMoreBlock() {
             label="Take me there"
             type="accent"
             className="w-full lg:w-[400px]"
-            onClick={() => router.push("/register")}
+            onClick={() => router.push(session ? "/" : `${path}/#loginForm`)}
           />
 
           <span

@@ -1,9 +1,8 @@
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import type { Session } from "next-auth";
 
 import Button from "~/app/(site)/components/button";
-import { poppins, roboto } from "~/app/fonts";
+import { poppins } from "~/app/fonts";
 import MockUpBlock from "../../sections/widget-mock-block";
 
 interface HerogProps {
@@ -27,8 +26,9 @@ export default function FreeDemoHero({
 
   function spiltTitle(title: string) {
     const titleArray = title.split(" ");
-    const first = titleArray[0];
-    const second = titleArray[1];
+    const half = Math.ceil(titleArray.length / 2);
+    const first = titleArray.slice(0, half).join(" ");
+    const second = titleArray.slice(half).join(" ");
     return { first, second };
   }
 
@@ -70,7 +70,9 @@ export default function FreeDemoHero({
               <Button
                 label="Open full studio"
                 type="accent"
-                onClick={() => router.push("/")}
+                onClick={() =>
+                  router.push(session ? "/texttovoice" : `${path}/#loginForm`)
+                }
                 className="w-full px-[8px] lg:w-[206px]"
               />
             </div>
@@ -88,7 +90,7 @@ export default function FreeDemoHero({
         </div>
 
         <div className="mt-12 flex w-full flex-col items-center lg:mt-[120px]">
-          <MockUpBlock />
+          <MockUpBlock session={session} path={path} />
         </div>
       </div>
     </section>
