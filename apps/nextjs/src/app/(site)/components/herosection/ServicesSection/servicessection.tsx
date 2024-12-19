@@ -84,7 +84,6 @@ export default function ServiceSection() {
   );
 
   return (
-    
     <div
       className={`${poppins.className} h-full w-full items-center justify-center bg-[#E2E8F0] py-[32px] lg:py-[60px] `}
     >
@@ -113,14 +112,14 @@ export default function ServiceSection() {
                   target="_blank"
                   className="h-full w-full"
                 >
-                  <CardContent className="flex h-[95px] items-center p-[21px] lg:flex lg:h-full lg:w-full lg:items-center lg:justify-center lg:p-[28px]">
-                    <div className="flex flex-row items-center space-y-2 text-left lg:flex-row lg:items-center lg:justify-center lg:gap-x-3">
+                  <CardContent className="flex h-[95px] items-center p-[21px] lg:h-full lg:w-full lg:p-[28px]">
+                    <div className="flex w-full items-start gap-3">
                       <Icon className="text-cp-secondary h-[52px] w-[52px] flex-shrink-0 lg:h-[70px] lg:w-[70px]" />
-                      <div className="ml-3 flex flex-col items-start">
+                      <div className="mt-1 flex flex-col gap-1 lg:mt-0">
                         <h3 className="text-cp-primary text-[15px] font-bold leading-[21px] lg:text-[20px] lg:leading-[28px]">
                           {service.title}
                         </h3>
-                        <p className="mt-1 text-[16px] font-normal leading-[17px] text-black lg:text-[16px] lg:leading-[22.5px]">
+                        <p className="text-[16px] font-normal leading-[17px] text-black lg:text-[16px] lg:leading-[22.5px]">
                           {service.description}
                         </p>
                       </div>
