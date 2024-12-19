@@ -83,10 +83,10 @@ export default function Landing() {
         <EmailLoginSection type={landing?.lp_type} />
       )}
       <MarqueeLogos />
-      <DirectorBlock />
+      <DirectorBlock session={session} path={pathname} />
       <AwardsBlock />
       <ClassesBlock />
-      <LearnMoreBlock />
+      <LearnMoreBlock session={session} path={pathname} />
       <FAQAccordion />
       <VideoBlock />
       <ServiceSection />
