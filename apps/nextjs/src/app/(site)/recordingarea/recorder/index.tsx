@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { upload } from "@vercel/blob/client";
 
 import { IconMic2 } from "@voiceai/ui/@/components/ui/icons";
 
@@ -24,7 +25,7 @@ export default function MicrophoneComponent() {
   const [summary, setSummary] = useState("");
   const [bulletPoints, setBulletPoints] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [uploadUrl, setUploadUrl] = useState<string | null>(null);
   const recognitionRef = useRef<any>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
@@ -96,13 +97,51 @@ export default function MicrophoneComponent() {
         setIsRecording(false);
       });
   };
+  const uploadToVercelBlob = async (blob: Blob) => {
+    try {
+      const filename = `recording-${Date.now()}.wav`;
+      const formData = new FormData();
+      formData.append("file", blob, filename);
 
-  const stopRecording = () => {
+      const uploadedFile = await upload(filename, blob, {
+        access: "public",
+        handleUploadUrl: "/api/upload",
+      });
+
+      setUploadUrl(uploadedFile.url);
+      return uploadedFile.url;
+    } catch (error) {
+      console.error("Error uploading to Vercel Blob:", error);
+      alert("Failed to upload recording. Please try again.");
+      return null;
+    }
+  };
+  const stopRecording = async () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
     }
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
+
+      // Wait for the mediaRecorder onstop event to complete
+      await new Promise<void>((resolve) => {
+        mediaRecorderRef.current!.onstop = async () => {
+          const audioBlob = new Blob(audioChunksRef.current, {
+            type: "audio/wav",
+          });
+          setAudioBlob(audioBlob);
+          const audioUrl = URL.createObjectURL(audioBlob);
+          setAudioUrl(audioUrl);
+
+          // Upload to Vercel Blob
+          const uploadedUrl = await uploadToVercelBlob(audioBlob);
+          if (uploadedUrl) {
+            console.log("Recording uploaded successfully:", uploadedUrl);
+          }
+
+          resolve();
+        };
+      });
     }
     setIsRecording(false);
     setIsPaused(true);
@@ -248,7 +287,19 @@ export default function MicrophoneComponent() {
             placeholder="Transcript will appear here..."
           />
         </div>
-
+        {uploadUrl && (
+          <div className="mt-2 text-sm text-gray-600">
+            Recording uploaded successfully!
+            <a
+              href={uploadUrl}
+              className="ml-2 text-blue-500 hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View uploaded file
+            </a>
+          </div>
+        )}
         {audioUrl && (
           <div className="mt-6 text-center">
             <audio controls src={audioUrl} className="w-full" />

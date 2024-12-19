@@ -13,7 +13,8 @@ export const metadata: Metadata = {
 
 export default async function indexPage() {
   const session = await auth();
-
+ 
+  const userId = session?.user.id;
   return (
     <div className="flex min-h-screen w-full items-center justify-center ">
       <div className="flex w-[1024px] flex-col py-10">
@@ -25,7 +26,7 @@ export default async function indexPage() {
             Capture your voice, video, and/or screen record
           </p>
         </div>
-        <ModeSelectorRecorder />
+        <ModeSelectorRecorder userId={userId} />
       </div>
     </div>
   );

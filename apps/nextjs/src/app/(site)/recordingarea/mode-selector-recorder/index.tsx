@@ -8,10 +8,12 @@ import WebcamRecorder from "../webcamrecorder";
 
 interface SelectorProps {
   initialMode?: "audio" | "video" | "screen";
+  userId: string | undefined;
 }
 
 export default function ModeSelectorRecorder({
   initialMode = "audio",
+  userId,
 }: SelectorProps) {
   const [activeMode, setActiveMode] = useState(initialMode);
 
@@ -22,7 +24,7 @@ export default function ModeSelectorRecorder({
   const renderComponent = () => {
     switch (activeMode) {
       case "audio":
-        return <MicrophoneComponent />;
+        return <MicrophoneComponent userId={userId} />;
       case "video":
         return <WebcamRecorder />;
       case "screen":
