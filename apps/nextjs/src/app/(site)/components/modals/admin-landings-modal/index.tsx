@@ -94,7 +94,7 @@ export default function AdminLandingModal({
               >
                 <option value="regular">Regular</option>
                 <option value="tools">Tools</option>
-                <option value="saasy">Saasy</option>
+                <option value="saasy">Free Demo</option>
               </select>
               <label htmlFor="name" className="text-sm font-semibold">
                 Landing Page Title

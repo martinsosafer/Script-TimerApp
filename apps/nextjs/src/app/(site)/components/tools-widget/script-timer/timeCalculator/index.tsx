@@ -40,24 +40,24 @@ export default function TimeCalculator() {
   }, [speed]);
 
   return (
-    <main className="w-full">
-      <div className="mb-4 flex w-full justify-between gap-4">
+    <main className="w-full lg:mb-[100px]">
+      <div className="mb-6 flex w-full flex-col justify-between gap-4 lg:flex-row">
         <Button
           label="Listen to your script"
           type="secondary"
-          className="w-[300px]"
+          className="lg:w-[300px]"
           onClick={() => router.push("/texttovoice")}
         />
         <Button
           label="Specialized AI rewriting"
           type="secondary"
-          className="w-[300px]"
+          className="lg:w-[300px]"
           onClick={() => router.push("/chat")}
         />
         <Button
           label="Detect Plagiarism & AI"
           type="secondary"
-          className="w-[300px]"
+          className="lg:w-[300px]"
           onClick={() => router.push("/plagiarism-detector")}
         />
       </div>

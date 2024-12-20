@@ -122,24 +122,24 @@ export default function Grader() {
   }
 
   return (
-    <main className="mb-[100px] w-full">
-      <div className="mb-4 flex w-full justify-between gap-4">
+    <main className="w-full lg:mb-[100px]">
+      <div className="mb-6 flex w-full flex-col justify-between gap-4 lg:flex-row">
         <Button
           label="Listen to your script"
           type="secondary"
-          className="w-[300px]"
+          className="lg:w-[300px]"
           onClick={() => router.push("/texttovoice")}
         />
         <Button
           label="Specialized AI rewriting"
           type="secondary"
-          className="w-[300px]"
+          className="lg:w-[300px]"
           onClick={() => router.push("/chat")}
         />
         <Button
           label="Detect Plagiarism & AI"
           type="secondary"
-          className="w-[300px]"
+          className="lg:w-[300px]"
           onClick={() => router.push("/plagiarism-detector")}
         />
       </div>
@@ -154,8 +154,8 @@ export default function Grader() {
           onChange={(e) => setText(e.currentTarget.value)}
         />
 
-        <article className="mt-3 flex w-full items-start">
-          <div className="w-[20%]">
+        <article className="mt-3 flex w-full flex-col lg:flex-row lg:items-start">
+          <div className="w-full lg:w-[20%]">
             <h3 className="text-base font-normal">Readability</h3>
             <span className="text-xs">Goal: 9th grade</span>
             <h2 className="mt-1 text-[18px] font-bold">
@@ -167,7 +167,7 @@ export default function Grader() {
               )}
             </h2>
           </div>
-          <div className="w-[30%] text-base font-bold">
+          <div className="mt-4 w-full text-base font-bold lg:mt-0 lg:w-[30%]">
             <p className="mt-1">
               Letters:{" "}
               <span className="font-normal">{countResult.letters}</span>{" "}
@@ -191,27 +191,27 @@ export default function Grader() {
               Reading Time: <span className="font-normal">{readingTime}</span>
             </p>
           </div>
-          <div className="flex w-1/2 flex-col gap-1">
-            <div className="flex h-[38px] w-full items-center rounded bg-[#C4E3F3] px-3 text-[16px]">
+          <div className="mt-4 flex w-full flex-col gap-1 lg:mt-0 lg:w-1/2">
+            <div className="flex w-full items-center rounded bg-[#C4E3F3] px-3 py-1 text-[16px] lg:h-[38px]">
               You have used {highlightedText.adverbs} adverbs. Try to use 2 or
               less.
             </div>
 
-            <div className="flex h-[38px] w-full items-center rounded bg-[#C4ED9D] px-3 text-[16px]">
+            <div className="flex w-full items-center rounded bg-[#C4ED9D] px-3 py-1 text-[16px] lg:h-[38px]">
               You have used passive voice {highlightedText.passive} time. Aim
               for 2 or less.
             </div>
 
-            <div className="flex h-[38px] w-full items-center rounded bg-[#E3B7E8] px-3 text-[16px]">
+            <div className="flex w-full items-center rounded bg-[#E3B7E8] px-3 py-1 text-[16px] lg:h-[38px]">
               {highlightedText.simplify} phrase could be simplified.
             </div>
 
-            <div className="flex h-[38px] w-full items-center rounded bg-[#F7ECB5] px-3 text-[16px]">
+            <div className="flex w-full items-center rounded bg-[#F7ECB5] px-3 py-1 text-[16px] lg:h-[38px]">
               {highlightedText.hard} of {countResult.sentences} sentences are
               hard to read.
             </div>
 
-            <div className="flex h-[38px] w-full items-center rounded bg-[#E4B9B9] px-3 text-[16px]">
+            <div className="flex w-full items-center rounded bg-[#E4B9B9] px-3 py-1 text-[16px] lg:h-[38px]">
               {highlightedText.veryHard} of {countResult.sentences} sentences
               are very hard to read.
             </div>

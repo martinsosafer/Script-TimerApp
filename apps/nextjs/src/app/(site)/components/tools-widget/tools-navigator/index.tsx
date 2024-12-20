@@ -1,5 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
 
+import { roboto } from "~/app/fonts";
 import Tabs from "../../tabs";
 
 interface ToolsNavigatorProps {
@@ -40,8 +41,24 @@ export default function ToolsNavigator({
   ];
 
   return (
-    <div className="flex items-center justify-center gap-4">
-      <Tabs options={tools} />
-    </div>
+    <>
+      <div className="hidden items-center justify-center gap-4 lg:flex">
+        <Tabs options={tools} />
+      </div>
+      <select
+        className={`${roboto.className}text-[16px] border-cp-primary text-cp-primary w-full rounded-[4px] border bg-white px-4 py-6 font-bold lg:hidden`}
+      >
+        {tools.map((tool) => (
+          <option
+            key={tool.label}
+            value={tool.label}
+            selected={tool.active}
+            onClick={tool.action}
+          >
+            {tool.label}
+          </option>
+        ))}
+      </select>
+    </>
   );
 }

@@ -39,7 +39,7 @@ export default function EmailLoginSection({
 
   return (
     <section
-      className={`${type !== "regular" && "py-10"} bg-cp-background  flex w-full justify-center`}
+      className={`${type !== "regular" && "py-10"} bg-cp-background  flex w-full justify-center px-6`}
       id="loginForm"
     >
       <div
