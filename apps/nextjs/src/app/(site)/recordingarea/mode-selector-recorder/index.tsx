@@ -9,11 +9,19 @@ import WebcamRecorder from "../webcamrecorder";
 interface SelectorProps {
   initialMode?: "audio" | "video" | "screen";
   userId: string | undefined;
+  savedAudios: SavedAudio[];
+}
+
+interface SavedAudio {
+  url: string;
+  filename: string;
+  uploadedAt: string;
 }
 
 export default function ModeSelectorRecorder({
   initialMode = "audio",
   userId,
+  savedAudios,
 }: SelectorProps) {
   const [activeMode, setActiveMode] = useState(initialMode);
 
@@ -24,32 +32,32 @@ export default function ModeSelectorRecorder({
   const renderComponent = () => {
     switch (activeMode) {
       case "audio":
-        return <MicrophoneComponent userId={userId} />;
+        return (
+          <MicrophoneComponent userId={userId} savedAudios={savedAudios} />
+        );
       case "video":
         return <WebcamRecorder />;
       case "screen":
         return <ScreenRecorder />;
       default:
-        return <MicrophoneComponent />;
+        return (
+          <MicrophoneComponent userId={userId} savedAudios={savedAudios} />
+        );
     }
   };
 
   return (
     <div className="mt-8 flex flex-col items-center justify-center">
-      {" "}
-      {/* Centered the entire component */}
       <div className="mb-4 flex justify-center gap-4 rounded-full border-2 border-gray-500 p-2">
-        {" "}
-        {/* Centered the buttons */}
         <button
           onClick={() => handleModeChange("audio")}
           className={`${
             activeMode === "audio"
               ? "rounded-full bg-primary font-bold text-white"
               : "rounded-full bg-gray-200 text-gray-400"
-          } relative overflow-hidden px-4 py-2 transition-colors duration-300`}
+          } px-4 py-2`}
         >
-          <span className="relative z-10">Audio Recorder</span>
+          Audio Recorder
         </button>
         <button
           onClick={() => handleModeChange("video")}
@@ -57,9 +65,9 @@ export default function ModeSelectorRecorder({
             activeMode === "video"
               ? "rounded-full bg-primary font-bold text-white"
               : "rounded-full bg-gray-200 text-gray-400"
-          } relative overflow-hidden px-4 py-2 transition-colors duration-300`}
+          } px-4 py-2`}
         >
-          <span className="relative z-10">Video Recorder</span>
+          Video Recorder
         </button>
         <button
           onClick={() => handleModeChange("screen")}
@@ -67,14 +75,12 @@ export default function ModeSelectorRecorder({
             activeMode === "screen"
               ? "rounded-full bg-primary font-bold text-white"
               : "rounded-full bg-gray-200 text-gray-400"
-          } relative overflow-hidden px-4 py-2 transition-colors duration-300`}
+          } px-4 py-2`}
         >
-          <span className="relative z-10">Screen Recorder</span>
+          Screen Recorder
         </button>
       </div>
-      <div className="w-full transition-opacity duration-500 ease-in-out">
-        {renderComponent()}
-      </div>
+      <div className="w-full">{renderComponent()}</div>
     </div>
   );
 }

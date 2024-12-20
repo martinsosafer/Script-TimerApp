@@ -14,7 +14,15 @@ declare global {
   }
 }
 
-export default function MicrophoneComponent() {
+interface MicrophoneProps {
+  userId: string | undefined;
+  savedAudios: { url: string; filename: string; uploadedAt: string }[];
+}
+
+export default function MicrophoneComponent({
+  userId,
+  savedAudios,
+}: MicrophoneProps) {
   const [isRecording, setIsRecording] = useState(false);
   const [transcript, setTranscript] = useState("");
   const [completeTranscript, setCompleteTranscript] = useState("");
@@ -99,7 +107,7 @@ export default function MicrophoneComponent() {
   };
   const uploadToVercelBlob = async (blob: Blob) => {
     try {
-      const filename = `recording-${Date.now()}.wav`;
+      const filename = `RecordedAudio/${userId}/recording-${Date.now()}.wav`;
       const formData = new FormData();
       formData.append("file", blob, filename);
 
@@ -125,20 +133,13 @@ export default function MicrophoneComponent() {
 
       // Wait for the mediaRecorder onstop event to complete
       await new Promise<void>((resolve) => {
-        mediaRecorderRef.current!.onstop = async () => {
+        mediaRecorderRef.current!.onstop = () => {
           const audioBlob = new Blob(audioChunksRef.current, {
             type: "audio/wav",
           });
           setAudioBlob(audioBlob);
           const audioUrl = URL.createObjectURL(audioBlob);
           setAudioUrl(audioUrl);
-
-          // Upload to Vercel Blob
-          const uploadedUrl = await uploadToVercelBlob(audioBlob);
-          if (uploadedUrl) {
-            console.log("Recording uploaded successfully:", uploadedUrl);
-          }
-
           resolve();
         };
       });
@@ -167,6 +168,20 @@ export default function MicrophoneComponent() {
   const handleCopyTranscript = () => {
     navigator.clipboard.writeText(completeTranscript);
     alert("Transcript copied to clipboard!");
+  };
+
+  const handleSave = async () => {
+    if (audioBlob) {
+      setIsLoading(true);
+      const uploadedUrl = await uploadToVercelBlob(audioBlob);
+      if (uploadedUrl) {
+        console.log("Recording uploaded successfully:", uploadedUrl);
+        alert("Recording saved successfully!");
+      }
+      setIsLoading(false);
+    } else {
+      alert("No recording to save. Please record something first.");
+    }
   };
 
   const handleGenerateSummary = async () => {
@@ -317,15 +332,22 @@ export default function MicrophoneComponent() {
                 Copy Transcript
               </button>
               <button
-                onClick={handleGenerateSummary}
+                onClick={handleSave}
                 className="rounded-md bg-green-500 px-4 py-2 text-white hover:bg-green-400"
+                disabled={isLoading}
+              >
+                Save Recording
+              </button>
+              <button
+                onClick={handleGenerateSummary}
+                className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-400"
                 disabled={isLoading}
               >
                 Generate Summary
               </button>
               <button
                 onClick={handleGenerateBulletPoints}
-                className="rounded-md bg-purple-500 px-4 py-2 text-white hover:bg-purple-400"
+                className="rounded-md bg-indigo-500 px-4 py-2 text-white hover:bg-indigo-400"
                 disabled={isLoading}
               >
                 Generate Bullet Points
@@ -353,6 +375,27 @@ export default function MicrophoneComponent() {
             </ul>
           </div>
         )}
+
+        <div className="mt-8">
+          <h3 className="mb-4 text-lg font-semibold">Recording History</h3>
+          {savedAudios.length > 0 ? (
+            <ul className="space-y-4">
+              {savedAudios.map((audio, index) => (
+                <li key={index} className="rounded-lg bg-gray-50 p-4">
+                  <div className="mb-2 flex items-center justify-between">
+                    <span className="font-medium">{audio.filename}</span>
+                    <span className="text-sm text-gray-500">
+                      {new Date(audio.uploadedAt).toLocaleString()}
+                    </span>
+                  </div>
+                  <audio controls src={audio.url} className="w-full" />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-gray-500">No saved recordings yet.</p>
+          )}
+        </div>
       </div>
     </div>
   );
