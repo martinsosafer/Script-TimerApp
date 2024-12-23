@@ -1,6 +1,11 @@
+import { useState } from "react";
 import Image from "next/image";
 import type { Session } from "next-auth";
+import { set } from "zod";
 
+import CheckoutLoginModal from "~/app/(site)/components/modals/checkout-login-modal";
+import UpgradeModal from "~/app/(site)/components/modals/upgrade-modal";
+import { useSharedState } from "~/app/context/state";
 import { roboto } from "~/app/fonts";
 import {
   DESCRIPTION,
@@ -26,11 +31,15 @@ function RegularCard({
   period,
   session,
   interval,
+  setIsUpgrading,
+  noSessionCheckout,
 }: {
   type: "FREE" | "EDUCATION" | "CREATOR" | "BUSINESS";
   period: "monthly" | "yearly";
   session: Session | null;
   interval: string | undefined;
+  setIsUpgrading?: () => void;
+  noSessionCheckout?: () => void;
 }) {
   function setHasPlan() {
     if (
@@ -134,6 +143,8 @@ function RegularCard({
                 priceId={priceIds[type]?.[period]}
                 session={session}
                 hasPlan={setHasPlan()}
+                upgradeAction={setIsUpgrading}
+                noSessionCheckout={noSessionCheckout}
               />
             </div>
           </div>
@@ -185,6 +196,8 @@ function RegularCard({
             priceId={priceIds[type]?.[period]}
             session={session}
             hasPlan={setHasPlan()}
+            upgradeAction={setIsUpgrading}
+            noSessionCheckout={noSessionCheckout}
           />
         </div>
       )}
@@ -201,6 +214,11 @@ export default function PlansCards({
   session: Session | null;
   interval: string | undefined;
 }) {
+  const { setProductId } = useSharedState();
+  const [isUpgrading, setIsUpgrading] = useState(false);
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const [priceId, setPriceId] = useState("");
+
   return (
     <section className="mt-[52px] flex w-[1024px] items-center justify-center gap-4">
       <RegularCard
@@ -214,19 +232,53 @@ export default function PlansCards({
         period={period}
         session={session}
         interval={interval}
+        setIsUpgrading={() => {
+          setPriceId(priceIds.EDUCATION![period]!);
+          setIsUpgrading(true);
+        }}
+        noSessionCheckout={() => {
+          setProductId(productIds.EDUCATION![period]);
+          return setIsCheckingOut(true);
+        }}
       />
       <RegularCard
         type="CREATOR"
         period={period}
         session={session}
         interval={interval}
+        setIsUpgrading={() => {
+          setPriceId(priceIds.CREATOR![period]!);
+          setIsUpgrading(true);
+        }}
+        noSessionCheckout={() => {
+          setProductId(productIds.EDUCATION![period]);
+          return setIsCheckingOut(true);
+        }}
       />
       <RegularCard
         type="BUSINESS"
         period={period}
         session={session}
         interval={interval}
+        setIsUpgrading={() => {
+          setPriceId(priceIds.BUSINESS![period]!);
+          setIsUpgrading(true);
+        }}
+        noSessionCheckout={() => {
+          setProductId(productIds.EDUCATION![period]);
+          return setIsCheckingOut(true);
+        }}
       />
+      {isUpgrading && (
+        <UpgradeModal
+          onClose={() => setIsUpgrading(false)}
+          session={session}
+          priceId={priceId}
+        />
+      )}
+      {isCheckingOut && (
+        <CheckoutLoginModal onClose={() => setIsCheckingOut(false)} />
+      )}
     </section>
   );
 }

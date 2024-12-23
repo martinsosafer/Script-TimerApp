@@ -170,7 +170,7 @@ export default function AdminSpecialModal({
                     defaultValue={special?.promo_code ?? undefined}
                     placeholder={"Promo Code"}
                     className="w-full rounded-md border-2 border-primary p-2"
-                    maxLength={8}
+                    maxLength={13}
                     onChange={(e) =>
                       setPreviewValues({
                         ...previewValues,

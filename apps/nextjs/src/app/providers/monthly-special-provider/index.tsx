@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 
+import type { Session } from "@voiceai/auth";
+
 import type {
   Page,
   MonthlySpecial as Specials,
@@ -12,6 +14,7 @@ import MonthlySpecial from "~/app/(site)/components/monthySpecial";
 interface MonthlySpecialProviderProps {
   monthlySpecials?: Specials[];
   children: React.ReactNode;
+  session: Session | null;
 }
 
 const paths: Record<string, Page> = {
@@ -26,13 +29,14 @@ const paths: Record<string, Page> = {
 export default function MonthlySpecialProvider({
   children,
   monthlySpecials,
+  session,
 }: MonthlySpecialProviderProps) {
   const path = usePathname();
   const displayPage = paths[path]!;
 
   const pageSpecial = monthlySpecials?.find((special) => {
     return (
-      special.pages_display.includes(displayPage) ??
+      special.pages_display.includes(displayPage) ||
       special.pages_display.includes("ALL")
     );
   });
@@ -46,9 +50,18 @@ export default function MonthlySpecialProvider({
     pageSpecial?.start_date <= today &&
     today <= pageSpecial?.end_date;
 
+  const isPayingCustomer =
+    (session && session.user?.subscription?.status !== "FREE") ??
+    (session && session?.user?.subscription?.status !== "FREE_TRIAL");
+
+  const isAnnouncement = pageSpecial?.type === "announcement";
+
+  console.log("coleSpecial", closeSpecial);
+
   return (
     <div>
-      {isVisible && pageSpecial && !closeSpecial && (
+      {((isAnnouncement && !closeSpecial) ||
+        (!isPayingCustomer && isVisible && pageSpecial && !closeSpecial)) && (
         <MonthlySpecial
           name={pageSpecial?.name ?? ""}
           description={pageSpecial?.description ?? ""}

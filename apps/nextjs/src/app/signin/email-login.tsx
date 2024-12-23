@@ -15,7 +15,8 @@ export function LoginWithEmailForm() {
     try {
       event.preventDefault();
       const formData = new FormData(event.currentTarget);
-      await createUser(formData);
+      const email = formData.get("email") as string;
+      await createUser({ email });
     } catch (error) {
       alert(
         "An error occurred while signing in. Please check your credentials",
@@ -27,19 +28,16 @@ export function LoginWithEmailForm() {
 
   return (
     <div>
-      <div className="relative">
+      <div className="relative mb-4 mt-1">
         <div className="absolute inset-0 flex items-center">
           <span className="w-full border-t" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
           <span className="bg-background px-2 text-muted-foreground">
-            LEGACY USERS: LOGIN VIA LINK
+            EMAIL ME A LINK
           </span>
         </div>
       </div>
-      <p className="mb-3 p-2 text-center text-sm text-muted-foreground">
-        Please create a password before 10.1.24
-      </p>
       <form
         onSubmit={handleLogin}
         className="mx-auto flex w-full max-w-md flex-col space-y-4"

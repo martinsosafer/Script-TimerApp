@@ -189,7 +189,7 @@ export function ScriptAI({
 
     const charLimit = {
       FREE: 300,
-      FREE_TRIAL: 2000,
+      FREE_TRIAL: 1600,
       STUDENT: 2000,
       CREATOR: 5000,
       BUSINESS: 10000,

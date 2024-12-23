@@ -7,7 +7,7 @@ interface Matches {
   text: { words: Words };
 }
 
-interface Results {
+export interface Results {
   classification: number;
   matches: Matches[];
 }

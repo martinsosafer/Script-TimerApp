@@ -1,12 +1,21 @@
 import type { Metadata } from "next";
 import { Poppins, Roboto } from "next/font/google";
 
+
+
 import { PageAnalytics } from "./analytics";
+import { ContextWrapper } from "./context/state";
 import GoogleAnalytics from "./GoogleAnalytics";
+
+
 
 import "~/styles/globals.css";
 
+import { headers } from "next/headers";
+
+import { TRPCReactProvider } from "./providers";
 import Squid from "./SquidAnalitycs";
+
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -44,20 +53,25 @@ export const metadata: Metadata = {
 };
 
 export default function Layout(props: { children: React.ReactNode }) {
+  const { children } = props;
   return (
-    <html lang="en" className="h-full">
+    <html lang="en" className="h-full w-full">
       <GoogleAnalytics />
       <body
         className={[
           "font-poppins",
           "font-roboto",
           "theme-blue",
-          "h-screen bg-background",
+          "h-full",
+          "bg-background",
+          "w-full",
           poppins.variable,
           roboto.variable,
         ].join(" ")}
       >
-        {props.children}
+        <TRPCReactProvider headers={headers()}>
+          <ContextWrapper>{children}</ContextWrapper>
+        </TRPCReactProvider>
         <Squid />
       </body>
 
