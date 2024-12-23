@@ -61,11 +61,12 @@ import {
 } from "~/assets/masterclasses";
 
 const MauryPic =
-  "https://media.licdn.com/dms/image/D4E03AQEllFdlVv9JvQ/profile-displayphoto-shrink_800_800/0/1710177885632?e=1722470400&v=beta&t=ZytZa0Mnwzlgci64KNB9kux2hUyhB2iek-RsoF_Tc50";
+  "https://8ipgp5xevb8hkgbh.public.blob.vercel-storage.com/Images/MauryProfile-DQEwqsYnn5Zn6cYJmG4KRghwWCcGMe.jpg";
 
 export interface Video {
   id: number;
   image: StaticImageData;
+  number: string;
   title: string;
   name: string;
   videoUrl: string;
@@ -79,6 +80,7 @@ const videoCardData: Video[] = [
   {
     course: "Stories That Transform Marketing",
     id: 1,
+    number: "1",
     image: WhySalesStories,
     title: "Why Sales Stories Are Important",
     name: "Maury Rogow",
@@ -91,6 +93,7 @@ const videoCardData: Video[] = [
   {
     course: "Stories That Transform Marketing",
     id: 2,
+    number: "2",
     image: SelectingTheRight,
     title: "Selecting The Right Story",
     name: "Maury Rogow",
@@ -103,6 +106,7 @@ const videoCardData: Video[] = [
   {
     course: "Stories That Transform Marketing",
     id: 3,
+    number: "3",
     image: The10Commandments,
     title: "The 10 commandments of Great Sales Stories",
     name: "Maury Rogow",
@@ -115,6 +119,7 @@ const videoCardData: Video[] = [
   {
     course: "Stories That Transform Marketing",
     id: 4,
+    number: "4",
     image: The5Emotions,
     title: "The Five Emotions that Drive a Great Story",
     name: "Maury Rogow",
@@ -127,6 +132,7 @@ const videoCardData: Video[] = [
   {
     course: "Stories That Transform Marketing",
     id: 5,
+    number: "5",
     image: ElevatorPitch,
     title: "Elevator Pitch Story",
     name: "Maury Rogow",
@@ -151,6 +157,7 @@ const videoCardData: Video[] = [
   {
     course: "Stories That Transform Marketing",
     id: 7,
+    number: "7",
     image: OpeningAStory,
     title: "Opening a Story With SCIPAB",
     name: "Maury Rogow",
@@ -163,6 +170,7 @@ const videoCardData: Video[] = [
   {
     course: "Stories That Transform Marketing",
     id: 8,
+    number: "8",
     image: UnicornSales,
     title: "Unicorn Sales Story",
     name: "Maury Rogow",
@@ -175,6 +183,7 @@ const videoCardData: Video[] = [
   {
     course: "Stories That Transform Marketing",
     id: 9,
+    number: "9",
     image: Wiifm,
     title: "WIIFM-demo story",
     name: "Maury Rogow",
@@ -187,6 +196,7 @@ const videoCardData: Video[] = [
   {
     course: "Stories That Transform Marketing",
     id: 10,
+    number: "10",
     image: TheCloser,
     title: "The closer story",
     name: "Maury Rogow",
@@ -199,6 +209,7 @@ const videoCardData: Video[] = [
   {
     course: "Stories That Transform Marketing",
     id: 11,
+    number: "11",
     image: RetainAndGrow,
     title: "Retain and Grow-together stories",
     name: "Maury Rogow",
@@ -211,6 +222,7 @@ const videoCardData: Video[] = [
   {
     course: "Stories That Transform Marketing",
     id: 12,
+    number: "12",
     image: NextSteps,
     title: "Next Steps",
     name: "Maury Rogow",
@@ -224,6 +236,7 @@ const videoCardData: Video[] = [
   {
     course: "How to Create Stunning Videos",
     id: 1,
+    number: "1",
     image: CourseOverview,
     title: "Course Overview",
     name: "Maury Rogow",
@@ -236,6 +249,7 @@ const videoCardData: Video[] = [
   {
     course: "How to Create Stunning Videos",
     id: 2,
+    number: "2",
     image: WhyStoryWorks,
     title: "Why Story Works ",
     name: "Maury Rogow",
@@ -248,6 +262,7 @@ const videoCardData: Video[] = [
   {
     course: "How to Create Stunning Videos",
     id: 3,
+    number: "4",
     image: TheQuest,
     title: "The Quest",
     name: "Maury Rogow",
@@ -260,6 +275,7 @@ const videoCardData: Video[] = [
   {
     course: "How to Create Stunning Videos",
     id: 4,
+    number: "4",
     image: CustomerJourney,
     title: "Customer Journey Value Ladder",
     name: "Maury Rogow",
@@ -272,6 +288,7 @@ const videoCardData: Video[] = [
   {
     course: "How to Create Stunning Videos",
     id: 5,
+    number: "5",
     image: The10Lights,
     title: "The 10 Commandments",
     name: "Maury Rogow",
@@ -283,6 +300,7 @@ const videoCardData: Video[] = [
   {
     course: "How to Create Stunning Videos",
     id: 6,
+    number: "6",
     image: TheStuff,
     title: "The STUFF",
     name: "Maury Rogow",
@@ -295,6 +313,7 @@ const videoCardData: Video[] = [
   {
     course: "How to Create Stunning Videos",
     id: 7,
+    number: "7",
     image: TheCreativeBrief,
     title: "The Creative Brief",
     name: "Maury Rogow",
@@ -307,6 +326,7 @@ const videoCardData: Video[] = [
   {
     course: "How to Create Stunning Videos",
     id: 8,
+    number: "8",
     image: TheIdeaFactory,
     title: " The Idea Factory",
     name: "Maury Rogow",
@@ -318,6 +338,7 @@ const videoCardData: Video[] = [
   {
     course: "How to Create Stunning Videos",
     id: 9,
+    number: "9",
     image: ScriptTemplates,
     title: "Script Templates",
     name: "Maury Rogow",
@@ -330,6 +351,7 @@ const videoCardData: Video[] = [
   {
     course: "How to Create Stunning Videos",
     id: 10,
+    number: "10",
     image: TheArtOfPostProduction,
     title: "The Art Of Post Production",
     name: "Maury Rogow",
@@ -343,6 +365,7 @@ const videoCardData: Video[] = [
   {
     course: "How to Create Stunning Videos",
     id: 11,
+    number: "11",
     image: PostProductionSecrets,
     title: " Post Production Secrets",
     name: "Maury Rogow",
@@ -356,6 +379,7 @@ const videoCardData: Video[] = [
   {
     course: "Present and Win Your Audience",
     id: 1,
+    number: "1",
     image: Intro,
     title: "Intro",
     name: "Maury Rogow",
@@ -368,6 +392,7 @@ const videoCardData: Video[] = [
   {
     course: "Present and Win Your Audience",
     id: 2,
+    number: "2",
     image: WhatNotToDo,
     title: "What Not To Do",
     name: "Maury Rogow",
@@ -380,6 +405,7 @@ const videoCardData: Video[] = [
   {
     course: "Present and Win Your Audience",
     id: 3,
+    number: "3",
     image: Breakdown,
     title: "Breakdown",
     name: "Maury Rogow",
@@ -392,6 +418,7 @@ const videoCardData: Video[] = [
   {
     course: "Present and Win Your Audience",
     id: 4,
+    number: "4",
     image: DiscoverThePain,
     title: "Discover the Pain",
     name: "Maury Rogow",
@@ -404,6 +431,7 @@ const videoCardData: Video[] = [
   {
     course: "Present and Win Your Audience",
     id: 5,
+    number: "5",
     image: Empathy,
     title: "Empathy",
     name: "Maury Rogow",
@@ -416,6 +444,7 @@ const videoCardData: Video[] = [
   {
     course: "Present and Win Your Audience",
     id: 6,
+    number: "6",
     image: MountainTop,
     title: "Mountain Top",
     name: "Maury Rogow",
@@ -428,6 +457,7 @@ const videoCardData: Video[] = [
   {
     course: "Present and Win Your Audience",
     id: 7,
+    number: "7",
     image: OnTeam,
     title: "On Team",
     name: "Maury Rogow",
@@ -440,6 +470,7 @@ const videoCardData: Video[] = [
   {
     course: "Present and Win Your Audience",
     id: 8,
+    number: "8",
     image: Story,
     title: "Story",
     name: "Maury Rogow",
@@ -452,6 +483,7 @@ const videoCardData: Video[] = [
   {
     course: "Present and Win Your Audience",
     id: 9,
+    number: "9",
     image: MicroStories,
     title: "Micro Stories",
     name: "Maury Rogow",
@@ -464,6 +496,7 @@ const videoCardData: Video[] = [
   {
     course: "Present and Win Your Audience",
     id: 10,
+    number: "10",
     image: ExecDec,
     title: "Exec Dec",
     name: "Maury Rogow",
@@ -476,6 +509,7 @@ const videoCardData: Video[] = [
   {
     course: "Present and Win Your Audience",
     id: 11,
+    number: "11",
     image: Listen,
     title: "Listen",
     name: "Maury Rogow",
@@ -488,6 +522,7 @@ const videoCardData: Video[] = [
   {
     course: "Present and Win Your Audience",
     id: 12,
+    number: "12",
     image: LeverageBenefits,
     title: "Leverage Benefits",
     name: "Maury Rogow",
@@ -500,6 +535,7 @@ const videoCardData: Video[] = [
   {
     course: "Present and Win Your Audience",
     id: 13,
+    number: "13",
     image: NextSteps,
     title: "Next Steps",
     name: "Maury Rogow",
@@ -513,6 +549,7 @@ const videoCardData: Video[] = [
   {
     course: "Create with Hollywood Movie Storylines",
     id: 1,
+    number: "11",
     image: WhatMakesAGreatSpeech,
     title: "What Makes a Great Sales Pitch",
     name: "Maury Rogow",
@@ -525,6 +562,7 @@ const videoCardData: Video[] = [
   {
     course: "Create with Hollywood Movie Storylines",
     id: 2,
+    number: "2",
     image: TheElementsOfA,
     title: "The Elements of a Great Sales Pitch",
     name: "Maury Rogow",
@@ -537,6 +575,7 @@ const videoCardData: Video[] = [
   {
     course: "Create with Hollywood Movie Storylines",
     id: 3,
+    number: "3",
     image: EngageAndEstablish,
     title: "Engage and Establish to Gain Prospects",
     name: "Maury Rogow",
@@ -549,6 +588,7 @@ const videoCardData: Video[] = [
   {
     course: "Create with Hollywood Movie Storylines",
     id: 4,
+    number: "4",
     image: IdentifyYourProspect,
     title: "Identify your Prospect's Biggest Pain Point",
     name: "Maury Rogow",
@@ -561,6 +601,7 @@ const videoCardData: Video[] = [
   {
     course: "Create with Hollywood Movie Storylines",
     id: 5,
+    number: "5",
     image: CreateImpactInYour,
     title: "Create Impact in Your Sales Pitch",
     name: "Maury Rogow",
@@ -573,6 +614,7 @@ const videoCardData: Video[] = [
   {
     course: "Create with Hollywood Movie Storylines",
     id: 6,
+    number: "6",
     image: AimHigherThan,
     title: "Aim higher than closing the Deal",
     name: "Maury Rogow",
@@ -585,6 +627,7 @@ const videoCardData: Video[] = [
   {
     course: "Create with Hollywood Movie Storylines",
     id: 7,
+    number: "7",
     image: UpgradeYourPitch,
     title: "Upgrade your Pitch With Five Key Emotions",
     name: "Maury Rogow",
@@ -597,6 +640,7 @@ const videoCardData: Video[] = [
   {
     course: "Create with Hollywood Movie Storylines",
     id: 8,
+    number: "8",
     image: LeverageDifferent,
     title: "Leverage Different Learning Styles",
     name: "Maury Rogow",
@@ -609,6 +653,7 @@ const videoCardData: Video[] = [
   {
     course: "Create with Hollywood Movie Storylines",
     id: 9,
+    number: "9",
     image: SpiceUpYourPitch,
     title: "Spice Up Your Pitch",
     name: "Maury Rogow",
@@ -621,6 +666,7 @@ const videoCardData: Video[] = [
   {
     course: "Create with Hollywood Movie Storylines",
     id: 10,
+    number: "10",
     image: TurnObstacleInto,
     title: "Turn Obstacles Into Opportunities",
     name: "Maury Rogow",
@@ -633,6 +679,7 @@ const videoCardData: Video[] = [
   {
     course: "Create with Hollywood Movie Storylines",
     id: 11,
+    number: "11",
     image: ContinueTransforming,
     title: "Continue Transforming Your Great Pitch",
     name: "Maury Rogow",
@@ -646,6 +693,7 @@ const videoCardData: Video[] = [
   {
     course: "How to Build Rapport with Your Audience",
     id: 1,
+    number: "1",
     image: WhyIsBuildingRapportCriticalTo,
     title: "Why is Building Rapport Critical To Remote Selling",
     name: "Maury Rogow",
@@ -658,6 +706,7 @@ const videoCardData: Video[] = [
   {
     course: "How to Build Rapport with Your Audience",
     id: 2,
+    number: "2",
     image: LoseYourAgenda,
     title: "Lose Your Agenda",
     name: "Maury Rogow",
@@ -670,6 +719,7 @@ const videoCardData: Video[] = [
   {
     course: "How to Build Rapport with Your Audience",
     id: 3,
+    number: "3",
     image: ShutDownTheDistractions,
     title: "Shut Down the Distractions",
     name: "Maury Rogow",
@@ -682,6 +732,7 @@ const videoCardData: Video[] = [
   {
     course: "How to Build Rapport with Your Audience",
     id: 4,
+    number: "4",
     image: ControlTheRoom,
     title: "Control the Room",
     name: "Maury Rogow",
@@ -694,6 +745,7 @@ const videoCardData: Video[] = [
   {
     course: "How to Build Rapport with Your Audience",
     id: 5,
+    number: "5",
     image: WintThePerson,
     title: "Win the Person, Not the Sale",
     name: "Maury Rogow",
@@ -706,6 +758,7 @@ const videoCardData: Video[] = [
   {
     course: "How to Build Rapport with Your Audience",
     id: 6,
+    number: "6",
     image: BuildRapportByBeingReal,
     title: "Build Rapport By Being Real",
     name: "Maury Rogow",
@@ -718,6 +771,7 @@ const videoCardData: Video[] = [
   {
     course: "How to Build Rapport with Your Audience",
     id: 7,
+    number: "7",
     image: RelaxMirrorAnd,
     title: "Relax,Mirror, and Reiterate",
     name: "Maury Rogow",
@@ -730,6 +784,7 @@ const videoCardData: Video[] = [
   {
     course: "How to Build Rapport with Your Audience",
     id: 8,
+    number: "8",
     image: AskRelatableQuestions,
     title: "Ask Relatable Questions",
     name: "Maury Rogow",
@@ -742,6 +797,7 @@ const videoCardData: Video[] = [
   {
     course: "How to Build Rapport with Your Audience",
     id: 9,
+    number: "9",
     image: LearnToLove,
     title: "Learn to Love to Question Their Answers",
     name: "Maury Rogow",
@@ -754,6 +810,7 @@ const videoCardData: Video[] = [
   {
     course: "How to Build Rapport with Your Audience",
     id: 10,
+    number: "10",
     image: WhatToAvoid,
     title: "What to Avoid",
     name: "Maury Rogow",
@@ -766,6 +823,7 @@ const videoCardData: Video[] = [
   {
     course: "How to Build Rapport with Your Audience",
     id: 11,
+    number: "11",
     image: RapportBuildingIs,
     title: "Rapport Building is a Learned Trait",
     name: "Maury Rogow",

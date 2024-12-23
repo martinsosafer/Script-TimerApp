@@ -11,11 +11,19 @@ const schema = z.object({
     })
     .email()
     .min(1),
+  name: z.string().min(1).optional(),
 });
 
-export async function createUser(formData: FormData) {
+export async function createUser({
+  email,
+  name,
+}: {
+  email: string;
+  name?: string;
+}) {
   const validatedFields = schema.safeParse({
-    email: formData.get("email"),
+    email: email,
+    ...(name ? { name } : {}),
   });
 
   // Return early if the form data is invalid
@@ -26,7 +34,7 @@ export async function createUser(formData: FormData) {
   }
 
   await signIn("resend", {
-    email: formData.get("email"),
+    email: email,
     redirectTo: "/",
   });
 }

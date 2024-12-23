@@ -15,12 +15,8 @@ import { TRPCReactProvider } from "../providers";
 import MonthlySpecialProvider from "../providers/monthly-special-provider";
 import Footer from "./components/Footer/Footer";
 import Newnavbar from "./components/navbar";
+import TutorialWidget from "./components/tutorial-widget";
 
-/**
- * Since we're passing `headers()` to the `TRPCReactProvider` we need to
- * make the entire app dynamic. You can move the `TRPCReactProvider` further
- * down the tree (e.g. /dashboard and onwards) to make part of the app statically rendered.
- */
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
@@ -52,23 +48,24 @@ export default async function Layout(props: { children: React.ReactNode }) {
   const session = await auth();
   const monthlySpecials = await getSpecials();
 
-  console.log("monthly active", monthlySpecials);
-
   return (
     <div className="flex min-h-screen w-full flex-col justify-between bg-background">
+      <Head>
+        <meta name="referrer" content="origin" />
+      </Head>
       <TRPCReactProvider headers={headers()}>
-        <Head>
-          <meta name="referrer" content="origin" />
-        </Head>
         <Newnavbar
           signOut={signOutServer}
           signIn={signInServer}
           session={session}
         />
-        <MonthlySpecialProvider monthlySpecials={monthlySpecials}>
+        <TutorialWidget />
+        <MonthlySpecialProvider
+          monthlySpecials={monthlySpecials}
+          session={session}
+        >
           <div>{props.children}</div>
         </MonthlySpecialProvider>
-
         <Toaster />
         <Footer />
         <IdentifyAnalytics />

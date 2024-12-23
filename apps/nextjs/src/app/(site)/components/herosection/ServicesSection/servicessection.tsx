@@ -1,13 +1,18 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
+import { Button } from "@voiceai/ui";
+import { Card, CardContent } from "@voiceai/ui/@/components/ui/card";
 import {
   FileImageIcon,
   IconAudioLines,
   IconBookPlus,
   IconBrainCog,
+  IconChevronLeft,
+  IconChevronRight,
   IconClone,
   IconCopyright,
   IconEar,
@@ -18,9 +23,9 @@ import {
   IconMic2,
   IconNoAi,
 } from "@voiceai/ui/@/components/ui/icons";
+import { cn } from "@voiceai/ui/@/lib/utils";
 
-import { RevealText } from "~/app/animations/RevealText";
-import ArtificialIntelligenceRobot from "../../../../../../public/Artificial-Intelligence-2--Streamline-Brooklyn 1.png";
+import { poppins } from "~/app/fonts";
 import { servicesData } from "./servicesdata";
 
 const iconComponents = {
@@ -39,108 +44,133 @@ const iconComponents = {
   IconCopyright,
 };
 export default function ServiceSection() {
+  const [currentPage, setCurrentPage] = useState(0);
+  const [fade, setFade] = useState(false);
+  const [itemsPerPage, setItemsPerPage] = useState(3);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setItemsPerPage(window.innerWidth >= 1040 ? 6 : 3);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const totalPages = Math.ceil(servicesData.length / itemsPerPage);
+
+  const handlePageChange = (index: number) => {
+    setFade(true);
+    setTimeout(() => {
+      setCurrentPage(index);
+      setFade(false);
+    }, 300);
+  };
+
+  const handleNextPage = () => {
+    const newPage = (currentPage + 1) % totalPages;
+    handlePageChange(newPage);
+  };
+
+  const handlePrevPage = () => {
+    const newPage = (currentPage - 1 + totalPages) % totalPages;
+    handlePageChange(newPage);
+  };
+
+  const currentServices = servicesData.slice(
+    currentPage * itemsPerPage,
+    (currentPage + 1) * itemsPerPage,
+  );
+
   return (
-    <div className="relative mb-12 bg-slate-200 px-6 py-10 md:py-16">
-      <div className="mx-auto max-w-6xl">
-        <RevealText>
-          <div className=" justify-center text-center align-middle">
-            <h2 className="mb-8 ml-32 text-center font-poppins text-4xl font-semibold md:text-4xl">
-              <span className="block text-center text-black">
-                You have a project
-              </span>
-              <span className="text-center text-primary">
-                Bring it to life with custom AI built for scripts
-              </span>
-            </h2>
-          </div>
-        </RevealText>
+    <div
+      className={`${poppins.className} h-full w-full items-center justify-center bg-[#E2E8F0] py-[32px] lg:py-[60px] `}
+    >
+      <div className="mx-auto h-[68px] w-[263px] lg:h-[50px] lg:w-[478px] ">
+        <h2 className="text-cp-primary text-center text-[28px] font-bold leading-[34px]  lg:whitespace-nowrap lg:text-[42px] lg:leading-[50px] ">
+          Bring Your Ideas to Life
+        </h2>
+      </div>
+      <div className=" mx-auto  mt-6 h-[305px] w-[312px] flex-col items-center justify-center lg:mx-auto lg:h-[467px] lg:w-[1274px] lg:items-center lg:justify-center lg:px-[83px] ">
+        <div
+          className={cn(
+            "mt-8 grid grid-cols-1 gap-4 lg:mt-[48px] lg:grid-cols-2 lg:gap-6 lg:px-[120px]",
+            fade ? "opacity-0 transition-opacity duration-300" : "opacity-100",
+          )}
+        >
+          {currentServices.map((service) => {
+            const Icon = iconComponents[service.icon] || (() => null);
 
-        <div className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-4">
-          <div className=" -mt-4 flex items-center justify-center self-start md:row-span-3">
-            {/* Ensures the image starts at the top, aligned with other columns */}
-            <Image
-              src={ArtificialIntelligenceRobot}
-              alt="AI Robot"
-              width={800}
-              height={880}
-              className=" rounded-lg" // Slightly taller than other columns
-            />
-          </div>
-
-          <div className="grid gap-2">
-            {servicesData
-              .slice(0, 4)
-              .map(({ id, icon, title, description }) => {
-                const IconComponent = iconComponents[icon];
-                return (
-                  <RevealText key={id}>
-                    <div className="flex h-full w-[230px] flex-col rounded-lg border border-black bg-white px-4 shadow-sm transition-shadow hover:shadow-md">
-                      <div className="flex flex-grow items-start gap-2">
-                        <div className="flex-shrink-0">
-                          <IconComponent className="h-8 w-8 text-tertiary" />
-                        </div>
-                        <div>
-                          <h4 className="font-poppins text-sm font-semibold text-primary">
-                            {title}
-                          </h4>
-                          <p className="text-xs text-gray-600">{description}</p>
-                        </div>
+            return (
+              <Card
+                key={service.id}
+                className="h-[94px] w-[312px] rounded-lg border-none shadow-sm transition-shadow hover:shadow-md lg:flex lg:h-[125px] lg:w-[417px] lg:items-center lg:justify-center"
+              >
+                <Link
+                  href={service.link}
+                  target="_blank"
+                  className="h-full w-full"
+                >
+                  <CardContent className="flex h-[95px] items-center p-[21px] lg:h-full lg:w-full lg:p-[28px]">
+                    <div className="flex w-full items-start gap-3">
+                      <Icon className="text-cp-secondary h-[52px] w-[52px] flex-shrink-0 lg:h-[70px] lg:w-[70px]" />
+                      <div className="mt-1 flex flex-col gap-1 lg:mt-0">
+                        <h3 className="text-cp-primary text-[15px] font-bold leading-[21px] lg:text-[20px] lg:leading-[28px]">
+                          {service.title}
+                        </h3>
+                        <p className="text-[16px] font-normal leading-[17px] text-black lg:text-[16px] lg:leading-[22.5px]">
+                          {service.description}
+                        </p>
                       </div>
                     </div>
-                  </RevealText>
-                );
-              })}
+                  </CardContent>
+                </Link>
+              </Card>
+            );
+          })}
+        </div>
+      </div>
+      <div className="mx-auto mt-6 flex items-center justify-center gap-4 lg:mt-[16px]">
+        {/* Mobile navigation with dots */}
+        <div className="flex items-center justify-center gap-4">
+          <Button
+            variant="outline"
+            size="icon"
+            className="h-10 w-10 rounded-full"
+            onClick={handlePrevPage}
+          >
+            <IconChevronLeft className="h-6 w-6" />
+            <span className="sr-only">Previous page</span>
+          </Button>
+
+          {/* Pagination dots */}
+          <div className="flex items-center justify-center gap-2">
+            {Array.from({ length: totalPages }).map((_, index) => (
+              <Button
+                key={index}
+                variant="ghost"
+                size="icon"
+                className={cn(
+                  "h-3 w-3 rounded-full p-0",
+                  currentPage === index ? "bg-blue-600" : "bg-blue-200",
+                )}
+                onClick={() => handlePageChange(index)}
+              >
+                <span className="sr-only">Page {index + 1}</span>
+              </Button>
+            ))}
           </div>
 
-          <div className="grid gap-2">
-            {servicesData
-              .slice(4, 8)
-              .map(({ id, icon, title, description }) => {
-                const IconComponent = iconComponents[icon];
-                return (
-                  <RevealText key={id}>
-                    <div className="flex h-full w-[230px] flex-col rounded-lg border border-black bg-white px-4 shadow-sm transition-shadow hover:shadow-md">
-                      <div className="flex flex-grow items-start gap-2">
-                        <div className="flex-shrink-0">
-                          <IconComponent className="h-8 w-8 text-tertiary" />
-                        </div>
-                        <div>
-                          <h4 className="font-poppins text-sm font-semibold text-primary">
-                            {title}
-                          </h4>
-                          <p className="text-xs text-gray-600">{description}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </RevealText>
-                );
-              })}
-          </div>
-
-          <div className="grid gap-2">
-            {servicesData
-              .slice(8, 12)
-              .map(({ id, icon, title, description }) => {
-                const IconComponent = iconComponents[icon];
-                return (
-                  <RevealText key={id}>
-                    <div className="flex h-full w-[230px] flex-col rounded-lg border border-black bg-white px-4 shadow-sm transition-shadow hover:shadow-md">
-                      <div className="flex flex-grow items-start gap-2">
-                        <div className="flex-shrink-0">
-                          <IconComponent className="h-8 w-8 text-tertiary" />
-                        </div>
-                        <div>
-                          <h4 className="font-poppins text-sm font-semibold text-primary">
-                            {title}
-                          </h4>
-                          <p className="text-xs text-gray-600">{description}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </RevealText>
-                );
-              })}
-          </div>
+          <Button
+            variant="outline"
+            size="icon"
+            className="h-10 w-10 rounded-full"
+            onClick={handleNextPage}
+          >
+            <IconChevronRight className="h-6 w-6" />
+            <span className="sr-only">Next page</span>
+          </Button>
         </div>
       </div>
     </div>

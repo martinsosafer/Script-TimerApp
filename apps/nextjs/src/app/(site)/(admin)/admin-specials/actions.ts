@@ -5,9 +5,6 @@ import { db, eq, schema } from "@voiceai/db";
 import type { MonthlySpecial } from "./types";
 
 export async function addSpecial(payload: MonthlySpecial) {
-  // console.log("raw start date", start_date);
-  // console.log("IS ACTIVE", is_active);
-
   const special = await db
     .insert(schema.monthlySpecials)
     .values({

@@ -1,18 +1,13 @@
-import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-import { auth, signIn } from "@voiceai/auth";
-import { cn } from "@voiceai/ui/@/lib/utils";
+import { auth } from "@voiceai/auth";
 
-import coverImg from "../../../public/login_photo.png";
+import "~/styles/globals.css";
+
 import Logo from "../(site)/components/logo";
 import AnimatedGifs from "./animtadgifs";
-import { LoginWithEmailForm } from "./email-login";
-import LoginForm from "./form-login";
 import FormSwitcher from "./formswitcher";
-import RegisterForm from "./register";
-import RegisterFormNew from "./register";
 import SignUpForm from "./signupform";
 
 export default async function SignIn() {
@@ -25,7 +20,7 @@ export default async function SignIn() {
   return (
     <div className="container relative min-h-full flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
       {/* Show AnimatedGifs only on medium and larger screens */}
-      <div className="flex hidden h-full w-full items-center justify-center lg:block">
+      <div className="hidden h-full w-full items-center justify-center lg:block">
         <AnimatedGifs />
       </div>
 

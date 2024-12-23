@@ -5,8 +5,10 @@ import { db, eq, schema } from "@voiceai/db";
 import { elevenLabsCredit } from "@voiceai/db/schema/11LabsCredits";
 
 function addWatermark(message: string) {
-  const watermark = "created by script timer";
-  return `${message} - ${watermark}`;
+  const prefix = "Voice test by Co-Producer";
+  const suffix = "Thank you for testing Co-Producer";
+
+  return `${prefix} - ${message} -  - ${suffix}`;
 }
 
 export async function POST(req: { json: () => any }) {
@@ -32,10 +34,10 @@ export async function POST(req: { json: () => any }) {
     });
 
     // Determine max message length based on subscription
-    let maxMessageLength = 500; // Default maximum message length for free users
+    let maxMessageLength = 1000; // Default maximum message length for free users
 
     if (subscription?.status === "FREE_TRIAL") {
-      maxMessageLength = 1000; // Updated maximum message length for free trials
+      maxMessageLength = 1600; // Updated maximum message length for free trials
     } else if (subscription?.status === "STUDENT") {
       maxMessageLength = 2000;
     } else if (subscription?.status === "CREATOR") {

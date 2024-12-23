@@ -1,8 +1,7 @@
-import Link from "next/link";
-
 import { signIn } from "@voiceai/auth";
 import { cn } from "@voiceai/ui/@/lib/utils";
 
+import { LoginWithEmailForm } from "../email-login";
 import LoginForm from "../form-login";
 
 export default function SignUpForm() {
@@ -10,10 +9,8 @@ export default function SignUpForm() {
     <div className={cn("grid gap-2")}>
       <LoginForm />
 
-      <div className="relative">
-        <div className="text-md relative flex justify-center">
-          <span className="bg-background px-2 text-black">or</span>
-        </div>
+      <div className="text-md flex justify-center">
+        <span className="text-md bg-background px-2 text-black">or</span>
       </div>
 
       <form
@@ -53,6 +50,10 @@ export default function SignUpForm() {
           </span>
         </button>
       </form>
+      <div className="text-md flex justify-center">
+        <span className="text-md bg-background px-2 text-black">or</span>
+      </div>
+      <LoginWithEmailForm />
     </div>
   );
 }

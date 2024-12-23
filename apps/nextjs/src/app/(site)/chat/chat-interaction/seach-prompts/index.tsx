@@ -65,6 +65,7 @@ export default function SearchPrompts({
         value={searchValue}
         onChange={(e) => setSearchValue(e.currentTarget.value)}
         className="w-full outline-none"
+        placeholder="What are you writing?"
       />
       {searchValue.length > 0 && filteredPrompts.length > 0 && (
         <div className="absolute left-0 top-14 z-20 flex max-h-[500px] w-96 flex-col overflow-y-auto border border-gray-400 bg-white">

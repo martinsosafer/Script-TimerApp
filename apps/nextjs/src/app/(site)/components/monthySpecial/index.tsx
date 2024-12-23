@@ -45,7 +45,7 @@ export default function MonthlySpecial({
       <span className="text-[14px]">{description}</span>
       {type === "promo" && (
         <span className="text-[14px]">
-          Add one-time-promotion code:{" "}
+          Use one-time-promotion code:{" "}
           <span className="text-cp-primary font-bold">{promo_code}</span>
         </span>
       )}
