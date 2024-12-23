@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { upload } from "@vercel/blob/client";
 
 import { poppins } from "~/app/fonts";
 import { formatTime } from "~/lib/formattime";
@@ -10,8 +11,15 @@ declare global {
     webkitSpeechRecognition: any;
   }
 }
+interface WebcamRecorderProps {
+  userId: string | undefined;
+  savedWebcam: { url: string; filename: string; uploadedAt: string }[];
+}
 
-export default function MicrophoneAndWebcamComponent() {
+export default function MicrophoneAndWebcamComponent({
+  userId,
+  savedWebcam,
+}: WebcamRecorderProps) {
   const [isRecording, setIsRecording] = useState(false);
   const [transcript, setTranscript] = useState("");
   const [completeTranscript, setCompleteTranscript] = useState("");
@@ -23,7 +31,7 @@ export default function MicrophoneAndWebcamComponent() {
   const [summary, setSummary] = useState("");
   const [bulletPoints, setBulletPoints] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [uploadUrl, setUploadUrl] = useState<string | null>(null);
   const recognitionRef = useRef<any>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
@@ -88,7 +96,25 @@ export default function MicrophoneAndWebcamComponent() {
         setIsRecording(false);
       });
   };
+  const uploadToVercelBlob = async (blob: Blob) => {
+    try {
+      const filename = `RecordedWebcam/${userId}/recording-${Date.now()}.wav`;
+      const formData = new FormData();
+      formData.append("file", blob, filename);
 
+      const uploadedFile = await upload(filename, blob, {
+        access: "public",
+        handleUploadUrl: "/api/upload",
+      });
+
+      setUploadUrl(uploadedFile.url);
+      return uploadedFile.url;
+    } catch (error) {
+      console.error("Error uploading to Vercel Blob:", error);
+      alert("Failed to upload recording. Please try again.");
+      return null;
+    }
+  };
   const stopRecording = () => {
     if (recognitionRef.current) recognitionRef.current.stop();
     if (mediaRecorderRef.current) mediaRecorderRef.current.stop();
@@ -146,6 +172,20 @@ export default function MicrophoneAndWebcamComponent() {
     alert("Transcript copied to clipboard!");
   };
 
+  const handleSave = async () => {
+    if (audioBlob) {
+      setIsLoading(true);
+      const uploadedUrl = await uploadToVercelBlob(audioBlob);
+      if (uploadedUrl) {
+        console.log("Recording uploaded successfully:", uploadedUrl);
+        alert("Recording saved successfully!");
+      }
+      setIsLoading(false);
+    } else {
+      alert("No recording to save. Please record something first.");
+    }
+  };
+
   return (
     <div
       className={`mb-20 flex h-full w-full items-center justify-center bg-gray-100 ${poppins.className}`}
@@ -199,7 +239,19 @@ export default function MicrophoneAndWebcamComponent() {
             placeholder="Transcript will appear here..."
           />
         </div>
-
+        {uploadUrl && (
+          <div className="mt-2 text-sm text-gray-600">
+            Recording uploaded successfully!
+            <a
+              href={uploadUrl}
+              className="ml-2 text-blue-500 hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View uploaded file
+            </a>
+          </div>
+        )}
         <div className="mt-6 flex justify-center space-x-4">
           <button
             onClick={handleGenerateSummary}
@@ -220,6 +272,13 @@ export default function MicrophoneAndWebcamComponent() {
             className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-400"
           >
             Copy Transcript
+          </button>
+          <button
+            onClick={handleSave}
+            className="rounded-md bg-green-500 px-4 py-2 text-white hover:bg-green-400"
+            disabled={isLoading}
+          >
+            Save Recording
           </button>
           {videoUrl && (
             <a
@@ -249,6 +308,26 @@ export default function MicrophoneAndWebcamComponent() {
             </ul>
           </div>
         )}
+         <div className="mt-8">
+          <h3 className="mb-4 text-lg font-semibold">Webcam Recording History</h3>
+          {savedWebcam.length > 0 ? (
+            <ul className="space-y-4">
+              {savedWebcam.map((recording, index) => (
+                <li key={index} className="rounded-lg bg-gray-50 p-4">
+                  <div className="mb-2 flex items-center justify-between">
+                    <span className="font-medium">{recording.filename}</span>
+                    <span className="text-sm text-gray-500">
+                      {new Date(recording.uploadedAt).toLocaleString()}
+                    </span>
+                  </div>
+                  <video controls src={recording.url} className="w-full" />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-gray-500">No saved webcam recordings yet.</p>
+          )}
+        </div>
       </div>
     </div>
   );

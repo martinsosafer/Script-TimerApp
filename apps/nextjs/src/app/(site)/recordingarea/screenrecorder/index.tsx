@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import { upload } from "@vercel/blob/client";
 import Draggable from "react-draggable";
 import { useReactMediaRecorder } from "react-media-recorder";
 import Webcam from "react-webcam";
@@ -9,6 +10,7 @@ import { Button } from "@voiceai/ui";
 import {
   IconCameraVideo,
   IconCircleStop,
+  IconSave,
   IconSilence,
   IconStop,
 } from "@voiceai/ui/@/components/ui/icons";
@@ -20,7 +22,15 @@ declare global {
   }
 }
 
-export default function ScreenRecorder() {
+interface ScreenRecorderProps {
+  userId: string | undefined;
+  savedScreen: { url: string; filename: string; uploadedAt: string }[];
+}
+
+export default function ScreenRecorder({
+  userId,
+  savedScreen,
+}: ScreenRecorderProps) {
   const {
     status,
     startRecording,
@@ -28,6 +38,7 @@ export default function ScreenRecorder() {
     pauseRecording,
     resumeRecording,
     mediaBlobUrl,
+    clearBlobUrl,
   } = useReactMediaRecorder({ screen: true, audio: true });
 
   const webcamRef = useRef<Webcam | null>(null);
@@ -37,6 +48,7 @@ export default function ScreenRecorder() {
   const [summary, setSummary] = useState("");
   const [bulletPoints, setBulletPoints] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [uploadUrl, setUploadUrl] = useState<string | null>(null);
 
   const recognitionRef = useRef<any>(null);
 
@@ -185,6 +197,45 @@ export default function ScreenRecorder() {
     }
   };
 
+  const uploadToVercelBlob = async (blob: Blob) => {
+    try {
+      const filename = `RecordedScreen/${userId}/recording-${Date.now()}.mp4`;
+      const uploadedFile = await upload(filename, blob, {
+        access: "public",
+        handleUploadUrl: "/api/upload",
+      });
+
+      setUploadUrl(uploadedFile.url);
+      return uploadedFile.url;
+    } catch (error) {
+      console.error("Error uploading to Vercel Blob:", error);
+      alert("Failed to upload recording. Please try again.");
+      return null;
+    }
+  };
+
+  const handleSave = async () => {
+    if (mediaBlobUrl) {
+      setIsLoading(true);
+      try {
+        const response = await fetch(mediaBlobUrl);
+        const blob = await response.blob();
+        const uploadedUrl = await uploadToVercelBlob(blob);
+        if (uploadedUrl) {
+          console.log("Recording uploaded successfully:", uploadedUrl);
+          alert("Recording saved successfully!");
+        }
+      } catch (error) {
+        console.error("Error saving recording:", error);
+        alert("Failed to save recording. Please try again.");
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      alert("No recording to save. Please record something first.");
+    }
+  };
+
   return (
     <div className="relative mx-auto flex h-full max-w-xl flex-col items-center rounded-lg bg-gray-100 p-6 shadow-lg">
       <h2 className="mb-4 text-center text-2xl font-semibold">
@@ -209,10 +260,16 @@ export default function ScreenRecorder() {
           Stop Recording
         </Button>
         {mediaBlobUrl && (
-          <Button onClick={downloadRecording} variant="default">
-            <PlayIcon className="mr-2 h-4 w-4" />
-            Download Recording
-          </Button>
+          <>
+            <Button onClick={downloadRecording} variant="default">
+              <PlayIcon className="mr-2 h-4 w-4" />
+              Download Recording
+            </Button>
+            <Button onClick={handleSave} variant="default" disabled={isLoading}>
+              <IconSave className="mr-2 h-4 w-4" />
+              Save Recording
+            </Button>
+          </>
         )}
       </div>
 
@@ -288,6 +345,41 @@ export default function ScreenRecorder() {
             className="h-full w-full rounded-full object-cover"
           />
         </Draggable>
+      </div>
+
+      {/* Upload URL Display */}
+      {uploadUrl && (
+        <div className="mt-4 text-sm text-gray-600">
+          Recording uploaded successfully!
+          <a
+            href={uploadUrl}
+            className="ml-2 text-blue-500 hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View uploaded file
+          </a>
+        </div>
+      )}
+      <div className="mt-8">
+        <h3 className="mb-4 text-lg font-semibold">Webcam Recording History</h3>
+        {savedScreen.length > 0 ? (
+          <ul className="space-y-4">
+            {savedScreen.map((recording, index) => (
+              <li key={index} className="rounded-lg bg-gray-50 p-4">
+                <div className="mb-2 flex items-center justify-between">
+                  <span className="font-medium">{recording.filename}</span>
+                  <span className="text-sm text-gray-500">
+                    {new Date(recording.uploadedAt).toLocaleString()}
+                  </span>
+                </div>
+                <video controls src={recording.url} className="w-full" />
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-gray-500">No saved webcam recordings yet.</p>
+        )}
       </div>
     </div>
   );

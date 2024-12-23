@@ -26,7 +26,36 @@ async function getSavedAudios(userId: string) {
     return [];
   }
 }
-
+async function getSavedWebcam(userId: string) {
+  try {
+    const { blobs } = await list({
+      prefix: `RecordedWebcam/${userId}/`,
+    });
+    return blobs.map((blob) => ({
+      url: blob.url,
+      filename: blob.pathname.split("/").pop(),
+      uploadedAt: blob.uploadedAt,
+    }));
+  } catch (error) {
+    console.error("Error fetching saved audios:", error);
+    return [];
+  }
+}
+async function getSavedScreen(userId: string) {
+  try {
+    const { blobs } = await list({
+      prefix: `RecordedScreen/${userId}/`,
+    });
+    return blobs.map((blob) => ({
+      url: blob.url,
+      filename: blob.pathname.split("/").pop(),
+      uploadedAt: blob.uploadedAt,
+    }));
+  } catch (error) {
+    console.error("Error fetching saved audios:", error);
+    return [];
+  }
+}
 export default async function IndexPage() {
   const session = await auth();
   const userId = session?.user.id;
@@ -35,7 +64,15 @@ export default async function IndexPage() {
   if (userId) {
     savedAudios = await getSavedAudios(userId);
   }
-  console.log(savedAudios);
+  let savedWebcam = [];
+  if (userId) {
+    savedWebcam = await getSavedWebcam(userId);
+  }
+  let savedScreen = [];
+  if (userId) {
+    savedScreen = await getSavedScreen(userId);
+  }
+
   return (
     <div className="flex min-h-screen w-full items-center justify-center ">
       <div className="flex w-[1024px] flex-col py-10">
@@ -47,7 +84,12 @@ export default async function IndexPage() {
             Capture your voice, video, and/or screen record
           </p>
         </div>
-        <ModeSelectorRecorder userId={userId} savedAudios={savedAudios} />
+        <ModeSelectorRecorder
+          userId={userId}
+          savedAudios={savedAudios}
+          savedWebcam={savedWebcam}
+          savedScreen={savedScreen}
+        />
       </div>
     </div>
   );

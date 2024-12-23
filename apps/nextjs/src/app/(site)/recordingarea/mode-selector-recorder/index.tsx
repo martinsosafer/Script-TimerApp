@@ -9,10 +9,12 @@ import WebcamRecorder from "../webcamrecorder";
 interface SelectorProps {
   initialMode?: "audio" | "video" | "screen";
   userId: string | undefined;
-  savedAudios: SavedAudio[];
+  savedAudios: SavedBlob[];
+  savedScreen: SavedBlob[];
+  savedWebcam: SavedBlob[];
 }
 
-interface SavedAudio {
+interface SavedBlob {
   url: string;
   filename: string;
   uploadedAt: string;
@@ -22,6 +24,8 @@ export default function ModeSelectorRecorder({
   initialMode = "audio",
   userId,
   savedAudios,
+  savedWebcam,
+  savedScreen,
 }: SelectorProps) {
   const [activeMode, setActiveMode] = useState(initialMode);
 
@@ -36,9 +40,9 @@ export default function ModeSelectorRecorder({
           <MicrophoneComponent userId={userId} savedAudios={savedAudios} />
         );
       case "video":
-        return <WebcamRecorder />;
+        return <WebcamRecorder userId={userId} savedWebcam={savedWebcam} />;
       case "screen":
-        return <ScreenRecorder />;
+        return <ScreenRecorder userId={userId} savedScreen={savedScreen} />;
       default:
         return (
           <MicrophoneComponent userId={userId} savedAudios={savedAudios} />
