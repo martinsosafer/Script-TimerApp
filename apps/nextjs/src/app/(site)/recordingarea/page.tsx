@@ -4,8 +4,6 @@ import { list } from "@vercel/blob";
 import { auth } from "@voiceai/auth";
 
 import ModeSelectorRecorder from "./mode-selector-recorder";
-import Recorder from "./recorder";
-import ScreenRecorder from "./screenrecorder";
 
 export const metadata: Metadata = {
   title: "Recording Area",

@@ -3,8 +3,10 @@
 import { useState } from "react";
 
 import MicrophoneComponent from "../recorder";
-import ScreenRecorder from "../screenrecorder";
+import ScreenRecorder from "../screenrecorder/index";
 import WebcamRecorder from "../webcamrecorder";
+
+console.log("ScreenRecorder:", ScreenRecorder);
 
 interface SelectorProps {
   initialMode?: "audio" | "video" | "screen";

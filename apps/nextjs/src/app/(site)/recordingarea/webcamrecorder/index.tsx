@@ -308,8 +308,10 @@ export default function MicrophoneAndWebcamComponent({
             </ul>
           </div>
         )}
-         <div className="mt-8">
-          <h3 className="mb-4 text-lg font-semibold">Webcam Recording History</h3>
+        <div className="mt-8">
+          <h3 className="mb-4 text-lg font-semibold">
+            Webcam Recording History
+          </h3>
           {savedWebcam.length > 0 ? (
             <ul className="space-y-4">
               {savedWebcam.map((recording, index) => (
