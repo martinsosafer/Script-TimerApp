@@ -3,10 +3,8 @@
 import { useState } from "react";
 
 import MicrophoneComponent from "../recorder";
-import ScreenRecorder from "../screenrecorder/index";
+import ShareScreenRecorder from "../sharescreenrecorder";
 import WebcamRecorder from "../webcamrecorder";
-
-console.log("ScreenRecorder:", ScreenRecorder);
 
 interface SelectorProps {
   initialMode?: "audio" | "video" | "screen";
@@ -44,7 +42,9 @@ export default function ModeSelectorRecorder({
       case "video":
         return <WebcamRecorder userId={userId} savedWebcam={savedWebcam} />;
       case "screen":
-        return <ScreenRecorder userId={userId} savedScreen={savedScreen} />;
+        return (
+          <ShareScreenRecorder userId={userId} savedScreen={savedScreen} />
+        );
       default:
         return (
           <MicrophoneComponent userId={userId} savedAudios={savedAudios} />

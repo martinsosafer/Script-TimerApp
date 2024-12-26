@@ -34,6 +34,10 @@ export default function MicrophoneComponent({
   const [bulletPoints, setBulletPoints] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [uploadUrl, setUploadUrl] = useState<string | null>(null);
+  const [sortedWords, setSortedWords] = useState([]);
+  const [mainTheme, setMainTheme] = useState([]);
+  const [cutDowns, setCutDowns] = useState([]);
+  const [soundBites, setSoundBites] = useState("");
   const recognitionRef = useRef<any>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
@@ -187,7 +191,7 @@ export default function MicrophoneComponent({
   const handleGenerateSummary = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch("/api/getSummary", {
+      const response = await fetch("/api/getRecorderTools", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -209,7 +213,7 @@ export default function MicrophoneComponent({
   const handleGenerateBulletPoints = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch("/api/getSummary", {
+      const response = await fetch("/api/getRecorderTools", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -227,7 +231,97 @@ export default function MicrophoneComponent({
     }
     setIsLoading(false);
   };
+  const handleSortWords = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/getRecorderTools", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          transcript: completeTranscript,
+          type: "word-sorter",
+        }),
+      });
+      const data = await response.json();
+      setSortedWords(data.content);
+    } catch (error) {
+      console.error("Error sorting words:", error);
+      alert("Failed to sort words. Please try again.");
+    }
+    setIsLoading(false);
+  };
+  const handleMainTheme = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/getRecorderTools", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          transcript: completeTranscript,
+          type: "main-topic",
+        }),
+      });
+      const data = await response.json();
+      setMainTheme(data.content); // Assuming you have a `mainTheme` state
+    } catch (error) {
+      console.error("Error fetching main theme:", error);
+      alert("Failed to fetch the main theme. Please try again.");
+    }
+    setIsLoading(false);
+  };
+  const handleUsefulCutdowns = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/getRecorderTools", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          transcript: completeTranscript,
+          type: "useful-cutdowns",
+        }),
+      });
+      const data = await response.json();
 
+      // Check if data.content is an array
+      if (Array.isArray(data.content)) {
+        setCutDowns(data.content);
+      } else {
+        console.error("Received content is not an array:", data.content);
+        alert("Unexpected response format. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error fetching useful cutdowns:", error);
+      alert("Failed to fetch useful cutdowns. Please try again.");
+    }
+    setIsLoading(false);
+  };
+  const handleGenerateSoundBites = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/getRecorderTools", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          transcript: completeTranscript,
+          type: "sound-bites",
+        }),
+      });
+      const data = await response.json();
+      setSoundBites(data.content);
+    } catch (error) {
+      console.error("Error generating sound bites:", error);
+      alert("Failed to generate sound bites. Please try again.");
+    }
+    setIsLoading(false);
+  };
   return (
     <div
       className={`mb-20 flex h-full w-full items-center justify-center  bg-gray-100 ${poppins.className}`}
@@ -352,6 +446,34 @@ export default function MicrophoneComponent({
               >
                 Generate Bullet Points
               </button>
+              <button
+                onClick={handleSortWords}
+                className="rounded-md bg-indigo-500 px-4 py-2 text-white hover:bg-indigo-400"
+                disabled={isLoading}
+              >
+                {isLoading ? "Sorting..." : "Word Sorter"}
+              </button>
+              <button
+                onClick={handleMainTheme}
+                className="rounded-md bg-indigo-500 px-4 py-2 text-white hover:bg-indigo-400"
+                disabled={isLoading}
+              >
+                {isLoading ? "Sorting..." : "Main Theme"}
+              </button>
+              <button
+                onClick={handleUsefulCutdowns}
+                className="rounded-md bg-indigo-500 px-4 py-2 text-white hover:bg-indigo-400"
+                disabled={isLoading}
+              >
+                {isLoading ? "Sorting..." : "Cut Downs"}
+              </button>
+              <button
+                onClick={handleGenerateSoundBites}
+                className="rounded-md bg-indigo-500 px-4 py-2 text-white hover:bg-indigo-400"
+                disabled={isLoading}
+              >
+                {isLoading ? "Sorting..." : "Sound Bites"}
+              </button>
             </div>
           </div>
         )}
@@ -375,7 +497,44 @@ export default function MicrophoneComponent({
             </ul>
           </div>
         )}
-
+        {sortedWords.length > 0 && (
+          <div className="mt-4">
+            <h3 className="text-lg font-semibold">Sorted Words:</h3>
+            <ul className="mt-2 list-disc pl-5">
+              {sortedWords.map((word, index) => (
+                <li key={index}>{word}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {mainTheme && (
+          <div className="mt-4">
+            <h3 className="text-lg font-semibold">Main Theme:</h3>
+            <p className="mt-2">{mainTheme}</p>
+          </div>
+        )}
+        {Array.isArray(cutDowns) && cutDowns.length > 0 && (
+          <div className="mt-4">
+            <h3 className="text-lg font-semibold">Useful Cutfowns:</h3>
+            <ul className="mt-2 list-disc pl-5">
+              {cutDowns.map((cutdown, index) => (
+                <li key={index}>{cutdown}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {soundBites && (
+          <div className="mt-4">
+            <h3 className="text-lg font-semibold">Sound Bites:</h3>
+            <div className="mt-2 space-y-2">
+              {soundBites.split("\n").map((bite, index) => (
+                <p key={index} className="rounded-lg bg-gray-50 p-2">
+                  {bite}
+                </p>
+              ))}
+            </div>
+          </div>
+        )}
         <div className="mt-8">
           <h3 className="mb-4 text-lg font-semibold">Recording History</h3>
           {savedAudios.length > 0 ? (

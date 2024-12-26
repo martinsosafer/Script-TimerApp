@@ -1,4 +1,3 @@
-// Importing env files here to validate on build
 import "./src/env.mjs";
 import "@voiceai/auth/env.mjs";
 
@@ -37,6 +36,17 @@ const config = {
         permanent: true,
       },
     ];
+  },
+
+  experimental: {
+    serverActions: true,
+  },
+
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.resolve.alias["@google-cloud/speech"] = "@google-cloud/speech";
+    }
+    return config;
   },
 };
 
