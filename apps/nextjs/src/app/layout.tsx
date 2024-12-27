@@ -1,21 +1,17 @@
 import type { Metadata } from "next";
 import { Poppins, Roboto } from "next/font/google";
 
-
-
 import { PageAnalytics } from "./analytics";
 import { ContextWrapper } from "./context/state";
 import GoogleAnalytics from "./GoogleAnalytics";
-
-
 
 import "~/styles/globals.css";
 
 import { headers } from "next/headers";
 
+import MetaPixel from "./MetaPixel";
 import { TRPCReactProvider } from "./providers";
 import Squid from "./SquidAnalitycs";
-
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -57,6 +53,7 @@ export default function Layout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" className="h-full w-full">
       <GoogleAnalytics />
+      <MetaPixel />
       <body
         className={[
           "font-poppins",
