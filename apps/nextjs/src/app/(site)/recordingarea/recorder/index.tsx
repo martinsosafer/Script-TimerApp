@@ -38,10 +38,12 @@ export default function MicrophoneComponent({
   const [mainTheme, setMainTheme] = useState([]);
   const [cutDowns, setCutDowns] = useState([]);
   const [soundBites, setSoundBites] = useState("");
+  const [isProcessingWhisper, setIsProcessingWhisper] = useState(false);
   const recognitionRef = useRef<any>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+
   const startRecording = () => {
     setTranscript("");
     setCompleteTranscript("");
@@ -85,16 +87,19 @@ export default function MicrophoneComponent({
     navigator.mediaDevices
       .getUserMedia({ audio: true })
       .then((stream) => {
-        mediaRecorderRef.current = new MediaRecorder(stream);
+        // Specify the MIME type explicitly for WAV format
+        mediaRecorderRef.current = new MediaRecorder(stream, {
+          mimeType: "audio/webm", // Use webm as it's widely supported
+        });
         audioChunksRef.current = [];
 
         mediaRecorderRef.current.ondataavailable = (event) => {
           audioChunksRef.current.push(event.data);
         };
 
-        mediaRecorderRef.current.onstop = () => {
+        mediaRecorderRef.current.onstop = async () => {
           const audioBlob = new Blob(audioChunksRef.current, {
-            type: "audio/wav",
+            type: "audio/webm", // Keep consistent MIME type
           });
           setAudioBlob(audioBlob);
           const audioUrl = URL.createObjectURL(audioBlob);
@@ -109,25 +114,7 @@ export default function MicrophoneComponent({
         setIsRecording(false);
       });
   };
-  const uploadToVercelBlob = async (blob: Blob) => {
-    try {
-      const filename = `RecordedAudio/${userId}/recording-${Date.now()}.wav`;
-      const formData = new FormData();
-      formData.append("file", blob, filename);
 
-      const uploadedFile = await upload(filename, blob, {
-        access: "public",
-        handleUploadUrl: "/api/upload",
-      });
-
-      setUploadUrl(uploadedFile.url);
-      return uploadedFile.url;
-    } catch (error) {
-      console.error("Error uploading to Vercel Blob:", error);
-      alert("Failed to upload recording. Please try again.");
-      return null;
-    }
-  };
   const stopRecording = async () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
@@ -137,10 +124,43 @@ export default function MicrophoneComponent({
 
       // Wait for the mediaRecorder onstop event to complete
       await new Promise<void>((resolve) => {
-        mediaRecorderRef.current!.onstop = () => {
+        mediaRecorderRef.current!.onstop = async () => {
           const audioBlob = new Blob(audioChunksRef.current, {
-            type: "audio/wav",
+            type: "audio/webm",
           });
+
+          // Convert webm to mp3 before sending to Whisper
+          const formData = new FormData();
+          formData.append("file", audioBlob, "recording.webm");
+
+          setIsProcessingWhisper(true);
+          try {
+            const response = await fetch("/api/live-transcription", {
+              method: "POST",
+              body: formData,
+            });
+
+            if (response.ok) {
+              const { transcription } = await response.json();
+              setCompleteTranscript(transcription);
+            } else {
+              console.error(
+                "Error in Whisper transcription:",
+                await response.text(),
+              );
+              alert(
+                "Failed to process audio with Whisper. Using speech recognition result instead.",
+              );
+            }
+          } catch (error) {
+            console.error("Fetch error:", error);
+            alert(
+              "Failed to process audio with Whisper. Using speech recognition result instead.",
+            );
+          } finally {
+            setIsProcessingWhisper(false);
+          }
+
           setAudioBlob(audioBlob);
           const audioUrl = URL.createObjectURL(audioBlob);
           setAudioUrl(audioUrl);
@@ -150,6 +170,9 @@ export default function MicrophoneComponent({
     }
     setIsRecording(false);
     setIsPaused(true);
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
   };
 
   const handleToggleRecording = () => {
@@ -185,6 +208,26 @@ export default function MicrophoneComponent({
       setIsLoading(false);
     } else {
       alert("No recording to save. Please record something first.");
+    }
+  };
+
+  const uploadToVercelBlob = async (blob: Blob) => {
+    try {
+      const filename = `RecordedAudio/${userId}/recording-${Date.now()}.wav`;
+      const formData = new FormData();
+      formData.append("file", blob, filename);
+
+      const uploadedFile = await upload(filename, blob, {
+        access: "public",
+        handleUploadUrl: "/api/upload",
+      });
+
+      setUploadUrl(uploadedFile.url);
+      return uploadedFile.url;
+    } catch (error) {
+      console.error("Error uploading to Vercel Blob:", error);
+      alert("Failed to upload recording. Please try again.");
+      return null;
     }
   };
 
@@ -231,6 +274,7 @@ export default function MicrophoneComponent({
     }
     setIsLoading(false);
   };
+
   const handleSortWords = async () => {
     setIsLoading(true);
     try {
@@ -252,6 +296,7 @@ export default function MicrophoneComponent({
     }
     setIsLoading(false);
   };
+
   const handleMainTheme = async () => {
     setIsLoading(true);
     try {
@@ -266,13 +311,14 @@ export default function MicrophoneComponent({
         }),
       });
       const data = await response.json();
-      setMainTheme(data.content); // Assuming you have a `mainTheme` state
+      setMainTheme(data.content);
     } catch (error) {
       console.error("Error fetching main theme:", error);
       alert("Failed to fetch the main theme. Please try again.");
     }
     setIsLoading(false);
   };
+
   const handleUsefulCutdowns = async () => {
     setIsLoading(true);
     try {
@@ -288,7 +334,6 @@ export default function MicrophoneComponent({
       });
       const data = await response.json();
 
-      // Check if data.content is an array
       if (Array.isArray(data.content)) {
         setCutDowns(data.content);
       } else {
@@ -301,6 +346,7 @@ export default function MicrophoneComponent({
     }
     setIsLoading(false);
   };
+
   const handleGenerateSoundBites = async () => {
     setIsLoading(true);
     try {
@@ -322,6 +368,7 @@ export default function MicrophoneComponent({
     }
     setIsLoading(false);
   };
+
   return (
     <div
       className={`mb-20 flex h-full w-full items-center justify-center  bg-gray-100 ${poppins.className}`}
@@ -391,7 +438,11 @@ export default function MicrophoneComponent({
         <div className="mt-4 h-full rounded-md border p-2">
           <textarea
             className="h-40 w-full border p-2"
-            value={completeTranscript + transcript}
+            value={
+              isProcessingWhisper
+                ? "Processing your audio with Whisper AI..."
+                : completeTranscript + transcript
+            }
             readOnly
             placeholder="Transcript will appear here..."
           />
@@ -515,7 +566,7 @@ export default function MicrophoneComponent({
         )}
         {Array.isArray(cutDowns) && cutDowns.length > 0 && (
           <div className="mt-4">
-            <h3 className="text-lg font-semibold">Useful Cutfowns:</h3>
+            <h3 className="text-lg font-semibold">Useful Cutdowns:</h3>
             <ul className="mt-2 list-disc pl-5">
               {cutDowns.map((cutdown, index) => (
                 <li key={index}>{cutdown}</li>
