@@ -1,4 +1,5 @@
 import type { FormEvent } from "react";
+import Image from "next/image";
 
 import type { Chat, ChatMessage } from "../types";
 import ChatHistory from "./chat-history";
@@ -32,10 +33,17 @@ export default function ChatFeedback({
   setIsEditingChatSubject,
 }: ChatFeedbackProps) {
   return (
-    <div className="mt-14 w-full" id="chatFeedback">
-      <p className="p-2 text-center text-lg font-semibold text-primary">
-        I made this for you:
-      </p>
+    <div className="mt-[148px] w-full" id="chatFeedback">
+      <div className="relative -top-14 left-[254px]">
+        <div className="absolute h-[152px] w-[98px]">
+          <Image src="/bot.png" alt="bot" fill />
+        </div>
+        {chat && chat.length > 0 && (
+          <div className="absolute -top-2 left-[86px] h-[54px] w-[113px]">
+            <Image src="/made_this_for_you.png" alt="message bubble" fill />
+          </div>
+        )}
+      </div>
       <div className="mt-4 flex gap-3">
         <ChatHistory
           chatHistory={chatHistory}

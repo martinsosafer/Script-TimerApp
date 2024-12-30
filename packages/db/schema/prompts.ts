@@ -18,6 +18,7 @@ export const prompts = pgTable("prompts", {
   prompt_ai: text("prompt_ai").notNull(),
   prompt_display: text("prompt_display").notNull(),
   ai_model_type: aiModelType("ai_model_type").default("OTHER"),
+  additional_fields: text("additional_fields").array(),
   created_at: timestamp("created_at").notNull().defaultNow(),
   updated_at: timestamp("updated_at").notNull().defaultNow(),
 });

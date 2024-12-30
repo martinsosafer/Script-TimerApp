@@ -5,7 +5,7 @@ import { poppins } from "~/app/fonts";
 interface ButtonProps {
   label: string;
   type: "primary" | "secondary" | "accent" | "secondary-accent" | "custom";
-  onClick: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  onClick?: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   icon?: ({
     className,
     ...props

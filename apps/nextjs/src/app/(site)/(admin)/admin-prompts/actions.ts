@@ -10,6 +10,9 @@ export async function addPrompt(formData: FormData) {
   const prompt_ai = formData.get("prompt_ai");
   const prompt_display = formData.get("prompt_display");
   const ai_model_type = formData.get("ai_model_type");
+  const additional = formData.get("additional");
+  const fields = typeof additional === "string" ? additional.split(",") : [];
+  const mappedFields = fields.map((el) => el.trim());
 
   const prompt = await db
     .insert(schema.prompts)
@@ -20,6 +23,7 @@ export async function addPrompt(formData: FormData) {
       subtype,
       prompt_ai,
       prompt_display,
+      additional_fields: mappedFields,
       ai_model_type,
     })
     .execute();
@@ -34,6 +38,10 @@ export async function updatePrompt(formData: FormData, id: string) {
   const subtype = formData.get("subtype") as string | undefined;
   const prompt_ai = formData.get("prompt_ai") as string | undefined;
   const prompt_display = formData.get("prompt_display") as string | undefined;
+  const additional = formData.get("additional");
+  const fields = typeof additional === "string" ? additional.split(",") : [];
+  const mappedFields = fields.map((el) => el.trim());
+
   const ai_model_type = formData.get("ai_model_type") as
     | "CHAT"
     | "VOICE"
@@ -49,6 +57,7 @@ export async function updatePrompt(formData: FormData, id: string) {
       subtype,
       prompt_ai,
       prompt_display,
+      additional_fields: mappedFields,
       ai_model_type,
     })
     .where(eq(schema.prompts.id, id));

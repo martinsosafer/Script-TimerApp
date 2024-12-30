@@ -21,9 +21,8 @@ import {
   improveYourSpeechsubtypes,
   types as tabs,
 } from "~/app/(site)/data/chat-prompts/types";
-import PromptCard from "./subComponents/card";
-import Pill from "./subComponents/pill";
-import Tab from "./subComponents/tab";
+import { roboto } from "~/app/fonts";
+import SearchPrompts from "../seach-prompts";
 
 export const pills = {
   "HEADLINES & OPENINGS": headlinesAndopeningSubtypes,
@@ -49,6 +48,7 @@ interface PromptsSelectorProps {
   selectedPill: PromptSubType;
   setSelectedPill: Dispatch<SetStateAction<PromptSubType>>;
   setIsInputMinimized: Dispatch<SetStateAction<boolean>>;
+  prompts: Prompt[];
 }
 
 export default function PromptsSelector({
@@ -58,69 +58,76 @@ export default function PromptsSelector({
   setSelectedTab,
   selectedPill,
   setSelectedPill,
-  setIsInputMinimized,
+  prompts,
 }: PromptsSelectorProps) {
   return (
-    <div className="mt-10 flex w-[1024px] flex-col items-center justify-center">
-      <div className="z-10 flex w-full justify-center gap-1">
-        {tabs.map((tab, index) => {
-          const isSelected = selectedTab === tab;
+    <div className="flex flex-col lg:w-[565px]">
+      <p className="text-cp-gray-500 mb-3 text-xl font-bold">
+        You can do a quick search
+      </p>
+      <SearchPrompts
+        setSelectedCard={setSelectedCard}
+        setSelectedPill={setSelectedPill}
+        setSelectedTab={setSelectedTab}
+        prompts={prompts}
+      />
+      <p className="text-cp-gray-500 mb-3 text-xl font-bold lg:mt-[60px]">
+        Or choose options from our categories
+      </p>
+      <select
+        className={`${roboto.className} border-cp-accent-light bg-cp-accent-light w-full rounded-lg border-2 font-bold lg:h-[48px] lg:px-6`}
+        value={selectedTab}
+        onChange={(e) => setSelectedTab(e.target.value as PromptType)}
+      >
+        {tabs.map((tab, idx) => {
           return (
-            <Tab
-              key={`${tab}-${index}`}
-              isSelected={isSelected}
-              tab={tab}
-              setSelectedTab={setSelectedTab}
-              setSelectedPill={setSelectedPill}
-              setSelectedCard={setSelectedCard}
-              setIsInputMinimized={setIsInputMinimized}
-            />
+            <option value={tab} key={`${tab}-${idx}`} className="bg-white">
+              {tab}
+            </option>
           );
         })}
-      </div>
-      <div className="-mt-0.5 min-h-[600px] w-full rounded-md border border-gray-400 bg-white p-6">
-        <div className="flex flex-wrap justify-center gap-4">
-          {pills[selectedTab].map((pill) => {
-            const isSelected = selectedPill === pill;
+      </select>
+      <span className={`${roboto.className} text-[16px] font-bold lg:mt-6`}>
+        Select a subcategory:
+      </span>
+      <select
+        className={`${roboto.className} border-cp-accent-light w-full rounded-lg border-2 bg-white font-bold lg:mt-2 lg:h-[48px] lg:px-6`}
+        value={selectedPill}
+        onChange={(e) => setSelectedPill(e.target.value as PromptSubType)}
+      >
+        {pills[selectedTab].map((pill, idx) => {
+          return (
+            <option value={pill} key={`${pill}-${idx}`}>
+              {pill}
+            </option>
+          );
+        })}
+      </select>
+      <span className={`${roboto.className} text-[16px] font-bold lg:mt-6`}>
+        Select a prompt:
+      </span>
+      <select
+        className={`${roboto.className} border-cp-accent-light w-full rounded-lg border-2 bg-white font-bold lg:mt-2 lg:h-[48px] lg:px-6`}
+        value={selectedCard?.name}
+        onChange={(e) =>
+          setSelectedCard(
+            cards[selectedTab]
+              .concat(prompts.filter((prompt) => prompt.type === selectedTab))
+              .find((card) => card.name === e.target.value),
+          )
+        }
+      >
+        {cards[selectedTab]
+          .concat(prompts.filter((prompt) => prompt.type === selectedTab))
+          .filter((card) => card.subtype === selectedPill)
+          .map((card, idx) => {
             return (
-              <Pill
-                key={pill}
-                isSelected={isSelected}
-                speechPill={pill}
-                setSelectedPill={setSelectedPill}
-                setSelectedCard={setSelectedCard}
-                setIsInputMinimized={setIsInputMinimized}
-              />
+              <option value={card.name} key={`${card.name}-${idx}`}>
+                {card.name}
+              </option>
             );
           })}
-        </div>
-        <h4 className="p-6 text-center text-lg font-semibold text-primary">
-          How can I help you today?
-        </h4>
-        <div className="flex w-full flex-wrap gap-5">
-          {cards[selectedTab]
-            .filter((card) => card.subtype === selectedPill)
-            .map((card) => {
-              const isSelected = selectedCard?.id === card.id;
-              return (
-                <PromptCard
-                  key={`${card.id}`}
-                  isSelected={isSelected}
-                  card={card}
-                  setSelectedCard={setSelectedCard}
-                  setIsInputMinimized={setIsInputMinimized}
-                />
-              );
-            })}
-          <PromptCard
-            isSelected={selectedCard?.id === YOUR_OWN_PROMPT.id}
-            card={YOUR_OWN_PROMPT}
-            setSelectedCard={setSelectedCard}
-            setIsInputMinimized={setIsInputMinimized}
-            isAddYourOwn
-          />
-        </div>
-      </div>
+      </select>
     </div>
   );
 }

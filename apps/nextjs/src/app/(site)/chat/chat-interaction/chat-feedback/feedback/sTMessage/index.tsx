@@ -1,7 +1,11 @@
-import Image from "next/image";
-
-import { IconCopy } from "@voiceai/ui/@/components/ui/icons";
+import {
+  IconBot,
+  IconCopy,
+  LightMessageBubbleArrow,
+} from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
+
+import { roboto } from "~/app/fonts";
 
 interface STMessageProps {
   messageContent: string[];
@@ -9,17 +13,17 @@ interface STMessageProps {
 
 export default function STMessage({ messageContent }: STMessageProps) {
   return (
-    <div className="flex w-full items-start gap-4">
-      <Image
-        src="/icons/locoChatFeedback.svg"
-        width={30}
-        height={30}
-        alt="feedback"
-      />
-      <div>
+    <div className="flex w-full items-start gap-[35px]">
+      <div className="bg-cp-background flex h-[36px] w-[36px] flex-shrink-0 items-center justify-center rounded-full shadow-md">
+        <IconBot className="text-cp-gray-500 h-7 w-7" strokeWidth={2} />
+      </div>
+      <div className="bg-cp-gray-200 relative mt-2 w-[523px] rounded-lg px-6 py-3">
+        <div className="absolute -left-6 top-0">
+          <LightMessageBubbleArrow />
+        </div>
         {messageContent.map((item: string, idx: number) => {
           return (
-            <p className="mb-3" key={`${item}-${idx}`}>
+            <p className={`${roboto.className} mb-3`} key={`${item}-${idx}`}>
               {item}
             </p>
           );

@@ -63,5 +63,6 @@ export interface Prompt {
   strengths?: string;
   type: PromptType;
   subtype: PromptSubType;
+  additional_fields: string[];
   icon: string;
 }

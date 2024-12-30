@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { auth } from "@voiceai/auth";
 
 import PageHeader from "../components/page-header";
-import getOpenAiCredits from "./actions";
+import { getAllPrompts, getOpenAiCredits } from "./actions";
 import ChatInteraction from "./chat-interaction";
 
 export const metadata: Metadata = {
@@ -16,6 +16,7 @@ export default async function indexPage() {
   const session = await auth();
   const userId = session?.user.id; // Ensure userId is always a string
   const openAiCredits = await getOpenAiCredits(userId ?? "");
+  const prompts = await getAllPrompts();
 
   const subtitle = (
     <span className="flex flex-col items-center">
@@ -28,9 +29,13 @@ export default async function indexPage() {
   );
 
   return (
-    <div className="flex w-[1024px] flex-col items-center ">
+    <div className="flex w-[1024px] flex-col items-center p-6 lg:p-10">
       <PageHeader title="I am your Script Coach" subtitle={subtitle} />
-      <ChatInteraction userId={userId} openAiCredits={openAiCredits} />
+      <ChatInteraction
+        userId={userId}
+        openAiCredits={openAiCredits}
+        prompts={prompts}
+      />
     </div>
   );
 }

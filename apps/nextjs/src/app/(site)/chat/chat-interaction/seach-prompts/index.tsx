@@ -16,7 +16,7 @@ import type {
   PromptType,
 } from "~/app/(site)/data/chat-prompts/types";
 
-const prompts = [
+const staticPrompts = [
   ...HEADLINES_AND_OPENINGS_PROMPTS,
   ...IMPROVE_YOUR_SPEECH_PROMPTS,
   ...ENHANCE_YOUR_PRESENTATION_PROMPTS,
@@ -24,31 +24,37 @@ const prompts = [
   ...IMPROVE_SALES_PROMPTS,
 ];
 
-const promptNames = prompts.map((prompt) => prompt.name);
+const promptNames = staticPrompts.map((prompt) => prompt.name);
 
 interface SearchPromptsProps {
   setSelectedCard: Dispatch<SetStateAction<Prompt | undefined>>;
   setSelectedPill: Dispatch<SetStateAction<PromptSubType>>;
   setSelectedTab: Dispatch<SetStateAction<PromptType>>;
+  prompts: Prompt[];
 }
 
 export default function SearchPrompts({
   setSelectedCard,
   setSelectedPill,
   setSelectedTab,
+  prompts,
 }: SearchPromptsProps) {
   const [searchValue, setSearchValue] = useState<string>("");
   const [filteredPrompts, setFilteredPrompts] = useState<string[] | []>([]);
 
   useEffect(() => {
-    const filteredPrompts = promptNames.filter((prompt) =>
-      prompt.toLowerCase().includes(searchValue.toLowerCase()),
-    );
+    const filteredPrompts = promptNames
+      .concat(prompts.map((prompt) => prompt.name))
+      .filter((prompt) =>
+        prompt.toLowerCase().includes(searchValue.toLowerCase()),
+      );
     setFilteredPrompts(filteredPrompts);
   }, [searchValue]);
 
   function handleSelectPrompt(prompt: string) {
-    const selectedPrompt = prompts.find((p) => p.name === prompt);
+    const selectedPrompt = staticPrompts
+      .concat(prompts)
+      .find((p) => p.name === prompt);
     if (selectedPrompt) {
       setSelectedCard(selectedPrompt);
       setSelectedPill(selectedPrompt.subtype);
@@ -58,8 +64,8 @@ export default function SearchPrompts({
   }
 
   return (
-    <div className="relative flex w-96 items-center justify-between gap-2 rounded-md border border-gray-400 bg-white p-2">
-      <IconSearch className="h-6 w-6 text-gray-400" />
+    <div className="relative flex items-center justify-between gap-2 rounded-lg border-2 border-[#898F98] bg-white p-4 lg:w-[565px]">
+      <IconSearch className="h-5 w-5 text-gray-400" />
       <input
         type="text"
         value={searchValue}
@@ -68,7 +74,7 @@ export default function SearchPrompts({
         placeholder="What are you writing?"
       />
       {searchValue.length > 0 && filteredPrompts.length > 0 && (
-        <div className="absolute left-0 top-14 z-20 flex max-h-[500px] w-96 flex-col overflow-y-auto border border-gray-400 bg-white">
+        <div className="absolute left-0 top-14 z-20 mt-1 flex max-h-[500px] flex-col overflow-y-auto border border-gray-400 bg-white lg:w-[565px]">
           {filteredPrompts.map((prompt) => (
             <button
               key={prompt}
