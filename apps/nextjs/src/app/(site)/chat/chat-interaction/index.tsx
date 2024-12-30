@@ -18,28 +18,36 @@ import {
 } from "~/app/(site)/data/chat-prompts/types";
 import { clearChats } from "~/app/actions/newChatActions";
 import deductOpenAiCredits from "~/app/actions/openAiCredits";
+import { poppins, roboto } from "~/app/fonts";
 import { nanoid } from "~/utils/helpers";
 import { continueConversation } from "../../../actions/aiActions";
 import ClearChatHistoryModal from "../../components/modals/clear-chat-history";
 import EditChatSubjectModal from "../../components/modals/edit-chat-subject";
 import NoSessionModal from "../../components/modals/no-session-modal";
 import ChatFeedback from "./chat-feedback";
-import GoToOldChat from "./go-to-old-chat";
 import PromptInput from "./prompt-input";
 import Prompter from "./prompter";
 import PromptsSelector from "./promptSelector";
 import SearchPrompts from "./seach-prompts";
 import type { Chat, ChatMessage } from "./types";
-import { getChatHistory } from "./utils";
-import WelcomeMessage from "./welcome-message/welcome-message";
+import { getChatHistory, replaceWordInString } from "./utils";
 
 interface ChatProps {
   userId: string | undefined;
   openAiCredits: number;
+  prompts: Prompt[];
 }
 
-export default function ChatInteraction({ userId, openAiCredits }: ChatProps) {
+export default function ChatInteraction({
+  userId,
+  openAiCredits,
+  prompts,
+}: ChatProps) {
   const [selectedCard, setSelectedCard] = useState<Prompt | undefined>();
+  const [additionalFields, setAdditionalFields] = useState<Record<
+    string,
+    string
+  > | null>(null);
   const [promptInput, setPromptInput] = useState<string>("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [chatHistory, setChatHistory] = useState<Chat[]>([]);
@@ -101,10 +109,14 @@ export default function ChatInteraction({ userId, openAiCredits }: ChatProps) {
       try {
         e.preventDefault();
 
+        const systemMessage = selectedCard?.additional_fields
+          ? replaceWordInString(selectedCard.prompt_ai, additionalFields!)
+          : selectedCard?.prompt_ai;
+
         const newMessages: CoreMessage[] = [
           ...messages,
           {
-            content: selectedCard?.prompt_ai ?? "",
+            content: systemMessage ?? "",
             role: "system",
           },
           {
@@ -143,38 +155,45 @@ export default function ChatInteraction({ userId, openAiCredits }: ChatProps) {
   }
 
   return (
-    <div className="flex w-full flex-col items-center">
-      <SearchPrompts
-        setSelectedCard={setSelectedCard}
-        setSelectedPill={setSelectedPill}
-        setSelectedTab={setSelectedTab}
-      />
-      <PromptsSelector
-        selectedCard={selectedCard}
-        setSelectedCard={setSelectedCard}
-        selectedPill={selectedPill}
-        setSelectedPill={setSelectedPill}
-        selectedTab={selectedTab}
-        setSelectedTab={setSelectedTab}
-        setIsInputMinimized={setIsInputMinimized}
-      />
-      <Prompter uiPrompt={selectedCard?.prompt_display} />
-      <PromptInput
-        value={promptInput}
-        onChange={setPromptInput}
-        selectedCardName={selectedCard?.name}
-        onSubmit={async (e) => {
-          const chatId = feedbackChatId ?? nanoid();
-          await handleSubmitChat(e, chatId);
-          await getChatHistory({ userId, setChatHistory });
-          setFeedbackChatId(chatId);
-        }}
-        loadingMessages={isLoading}
-        isEnabled={Boolean(selectedCard) && promptInput.length > 0}
-        userId={userId}
-        isInputMinimized={isInputMinimized}
-        setIsInputMinimized={setIsInputMinimized}
-      />
+    <div className={`${poppins.className} flex w-full flex-col items-center`}>
+      <p
+        className={`${roboto.className} bg-cp-accent-lightest w-full rounded-lg p-4 text-[16px] shadow-md lg:p-6 lg:text-lg`}
+      >
+        Use the quick-search bar or follow the steps below to get the best
+        results with our pre built prompts.
+      </p>
+      <div className="mt-6 flex w-full flex-col items-center justify-center rounded-lg bg-white lg:px-[42px] lg:py-8">
+        <PromptsSelector
+          selectedCard={selectedCard}
+          setSelectedCard={setSelectedCard}
+          selectedPill={selectedPill}
+          setSelectedPill={setSelectedPill}
+          selectedTab={selectedTab}
+          setSelectedTab={setSelectedTab}
+          setIsInputMinimized={setIsInputMinimized}
+          prompts={prompts}
+        />
+        <PromptInput
+          value={promptInput}
+          onChange={setPromptInput}
+          selectedCardName={selectedCard?.name}
+          onSubmit={async (e) => {
+            const chatId = feedbackChatId ?? nanoid();
+            await handleSubmitChat(e, chatId);
+            await getChatHistory({ userId, setChatHistory });
+            setFeedbackChatId(chatId);
+          }}
+          loadingMessages={isLoading}
+          isEnabled={Boolean(selectedCard) && promptInput.length > 0}
+          userId={userId}
+          isInputMinimized={isInputMinimized}
+          setIsInputMinimized={setIsInputMinimized}
+          prompt={selectedCard}
+          setAdditionalFields={setAdditionalFields}
+          additionalFields={additionalFields}
+        />
+      </div>
+
       <ChatFeedback
         chat={messages}
         chatHistory={chatHistory}
@@ -191,7 +210,6 @@ export default function ChatInteraction({ userId, openAiCredits }: ChatProps) {
         loadingMessages={isLoading}
         setIsEditingChatSubject={setIsEditingChatSubject}
       />
-      <GoToOldChat />
       {isDeletingHistory && (
         <ClearChatHistoryModal
           onClose={() => setIsDeletingHistory(false)}

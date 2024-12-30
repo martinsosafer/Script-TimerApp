@@ -22,3 +22,23 @@ export async function getChatHistory({
     console.error(err);
   }
 }
+
+function escapeRegExp(string: string): string {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
+}
+
+export function replaceWordInString(
+  prompt: string,
+  additionalFields: Record<string, string>,
+): string {
+  let modiffiedPrompt = prompt;
+
+  Object.entries(additionalFields).forEach((field) => {
+    const [label, value] = field;
+    const escapedLabel = escapeRegExp(label);
+    const regex = new RegExp(`\\[${escapedLabel}\\]`, "g");
+
+    modiffiedPrompt = modiffiedPrompt.replace(regex, value);
+  });
+  return modiffiedPrompt;
+}

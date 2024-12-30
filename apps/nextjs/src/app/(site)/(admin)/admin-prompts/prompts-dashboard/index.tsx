@@ -40,7 +40,7 @@ export default function PromptsDashboard() {
           {allPrompts && allPrompts.length > 0 && (
             <div>
               <div className="mb-2 flex w-full text-lg">
-                <div className="w-[20%] p-1 font-bold">Name</div>
+                <div className="w-[20%] p-1 font-bold">Prompt Name</div>
                 <div className="w-[40%] p-1 font-bold">Description</div>
                 <div className="w-[20%] p-1 font-bold">Type</div>
                 <div className="w-[10%] p-1 font-bold">AI Type</div>

@@ -9,6 +9,10 @@ import {
 } from "@voiceai/ui/@/components/ui/hover-card";
 import { IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 
+import type { Prompt } from "~/app/(site)/(admin)/admin-prompts/types";
+import Button from "~/app/(site)/components/button";
+import { roboto } from "~/app/fonts";
+
 interface PromptInputProps {
   value: string;
   onChange: (value: string) => void;
@@ -19,6 +23,9 @@ interface PromptInputProps {
   selectedCardName: string | undefined;
   isInputMinimized: boolean;
   setIsInputMinimized: Dispatch<SetStateAction<boolean>>;
+  prompt: Prompt | undefined;
+  setAdditionalFields: Dispatch<SetStateAction<Record<string, string> | null>>;
+  additionalFields: Record<string, string> | null;
 }
 
 export default function PromptInput({
@@ -30,6 +37,9 @@ export default function PromptInput({
   selectedCardName,
   isInputMinimized,
   setIsInputMinimized,
+  prompt,
+  setAdditionalFields,
+  additionalFields,
 }: PromptInputProps) {
   function placeholderText() {
     if (isInputMinimized) {
@@ -44,49 +54,72 @@ export default function PromptInput({
   const router = useRouter();
 
   return (
-    <div className="flex w-full flex-col items-center">
+    <div className={`${roboto.className} flex w-full flex-col items-center`}>
       <form
         onSubmit={(e) => {
           setIsInputMinimized(true);
           router.push(`#chatFeedback`);
           onSubmit(e);
         }}
-        className="mt-4 flex w-full items-center gap-4 rounded-md border border-gray-400 bg-white p-3"
+        className="mt-[60px] flex w-full flex-col items-center"
       >
-        <textarea
-          placeholder={placeholderText()}
-          className="w-full resize-none p-4 outline-none placeholder:text-lg"
-          rows={isInputMinimized ? 1 : 6}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
+        {prompt?.additional_fields && (
+          <div className="flex w-full flex-col">
+            <span className="text-[16px] font-bold">
+              Give us more details to help you
+            </span>
+            <div className="mt-5 flex w-full flex-wrap justify-between gap-3">
+              {prompt?.additional_fields.map((field, index) => {
+                return (
+                  <div key={index} className="flex flex-col gap-2 lg:w-[410px]">
+                    <label className="text-sm" htmlFor={field}>
+                      {field}
+                    </label>
+                    <input
+                      type="text"
+                      name={field}
+                      placeholder="Enter additional information"
+                      className="border-cp-gray-400 h-[42px] w-full rounded-lg border bg-white p-2 outline-none placeholder:text-lg"
+                      value={additionalFields?.[field] ?? ""}
+                      onChange={(e) =>
+                        setAdditionalFields((prev) => ({
+                          ...prev,
+                          [field]: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+        <div className="mt-[36px] flex w-full flex-col">
+          <label htmlFor="prompt" className="text-[16px] font-bold">
+            Add even more details or the result your want
+          </label>
+          <textarea
+            name="prompt"
+            placeholder={placeholderText()}
+            className="mt-[6px] w-full resize-none rounded-md border border-gray-400 bg-white p-4 outline-none placeholder:text-lg"
+            rows={isInputMinimized ? 1 : 8}
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+          />
+        </div>
+
+        <Button
+          disabled={!isEnabled}
+          type="primary"
+          label={loadingMessages ? "" : "Create"}
+          fit
+          icon={
+            loadingMessages
+              ? () => <IconSpinner className="animate-spin text-white" />
+              : undefined
+          }
+          className="mt-2"
         />
-        <HoverCard>
-          <HoverCardTrigger>
-            <button
-              className={`flex h-8 w-8 items-center justify-center rounded-md ${isEnabled ? "bg-[#0066FF]" : "bg-gray-400"}  p-2`}
-              disabled={!isEnabled}
-              type="submit"
-            >
-              {loadingMessages ? (
-                <IconSpinner className="animate-spin text-white" />
-              ) : (
-                <Image
-                  src="/icons/leftArrow.svg"
-                  height={20}
-                  width={20}
-                  alt="send prompt"
-                />
-              )}
-            </button>
-          </HoverCardTrigger>
-          {!isEnabled && (
-            <HoverCardContent>
-              <p className="text-sm text-gray-500">
-                Please, select a prompt above to continue.
-              </p>
-            </HoverCardContent>
-          )}
-        </HoverCard>
       </form>
     </div>
   );

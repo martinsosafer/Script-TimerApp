@@ -1,14 +1,16 @@
 import { useState } from "react";
-import Image from "next/image";
 
 import { Tooltip, TooltipContent, TooltipTrigger } from "@voiceai/ui";
 import {
+  IconMessageFull,
   IconPencilLine,
   IconSpinner,
   IconTrash,
 } from "@voiceai/ui/@/components/ui/icons";
 
+import Button from "~/app/(site)/components/button";
 import { removeChat } from "~/app/actions/newChatActions";
+import { roboto } from "~/app/fonts";
 import type { Chat, ChatMessage } from "../../types";
 
 interface ChatHistoryProps {
@@ -33,10 +35,12 @@ export default function ChatHistory({
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   return (
-    <div className="flex h-[900px] w-[30%] flex-col rounded-md border border-gray-400 bg-white p-4">
+    <div
+      className={`${roboto.className} bg-cp-primary-lightest flex w-[276px] flex-col rounded-lg p-6 lg:h-[733px]`}
+    >
       <div className="flex h-full w-full flex-col justify-between">
         <>
-          <p className="p-2 text-start text-lg font-semibold text-gray-900">
+          <p className="text-start text-lg font-bold text-white">
             Your recent scripts.
           </p>
           <div className="flex h-full w-full flex-col overflow-y-auto ">
@@ -50,10 +54,10 @@ export default function ChatHistory({
                   return (
                     <div
                       key={`${item.id}`}
-                      className="group flex w-full items-center justify-between hover:bg-gray-100"
+                      className="hover:bg-cp-primary-light group flex w-full justify-between px-[10px] py-3"
                     >
                       <div
-                        className="flex cursor-pointer items-start justify-start gap-4 p-2 "
+                        className="flex cursor-pointer items-start justify-start gap-2"
                         role="button"
                         tabIndex={0}
                         onClick={() => {
@@ -66,15 +70,11 @@ export default function ChatHistory({
                           }
                         }}
                       >
-                        <Image
-                          src="/icons/messageIcon.svg"
-                          width={20}
-                          height={20}
-                          alt="feedback"
-                          className="mt-1"
-                        />
+                        <IconMessageFull className="text-cp-secondary-lightest h-[30px] w-[30px]" />
 
-                        <p className="w-full">{item.title}</p>
+                        <p className="w-full text-base text-white">
+                          {item.title}
+                        </p>
                       </div>
                       <div className="flex gap-1">
                         <Tooltip>
@@ -86,7 +86,7 @@ export default function ChatHistory({
                                 setSelectedChatHistory(item);
                               }}
                             >
-                              <IconPencilLine className="invisible h-5 w-5 cursor-pointer text-green-800 hover:text-green-400 group-hover:visible" />
+                              <IconPencilLine className="invisible h-5 w-5 cursor-pointer text-white hover:text-white/50 group-hover:visible" />
                             </button>
                           </TooltipTrigger>
                           <TooltipContent>
@@ -110,7 +110,7 @@ export default function ChatHistory({
                           {isLoading ? (
                             <IconSpinner className="invisible h-5 w-5 animate-spin group-hover:visible" />
                           ) : (
-                            <IconTrash className="invisible h-5 w-5 cursor-pointer text-[#FF0000] hover:text-red-400 group-hover:visible" />
+                            <IconTrash className="invisible h-5 w-5 cursor-pointer text-white hover:text-white/50 group-hover:visible" />
                           )}
                         </button>
                       </div>
@@ -122,19 +122,15 @@ export default function ChatHistory({
           </div>
         </>
         <div className="flex h-[100px] w-full items-center justify-center pt-6">
-          <button
-            className={`flex w-full items-center justify-center gap-4 bg-gray-200 p-4 ${!noChatHistory && "hover:bg-gray-100"}`}
-            disabled={noChatHistory}
+          <Button
+            label="Clear Chat History"
+            icon={IconTrash}
             onClick={onClearChatHistory}
-          >
-            <Image
-              src="/icons/trash.svg"
-              width={20}
-              height={20}
-              alt="delete conversation"
-            />
-            <span>Clear Chat History</span>
-          </button>
+            type="custom"
+            fit
+            className="border-2 border-white bg-transparent text-white transition-all duration-300 hover:border-white/80 hover:text-white/80 hover:shadow-md disabled:cursor-default disabled:border-white/50 disabled:text-white/50"
+            iconColor="#ffffff"
+          />
         </div>
       </div>
     </div>

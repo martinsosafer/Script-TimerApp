@@ -20,7 +20,7 @@ export default function FeedbackInput({
   return (
     <form
       onSubmit={(e) => onSubmit(e)}
-      className="flex h-[100px] w-full items-center gap-4 rounded-md border border-gray-400 bg-white p-3"
+      className="flex h-[97px] w-full items-center gap-4 rounded-lg border border-gray-400 bg-white p-3"
     >
       <textarea
         className="w-full resize-none p-1 outline-none placeholder:text-lg"

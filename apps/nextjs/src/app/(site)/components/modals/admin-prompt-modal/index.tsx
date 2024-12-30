@@ -183,6 +183,16 @@ export default function AdminPromptModal({
                 rows={6}
                 className="w-full rounded-md border-2 border-primary p-2"
               />
+              <label htmlFor="additional" className="text-sm font-semibold">
+                Additional inputs, separate each item with a comma.
+              </label>
+              <input
+                type="text"
+                name="additional"
+                defaultValue={prompt?.additional_fields?.join(", ")}
+                placeholder={"Additional fileds"}
+                className="w-full rounded-md border-2 border-primary p-2"
+              />
             </div>
           </div>
 
@@ -200,7 +210,7 @@ export default function AdminPromptModal({
               {isLoading ? (
                 <IconSpinner className="h-6 w-6 animate-spin" />
               ) : prompt ? (
-                "Edit Propmt"
+                "Edit Prompt"
               ) : (
                 "Save Prompt"
               )}
