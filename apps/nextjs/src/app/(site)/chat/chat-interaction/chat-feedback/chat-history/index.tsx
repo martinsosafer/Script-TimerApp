@@ -1,4 +1,6 @@
+import type { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
+import { set } from "zod";
 
 import { Tooltip, TooltipContent, TooltipTrigger } from "@voiceai/ui";
 import {
@@ -20,6 +22,8 @@ interface ChatHistoryProps {
   setSelectedChatHistory: (arg: Chat | undefined) => void;
   setChatHistory: (value: Chat[]) => void;
   setIsEditingChatSubject: (arg: boolean) => void;
+  openChatHistory: boolean;
+  setOpenChatHistory: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function ChatHistory({
@@ -29,6 +33,8 @@ export default function ChatHistory({
   setSelectedChatHistory,
   setChatHistory,
   setIsEditingChatSubject,
+  openChatHistory,
+  setOpenChatHistory,
 }: ChatHistoryProps) {
   const noChatHistory = chatHistory?.length === 0;
 
@@ -36,7 +42,7 @@ export default function ChatHistory({
 
   return (
     <div
-      className={`${roboto.className} bg-cp-primary-lightest flex w-[276px] flex-col rounded-lg p-6 lg:h-[733px]`}
+      className={`${roboto.className} bg-cp-primary-lightest absolute right-0 top-0 z-30 flex h-[733px] w-full ${openChatHistory ? "-translate-x-0" : "-translate-x-[120%]"}  transform flex-col rounded-lg p-6 transition-all duration-300 lg:static lg:z-0 lg:w-[276px] lg:-translate-x-0`}
     >
       <div className="flex h-full w-full flex-col justify-between">
         <>
@@ -63,6 +69,7 @@ export default function ChatHistory({
                         onClick={() => {
                           setSelectedChatHistory(item);
                           setMessages(item.messages);
+                          setOpenChatHistory(false);
                         }}
                         onKeyDown={(e) => {
                           if (e.key === "Enter" || e.key === " ") {

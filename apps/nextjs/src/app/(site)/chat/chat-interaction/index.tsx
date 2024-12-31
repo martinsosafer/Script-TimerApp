@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import type { CoreMessage } from "ai";
 import { readStreamableValue } from "ai/rsc";
 
+import { IconHistory } from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 import type {
@@ -21,6 +22,7 @@ import deductOpenAiCredits from "~/app/actions/openAiCredits";
 import { poppins, roboto } from "~/app/fonts";
 import { nanoid } from "~/utils/helpers";
 import { continueConversation } from "../../../actions/aiActions";
+import Button from "../../components/button";
 import ClearChatHistoryModal from "../../components/modals/clear-chat-history";
 import EditChatSubjectModal from "../../components/modals/edit-chat-subject";
 import NoSessionModal from "../../components/modals/no-session-modal";
@@ -162,7 +164,7 @@ export default function ChatInteraction({
         Use the quick-search bar or follow the steps below to get the best
         results with our pre built prompts.
       </p>
-      <div className="mt-6 flex w-full flex-col items-center justify-center rounded-lg bg-white lg:px-[42px] lg:py-8">
+      <div className="mt-5 flex w-full flex-col items-center justify-center rounded-lg bg-white p-3 lg:mt-6 lg:px-[42px] lg:py-8">
         <PromptsSelector
           selectedCard={selectedCard}
           setSelectedCard={setSelectedCard}
@@ -210,6 +212,7 @@ export default function ChatInteraction({
         loadingMessages={isLoading}
         setIsEditingChatSubject={setIsEditingChatSubject}
       />
+
       {isDeletingHistory && (
         <ClearChatHistoryModal
           onClose={() => setIsDeletingHistory(false)}

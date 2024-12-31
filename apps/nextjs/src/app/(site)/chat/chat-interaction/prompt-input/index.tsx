@@ -61,17 +61,20 @@ export default function PromptInput({
           router.push(`#chatFeedback`);
           onSubmit(e);
         }}
-        className="mt-[60px] flex w-full flex-col items-center"
+        className="mt-10 flex w-full flex-col items-center lg:mt-[60px]"
       >
         {prompt?.additional_fields && (
           <div className="flex w-full flex-col">
             <span className="text-[16px] font-bold">
               Give us more details to help you
             </span>
-            <div className="mt-5 flex w-full flex-wrap justify-between gap-3">
+            <div className="mt-3 flex w-full flex-wrap justify-between gap-3 lg:mt-5">
               {prompt?.additional_fields.map((field, index) => {
                 return (
-                  <div key={index} className="flex flex-col gap-2 lg:w-[410px]">
+                  <div
+                    key={index}
+                    className="flex w-full flex-col gap-2 lg:w-[410px]"
+                  >
                     <label className="text-sm" htmlFor={field}>
                       {field}
                     </label>
@@ -94,7 +97,7 @@ export default function PromptInput({
             </div>
           </div>
         )}
-        <div className="mt-[36px] flex w-full flex-col">
+        <div className="mt-[28px] flex w-full flex-col lg:mt-[36px]">
           <label htmlFor="prompt" className="text-[16px] font-bold">
             Add even more details or the result your want
           </label>

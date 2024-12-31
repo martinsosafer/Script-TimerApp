@@ -49,7 +49,7 @@ export default function Feedback({
   }, [filteredChats]);
 
   return (
-    <div className="relative flex w-[656px] flex-col justify-between gap-2">
+    <div className="relative z-20 flex w-full flex-col justify-between gap-2 lg:w-[656px]">
       {chat.length > 0 && (
         <Tooltip>
           <TooltipTrigger asChild className="mb-17">
@@ -76,7 +76,7 @@ export default function Feedback({
       )}
 
       <div
-        className="flex h-[624px] w-full  flex-col items-start gap-6 overflow-y-auto rounded-lg  bg-white p-6"
+        className="flex h-[624px] w-full flex-col items-start gap-6 overflow-y-auto rounded-lg bg-white p-2 lg:p-6"
         ref={messageEnd}
       >
         {filteredChats.map((chatItem, idx) => {

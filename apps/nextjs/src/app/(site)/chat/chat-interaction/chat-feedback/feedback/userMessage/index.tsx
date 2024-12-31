@@ -12,7 +12,7 @@ interface STMessageProps {
 export default function UserMessage({ messageContent }: STMessageProps) {
   return (
     <div className="flex w-full items-start gap-[35px]">
-      <div className="bg-cp-gray-500 relative mt-2 w-[523px] rounded-lg px-6 py-3">
+      <div className="bg-cp-gray-500 relative mt-2 w-[523px] rounded-lg px-3 py-3 lg:px-6">
         {messageContent.map((item: string, idx: number) => {
           return (
             <p

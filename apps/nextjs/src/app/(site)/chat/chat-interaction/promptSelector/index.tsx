@@ -62,7 +62,7 @@ export default function PromptsSelector({
 }: PromptsSelectorProps) {
   return (
     <div className="flex flex-col lg:w-[565px]">
-      <p className="text-cp-gray-500 mb-3 text-xl font-bold">
+      <p className="text-cp-gray-500 mb-3 text-[16px] font-bold lg:text-xl">
         You can do a quick search
       </p>
       <SearchPrompts
@@ -71,11 +71,11 @@ export default function PromptsSelector({
         setSelectedTab={setSelectedTab}
         prompts={prompts}
       />
-      <p className="text-cp-gray-500 mb-3 text-xl font-bold lg:mt-[60px]">
+      <p className="text-cp-gray-500 mb-3 mt-10 text-[16px] font-bold lg:mt-[60px] lg:text-xl">
         Or choose options from our categories
       </p>
       <select
-        className={`${roboto.className} border-cp-accent-light bg-cp-accent-light w-full rounded-lg border-2 font-bold lg:h-[48px] lg:px-6`}
+        className={`${roboto.className} border-cp-accent-light bg-cp-accent-light h-[56px] w-full rounded-lg border-2 px-2 font-bold lg:px-6`}
         value={selectedTab}
         onChange={(e) => setSelectedTab(e.target.value as PromptType)}
       >
@@ -87,11 +87,13 @@ export default function PromptsSelector({
           );
         })}
       </select>
-      <span className={`${roboto.className} text-[16px] font-bold lg:mt-6`}>
+      <span
+        className={`${roboto.className} mt-[16px] text-[16px] font-bold lg:mt-6`}
+      >
         Select a subcategory:
       </span>
       <select
-        className={`${roboto.className} border-cp-accent-light w-full rounded-lg border-2 bg-white font-bold lg:mt-2 lg:h-[48px] lg:px-6`}
+        className={`${roboto.className} border-cp-accent-light mt-2 h-[56px] w-full rounded-lg border-2 bg-white px-2 font-bold lg:px-6`}
         value={selectedPill}
         onChange={(e) => setSelectedPill(e.target.value as PromptSubType)}
       >
@@ -103,11 +105,13 @@ export default function PromptsSelector({
           );
         })}
       </select>
-      <span className={`${roboto.className} text-[16px] font-bold lg:mt-6`}>
+      <span
+        className={`${roboto.className} mt-[16px] text-[16px] font-bold lg:mt-6`}
+      >
         Select a prompt:
       </span>
       <select
-        className={`${roboto.className} border-cp-accent-light w-full rounded-lg border-2 bg-white font-bold lg:mt-2 lg:h-[48px] lg:px-6`}
+        className={`${roboto.className} border-cp-accent-light mt-2 h-[56px] w-full rounded-lg border-2 bg-white px-2 font-bold lg:px-6`}
         value={selectedCard?.name}
         onChange={(e) =>
           setSelectedCard(
