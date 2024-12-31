@@ -1,10 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import { upload } from "@vercel/blob/client";
-import Draggable from "react-draggable";
-import { useReactMediaRecorder } from "react-media-recorder";
-import Webcam from "react-webcam";
+import React, { useState } from "react";
 
 import { Button } from "@voiceai/ui";
 import {
@@ -15,11 +11,16 @@ import {
 } from "@voiceai/ui/@/components/ui/icons";
 import { PlayIcon } from "@voiceai/ui/@/icons/icons";
 
-declare global {
-  interface Window {
-    webkitSpeechRecognition: any;
-  }
-}
+import { poppins } from "~/app/fonts";
+import { formatTime } from "~/lib/formattime";
+import { usePostProcessing } from "../hooks/usePostProcess";
+import { useScreenRecorder } from "../hooks/useScreenRecorder";
+import { useTranscription } from "../hooks/useTranscription";
+import { AIFeatureButtons } from "../recorder/aifeaturebutton";
+import { AudioControls } from "../recorder/audiocontrols";
+import { RecordButton } from "../recorder/recordbutton";
+import { TranscriptDisplay } from "../recorder/transcriptDisplay";
+import { WebcamPreview } from "./webcampreview";
 
 interface ScreenRecorderProps {
   userId: string | undefined;
@@ -32,211 +33,95 @@ export default function ShareScreenRecorder({
 }: ScreenRecorderProps) {
   const {
     status,
-    startRecording,
-    stopRecording,
-    pauseRecording,
-    resumeRecording,
+    isPaused,
     mediaBlobUrl,
+    uploadUrl,
+    handleStartRecording,
+    handleStopRecording,
+    handlePauseResume,
+    uploadToVercelBlob,
     clearBlobUrl,
-  } = useReactMediaRecorder({ screen: true, audio: true });
+  } = useScreenRecorder(userId);
 
-  const webcamRef = useRef<Webcam | null>(null);
-  const [isPaused, setIsPaused] = useState(false);
-  const [transcript, setTranscript] = useState("");
-  const [completeTranscript, setCompleteTranscript] = useState("");
-  const [summary, setSummary] = useState("");
-  const [bulletPoints, setBulletPoints] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [uploadUrl, setUploadUrl] = useState<string | null>(null);
+  const {
+    transcript,
+    completeTranscript,
+    startTranscription,
+    stopTranscription,
+    pauseTranscription,
+    resumeTranscription,
+  } = useTranscription();
 
-  const recognitionRef = useRef<any>(null);
+  const {
+    summary,
+    bulletPoints,
+    sortedWords,
+    mainTheme,
+    cutDowns,
+    soundBites,
+    isLoading,
+    processTranscript,
+  } = usePostProcessing();
 
-  const handleStartRecording = () => {
-    startRecording();
-    startSpeechRecognition();
-  };
+  const [isRecordingComplete, setIsRecordingComplete] = useState(false);
 
-  const handleStopRecording = () => {
-    stopRecording();
-    stopSpeechRecognition();
-  };
-
-  const handlePauseResume = () => {
-    if (isPaused) {
-      resumeRecording();
-      resumeSpeechRecognition();
+  const handleToggleRecording = () => {
+    if (status !== "recording") {
+      handleStartRecording();
+      startTranscription();
+      setIsRecordingComplete(false);
     } else {
-      pauseRecording();
-      pauseSpeechRecognition();
-    }
-    setIsPaused(!isPaused);
-  };
-
-  const startSpeechRecognition = () => {
-    try {
-      recognitionRef.current = new window.webkitSpeechRecognition();
-      recognitionRef.current.continuous = true;
-      recognitionRef.current.interimResults = true;
-
-      recognitionRef.current.onresult = (event: any) => {
-        let interimTranscript = "";
-
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          const currentTranscript = event.results[i][0].transcript;
-
-          if (event.results[i].isFinal) {
-            setCompleteTranscript((prev) => prev + currentTranscript + " ");
-          } else {
-            interimTranscript += currentTranscript;
-          }
-        }
-
-        setTranscript(interimTranscript);
-      };
-
-      recognitionRef.current.start();
-    } catch (error) {
-      console.error("Speech recognition error: ", error);
-      alert(
-        "Your browser does not support speech recognition. Please use Chrome.",
-      );
+      handleStopRecording();
+      stopTranscription();
+      setIsRecordingComplete(true);
     }
   };
 
-  const stopSpeechRecognition = () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
+  const handlePauseResumeRecording = () => {
+    handlePauseResume();
+    if (isPaused) {
+      resumeTranscription();
+    } else {
+      pauseTranscription();
     }
   };
 
-  const pauseSpeechRecognition = () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-    }
-  };
-
-  const resumeSpeechRecognition = () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.start();
-    }
-  };
-
-  const enablePictureInPicture = async () => {
-    try {
-      if (webcamRef.current?.video) {
-        await webcamRef.current.video.requestPictureInPicture();
-      }
-    } catch (error) {
-      console.error("Failed to enable Picture-in-Picture:", error);
-    }
-  };
-
-  const disablePictureInPicture = async () => {
-    try {
-      if (document.pictureInPictureElement) {
-        await document.exitPictureInPicture();
-      }
-    } catch (error) {
-      console.error("Failed to disable Picture-in-Picture:", error);
-    }
-  };
-
-  const downloadRecording = () => {
-    if (mediaBlobUrl) {
-      const a = document.createElement("a");
-      a.href = mediaBlobUrl;
-      a.download = "screen-recording.mp4";
-      a.click();
-    }
-  };
-
-  const handleGenerateSummary = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch("/api/getSummary", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          transcript: completeTranscript,
-          type: "summary",
-        }),
-      });
-      const data = await response.json();
-      setSummary(data.content);
-    } catch (error) {
-      console.error("Error generating summary:", error);
-      alert("Failed to generate summary. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleGenerateBulletPoints = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch("/api/getSummary", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          transcript: completeTranscript,
-          type: "bullet-points",
-        }),
-      });
-      const data = await response.json();
-      setBulletPoints(data.content);
-    } catch (error) {
-      console.error("Error generating bullet points:", error);
-      alert("Failed to generate bullet points. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const uploadToVercelBlob = async (blob: Blob) => {
-    try {
-      const filename = `RecordedScreen/${userId}/recording-${Date.now()}.mp4`;
-      const uploadedFile = await upload(filename, blob, {
-        access: "public",
-        handleUploadUrl: "/api/upload",
-      });
-
-      setUploadUrl(uploadedFile.url);
-      return uploadedFile.url;
-    } catch (error) {
-      console.error("Error uploading to Vercel Blob:", error);
-      alert("Failed to upload recording. Please try again.");
-      return null;
-    }
+  const handleCopyTranscript = () => {
+    navigator.clipboard.writeText(completeTranscript + transcript);
+    alert("Transcript copied to clipboard!");
   };
 
   const handleSave = async () => {
     if (mediaBlobUrl) {
-      setIsLoading(true);
-      try {
-        const response = await fetch(mediaBlobUrl);
-        const blob = await response.blob();
-        const uploadedUrl = await uploadToVercelBlob(blob);
-        if (uploadedUrl) {
-          console.log("Recording uploaded successfully:", uploadedUrl);
-          alert("Recording saved successfully!");
-        }
-      } catch (error) {
-        console.error("Error saving recording:", error);
-        alert("Failed to save recording. Please try again.");
-      } finally {
-        setIsLoading(false);
+      const response = await fetch(mediaBlobUrl);
+      const blob = await response.blob();
+      const uploadedUrl = await uploadToVercelBlob(blob);
+      if (uploadedUrl) {
+        console.log("Recording uploaded successfully:", uploadedUrl);
+        alert("Recording saved successfully!");
       }
     } else {
       alert("No recording to save. Please record something first.");
     }
   };
 
+  const handleGenerateSummary = () =>
+    processTranscript(completeTranscript, "summary");
+  const handleGenerateBulletPoints = () =>
+    processTranscript(completeTranscript, "bullet-points");
+  const handleSortWords = () =>
+    processTranscript(completeTranscript, "word-sorter");
+  const handleMainTheme = () =>
+    processTranscript(completeTranscript, "main-topic");
+  const handleUsefulCutdowns = () =>
+    processTranscript(completeTranscript, "useful-cutdowns");
+  const handleGenerateSoundBites = () =>
+    processTranscript(completeTranscript, "sound-bites");
+
   return (
-    <div className="relative mx-auto flex h-full max-w-xl flex-col items-center rounded-lg bg-gray-100 p-6 shadow-lg">
+    <div
+      className={`relative mx-auto flex h-full max-w-xl flex-col items-center rounded-lg bg-gray-100 p-6 shadow-lg ${poppins.className}`}
+    >
       <h2 className="mb-4 text-center text-2xl font-semibold">
         Screen Recorder
       </h2>
@@ -244,23 +129,18 @@ export default function ShareScreenRecorder({
         Status: <span className="font-bold">{status}</span>
       </p>
 
-      {/* Controls */}
       <div className="mb-4 flex flex-wrap justify-center space-x-3">
-        <Button onClick={handleStartRecording} variant="default">
-          <IconVideoCamera className="mr-2 h-4 w-4" />
-          Start Screen Recorder
-        </Button>
-        <Button onClick={handlePauseResume} variant="default">
+        <RecordButton
+          isRecording={status === "recording"}
+          onClick={handleToggleRecording}
+        />
+        <Button onClick={handlePauseResumeRecording} variant="default">
           <IconStop className="mr-2 h-4 w-4" />
           {isPaused ? "Resume Recording" : "Pause Recording"}
         </Button>
-        <Button onClick={handleStopRecording} variant="destructive">
-          <IconCircleStop className="mr-2 h-4 w-4" />
-          Stop Recording
-        </Button>
         {mediaBlobUrl && (
           <>
-            <Button onClick={downloadRecording} variant="default">
+            <Button onClick={() => window.open(mediaBlobUrl)} variant="default">
               <PlayIcon className="mr-2 h-4 w-4" />
               Download Recording
             </Button>
@@ -272,19 +152,8 @@ export default function ShareScreenRecorder({
         )}
       </div>
 
-      {/* PiP Controls */}
-      <div className="mb-4 flex flex-wrap justify-center space-x-3">
-        <Button onClick={enablePictureInPicture} variant="default">
-          <IconCameraVideo className="mr-2 h-4 w-4" />
-          Enable Webcam (PiP)
-        </Button>
-        <Button onClick={disablePictureInPicture} variant="outline">
-          <IconStop className="mr-2 h-4 w-4" />
-          Exit Webcam (PiP)
-        </Button>
-      </div>
+      <WebcamPreview />
 
-      {/* Video Display */}
       {mediaBlobUrl && (
         <div className="mt-6 w-full">
           <video
@@ -297,56 +166,95 @@ export default function ShareScreenRecorder({
         </div>
       )}
 
-      {/* Transcript */}
-      <div className="mt-6 w-full">
-        <h3 className="mb-2 text-lg font-semibold">Transcript</h3>
-        <textarea
-          className="h-32 w-full rounded border p-2"
-          value={completeTranscript + transcript}
-          readOnly
-          placeholder="Transcript will appear here..."
+      <TranscriptDisplay
+        isProcessingWhisper={false}
+        completeTranscript={completeTranscript}
+        transcript={transcript}
+      />
+
+      <AudioControls
+        audioUrl={mediaBlobUrl}
+        onDownload={() => window.open(mediaBlobUrl)}
+        onCopyTranscript={handleCopyTranscript}
+        onSave={handleSave}
+        isLoading={isLoading}
+      />
+
+      {isRecordingComplete && (
+        <AIFeatureButtons
+          onGenerateSummary={handleGenerateSummary}
+          onGenerateBulletPoints={handleGenerateBulletPoints}
+          onSortWords={handleSortWords}
+          onMainTheme={handleMainTheme}
+          onUsefulCutdowns={handleUsefulCutdowns}
+          onGenerateSoundBites={handleGenerateSoundBites}
+          isLoading={isLoading}
+          videoUrl={mediaBlobUrl}
         />
-        <div className="mt-4 flex space-x-4">
-          <Button onClick={handleGenerateSummary} disabled={isLoading}>
-            Generate Summary
-          </Button>
-          <Button onClick={handleGenerateBulletPoints} disabled={isLoading}>
-            Generate Bullet Points
-          </Button>
+      )}
+
+      {isLoading && <p className="mt-4 text-center">Processing...</p>}
+
+      {summary && (
+        <div className="mt-4">
+          <h3 className="text-lg font-semibold">Summary:</h3>
+          <p className="mt-2">{summary}</p>
         </div>
-        {isLoading && <p className="mt-2 text-gray-500">Processing...</p>}
-        {summary && (
-          <div className="mt-4">
-            <h4 className="font-semibold">Summary:</h4>
-            <p>{summary}</p>
-          </div>
-        )}
-        {bulletPoints.length > 0 && (
-          <div className="mt-4">
-            <h4 className="font-semibold">Bullet Points:</h4>
-            <ul className="list-disc pl-5">
-              {bulletPoints.map((point, index) => (
-                <li key={index}>{point}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
+      )}
 
-      {/* Webcam Display */}
-      <div
-        className="fixed bottom-4 right-4 h-28 w-28 overflow-hidden rounded-full border-4 border-white shadow-lg"
-        style={{ zIndex: 9999 }}
-      >
-        <Draggable>
-          <Webcam
-            ref={webcamRef}
-            className="h-full w-full rounded-full object-cover"
-          />
-        </Draggable>
-      </div>
+      {bulletPoints.length > 0 && (
+        <div className="mt-4">
+          <h3 className="text-lg font-semibold">Key Points:</h3>
+          <ul className="mt-2 list-disc pl-5">
+            {bulletPoints.map((point, index) => (
+              <li key={index}>{point}</li>
+            ))}
+          </ul>
+        </div>
+      )}
 
-      {/* Upload URL Display */}
+      {sortedWords.length > 0 && (
+        <div className="mt-4">
+          <h3 className="text-lg font-semibold">Sorted Words:</h3>
+          <ul className="mt-2 list-disc pl-5">
+            {sortedWords.map((word, index) => (
+              <li key={index}>{word}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {mainTheme && (
+        <div className="mt-4">
+          <h3 className="text-lg font-semibold">Main Theme:</h3>
+          <p className="mt-2">{mainTheme}</p>
+        </div>
+      )}
+
+      {Array.isArray(cutDowns) && cutDowns.length > 0 && (
+        <div className="mt-4">
+          <h3 className="text-lg font-semibold">Useful Cutdowns:</h3>
+          <ul className="mt-2 list-disc pl-5">
+            {cutDowns.map((cutdown, index) => (
+              <li key={index}>{cutdown}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {soundBites && (
+        <div className="mt-4">
+          <h3 className="text-lg font-semibold">Sound Bites:</h3>
+          <div className="mt-2 space-y-2">
+            {soundBites.split("\n").map((bite, index) => (
+              <p key={index} className="rounded-lg bg-gray-50 p-2">
+                {bite}
+              </p>
+            ))}
+          </div>
+        </div>
+      )}
+
       {uploadUrl && (
         <div className="mt-4 text-sm text-gray-600">
           Recording uploaded successfully!
@@ -360,8 +268,9 @@ export default function ShareScreenRecorder({
           </a>
         </div>
       )}
+
       <div className="mt-8">
-        <h3 className="mb-4 text-lg font-semibold">Webcam Recording History</h3>
+        <h3 className="mb-4 text-lg font-semibold">Screen Recording History</h3>
         {savedScreen.length > 0 ? (
           <ul className="space-y-4">
             {savedScreen.map((recording, index) => (
@@ -377,7 +286,7 @@ export default function ShareScreenRecorder({
             ))}
           </ul>
         ) : (
-          <p className="text-gray-500">No saved webcam recordings yet.</p>
+          <p className="text-gray-500">No saved screen recordings yet.</p>
         )}
       </div>
     </div>

@@ -1,18 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { upload } from "@vercel/blob/client";
-
-import { IconMic2 } from "@voiceai/ui/@/components/ui/icons";
+import { useState } from "react";
 
 import { poppins } from "~/app/fonts";
 import { formatTime } from "~/lib/formattime";
-
-declare global {
-  interface Window {
-    webkitSpeechRecognition: any;
-  }
-}
+import { useAudioRecorder } from "../hooks/useAudioRecorder";
+import { usePostProcessing } from "../hooks/usePostProcess";
+import { useTranscription } from "../hooks/useTranscription";
+import { AIFeatureButtons } from "./aifeaturebutton";
+import { AudioControls } from "./audiocontrols";
+import { RecordButton } from "./recordbutton";
+import { TranscriptDisplay } from "./transcriptDisplay";
 
 interface MicrophoneProps {
   userId: string | undefined;
@@ -23,166 +21,49 @@ export default function MicrophoneComponent({
   userId,
   savedAudios,
 }: MicrophoneProps) {
-  const [isRecording, setIsRecording] = useState(false);
-  const [transcript, setTranscript] = useState("");
-  const [completeTranscript, setCompleteTranscript] = useState("");
-  const [audioUrl, setAudioUrl] = useState<string | null>(null);
-  const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
-  const [isPaused, setIsPaused] = useState(false);
-  const [timer, setTimer] = useState(0);
-  const [summary, setSummary] = useState("");
-  const [bulletPoints, setBulletPoints] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [uploadUrl, setUploadUrl] = useState<string | null>(null);
-  const [sortedWords, setSortedWords] = useState([]);
-  const [mainTheme, setMainTheme] = useState([]);
-  const [cutDowns, setCutDowns] = useState([]);
-  const [soundBites, setSoundBites] = useState("");
-  const [isProcessingWhisper, setIsProcessingWhisper] = useState(false);
-  const recognitionRef = useRef<any>(null);
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const audioChunksRef = useRef<Blob[]>([]);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const {
+    isRecording,
+    audioUrl,
+    audioBlob,
+    timer,
+    uploadUrl,
+    isProcessingWhisper,
+    startRecording,
+    stopRecording,
+    uploadToVercelBlob,
+  } = useAudioRecorder(userId);
 
-  const startRecording = () => {
-    setTranscript("");
-    setCompleteTranscript("");
-    setIsRecording(true);
-    setIsPaused(false);
-    timerRef.current = setInterval(() => {
-      setTimer((prev) => prev + 1);
-    }, 1000);
+  const {
+    transcript,
+    completeTranscript,
+    startTranscription,
+    stopTranscription,
+  } = useTranscription();
 
-    try {
-      recognitionRef.current = new window.webkitSpeechRecognition();
-      recognitionRef.current.continuous = true;
-      recognitionRef.current.interimResults = true;
+  const {
+    summary,
+    bulletPoints,
+    sortedWords,
+    mainTheme,
+    cutDowns,
+    soundBites,
+    isLoading,
+    processTranscript,
+  } = usePostProcessing();
 
-      recognitionRef.current.onresult = (event: any) => {
-        let interimTranscript = "";
-
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          const currentTranscript = event.results[i][0].transcript;
-
-          if (event.results[i].isFinal) {
-            setCompleteTranscript((prev) => prev + currentTranscript + " ");
-          } else {
-            interimTranscript += currentTranscript;
-          }
-        }
-
-        setTranscript(interimTranscript);
-      };
-
-      recognitionRef.current.start();
-    } catch (error) {
-      console.error("Speech recognition error: ", error);
-      alert(
-        "Your browser does not support speech recognition. Please use Chrome.",
-      );
-      setIsRecording(false);
-      return;
-    }
-
-    navigator.mediaDevices
-      .getUserMedia({ audio: true })
-      .then((stream) => {
-        // Specify the MIME type explicitly for WAV format
-        mediaRecorderRef.current = new MediaRecorder(stream, {
-          mimeType: "audio/webm", // Use webm as it's widely supported
-        });
-        audioChunksRef.current = [];
-
-        mediaRecorderRef.current.ondataavailable = (event) => {
-          audioChunksRef.current.push(event.data);
-        };
-
-        mediaRecorderRef.current.onstop = async () => {
-          const audioBlob = new Blob(audioChunksRef.current, {
-            type: "audio/webm", // Keep consistent MIME type
-          });
-          setAudioBlob(audioBlob);
-          const audioUrl = URL.createObjectURL(audioBlob);
-          setAudioUrl(audioUrl);
-        };
-
-        mediaRecorderRef.current.start();
-      })
-      .catch((error) => {
-        console.error("Microphone access error: ", error);
-        alert("Microphone access is required to record audio.");
-        setIsRecording(false);
-      });
-  };
-
-  const stopRecording = async () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-    }
-    if (mediaRecorderRef.current) {
-      mediaRecorderRef.current.stop();
-
-      // Wait for the mediaRecorder onstop event to complete
-      await new Promise<void>((resolve) => {
-        mediaRecorderRef.current!.onstop = async () => {
-          const audioBlob = new Blob(audioChunksRef.current, {
-            type: "audio/webm",
-          });
-
-          // Convert webm to mp3 before sending to Whisper
-          const formData = new FormData();
-          formData.append("file", audioBlob, "recording.webm");
-
-          setIsProcessingWhisper(true);
-          try {
-            const response = await fetch("/api/live-transcription", {
-              method: "POST",
-              body: formData,
-            });
-
-            if (response.ok) {
-              const { transcription } = await response.json();
-              setCompleteTranscript(transcription);
-            } else {
-              console.error(
-                "Error in Whisper transcription:",
-                await response.text(),
-              );
-              alert(
-                "Failed to process audio with Whisper. Using speech recognition result instead.",
-              );
-            }
-          } catch (error) {
-            console.error("Fetch error:", error);
-            alert(
-              "Failed to process audio with Whisper. Using speech recognition result instead.",
-            );
-          } finally {
-            setIsProcessingWhisper(false);
-          }
-
-          setAudioBlob(audioBlob);
-          const audioUrl = URL.createObjectURL(audioBlob);
-          setAudioUrl(audioUrl);
-          resolve();
-        };
-      });
-    }
-    setIsRecording(false);
-    setIsPaused(true);
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-    }
-  };
+  const [isRecordingComplete, setIsRecordingComplete] = useState(false);
 
   const handleToggleRecording = () => {
     if (!isRecording) {
       startRecording();
+      startTranscription();
+      setIsRecordingComplete(false);
     } else {
       stopRecording();
+      stopTranscription();
+      setIsRecordingComplete(true);
     }
   };
-
   const handleDownload = () => {
     if (audioBlob) {
       const link = document.createElement("a");
@@ -199,186 +80,38 @@ export default function MicrophoneComponent({
 
   const handleSave = async () => {
     if (audioBlob) {
-      setIsLoading(true);
       const uploadedUrl = await uploadToVercelBlob(audioBlob);
       if (uploadedUrl) {
         console.log("Recording uploaded successfully:", uploadedUrl);
         alert("Recording saved successfully!");
       }
-      setIsLoading(false);
     } else {
       alert("No recording to save. Please record something first.");
     }
   };
 
-  const uploadToVercelBlob = async (blob: Blob) => {
-    try {
-      const filename = `RecordedAudio/${userId}/recording-${Date.now()}.wav`;
-      const formData = new FormData();
-      formData.append("file", blob, filename);
-
-      const uploadedFile = await upload(filename, blob, {
-        access: "public",
-        handleUploadUrl: "/api/upload",
-      });
-
-      setUploadUrl(uploadedFile.url);
-      return uploadedFile.url;
-    } catch (error) {
-      console.error("Error uploading to Vercel Blob:", error);
-      alert("Failed to upload recording. Please try again.");
-      return null;
-    }
-  };
-
-  const handleGenerateSummary = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch("/api/getRecorderTools", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          transcript: completeTranscript,
-          type: "summary",
-        }),
-      });
-      const data = await response.json();
-      setSummary(data.content);
-    } catch (error) {
-      console.error("Error generating summary:", error);
-      alert("Failed to generate summary. Please try again.");
-    }
-    setIsLoading(false);
-  };
-
-  const handleGenerateBulletPoints = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch("/api/getRecorderTools", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          transcript: completeTranscript,
-          type: "bullet-points",
-        }),
-      });
-      const data = await response.json();
-      setBulletPoints(data.content);
-    } catch (error) {
-      console.error("Error generating bullet points:", error);
-      alert("Failed to generate bullet points. Please try again.");
-    }
-    setIsLoading(false);
-  };
-
-  const handleSortWords = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch("/api/getRecorderTools", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          transcript: completeTranscript,
-          type: "word-sorter",
-        }),
-      });
-      const data = await response.json();
-      setSortedWords(data.content);
-    } catch (error) {
-      console.error("Error sorting words:", error);
-      alert("Failed to sort words. Please try again.");
-    }
-    setIsLoading(false);
-  };
-
-  const handleMainTheme = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch("/api/getRecorderTools", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          transcript: completeTranscript,
-          type: "main-topic",
-        }),
-      });
-      const data = await response.json();
-      setMainTheme(data.content);
-    } catch (error) {
-      console.error("Error fetching main theme:", error);
-      alert("Failed to fetch the main theme. Please try again.");
-    }
-    setIsLoading(false);
-  };
-
-  const handleUsefulCutdowns = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch("/api/getRecorderTools", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          transcript: completeTranscript,
-          type: "useful-cutdowns",
-        }),
-      });
-      const data = await response.json();
-
-      if (Array.isArray(data.content)) {
-        setCutDowns(data.content);
-      } else {
-        console.error("Received content is not an array:", data.content);
-        alert("Unexpected response format. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error fetching useful cutdowns:", error);
-      alert("Failed to fetch useful cutdowns. Please try again.");
-    }
-    setIsLoading(false);
-  };
-
-  const handleGenerateSoundBites = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch("/api/getRecorderTools", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          transcript: completeTranscript,
-          type: "sound-bites",
-        }),
-      });
-      const data = await response.json();
-      setSoundBites(data.content);
-    } catch (error) {
-      console.error("Error generating sound bites:", error);
-      alert("Failed to generate sound bites. Please try again.");
-    }
-    setIsLoading(false);
-  };
+  const handleGenerateSummary = () =>
+    processTranscript(completeTranscript, "summary");
+  const handleGenerateBulletPoints = () =>
+    processTranscript(completeTranscript, "bullet-points");
+  const handleSortWords = () =>
+    processTranscript(completeTranscript, "word-sorter");
+  const handleMainTheme = () =>
+    processTranscript(completeTranscript, "main-topic");
+  const handleUsefulCutdowns = () =>
+    processTranscript(completeTranscript, "useful-cutdowns");
+  const handleGenerateSoundBites = () =>
+    processTranscript(completeTranscript, "sound-bites");
 
   return (
     <div
       className={`mb-20 flex h-full w-full items-center justify-center  bg-gray-100 ${poppins.className}`}
     >
       <div className="w-2/3 space-y-4 rounded-lg bg-white p-6 shadow-md">
-        <div className="flex flex-col items-center justify-center ">
-          <h2 className="mb-4 font-poppins text-[28px] font-bold leading-[24px]">
+        <div className="flex flex-col items-center justify-center">
+          <h2 className="text-[28pxfont-bold mb-4 font-poppins leading-[24px]">
             Record yourself!
           </h2>
-
           <p className="mb-4 text-sm text-gray-700">
             Please record your voice for an optimal time. For best results,
             ensure your microphone is of good quality, and avoid background
@@ -399,54 +132,24 @@ export default function MicrophoneComponent({
             <div className="mt-2 h-4 w-4 animate-pulse rounded-full bg-red-400" />
           )}
         </div>
-        <div className="mt-4 flex w-full justify-center">
-          <button
-            onClick={handleToggleRecording}
-            className="hover:bg-primary-dark flex w-full items-center justify-center rounded-md bg-primary py-2 font-semibold text-white focus:outline-none"
-          >
-            <div className="mr-2 flex items-center justify-center">
-              {isRecording ? (
-                <svg
-                  className="h-6 w-6"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path fill="white" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-                </svg>
-              ) : (
-                <svg
-                  viewBox="0 0 256 256"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 text-white"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M128 176a48.05 48.05 0 0 0 48-48V64a48 48 0 0 0-96 0v64a48.05 48.05 0 0 0 48 48ZM96 64a32 32 0 0 1 64 0v64a32 32 0 0 1-64 0Zm40 143.6V232a8 8 0 0 1-16 0v-24.4A80.11 80.11 0 0 1 48 128a8 8 0 0 1 16 0a64 64 0 0 0 128 0a8 8 0 0 1 16 0a80.11 80.11 0 0 1-72 79.6Z"
-                  />
-                </svg>
-              )}
-            </div>
-            {isRecording ? "Stop Recording" : "Start Recording"}
-          </button>
-        </div>
+
+        <RecordButton
+          isRecording={isRecording}
+          onClick={handleToggleRecording}
+        />
 
         {isRecording && (
           <div className="mt-2 text-center text-gray-700">
             Recording... {formatTime(timer)}
           </div>
         )}
-        <div className="mt-4 h-full rounded-md border p-2">
-          <textarea
-            className="h-40 w-full border p-2"
-            value={
-              isProcessingWhisper
-                ? "Processing your audio with Whisper AI..."
-                : completeTranscript + transcript
-            }
-            readOnly
-            placeholder="Transcript will appear here..."
-          />
-        </div>
+
+        <TranscriptDisplay
+          isProcessingWhisper={isProcessingWhisper}
+          completeTranscript={completeTranscript}
+          transcript={transcript}
+        />
+
         {uploadUrl && (
           <div className="mt-2 text-sm text-gray-600">
             Recording uploaded successfully!
@@ -460,73 +163,26 @@ export default function MicrophoneComponent({
             </a>
           </div>
         )}
-        {audioUrl && (
-          <div className="mt-6 text-center">
-            <audio controls src={audioUrl} className="w-full" />
-            <div className="mt-4 flex justify-center space-x-4">
-              <button
-                onClick={handleDownload}
-                className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-400"
-              >
-                Download Recording
-              </button>
-              <button
-                onClick={handleCopyTranscript}
-                className="rounded-md bg-gray-600 px-4 py-2 text-white hover:bg-gray-700"
-              >
-                Copy Transcript
-              </button>
-              <button
-                onClick={handleSave}
-                className="rounded-md bg-green-500 px-4 py-2 text-white hover:bg-green-400"
-                disabled={isLoading}
-              >
-                Save Recording
-              </button>
-              <button
-                onClick={handleGenerateSummary}
-                className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-400"
-                disabled={isLoading}
-              >
-                Generate Summary
-              </button>
-              <button
-                onClick={handleGenerateBulletPoints}
-                className="rounded-md bg-indigo-500 px-4 py-2 text-white hover:bg-indigo-400"
-                disabled={isLoading}
-              >
-                Generate Bullet Points
-              </button>
-              <button
-                onClick={handleSortWords}
-                className="rounded-md bg-indigo-500 px-4 py-2 text-white hover:bg-indigo-400"
-                disabled={isLoading}
-              >
-                {isLoading ? "Sorting..." : "Word Sorter"}
-              </button>
-              <button
-                onClick={handleMainTheme}
-                className="rounded-md bg-indigo-500 px-4 py-2 text-white hover:bg-indigo-400"
-                disabled={isLoading}
-              >
-                {isLoading ? "Sorting..." : "Main Theme"}
-              </button>
-              <button
-                onClick={handleUsefulCutdowns}
-                className="rounded-md bg-indigo-500 px-4 py-2 text-white hover:bg-indigo-400"
-                disabled={isLoading}
-              >
-                {isLoading ? "Sorting..." : "Cut Downs"}
-              </button>
-              <button
-                onClick={handleGenerateSoundBites}
-                className="rounded-md bg-indigo-500 px-4 py-2 text-white hover:bg-indigo-400"
-                disabled={isLoading}
-              >
-                {isLoading ? "Sorting..." : "Sound Bites"}
-              </button>
-            </div>
-          </div>
+
+        <AudioControls
+          audioUrl={audioUrl}
+          onDownload={handleDownload}
+          onCopyTranscript={handleCopyTranscript}
+          onSave={handleSave}
+          isLoading={isLoading}
+        />
+
+        {isRecordingComplete && (
+          <AIFeatureButtons
+            onGenerateSummary={handleGenerateSummary}
+            onGenerateBulletPoints={handleGenerateBulletPoints}
+            onSortWords={handleSortWords}
+            onMainTheme={handleMainTheme}
+            onUsefulCutdowns={handleUsefulCutdowns}
+            onGenerateSoundBites={handleGenerateSoundBites}
+            isLoading={isLoading}
+            audioUrl={audioUrl}
+          />
         )}
 
         {isLoading && <p className="mt-4 text-center">Processing...</p>}
@@ -548,6 +204,7 @@ export default function MicrophoneComponent({
             </ul>
           </div>
         )}
+
         {sortedWords.length > 0 && (
           <div className="mt-4">
             <h3 className="text-lg font-semibold">Sorted Words:</h3>
@@ -558,12 +215,14 @@ export default function MicrophoneComponent({
             </ul>
           </div>
         )}
+
         {mainTheme && (
           <div className="mt-4">
             <h3 className="text-lg font-semibold">Main Theme:</h3>
             <p className="mt-2">{mainTheme}</p>
           </div>
         )}
+
         {Array.isArray(cutDowns) && cutDowns.length > 0 && (
           <div className="mt-4">
             <h3 className="text-lg font-semibold">Useful Cutdowns:</h3>
@@ -574,6 +233,7 @@ export default function MicrophoneComponent({
             </ul>
           </div>
         )}
+
         {soundBites && (
           <div className="mt-4">
             <h3 className="text-lg font-semibold">Sound Bites:</h3>
@@ -586,6 +246,7 @@ export default function MicrophoneComponent({
             </div>
           </div>
         )}
+
         <div className="mt-8">
           <h3 className="mb-4 text-lg font-semibold">Recording History</h3>
           {savedAudios.length > 0 ? (
