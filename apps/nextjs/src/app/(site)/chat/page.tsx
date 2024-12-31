@@ -29,7 +29,7 @@ export default async function indexPage() {
   );
 
   return (
-    <div className="flex w-[1024px] flex-col items-center p-6 lg:p-10">
+    <div className="flex w-full flex-col items-center p-6 lg:w-[1024px] lg:p-10">
       <PageHeader title="I am your Script Coach" subtitle={subtitle} />
       <ChatInteraction
         userId={userId}

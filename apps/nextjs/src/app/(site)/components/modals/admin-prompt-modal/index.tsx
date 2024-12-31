@@ -57,8 +57,7 @@ export default function AdminPromptModal({
       refetch();
       return onClose();
     }
-    const newPrompt = await addPrompt(form);
-    console.log("newPrompt", newPrompt);
+    await addPrompt(form);
     refetch();
     onClose();
     setIsLoading(false);

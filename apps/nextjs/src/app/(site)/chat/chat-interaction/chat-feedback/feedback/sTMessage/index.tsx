@@ -17,7 +17,7 @@ export default function STMessage({ messageContent }: STMessageProps) {
       <div className="bg-cp-background flex h-[36px] w-[36px] flex-shrink-0 items-center justify-center rounded-full shadow-md">
         <IconBot className="text-cp-gray-500 h-7 w-7" strokeWidth={2} />
       </div>
-      <div className="bg-cp-gray-200 relative mt-2 w-[523px] rounded-lg px-6 py-3">
+      <div className="bg-cp-gray-200 relative mt-2 w-[523px] rounded-lg px-3 py-3 lg:px-6">
         <div className="absolute -left-6 top-0">
           <LightMessageBubbleArrow />
         </div>
