@@ -3,6 +3,11 @@ import { useEffect, useState } from "react";
 
 import { IconSearch } from "@voiceai/ui/@/components/ui/icons";
 
+import type {
+  PromptCategory,
+  PromptSubcategory,
+} from "~/app/(site)/(admin)/admin-prompt-categories/types";
+import { isNewPrompt } from "~/app/(site)/chat/chat-interaction/utils";
 import {
   BOOST_YOUR_VIDEO_SCRIPT_PROMPTS,
   ENHANCE_YOUR_PRESENTATION_PROMPTS,
@@ -10,11 +15,7 @@ import {
   IMPROVE_SALES_PROMPTS,
   IMPROVE_YOUR_SPEECH_PROMPTS,
 } from "~/app/(site)/data/chat-prompts/";
-import type {
-  Prompt,
-  PromptSubType,
-  PromptType,
-} from "~/app/(site)/data/chat-prompts/types";
+import type { Prompt } from "~/app/(site)/data/chat-prompts/types";
 
 const staticPrompts = [
   ...HEADLINES_AND_OPENINGS_PROMPTS,
@@ -27,17 +28,21 @@ const staticPrompts = [
 const promptNames = staticPrompts.map((prompt) => prompt.name);
 
 interface SearchPromptsProps {
-  setSelectedCard: Dispatch<SetStateAction<Prompt | undefined>>;
-  setSelectedPill: Dispatch<SetStateAction<PromptSubType>>;
-  setSelectedTab: Dispatch<SetStateAction<PromptType>>;
+  setSelectedPrompt: Dispatch<SetStateAction<Prompt | undefined>>;
+  setSelectedSubCategory: Dispatch<SetStateAction<PromptSubcategory>>;
+  setSelectedCategory: Dispatch<SetStateAction<PromptCategory>>;
   prompts: Prompt[];
+  categories: PromptCategory[];
+  subcategories: PromptSubcategory[];
 }
 
 export default function SearchPrompts({
-  setSelectedCard,
-  setSelectedPill,
-  setSelectedTab,
+  setSelectedPrompt,
+  setSelectedSubCategory,
+  setSelectedCategory,
   prompts,
+  categories,
+  subcategories,
 }: SearchPromptsProps) {
   const [searchValue, setSearchValue] = useState<string>("");
   const [filteredPrompts, setFilteredPrompts] = useState<string[] | []>([]);
@@ -52,13 +57,17 @@ export default function SearchPrompts({
   }, [searchValue]);
 
   function handleSelectPrompt(prompt: string) {
-    const selectedPrompt = staticPrompts
+    const promptSelected = staticPrompts
       .concat(prompts)
       .find((p) => p.name === prompt);
-    if (selectedPrompt) {
-      setSelectedCard(selectedPrompt);
-      setSelectedPill(selectedPrompt.subtype);
-      setSelectedTab(selectedPrompt.type);
+    if (promptSelected) {
+      setSelectedPrompt(promptSelected);
+      setSelectedSubCategory(
+        subcategories.find((sub) => sub.id === promptSelected.subcategoryId)!,
+      );
+      setSelectedCategory(
+        categories.find((cat) => cat.id === promptSelected.categoryId)!,
+      );
     }
     setSearchValue("");
   }
@@ -81,7 +90,14 @@ export default function SearchPrompts({
               className="p-2 text-left hover:bg-blue-200"
               onClick={() => handleSelectPrompt(prompt)}
             >
-              {prompt}
+              {prompt}{" "}
+              {isNewPrompt(
+                staticPrompts.concat(prompts).find((p) => p.name === prompt),
+              ) && (
+                <span className="bg-cp-secondary-light rounded-full px-2 py-1 text-xs font-bold">
+                  NEW
+                </span>
+              )}
             </button>
           ))}
         </div>

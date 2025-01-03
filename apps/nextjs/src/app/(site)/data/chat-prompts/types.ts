@@ -61,8 +61,9 @@ export interface Prompt {
   prompt_display: string;
   prompt_ai: string;
   strengths?: string;
-  type: PromptType;
-  subtype: PromptSubType;
+  categoryId: string;
+  subcategoryId: string;
   additional_fields: string[];
   icon: string;
+  created_at: Date;
 }

@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import type { CoreMessage } from "ai";
 import { readStreamableValue } from "ai/rsc";
 
-import { IconHistory } from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 import type {
@@ -22,15 +21,16 @@ import deductOpenAiCredits from "~/app/actions/openAiCredits";
 import { poppins, roboto } from "~/app/fonts";
 import { nanoid } from "~/utils/helpers";
 import { continueConversation } from "../../../actions/aiActions";
-import Button from "../../components/button";
+import type {
+  PromptCategory,
+  PromptSubcategory,
+} from "../../(admin)/admin-prompt-categories/types";
 import ClearChatHistoryModal from "../../components/modals/clear-chat-history";
 import EditChatSubjectModal from "../../components/modals/edit-chat-subject";
 import NoSessionModal from "../../components/modals/no-session-modal";
 import ChatFeedback from "./chat-feedback";
 import PromptInput from "./prompt-input";
-import Prompter from "./prompter";
 import PromptsSelector from "./promptSelector";
-import SearchPrompts from "./seach-prompts";
 import type { Chat, ChatMessage } from "./types";
 import { getChatHistory, replaceWordInString } from "./utils";
 
@@ -38,14 +38,18 @@ interface ChatProps {
   userId: string | undefined;
   openAiCredits: number;
   prompts: Prompt[];
+  categories: PromptCategory[];
+  subcategories: PromptSubcategory[];
 }
 
 export default function ChatInteraction({
   userId,
   openAiCredits,
   prompts,
+  categories,
+  subcategories,
 }: ChatProps) {
-  const [selectedCard, setSelectedCard] = useState<Prompt | undefined>();
+  const [selectedPrompt, setSelectedPrompt] = useState<Prompt | undefined>();
   const [additionalFields, setAdditionalFields] = useState<Record<
     string,
     string
@@ -72,10 +76,12 @@ export default function ChatInteraction({
 
   const [credits, setCredits] = useState(openAiCredits);
 
-  const [selectedTab, setSelectedTab] = useState<PromptType>(tabs[3]);
-  const [selectedPill, setSelectedPill] = useState<PromptSubType>(
-    boostYourVideoScriptSubtypes[0],
-  );
+  const [selectedCategory, setSelectedCategory] = useState<
+    PromptCategory | undefined
+  >();
+  const [selectedSubCategory, setSelectedSubCategory] = useState<
+    PromptSubcategory | undefined
+  >();
 
   const [isInputMinimized, setIsInputMinimized] = useState(false);
 
@@ -111,9 +117,9 @@ export default function ChatInteraction({
       try {
         e.preventDefault();
 
-        const systemMessage = selectedCard?.additional_fields
-          ? replaceWordInString(selectedCard.prompt_ai, additionalFields!)
-          : selectedCard?.prompt_ai;
+        const systemMessage = selectedPrompt?.additional_fields
+          ? replaceWordInString(selectedPrompt.prompt_ai, additionalFields!)
+          : selectedPrompt?.prompt_ai;
 
         const newMessages: CoreMessage[] = [
           ...messages,
@@ -131,7 +137,7 @@ export default function ChatInteraction({
         setMessages(newMessages);
         setPromptInput("");
         setFeedbackInput("");
-        setSelectedCard(undefined);
+        setSelectedPrompt(undefined);
 
         const { value } = await continueConversation(
           newMessages,
@@ -166,19 +172,21 @@ export default function ChatInteraction({
       </p>
       <div className="mt-5 flex w-full flex-col items-center justify-center rounded-lg bg-white p-3 lg:mt-6 lg:px-[42px] lg:py-8">
         <PromptsSelector
-          selectedCard={selectedCard}
-          setSelectedCard={setSelectedCard}
-          selectedPill={selectedPill}
-          setSelectedPill={setSelectedPill}
-          selectedTab={selectedTab}
-          setSelectedTab={setSelectedTab}
+          selectedPrompt={selectedPrompt}
+          setSelectedPrompt={setSelectedPrompt}
+          selectedSubCategory={selectedSubCategory}
+          setSelectedSubCategory={setSelectedSubCategory}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
           setIsInputMinimized={setIsInputMinimized}
           prompts={prompts}
+          categories={categories}
+          subcategories={subcategories}
         />
         <PromptInput
           value={promptInput}
           onChange={setPromptInput}
-          selectedCardName={selectedCard?.name}
+          selectedPromptName={selectedPrompt?.name}
           onSubmit={async (e) => {
             const chatId = feedbackChatId ?? nanoid();
             await handleSubmitChat(e, chatId);
@@ -186,11 +194,11 @@ export default function ChatInteraction({
             setFeedbackChatId(chatId);
           }}
           loadingMessages={isLoading}
-          isEnabled={Boolean(selectedCard) && promptInput.length > 0}
+          isEnabled={Boolean(selectedPrompt) && promptInput.length > 0}
           userId={userId}
           isInputMinimized={isInputMinimized}
           setIsInputMinimized={setIsInputMinimized}
-          prompt={selectedCard}
+          prompt={selectedPrompt}
           setAdditionalFields={setAdditionalFields}
           additionalFields={additionalFields}
         />

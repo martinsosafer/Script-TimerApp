@@ -2,8 +2,8 @@ export interface Prompt {
   id: string;
   name: string;
   description?: string;
-  type?: string;
-  subtype?: string;
+  categoryId?: string;
+  subcategoryId?: string;
   prompt_ai: string;
   prompt_display: string;
   additional_fields?: string[] | null;

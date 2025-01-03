@@ -1,3 +1,4 @@
+import type { Prompt } from "~/app/(site)/data/chat-prompts/types";
 import type { Chat } from "./types";
 
 export async function getChatHistory({
@@ -41,4 +42,13 @@ export function replaceWordInString(
     modiffiedPrompt = modiffiedPrompt.replace(regex, value);
   });
   return modiffiedPrompt;
+}
+
+export function isNewPrompt(prompt?: Prompt) {
+  if (!prompt?.created_at) return false;
+  const today = new Date();
+  const oneMonthAgo = new Date(today.setMonth(today.getMonth() - 1));
+  const promptDate = new Date(prompt.created_at);
+
+  return oneMonthAgo < promptDate;
 }

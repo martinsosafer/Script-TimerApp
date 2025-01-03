@@ -1,5 +1,9 @@
 import type { Dispatch, SetStateAction } from "react";
 
+import type {
+  PromptCategory,
+  PromptSubcategory,
+} from "~/app/(site)/(admin)/admin-prompt-categories/types";
 import {
   BOOST_YOUR_VIDEO_SCRIPT_PROMPTS,
   ENHANCE_YOUR_PRESENTATION_PROMPTS,
@@ -23,6 +27,7 @@ import {
 } from "~/app/(site)/data/chat-prompts/types";
 import { roboto } from "~/app/fonts";
 import SearchPrompts from "../seach-prompts";
+import { isNewPrompt } from "../utils";
 
 export const pills = {
   "HEADLINES & OPENINGS": headlinesAndopeningSubtypes,
@@ -41,24 +46,28 @@ const cards = {
 };
 
 interface PromptsSelectorProps {
-  selectedCard: Prompt | undefined;
-  setSelectedCard: Dispatch<SetStateAction<Prompt | undefined>>;
-  selectedTab: PromptType;
-  setSelectedTab: Dispatch<SetStateAction<PromptType>>;
-  selectedPill: PromptSubType;
-  setSelectedPill: Dispatch<SetStateAction<PromptSubType>>;
+  selectedPrompt: Prompt | undefined;
+  setSelectedPrompt: Dispatch<SetStateAction<Prompt | undefined>>;
+  selectedCategory: PromptCategory;
+  setSelectedCategory: Dispatch<SetStateAction<PromptCategory>>;
+  selectedSubCategory: PromptSubcategory;
+  setSelectedSubCategory: Dispatch<SetStateAction<PromptSubcategory>>;
   setIsInputMinimized: Dispatch<SetStateAction<boolean>>;
   prompts: Prompt[];
+  categories: PromptCategory[];
+  subcategories: PromptSubcategory[];
 }
 
 export default function PromptsSelector({
-  selectedCard,
-  setSelectedCard,
-  selectedTab,
-  setSelectedTab,
-  selectedPill,
-  setSelectedPill,
+  selectedPrompt,
+  setSelectedPrompt,
+  selectedCategory,
+  setSelectedCategory,
+  selectedSubCategory,
+  setSelectedSubCategory,
   prompts,
+  categories,
+  subcategories,
 }: PromptsSelectorProps) {
   return (
     <div className="flex flex-col lg:w-[565px]">
@@ -66,10 +75,12 @@ export default function PromptsSelector({
         You can do a quick search
       </p>
       <SearchPrompts
-        setSelectedCard={setSelectedCard}
-        setSelectedPill={setSelectedPill}
-        setSelectedTab={setSelectedTab}
+        setSelectedPrompt={setSelectedPrompt}
+        setSelectedSubCategory={setSelectedSubCategory}
+        setSelectedCategory={setSelectedCategory}
         prompts={prompts}
+        categories={categories}
+        subcategories={subcategories}
       />
       <p className="text-cp-gray-500 mb-3 mt-10 text-[16px] font-bold lg:mt-[60px] lg:text-xl">
         Or choose options from our categories
@@ -127,7 +138,7 @@ export default function PromptsSelector({
           .map((card, idx) => {
             return (
               <option value={card.name} key={`${card.name}-${idx}`}>
-                {card.name}
+                {card.name} {isNewPrompt(card) ? "- New" : ""}
               </option>
             );
           })}

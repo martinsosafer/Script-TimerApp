@@ -20,6 +20,11 @@ export default function AdminNavigator() {
       action: () => router.push("/admin-prompts"),
     },
     {
+      label: "Prompt Categories",
+      active: pathname === "/admin-prompt-categories",
+      action: () => router.push("/admin-prompt-categories"),
+    },
+    {
       label: "Specials and announcements",
       active: pathname === "/admin-specials",
       action: () => router.push("/admin-specials"),

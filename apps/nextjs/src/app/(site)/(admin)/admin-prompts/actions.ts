@@ -2,11 +2,13 @@
 
 import { db, eq, schema } from "@voiceai/db";
 
-export async function addPrompt(formData: FormData) {
+export async function addPrompt(
+  formData: FormData,
+  categoryId: string,
+  subcategoryId: string,
+) {
   const name = formData.get("name") as string;
   const description = formData.get("description");
-  const type = formData.get("type");
-  const subtype = formData.get("subtype");
   const prompt_ai = formData.get("prompt_ai");
   const prompt_display = formData.get("prompt_display");
   const ai_model_type = formData.get("ai_model_type");
@@ -19,8 +21,8 @@ export async function addPrompt(formData: FormData) {
     .values({
       name,
       description,
-      type,
-      subtype,
+      categoryId,
+      subcategoryId,
       prompt_ai,
       prompt_display,
       additional_fields: mappedFields,

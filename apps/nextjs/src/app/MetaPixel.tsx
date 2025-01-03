@@ -5,9 +5,8 @@ import Script from "next/script";
 
 export default function MetaPixel() {
   return (
-    <>
-      <Script id="meta-pixel" strategy="afterInteractive">
-        {`
+    <Script id="meta-pixel" strategy="afterInteractive">
+      {`
           !function(f,b,e,v,n,t,s)
           {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
           n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -19,16 +18,6 @@ export default function MetaPixel() {
           fbq('init', '2607599612759264');
           fbq('track', 'PageView');
         `}
-      </Script>
-      <noscript>
-        <img
-          height="1"
-          width="1"
-          style={{ display: "none" }}
-          src="https://www.facebook.com/tr?id=2607599612759264&ev=PageView&noscript=1"
-          alt=""
-        />
-      </noscript>
-    </>
+    </Script>
   );
 }

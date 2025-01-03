@@ -24,3 +24,23 @@ export async function getAllPrompts() {
     throw new Error("Error fetching prompts");
   }
 }
+
+export async function getAllCategories() {
+  try {
+    const categories = await db.query.promptCategory.findMany();
+    return categories;
+  } catch (e) {
+    console.error(e);
+    throw new Error("Error fetching categories");
+  }
+}
+
+export async function getAllSubCategories() {
+  try {
+    const subcategories = await db.query.promptSubcategory.findMany();
+    return subcategories;
+  } catch (e) {
+    console.error(e);
+    throw new Error("Error fetching subcategories");
+  }
+}
