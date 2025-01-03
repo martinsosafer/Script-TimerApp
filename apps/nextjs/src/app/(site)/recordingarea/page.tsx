@@ -76,10 +76,11 @@ export default async function IndexPage() {
       <div className="flex w-[1024px] flex-col py-10">
         <div className="flex flex-col items-center">
           <h2 className="font-poppins  text-3xl text-[#0066FF]">
-            Record and Transcribe
+            Record and Get Feedback
           </h2>
           <p className="text-center text-gray-900">
-            Capture your voice, video, and/or screen record
+            Speak freely and record yourself, then get instant feedback on areas
+            to improve your delivery
           </p>
         </div>
         <ModeSelectorRecorder

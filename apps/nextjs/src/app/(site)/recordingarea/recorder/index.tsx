@@ -31,6 +31,7 @@ export default function MicrophoneComponent({
     startRecording,
     stopRecording,
     uploadToVercelBlob,
+    whisperTranscription,
   } = useAudioRecorder(userId);
 
   const {
@@ -148,6 +149,7 @@ export default function MicrophoneComponent({
           isProcessingWhisper={isProcessingWhisper}
           completeTranscript={completeTranscript}
           transcript={transcript}
+          whisperTranscription={whisperTranscription}
         />
 
         {uploadUrl && (

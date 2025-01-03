@@ -2,12 +2,14 @@ interface TranscriptDisplayProps {
   isProcessingWhisper: boolean;
   completeTranscript: string;
   transcript: string;
+  whisperTranscription: string | null;
 }
 
 export function TranscriptDisplay({
   isProcessingWhisper,
   completeTranscript,
   transcript,
+  whisperTranscription,
 }: TranscriptDisplayProps) {
   return (
     <div className="mt-4 h-full rounded-md border p-2">
@@ -16,7 +18,7 @@ export function TranscriptDisplay({
         value={
           isProcessingWhisper
             ? "Processing your audio with Whisper AI..."
-            : completeTranscript + transcript
+            : whisperTranscription || completeTranscript + transcript
         }
         readOnly
         placeholder="Transcript will appear here..."

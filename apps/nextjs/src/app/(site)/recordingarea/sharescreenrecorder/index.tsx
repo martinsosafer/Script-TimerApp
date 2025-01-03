@@ -15,7 +15,6 @@ import { poppins } from "~/app/fonts";
 import { formatTime } from "~/lib/formattime";
 import { usePostProcessing } from "../hooks/usePostProcess";
 import { useScreenRecorder } from "../hooks/useScreenRecorder";
-import { useTranscription } from "../hooks/useTranscription";
 import { AIFeatureButtons } from "../recorder/aifeaturebutton";
 import { AudioControls } from "../recorder/audiocontrols";
 import { RecordButton } from "../recorder/recordbutton";
@@ -36,21 +35,14 @@ export default function ShareScreenRecorder({
     isPaused,
     mediaBlobUrl,
     uploadUrl,
+    isProcessingWhisper,
+    whisperTranscription,
     handleStartRecording,
     handleStopRecording,
     handlePauseResume,
     uploadToVercelBlob,
     clearBlobUrl,
   } = useScreenRecorder(userId);
-
-  const {
-    transcript,
-    completeTranscript,
-    startTranscription,
-    stopTranscription,
-    pauseTranscription,
-    resumeTranscription,
-  } = useTranscription();
 
   const {
     summary,
@@ -68,26 +60,15 @@ export default function ShareScreenRecorder({
   const handleToggleRecording = () => {
     if (status !== "recording") {
       handleStartRecording();
-      startTranscription();
       setIsRecordingComplete(false);
     } else {
       handleStopRecording();
-      stopTranscription();
       setIsRecordingComplete(true);
     }
   };
 
-  const handlePauseResumeRecording = () => {
-    handlePauseResume();
-    if (isPaused) {
-      resumeTranscription();
-    } else {
-      pauseTranscription();
-    }
-  };
-
   const handleCopyTranscript = () => {
-    navigator.clipboard.writeText(completeTranscript + transcript);
+    navigator.clipboard.writeText(whisperTranscription || "");
     alert("Transcript copied to clipboard!");
   };
 
@@ -106,17 +87,17 @@ export default function ShareScreenRecorder({
   };
 
   const handleGenerateSummary = () =>
-    processTranscript(completeTranscript, "summary");
+    processTranscript(whisperTranscription || "", "summary");
   const handleGenerateBulletPoints = () =>
-    processTranscript(completeTranscript, "bullet-points");
+    processTranscript(whisperTranscription || "", "bullet-points");
   const handleSortWords = () =>
-    processTranscript(completeTranscript, "word-sorter");
+    processTranscript(whisperTranscription || "", "word-sorter");
   const handleMainTheme = () =>
-    processTranscript(completeTranscript, "main-topic");
+    processTranscript(whisperTranscription || "", "main-topic");
   const handleUsefulCutdowns = () =>
-    processTranscript(completeTranscript, "useful-cutdowns");
+    processTranscript(whisperTranscription || "", "useful-cutdowns");
   const handleGenerateSoundBites = () =>
-    processTranscript(completeTranscript, "sound-bites");
+    processTranscript(whisperTranscription || "", "sound-bites");
 
   return (
     <div
@@ -134,7 +115,7 @@ export default function ShareScreenRecorder({
           isRecording={status === "recording"}
           onClick={handleToggleRecording}
         />
-        <Button onClick={handlePauseResumeRecording} variant="default">
+        <Button onClick={handlePauseResume} variant="default">
           <IconStop className="mr-2 h-4 w-4" />
           {isPaused ? "Resume Recording" : "Pause Recording"}
         </Button>
@@ -167,9 +148,9 @@ export default function ShareScreenRecorder({
       )}
 
       <TranscriptDisplay
-        isProcessingWhisper={false}
-        completeTranscript={completeTranscript}
-        transcript={transcript}
+        isProcessingWhisper={isProcessingWhisper}
+        completeTranscript={whisperTranscription || ""}
+        transcript={""}
       />
 
       <AudioControls

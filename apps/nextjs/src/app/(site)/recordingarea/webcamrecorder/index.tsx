@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { poppins } from "~/app/fonts";
 import { formatTime } from "~/lib/formattime";
+import { DeviceSelector } from "../deviceSelector";
 import { usePostProcessing } from "../hooks/usePostProcess";
 import { useTranscription } from "../hooks/useTranscription";
 import { useWebcamRecorder } from "../hooks/useWebcamRecorder";
@@ -24,14 +25,20 @@ export default function MicrophoneAndWebcamComponent({
 }: WebcamRecorderProps) {
   const {
     isRecording,
-    videoUrl,
-    videoBlob,
+    recordingUrl,
+    recordingBlob,
     timer,
     uploadUrl,
-    videoRef,
+    isProcessingWhisper,
     startRecording,
     stopRecording,
     uploadToVercelBlob,
+    whisperTranscription,
+    selectedWebcam,
+    setSelectedWebcam,
+    selectedMicrophone,
+    setSelectedMicrophone,
+    stream,
   } = useWebcamRecorder(userId);
 
   const {
@@ -72,14 +79,27 @@ export default function MicrophoneAndWebcamComponent({
   };
 
   const handleSave = async () => {
-    if (videoBlob) {
-      const uploadedUrl = await uploadToVercelBlob(videoBlob);
+    if (recordingBlob) {
+      const uploadedUrl = await uploadToVercelBlob(recordingBlob);
       if (uploadedUrl) {
         console.log("Recording uploaded successfully:", uploadedUrl);
         alert("Recording saved successfully!");
       }
     } else {
       alert("No recording to save. Please record something first.");
+    }
+  };
+
+  const handleDownload = () => {
+    if (recordingBlob) {
+      const url = URL.createObjectURL(recordingBlob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "recorded-video.webm";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     }
   };
 
@@ -109,7 +129,17 @@ export default function MicrophoneAndWebcamComponent({
         </div>
 
         <div className="flex flex-col items-center space-y-4">
-          <VideoPreview videoRef={videoRef} />
+          <div className="flex w-full justify-between">
+            <DeviceSelector
+              kind="videoinput"
+              onDeviceChange={setSelectedWebcam}
+            />
+            <DeviceSelector
+              kind="audioinput"
+              onDeviceChange={setSelectedMicrophone}
+            />
+          </div>
+          <VideoPreview stream={stream} />
           <div className="text-center">
             <p className="text-sm font-medium">Recorder</p>
             <p className="text-sm text-gray-500">
@@ -135,9 +165,10 @@ export default function MicrophoneAndWebcamComponent({
         )}
 
         <TranscriptDisplay
-          isProcessingWhisper={false}
+          isProcessingWhisper={isProcessingWhisper}
           completeTranscript={completeTranscript}
           transcript={transcript}
+          whisperTranscription={whisperTranscription}
         />
 
         {uploadUrl && (
@@ -155,8 +186,8 @@ export default function MicrophoneAndWebcamComponent({
         )}
 
         <AudioControls
-          audioUrl={videoUrl}
-          onDownload={() => {}}
+          audioUrl={recordingUrl}
+          onDownload={handleDownload}
           onCopyTranscript={handleCopyTranscript}
           onSave={handleSave}
           isLoading={isLoading}
@@ -171,7 +202,7 @@ export default function MicrophoneAndWebcamComponent({
             onUsefulCutdowns={handleUsefulCutdowns}
             onGenerateSoundBites={handleGenerateSoundBites}
             isLoading={isLoading}
-            videoUrl={videoUrl}
+            videoUrl={recordingUrl}
           />
         )}
 

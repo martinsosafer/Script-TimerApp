@@ -8,7 +8,9 @@ export function useAudioRecorder(userId: string | undefined) {
   const [timer, setTimer] = useState(0);
   const [uploadUrl, setUploadUrl] = useState<string | null>(null);
   const [isProcessingWhisper, setIsProcessingWhisper] = useState(false);
-
+  const [whisperTranscription, setWhisperTranscription] = useState<
+    string | null
+  >(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -48,7 +50,6 @@ export function useAudioRecorder(userId: string | undefined) {
         setIsRecording(false);
       });
   }, []);
-
   const stopRecording = useCallback(async () => {
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
@@ -70,16 +71,14 @@ export function useAudioRecorder(userId: string | undefined) {
             });
 
             if (!response.ok) {
-              console.error(
-                "Error in Whisper transcription:",
-                await response.text(),
-              );
-              alert(
-                "Failed to process audio with Whisper. Using speech recognition result instead.",
-              );
+              throw new Error(await response.text());
             }
+
+            const result = await response.json();
+           
+            setWhisperTranscription(result.transcription);
           } catch (error) {
-            console.error("Fetch error:", error);
+            console.error("Error in Whisper transcription:", error);
             alert(
               "Failed to process audio with Whisper. Using speech recognition result instead.",
             );
@@ -128,6 +127,7 @@ export function useAudioRecorder(userId: string | undefined) {
     uploadUrl,
     isProcessingWhisper,
     startRecording,
+    whisperTranscription,
     stopRecording,
     uploadToVercelBlob,
   };
