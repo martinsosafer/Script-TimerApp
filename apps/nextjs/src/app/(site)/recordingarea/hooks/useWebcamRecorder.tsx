@@ -161,7 +161,7 @@ export function useWebcamRecorder(userId: string | undefined) {
   const uploadToVercelBlob = useCallback(
     async (blob: Blob) => {
       try {
-        const filename = `RecordedVideo/${userId}/recording-${Date.now()}.webm`;
+        const filename = `RecordedWebcam/${userId}/recording-${Date.now()}.mp4`;
         const uploadedFile = await upload(filename, blob, {
           access: "public",
           handleUploadUrl: "/api/upload",

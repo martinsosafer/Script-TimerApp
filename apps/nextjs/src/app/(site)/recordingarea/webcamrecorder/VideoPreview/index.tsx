@@ -12,7 +12,7 @@ export function VideoPreview({
   isRecording,
 }: VideoPreviewProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
-
+  console.log("Video preview URL:", recordingUrl);
   useEffect(() => {
     const videoElement = videoRef.current;
     if (!videoElement) return;

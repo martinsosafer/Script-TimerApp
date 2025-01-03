@@ -139,7 +139,11 @@ export default function MicrophoneAndWebcamComponent({
               onDeviceChange={setSelectedMicrophone}
             />
           </div>
-          <VideoPreview stream={stream} />
+          <VideoPreview
+            stream={stream}
+            recordingUrl={recordingUrl}
+            isRecording={isRecording}
+          />
           <div className="text-center">
             <p className="text-sm font-medium">Recorder</p>
             <p className="text-sm text-gray-500">
