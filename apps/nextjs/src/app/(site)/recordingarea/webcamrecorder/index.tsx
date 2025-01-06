@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import { poppins } from "~/app/fonts";
 import { formatTime } from "~/lib/formattime";
@@ -30,8 +30,8 @@ export default function MicrophoneAndWebcamComponent({
     timer,
     uploadUrl,
     isProcessingWhisper,
-    startRecording,
-    stopRecording,
+    startRecording: originalStartRecording,
+    stopRecording: originalStopRecording,
     uploadToVercelBlob,
     whisperTranscription,
     selectedWebcam,
@@ -58,8 +58,41 @@ export default function MicrophoneAndWebcamComponent({
     isLoading,
     processTranscript,
   } = usePostProcessing();
-
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const chunksRef = useRef<Blob[]>([]);
   const [isRecordingComplete, setIsRecordingComplete] = useState(false);
+  const [showingRecordedVideo, setShowingRecordedVideo] = useState(false);
+
+  const startRecording = () => {
+    chunksRef.current = [];
+    if (stream) {
+      mediaRecorderRef.current = new MediaRecorder(stream);
+      mediaRecorderRef.current.ondataavailable = (e) => {
+        if (e.data.size > 0) {
+          chunksRef.current.push(e.data);
+        }
+      };
+      mediaRecorderRef.current.start();
+    }
+    originalStartRecording();
+  };
+
+  const stopRecording = () => {
+    if (
+      mediaRecorderRef.current &&
+      mediaRecorderRef.current.state === "recording"
+    ) {
+      mediaRecorderRef.current.stop();
+      mediaRecorderRef.current.onstop = () => {
+        const blob = new Blob(chunksRef.current, { type: "video/webm" });
+        const url = URL.createObjectURL(blob);
+        setPreviewUrl(url);
+        setShowingRecordedVideo(true);
+      };
+    }
+    originalStopRecording();
+  };
 
   const handleToggleRecording = () => {
     if (!isRecording) {
@@ -103,6 +136,11 @@ export default function MicrophoneAndWebcamComponent({
     }
   };
 
+  const handleResetToWebcam = () => {
+    setShowingRecordedVideo(false);
+    setPreviewUrl(null);
+  };
+
   const handleGenerateSummary = () =>
     processTranscript(completeTranscript, "summary");
   const handleGenerateBulletPoints = () =>
@@ -141,8 +179,11 @@ export default function MicrophoneAndWebcamComponent({
           </div>
           <VideoPreview
             stream={stream}
-            recordingUrl={recordingUrl}
+            recordingUrl={
+              showingRecordedVideo ? (previewUrl ?? recordingUrl) : null
+            }
             isRecording={isRecording}
+            onReset={handleResetToWebcam}
           />
           <div className="text-center">
             <p className="text-sm font-medium">Recorder</p>

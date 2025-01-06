@@ -1,20 +1,22 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+import { Button } from "@voiceai/ui";
 
 interface VideoPreviewProps {
   stream: MediaStream | null;
   recordingUrl?: string | null;
   isRecording?: boolean;
+  onReset: () => void;
 }
 
 export function VideoPreview({
   stream,
-  recordingUrl: initialRecordingUrl,
+  recordingUrl,
   isRecording,
+  onReset,
 }: VideoPreviewProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [recordingUrl, setRecordingUrl] = useState<string | null>(
-    initialRecordingUrl,
-  );
+  const [showResetButton, setShowResetButton] = useState(false);
 
   useEffect(() => {
     const videoElement = videoRef.current;
@@ -24,11 +26,16 @@ export function VideoPreview({
       videoElement.srcObject = null;
       videoElement.src = recordingUrl;
       videoElement.load();
+      videoElement
+        .play()
+        .catch((err) => console.error("Error playing video:", err));
+      setShowResetButton(true);
     } else if (stream) {
       videoElement.srcObject = stream;
       videoElement
         .play()
         .catch((err) => console.error("Error playing video:", err));
+      setShowResetButton(false);
     }
 
     return () => {
@@ -38,27 +45,25 @@ export function VideoPreview({
     };
   }, [stream, recordingUrl]);
 
-  const resetWebcam = () => {
-    setRecordingUrl(null);
+  const handleReset = () => {
+    onReset();
+    setShowResetButton(false);
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="relative">
       <video
         ref={videoRef}
-        className="mb-4 w-full max-w-2xl rounded-lg shadow-lg"
+        className="w-full max-w-2xl rounded-lg shadow-lg"
         autoPlay
         playsInline
         muted={!recordingUrl}
         controls={!!recordingUrl}
       />
-      {recordingUrl && (
-        <button
-          onClick={resetWebcam}
-          className="rounded-lg bg-blue-500 px-4 py-2 text-white shadow hover:bg-blue-600"
-        >
-          Reset Webcam
-        </button>
+      {showResetButton && (
+        <Button className="absolute right-2 top-2" onClick={handleReset}>
+          Reset to Webcam
+        </Button>
       )}
     </div>
   );
