@@ -9,7 +9,7 @@ const openai = new OpenAI({
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
-    const file = formData.get("file") as Blob;
+    const file = formData.get("file") as File;
 
     if (!file) {
       return NextResponse.json(
@@ -18,17 +18,14 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    console.log("Received audio file:", file.type, file.size);
+    console.log("Received audio file:", file.name, file.type, file.size);
 
-    // Convert the Blob to a Buffer
+    // Convert the File to a Buffer before sending to OpenAI
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    // Create a File object from the buffer
-    const fileObject = new File([buffer], "audio.webm", { type: file.type });
-
     const transcription = await openai.audio.transcriptions.create({
-      file: fileObject,
+      file: new File([buffer], file.name, { type: file.type }),
       model: "whisper-1",
       response_format: "verbose_json",
       prompt:
@@ -37,6 +34,7 @@ export async function POST(req: NextRequest) {
 
     console.log("Transcription result:", transcription);
 
+    // Return the transcription as is, focusing on the inclusion of filler words
     return NextResponse.json(
       {
         transcription: transcription.text,

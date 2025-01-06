@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface VideoPreviewProps {
   stream: MediaStream | null;
@@ -8,11 +8,14 @@ interface VideoPreviewProps {
 
 export function VideoPreview({
   stream,
-  recordingUrl,
+  recordingUrl: initialRecordingUrl,
   isRecording,
 }: VideoPreviewProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  console.log("Video preview URL:", recordingUrl);
+  const [recordingUrl, setRecordingUrl] = useState<string | null>(
+    initialRecordingUrl,
+  );
+
   useEffect(() => {
     const videoElement = videoRef.current;
     if (!videoElement) return;
@@ -35,14 +38,28 @@ export function VideoPreview({
     };
   }, [stream, recordingUrl]);
 
+  const resetWebcam = () => {
+    setRecordingUrl(null);
+  };
+
   return (
-    <video
-      ref={videoRef}
-      className="w-full max-w-2xl rounded-lg shadow-lg"
-      autoPlay
-      playsInline
-      muted={!recordingUrl}
-      controls={!!recordingUrl}
-    />
+    <div className="flex flex-col items-center">
+      <video
+        ref={videoRef}
+        className="mb-4 w-full max-w-2xl rounded-lg shadow-lg"
+        autoPlay
+        playsInline
+        muted={!recordingUrl}
+        controls={!!recordingUrl}
+      />
+      {recordingUrl && (
+        <button
+          onClick={resetWebcam}
+          className="rounded-lg bg-blue-500 px-4 py-2 text-white shadow hover:bg-blue-600"
+        >
+          Reset Webcam
+        </button>
+      )}
+    </div>
   );
 }
