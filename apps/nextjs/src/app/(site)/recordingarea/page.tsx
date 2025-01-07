@@ -73,12 +73,14 @@ export default async function IndexPage() {
 
   return (
     <div className="flex min-h-screen w-full items-center justify-center ">
-      <div className="flex w-[1024px] flex-col py-10">
+      <div className="flex w-[1024px] flex-col py-[60px]">
         <div className="flex flex-col items-center">
-          <h2 className="font-poppins  text-3xl text-[#0066FF]">
+          <h2
+            className={`text-cp-primary  font-poppins text-[42px] font-bold leading-[50px] `}
+          >
             Record and Get Feedback
           </h2>
-          <p className="text-center text-gray-900">
+          <p className="text-center text-[16px] font-bold leading-[22.4px] text-black">
             Speak freely and record yourself, then get instant feedback on areas
             to improve your delivery
           </p>

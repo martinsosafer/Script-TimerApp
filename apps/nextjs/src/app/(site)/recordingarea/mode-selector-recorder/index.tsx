@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 import MicrophoneComponent from "../recorder";
 import ShareScreenRecorder from "../sharescreenrecorder";
@@ -53,40 +54,62 @@ export default function ModeSelectorRecorder({
   };
 
   return (
-    <div className="mt-8 flex flex-col items-center justify-center">
-      <div className="mb-4 flex justify-center gap-4 rounded-full border-2 border-gray-500 p-2">
-        <button
-          onClick={() => handleModeChange("audio")}
-          className={`${
-            activeMode === "audio"
-              ? "rounded-full bg-primary font-bold text-white"
-              : "rounded-full bg-gray-200 text-gray-400"
-          } px-4 py-2`}
-        >
-          Audio Recorder
-        </button>
-        <button
-          onClick={() => handleModeChange("video")}
-          className={`${
-            activeMode === "video"
-              ? "rounded-full bg-primary font-bold text-white"
-              : "rounded-full bg-gray-200 text-gray-400"
-          } px-4 py-2`}
-        >
-          Video Recorder
-        </button>
-        <button
-          onClick={() => handleModeChange("screen")}
-          className={`${
-            activeMode === "screen"
-              ? "rounded-full bg-primary font-bold text-white"
-              : "rounded-full bg-gray-200 text-gray-400"
-          } px-4 py-2`}
-        >
-          Screen Recorder
-        </button>
+    <div
+      className={`mx-auto flex w-full max-w-[944px] flex-col items-center rounded-lg bg-[#F5F5F7] shadow-lg`}
+    >
+      <div className="w-full px-4 lg:px-6">
+        <div className="mx-auto mb-3 max-w-[500px] border-b">
+          <div className="mt-5 lg:mt-10">
+            <div className="flex justify-center space-x-6">
+              {["audio", "video", "screen"].map((mode) => (
+                <motion.button
+                  key={mode}
+                  className={`relative px-1 py-4 text-base transition-colors
+                    ${
+                      activeMode === mode
+                        ? "font-bold text-primary"
+                        : "font-normal text-gray-600 hover:text-gray-900"
+                    }
+                  `}
+                  onClick={() =>
+                    handleModeChange(mode as "audio" | "video" | "screen")
+                  }
+                >
+                  {mode === "audio"
+                    ? "Audio Recorder"
+                    : mode === "video"
+                      ? "Video Recorder"
+                      : "Screen Recorder"}
+                  {activeMode === mode && (
+                    <motion.div
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
+                      layoutId="activeMode"
+                      initial={false}
+                      transition={{
+                        type: "spring",
+                        stiffness: 500,
+                        damping: 30,
+                      }}
+                    />
+                  )}
+                </motion.button>
+              ))}
+            </div>
+          </div>
+        </div>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeMode}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="mt-[60px] min-h-[calc(100vh-200px)]"
+          >
+            <div className="h-full w-full">{renderComponent()}</div>
+          </motion.div>
+        </AnimatePresence>
       </div>
-      <div className="w-full">{renderComponent()}</div>
     </div>
   );
 }
