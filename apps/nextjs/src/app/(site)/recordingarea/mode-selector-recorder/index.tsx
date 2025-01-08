@@ -54,10 +54,8 @@ export default function ModeSelectorRecorder({
   };
 
   return (
-    <div
-      className={`mx-auto flex w-full max-w-[944px] flex-col items-center rounded-lg bg-[#F5F5F7] shadow-lg`}
-    >
-      <div className="w-full px-4 lg:px-6">
+    <div className={` flex w-full  flex-col items-center rounded-lg  `}>
+      <div className="w-full ">
         <div className="mx-auto mb-3 max-w-[500px] border-b">
           <div className="mt-5 lg:mt-10">
             <div className="flex justify-center space-x-6">

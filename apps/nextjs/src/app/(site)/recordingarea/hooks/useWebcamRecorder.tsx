@@ -15,7 +15,7 @@ export function useWebcamRecorder(userId: string | undefined) {
   const recordingChunksRef = useRef<Blob[]>([]);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
-
+  const [isPaused, setIsPaused] = useState(false);
   const [selectedWebcam, setSelectedWebcam] = useState<string | null>(null);
   const [selectedMicrophone, setSelectedMicrophone] = useState<string | null>(
     null,
@@ -43,6 +43,9 @@ export function useWebcamRecorder(userId: string | undefined) {
   }, [selectedMicrophone, selectedWebcam]);
   const startRecording = useCallback(() => {
     setIsRecording(true);
+
+    setIsPaused(false);
+    setTimer(0);
     timerRef.current = setInterval(() => {
       setTimer((prev) => prev + 1);
     }, 1000);
@@ -84,12 +87,36 @@ export function useWebcamRecorder(userId: string | undefined) {
         setIsRecording(false);
       });
   }, [selectedWebcam, selectedMicrophone]);
+  const pauseRecording = useCallback(() => {
+    if (
+      mediaRecorderRef.current &&
+      mediaRecorderRef.current.state === "recording"
+    ) {
+      mediaRecorderRef.current.pause();
+      setIsPaused(true);
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    }
+  }, []);
 
+  const resumeRecording = useCallback(() => {
+    if (
+      mediaRecorderRef.current &&
+      mediaRecorderRef.current.state === "paused"
+    ) {
+      mediaRecorderRef.current.resume();
+      setIsPaused(false);
+      timerRef.current = setInterval(() => {
+        setTimer((prev) => prev + 1);
+      }, 1000);
+    }
+  }, []);
   const stopRecording = useCallback(async () => {
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
       setIsRecording(false);
-
+      setTimer(0);
       await new Promise<void>((resolve) => {
         mediaRecorderRef.current!.onstop = async () => {
           const recordingBlob = new Blob(recordingChunksRef.current, {
@@ -161,7 +188,9 @@ export function useWebcamRecorder(userId: string | undefined) {
   const uploadToVercelBlob = useCallback(
     async (blob: Blob) => {
       try {
-        const filename = `RecordedWebcam/${userId}/recording-${Date.now()}.mp4`;
+        const now = new Date();
+        const formattedDate = `${now.getDate().toString().padStart(2, "0")}/${(now.getMonth() + 1).toString().padStart(2, "0")}/${now.getFullYear()}`;
+        const filename = `RecordedWebcam/${userId}/recording-${formattedDate}.mp4`;
         const uploadedFile = await upload(filename, blob, {
           access: "public",
           handleUploadUrl: "/api/upload",
@@ -194,5 +223,8 @@ export function useWebcamRecorder(userId: string | undefined) {
     selectedMicrophone,
     setSelectedMicrophone,
     stream,
+    pauseRecording,
+    resumeRecording,
+    isPaused,
   };
 }

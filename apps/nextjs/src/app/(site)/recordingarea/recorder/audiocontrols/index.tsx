@@ -1,3 +1,11 @@
+import {
+  IconCopy,
+  IconDownload,
+  IconSave,
+} from "@voiceai/ui/@/components/ui/icons";
+
+import Button from "~/app/(site)/components/button";
+
 interface AudioControlsProps {
   audioUrl: string | null;
   onDownload: () => void;
@@ -19,25 +27,28 @@ export function AudioControls({
     <div className="mt-6 text-center">
       <audio controls src={audioUrl} className="w-full" />
       <div className="mt-4 flex justify-center space-x-4">
-        <button
+        <Button
+          label="Download"
+          type="primary"
           onClick={onDownload}
-          className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-400"
-        >
-          Download Recording
-        </button>
-        <button
+          icon={IconDownload}
+          iconColor="#FFFFFF"
+        />
+        <Button
+          label="Copy transcript "
+          type="primary"
           onClick={onCopyTranscript}
-          className="rounded-md bg-gray-600 px-4 py-2 text-white hover:bg-gray-700"
-        >
-          Copy Transcript
-        </button>
-        <button
+          icon={IconCopy}
+          iconColor="#FFFFFF"
+        />
+        <Button
+          label="Save Recording"
+          type="accent"
           onClick={onSave}
-          className="rounded-md bg-green-500 px-4 py-2 text-white hover:bg-green-400"
+          icon={IconSave}
+          iconColor="#FFFFFF"
           disabled={isLoading}
-        >
-          Save Recording
-        </button>
+        />
       </div>
     </div>
   );

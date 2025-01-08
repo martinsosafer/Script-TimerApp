@@ -2,8 +2,9 @@
 
 import { useRef, useState } from "react";
 
-import { poppins } from "~/app/fonts";
+import { poppins, roboto } from "~/app/fonts";
 import { formatTime } from "~/lib/formattime";
+import Button from "../../components/button";
 import { DeviceSelector } from "../deviceSelector";
 import { usePostProcessing } from "../hooks/usePostProcess";
 import { useTranscription } from "../hooks/useTranscription";
@@ -30,15 +31,18 @@ export default function MicrophoneAndWebcamComponent({
     timer,
     uploadUrl,
     isProcessingWhisper,
-    startRecording: originalStartRecording,
-    stopRecording: originalStopRecording,
+    startRecording,
+    stopRecording,
     uploadToVercelBlob,
     whisperTranscription,
     selectedWebcam,
     setSelectedWebcam,
     selectedMicrophone,
     setSelectedMicrophone,
+    pauseRecording,
+    resumeRecording,
     stream,
+    isPaused,
   } = useWebcamRecorder(userId);
 
   const {
@@ -58,52 +62,36 @@ export default function MicrophoneAndWebcamComponent({
     isLoading,
     processTranscript,
   } = usePostProcessing();
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const chunksRef = useRef<Blob[]>([]);
+
   const [isRecordingComplete, setIsRecordingComplete] = useState(false);
   const [showingRecordedVideo, setShowingRecordedVideo] = useState(false);
+  const [displayVideoCount, setDisplayVideoCount] = useState(3);
 
-  const startRecording = () => {
-    chunksRef.current = [];
-    if (stream) {
-      mediaRecorderRef.current = new MediaRecorder(stream);
-      mediaRecorderRef.current.ondataavailable = (e) => {
-        if (e.data.size > 0) {
-          chunksRef.current.push(e.data);
-        }
-      };
-      mediaRecorderRef.current.start();
-    }
-    originalStartRecording();
+  const loadMoreVideos = () => {
+    setDisplayVideoCount((prevCount) => prevCount + 3);
   };
 
-  const stopRecording = () => {
-    if (
-      mediaRecorderRef.current &&
-      mediaRecorderRef.current.state === "recording"
-    ) {
-      mediaRecorderRef.current.stop();
-      mediaRecorderRef.current.onstop = () => {
-        const blob = new Blob(chunksRef.current, { type: "video/webm" });
-        const url = URL.createObjectURL(blob);
-        setPreviewUrl(url);
-        setShowingRecordedVideo(true);
-      };
-    }
-    originalStopRecording();
+  const displayedRecordings = savedWebcam.slice(0, displayVideoCount);
+  const handleStart = () => {
+    startRecording();
+    startTranscription();
+    setIsRecordingComplete(false);
+    setShowingRecordedVideo(false);
   };
 
-  const handleToggleRecording = () => {
-    if (!isRecording) {
-      startRecording();
-      startTranscription();
-      setIsRecordingComplete(false);
+  const handlePauseResume = () => {
+    if (isPaused) {
+      resumeRecording();
     } else {
-      stopRecording();
-      stopTranscription();
-      setIsRecordingComplete(true);
+      pauseRecording();
     }
+  };
+
+  const handleStop = () => {
+    stopRecording();
+    stopTranscription();
+    setIsRecordingComplete(true);
+    setShowingRecordedVideo(true);
   };
 
   const handleCopyTranscript = () => {
@@ -138,7 +126,6 @@ export default function MicrophoneAndWebcamComponent({
 
   const handleResetToWebcam = () => {
     setShowingRecordedVideo(false);
-    setPreviewUrl(null);
   };
 
   const handleGenerateSummary = () =>
@@ -153,16 +140,31 @@ export default function MicrophoneAndWebcamComponent({
     processTranscript(completeTranscript, "useful-cutdowns");
   const handleGenerateSoundBites = () =>
     processTranscript(completeTranscript, "sound-bites");
+  const PulseCircle = () => (
+    <div
+      className={`h-4 w-4 rounded-full ${
+        isRecording
+          ? isPaused
+            ? "bg-gray-500"
+            : "animate-pulse bg-red-500"
+          : "bg-transparent"
+      }`}
+    />
+  );
 
   return (
     <div
       className={`mb-20 flex h-full w-full items-center justify-center bg-gray-100 ${poppins.className}`}
     >
-      <div className="w-2/3 space-y-4 rounded-lg bg-white p-6 shadow-md">
+      <div className="mt-[70px] w-[680px] space-y-4 rounded-lg bg-white p-6 shadow-md">
         <div className="flex flex-col items-center">
-          <h2 className="text-xl font-bold">Record with Video!</h2>
-          <p className="text-sm text-gray-500">
-            Ensure good audio and lighting quality.
+          <h2 className="text-cp-primary text-[28px] font-bold leading-[33.6px]">
+            Record with Video!
+          </h2>
+          <p
+            className={`${roboto.className}  text-[18px] font-normal leading-[25px]`}
+          >
+            Please ensure good audio and lighting quality.
           </p>
         </div>
 
@@ -179,35 +181,24 @@ export default function MicrophoneAndWebcamComponent({
           </div>
           <VideoPreview
             stream={stream}
-            recordingUrl={
-              showingRecordedVideo ? (previewUrl ?? recordingUrl) : null
-            }
+            recordingUrl={showingRecordedVideo ? recordingUrl : null}
             isRecording={isRecording}
             onReset={handleResetToWebcam}
           />
-          <div className="text-center">
-            <p className="text-sm font-medium">Recorder</p>
-            <p className="text-sm text-gray-500">
-              {isRecording
-                ? "Recording..."
-                : "Press the button to start recording!"}
-            </p>
-            {isRecording && (
-              <div className="mt-2 h-4 w-4 animate-pulse rounded-full bg-red-400" />
-            )}
+        </div>
+        <div className="flex items-center justify-center space-x-4">
+          <PulseCircle />
+          <div className="text-center text-gray-700">
+            {isRecording && <>Recording... {formatTime(timer)}</>}
           </div>
         </div>
-
         <RecordButton
           isRecording={isRecording}
-          onClick={handleToggleRecording}
+          isPaused={isPaused}
+          onStart={handleStart}
+          onPauseResume={handlePauseResume}
+          onStop={handleStop}
         />
-
-        {isRecording && (
-          <div className="mt-2 text-center text-gray-700">
-            Recording... {formatTime(timer)}
-          </div>
-        )}
 
         <TranscriptDisplay
           isProcessingWhisper={isProcessingWhisper}
@@ -264,9 +255,12 @@ export default function MicrophoneAndWebcamComponent({
           <div className="mt-4">
             <h3 className="text-lg font-semibold">Key Points:</h3>
             <ul className="mt-2 list-disc pl-5">
-              {bulletPoints.map((point, index) => (
-                <li key={index}>{point}</li>
-              ))}
+              {bulletPoints[0] // Assuming bulletPoints[0] contains your string
+                .split("-") // Split on dashes
+                .filter((point) => point.trim() && !point.includes("*")) // Remove empty strings and asterisks
+                .map((point, index) => (
+                  <li key={index}>{point.trim()}</li>
+                ))}
             </ul>
           </div>
         )}
@@ -318,19 +312,30 @@ export default function MicrophoneAndWebcamComponent({
             Webcam Recording History
           </h3>
           {savedWebcam.length > 0 ? (
-            <ul className="space-y-4">
-              {savedWebcam.map((recording, index) => (
-                <li key={index} className="rounded-lg bg-gray-50 p-4">
-                  <div className="mb-2 flex items-center justify-between">
-                    <span className="font-medium">{recording.filename}</span>
-                    <span className="text-sm text-gray-500">
-                      {new Date(recording.uploadedAt).toLocaleString()}
-                    </span>
-                  </div>
-                  <video controls src={recording.url} className="w-full" />
-                </li>
-              ))}
-            </ul>
+            <>
+              <ul className="space-y-4">
+                {displayedRecordings.map((recording, index) => (
+                  <li key={index} className="rounded-lg bg-gray-50 p-4">
+                    <div className="mb-2 flex items-center justify-between">
+                      <span className="font-medium">{recording.filename}</span>
+                      <span className="text-sm text-gray-500">
+                        {recording.uploadedAt}
+                      </span>
+                    </div>
+                    <video controls src={recording.url} className="w-full" />
+                  </li>
+                ))}
+              </ul>
+              {displayVideoCount < savedWebcam.length && (
+                <div className="mt-4 flex justify-center">
+                  <Button
+                    label="Load More"
+                    type="secondary"
+                    onClick={loadMoreVideos}
+                  />
+                </div>
+              )}
+            </>
           ) : (
             <p className="text-gray-500">No saved webcam recordings yet.</p>
           )}

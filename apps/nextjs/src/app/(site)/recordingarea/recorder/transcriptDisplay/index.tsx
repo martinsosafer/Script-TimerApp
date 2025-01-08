@@ -17,7 +17,7 @@ export function TranscriptDisplay({
         className="h-40 w-full border p-2"
         value={
           isProcessingWhisper
-            ? "Processing your audio with Whisper AI..."
+            ? "We are processing your audio transcription, please wait..."
             : whisperTranscription || completeTranscript + transcript
         }
         readOnly

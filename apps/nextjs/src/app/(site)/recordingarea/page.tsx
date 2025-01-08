@@ -29,13 +29,35 @@ async function getSavedWebcam(userId: string) {
     const { blobs } = await list({
       prefix: `RecordedWebcam/${userId}/`,
     });
-    return blobs.map((blob) => ({
-      url: blob.url,
-      filename: blob.pathname.split("/").pop(),
-      uploadedAt: blob.uploadedAt,
-    }));
+    return blobs.map((blob) => {
+      // Get the full path after RecordedWebcam/userId/
+      const fullPath = blob.pathname.split(`RecordedWebcam/${userId}/`)[1];
+
+      // Extract the recording pattern using regex
+      const recordingPattern = fullPath.match(
+        /(recording-\d{2}\/\d{2}\/\d{4}-)/,
+      );
+      const filename = recordingPattern ? recordingPattern[1] : fullPath;
+
+      // Format the date
+      const date = new Date(blob.uploadedAt);
+      const formattedDate = `${date.getDate().toString().padStart(2, "0")}-${(
+        date.getMonth() + 1
+      )
+        .toString()
+        .padStart(2, "0")}-${date.getFullYear()} ${date
+        .getHours()
+        .toString()
+        .padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
+
+      return {
+        url: blob.url,
+        filename,
+        uploadedAt: formattedDate,
+      };
+    });
   } catch (error) {
-    console.error("Error fetching saved audios:", error);
+    console.error("Error fetching saved webcams:", error);
     return [];
   }
 }
@@ -70,10 +92,10 @@ export default async function IndexPage() {
   if (userId) {
     savedScreen = await getSavedScreen(userId);
   }
-
+  console.log("saved webcammm", savedWebcam);
   return (
-    <div className="flex min-h-screen w-full items-center justify-center ">
-      <div className="flex w-[1024px] flex-col py-[60px]">
+    <div className="min-h-screen w-full items-center justify-center ">
+      <div className="flex flex-col py-[60px]">
         <div className="flex flex-col items-center">
           <h2
             className={`text-cp-primary  font-poppins text-[42px] font-bold leading-[50px] `}

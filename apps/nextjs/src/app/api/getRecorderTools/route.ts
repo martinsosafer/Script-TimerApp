@@ -19,7 +19,7 @@ export async function POST(req: Request) {
     userPrompt = `Please provide a bullet point list of key points from the following transcript:\n\n${transcript}`;
   } else if (type === "word-sorter") {
     systemPrompt = "You are a helpful assistant that analyzes text.";
-    userPrompt = `Please count the frequency of each word in the following transcript and return a list of words in descending order by frequency:\n\n${transcript}`;
+    userPrompt = `Please count the frequency of each word in the following transcript and return a list of words in descending order by frequency:\n\n${transcript} if you are not able to get the words please tell the user that word sotter only works when you repeat more than 3 words`;
   } else if (type === "main-topic") {
     systemPrompt =
       "You are an intelligent assistant that extracts the main topic of a presentation.";
@@ -27,7 +27,7 @@ export async function POST(req: Request) {
   } else if (type === "useful-cutdowns") {
     systemPrompt =
       "You are a highly skilled assistant that identifies impactful statements from a transcript.";
-    userPrompt = `From the following transcript, identify and extract the most significant and impactful statements. Condense them into brief, actionable cutdowns:\n\n${transcript}`;
+    userPrompt = `From the following transcript, identify and extract the most significant and impactful statements. Condense them into brief, actionable cutdowns:\n\n${transcript} if there is none please tell the user there are not impactful statements`;
   } else if (type === "sound-bites") {
     systemPrompt =
       "You are a skilled content curator specializing in creating memorable sound bites.";

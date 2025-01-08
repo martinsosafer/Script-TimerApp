@@ -1,3 +1,25 @@
+"use client";
+
+import { useState } from "react";
+
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@voiceai/ui/@/components/ui/select";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@voiceai/ui/@/components/ui/tooltip";
+
+import Button from "~/app/(site)/components/button";
+
 interface AIFeatureButtonsProps {
   onGenerateSummary: () => void;
   onGenerateBulletPoints: () => void;
@@ -6,10 +28,15 @@ interface AIFeatureButtonsProps {
   onUsefulCutdowns: () => void;
   onGenerateSoundBites: () => void;
   isLoading: boolean;
-
   audioUrl: string | null;
   videoUrl: string | null;
 }
+
+type AIFeature = {
+  label: string;
+  action: () => void;
+  description: string;
+};
 
 export function AIFeatureButtons({
   onGenerateSummary,
@@ -22,52 +49,96 @@ export function AIFeatureButtons({
   audioUrl,
   videoUrl,
 }: AIFeatureButtonsProps) {
+  const [selectedFeature, setSelectedFeature] = useState<string | undefined>(
+    undefined,
+  );
+
+  const features: { [key: string]: AIFeature } = {
+    summary: {
+      label: "Generate Summary",
+      action: onGenerateSummary,
+      description: "Create a concise summary of the content",
+    },
+    bulletPoints: {
+      label: "Generate Bullet Points",
+      action: onGenerateBulletPoints,
+      description: "Extract key points in bullet form",
+    },
+    sortWords: {
+      label: "Word Sorter",
+      action: onSortWords,
+      description: "Sort and analyze word usage",
+    },
+    mainTheme: {
+      label: "Main Theme",
+      action: onMainTheme,
+      description: "Identify the primary theme of the content",
+    },
+    cutDowns: {
+      label: "Cut Downs",
+      action: onUsefulCutdowns,
+      description: "Generate shorter versions of the content",
+    },
+    soundBites: {
+      label: "Sound Bites",
+      action: onGenerateSoundBites,
+      description: "Extract memorable quotes or phrases",
+    },
+  };
+
   return (
-    <>
-      <div className="mt-4 flex flex-wrap justify-center gap-4">
-        <button
-          onClick={onGenerateSummary}
-          className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-400"
-          disabled={isLoading}
-        >
-          Generate Summary
-        </button>
-        <button
-          onClick={onGenerateBulletPoints}
-          className="rounded-md bg-indigo-500 px-4 py-2 text-white hover:bg-indigo-400"
-          disabled={isLoading}
-        >
-          Generate Bullet Points
-        </button>
-        <button
-          onClick={onSortWords}
-          className="rounded-md bg-indigo-500 px-4 py-2 text-white hover:bg-indigo-400"
-          disabled={isLoading}
-        >
-          {isLoading ? "Sorting..." : "Word Sorter"}
-        </button>
-        <button
-          onClick={onMainTheme}
-          className="rounded-md bg-indigo-500 px-4 py-2 text-white hover:bg-indigo-400"
-          disabled={isLoading}
-        >
-          {isLoading ? "Processing..." : "Main Theme"}
-        </button>
-        <button
-          onClick={onUsefulCutdowns}
-          className="rounded-md bg-indigo-500 px-4 py-2 text-white hover:bg-indigo-400"
-          disabled={isLoading}
-        >
-          {isLoading ? "Processing..." : "Cut Downs"}
-        </button>
-        <button
-          onClick={onGenerateSoundBites}
-          className="rounded-md bg-indigo-500 px-4 py-2 text-white hover:bg-indigo-400"
-          disabled={isLoading}
-        >
-          {isLoading ? "Processing..." : "Sound Bites"}
-        </button>
+    <div className="mt-4 flex flex-col items-start gap-4">
+      <div className="relative">
+        <TooltipProvider>
+          <Select onValueChange={setSelectedFeature}>
+            <SelectTrigger className="bg-cp-accent w-[280px] font-semibold text-black">
+              <SelectValue placeholder="Select AI Feature" />
+            </SelectTrigger>
+            <SelectContent className="z-40">
+              <SelectGroup>
+                <SelectLabel className="bg-gray-200">AI Features</SelectLabel>
+                {Object.entries(features).map(([key, feature]) => (
+                  <div key={key} className="relative">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div className="w-full">
+                          <SelectItem
+                            value={key}
+                            className="cursor-pointer bg-gray-100"
+                          >
+                            {feature.label}
+                          </SelectItem>
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent
+                        side="right"
+                        sideOffset={5}
+                        className="z-50 w-[300px] bg-gray-200 font-medium text-black"
+                      >
+                        <p className="text-sm">{feature.description}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </TooltipProvider>
       </div>
-    </>
+
+      <Button
+        label={
+          isLoading
+            ? "Processing..."
+            : selectedFeature
+              ? features[selectedFeature].label
+              : "Select a feature"
+        }
+        type="primary"
+        onClick={() => selectedFeature && features[selectedFeature].action()}
+        disabled={isLoading || !selectedFeature}
+        className="w-[280px]"
+      />
+    </div>
   );
 }
