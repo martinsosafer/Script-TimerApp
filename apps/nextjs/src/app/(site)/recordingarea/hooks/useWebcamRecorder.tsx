@@ -14,12 +14,14 @@ export function useWebcamRecorder(userId: string | undefined) {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const recordingChunksRef = useRef<Blob[]>([]);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const lastTimerUpdateRef = useRef<number>(0);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [isPaused, setIsPaused] = useState(false);
   const [selectedWebcam, setSelectedWebcam] = useState<string | null>(null);
   const [selectedMicrophone, setSelectedMicrophone] = useState<string | null>(
     null,
   );
+
   useEffect(() => {
     const constraints = {
       audio: selectedMicrophone
@@ -41,14 +43,48 @@ export function useWebcamRecorder(userId: string | undefined) {
       stream?.getTracks().forEach((track) => track.stop());
     };
   }, [selectedMicrophone, selectedWebcam]);
+
+  const startTimer = useCallback(() => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+    lastTimerUpdateRef.current = Date.now();
+    timerRef.current = setInterval(() => {
+      const now = Date.now();
+      const elapsed = now - lastTimerUpdateRef.current;
+      setTimer((prevTimer) => prevTimer + Math.floor(elapsed / 1000));
+      lastTimerUpdateRef.current = now;
+    }, 1000);
+  }, []);
+
+  const pauseTimer = useCallback(() => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+  }, []);
+
+  const resumeTimer = useCallback(() => {
+    lastTimerUpdateRef.current = Date.now();
+    timerRef.current = setInterval(() => {
+      const now = Date.now();
+      const elapsed = now - lastTimerUpdateRef.current;
+      setTimer((prevTimer) => prevTimer + Math.floor(elapsed / 1000));
+      lastTimerUpdateRef.current = now;
+    }, 1000);
+  }, []);
+
+  const stopTimer = useCallback(() => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+    setTimer(0);
+  }, []);
+
   const startRecording = useCallback(() => {
     setIsRecording(true);
-
     setIsPaused(false);
     setTimer(0);
-    timerRef.current = setInterval(() => {
-      setTimer((prev) => prev + 1);
-    }, 1000);
+    startTimer();
 
     const constraints = {
       audio: selectedMicrophone
@@ -85,8 +121,10 @@ export function useWebcamRecorder(userId: string | undefined) {
         console.error("Webcam and microphone access error: ", error);
         alert("Webcam and microphone access is required to record.");
         setIsRecording(false);
+        stopTimer();
       });
-  }, [selectedWebcam, selectedMicrophone]);
+  }, [selectedWebcam, selectedMicrophone, startTimer]);
+
   const pauseRecording = useCallback(() => {
     if (
       mediaRecorderRef.current &&
@@ -94,11 +132,9 @@ export function useWebcamRecorder(userId: string | undefined) {
     ) {
       mediaRecorderRef.current.pause();
       setIsPaused(true);
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
+      pauseTimer();
     }
-  }, []);
+  }, [pauseTimer]);
 
   const resumeRecording = useCallback(() => {
     if (
@@ -107,16 +143,15 @@ export function useWebcamRecorder(userId: string | undefined) {
     ) {
       mediaRecorderRef.current.resume();
       setIsPaused(false);
-      timerRef.current = setInterval(() => {
-        setTimer((prev) => prev + 1);
-      }, 1000);
+      resumeTimer();
     }
-  }, []);
+  }, [resumeTimer]);
+
   const stopRecording = useCallback(async () => {
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
       setIsRecording(false);
-      setTimer(0);
+      stopTimer();
       await new Promise<void>((resolve) => {
         mediaRecorderRef.current!.onstop = async () => {
           const recordingBlob = new Blob(recordingChunksRef.current, {
@@ -176,14 +211,10 @@ export function useWebcamRecorder(userId: string | undefined) {
         };
       });
 
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-
       // Don't stop the stream immediately to allow for another recording
       // Only stop tracks if component is unmounting or user changes devices
     }
-  }, []);
+  }, [stopTimer]);
 
   const uploadToVercelBlob = useCallback(
     async (blob: Blob) => {
@@ -206,6 +237,14 @@ export function useWebcamRecorder(userId: string | undefined) {
     },
     [userId],
   );
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+  }, []);
 
   return {
     isRecording,

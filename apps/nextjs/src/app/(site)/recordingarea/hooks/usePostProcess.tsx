@@ -5,12 +5,12 @@ export function usePostProcessing() {
   const [bulletPoints, setBulletPoints] = useState<string[]>([]);
   const [sortedWords, setSortedWords] = useState([]);
   const [mainTheme, setMainTheme] = useState("");
-  const [cutDowns, setCutDowns] = useState([]);
+  const [cutDowns, setCutDowns] = useState("");
   const [soundBites, setSoundBites] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const processTranscript = useCallback(
-    async (transcript: string, type: string) => {
+    async (whisperTranscription: string | null, type: string) => {
       setIsLoading(true);
       try {
         const response = await fetch("/api/getRecorderTools", {
@@ -19,12 +19,12 @@ export function usePostProcessing() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            transcript,
+            transcript: whisperTranscription,
             type,
           }),
         });
         const data = await response.json();
-
+        console.log("CUTDOWN", data);
         switch (type) {
           case "summary":
             setSummary(data.content);
@@ -41,7 +41,11 @@ export function usePostProcessing() {
             setMainTheme(data.content);
             break;
           case "useful-cutdowns":
-            setCutDowns(Array.isArray(data.content) ? data.content : []);
+            setCutDowns(
+              typeof data.content === "string"
+                ? data.content
+                : data.content.join("\n"),
+            );
             break;
           case "sound-bites":
             setSoundBites(data.content);

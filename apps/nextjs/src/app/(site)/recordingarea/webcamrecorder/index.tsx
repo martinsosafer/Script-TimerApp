@@ -2,6 +2,8 @@
 
 import { useRef, useState } from "react";
 
+import { IconSpinner } from "@voiceai/ui/@/components/ui/icons";
+
 import { poppins, roboto } from "~/app/fonts";
 import { formatTime } from "~/lib/formattime";
 import Button from "../../components/button";
@@ -13,6 +15,7 @@ import { AIFeatureButtons } from "../recorder/aifeaturebutton";
 import { AudioControls } from "../recorder/audiocontrols";
 import { RecordButton } from "../recorder/recordbutton";
 import { TranscriptDisplay } from "../recorder/transcriptDisplay";
+import VideoHistory from "./videoHistory";
 import { VideoPreview } from "./VideoPreview";
 
 interface WebcamRecorderProps {
@@ -66,17 +69,29 @@ export default function MicrophoneAndWebcamComponent({
   const [isRecordingComplete, setIsRecordingComplete] = useState(false);
   const [showingRecordedVideo, setShowingRecordedVideo] = useState(false);
   const [displayVideoCount, setDisplayVideoCount] = useState(3);
+  const [countdown, setCountdown] = useState<number | null>(null);
 
   const loadMoreVideos = () => {
     setDisplayVideoCount((prevCount) => prevCount + 3);
   };
 
   const displayedRecordings = savedWebcam.slice(0, displayVideoCount);
+
   const handleStart = () => {
-    startRecording();
-    startTranscription();
-    setIsRecordingComplete(false);
-    setShowingRecordedVideo(false);
+    setCountdown(3);
+    const countdownInterval = setInterval(() => {
+      setCountdown((prevCount) => {
+        if (prevCount === 1) {
+          clearInterval(countdownInterval);
+          startRecording();
+          startTranscription();
+          setIsRecordingComplete(false);
+          setShowingRecordedVideo(false);
+          return null;
+        }
+        return prevCount! - 1;
+      });
+    }, 1000);
   };
 
   const handlePauseResume = () => {
@@ -129,17 +144,18 @@ export default function MicrophoneAndWebcamComponent({
   };
 
   const handleGenerateSummary = () =>
-    processTranscript(completeTranscript, "summary");
+    processTranscript(whisperTranscription, "summary");
   const handleGenerateBulletPoints = () =>
-    processTranscript(completeTranscript, "bullet-points");
+    processTranscript(whisperTranscription, "bullet-points");
   const handleSortWords = () =>
-    processTranscript(completeTranscript, "word-sorter");
+    processTranscript(whisperTranscription, "word-sorter");
   const handleMainTheme = () =>
-    processTranscript(completeTranscript, "main-topic");
+    processTranscript(whisperTranscription, "main-topic");
   const handleUsefulCutdowns = () =>
-    processTranscript(completeTranscript, "useful-cutdowns");
+    processTranscript(whisperTranscription, "useful-cutdowns");
   const handleGenerateSoundBites = () =>
-    processTranscript(completeTranscript, "sound-bites");
+    processTranscript(whisperTranscription, "sound-bites");
+
   const PulseCircle = () => (
     <div
       className={`h-4 w-4 rounded-full ${
@@ -184,6 +200,7 @@ export default function MicrophoneAndWebcamComponent({
             recordingUrl={showingRecordedVideo ? recordingUrl : null}
             isRecording={isRecording}
             onReset={handleResetToWebcam}
+            countdown={countdown}
           />
         </div>
         <div className="flex items-center justify-center space-x-4">
@@ -229,7 +246,7 @@ export default function MicrophoneAndWebcamComponent({
           isLoading={isLoading}
         />
 
-        {isRecordingComplete && (
+        {whisperTranscription && (
           <AIFeatureButtons
             onGenerateSummary={handleGenerateSummary}
             onGenerateBulletPoints={handleGenerateBulletPoints}
@@ -241,9 +258,12 @@ export default function MicrophoneAndWebcamComponent({
             videoUrl={recordingUrl}
           />
         )}
-
-        {isLoading && <p className="mt-4 text-center">Processing...</p>}
-
+        {isLoading && (
+          <p className="text-cp-primary mt-4 flex items-center justify-center gap-2 text-center text-[24px] font-semibold leading-[22.4px]">
+            We are getting your Feedback please wait
+            <IconSpinner className="h-6 w-6" />
+          </p>
+        )}
         {summary && (
           <div className="mt-4">
             <h3 className="text-lg font-semibold">Summary:</h3>
@@ -282,13 +302,12 @@ export default function MicrophoneAndWebcamComponent({
             <p className="mt-2">{mainTheme}</p>
           </div>
         )}
-
-        {Array.isArray(cutDowns) && cutDowns.length > 0 && (
+        {cutDowns && (
           <div className="mt-4">
             <h3 className="text-lg font-semibold">Useful Cutdowns:</h3>
             <ul className="mt-2 list-disc pl-5">
-              {cutDowns.map((cutdown, index) => (
-                <li key={index}>{cutdown}</li>
+              {cutDowns.split("\n").map((cutdown, index) => (
+                <li key={index}>{cutdown.replace(/^\d+\.\s*/, "").trim()}</li>
               ))}
             </ul>
           </div>
@@ -306,40 +325,11 @@ export default function MicrophoneAndWebcamComponent({
             </div>
           </div>
         )}
-
-        <div className="mt-8">
-          <h3 className="mb-4 text-lg font-semibold">
-            Webcam Recording History
-          </h3>
-          {savedWebcam.length > 0 ? (
-            <>
-              <ul className="space-y-4">
-                {displayedRecordings.map((recording, index) => (
-                  <li key={index} className="rounded-lg bg-gray-50 p-4">
-                    <div className="mb-2 flex items-center justify-between">
-                      <span className="font-medium">{recording.filename}</span>
-                      <span className="text-sm text-gray-500">
-                        {recording.uploadedAt}
-                      </span>
-                    </div>
-                    <video controls src={recording.url} className="w-full" />
-                  </li>
-                ))}
-              </ul>
-              {displayVideoCount < savedWebcam.length && (
-                <div className="mt-4 flex justify-center">
-                  <Button
-                    label="Load More"
-                    type="secondary"
-                    onClick={loadMoreVideos}
-                  />
-                </div>
-              )}
-            </>
-          ) : (
-            <p className="text-gray-500">No saved webcam recordings yet.</p>
-          )}
-        </div>
+        <VideoHistory
+          savedWebcam={savedWebcam}
+          displayVideoCount={displayVideoCount}
+          onLoadMore={loadMoreVideos}
+        />
       </div>
     </div>
   );

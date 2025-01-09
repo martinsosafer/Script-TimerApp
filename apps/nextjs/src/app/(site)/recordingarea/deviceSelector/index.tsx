@@ -27,15 +27,22 @@ export function DeviceSelector({ kind, onDeviceChange }: DeviceSelectorProps) {
   return (
     <Select onValueChange={onDeviceChange}>
       <SelectTrigger className="w-[180px]">
-        <SelectValue
-          placeholder={
-            kind === "videoinput" ? "Select webcam" : "Select microphone"
-          }
-        />
+        <div className="w-full overflow-hidden">
+          <SelectValue
+            className="block w-full truncate"
+            placeholder={
+              kind === "videoinput" ? "Select webcam" : "Select microphone"
+            }
+          />
+        </div>
       </SelectTrigger>
       <SelectContent>
         {devices.map((device) => (
-          <SelectItem key={device.deviceId} value={device.deviceId}>
+          <SelectItem
+            key={device.deviceId}
+            value={device.deviceId}
+            className="max-w-[180px] truncate"
+          >
             {device.label ||
               `${kind === "videoinput" ? "Webcam" : "Microphone"} ${devices.indexOf(device) + 1}`}
           </SelectItem>
@@ -44,3 +51,5 @@ export function DeviceSelector({ kind, onDeviceChange }: DeviceSelectorProps) {
     </Select>
   );
 }
+
+export default DeviceSelector;

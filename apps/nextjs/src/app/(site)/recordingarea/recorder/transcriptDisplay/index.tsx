@@ -11,6 +11,7 @@ export function TranscriptDisplay({
   transcript,
   whisperTranscription,
 }: TranscriptDisplayProps) {
+
   return (
     <div className="mt-4 h-full rounded-md border p-2">
       <textarea

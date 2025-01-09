@@ -38,7 +38,7 @@ export function RecordButton({
             {!isRecording ? (
               <Button
                 label="Start Recording"
-                type="primary"
+                type="accent"
                 onClick={onStart}
                 icon={IconMic2}
                 iconColor="#FFFFFF"
@@ -47,7 +47,7 @@ export function RecordButton({
               <>
                 <Button
                   label={isPaused ? "Resume" : "Pause"}
-                  type="primary"
+                  type="secondary"
                   onClick={onPauseResume}
                   icon={isPaused ? IconPlay : IconPause}
                   iconColor="#FFFFFF"
@@ -67,7 +67,7 @@ export function RecordButton({
             label={
               showTeleprompter ? "Close Teleprompter" : "Open Teleprompter"
             }
-            type="accent"
+            type="primary"
             onClick={() => setShowTeleprompter(!showTeleprompter)}
             icon={showTeleprompter ? IconXCircle : IconFileHeart}
             iconColor="#FFFF"

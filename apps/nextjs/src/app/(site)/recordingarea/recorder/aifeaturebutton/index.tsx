@@ -87,12 +87,12 @@ export function AIFeatureButtons({
   };
 
   return (
-    <div className="mt-4 flex flex-col items-start gap-4">
+    <div className="flex items-center gap-4">
       <div className="relative">
         <TooltipProvider>
           <Select onValueChange={setSelectedFeature}>
-            <SelectTrigger className="bg-cp-accent w-[280px] font-semibold text-black">
-              <SelectValue placeholder="Select AI Feature" />
+            <SelectTrigger className="w-[280px] bg-gray-100 font-semibold text-black">
+              <SelectValue placeholder="Get feedback" />
             </SelectTrigger>
             <SelectContent className="z-40">
               <SelectGroup>
@@ -125,19 +125,12 @@ export function AIFeatureButtons({
           </Select>
         </TooltipProvider>
       </div>
-
       <Button
-        label={
-          isLoading
-            ? "Processing..."
-            : selectedFeature
-              ? features[selectedFeature].label
-              : "Select a feature"
-        }
+        label="Submit"
         type="primary"
         onClick={() => selectedFeature && features[selectedFeature].action()}
         disabled={isLoading || !selectedFeature}
-        className="w-[280px]"
+        className="h-7"
       />
     </div>
   );

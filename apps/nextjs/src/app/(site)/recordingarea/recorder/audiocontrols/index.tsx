@@ -43,7 +43,7 @@ export function AudioControls({
         />
         <Button
           label="Save Recording"
-          type="accent"
+          type="primary"
           onClick={onSave}
           icon={IconSave}
           iconColor="#FFFFFF"

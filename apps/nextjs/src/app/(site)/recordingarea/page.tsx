@@ -92,7 +92,7 @@ export default async function IndexPage() {
   if (userId) {
     savedScreen = await getSavedScreen(userId);
   }
-  console.log("saved webcammm", savedWebcam);
+
   return (
     <div className="min-h-screen w-full items-center justify-center ">
       <div className="flex flex-col py-[60px]">
