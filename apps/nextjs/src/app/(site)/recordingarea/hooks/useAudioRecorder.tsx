@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { upload } from "@vercel/blob/client";
 
 export function useAudioRecorder(userId: string | undefined) {
@@ -14,17 +14,87 @@ export function useAudioRecorder(userId: string | undefined) {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const lastTimerUpdateRef = useRef<number>(0);
+  const [stream, setStream] = useState<MediaStream | null>(null);
+  const [isPaused, setIsPaused] = useState(false);
+  const [selectedMicrophone, setSelectedMicrophone] = useState<string | null>(
+    null,
+  );
+
+  useEffect(() => {
+    const constraints = {
+      audio: selectedMicrophone
+        ? { deviceId: { exact: selectedMicrophone } }
+        : true,
+    };
+
+    navigator.mediaDevices
+      .getUserMedia(constraints)
+      .then((mediaStream) => {
+        setStream(mediaStream);
+      })
+      .catch((error) => {
+        console.error("Microphone access error:", error);
+      });
+
+    return () => {
+      stream?.getTracks().forEach((track) => track.stop());
+    };
+  }, [selectedMicrophone]);
+
+  const startTimer = useCallback(() => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+    lastTimerUpdateRef.current = Date.now();
+    timerRef.current = setInterval(() => {
+      const now = Date.now();
+      const elapsed = now - lastTimerUpdateRef.current;
+      setTimer((prevTimer) => prevTimer + Math.floor(elapsed / 1000));
+      lastTimerUpdateRef.current = now;
+    }, 1000);
+  }, []);
+
+  const pauseTimer = useCallback(() => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+  }, []);
+
+  const resumeTimer = useCallback(() => {
+    lastTimerUpdateRef.current = Date.now();
+    timerRef.current = setInterval(() => {
+      const now = Date.now();
+      const elapsed = now - lastTimerUpdateRef.current;
+      setTimer((prevTimer) => prevTimer + Math.floor(elapsed / 1000));
+      lastTimerUpdateRef.current = now;
+    }, 1000);
+  }, []);
+
+  const stopTimer = useCallback(() => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+    setTimer(0);
+  }, []);
 
   const startRecording = useCallback(() => {
     setIsRecording(true);
-    timerRef.current = setInterval(() => {
-      setTimer((prev) => prev + 1);
-    }, 1000);
+    setIsPaused(false);
+    setTimer(0);
+    startTimer();
+
+    const constraints = {
+      audio: selectedMicrophone
+        ? { deviceId: { exact: selectedMicrophone } }
+        : true,
+    };
 
     navigator.mediaDevices
-      .getUserMedia({ audio: true })
-      .then((stream) => {
-        mediaRecorderRef.current = new MediaRecorder(stream, {
+      .getUserMedia(constraints)
+      .then((mediaStream) => {
+        setStream(mediaStream);
+        mediaRecorderRef.current = new MediaRecorder(mediaStream, {
           mimeType: "audio/webm",
         });
         audioChunksRef.current = [];
@@ -48,11 +118,37 @@ export function useAudioRecorder(userId: string | undefined) {
         console.error("Microphone access error: ", error);
         alert("Microphone access is required to record audio.");
         setIsRecording(false);
+        stopTimer();
       });
-  }, []);
+  }, [selectedMicrophone, startTimer]);
+
+  const pauseRecording = useCallback(() => {
+    if (
+      mediaRecorderRef.current &&
+      mediaRecorderRef.current.state === "recording"
+    ) {
+      mediaRecorderRef.current.pause();
+      setIsPaused(true);
+      pauseTimer();
+    }
+  }, [pauseTimer]);
+
+  const resumeRecording = useCallback(() => {
+    if (
+      mediaRecorderRef.current &&
+      mediaRecorderRef.current.state === "paused"
+    ) {
+      mediaRecorderRef.current.resume();
+      setIsPaused(false);
+      resumeTimer();
+    }
+  }, [resumeTimer]);
+
   const stopRecording = useCallback(async () => {
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
+      setIsRecording(false);
+      stopTimer();
 
       await new Promise<void>((resolve) => {
         mediaRecorderRef.current!.onstop = async () => {
@@ -75,7 +171,6 @@ export function useAudioRecorder(userId: string | undefined) {
             }
 
             const result = await response.json();
-           
             setWhisperTranscription(result.transcription);
           } catch (error) {
             console.error("Error in Whisper transcription:", error);
@@ -93,16 +188,14 @@ export function useAudioRecorder(userId: string | undefined) {
         };
       });
     }
-    setIsRecording(false);
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-    }
-  }, []);
+  }, [stopTimer]);
 
   const uploadToVercelBlob = useCallback(
     async (blob: Blob) => {
       try {
-        const filename = `RecordedAudio/${userId}/recording-${Date.now()}.wav`;
+        const now = new Date();
+        const formattedDate = `${now.getDate().toString().padStart(2, "0")}/${(now.getMonth() + 1).toString().padStart(2, "0")}/${now.getFullYear()}`;
+        const filename = `RecordedAudio/${userId}/recording-${formattedDate}.wav`;
         const uploadedFile = await upload(filename, blob, {
           access: "public",
           handleUploadUrl: "/api/upload",
@@ -119,6 +212,14 @@ export function useAudioRecorder(userId: string | undefined) {
     [userId],
   );
 
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+  }, []);
+
   return {
     isRecording,
     audioUrl,
@@ -130,5 +231,11 @@ export function useAudioRecorder(userId: string | undefined) {
     whisperTranscription,
     stopRecording,
     uploadToVercelBlob,
+    selectedMicrophone,
+    setSelectedMicrophone,
+    stream,
+    pauseRecording,
+    resumeRecording,
+    isPaused,
   };
 }

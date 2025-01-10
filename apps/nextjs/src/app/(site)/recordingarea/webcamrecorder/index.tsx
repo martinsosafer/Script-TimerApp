@@ -244,6 +244,7 @@ export default function MicrophoneAndWebcamComponent({
           onCopyTranscript={handleCopyTranscript}
           onSave={handleSave}
           isLoading={isLoading}
+          disableAudio={true}
         />
 
         {whisperTranscription && (

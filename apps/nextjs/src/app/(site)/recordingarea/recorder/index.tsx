@@ -2,13 +2,17 @@
 
 import { useState } from "react";
 
-import { poppins } from "~/app/fonts";
+import { IconSpinner } from "@voiceai/ui/@/components/ui/icons";
+
+import { poppins, roboto } from "~/app/fonts";
 import { formatTime } from "~/lib/formattime";
+import DeviceSelector from "../deviceSelector";
 import { useAudioRecorder } from "../hooks/useAudioRecorder";
 import { usePostProcessing } from "../hooks/usePostProcess";
 import { useTranscription } from "../hooks/useTranscription";
 import { AIFeatureButtons } from "./aifeaturebutton";
 import { AudioControls } from "./audiocontrols";
+import AudioHistory from "./audioHistory";
 import { RecordButton } from "./recordbutton";
 import { TranscriptDisplay } from "./transcriptDisplay";
 
@@ -32,6 +36,8 @@ export default function MicrophoneComponent({
     stopRecording,
     uploadToVercelBlob,
     whisperTranscription,
+    setSelectedMicrophone,
+    isPaused,
   } = useAudioRecorder(userId);
 
   const {
@@ -53,7 +59,10 @@ export default function MicrophoneComponent({
   } = usePostProcessing();
 
   const [isRecordingComplete, setIsRecordingComplete] = useState(false);
-
+  const [displayAudioCount, setDisplayAudioCount] = useState(3);
+  const loadMoreAudios = () => {
+    setDisplayAudioCount((prevCount) => prevCount + 3);
+  };
   const handleToggleRecording = () => {
     if (!isRecording) {
       startRecording();
@@ -92,58 +101,66 @@ export default function MicrophoneComponent({
   };
 
   const handleGenerateSummary = () =>
-    processTranscript(completeTranscript, "summary");
+    processTranscript(whisperTranscription, "summary");
   const handleGenerateBulletPoints = () =>
-    processTranscript(completeTranscript, "bullet-points");
+    processTranscript(whisperTranscription, "bullet-points");
   const handleSortWords = () =>
-    processTranscript(completeTranscript, "word-sorter");
+    processTranscript(whisperTranscription, "word-sorter");
   const handleMainTheme = () =>
-    processTranscript(completeTranscript, "main-topic");
+    processTranscript(whisperTranscription, "main-topic");
   const handleUsefulCutdowns = () =>
-    processTranscript(completeTranscript, "useful-cutdowns");
+    processTranscript(whisperTranscription, "useful-cutdowns");
   const handleGenerateSoundBites = () =>
-    processTranscript(completeTranscript, "sound-bites");
+    processTranscript(whisperTranscription, "sound-bites");
 
+  const PulseCircle = () => (
+    <div
+      className={`h-4 w-4 rounded-full ${
+        isRecording
+          ? isPaused
+            ? "bg-gray-500"
+            : "animate-pulse bg-red-500"
+          : "bg-transparent"
+      }`}
+    />
+  );
   return (
     <div
-      className={`mb-20 flex h-full w-full items-center justify-center  bg-gray-100 ${poppins.className}`}
+      className={`mb-20 flex h-full w-full items-center justify-center bg-gray-100 ${poppins.className}`}
     >
-      <div className="w-2/3 space-y-4 rounded-lg bg-white p-6 shadow-md">
-        <div className="flex flex-col items-center justify-center">
-          <h2 className="text-[28pxfont-bold mb-4 font-poppins leading-[24px]">
-            Record yourself!
+      <div className="mt-[70px] w-[680px] space-y-4 rounded-lg bg-white p-6 shadow-md">
+        <div className="flex flex-col items-center">
+          <h2 className="text-cp-primary text-[28px] font-bold leading-[33.6px]">
+            Record Audio!
           </h2>
-          <p className="mb-4 text-sm text-gray-700">
-            Please record your voice for an optimal time. For best results,
-            ensure your microphone is of good quality, and avoid background
-            noise.
+          <p
+            className={`${roboto.className} text-[18px] font-normal leading-[25px]`}
+          >
+            Please ensure good audio quality and avoid background noise.
           </p>
         </div>
 
-        <div className="flex w-full flex-col items-center justify-center">
-          <div className="flex flex-col items-center justify-center text-center">
-            <p className="text-sm font-medium leading-none">Recorder</p>
-            <p className="text-sm text-gray-500">
-              {isRecording
-                ? "Recording..."
-                : "Press the button to start recording!"}
-            </p>
+        <div className="flex flex-col items-center space-y-4">
+          <div className="flex w-full justify-start">
+            <DeviceSelector
+              kind="audioinput"
+              onDeviceChange={setSelectedMicrophone}
+            />
           </div>
-          {isRecording && (
-            <div className="mt-2 h-4 w-4 animate-pulse rounded-full bg-red-400" />
-          )}
         </div>
-
+        <div className="flex items-center justify-center space-x-4">
+          <PulseCircle />
+          <div className="text-center text-gray-700">
+            {isRecording && <>Recording... {formatTime(timer)}</>}
+          </div>
+        </div>
         <RecordButton
           isRecording={isRecording}
-          onClick={handleToggleRecording}
+          isPaused={false}
+          onStart={handleToggleRecording}
+          onPauseResume={handleToggleRecording}
+          onStop={handleToggleRecording}
         />
-
-        {isRecording && (
-          <div className="mt-2 text-center text-gray-700">
-            Recording... {formatTime(timer)}
-          </div>
-        )}
 
         <TranscriptDisplay
           isProcessingWhisper={isProcessingWhisper}
@@ -174,7 +191,7 @@ export default function MicrophoneComponent({
           isLoading={isLoading}
         />
 
-        {isRecordingComplete && (
+        {whisperTranscription && (
           <AIFeatureButtons
             onGenerateSummary={handleGenerateSummary}
             onGenerateBulletPoints={handleGenerateBulletPoints}
@@ -186,9 +203,12 @@ export default function MicrophoneComponent({
             audioUrl={audioUrl}
           />
         )}
-
-        {isLoading && <p className="mt-4 text-center">Processing...</p>}
-
+        {isLoading && (
+          <p className="text-cp-primary mt-4 flex items-center justify-center gap-2 text-center text-[24px] font-semibold leading-[22.4px]">
+            We are getting your Feedback please wait
+            <IconSpinner className="h-6 w-6" />
+          </p>
+        )}
         {summary && (
           <div className="mt-4">
             <h3 className="text-lg font-semibold">Summary:</h3>
@@ -200,9 +220,12 @@ export default function MicrophoneComponent({
           <div className="mt-4">
             <h3 className="text-lg font-semibold">Key Points:</h3>
             <ul className="mt-2 list-disc pl-5">
-              {bulletPoints.map((point, index) => (
-                <li key={index}>{point}</li>
-              ))}
+              {bulletPoints[0] // Assuming bulletPoints[0] contains your string
+                .split("-") // Split on dashes
+                .filter((point) => point.trim() && !point.includes("*")) // Remove empty strings and asterisks
+                .map((point, index) => (
+                  <li key={index}>{point.trim()}</li>
+                ))}
             </ul>
           </div>
         )}
@@ -224,13 +247,12 @@ export default function MicrophoneComponent({
             <p className="mt-2">{mainTheme}</p>
           </div>
         )}
-
-        {Array.isArray(cutDowns) && cutDowns.length > 0 && (
+        {cutDowns && (
           <div className="mt-4">
             <h3 className="text-lg font-semibold">Useful Cutdowns:</h3>
             <ul className="mt-2 list-disc pl-5">
-              {cutDowns.map((cutdown, index) => (
-                <li key={index}>{cutdown}</li>
+              {cutDowns.split("\n").map((cutdown, index) => (
+                <li key={index}>{cutdown.replace(/^\d+\.\s*/, "").trim()}</li>
               ))}
             </ul>
           </div>
@@ -248,27 +270,11 @@ export default function MicrophoneComponent({
             </div>
           </div>
         )}
-
-        <div className="mt-8">
-          <h3 className="mb-4 text-lg font-semibold">Recording History</h3>
-          {savedAudios.length > 0 ? (
-            <ul className="space-y-4">
-              {savedAudios.map((audio, index) => (
-                <li key={index} className="rounded-lg bg-gray-50 p-4">
-                  <div className="mb-2 flex items-center justify-between">
-                    <span className="font-medium">{audio.filename}</span>
-                    <span className="text-sm text-gray-500">
-                      {new Date(audio.uploadedAt).toLocaleString()}
-                    </span>
-                  </div>
-                  <audio controls src={audio.url} className="w-full" />
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-gray-500">No saved recordings yet.</p>
-          )}
-        </div>
+        <AudioHistory
+          savedAudios={savedAudios}
+          displayAudioCount={displayAudioCount}
+          onLoadMore={loadMoreAudios}
+        />
       </div>
     </div>
   );

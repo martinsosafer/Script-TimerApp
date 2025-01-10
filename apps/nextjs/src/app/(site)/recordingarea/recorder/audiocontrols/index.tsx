@@ -12,6 +12,7 @@ interface AudioControlsProps {
   onCopyTranscript: () => void;
   onSave: () => void;
   isLoading: boolean;
+  disableAudio?: boolean; // New optional prop
 }
 
 export function AudioControls({
@@ -20,12 +21,18 @@ export function AudioControls({
   onCopyTranscript,
   onSave,
   isLoading,
+  disableAudio = false, // Default value
 }: AudioControlsProps) {
   if (!audioUrl) return null;
 
   return (
     <div className="mt-6 text-center">
-      <audio controls src={audioUrl} className="w-full" />
+      <audio
+        controls
+        src={audioUrl}
+        className="w-full"
+        disabled={disableAudio} // Conditionally disable audio
+      />
       <div className="mt-4 flex justify-center space-x-4">
         <Button
           label="Download"
@@ -35,7 +42,7 @@ export function AudioControls({
           iconColor="#FFFFFF"
         />
         <Button
-          label="Copy transcript "
+          label="Copy transcript"
           type="primary"
           onClick={onCopyTranscript}
           icon={IconCopy}
