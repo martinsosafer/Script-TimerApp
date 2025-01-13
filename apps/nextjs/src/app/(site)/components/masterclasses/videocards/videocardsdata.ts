@@ -145,6 +145,7 @@ const videoCardData: Video[] = [
   {
     course: "Stories That Transform Marketing",
     id: 6,
+    number: "6",
     image: EpicCaptureStory,
     title: "Epic Capture Story",
     name: "Maury Rogow",

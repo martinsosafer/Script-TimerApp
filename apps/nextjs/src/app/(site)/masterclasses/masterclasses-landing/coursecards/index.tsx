@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { Button } from "@voiceai/ui";
 import { Card, CardContent } from "@voiceai/ui/@/components/ui/card";
 import { IconChevronRight } from "@voiceai/ui/@/components/ui/icons";
@@ -27,24 +29,29 @@ function CourseCard({ data, index }: CourseCardProps) {
   const isEven = index % 2 === 0;
 
   const ContentSection = () => (
-    <div className="flex h-full flex-col justify-between p-6">
+    <div className="flex h-full flex-col justify-between p-0">
       <div>
-        <h3 className="mb-2 text-xl font-semibold text-blue-600">
+        <h3 className="mb-4 line-clamp-1 text-xl font-semibold text-blue-600">
           {data.course}
         </h3>
-        <p className="mb-4 text-gray-600">{data.description}</p>
+        <p className="mb-6 line-clamp-3 text-gray-600">{data.description}</p>
       </div>
-      <Button variant="default" className="w-fit bg-blue-600 hover:bg-blue-700">
-        View course <IconChevronRight className="ml-2 h-4 w-4" />
-      </Button>
+      <Link href={`/masterclasses/${data.id}`} target="_blank">
+        <Button
+          variant="default"
+          className="h-12 w-[368px] bg-blue-600 hover:bg-blue-700"
+        >
+          View course <IconChevronRight className="ml-2 h-4 w-4" />
+        </Button>
+      </Link>
     </div>
   );
 
   const VideoSection = () => (
-    <div className="aspect-video h-full">
+    <div className="aspect-video h-full w-full">
       <iframe
         src={data.videoUrl}
-        className="h-full w-full"
+        className="h-full w-full rounded-lg"
         allow="autoplay; fullscreen; picture-in-picture"
         allowFullScreen
       />
@@ -75,7 +82,6 @@ export default function CourseListing({
 }: {
   videoCardData: Video[];
 }) {
-  // Get only the first video of each unique course
   const uniqueCourses = Array.from(
     new Set(videoCardData.map((video) => video.course)),
   );
@@ -84,16 +90,16 @@ export default function CourseListing({
     .filter((video): video is Video => video !== undefined);
 
   return (
-    <div className="min-h-[2331px] bg-blue-600 p-8">
+    <div className={`min-h-[2331px] bg-blue-600 p-8 ${poppins.className}`}>
       <div className="mx-auto max-w-[944px] items-center space-y-8">
-        <div className="space-y-4 text-center">
-          <h1 className="text-4xl font-bold text-white md:text-5xl">
+        <div className="space-y-4 text-start">
+          <h2 className="text-cp-secondary-lightest  font-bold lg:text-[42px] lg:leading-[50px]  ">
             These 60+ course modules will take
-          </h1>
-          <h1 className="text-4xl font-bold text-white md:text-5xl">
+          </h2>
+          <h2 className="text-cp-secondary-lightest  font-bold lg:text-[42px] lg:leading-[50px]  ">
             beginners through experts to new heights.
-          </h1>
-          <p className="text-xl text-blue-100">
+          </h2>
+          <p className="text-cp-accent text-[34px] font-bold leading-[41px]">
             See the courses introductions below.
           </p>
         </div>
