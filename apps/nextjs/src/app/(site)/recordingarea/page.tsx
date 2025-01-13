@@ -14,11 +14,34 @@ async function getSavedAudios(userId: string) {
     const { blobs } = await list({
       prefix: `RecordedAudio/${userId}/`,
     });
-    return blobs.map((blob) => ({
-      url: blob.url,
-      filename: blob.pathname.split("/").pop(),
-      uploadedAt: blob.uploadedAt,
-    }));
+
+    return blobs.map((blob) => {
+      // Get the full path after RecordedAudio/userId/
+      const fullPath = blob.pathname.split(`RecordedAudio/${userId}/`)[1];
+
+      // Extract the recording pattern using regex
+      const recordingPattern = fullPath.match(
+        /(recording-\d{2}\/\d{2}\/\d{4}-)/,
+      );
+      const filename = recordingPattern ? recordingPattern[1] : fullPath;
+
+      // Format the date
+      const date = new Date(blob.uploadedAt);
+      const formattedDate = `${date.getDate().toString().padStart(2, "0")}-${(
+        date.getMonth() + 1
+      )
+        .toString()
+        .padStart(2, "0")}-${date.getFullYear()} ${date
+        .getHours()
+        .toString()
+        .padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
+
+      return {
+        url: blob.url,
+        filename,
+        uploadedAt: formattedDate,
+      };
+    });
   } catch (error) {
     console.error("Error fetching saved audios:", error);
     return [];

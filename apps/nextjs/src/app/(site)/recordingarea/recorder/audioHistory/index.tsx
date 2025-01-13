@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 
 import { IconMusic as Music } from "@voiceai/ui/@/components/ui/icons";
@@ -23,7 +23,15 @@ const AudioHistory: React.FC<AudioHistoryProps> = ({
   displayAudioCount,
   onLoadMore,
 }) => {
-  const displayedRecordings = savedAudios.slice(0, displayAudioCount);
+  const sortedRecordings = useMemo(() => {
+    return [...savedAudios].sort((a, b) => {
+      const dateA = new Date(a.uploadedAt);
+      const dateB = new Date(b.uploadedAt);
+      return dateB - dateA; // Sort in descending order (newest first)
+    });
+  }, [savedAudios]);
+
+  const displayedRecordings = sortedRecordings.slice(0, displayAudioCount);
 
   return (
     <div className="mt-[20px]">
@@ -54,7 +62,16 @@ const AudioHistory: React.FC<AudioHistoryProps> = ({
 
                 {/* Upload Date */}
                 <div className="text-sm text-gray-500">
-                  {new Date(recording.uploadedAt).toLocaleString()}
+                  {new Date(recording.uploadedAt)
+                    .toLocaleString("en-GB", {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hour12: false,
+                    })
+                    .replace(",", "")}
                 </div>
               </motion.li>
             ))}

@@ -11,6 +11,7 @@ import { useAudioRecorder } from "../hooks/useAudioRecorder";
 import { usePostProcessing } from "../hooks/usePostProcess";
 import { useTranscription } from "../hooks/useTranscription";
 import { AIFeatureButtons } from "./aifeaturebutton";
+import { AIContentWrapper } from "./aiwrapper";
 import { AudioControls } from "./audiocontrols";
 import AudioHistory from "./audioHistory";
 import { RecordButton } from "./recordbutton";
@@ -191,85 +192,24 @@ export default function MicrophoneComponent({
           isLoading={isLoading}
         />
 
-        {whisperTranscription && (
-          <AIFeatureButtons
-            onGenerateSummary={handleGenerateSummary}
-            onGenerateBulletPoints={handleGenerateBulletPoints}
-            onSortWords={handleSortWords}
-            onMainTheme={handleMainTheme}
-            onUsefulCutdowns={handleUsefulCutdowns}
-            onGenerateSoundBites={handleGenerateSoundBites}
-            isLoading={isLoading}
-            audioUrl={audioUrl}
-          />
-        )}
-        {isLoading && (
-          <p className="text-cp-primary mt-4 flex items-center justify-center gap-2 text-center text-[24px] font-semibold leading-[22.4px]">
-            We are getting your Feedback please wait
-            <IconSpinner className="h-6 w-6" />
-          </p>
-        )}
-        {summary && (
-          <div className="mt-4">
-            <h3 className="text-lg font-semibold">Summary:</h3>
-            <p className="mt-2">{summary}</p>
-          </div>
-        )}
+        <AIContentWrapper
+          whisperTranscription={whisperTranscription}
+          isLoading={isLoading}
+          recordingUrl={audioUrl}
+          summary={summary}
+          bulletPoints={bulletPoints}
+          sortedWords={sortedWords}
+          mainTheme={mainTheme}
+          cutDowns={cutDowns}
+          soundBites={soundBites}
+          onGenerateSummary={handleGenerateSummary}
+          onGenerateBulletPoints={handleGenerateBulletPoints}
+          onSortWords={handleSortWords}
+          onMainTheme={handleMainTheme}
+          onUsefulCutdowns={handleUsefulCutdowns}
+          onGenerateSoundBites={handleGenerateSoundBites}
+        />
 
-        {bulletPoints.length > 0 && (
-          <div className="mt-4">
-            <h3 className="text-lg font-semibold">Key Points:</h3>
-            <ul className="mt-2 list-disc pl-5">
-              {bulletPoints[0] // Assuming bulletPoints[0] contains your string
-                .split("-") // Split on dashes
-                .filter((point) => point.trim() && !point.includes("*")) // Remove empty strings and asterisks
-                .map((point, index) => (
-                  <li key={index}>{point.trim()}</li>
-                ))}
-            </ul>
-          </div>
-        )}
-
-        {sortedWords.length > 0 && (
-          <div className="mt-4">
-            <h3 className="text-lg font-semibold">Sorted Words:</h3>
-            <ul className="mt-2 list-disc pl-5">
-              {sortedWords.map((word, index) => (
-                <li key={index}>{word}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {mainTheme && (
-          <div className="mt-4">
-            <h3 className="text-lg font-semibold">Main Theme:</h3>
-            <p className="mt-2">{mainTheme}</p>
-          </div>
-        )}
-        {cutDowns && (
-          <div className="mt-4">
-            <h3 className="text-lg font-semibold">Useful Cutdowns:</h3>
-            <ul className="mt-2 list-disc pl-5">
-              {cutDowns.split("\n").map((cutdown, index) => (
-                <li key={index}>{cutdown.replace(/^\d+\.\s*/, "").trim()}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {soundBites && (
-          <div className="mt-4">
-            <h3 className="text-lg font-semibold">Sound Bites:</h3>
-            <div className="mt-2 space-y-2">
-              {soundBites.split("\n").map((bite, index) => (
-                <p key={index} className="rounded-lg bg-gray-50 p-2">
-                  {bite}
-                </p>
-              ))}
-            </div>
-          </div>
-        )}
         <AudioHistory
           savedAudios={savedAudios}
           displayAudioCount={displayAudioCount}

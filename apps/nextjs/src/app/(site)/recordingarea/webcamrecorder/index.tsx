@@ -12,6 +12,7 @@ import { usePostProcessing } from "../hooks/usePostProcess";
 import { useTranscription } from "../hooks/useTranscription";
 import { useWebcamRecorder } from "../hooks/useWebcamRecorder";
 import { AIFeatureButtons } from "../recorder/aifeaturebutton";
+import { AIContentWrapper } from "../recorder/aiwrapper";
 import { AudioControls } from "../recorder/audiocontrols";
 import { RecordButton } from "../recorder/recordbutton";
 import { TranscriptDisplay } from "../recorder/transcriptDisplay";
@@ -183,7 +184,6 @@ export default function MicrophoneAndWebcamComponent({
             Please ensure good audio and lighting quality.
           </p>
         </div>
-
         <div className="flex flex-col items-center space-y-4">
           <div className="flex w-full justify-between">
             <DeviceSelector
@@ -216,14 +216,12 @@ export default function MicrophoneAndWebcamComponent({
           onPauseResume={handlePauseResume}
           onStop={handleStop}
         />
-
         <TranscriptDisplay
           isProcessingWhisper={isProcessingWhisper}
           completeTranscript={completeTranscript}
           transcript={transcript}
           whisperTranscription={whisperTranscription}
         />
-
         {uploadUrl && (
           <div className="mt-2 text-sm text-gray-600">
             Recording uploaded successfully!
@@ -237,7 +235,6 @@ export default function MicrophoneAndWebcamComponent({
             </a>
           </div>
         )}
-
         <AudioControls
           audioUrl={recordingUrl}
           onDownload={handleDownload}
@@ -246,86 +243,24 @@ export default function MicrophoneAndWebcamComponent({
           isLoading={isLoading}
           disableAudio={true}
         />
+        <AIContentWrapper
+          whisperTranscription={whisperTranscription}
+          isLoading={isLoading}
+          recordingUrl={recordingUrl}
+          summary={summary}
+          bulletPoints={bulletPoints}
+          sortedWords={sortedWords}
+          mainTheme={mainTheme}
+          cutDowns={cutDowns}
+          soundBites={soundBites}
+          onGenerateSummary={handleGenerateSummary}
+          onGenerateBulletPoints={handleGenerateBulletPoints}
+          onSortWords={handleSortWords}
+          onMainTheme={handleMainTheme}
+          onUsefulCutdowns={handleUsefulCutdowns}
+          onGenerateSoundBites={handleGenerateSoundBites}
+        />
 
-        {whisperTranscription && (
-          <AIFeatureButtons
-            onGenerateSummary={handleGenerateSummary}
-            onGenerateBulletPoints={handleGenerateBulletPoints}
-            onSortWords={handleSortWords}
-            onMainTheme={handleMainTheme}
-            onUsefulCutdowns={handleUsefulCutdowns}
-            onGenerateSoundBites={handleGenerateSoundBites}
-            isLoading={isLoading}
-            videoUrl={recordingUrl}
-          />
-        )}
-        {isLoading && (
-          <p className="text-cp-primary mt-4 flex items-center justify-center gap-2 text-center text-[24px] font-semibold leading-[22.4px]">
-            We are getting your Feedback please wait
-            <IconSpinner className="h-6 w-6" />
-          </p>
-        )}
-        {summary && (
-          <div className="mt-4">
-            <h3 className="text-lg font-semibold">Summary:</h3>
-            <p className="mt-2">{summary}</p>
-          </div>
-        )}
-
-        {bulletPoints.length > 0 && (
-          <div className="mt-4">
-            <h3 className="text-lg font-semibold">Key Points:</h3>
-            <ul className="mt-2 list-disc pl-5">
-              {bulletPoints[0] // Assuming bulletPoints[0] contains your string
-                .split("-") // Split on dashes
-                .filter((point) => point.trim() && !point.includes("*")) // Remove empty strings and asterisks
-                .map((point, index) => (
-                  <li key={index}>{point.trim()}</li>
-                ))}
-            </ul>
-          </div>
-        )}
-
-        {sortedWords.length > 0 && (
-          <div className="mt-4">
-            <h3 className="text-lg font-semibold">Sorted Words:</h3>
-            <ul className="mt-2 list-disc pl-5">
-              {sortedWords.map((word, index) => (
-                <li key={index}>{word}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {mainTheme && (
-          <div className="mt-4">
-            <h3 className="text-lg font-semibold">Main Theme:</h3>
-            <p className="mt-2">{mainTheme}</p>
-          </div>
-        )}
-        {cutDowns && (
-          <div className="mt-4">
-            <h3 className="text-lg font-semibold">Useful Cutdowns:</h3>
-            <ul className="mt-2 list-disc pl-5">
-              {cutDowns.split("\n").map((cutdown, index) => (
-                <li key={index}>{cutdown.replace(/^\d+\.\s*/, "").trim()}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {soundBites && (
-          <div className="mt-4">
-            <h3 className="text-lg font-semibold">Sound Bites:</h3>
-            <div className="mt-2 space-y-2">
-              {soundBites.split("\n").map((bite, index) => (
-                <p key={index} className="rounded-lg bg-gray-50 p-2">
-                  {bite}
-                </p>
-              ))}
-            </div>
-          </div>
-        )}
         <VideoHistory
           savedWebcam={savedWebcam}
           displayVideoCount={displayVideoCount}

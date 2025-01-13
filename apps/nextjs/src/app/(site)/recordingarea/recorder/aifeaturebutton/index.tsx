@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { Button } from "@voiceai/ui";
 import {
   Select,
   SelectContent,
@@ -17,8 +18,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@voiceai/ui/@/components/ui/tooltip";
-
-import Button from "~/app/(site)/components/button";
 
 interface AIFeatureButtonsProps {
   onGenerateSummary: () => void;
@@ -87,7 +86,7 @@ export function AIFeatureButtons({
   };
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center justify-center gap-4">
       <div className="relative">
         <TooltipProvider>
           <Select onValueChange={setSelectedFeature}>
@@ -126,12 +125,12 @@ export function AIFeatureButtons({
         </TooltipProvider>
       </div>
       <Button
-        label="Submit"
-        type="primary"
         onClick={() => selectedFeature && features[selectedFeature].action()}
         disabled={isLoading || !selectedFeature}
-        className="h-7"
-      />
+        className="bg-cp-secondary h-[30px]"
+      >
+        Submit
+      </Button>
     </div>
   );
 }
