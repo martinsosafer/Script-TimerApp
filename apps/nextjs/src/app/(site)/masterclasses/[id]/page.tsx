@@ -2,6 +2,7 @@ import * as React from "react";
 import type { Metadata } from "next";
 
 import videoCardData from "../../components/masterclasses/videocards/videocardsdata";
+import DynamicCourse from "../dynamiccourse/page";
 import VideoPage from "../videopage";
 
 export const metadata: Metadata = {
@@ -32,11 +33,14 @@ export default function CoursePage({ params }: { params: { id: string } }) {
       : null;
 
   return (
-    <VideoPage
-      currentVideo={currentVideo}
-      courseVideos={allCourseVideos}
-      previousVideo={previousVideo}
-      nextVideo={nextVideo}
-    />
+    <>
+      <DynamicCourse />
+      <VideoPage
+        currentVideo={currentVideo}
+        courseVideos={allCourseVideos}
+        previousVideo={previousVideo}
+        nextVideo={nextVideo}
+      />
+    </>
   );
 }
