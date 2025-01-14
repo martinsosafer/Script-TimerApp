@@ -21,7 +21,7 @@ export function useWebcamRecorder(userId: string | undefined) {
   const [selectedMicrophone, setSelectedMicrophone] = useState<string | null>(
     null,
   );
-
+  const [isRendering, setIsRendering] = useState(false);
   useEffect(() => {
     const constraints = {
       audio: selectedMicrophone
@@ -152,6 +152,7 @@ export function useWebcamRecorder(userId: string | undefined) {
       mediaRecorderRef.current.stop();
       setIsRecording(false);
       stopTimer();
+      setIsRendering(true);
       await new Promise<void>((resolve) => {
         mediaRecorderRef.current!.onstop = async () => {
           const recordingBlob = new Blob(recordingChunksRef.current, {
@@ -185,7 +186,7 @@ export function useWebcamRecorder(userId: string | undefined) {
           setRecordingBlob(recordingBlob);
           const videoUrl = URL.createObjectURL(recordingBlob);
           setRecordingUrl(videoUrl);
-
+          setIsRendering(false);
           setIsProcessingWhisper(true);
           try {
             const response = await fetch("/api/live-transcription", {
@@ -265,5 +266,6 @@ export function useWebcamRecorder(userId: string | undefined) {
     pauseRecording,
     resumeRecording,
     isPaused,
+    isRendering,
   };
 }

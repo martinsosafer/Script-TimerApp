@@ -47,6 +47,7 @@ export default function MicrophoneAndWebcamComponent({
     resumeRecording,
     stream,
     isPaused,
+    isRendering,
   } = useWebcamRecorder(userId);
 
   const {
@@ -189,10 +190,12 @@ export default function MicrophoneAndWebcamComponent({
             <DeviceSelector
               kind="videoinput"
               onDeviceChange={setSelectedWebcam}
+              disabled={isRecording}
             />
             <DeviceSelector
               kind="audioinput"
               onDeviceChange={setSelectedMicrophone}
+              disabled={isRecording}
             />
           </div>
           <VideoPreview
@@ -201,6 +204,7 @@ export default function MicrophoneAndWebcamComponent({
             isRecording={isRecording}
             onReset={handleResetToWebcam}
             countdown={countdown}
+            isRendering={isRendering}
           />
         </div>
         <div className="flex items-center justify-center space-x-4">

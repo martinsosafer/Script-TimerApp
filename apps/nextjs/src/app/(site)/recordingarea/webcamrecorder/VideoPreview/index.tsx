@@ -10,6 +10,7 @@ interface VideoPreviewProps {
   isRecording?: boolean;
   onReset: () => void;
   countdown: number | null;
+  isRendering?: boolean;
 }
 
 export function VideoPreview({
@@ -18,6 +19,7 @@ export function VideoPreview({
   isRecording,
   onReset,
   countdown,
+  isRendering,
 }: VideoPreviewProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [showResetButton, setShowResetButton] = useState(false);
@@ -110,6 +112,21 @@ export function VideoPreview({
               >
                 {countdown === 0 ? "Go!" : countdown}
               </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <AnimatePresence>
+          {isRendering && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50"
+            >
+              <IconSpinner className="mb-4 h-8 w-8 animate-spin text-white" />
+              <p className="text-lg font-medium text-white">
+                Please wait, we are rendering your video...
+              </p>
             </motion.div>
           )}
         </AnimatePresence>

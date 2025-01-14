@@ -11,9 +11,14 @@ import {
 interface DeviceSelectorProps {
   kind: "videoinput" | "audioinput";
   onDeviceChange: (deviceId: string) => void;
+  disabled?: boolean; // Add disabled prop
 }
 
-export function DeviceSelector({ kind, onDeviceChange }: DeviceSelectorProps) {
+export function DeviceSelector({
+  kind,
+  onDeviceChange,
+  disabled = false,
+}: DeviceSelectorProps) {
   const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
 
   useEffect(() => {
@@ -25,8 +30,10 @@ export function DeviceSelector({ kind, onDeviceChange }: DeviceSelectorProps) {
   }, [kind]);
 
   return (
-    <Select onValueChange={onDeviceChange}>
-      <SelectTrigger className="w-[180px]">
+    <Select onValueChange={onDeviceChange} disabled={disabled}>
+      <SelectTrigger
+        className={`w-[180px] ${disabled ? "cursor-not-allowed opacity-50" : ""}`}
+      >
         <div className="w-full overflow-hidden">
           <SelectValue
             className="block w-full truncate"

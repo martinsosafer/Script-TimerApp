@@ -206,7 +206,7 @@ export function AIContentWrapper({
       )}
       {isLoading && (
         <p className="text-cp-primary mt-4 flex items-center justify-center gap-2 text-center text-[24px] font-semibold leading-[22.4px]">
-          We are getting your Feedback please wait
+          We are creating feedback for you, please wait
           <IconSpinner className="h-6 w-6" />
         </p>
       )}

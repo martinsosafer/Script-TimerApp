@@ -4,14 +4,12 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import MicrophoneComponent from "../recorder";
-import ShareScreenRecorder from "../sharescreenrecorder";
 import WebcamRecorder from "../webcamrecorder";
 
 interface SelectorProps {
-  initialMode?: "audio" | "video" | "screen";
+  initialMode?: "audio" | "video";
   userId: string | undefined;
   savedAudios: SavedBlob[];
-  savedScreen: SavedBlob[];
   savedWebcam: SavedBlob[];
 }
 
@@ -26,11 +24,10 @@ export default function ModeSelectorRecorder({
   userId,
   savedAudios,
   savedWebcam,
-  savedScreen,
 }: SelectorProps) {
   const [activeMode, setActiveMode] = useState(initialMode);
 
-  const handleModeChange = (mode: "audio" | "video" | "screen") => {
+  const handleModeChange = (mode: "audio" | "video") => {
     setActiveMode(mode);
   };
 
@@ -42,10 +39,6 @@ export default function ModeSelectorRecorder({
         );
       case "video":
         return <WebcamRecorder userId={userId} savedWebcam={savedWebcam} />;
-      case "screen":
-        return (
-          <ShareScreenRecorder userId={userId} savedScreen={savedScreen} />
-        );
       default:
         return (
           <MicrophoneComponent userId={userId} savedAudios={savedAudios} />
@@ -54,12 +47,12 @@ export default function ModeSelectorRecorder({
   };
 
   return (
-    <div className={` flex w-full  flex-col items-center rounded-lg  `}>
-      <div className="w-full ">
+    <div className="flex w-full flex-col items-center rounded-lg">
+      <div className="w-full">
         <div className="mx-auto mb-3 max-w-[500px] border-b">
           <div className="mt-5 lg:mt-10">
             <div className="flex justify-center space-x-6">
-              {["audio", "video", "screen"].map((mode) => (
+              {["audio", "video"].map((mode) => (
                 <motion.button
                   key={mode}
                   className={`relative px-1 py-4 text-base transition-colors
@@ -69,15 +62,9 @@ export default function ModeSelectorRecorder({
                         : "font-normal text-gray-600 hover:text-gray-900"
                     }
                   `}
-                  onClick={() =>
-                    handleModeChange(mode as "audio" | "video" | "screen")
-                  }
+                  onClick={() => handleModeChange(mode as "audio" | "video")}
                 >
-                  {mode === "audio"
-                    ? "Audio Recorder"
-                    : mode === "video"
-                      ? "Video Recorder"
-                      : "Screen Recorder"}
+                  {mode === "audio" ? "Audio Recorder" : "Video Recorder"}
                   {activeMode === mode && (
                     <motion.div
                       className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
