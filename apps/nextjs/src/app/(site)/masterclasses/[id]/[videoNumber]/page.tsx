@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import videoCardData from "../../../components/masterclasses/videocards/videocardsdata";
 import { CourseData } from "../../dynamiccourse/coursesData";
 import DynamicCourse from "../../dynamiccourse/page";
+import OtherCoursesBanner from "../../othecoursesbanner";
 import VideoPage from "../../videopage";
 
 export const metadata: Metadata = {
@@ -52,6 +53,7 @@ export default function CoursePage({
         previousVideo={previousVideo}
         nextVideo={nextVideo}
       />
+      <OtherCoursesBanner />
     </>
   );
 }

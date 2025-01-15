@@ -116,8 +116,9 @@ export default function VideoPage({
           {courseVideos.map((video) => (
             <Link
               key={video.id}
-              href={`/masterclasses/${video.id}`}
+              href={`/masterclasses/${video.id}/${video.number}`}
               className="block"
+              target="_blank"
             >
               <div
                 className={`flex gap-4 rounded-lg p-4 px-[44px] hover:bg-gray-200 ${
