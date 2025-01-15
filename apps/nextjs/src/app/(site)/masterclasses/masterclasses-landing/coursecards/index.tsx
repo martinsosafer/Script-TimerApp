@@ -36,7 +36,7 @@ function CourseCard({ data, index }: CourseCardProps) {
         </h3>
         <p className="mb-6 line-clamp-3 text-gray-600">{data.description}</p>
       </div>
-      <Link href={`/masterclasses/${data.id}`} target="_blank">
+      <Link href={`/masterclasses/${data.id}/1`} target="_blank">
         <Button
           variant="default"
           className="h-12 w-[368px] bg-blue-600 hover:bg-blue-700"

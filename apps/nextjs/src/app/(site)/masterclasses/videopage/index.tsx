@@ -10,6 +10,8 @@ import {
   IconChevronRight as ChevronRight,
 } from "@voiceai/ui/@/components/ui/icons";
 
+import { poppins } from "~/app/fonts";
+
 interface Video {
   course: string;
   id: number;
@@ -36,19 +38,21 @@ export default function VideoPage({
   nextVideo,
 }: VideoPageProps) {
   return (
-    <div className="mx-auto max-w-[1200px] p-6">
-      <div className="space-y-6">
+    <div className="mx-auto mt-[106px] max-w-[944px] bg-[#F5F5F7] ">
+      <div className=" bg-white py-[32px] shadow-lg">
         {/* Main Video Section */}
         <div className="space-y-4">
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-white">
+            <div className="flex h-8 w-10 items-center justify-center rounded-r-full bg-blue-600 text-white">
               {currentVideo.number}
             </div>
-            <h1 className="text-2xl font-bold text-blue-600">
+            <h1
+              className={`text-cp-primary text-[34px] font-bold leading-[41px] ${poppins.className}`}
+            >
               {currentVideo.title}
             </h1>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="ml-11 flex items-center gap-2">
             <Image
               src={currentVideo.avatarUrl}
               alt={currentVideo.name}
@@ -56,43 +60,59 @@ export default function VideoPage({
               height={24}
               className="rounded-full"
             />
-            <span className="text-sm font-medium">{currentVideo.name}</span>
+            <span className="text-[16px]  font-bold leading-[23px] text-black">
+              {currentVideo.name}
+            </span>
           </div>
-          <div className="aspect-video w-full overflow-hidden rounded-lg bg-black">
-            <iframe
-              src={currentVideo.videoUrl}
-              className="h-full w-full"
-              allow="autoplay; fullscreen; picture-in-picture"
-              allowFullScreen
-            />
+          <div className=" px-[42px]">
+            <div className="aspect-video w-full overflow-hidden rounded-lg bg-black">
+              <iframe
+                src={currentVideo.videoUrl}
+                className="h-full w-full"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+            <p className="mt-3 text-[18px] font-normal leading-[25.2px] text-black">
+              {currentVideo.description}
+            </p>
+            <div className="mx-auto flex items-center justify-between pt-4">
+              {previousVideo ? (
+                <Link
+                  href={`/masterclasses/${currentVideo.id}/${previousVideo.number}`}
+                >
+                  <Button
+                    variant="ghost"
+                    className="flex items-center gap-2 text-[14px] font-bold  leading-[20px]"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                    Previous
+                  </Button>
+                </Link>
+              ) : (
+                <div />
+              )}
+              {nextVideo && (
+                <Link
+                  href={`/masterclasses/${currentVideo.id}/${nextVideo.number}`}
+                >
+                  <Button
+                    variant="ghost"
+                    className="flex items-center gap-2 text-[14px] font-bold  leading-[20px]"
+                  >
+                    Next
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </Link>
+              )}
+            </div>
           </div>
-          <p className="text-gray-600">{currentVideo.description}</p>
 
           {/* Navigation Buttons */}
-          <div className="flex items-center justify-between pt-4">
-            {previousVideo ? (
-              <Link href={`/masterclasses/${previousVideo.id}`}>
-                <Button variant="outline" className="flex items-center gap-2">
-                  <ChevronLeft className="h-4 w-4" />
-                  Previous
-                </Button>
-              </Link>
-            ) : (
-              <div />
-            )}
-            {nextVideo && (
-              <Link href={`/masterclasses/${nextVideo.id}`}>
-                <Button variant="outline" className="flex items-center gap-2">
-                  Next
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
-              </Link>
-            )}
-          </div>
         </div>
 
         {/* Playlist Section */}
-        <div className="space-y-4">
+        <div className="  my-[28px]">
           {courseVideos.map((video) => (
             <Link
               key={video.id}
@@ -100,8 +120,8 @@ export default function VideoPage({
               className="block"
             >
               <div
-                className={`flex gap-4 rounded-lg p-4 hover:bg-gray-50 ${
-                  video.id === currentVideo.id ? "bg-gray-50" : ""
+                className={`flex gap-4 rounded-lg p-4 px-[44px] hover:bg-gray-200 ${
+                  video.number === currentVideo.number ? "bg-[#BDF3F0]" : ""
                 }`}
               >
                 <div className="relative aspect-video w-40 flex-shrink-0 overflow-hidden rounded-lg">
@@ -114,12 +134,16 @@ export default function VideoPage({
                 </div>
                 <div className="flex-1">
                   <div className="mb-2 flex items-center gap-2">
-                    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-sm text-white">
+                    <div className="flex h-8 w-10 items-center justify-center rounded-r-full bg-blue-600 text-white">
                       {video.number}
                     </div>
-                    <h3 className="font-medium text-blue-600">{video.title}</h3>
+                    <h3
+                      className={`text-cp-primary font-poppins text-[16px]  font-bold leading-[23px] ${poppins.className}`}
+                    >
+                      {video.title}
+                    </h3>
                   </div>
-                  <p className="line-clamp-2 text-sm text-gray-600">
+                  <p className="line-clamp-2 text-[16px]  font-normal leading-[23px] text-black">
                     {video.description}
                   </p>
                 </div>
