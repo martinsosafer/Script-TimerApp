@@ -170,13 +170,13 @@ export default function MicrophoneAndWebcamComponent({
     />
   );
   function generateShareableLink(blobUrl: string) {
-    const baseUrl = process.env.NEXT_PUBLIC_HOST_URL;
+    const baseUrl = "https://voiceai-git-recordingarea-script-timer.vercel.app";
     if (!baseUrl) {
       console.error("NEXT_PUBLIC_HOST_URL is not defined in the environment.");
       return "";
     }
     const encodedBlobUrl = encodeURIComponent(blobUrl);
-    return `https://voiceai-git-recordingarea-script-timer.vercel.app/share/video?url=${encodedBlobUrl}`;
+    return `${baseUrl}/share/video?url=${encodedBlobUrl}`;
   }
   return (
     <div
