@@ -38,6 +38,19 @@ const config = {
       },
     ];
   },
+
+  async rewrites() {
+    return [
+      {
+        source: "/share/audio/:path*",
+        destination: "/share/audio/[...slug]",
+      },
+      {
+        source: "/share/video/:path*",
+        destination: "/share/video/[...slug]",
+      },
+    ];
+  },
 };
 
 export default config;

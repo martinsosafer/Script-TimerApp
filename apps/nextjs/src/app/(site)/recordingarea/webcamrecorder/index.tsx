@@ -169,7 +169,15 @@ export default function MicrophoneAndWebcamComponent({
       }`}
     />
   );
-
+  function generateShareableLink(blobUrl: string) {
+    const baseUrl = process.env.NEXT_PUBLIC_HOST_URL;
+    if (!baseUrl) {
+      console.error("NEXT_PUBLIC_HOST_URL is not defined in the environment.");
+      return "";
+    }
+    const encodedBlobUrl = encodeURIComponent(blobUrl);
+    return `${baseUrl}/share/video?url=${encodedBlobUrl}`;
+  }
   return (
     <div
       className={`mb-20 flex h-full w-full items-center justify-center bg-gray-100 ${poppins.className}`}
@@ -236,6 +244,14 @@ export default function MicrophoneAndWebcamComponent({
               rel="noopener noreferrer"
             >
               View uploaded file
+            </a>
+            <a
+              href={generateShareableLink(uploadUrl)}
+              className="ml-2 text-blue-500 hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Share this recording
             </a>
           </div>
         )}
