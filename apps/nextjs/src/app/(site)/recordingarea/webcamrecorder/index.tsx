@@ -176,7 +176,7 @@ export default function MicrophoneAndWebcamComponent({
       return "";
     }
     const encodedBlobUrl = encodeURIComponent(blobUrl);
-    return `${baseUrl}/share/video?url=${encodedBlobUrl}`;
+    return `https://voiceai-git-recordingarea-script-timer.vercel.app/share/video?url=${encodedBlobUrl}`;
   }
   return (
     <div

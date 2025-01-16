@@ -133,7 +133,7 @@ export default function MicrophoneComponent({
       return "";
     }
     const encodedBlobUrl = encodeURIComponent(blobUrl);
-    return `${baseUrl}/share/audio?url=${encodedBlobUrl}`;
+    return `https://voiceai-git-recordingarea-script-timer.vercel.app/share/audio?url=${encodedBlobUrl}`;
   }
 
   return (
