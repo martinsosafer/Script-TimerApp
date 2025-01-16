@@ -21,7 +21,7 @@ export default function Footer() {
               </span>
               {/* Subtitle positioned directly below the main title */}
               <span className=" text-left text-sm text-white">
-                created by Script-Timer
+                created by Script-Timer.
               </span>
             </div>
           </RevealText>
