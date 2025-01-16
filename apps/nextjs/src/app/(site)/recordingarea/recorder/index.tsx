@@ -127,7 +127,7 @@ export default function MicrophoneComponent({
   );
 
   function generateShareableLink(blobUrl: string) {
-    const baseUrl = "https://voiceai-git-recordingarea-script-timer.vercel.app";
+    const baseUrl = process.env.NEXT_PUBLIC_HOST_URL;
     if (!baseUrl) {
       console.error("NEXT_PUBLIC_HOST_URL is not defined in the environment.");
       return "";
