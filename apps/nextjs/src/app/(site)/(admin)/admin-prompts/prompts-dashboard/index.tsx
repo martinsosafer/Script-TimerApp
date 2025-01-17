@@ -63,7 +63,7 @@ export default function PromptsDashboard() {
                 {prompt.description}
               </div>
               <div className="w-[20%] border border-gray-300 p-1">
-                {categories?.find((cat) => cat.id === prompt.categoryId)?.name}
+                {categories?.find((cat) => cat.id === prompt.category_id)?.name}
               </div>
               <div className="w-[10%] border border-gray-300 p-1">
                 {prompt.ai_model_type}

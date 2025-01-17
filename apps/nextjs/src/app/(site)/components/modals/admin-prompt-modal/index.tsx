@@ -29,6 +29,8 @@ export default function AdminPromptModal({
   subcategories,
   refetch,
 }: ModalProps) {
+  console.log("categories", categories);
+  console.log("subcategories", subcategories);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [selectedAiType, setSelectedAiType] = useState<string | undefined>(
     () => prompt?.ai_model_type,
@@ -37,14 +39,14 @@ export default function AdminPromptModal({
     PromptCategory | undefined
   >(() =>
     selectedAiType === "CHAT"
-      ? categories.find((cat) => cat.id === prompt?.categoryId)
+      ? categories.find((cat) => cat.id === prompt?.category_id)
       : undefined,
   );
   const [selectedSubCategory, setSelectedSubCategory] = useState<
     PromptSubcategory | undefined
   >(() =>
     selectedAiType === "CHAT"
-      ? subcategories.find((cat) => cat.id === prompt?.subcategoryId)
+      ? subcategories.find((cat) => cat.id === prompt?.subcategory_id)
       : undefined,
   );
 
@@ -53,7 +55,12 @@ export default function AdminPromptModal({
     e.preventDefault();
     const form = new FormData(e.currentTarget);
     if (prompt) {
-      await updatePrompt(form, prompt.id);
+      await updatePrompt(
+        form,
+        prompt.id,
+        selectedCategory!.id!,
+        selectedSubCategory!.id!,
+      );
       refetch();
       return onClose();
     }
@@ -118,7 +125,7 @@ export default function AdminPromptModal({
               {selectedAiType === "CHAT" && (
                 <>
                   <label htmlFor="type" className="text-sm font-semibold">
-                    Chat Prompt Type
+                    Chat Prompt Category
                   </label>
                   <select
                     name="type"

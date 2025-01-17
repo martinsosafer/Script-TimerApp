@@ -15,11 +15,11 @@ export default function PromptsCategoriesDashboard() {
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
   const [isCategoryTab, setIsCategoryTab] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<
-    PromptCategory | undefined
+    PromptCategory | PromptSubcategory | undefined
   >();
-  const [selectedSubCategory, setSelectedSubCategory] = useState<
-    PromptSubcategory | undefined
-  >();
+  // const [selectedSubCategory, setSelectedSubCategory] = useState<
+  //   PromptSubcategory | undefined
+  // >();
   const [isDeletingCategory, setIsDeletingCategory] = useState(false);
 
   const {
@@ -104,8 +104,8 @@ export default function PromptsCategoriesDashboard() {
                   <div className="flex w-[100px] justify-around p-2">
                     <button
                       onClick={() => {
-                        // setSelectedPrompt(prompt as Prompt);
-                        // setPromptModalOpen(true);
+                        setSelectedCategory(category);
+                        setCategoryModalOpen(true);
                       }}
                       className="flex h-10 w-10 items-center justify-center rounded-md bg-primary text-white"
                     >
@@ -138,8 +138,8 @@ export default function PromptsCategoriesDashboard() {
                   <div className="flex w-[100px] justify-around p-2">
                     <button
                       onClick={() => {
-                        // setSelectedPrompt(prompt as Prompt);
-                        // setPromptModalOpen(true);
+                        setSelectedCategory(subcategory);
+                        setCategoryModalOpen(true);
                       }}
                       className="flex h-10 w-10 items-center justify-center rounded-md bg-primary text-white"
                     >

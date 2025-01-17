@@ -1,12 +1,6 @@
 import type { Dispatch, FormEvent, SetStateAction } from "react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@voiceai/ui/@/components/ui/hover-card";
 import { IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 
 import type { Prompt } from "~/app/(site)/(admin)/admin-prompts/types";
@@ -20,7 +14,7 @@ interface PromptInputProps {
   loadingMessages: boolean;
   isEnabled: boolean;
   userId: string | undefined;
-  selectedCardName: string | undefined;
+  selectedPromptName: string | undefined;
   isInputMinimized: boolean;
   setIsInputMinimized: Dispatch<SetStateAction<boolean>>;
   prompt: Prompt | undefined;
@@ -34,7 +28,7 @@ export default function PromptInput({
   onSubmit,
   loadingMessages,
   isEnabled,
-  selectedCardName,
+  selectedPromptName,
   isInputMinimized,
   setIsInputMinimized,
   prompt,
@@ -45,7 +39,7 @@ export default function PromptInput({
     if (isInputMinimized) {
       return "We are procesing your entry, please see the response below.";
     }
-    if (selectedCardName === "Add Your Own Prompt") {
+    if (selectedPromptName === "Add Your Own Prompt") {
       return `Enter your prompt here, with important details.`;
     }
     return "Topic, Audience, Goals, Problems solved, or current script.  I will help you improve it.";
@@ -99,7 +93,9 @@ export default function PromptInput({
         )}
         <div className="mt-[28px] flex w-full flex-col lg:mt-[36px]">
           <label htmlFor="prompt" className="text-[16px] font-bold">
-            Add even more details or the result your want
+            {selectedPromptName === "Add Your Own Prompt"
+              ? "Add your prompt or the result you want"
+              : "Add even more details or the result your want"}
           </label>
           <textarea
             name="prompt"

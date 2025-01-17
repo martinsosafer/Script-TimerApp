@@ -12,46 +12,28 @@ import {
   IMPROVE_YOUR_SPEECH_PROMPTS,
   YOUR_OWN_PROMPT,
 } from "~/app/(site)/data/chat-prompts/";
-import type {
-  Prompt,
-  PromptSubType,
-  PromptType,
-} from "~/app/(site)/data/chat-prompts/types";
-import {
-  boostYourVideoScriptSubtypes,
-  enhanceYourPresentationSubtypes,
-  headlinesAndopeningSubtypes,
-  improveSalesSubtypes,
-  improveYourSpeechsubtypes,
-  types as tabs,
-} from "~/app/(site)/data/chat-prompts/types";
+import type { Prompt } from "~/app/(site)/data/chat-prompts/types";
 import { roboto } from "~/app/fonts";
 import SearchPrompts from "../seach-prompts";
 import { isNewPrompt } from "../utils";
 
-export const pills = {
-  "HEADLINES & OPENINGS": headlinesAndopeningSubtypes,
-  "IMPROVE YOUR SPEECH": improveYourSpeechsubtypes,
-  "ENHANCE YOUR PRESENTATION": enhanceYourPresentationSubtypes,
-  "BOOST YOUR VIDEO SCRIPT": boostYourVideoScriptSubtypes,
-  "IMPROVE SALES": improveSalesSubtypes,
-};
-
-const cards = {
-  "HEADLINES & OPENINGS": HEADLINES_AND_OPENINGS_PROMPTS,
-  "IMPROVE YOUR SPEECH": IMPROVE_YOUR_SPEECH_PROMPTS,
-  "ENHANCE YOUR PRESENTATION": ENHANCE_YOUR_PRESENTATION_PROMPTS,
-  "BOOST YOUR VIDEO SCRIPT": BOOST_YOUR_VIDEO_SCRIPT_PROMPTS,
-  "IMPROVE SALES": IMPROVE_SALES_PROMPTS,
-};
+const staticPrompts = [
+  ...HEADLINES_AND_OPENINGS_PROMPTS,
+  ...IMPROVE_YOUR_SPEECH_PROMPTS,
+  ...ENHANCE_YOUR_PRESENTATION_PROMPTS,
+  ...BOOST_YOUR_VIDEO_SCRIPT_PROMPTS,
+  ...IMPROVE_SALES_PROMPTS,
+];
 
 interface PromptsSelectorProps {
   selectedPrompt: Prompt | undefined;
   setSelectedPrompt: Dispatch<SetStateAction<Prompt | undefined>>;
-  selectedCategory: PromptCategory;
-  setSelectedCategory: Dispatch<SetStateAction<PromptCategory>>;
-  selectedSubCategory: PromptSubcategory;
-  setSelectedSubCategory: Dispatch<SetStateAction<PromptSubcategory>>;
+  selectedCategory?: PromptCategory;
+  setSelectedCategory: Dispatch<SetStateAction<PromptCategory | undefined>>;
+  selectedSubCategory?: PromptSubcategory;
+  setSelectedSubCategory: Dispatch<
+    SetStateAction<PromptSubcategory | undefined>
+  >;
   setIsInputMinimized: Dispatch<SetStateAction<boolean>>;
   prompts: Prompt[];
   categories: PromptCategory[];
@@ -87,13 +69,23 @@ export default function PromptsSelector({
       </p>
       <select
         className={`${roboto.className} border-cp-accent-light bg-cp-accent-light h-[56px] w-full rounded-lg border-2 px-2 font-bold lg:px-6`}
-        value={selectedTab}
-        onChange={(e) => setSelectedTab(e.target.value as PromptType)}
+        value={
+          selectedCategory?.name ?? "Select a category to see subcategories"
+        }
+        onChange={(e) =>
+          setSelectedCategory(
+            categories.find((category) => category.name === e.target.value),
+          )
+        }
       >
-        {tabs.map((tab, idx) => {
+        {categories.map((category, idx) => {
           return (
-            <option value={tab} key={`${tab}-${idx}`} className="bg-white">
-              {tab}
+            <option
+              value={category.name}
+              key={`${category.name}-${idx}`}
+              className="bg-white"
+            >
+              {category.name}
             </option>
           );
         })}
@@ -105,16 +97,28 @@ export default function PromptsSelector({
       </span>
       <select
         className={`${roboto.className} border-cp-accent-light mt-2 h-[56px] w-full rounded-lg border-2 bg-white px-2 font-bold lg:px-6`}
-        value={selectedPill}
-        onChange={(e) => setSelectedPill(e.target.value as PromptSubType)}
+        value={selectedSubCategory?.name}
+        onChange={(e) =>
+          setSelectedSubCategory(
+            subcategories.find((subcat) => subcat.name === e.target.value),
+          )
+        }
       >
-        {pills[selectedTab].map((pill, idx) => {
-          return (
-            <option value={pill} key={`${pill}-${idx}`}>
-              {pill}
-            </option>
-          );
-        })}
+        <option value="" hidden>
+          Select a Subcategory
+        </option>
+        {subcategories
+          .filter((subcat) => subcat.categoryId === selectedCategory?.id)
+          .map((subcategory, idx) => {
+            return (
+              <option
+                value={subcategory.name}
+                key={`${subcategory.name}-${idx}`}
+              >
+                {subcategory.name}
+              </option>
+            );
+          })}
       </select>
       <span
         className={`${roboto.className} mt-[16px] text-[16px] font-bold lg:mt-6`}
@@ -123,25 +127,42 @@ export default function PromptsSelector({
       </span>
       <select
         className={`${roboto.className} border-cp-accent-light mt-2 h-[56px] w-full rounded-lg border-2 bg-white px-2 font-bold lg:px-6`}
-        value={selectedCard?.name}
-        onChange={(e) =>
-          setSelectedCard(
-            cards[selectedTab]
-              .concat(prompts.filter((prompt) => prompt.type === selectedTab))
-              .find((card) => card.name === e.target.value),
-          )
-        }
+        value={selectedPrompt?.name ?? ""}
+        onChange={(e) => {
+          if (e.target.value === YOUR_OWN_PROMPT.name) {
+            return setSelectedPrompt(YOUR_OWN_PROMPT);
+          }
+          setSelectedPrompt(
+            staticPrompts
+              .concat(
+                prompts.filter(
+                  (prompt) => prompt.category_id === selectedCategory?.id,
+                ),
+              )
+              .find((prompt) => prompt.name === e.target.value),
+          );
+        }}
       >
-        {cards[selectedTab]
-          .concat(prompts.filter((prompt) => prompt.type === selectedTab))
-          .filter((card) => card.subtype === selectedPill)
-          .map((card, idx) => {
+        <option value="" hidden>
+          Select a Prompt
+        </option>
+        {staticPrompts
+          .concat(
+            prompts.filter(
+              (prompt) => prompt.category_id === selectedCategory?.id,
+            ),
+          )
+          .filter((prompt) => prompt.subcategory_id === selectedSubCategory?.id)
+          .map((prompt, idx) => {
             return (
-              <option value={card.name} key={`${card.name}-${idx}`}>
-                {card.name} {isNewPrompt(card) ? "- New" : ""}
+              <option value={prompt.name} key={`${prompt.name}-${idx}`}>
+                {prompt.name} {isNewPrompt(prompt) ? "- New" : ""}
               </option>
             );
           })}
+        <option className="uppercase" value={YOUR_OWN_PROMPT.name}>
+          {YOUR_OWN_PROMPT.name}
+        </option>
       </select>
     </div>
   );

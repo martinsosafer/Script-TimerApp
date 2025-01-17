@@ -63,10 +63,10 @@ export default function SearchPrompts({
     if (promptSelected) {
       setSelectedPrompt(promptSelected);
       setSelectedSubCategory(
-        subcategories.find((sub) => sub.id === promptSelected.subcategoryId)!,
+        subcategories.find((sub) => sub.id === promptSelected.subcategory_id)!,
       );
       setSelectedCategory(
-        categories.find((cat) => cat.id === promptSelected.categoryId)!,
+        categories.find((cat) => cat.id === promptSelected.category_id)!,
       );
     }
     setSearchValue("");

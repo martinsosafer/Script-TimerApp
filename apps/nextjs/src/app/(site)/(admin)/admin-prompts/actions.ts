@@ -21,8 +21,8 @@ export async function addPrompt(
     .values({
       name,
       description,
-      categoryId,
-      subcategoryId,
+      category_id: categoryId,
+      subcategory_id: subcategoryId,
       prompt_ai,
       prompt_display,
       additional_fields: mappedFields,
@@ -33,11 +33,14 @@ export async function addPrompt(
   return prompt;
 }
 
-export async function updatePrompt(formData: FormData, id: string) {
+export async function updatePrompt(
+  formData: FormData,
+  id: string,
+  categoryId: string,
+  subcategoryId: string,
+) {
   const name = formData.get("name") as string;
   const description = formData.get("description") as string | undefined;
-  const type = formData.get("type") as string | undefined;
-  const subtype = formData.get("subtype") as string | undefined;
   const prompt_ai = formData.get("prompt_ai") as string | undefined;
   const prompt_display = formData.get("prompt_display") as string | undefined;
   const additional = formData.get("additional");
@@ -55,8 +58,8 @@ export async function updatePrompt(formData: FormData, id: string) {
     .set({
       name,
       description,
-      type,
-      subtype,
+      category_id: categoryId,
+      subcategory_id: subcategoryId,
       prompt_ai,
       prompt_display,
       additional_fields: mappedFields,

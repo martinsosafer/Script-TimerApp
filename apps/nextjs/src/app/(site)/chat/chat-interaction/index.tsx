@@ -7,15 +7,7 @@ import { readStreamableValue } from "ai/rsc";
 
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
-import type {
-  Prompt,
-  PromptSubType,
-  PromptType,
-} from "~/app/(site)/data/chat-prompts/types";
-import {
-  boostYourVideoScriptSubtypes,
-  types as tabs,
-} from "~/app/(site)/data/chat-prompts/types";
+import type { Prompt } from "~/app/(site)/data/chat-prompts/types";
 import { clearChats } from "~/app/actions/newChatActions";
 import deductOpenAiCredits from "~/app/actions/openAiCredits";
 import { poppins, roboto } from "~/app/fonts";
@@ -50,6 +42,7 @@ export default function ChatInteraction({
   subcategories,
 }: ChatProps) {
   const [selectedPrompt, setSelectedPrompt] = useState<Prompt | undefined>();
+
   const [additionalFields, setAdditionalFields] = useState<Record<
     string,
     string
@@ -78,7 +71,7 @@ export default function ChatInteraction({
 
   const [selectedCategory, setSelectedCategory] = useState<
     PromptCategory | undefined
-  >();
+  >(categories.find((category) => category.name === "IMPROVE YOUR SPEECH"));
   const [selectedSubCategory, setSelectedSubCategory] = useState<
     PromptSubcategory | undefined
   >();
@@ -91,7 +84,7 @@ export default function ChatInteraction({
     setFeedbackInput("");
     setSelectedChatHistory(undefined);
     setFeedbackChatId(undefined);
-  }, [selectedCard]);
+  }, [selectedPrompt]);
 
   useEffect(() => {
     if (userId) {

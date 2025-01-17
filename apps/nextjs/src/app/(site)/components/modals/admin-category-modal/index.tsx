@@ -2,16 +2,16 @@ import { useState } from "react";
 
 import { IconPencilLine, IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 
-import type {
-  PromptCategory,
-  PromptSubcategory,
-} from "~/app/(site)/(admin)/admin-prompt-categories/types";
 import {
   addCategory,
   addSubCategory,
   updateCategory,
   updateSubcategory,
-} from "~/app/(site)/(admin)/admin-prompts/actions";
+} from "~/app/(site)/(admin)/admin-prompt-categories/actions";
+import type {
+  PromptCategory,
+  PromptSubcategory,
+} from "~/app/(site)/(admin)/admin-prompt-categories/types";
 
 interface ModalProps {
   onClose: () => void;
@@ -43,7 +43,7 @@ export default function AdminCategoryModal({
     if (category?.id) {
       isCategoryTab
         ? await updateCategory(form, category.id)
-        : await updateSubcategory(form, categoryId!, category.id);
+        : await updateSubcategory(form, category.id, categoryId!);
       refetch();
       return onClose();
     }
@@ -122,9 +122,15 @@ export default function AdminCategoryModal({
               {isLoading ? (
                 <IconSpinner className="h-6 w-6 animate-spin" />
               ) : category ? (
-                "Edit Category"
-              ) : (
+                isCategoryTab ? (
+                  "Edit Category"
+                ) : (
+                  "Edit Subcategory"
+                )
+              ) : isCategoryTab ? (
                 "Save Category"
+              ) : (
+                "Save Subcategory"
               )}
             </button>
           </div>
