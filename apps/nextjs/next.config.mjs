@@ -46,8 +46,8 @@ const config = {
         destination: "/share/audio/[...slug]",
       },
       {
-        source: "/share/video/:path*",
-        destination: "/share/video/[...slug]",
+        source: "/share/video",
+        destination: "/share/video",
       },
     ];
   },
