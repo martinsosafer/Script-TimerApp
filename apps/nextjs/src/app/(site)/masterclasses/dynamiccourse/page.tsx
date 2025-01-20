@@ -17,7 +17,7 @@ interface DynamicCourseProps {
 
 export default function DynamicCourse({ courseInfo }: DynamicCourseProps) {
   return (
-    <div className="h-[513px] w-full font-poppins">
+    <div className="mb-[106px] h-[513px] w-full font-poppins">
       <div className="relative h-[513px] bg-gradient-to-br from-[#0066FF] to-[#000000]">
         <div className="flex-col-2 mx-auto flex items-center justify-center gap-x-[41px]">
           {/* currentcoursecard */}

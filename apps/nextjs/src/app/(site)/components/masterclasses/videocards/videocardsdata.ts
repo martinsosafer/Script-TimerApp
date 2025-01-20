@@ -263,7 +263,7 @@ const videoCardData: Video[] = [
   {
     course: "How to Create Stunning Videos",
     id: 2,
-    number: "4",
+    number: "3",
     image: TheQuest,
     title: "The Quest",
     name: "Maury Rogow",

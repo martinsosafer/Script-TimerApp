@@ -23,10 +23,22 @@ interface Video {
 interface CourseCardProps {
   data: Video;
   index: number;
+  subData?: { status?: string } | null;
+  setOpenNoSessionModal: () => void;
 }
-
-function CourseCard({ data, index }: CourseCardProps) {
+function CourseCard({
+  data,
+  index,
+  subData,
+  setOpenNoSessionModal,
+}: CourseCardProps) {
   const isEven = index % 2 === 0;
+  const handleCourseClick = (e: React.MouseEvent) => {
+    if (!subData) {
+      e.preventDefault();
+      setOpenNoSessionModal();
+    }
+  };
 
   const ContentSection = () => (
     <div className="flex h-full flex-col justify-between p-0">
@@ -36,14 +48,16 @@ function CourseCard({ data, index }: CourseCardProps) {
         </h3>
         <p className="mb-6 line-clamp-3 text-gray-600">{data.description}</p>
       </div>
-      <Link href={`/masterclasses/${data.id}/1`} target="_blank">
-        <Button
-          variant="default"
-          className="h-12 w-[368px] bg-blue-600 hover:bg-blue-700"
-        >
-          View course <IconChevronRight className="ml-2 h-4 w-4" />
-        </Button>
-      </Link>
+      <div onClick={handleCourseClick}>
+        <Link href={`/masterclasses/${data.id}/1`} target="_blank">
+          <Button
+            variant="default"
+            className="h-12 w-[368px] bg-blue-600 hover:bg-blue-700"
+          >
+            View course <IconChevronRight className="ml-2 h-4 w-4" />
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 
@@ -79,8 +93,12 @@ function CourseCard({ data, index }: CourseCardProps) {
 
 export default function CourseListing({
   videoCardData,
+  subData,
+  setOpenNoSessionModal,
 }: {
   videoCardData: Video[];
+  subData: { status?: string } | null | undefined;
+  setOpenNoSessionModal: () => void;
 }) {
   const uniqueCourses = Array.from(
     new Set(videoCardData.map((video) => video.course)),
@@ -90,13 +108,13 @@ export default function CourseListing({
     .filter((video): video is Video => video !== undefined);
 
   return (
-    <div className={`min-h-[2331px] bg-blue-600 p-8 ${poppins.className}`}>
-      <div className="mx-auto max-w-[944px] items-center space-y-8">
-        <div className="space-y-4 text-start">
+    <div className={`bg-cp-primary min-h-[2331px]  ${poppins.className}`}>
+      <div className="mx-auto max-w-[944px] items-center space-y-8 py-[60px]">
+        <div className=" text-start">
           <h2 className="text-cp-secondary-lightest  font-bold lg:text-[42px] lg:leading-[50px]  ">
             These 60+ course modules will take
           </h2>
-          <h2 className="text-cp-secondary-lightest  font-bold lg:text-[42px] lg:leading-[50px]  ">
+          <h2 className="text-cp-secondary-lightest mb-[32px]  font-bold lg:text-[42px] lg:leading-[50px]  ">
             beginners through experts to new heights.
           </h2>
           <p className="text-cp-accent text-[34px] font-bold leading-[41px]">
@@ -106,7 +124,13 @@ export default function CourseListing({
 
         <div className="space-y-6">
           {firstVideos.map((video, index) => (
-            <CourseCard key={video.course} data={video} index={index} />
+            <CourseCard
+              key={video.course}
+              data={video}
+              index={index}
+              subData={subData}
+              setOpenNoSessionModal={setOpenNoSessionModal}
+            />
           ))}
         </div>
       </div>

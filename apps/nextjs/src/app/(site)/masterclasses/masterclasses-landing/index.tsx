@@ -25,7 +25,11 @@ export default function MasterclasessLanding({
       <div className="mt-[32px]">
         <MarqueeLogos />
       </div>
-      <CourseListing videoCardData={videoCardData} />
+      <CourseListing
+        videoCardData={videoCardData}
+        subData={subData}
+        setOpenNoSessionModal={() => setOpenNoSessionModal(true)}
+      />
       {openNoSessionModal && (
         <NoSessionModal
           page="courses"

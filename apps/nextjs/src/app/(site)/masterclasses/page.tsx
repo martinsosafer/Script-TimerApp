@@ -14,12 +14,10 @@ export default async function Page() {
   const session = await auth();
   const subData = session?.user.subscription;
 
-  console.log("SESSION DANTAS", subData, session);
-
+ 
 
   return (
     <>
-      
       <MasterclasessLanding subData={subData} />
     </>
   );
