@@ -52,8 +52,10 @@ export default function Layout(props: { children: React.ReactNode }) {
   const { children } = props;
   return (
     <html lang="en" className="h-full w-full">
-      <GoogleAnalytics />
-      <MetaPixel />
+      <head>
+        <GoogleAnalytics />
+        <MetaPixel />
+      </head>
       <body
         className={[
           "font-poppins",
