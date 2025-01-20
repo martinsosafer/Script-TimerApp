@@ -72,6 +72,15 @@ export default function Layout(props: { children: React.ReactNode }) {
           <ContextWrapper>{children}</ContextWrapper>
         </TRPCReactProvider>
         <Squid />
+        <noscript>
+          <img
+            height="1"
+            width="1"
+            style={{ display: "none" }}
+            src="https://www.facebook.com/tr?id=2607599612759264&ev=PageView&noscript=1"
+            alt=""
+          />
+        </noscript>
       </body>
 
       <PageAnalytics />
