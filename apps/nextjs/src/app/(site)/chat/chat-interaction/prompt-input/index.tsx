@@ -57,7 +57,7 @@ export default function PromptInput({
           router.push(`#chatFeedback`);
           onSubmit(e);
         }}
-        className={`${isUsingMagicPrompt ? "mt-10 lg:mt-[60px]" : "mt-4 lg:mt-6"}  flex w-full flex-col items-center `}
+        className={`${isUsingMagicPrompt ? "mt-10 lg:mt-7" : "mt-4 lg:mt-6"}  flex w-full flex-col items-center `}
       >
         {prompt?.additional_fields && (
           <div className="flex w-full flex-col">
