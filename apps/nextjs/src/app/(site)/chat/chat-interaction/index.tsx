@@ -2,11 +2,13 @@
 
 import type { FormEvent } from "react";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import type { CoreMessage } from "ai";
 import { readStreamableValue } from "ai/rsc";
 
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
+import Tabs from "~/app/(site)/components/tabs";
 import type { Prompt } from "~/app/(site)/data/chat-prompts/types";
 import { clearChats } from "~/app/actions/newChatActions";
 import deductOpenAiCredits from "~/app/actions/openAiCredits";
@@ -20,6 +22,7 @@ import type {
 import ClearChatHistoryModal from "../../components/modals/clear-chat-history";
 import EditChatSubjectModal from "../../components/modals/edit-chat-subject";
 import NoSessionModal from "../../components/modals/no-session-modal";
+import { YOUR_OWN_PROMPT } from "../../data/chat-prompts";
 import ChatFeedback from "./chat-feedback";
 import PromptInput from "./prompt-input";
 import PromptsSelector from "./promptSelector";
@@ -77,6 +80,25 @@ export default function ChatInteraction({
   >();
 
   const [isInputMinimized, setIsInputMinimized] = useState(false);
+
+  const [isUsingMagicPrompt, setIsUsingMagicPrompt] = useState(true);
+
+  const router = useRouter();
+
+  function newChat() {
+    router.push("#chatInteraction");
+    setPromptInput("");
+    setMessages([]);
+    setFeedbackInput("");
+    setSelectedChatHistory(undefined);
+    setFeedbackChatId(undefined);
+    setSelectedPrompt(undefined);
+    setSelectedCategory(
+      categories.find((category) => category.name === "IMPROVE YOUR SPEECH"),
+    );
+    setSelectedSubCategory(undefined);
+    setIsInputMinimized(false);
+  }
 
   useEffect(() => {
     setPromptInput("");
@@ -155,27 +177,55 @@ export default function ChatInteraction({
     }
   }
 
+  const promptOptions = [
+    {
+      label: "Use Our Magic Prompt",
+      active: isUsingMagicPrompt,
+      action: () => {
+        setIsUsingMagicPrompt(true);
+        newChat();
+      },
+    },
+    {
+      label: "Use Your Our Prompt",
+      active: !isUsingMagicPrompt,
+      action: () => {
+        setIsUsingMagicPrompt(false);
+        setSelectedPrompt(YOUR_OWN_PROMPT);
+      },
+    },
+  ];
+
   return (
     <div className={`${poppins.className} flex w-full flex-col items-center`}>
-      <p
-        className={`${roboto.className} bg-cp-accent-lightest w-full rounded-lg p-4 text-[16px] shadow-md lg:p-6 lg:text-lg`}
+      <div
+        className="mt-5 flex w-full flex-col items-center justify-center rounded-lg bg-white p-3 lg:mt-6 lg:px-[42px] lg:py-8"
+        id="chatInteraction"
       >
-        Use the quick-search bar or follow the steps below to get the best
-        results with our pre built prompts.
-      </p>
-      <div className="mt-5 flex w-full flex-col items-center justify-center rounded-lg bg-white p-3 lg:mt-6 lg:px-[42px] lg:py-8">
-        <PromptsSelector
-          selectedPrompt={selectedPrompt}
-          setSelectedPrompt={setSelectedPrompt}
-          selectedSubCategory={selectedSubCategory}
-          setSelectedSubCategory={setSelectedSubCategory}
-          selectedCategory={selectedCategory}
-          setSelectedCategory={setSelectedCategory}
-          setIsInputMinimized={setIsInputMinimized}
-          prompts={prompts}
-          categories={categories}
-          subcategories={subcategories}
-        />
+        <Tabs options={promptOptions} />
+        {isUsingMagicPrompt && (
+          <p
+            className={`${roboto.className} bg-cp-accent-lightest mt-7 w-full rounded-lg p-4 text-[16px] shadow-md lg:p-6 lg:text-lg`}
+          >
+            Use the quick-search bar or follow the steps below to get the best
+            results with our pre built prompts.
+          </p>
+        )}
+        {isUsingMagicPrompt && (
+          <PromptsSelector
+            selectedPrompt={selectedPrompt}
+            setSelectedPrompt={setSelectedPrompt}
+            selectedSubCategory={selectedSubCategory}
+            setSelectedSubCategory={setSelectedSubCategory}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+            setIsInputMinimized={setIsInputMinimized}
+            prompts={prompts}
+            categories={categories}
+            subcategories={subcategories}
+          />
+        )}
+
         <PromptInput
           value={promptInput}
           onChange={setPromptInput}
@@ -194,6 +244,7 @@ export default function ChatInteraction({
           prompt={selectedPrompt}
           setAdditionalFields={setAdditionalFields}
           additionalFields={additionalFields}
+          isUsingMagicPrompt={isUsingMagicPrompt}
         />
       </div>
 
@@ -212,6 +263,7 @@ export default function ChatInteraction({
         setSelectedChatHistory={setSelectedChatHistory}
         loadingMessages={isLoading}
         setIsEditingChatSubject={setIsEditingChatSubject}
+        onNewChat={newChat}
       />
 
       {isDeletingHistory && (

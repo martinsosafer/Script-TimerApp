@@ -52,7 +52,7 @@ export default function PromptsSelector({
   subcategories,
 }: PromptsSelectorProps) {
   return (
-    <div className="flex flex-col lg:w-[565px]">
+    <div className="mt-10 flex flex-col lg:w-[565px]">
       <p className="text-cp-gray-500 mb-3 text-[16px] font-bold lg:text-xl">
         You can do a quick search
       </p>
@@ -160,9 +160,6 @@ export default function PromptsSelector({
               </option>
             );
           })}
-        <option className="uppercase" value={YOUR_OWN_PROMPT.name}>
-          {YOUR_OWN_PROMPT.name}
-        </option>
       </select>
     </div>
   );

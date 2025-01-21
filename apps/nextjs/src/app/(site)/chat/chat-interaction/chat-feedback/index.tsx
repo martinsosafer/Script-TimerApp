@@ -21,6 +21,7 @@ interface ChatFeedbackProps {
   loadingMessages: boolean;
   setChatHistory: (value: Chat[]) => void;
   setIsEditingChatSubject: (arg: boolean) => void;
+  onNewChat: () => void;
 }
 
 export default function ChatFeedback({
@@ -35,6 +36,7 @@ export default function ChatFeedback({
   loadingMessages,
   setChatHistory,
   setIsEditingChatSubject,
+  onNewChat,
 }: ChatFeedbackProps) {
   const [openChatHistory, setOpenChatHistory] = useState<boolean>(false);
 
@@ -67,6 +69,7 @@ export default function ChatFeedback({
           setFeedbackInput={setFeedbackInput}
           handleSubmit={handleSubmit}
           loadingMessages={loadingMessages}
+          onNewChat={onNewChat}
         />
       </div>
       <Button
