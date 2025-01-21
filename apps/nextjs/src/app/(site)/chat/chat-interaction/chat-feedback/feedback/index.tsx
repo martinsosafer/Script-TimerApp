@@ -5,6 +5,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@voiceai/ui";
 import { IconCopy } from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
+import Button from "~/app/(site)/components/button";
 import type { ChatMessage } from "../../types";
 import FeedbackInput from "./feedback-input";
 import STMessage from "./sTMessage";
@@ -18,6 +19,7 @@ export interface FeedbackProps {
   setFeedbackInput: (value: string) => void;
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
   loadingMessages: boolean;
+  onNewChat: () => void;
 }
 
 function contentFormatter(data: string) {
@@ -33,6 +35,7 @@ export default function Feedback({
   setFeedbackInput,
   handleSubmit,
   loadingMessages,
+  onNewChat,
 }: FeedbackProps) {
   const filteredChats = chat.filter((chatItem) => chatItem.role !== "system");
 
@@ -101,6 +104,7 @@ export default function Feedback({
         loadingMessages={loadingMessages}
         isDisabled={chat.length === 0 && !feedbackInput}
       />
+      <Button type="primary" label="New Chat" fit onClick={onNewChat} />
     </div>
   );
 }

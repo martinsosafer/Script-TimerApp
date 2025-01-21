@@ -11,7 +11,7 @@ interface ButtonProps {
     | "secondary-accent"
     | "custom"
     | "danger"; // Added "danger"
-  onClick: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  onClick?: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   icon?: ({
     className,
     ...props

@@ -42,7 +42,7 @@ export default function ChatHistory({
 
   return (
     <div
-      className={`${roboto.className} bg-cp-primary-lightest absolute right-0 top-0 z-30 flex h-[733px] w-full ${openChatHistory ? "-translate-x-0" : "-translate-x-[120%]"}  transform flex-col rounded-lg p-6 transition-all duration-300 lg:static lg:z-0 lg:w-[276px] lg:-translate-x-0`}
+      className={`${roboto.className} bg-cp-primary-lightest absolute right-0 top-0 z-30 flex h-[793px] w-full ${openChatHistory ? "-translate-x-0" : "-translate-x-[120%]"}  transform flex-col rounded-lg p-6 transition-all duration-300 lg:static lg:z-0 lg:w-[276px] lg:-translate-x-0`}
     >
       <div className="flex h-full w-full flex-col justify-between">
         <>

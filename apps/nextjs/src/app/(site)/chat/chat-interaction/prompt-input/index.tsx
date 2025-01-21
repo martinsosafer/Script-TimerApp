@@ -20,6 +20,7 @@ interface PromptInputProps {
   prompt: Prompt | undefined;
   setAdditionalFields: Dispatch<SetStateAction<Record<string, string> | null>>;
   additionalFields: Record<string, string> | null;
+  isUsingMagicPrompt: boolean;
 }
 
 export default function PromptInput({
@@ -34,6 +35,7 @@ export default function PromptInput({
   prompt,
   setAdditionalFields,
   additionalFields,
+  isUsingMagicPrompt,
 }: PromptInputProps) {
   function placeholderText() {
     if (isInputMinimized) {
@@ -55,7 +57,7 @@ export default function PromptInput({
           router.push(`#chatFeedback`);
           onSubmit(e);
         }}
-        className="mt-10 flex w-full flex-col items-center lg:mt-[60px]"
+        className={`${isUsingMagicPrompt ? "mt-10 lg:mt-[60px]" : "mt-4 lg:mt-6"}  flex w-full flex-col items-center `}
       >
         {prompt?.additional_fields && (
           <div className="flex w-full flex-col">
@@ -93,7 +95,7 @@ export default function PromptInput({
         )}
         <div className="mt-[28px] flex w-full flex-col lg:mt-[36px]">
           <label htmlFor="prompt" className="text-[16px] font-bold">
-            {selectedPromptName === "Add Your Own Prompt"
+            {!isUsingMagicPrompt
               ? "Add your prompt or the result you want"
               : "Add even more details or the result your want"}
           </label>
