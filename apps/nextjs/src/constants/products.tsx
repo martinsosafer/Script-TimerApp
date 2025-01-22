@@ -1,9 +1,68 @@
+import { roboto } from "~/app/fonts";
+
 export const DESCRIPTION: Record<string, string> = {
   FREE: "Good for hobbyist",
-  EDUCATION: "Discounted for .edu emails",
-  CREATOR: "Ideal for creatives professionals",
-  BUSINESS: "Best for brand marketers",
+  EDUCATION: "Perfect for your urgent project",
+  CREATOR: "Ideal for professionals",
+  BUSINESS: "For growing brands",
 };
+
+export function getDetails(
+  type: "FREE" | "EDUCATION" | "CREATOR" | "BUSINESS",
+): JSX.Element {
+  if (type === "FREE") {
+    return (
+      <div
+        className={`${roboto.className} mt-[10px] flex flex-col items-center p-2 text-[14px]`}
+      >
+        <span>Voices</span>
+        <span>Script Coaching</span>
+        <span>Image Creation</span>
+        <span>Plagiarism Detection</span>
+        <span>Training</span>
+      </div>
+    );
+  } else if (type === "EDUCATION") {
+    return (
+      <div
+        className={`${roboto.className} mt-[10px] flex flex-col items-center p-2 text-[14px]`}
+      >
+        <span>Voice AI</span>
+        <span>Script Writing</span>
+        <span>Storyboard Creation</span>
+        <span>Plagiarism Detection</span>
+        <span>AI Writing Detection</span>
+        <span>Core Training</span>
+      </div>
+    );
+  } else if (type === "CREATOR") {
+    return (
+      <div
+        className={`${roboto.className} mt-[10px] flex flex-col items-center p-2 text-[14px]`}
+      >
+        <span>Everithing in</span>
+        <span>previous, plus:</span>
+        <span className="mt-2">2-4x Generation</span>
+        <span>Speech Coaching</span>
+        <span>Sound Effects</span>
+        <span>Full Training</span>
+      </div>
+    );
+  } else {
+    return (
+      <div
+        className={`${roboto.className} mt-[10px] flex flex-col items-center p-2 text-[14px]`}
+      >
+        <span>Everithing in</span>
+        <span>Creator, plus:</span>
+        <span className="mt-2">2-4x More</span>
+        <span>Speech Coaching</span>
+        <span>Sound Effects</span>
+        <span>Advanced Training</span>
+      </div>
+    );
+  }
+}
 
 interface Price {
   monthly: string;

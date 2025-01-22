@@ -21,7 +21,7 @@ import {
 
 import { RevealText } from "~/app/animations/RevealText";
 import Logo from "../logo";
-import MobileNavBar, { MobileNav } from "../mobile-navbar";
+import { MobileNav } from "../mobile-navbar";
 import ImagesNavItem from "./imaimages-nav-item";
 import MasterclassesNavItem from "./masterclass-nav-item";
 import PlagNavItem from "./plagiarism-nav-item";
@@ -152,7 +152,7 @@ export default function NewNavBar({ signOut, signIn, session }: NavBarProps) {
             signOut={signOut}
             signIn={signIn}
             session={session}
-             plan={subscriptionData}
+            plan={subscriptionData}
           />
         )}
       </AnimatePresence>

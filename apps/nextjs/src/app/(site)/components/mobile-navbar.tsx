@@ -130,7 +130,7 @@ export function MobileNav({
     },
     {
       title: "Plans",
-      href: "/plans",
+      href: "/new-plans",
       icon: <IconFileStack className="h-5 w-5" />,
     },
   ];
