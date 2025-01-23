@@ -11,6 +11,8 @@ import * as landingPage from "./schema/landingPage";
 import * as monthlySpecials from "./schema/monthlySpecials";
 import * as openAiCredit from "./schema/openAiCredit";
 import * as plagiarism from "./schema/plagiarism";
+import * as promptCategory from "./schema/prompt_category";
+import * as promptSubcategory from "./schema/prompt_subcategory";
 import * as prompts from "./schema/prompts";
 import * as script from "./schema/script";
 import * as subscription from "./schema/subscription";
@@ -33,6 +35,8 @@ export const schema = {
   ...prompts,
   ...monthlySpecials,
   ...landingPage,
+  ...promptCategory,
+  ...promptSubcategory,
 };
 
 export { pgTable as tableCreator } from "./schema/_table";

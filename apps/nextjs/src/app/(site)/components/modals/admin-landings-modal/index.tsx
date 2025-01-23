@@ -23,7 +23,7 @@ export default function AdminLandingModal({
   refetch,
 }: ModalProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [type, setType] = useState<"regular" | "tools" | "saasy">(
+  const [type, setType] = useState<"regular" | "tools" | "free demo">(
     landing?.lp_type ?? "regular",
   );
 
@@ -84,17 +84,17 @@ export default function AdminLandingModal({
               <select
                 value={type}
                 onChange={(e) => {
-                  setType(e.target.value as "regular" | "tools" | "saasy");
+                  setType(e.target.value as "regular" | "tools" | "free demo");
                   setPreviewValues({
                     ...previewValues,
-                    lpType: e.target.value as "regular" | "tools" | "saasy",
+                    lpType: e.target.value as "regular" | "tools" | "free demo",
                   });
                 }}
                 className="rounded-md border border-gray-300 p-2"
               >
                 <option value="regular">Regular</option>
                 <option value="tools">Tools</option>
-                <option value="saasy">Free Demo</option>
+                <option value="free demo">Free Demo</option>
               </select>
               <label htmlFor="name" className="text-sm font-semibold">
                 Landing Page Title
@@ -224,7 +224,7 @@ export default function AdminLandingModal({
         </button>
       </div>
 
-      {previewLanding && previewValues.lpType !== "saasy" && (
+      {previewLanding && previewValues.lpType !== "free demo" && (
         <div className="-mt-20 flex w-full scale-75 flex-col items-center gap-4">
           <Button
             label="Close preview"
@@ -241,7 +241,7 @@ export default function AdminLandingModal({
           />
         </div>
       )}
-      {previewLanding && previewValues.lpType === "saasy" && (
+      {previewLanding && previewValues.lpType === "free demo" && (
         <div className="-mt-20 flex w-full scale-75 flex-col items-center gap-4">
           <Button
             label="Close preview"

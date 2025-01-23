@@ -5,6 +5,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@voiceai/ui";
 import { IconCopy } from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
+import Button from "~/app/(site)/components/button";
 import type { ChatMessage } from "../../types";
 import FeedbackInput from "./feedback-input";
 import STMessage from "./sTMessage";
@@ -18,6 +19,7 @@ export interface FeedbackProps {
   setFeedbackInput: (value: string) => void;
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
   loadingMessages: boolean;
+  onNewChat: () => void;
 }
 
 function contentFormatter(data: string) {
@@ -33,6 +35,7 @@ export default function Feedback({
   setFeedbackInput,
   handleSubmit,
   loadingMessages,
+  onNewChat,
 }: FeedbackProps) {
   const filteredChats = chat.filter((chatItem) => chatItem.role !== "system");
 
@@ -48,10 +51,8 @@ export default function Feedback({
     scrollToBottom();
   }, [filteredChats]);
 
-  console.log("CHAT", chat);
-
   return (
-    <div className="relative flex h-[900px] w-[70%] flex-col justify-between gap-2">
+    <div className="relative z-20 flex w-full flex-col justify-between gap-2 lg:w-[656px]">
       {chat.length > 0 && (
         <Tooltip>
           <TooltipTrigger asChild className="mb-17">
@@ -78,7 +79,7 @@ export default function Feedback({
       )}
 
       <div
-        className="flex h-full w-full  flex-col items-start gap-6 overflow-y-auto rounded-md border border-gray-400 bg-white p-6"
+        className="flex h-[624px] w-full flex-col items-start gap-6 overflow-y-auto rounded-lg bg-white p-2 lg:p-6"
         ref={messageEnd}
       >
         {filteredChats.map((chatItem, idx) => {
@@ -103,6 +104,7 @@ export default function Feedback({
         loadingMessages={loadingMessages}
         isDisabled={chat.length === 0 && !feedbackInput}
       />
+      <Button type="primary" label="New Chat" fit onClick={onNewChat} />
     </div>
   );
 }

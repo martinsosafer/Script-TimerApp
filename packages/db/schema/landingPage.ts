@@ -3,7 +3,7 @@ import { pgEnum, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { pgTable } from "./_table";
 
 export const is_active = pgEnum("is_active", ["active", "inactive"]);
-export const type = pgEnum("lp_type", ["regular", "tools", "saasy"]);
+export const type = pgEnum("lp_type", ["regular", "tools", "free demo"]);
 
 export const landingPage = pgTable("landing_page", {
   id: uuid("id").notNull().primaryKey().defaultRandom(),

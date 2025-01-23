@@ -5,7 +5,7 @@ import { auth } from "@voiceai/auth";
 
 import { fetchUserCredits } from "~/lib/get11LabsCredits";
 import { set11LabsCreditsBasedOnPlan } from "~/lib/set11labsCredits";
-import getOpenAiCredits from "../../chat/actions";
+import { getOpenAiCredits } from "../../chat/actions";
 import PageHeader from "../../components/page-header";
 import { ScriptAI } from "./script-ai";
 import { characters, getTotalCredits } from "./utils";
@@ -79,7 +79,11 @@ export default async function ScriptPage() {
   return (
     <>
       <PageHeader title="Text to Voice" subtitle={subtitle} />
-      <ScriptAI subData={subData} credits={credits} openAiCredits={openAiCredits} />
+      <ScriptAI
+        subData={subData}
+        credits={credits}
+        openAiCredits={openAiCredits}
+      />
     </>
   );
 }
