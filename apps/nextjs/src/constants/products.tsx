@@ -1,7 +1,7 @@
 import { roboto } from "~/app/fonts";
 
 export const DESCRIPTION: Record<string, string> = {
-  FREE: "Good for hobbyist",
+  FREE: "Amazing trial",
   EDUCATION: "Perfect for your urgent project",
   CREATOR: "Ideal for professionals",
   BUSINESS: "For growing brands",
@@ -15,11 +15,11 @@ export function getDetails(
       <div
         className={`${roboto.className} mt-[10px] flex flex-col items-center p-2 text-[14px]`}
       >
-        <span>Voices</span>
-        <span>Script Coaching</span>
-        <span>Image Creation</span>
-        <span>Plagiarism Detection</span>
-        <span>Training</span>
+        <span>5 Voices Limit</span>
+        <span>Script Support</span>
+        <span>Image Limit</span>
+        <span>Plagiarism Coach</span>
+        <span>Product Training</span>
       </div>
     );
   } else if (type === "EDUCATION") {
@@ -27,12 +27,11 @@ export function getDetails(
       <div
         className={`${roboto.className} mt-[10px] flex flex-col items-center p-2 text-[14px]`}
       >
-        <span>Voice AI</span>
+        <span>100 + Voices</span>
         <span>Script Writing</span>
-        <span>Storyboard Creation</span>
+        <span>Image Creation</span>
         <span>Plagiarism Detection</span>
-        <span>AI Writing Detection</span>
-        <span>Core Training</span>
+        <span>Training</span>
       </div>
     );
   } else if (type === "CREATOR") {
@@ -40,10 +39,10 @@ export function getDetails(
       <div
         className={`${roboto.className} mt-[10px] flex flex-col items-center p-2 text-[14px]`}
       >
-        <span>Everithing in</span>
-        <span>previous, plus:</span>
-        <span className="mt-2">2-4x Generation</span>
-        <span>Speech Coaching</span>
+        <span className="font-semibold">Everithing in</span>
+        <span className="font-semibold">previous, plus:</span>
+        <span className="mt-2">2-4x More</span>
+        <span>150 Built-in Prompts</span>
         <span>Sound Effects</span>
         <span>Full Training</span>
       </div>
@@ -51,13 +50,14 @@ export function getDetails(
   } else {
     return (
       <div
-        className={`${roboto.className} mt-[10px] flex flex-col items-center p-2 text-[14px]`}
+        className={`${roboto.className} mt-[10px] flex flex-col items-center p-2 text-center text-[14px]`}
       >
-        <span>Everithing in</span>
-        <span>Creator, plus:</span>
-        <span className="mt-2">2-4x More</span>
-        <span>Speech Coaching</span>
-        <span>Sound Effects</span>
+        <span className="font-semibold">Everithing in</span>
+        <span className="font-semibold">Creator, plus:</span>
+        <span className="mt-2">Producer Level</span>
+        <span>150+ Marketing Prompts</span>
+        <span>Speech Coach AI</span>
+        <span>Sound & Music</span>
         <span>Advanced Training</span>
       </div>
     );
