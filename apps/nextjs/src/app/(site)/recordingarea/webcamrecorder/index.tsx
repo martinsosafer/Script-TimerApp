@@ -72,6 +72,7 @@ export default function MicrophoneAndWebcamComponent({
   const [showingRecordedVideo, setShowingRecordedVideo] = useState(false);
   const [displayVideoCount, setDisplayVideoCount] = useState(3);
   const [countdown, setCountdown] = useState<number | null>(null);
+  const [uploadedVideoUrl, setUploadedVideoUrl] = useState<string | null>(null);
 
   const loadMoreVideos = () => {
     setDisplayVideoCount((prevCount) => prevCount + 3);
@@ -121,6 +122,7 @@ export default function MicrophoneAndWebcamComponent({
       const uploadedUrl = await uploadToVercelBlob(recordingBlob);
       if (uploadedUrl) {
         console.log("Recording uploaded successfully:", uploadedUrl);
+        setUploadedVideoUrl(uploadedUrl);
         alert("Recording saved successfully!");
       }
     } else {
@@ -245,14 +247,16 @@ export default function MicrophoneAndWebcamComponent({
             >
               View uploaded file
             </a>
-            <a
-              href={generateShareableLink(uploadUrl)}
-              className="ml-2 text-blue-500 hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Share this recording
-            </a>
+            {(uploadedVideoUrl || uploadUrl) && (
+              <a
+                href={generateShareableLink(uploadedVideoUrl || uploadUrl)}
+                className="ml-2 text-blue-500 hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Share this recording
+              </a>
+            )}
           </div>
         )}
         <AudioControls
@@ -279,12 +283,15 @@ export default function MicrophoneAndWebcamComponent({
           onMainTheme={handleMainTheme}
           onUsefulCutdowns={handleUsefulCutdowns}
           onGenerateSoundBites={handleGenerateSoundBites}
+          userId={userId}
+          uploadUrl={uploadUrl}
         />
 
         <VideoHistory
           savedWebcam={savedWebcam}
           displayVideoCount={displayVideoCount}
           onLoadMore={loadMoreVideos}
+          userId={userId}
         />
       </div>
     </div>

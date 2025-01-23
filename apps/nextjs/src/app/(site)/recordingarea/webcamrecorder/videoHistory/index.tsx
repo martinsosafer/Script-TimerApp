@@ -1,12 +1,20 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { IconXCircle as X } from "@voiceai/ui/@/components/ui/icons";
 import { Separator } from "@voiceai/ui/@/components/ui/separator";
 
 import Button from "~/app/(site)/components/button";
+import AIFeedback from "./aiFeedback";
 
-const VideoHistory = ({ savedWebcam = [], displayVideoCount, onLoadMore }) => {
+// New function to fetch KV database content
+
+const VideoHistory = ({
+  savedWebcam = [],
+  displayVideoCount,
+  onLoadMore,
+  userId,
+}) => {
   const [selectedVideo, setSelectedVideo] = useState(null);
 
   // Sort the savedWebcam array by date and time

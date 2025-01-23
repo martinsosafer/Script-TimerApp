@@ -1,25 +1,28 @@
 import React, { useEffect, useState } from "react";
 
-import { IconSpinner } from "@voiceai/ui/@/components/ui/icons";
+import { Button } from "@voiceai/ui";
+import { IconBookPlus, IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 
 import { AIFeatureButtons } from "../aifeaturebutton";
 
 interface AIContentWrapperProps {
+  userId?: string;
   whisperTranscription: boolean;
   isLoading: boolean;
-  recordingUrl: string;
+  recordingUrl: string | null;
+  uploadUrl: string | null;
   summary: string | null;
   bulletPoints: string[];
   sortedWords: string[];
   mainTheme: string | null;
   cutDowns: string | null;
   soundBites: string | null;
-  onGenerateSummary: () => void;
-  onGenerateBulletPoints: () => void;
-  onSortWords: () => void;
-  onMainTheme: () => void;
-  onUsefulCutdowns: () => void;
-  onGenerateSoundBites: () => void;
+  onGenerateSummary: () => Promise<string>;
+  onGenerateBulletPoints: () => Promise<string[]>;
+  onSortWords: () => Promise<string[]>;
+  onMainTheme: () => Promise<string>;
+  onUsefulCutdowns: () => Promise<string>;
+  onGenerateSoundBites: () => Promise<string>;
 }
 
 type ContentType =
@@ -30,10 +33,17 @@ type ContentType =
   | "cutDowns"
   | "soundBites";
 
+interface AIContent {
+  type: ContentType;
+  content: string | string[];
+}
+
 export function AIContentWrapper({
+  userId,
   whisperTranscription,
   isLoading,
   recordingUrl,
+  uploadUrl,
   summary,
   bulletPoints,
   sortedWords,
@@ -48,7 +58,10 @@ export function AIContentWrapper({
   onGenerateSoundBites,
 }: AIContentWrapperProps) {
   const [contentOrder, setContentOrder] = useState<ContentType[]>([]);
+  const [aiContent, setAIContent] = useState<AIContent[]>([]);
+  const [isSaving, setIsSaving] = useState(false);
 
+  // Update content order based on props
   useEffect(() => {
     setContentOrder((prevOrder) => {
       const newOrder: ContentType[] = [];
@@ -76,97 +89,199 @@ export function AIContentWrapper({
           (type === "cutDowns" && cutDowns) ||
           (type === "soundBites" && soundBites)
         ) {
-          newOrder.push(type);
+          if (!newOrder.includes(type)) {
+            newOrder.push(type);
+          }
         }
       });
 
       return newOrder;
     });
   }, [summary, bulletPoints, sortedWords, mainTheme, cutDowns, soundBites]);
+  const saveAllContent = async () => {
+    if (!userId || !uploadUrl) return;
 
-  const handleAction = (type: ContentType) => {
-    setContentOrder((prev) => {
-      const newOrder = prev.filter((t) => t !== type);
-      return [type, ...newOrder];
-    });
+    setIsSaving(true);
+    try {
+      // Save each type of content that exists
+      const contentToSave: ContentType[] = [
+        "summary",
+        "bulletPoints",
+        "sortedWords",
+        "mainTheme",
+        "cutDowns",
+        "soundBites",
+      ];
+
+      for (const type of contentToSave) {
+        const content = (() => {
+          switch (type) {
+            case "summary":
+              return summary;
+            case "bulletPoints":
+              return bulletPoints;
+            case "sortedWords":
+              return sortedWords;
+            case "mainTheme":
+              return mainTheme;
+            case "cutDowns":
+              return cutDowns;
+            case "soundBites":
+              return soundBites;
+            default:
+              return null;
+          }
+        })();
+
+        if (content) {
+          await saveContent(type, content, uploadUrl);
+        }
+      }
+    } catch (error) {
+      console.error("Error saving all AI content:", error);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+  const saveContent = async (
+    type: ContentType,
+    content: string | string[],
+    uploadUrl: string | null,
+  ) => {
+    if (userId && uploadUrl) {
+      try {
+        await fetch("/api/speechcoachai", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId,
+            contentType: type,
+            content,
+            uploadUrl,
+          }),
+        });
+        setAIContent((prev) => [
+          ...prev.filter((item) => item.type !== type),
+          { type, content },
+        ]);
+      } catch (error) {
+        console.error("Error saving AI content:", error);
+      }
+    }
   };
 
+  const handleAction = async (
+    type: ContentType,
+    action: () => Promise<string | string[]>,
+  ) => {
+    try {
+      const newContent = await action();
+
+      if (type === "summary" && !newContent && summary) {
+        await saveContent(type, summary, uploadUrl);
+      } else if (newContent) {
+        await saveContent(type, newContent, uploadUrl);
+      }
+
+      setContentOrder((prev) => [type, ...prev.filter((t) => t !== type)]);
+    } catch (error) {
+      console.error(`Error generating ${type}:`, error);
+    }
+  };
   const renderContent = (type: ContentType) => {
+    // Get content from props or saved state
+    const getContent = () => {
+      const savedContent = aiContent.find(
+        (item) => item.type === type,
+      )?.content;
+      switch (type) {
+        case "summary":
+          return savedContent || summary;
+        case "bulletPoints":
+          return savedContent || bulletPoints;
+        case "sortedWords":
+          return savedContent || sortedWords;
+        case "mainTheme":
+          return savedContent || mainTheme;
+        case "cutDowns":
+          return savedContent || cutDowns;
+        case "soundBites":
+          return savedContent || soundBites;
+        default:
+          return null;
+      }
+    };
+
+    const content = getContent();
+    if (!content) return null;
+
     switch (type) {
       case "summary":
         return (
-          summary && (
-            <div className="mt-4">
-              <h3 className="text-lg font-semibold">Summary:</h3>
-              <p className="mt-2">{summary}</p>
-            </div>
-          )
+          <div className="mt-4">
+            <h3 className="text-lg font-semibold">Summary:</h3>
+            <p className="mt-2">{content as string}</p>
+          </div>
         );
       case "bulletPoints":
         return (
-          bulletPoints.length > 0 && (
-            <div className="mt-4">
-              <h3 className="text-lg font-semibold">Key Points:</h3>
-              <ul className="mt-2 list-disc pl-5">
-                {bulletPoints[0]
-                  .split("-")
-                  .filter((point) => point.trim() && !point.includes("*"))
-                  .map((point, index) => (
-                    <li key={index}>{point.trim()}</li>
-                  ))}
-              </ul>
-            </div>
-          )
+          <div className="mt-4">
+            <h3 className="text-lg font-semibold">Key Points:</h3>
+            <ul className="mt-2 list-disc pl-5">
+              {Array.isArray(content)
+                ? content.map((point, index) => <li key={index}>{point}</li>)
+                : content
+                    .split("-")
+                    .filter((point) => point.trim() && !point.includes("*"))
+                    .map((point, index) => <li key={index}>{point.trim()}</li>)}
+            </ul>
+          </div>
         );
       case "sortedWords":
         return (
-          sortedWords.length > 0 && (
-            <div className="mt-4">
-              <h3 className="text-lg font-semibold">Sorted Words:</h3>
-              <ul className="mt-2 list-disc pl-5">
-                {sortedWords.map((word, index) => (
+          <div className="mt-4">
+            <h3 className="text-lg font-semibold">Sorted Words:</h3>
+            <ul className="mt-2 list-disc pl-5">
+              {(Array.isArray(content) ? content : [content]).map(
+                (word, index) => (
                   <li key={index}>{word}</li>
-                ))}
-              </ul>
-            </div>
-          )
+                ),
+              )}
+            </ul>
+          </div>
         );
       case "mainTheme":
         return (
-          mainTheme && (
-            <div className="mt-4">
-              <h3 className="text-lg font-semibold">Main Theme:</h3>
-              <p className="mt-2">{mainTheme}</p>
-            </div>
-          )
+          <div className="mt-4">
+            <h3 className="text-lg font-semibold">Main Theme:</h3>
+            <p className="mt-2">{content as string}</p>
+          </div>
         );
       case "cutDowns":
         return (
-          cutDowns && (
-            <div className="mt-4">
-              <h3 className="text-lg font-semibold">Useful Cutdowns:</h3>
-              <ul className="mt-2 list-disc pl-5">
-                {cutDowns.split("\n").map((cutdown, index) => (
-                  <li key={index}>{cutdown.replace(/^\d+\.\s*/, "").trim()}</li>
-                ))}
-              </ul>
-            </div>
-          )
+          <div className="mt-4">
+            <h3 className="text-lg font-semibold">Useful Cutdowns:</h3>
+            <ul className="mt-2 list-disc pl-5">
+              {(content as string).split("\n").map((cutdown, index) => (
+                <li key={index}>{cutdown.replace(/^\d+\.\s*/, "").trim()}</li>
+              ))}
+            </ul>
+          </div>
         );
       case "soundBites":
         return (
-          soundBites && (
-            <div className="mt-4">
-              <h3 className="text-lg font-semibold">Sound Bites:</h3>
-              <div className="mt-2 space-y-2">
-                {soundBites.split("\n").map((bite, index) => (
-                  <p key={index} className="rounded-lg bg-gray-50 p-2">
-                    {bite}
-                  </p>
-                ))}
-              </div>
+          <div className="mt-4">
+            <h3 className="text-lg font-semibold">Sound Bites:</h3>
+            <div className="mt-2 space-y-2">
+              {(content as string).split("\n").map((bite, index) => (
+                <p key={index} className="rounded-lg bg-gray-50 p-2">
+                  {bite}
+                </p>
+              ))}
             </div>
-          )
+          </div>
         );
     }
   };
@@ -174,35 +289,41 @@ export function AIContentWrapper({
   return (
     <div>
       {whisperTranscription && (
-        <AIFeatureButtons
-          onGenerateSummary={() => {
-            handleAction("summary");
-            onGenerateSummary();
-          }}
-          onGenerateBulletPoints={() => {
-            handleAction("bulletPoints");
-            onGenerateBulletPoints();
-          }}
-          onSortWords={() => {
-            handleAction("sortedWords");
-            onSortWords();
-          }}
-          onMainTheme={() => {
-            handleAction("mainTheme");
-            onMainTheme();
-          }}
-          onUsefulCutdowns={() => {
-            handleAction("cutDowns");
-            onUsefulCutdowns();
-          }}
-          onGenerateSoundBites={() => {
-            handleAction("soundBites");
-            onGenerateSoundBites();
-          }}
-          isLoading={isLoading}
-          audioUrl={null}
-          videoUrl={recordingUrl}
-        />
+        <div className="flex items-center gap-2">
+          <AIFeatureButtons
+            onGenerateSummary={() => handleAction("summary", onGenerateSummary)}
+            onGenerateBulletPoints={() =>
+              handleAction("bulletPoints", onGenerateBulletPoints)
+            }
+            onSortWords={() => handleAction("sortedWords", onSortWords)}
+            onMainTheme={() => handleAction("mainTheme", onMainTheme)}
+            onUsefulCutdowns={() => handleAction("cutDowns", onUsefulCutdowns)}
+            onGenerateSoundBites={() =>
+              handleAction("soundBites", onGenerateSoundBites)
+            }
+            isLoading={isLoading}
+            audioUrl={null}
+            videoUrl={uploadUrl}
+          />
+          <Button
+            variant="outline"
+            onClick={saveAllContent}
+            disabled={!uploadUrl || isSaving}
+            className="flex items-center gap-2"
+          >
+            {isSaving ? (
+              <>
+                <IconSpinner className="h-4 w-4 animate-spin" />
+                Saving...
+              </>
+            ) : (
+              <>
+                <IconBookPlus className="h-4 w-4" />
+                Save All
+              </>
+            )}
+          </Button>
+        </div>
       )}
       {isLoading && (
         <p className="text-cp-primary mt-4 flex items-center justify-center gap-2 text-center text-[24px] font-semibold leading-[22.4px]">

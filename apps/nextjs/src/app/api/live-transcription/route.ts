@@ -32,8 +32,6 @@ export async function POST(req: NextRequest) {
         "Please transcribe the audio, including all filler words like 'um', 'uh', 'er', 'ah', 'like', 'okay', and 'you know'.",
     });
 
-    console.log("Transcription result:", transcription);
-
     // Return the transcription as is, focusing on the inclusion of filler words
     return NextResponse.json(
       {

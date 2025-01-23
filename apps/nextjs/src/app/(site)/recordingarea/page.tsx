@@ -3,6 +3,7 @@ import { list } from "@vercel/blob";
 
 import { auth } from "@voiceai/auth";
 
+import { getAllAIContent } from "~/app/actions/speechcoach";
 import ModeSelectorRecorder from "./mode-selector-recorder";
 
 export const metadata: Metadata = {
@@ -104,17 +105,40 @@ export default async function IndexPage() {
   const userId = session?.user.id;
 
   let savedAudios = [];
+  let savedWebcam = [];
+  let savedScreen = [];
+  let aiContents = [];
+
   if (userId) {
     savedAudios = await getSavedAudios(userId);
-  }
-  let savedWebcam = [];
-  if (userId) {
     savedWebcam = await getSavedWebcam(userId);
-  }
-  let savedScreen = [];
-  if (userId) {
     savedScreen = await getSavedScreen(userId);
+
+    // Fetch all AI contents for the user
+    aiContents = await getAllAIContent(userId);
+
+    // Compare and combine savedWebcam with aiContents
+    savedWebcam = savedWebcam.map((webcamItem) => {
+      const matchingAIContents = aiContents.filter(
+        (aiItem) => aiItem.uploadUrl === webcamItem.url,
+      );
+
+      if (matchingAIContents.length > 0) {
+        return {
+          ...webcamItem,
+          aiContent: matchingAIContents.map(({ type, content }) => ({
+            type,
+            content,
+          })),
+        };
+      }
+
+      return webcamItem;
+    });
   }
+
+  console.log("aicontent", JSON.stringify(aiContents, null, 2));
+  console.log("savedwebcam", JSON.stringify(savedWebcam, null, 2));
 
   return (
     <div className="min-h-screen w-full items-center justify-center ">
