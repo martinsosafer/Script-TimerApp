@@ -98,7 +98,7 @@ function RegularCard({
             height={65}
             className="absolute -right-6 -top-11 z-10"
           />
-          <div className="bg-cp-primary relative flex h-[441px] w-[195px] flex-col items-center justify-between overflow-hidden rounded-md text-white shadow-md">
+          <div className="bg-cp-primary relative flex h-[470px] w-[195px] flex-col items-center justify-between overflow-hidden rounded-md text-white shadow-md">
             <span className="bg-cp-accent flex h-[21px] w-full items-center justify-center text-[11px] font-semibold text-black">
               MOST POPULAR
             </span>
@@ -112,7 +112,9 @@ function RegularCard({
                 >
                   {DESCRIPTION[type]}
                 </p>
-                {getDetails(type)}
+              </div>
+              {getDetails(type)}
+              <div className="flex flex-col items-center">
                 <span className="mt-[10px] text-center text-[34px] font-bold">
                   {PRICE[type]?.[period]}
                   <span
@@ -142,7 +144,7 @@ function RegularCard({
           </div>
         </div>
       ) : (
-        <div className="flex h-[410px] w-[195px] flex-col items-center justify-between rounded-md bg-white p-4 shadow-md">
+        <div className="flex h-[450px] w-[195px] flex-col items-center justify-between rounded-md bg-white p-4 shadow-md">
           <div className="flex flex-col items-center">
             <h3 className="text-cp-primary text-center text-[24px] font-semibold">
               {type === "EDUCATION" ? "ONE WEEK" : type}
@@ -152,8 +154,10 @@ function RegularCard({
             >
               {DESCRIPTION[type]}
             </p>
-            {getDetails(type)}
-            <span className="mt-[10px] text-center text-[34px] font-bold">
+          </div>
+          {getDetails(type)}
+          <div className="flex flex-col items-center">
+            <span className="text-center text-[34px] font-bold">
               {PRICE[type]?.[period]}
               <span className={`${roboto.className} text-[14px] font-light`}>
                 {type !== "FREE" && "/month"}
@@ -161,14 +165,14 @@ function RegularCard({
             </span>
             {type === "FREE" && (
               <span
-                className={`${roboto.className} mb-[10px] mt-[2px] text-center text-[16px] font-light`}
+                className={`${roboto.className} mb-5 mt-[2px] text-center text-[16px] font-light`}
               >
                 No card needed
               </span>
             )}
             {period === "yearly" && type !== "FREE" && (
               <span
-                className={`${roboto.className} mb-[10px] mt-[2px] text-center text-[16px] font-light`}
+                className={`${roboto.className} mb-5 mt-[2px] text-center text-[16px] font-light`}
               >
                 {PRICE[type]?.total}
               </span>
