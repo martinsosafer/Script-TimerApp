@@ -98,7 +98,7 @@ export default function Explore({
           className={`${roboto.className} mb-0 mt-[8px] flex w-[893px] justify-around gap-1 text-[18px] font-bold`}
         >
           <div className="w-[220px]" />
-          <span className="w-[142px] text-center">
+          <span className="w-[150px] text-center">
             <CheckoutButton
               hasPlan={
                 session?.user.subscription?.status === "FREE_TRIAL" ||
@@ -111,7 +111,7 @@ export default function Explore({
               type="primary"
             />
           </span>
-          <span className="w-[142px] text-center">
+          <span className="w-[150px] text-center">
             <CheckoutButton
               hasPlan={setHasPlan(session, "EDUCATION", interval, period)}
               productId={PRODUCTS_ID.EDUCATION![period]}
@@ -121,7 +121,7 @@ export default function Explore({
               type="primary"
             />
           </span>
-          <span className="w-[142px] text-center">
+          <span className="w-[150px] text-center">
             <CheckoutButton
               hasPlan={setHasPlan(session, "CREATOR", interval, period)}
               productId={PRODUCTS_ID.CREATOR![period]}
@@ -131,7 +131,7 @@ export default function Explore({
               type="accent"
             />
           </span>
-          <span className="w-[142px] text-center">
+          <span className="w-[150px] text-center">
             <CheckoutButton
               hasPlan={setHasPlan(session, "BUSINESS", interval, period)}
               productId={PRODUCTS_ID.BUSINESS![period]}
