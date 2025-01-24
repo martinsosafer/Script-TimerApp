@@ -130,7 +130,7 @@ export const ADD_ON_TEST_PRICES_ID: Record<string, ProductId> = {
 // Standart Products prices
 export const PRICE: Record<string, Price> = {
   FREE: { monthly: "Free", yearly: "Free" },
-  EDUCATION: { monthly: "$9", yearly: "$6.58", total: "$79/year" },
+  EDUCATION: { monthly: "$9", yearly: "$9", total: "$79/year" },
   CREATOR: { monthly: "$19", yearly: "$14.75", total: "$177/year" },
   BUSINESS: { monthly: "$39", yearly: "$24.75", total: "$297/year" },
 };

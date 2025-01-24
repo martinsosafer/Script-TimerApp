@@ -66,7 +66,6 @@ function CheckoutButton({
     window.location.reload();
   }
 
-  const router = useRouter();
   return (
     <Button
       label={
@@ -74,7 +73,8 @@ function CheckoutButton({
       }
       type={type}
       fit
-      hight="h-[42px]"
+      height="h-[42px]"
+      className="p-0"
       disabled={hasPlan}
       onClick={
         session

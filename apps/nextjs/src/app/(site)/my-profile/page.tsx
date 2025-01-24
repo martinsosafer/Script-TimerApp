@@ -7,7 +7,7 @@ import {
   IconUserRound,
 } from "@voiceai/ui/@/components/ui/icons";
 
-import type { I_Subscription } from "../plans/types";
+import type { I_Subscription } from "../plans-OLD/types";
 import { getCredits } from "./actions";
 import SubscriptionDetails from "./subscription-details";
 
