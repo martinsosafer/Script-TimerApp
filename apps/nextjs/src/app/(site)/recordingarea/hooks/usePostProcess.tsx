@@ -24,7 +24,7 @@ export function usePostProcessing() {
           }),
         });
         const data = await response.json();
-        console.log("CUTDOWN", data);
+
         switch (type) {
           case "summary":
             setSummary(data.content);

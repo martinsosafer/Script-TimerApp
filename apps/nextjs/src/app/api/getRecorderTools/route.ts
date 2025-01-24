@@ -19,7 +19,7 @@ export async function POST(req: Request) {
     userPrompt = `Please provide a bullet point list of key points from the following transcript:\n\n${transcript}`;
   } else if (type === "word-sorter") {
     systemPrompt = "You are a helpful assistant that analyzes text.";
-    userPrompt = `Please count the frequency of each word in the following transcript and return a list of words in descending order by frequency:\n\n${transcript} if you are not able to get the words please tell the user that word sotter only works when you repeat more than 3 words`;
+    userPrompt = `Please count the frequency of each word in the following transcript and return a list of words in descending order by frequency:\n\n${transcript} if you are not able to get the words please tell the user that word sotter only works when you repeat more than 3 words.Please do not forget about telling the user that they need a longer speech in order "word-sorter works!`;
   } else if (type === "main-topic") {
     systemPrompt =
       "You are an intelligent assistant that extracts the main topic of a presentation.";
@@ -57,7 +57,6 @@ export async function POST(req: Request) {
     });
 
     let content = response.choices[0].message.content;
-
     if (type === "word-sorter") {
       const wordCounts = {};
       transcript
@@ -69,12 +68,18 @@ export async function POST(req: Request) {
           wordCounts[word] = (wordCounts[word] || 0) + 1;
         });
 
-      content = Object.entries(wordCounts)
+      const sortedWords = Object.entries(wordCounts)
         .filter(([_, count]) => count > 3) // Filter words occurring more than 3 times
         .sort((a, b) => b[1] - a[1]) // Sort by frequency descending
         .map(([word, count]) => `${word}: ${count}`);
-    }
 
+      if (sortedWords.length === 0) {
+        content =
+          "The text is too short or lacks sufficient repeated words. Please provide a longer transcript with repeated words for the word-sorter to work.";
+      } else {
+        content = sortedWords;
+      }
+    }
     return NextResponse.json({ content });
   } catch (error) {
     console.error("Error in generate-content:", error);

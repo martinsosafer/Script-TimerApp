@@ -137,7 +137,6 @@ export default async function IndexPage() {
     });
   }
 
-  console.log("aicontent", JSON.stringify(aiContents, null, 2));
   console.log("savedwebcam", JSON.stringify(savedWebcam, null, 2));
 
   return (

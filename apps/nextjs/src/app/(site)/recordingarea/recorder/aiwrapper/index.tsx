@@ -230,12 +230,14 @@ export function AIContentWrapper({
           <div className="mt-4">
             <h3 className="text-lg font-semibold">Key Points:</h3>
             <ul className="mt-2 list-disc pl-5">
-              {Array.isArray(content)
-                ? content.map((point, index) => <li key={index}>{point}</li>)
-                : content
-                    .split("-")
-                    .filter((point) => point.trim() && !point.includes("*"))
-                    .map((point, index) => <li key={index}>{point.trim()}</li>)}
+              {Array.isArray(content) && typeof content[0] === "string"
+                ? content[0] // Access the first element of the array
+                    .split("\n") // Split by line breaks
+                    .filter((line) => line.trim().startsWith("-")) // Keep lines starting with a dash
+                    .map((line, index) => (
+                      <li key={index}>{line.replace(/^-/, "").trim()}</li> // Clean up dashes and spaces
+                    ))
+                : null}
             </ul>
           </div>
         );
