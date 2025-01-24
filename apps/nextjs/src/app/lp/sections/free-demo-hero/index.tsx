@@ -51,11 +51,7 @@ export default function FreeDemoHero({
               </h3>
             )}
             <h2 className="text-[32px] font-bold leading-[38px] text-white lg:mt-5 lg:text-[50px] lg:leading-[60px]">
-              {description ? spiltTitle(description).first : "You're creating"}
-            </h2>
-            <h2 className="text-cp-secondary text-[32px] font-bold leading-[38px] lg:text-[50px] lg:leading-[60px]">
-              {description ? spiltTitle(description).second : "an experience"}
-              <span className="text-white">.</span>
+              {description ?? "You're creating an experience"}
             </h2>
             <h4 className="mt-4 text-[18px] text-white lg:mt-6 lg:text-xl">
               {sub_description ?? defaultSubDescription}
