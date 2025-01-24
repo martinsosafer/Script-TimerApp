@@ -5,9 +5,7 @@ import { IconXCircle as X } from "@voiceai/ui/@/components/ui/icons";
 import { Separator } from "@voiceai/ui/@/components/ui/separator";
 
 import Button from "~/app/(site)/components/button";
-import AIFeedback from "./aiFeedback";
-
-// New function to fetch KV database content
+import AIFeedbackContent from "./aiFeedback";
 
 const VideoHistory = ({
   savedWebcam = [],
@@ -16,6 +14,7 @@ const VideoHistory = ({
   userId,
 }) => {
   const [selectedVideo, setSelectedVideo] = useState(null);
+  const [expandedRecordings, setExpandedRecordings] = useState({});
 
   // Sort the savedWebcam array by date and time
   const sortedRecordings = useMemo(() => {
@@ -32,6 +31,13 @@ const VideoHistory = ({
     setSelectedVideo(null);
   };
 
+  const toggleAIFeedback = (index) => {
+    setExpandedRecordings((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
+  };
+
   return (
     <div className="mt-[20px]">
       <Separator className="bg-cp-primary mb-8 h-1" />
@@ -46,37 +52,82 @@ const VideoHistory = ({
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="flex items-center rounded-lg bg-gray-50 p-4"
+                className="rounded-lg bg-gray-50 p-4"
               >
-                {/* Thumbnail */}
-                <div
-                  className="h-32 w-48 cursor-pointer overflow-hidden rounded-md"
-                  onClick={() => setSelectedVideo(recording)}
-                >
-                  <video
-                    src={recording.url}
-                    className="h-full w-full object-cover"
-                  />
+                <div className="flex items-center">
+                  {/* Thumbnail */}
+                  <div
+                    className="h-32 w-48 cursor-pointer overflow-hidden rounded-md"
+                    onClick={() => setSelectedVideo(recording)}
+                  >
+                    <video
+                      src={recording.url}
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+
+                  {/* Info */}
+                  <div className="ml-4 flex flex-1 flex-col justify-center">
+                    <span className="font-medium">{recording.filename}</span>
+                  </div>
+
+                  {/* Upload Date */}
+                  <div className="text-sm text-gray-500">
+                    {new Date(recording.uploadedAt)
+                      .toLocaleString("en-GB", {
+                        year: "numeric",
+                        month: "2-digit",
+                        day: "2-digit",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: false,
+                      })
+                      .replace(",", "")}
+                  </div>
                 </div>
 
-                {/* Info */}
-                <div className="ml-4 flex flex-1 flex-col justify-center">
-                  <span className="font-medium">{recording.filename}</span>
-                </div>
+                {/* AI Feedback Toggle */}
+                {recording.aiContent && recording.aiContent.length > 0 && (
+                  <div className="mt-4">
+                    <motion.button
+                      onClick={() => toggleAIFeedback(index)}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="rounded-md bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
+                    >
+                      {expandedRecordings[index]
+                        ? "Hide AI Feedback"
+                        : "Show AI Feedback"}
+                    </motion.button>
 
-                {/* Upload Date */}
-                <div className="text-sm text-gray-500">
-                  {new Date(recording.uploadedAt)
-                    .toLocaleString("en-GB", {
-                      year: "numeric",
-                      month: "2-digit",
-                      day: "2-digit",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      hour12: false,
-                    })
-                    .replace(",", "")}
-                </div>
+                    <AnimatePresence>
+                      {expandedRecordings[index] && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          className="overflow-hidden"
+                        >
+                          {recording.aiContent.map((item, feedbackIndex) => (
+                            <motion.div
+                              key={feedbackIndex}
+                              initial={{ opacity: 0, y: -10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -10 }}
+                              transition={{ delay: feedbackIndex * 0.1 }}
+                              className="mt-2 rounded-md bg-gray-100 p-3"
+                            >
+                              <AIFeedbackContent
+                                type={item.type}
+                                content={item.content}
+                              />
+                            </motion.div>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                )}
               </motion.li>
             ))}
           </ul>

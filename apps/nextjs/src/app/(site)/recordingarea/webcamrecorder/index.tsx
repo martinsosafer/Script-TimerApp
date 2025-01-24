@@ -22,6 +22,7 @@ import { VideoPreview } from "./VideoPreview";
 interface WebcamRecorderProps {
   userId: string | undefined;
   savedWebcam: { url: string; filename: string; uploadedAt: string }[];
+  aiContent: [];
 }
 
 export default function MicrophoneAndWebcamComponent({

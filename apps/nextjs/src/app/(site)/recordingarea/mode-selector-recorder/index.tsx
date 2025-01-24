@@ -17,6 +17,7 @@ interface SavedBlob {
   url: string;
   filename: string;
   uploadedAt: string;
+  aiContent: [];
 }
 
 export default function ModeSelectorRecorder({
