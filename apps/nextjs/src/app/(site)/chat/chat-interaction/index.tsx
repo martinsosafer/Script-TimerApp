@@ -179,7 +179,7 @@ export default function ChatInteraction({
 
   const promptOptions = [
     {
-      label: "Use Our Magic Prompt",
+      label: "Use Our Magic Prompts",
       active: isUsingMagicPrompt,
       action: () => {
         setIsUsingMagicPrompt(true);
@@ -187,7 +187,7 @@ export default function ChatInteraction({
       },
     },
     {
-      label: "Use Your Our Prompt",
+      label: "Use Your Own Prompts",
       active: !isUsingMagicPrompt,
       action: () => {
         setIsUsingMagicPrompt(false);
