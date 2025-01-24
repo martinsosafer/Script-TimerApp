@@ -11,7 +11,7 @@ import {
 } from "~/constants/products";
 import Button from "../../components/button/index";
 import MotionTransition from "../../components/herosection/MotionTransition/MotionTransition";
-import CheckoutButton from "../../plans/plans/plans-cards/checkout-button";
+import CheckoutButton from "../../plans-OLD/plans/plans-cards/checkout-button";
 
 interface AddOnSuccessProps {
   userPlan: keyof typeof plans;

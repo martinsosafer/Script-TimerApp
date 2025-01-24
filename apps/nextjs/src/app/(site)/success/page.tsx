@@ -1,8 +1,8 @@
 import { auth } from "@voiceai/auth";
 
 import { poppins } from "~/app/fonts";
-import type { Plan } from "../plans/types";
-import { getSubscription } from "../plans/utils";
+import type { Plan } from "../plans-OLD/types";
+import { getSubscription } from "../plans-OLD/utils";
 import SuccessPage from "./sucesspage";
 
 export default async function NewPlansPage() {
