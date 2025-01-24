@@ -39,7 +39,7 @@ export function getDetails(
       <div
         className={`${roboto.className} mt-[10px] flex flex-col items-center p-2 text-[14px]`}
       >
-        <span className="font-semibold">Everithing in</span>
+        <span className="font-semibold">Everything in</span>
         <span className="font-semibold">previous, plus:</span>
         <span className="mt-2">2-4x More</span>
         <span>150 Built-in Prompts</span>
@@ -52,7 +52,7 @@ export function getDetails(
       <div
         className={`${roboto.className} mt-[10px] flex flex-col items-center p-2 text-center text-[14px]`}
       >
-        <span className="font-semibold">Everithing in</span>
+        <span className="font-semibold">Everything in</span>
         <span className="font-semibold">Creator, plus:</span>
         <span className="mt-2">Producer Level</span>
         <span>150+ Marketing Prompts</span>
