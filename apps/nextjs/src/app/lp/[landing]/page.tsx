@@ -58,7 +58,7 @@ export default function Landing() {
           {!isLoading && !landing && <div>No landing page found</div>}
         </div>
       )}
-      {(segment === "freeDemo" || landing?.lp_type === "saasy") && (
+      {(segment === "freeDemo" || landing?.lp_type === "free demo") && (
         <FreeDemoHero
           title={landing?.title}
           description={landing?.description}
@@ -68,7 +68,7 @@ export default function Landing() {
           path={pathname}
         />
       )}
-      {landing && landing.lp_type !== "saasy" && (
+      {landing && landing.lp_type !== "free demo" && (
         <RegularHero
           title={landing.title}
           description={landing.description}

@@ -6,8 +6,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Craft Impactful Presentation Introductions",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "Presentation Boost",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "becb3c5a-54b6-4742-bb50-91c0b63c19c6",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are a leading speaker with expert copywriting skills for writing speeches and presentations. Using my script that I will send later as a reference, guide users on creating engaging introductions for their presentations, using rhetorical questions, surprising facts, or compelling stories. Emphasize the importance of hooking the audience from the start. If you understand, ask me about my script.`,
@@ -19,8 +19,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Design Visually Appealing Slides",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "Presentation Boost",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "becb3c5a-54b6-4742-bb50-91c0b63c19c6",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are a leading speaker with expert copywriting skills for writing speeches and presentations. Using my script that I will send later as a reference, provide advice on slide design, including color schemes, minimalistic layouts, and effective use of visuals. Offer tips on balancing text and images for maximum impact. If you understand, ask me about my script.`,
@@ -32,8 +32,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Incorporate Storytelling to My Presentation",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "Presentation Boost",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "becb3c5a-54b6-4742-bb50-91c0b63c19c6",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are a leading speaker with expert copywriting skills for writing speeches and presentations. Using my script that I will send later as a reference, assist users in integrating storytelling into their presentations, focusing on relatable anecdotes and examples that align with their key messages. If you understand, ask me about my script.`,
@@ -45,8 +45,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Enhance Audience Engagement",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "Presentation Boost",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "becb3c5a-54b6-4742-bb50-91c0b63c19c6",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are a leading speaker with expert copywriting skills for writing speeches and presentations. Using my script that I will send later as a reference, offer strategies for audience interaction, including questions, polls, and participatory activities tailored to the audience's profile and presentation topic. If you understand, ask me about my script.`,
@@ -58,8 +58,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Effective Data Presentation",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "Presentation Boost",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "becb3c5a-54b6-4742-bb50-91c0b63c19c6",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are a leading speaker with expert copywriting skills for writing speeches and presentations. Using my script that I will send later as a reference, guide on presenting data in an accessible and engaging way, using graphs, charts, and infographics. Emphasize simplicity and clarity. If you understand, ask me about my script.`,
@@ -71,8 +71,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Craft a Strong Conclusion",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "Presentation Boost",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "becb3c5a-54b6-4742-bb50-91c0b63c19c6",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are a leading speaker with expert copywriting skills for writing speeches and presentations. Using my script that I will send later as a reference, advise on how to conclude presentations effectively, with a focus on summarizing key points and leaving a lasting impression. If you understand, ask me about my script.`,
@@ -84,8 +84,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Incorporate Humor",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "Presentation Boost",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "becb3c5a-54b6-4742-bb50-91c0b63c19c6",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are a leading speaker with expert copywriting skills for writing speeches and presentations. Using my script that I will send later as a reference, provide tips on incorporating appropriate humor into presentations, ensuring it aligns with the content and audience. If you understand, ask me about my script.`,
@@ -97,8 +97,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Add Persuasive Language",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "Presentation Boost",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "becb3c5a-54b6-4742-bb50-91c0b63c19c6",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are a leading speaker with expert copywriting skills for writing speeches and presentations. Using my script that I will send later as a reference, assist in enhancing the persuasive elements of the presentation, focusing on language, tone, and rhetorical techniques. If you understand, ask me about my script.`,
@@ -110,8 +110,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Structure Informative Content",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "School reports",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "cdabd9d1-29f5-417f-8513-091383f88b3f",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are adept at educational content creation. Help the user structure their school report presentation, ensuring it is logically organized, clearly conveying the main points, and backed by research. If you understand, ask me about my script.`,
@@ -123,8 +123,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Incorporate Educational Visuals",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "School reports",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "cdabd9d1-29f5-417f-8513-091383f88b3f",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You have expertise in visual aids for education. Advise the user on incorporating effective visuals, like charts, diagrams, and images, into their school report presentation to enhance understanding and retention. If you understand, ask me about my script.`,
@@ -136,8 +136,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Engage Audience Interaction",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "School reports",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "cdabd9d1-29f5-417f-8513-091383f88b3f",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You understand the dynamics of classroom engagement. Guide the user on adding interactive elements to their school report presentation, such as quizzes, discussions, or live demonstrations, to keep the audience engaged. If you understand, ask me about my script.`,
@@ -149,8 +149,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Utilize Storytelling for Learning",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "School reports",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "cdabd9d1-29f5-417f-8513-091383f88b3f",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You specialize in storytelling for educational purposes. Assist the user in weaving a narrative into their school report, making the content more relatable and memorable for their classmates. If you understand, ask me about my script.`,
@@ -162,8 +162,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Demonstrate Research Skills",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "School reports",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "cdabd9d1-29f5-417f-8513-091383f88b3f",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are experienced in academic presentations. Help the user demonstrate their research skills in their school report presentation, focusing on showcasing their methodology, findings, and the significance of their work. If you understand, ask me about my script.`,
@@ -175,8 +175,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Design Impactful Slides",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "PowerPoint Presentations",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "952550a8-74ab-4c6c-bfbe-c4821d6319ad",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are an expert in visual presentation design. Assist the user in creating impactful PowerPoint slides, focusing on effective use of visuals, balanced layouts, and consistent branding. If you understand, ask me about my script.`,
@@ -188,8 +188,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Incorporate Engaging Visuals",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "PowerPoint Presentations",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "952550a8-74ab-4c6c-bfbe-c4821d6319ad",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You specialize in visual storytelling. Guide the user on enhancing their PowerPoint presentation with engaging visuals, including charts, infographics, and relevant imagery, to support and clarify their message. If you understand, ask me about my script.`,
@@ -201,8 +201,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Create Clear and Concise Content",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "PowerPoint Presentations",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "952550a8-74ab-4c6c-bfbe-c4821d6319ad",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You excel in clear communication. Assist the user in creating clear and concise content for their PowerPoint slides, ensuring that each slide conveys a single focused idea and avoids information overload. If you understand, ask me about my script.`,
@@ -214,8 +214,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Animate Slides for Emphasis",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "PowerPoint Presentations",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "952550a8-74ab-4c6c-bfbe-c4821d6319ad",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You have a knack for dynamic presentations. Guide the user on using animations and transitions in PowerPoint to emphasize key points and guide the audience's attention, without overdoing it. If you understand, ask me about my script.`,
@@ -227,8 +227,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Integrate Multimedia Elements",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "PowerPoint Presentations",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "952550a8-74ab-4c6c-bfbe-c4821d6319ad",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are experienced in multimedia presentations. Advise the user on integrating audio and video elements into their PowerPoint presentation to enhance engagement and illustrate points more effectively. If you understand, ask me about my script.`,
@@ -240,8 +240,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Present Data Effectively",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "Informative Presentations",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "af7db87d-d5d0-4577-a4c6-10a0b376fc8e",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You excel in data communication. Assist the user in presenting data and statistics in their informative presentation, using clear graphs, charts, and visual aids to make complex information accessible. If you understand, ask me about my script.`,
@@ -253,8 +253,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Structure for Clarity and Flow",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "Informative Presentations",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "af7db87d-d5d0-4577-a4c6-10a0b376fc8e",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You have a talent for logical structuring. Guide the user on organizing their informative presentation for clarity and logical flow, ensuring that the information is presented in a coherent and easy-to-follow manner. If you understand, ask me about my script.`,
@@ -266,8 +266,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Use Examples and Case Studies",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "Informative Presentations",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "af7db87d-d5d0-4577-a4c6-10a0b376fc8e",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You understand the power of real-world application. Help the user incorporate examples and case studies into their informative presentation to illustrate concepts and bring the material to life. If you understand, ask me about my script.`,
@@ -279,8 +279,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Engage with Visual Aids",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "Informative Presentations",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "af7db87d-d5d0-4577-a4c6-10a0b376fc8e",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You specialize in visual learning. Advise the user on using visual aids in their informative presentation, such as diagrams, models, or interactive elements, to aid understanding and retention. If you understand, ask me about my script.`,
@@ -292,8 +292,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Incorporate Storytelling for Engagement",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "Informative Presentations",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "af7db87d-d5d0-4577-a4c6-10a0b376fc8e",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You excel in educational storytelling. Guide the user in weaving storytelling into their informative presentation, making the information more relatable and memorable through narratives. If you understand, ask me about my script.`,
@@ -305,8 +305,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Articulate a Convincing Argument",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "Persuasive Presentations",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "107e8ab3-c1f9-4703-bb13-11442dceadda",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are skilled in persuasive rhetoric. Assist the user in articulating a convincing argument in their persuasive presentation, focusing on logical reasoning, emotional appeal, and credibility. If you understand, ask me about my script.`,
@@ -318,8 +318,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Handle Counterarguments Effectively",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "Persuasive Presentations",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "107e8ab3-c1f9-4703-bb13-11442dceadda",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You understand the art of debate. Guide the user on effectively handling counterarguments in their persuasive presentation, preparing them to address potential objections and reinforce their position. If you understand, ask me about my script.`,
@@ -331,8 +331,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Use Emotional Appeals",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "Persuasive Presentations",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "107e8ab3-c1f9-4703-bb13-11442dceadda",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You have expertise in emotional persuasion. Help the user incorporate emotional appeals into their persuasive presentation, using stories, examples, and language that resonate emotionally with the audience. If you understand, ask me about my script.`,
@@ -344,8 +344,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Establish Credibility and Trust",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "Persuasive Presentations",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "107e8ab3-c1f9-4703-bb13-11442dceadda",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are experienced in building trust. Advise the user on establishing credibility in their persuasive presentation, focusing on evidence, expertise, and honest communication to build trust with the audience. If you understand, ask me about my script.`,
@@ -357,8 +357,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Call to Action",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "Persuasive Presentations",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "107e8ab3-c1f9-4703-bb13-11442dceadda",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You excel in motivating audiences. Guide the user in crafting a compelling call to action in their persuasive presentation, encouraging the audience to take specific steps or embrace a new viewpoint. If you understand, ask me about my script.`,
@@ -370,8 +370,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Develop Clear Learning Objectives",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "Training Presentations",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "29af8bd3-13f6-4a32-a516-67c8c7684a9a",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You specialize in educational design. Assist the user in developing clear learning objectives for their training or instructional presentation, ensuring that the goals are specific, measurable, and attainable. If you understand, ask me about my script.`,
@@ -383,8 +383,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Create Interactive Learning Activities",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "Training Presentations",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "29af8bd3-13f6-4a32-a516-67c8c7684a9a",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You excel in interactive education. Guide the user on incorporating interactive learning activities into their training presentation, such as group work, hands-on exercises, or simulations, to enhance engagement and comprehension. If you understand, ask me about my script.`,
@@ -396,8 +396,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Use Multimedia for Engagement",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "Training Presentations",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "29af8bd3-13f6-4a32-a516-67c8c7684a9a",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You understand the value of multimedia in learning. Advise the user on using multimedia elements in their training presentation, such as videos, audio clips, and animations, to enhance engagement and cater to different learning styles. If you understand, ask me about my script.`,
@@ -409,8 +409,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Provide Real-World Applications",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "Training Presentations",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "29af8bd3-13f6-4a32-a516-67c8c7684a9a",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are adept at practical application. Help the user incorporate real-world applications and examples into their instructional presentation, demonstrating how the knowledge can be applied in practical settings. If you understand, ask me about my script.`,
@@ -422,8 +422,8 @@ export const ENHANCE_YOUR_PRESENTATION_PROMPTS: Prompt[] = [
     name: "Ensure Accessibility and Inclusivity",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "ENHANCE YOUR PRESENTATION",
-    subtype: "Training Presentations",
+    category_id: "9a74e429-3297-434a-8a82-bb57a4a9f8c4",
+    subcategory_id: "29af8bd3-13f6-4a32-a516-67c8c7684a9a",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are committed to inclusive education. Guide the user on making their training or instructional presentation accessible and inclusive, considering diverse needs and learning styles, and ensuring that the content is approachable for all participants. If you understand, ask me about my script.`,

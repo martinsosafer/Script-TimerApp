@@ -2,24 +2,30 @@
 
 import { db, eq, schema } from "@voiceai/db";
 
-export async function addPrompt(formData: FormData) {
+export async function addPrompt(
+  formData: FormData,
+  categoryId: string,
+  subcategoryId: string,
+) {
   const name = formData.get("name") as string;
   const description = formData.get("description");
-  const type = formData.get("type");
-  const subtype = formData.get("subtype");
   const prompt_ai = formData.get("prompt_ai");
   const prompt_display = formData.get("prompt_display");
   const ai_model_type = formData.get("ai_model_type");
+  const additional = formData.get("additional");
+  const fields = typeof additional === "string" ? additional.split(",") : [];
+  const mappedFields = fields.map((el) => el.trim());
 
   const prompt = await db
     .insert(schema.prompts)
     .values({
       name,
       description,
-      type,
-      subtype,
+      category_id: categoryId,
+      subcategory_id: subcategoryId,
       prompt_ai,
       prompt_display,
+      additional_fields: mappedFields,
       ai_model_type,
     })
     .execute();
@@ -27,13 +33,20 @@ export async function addPrompt(formData: FormData) {
   return prompt;
 }
 
-export async function updatePrompt(formData: FormData, id: string) {
+export async function updatePrompt(
+  formData: FormData,
+  id: string,
+  categoryId: string,
+  subcategoryId: string,
+) {
   const name = formData.get("name") as string;
   const description = formData.get("description") as string | undefined;
-  const type = formData.get("type") as string | undefined;
-  const subtype = formData.get("subtype") as string | undefined;
   const prompt_ai = formData.get("prompt_ai") as string | undefined;
   const prompt_display = formData.get("prompt_display") as string | undefined;
+  const additional = formData.get("additional");
+  const fields = typeof additional === "string" ? additional.split(",") : [];
+  const mappedFields = fields.map((el) => el.trim());
+
   const ai_model_type = formData.get("ai_model_type") as
     | "CHAT"
     | "VOICE"
@@ -45,10 +58,11 @@ export async function updatePrompt(formData: FormData, id: string) {
     .set({
       name,
       description,
-      type,
-      subtype,
+      category_id: categoryId,
+      subcategory_id: subcategoryId,
       prompt_ai,
       prompt_display,
+      additional_fields: mappedFields,
       ai_model_type,
     })
     .where(eq(schema.prompts.id, id));

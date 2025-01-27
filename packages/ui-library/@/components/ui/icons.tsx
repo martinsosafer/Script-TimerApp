@@ -488,6 +488,28 @@ function IconMessage({ className, ...props }: React.ComponentProps<"svg">) {
   );
 }
 
+function IconMessageFull({ className, ...props }: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cn("h-4 w-4", className)}
+      {...props}
+    >
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+      <path d="M13 8H7" />
+      <path d="M17 12H7" />
+    </svg>
+  );
+}
+
 function IconTrash({ className, ...props }: React.ComponentProps<"svg">) {
   return (
     <svg
@@ -2392,6 +2414,56 @@ function IconClapperboard({
     </svg>
   );
 }
+
+function LightMessageBubbleArrow({
+  className,
+  ...props
+}: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      width="35"
+      height="29"
+      viewBox="0 0 35 29"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={`${className}`}
+      {...props}
+    >
+      <path
+        d="M1.29665 1.87417L1.2967 1.8741L1.30415 1.88012L32.3811 27.021C33.119 27.5938 33.6131 27.6279 33.8572 27.5217C34.0821 27.424 34.3642 27.0809 34.3642 26.1905L34.3642 3.49112C34.3642 2.69754 34.0489 1.93646 33.4878 1.37531C32.9266 0.814157 32.1655 0.498906 31.372 0.498906L1.68812 0.498909C1.24653 0.498909 0.937253 0.560093 0.741923 0.642437C0.548859 0.723827 0.513387 0.803043 0.506109 0.82609C0.49768 0.852781 0.481785 0.948864 0.597147 1.14577C0.712268 1.34227 0.93318 1.59147 1.29665 1.87417Z"
+        fill="#E2E8F0"
+        stroke="#E2E8F0"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+}
+
+function DarkMessageBubbleArrow({
+  className,
+  ...props
+}: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      width="35"
+      height="29"
+      viewBox="0 0 35 29"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={`${className}`}
+      {...props}
+    >
+      <path
+        d="M33.5666 1.87417L33.5666 1.8741L33.5591 1.88012L2.48223 27.021C1.74425 27.5938 1.25015 27.6279 1.00605 27.5217C0.781204 27.424 0.499111 27.0809 0.499111 26.1905L0.499113 3.49112C0.499113 2.69754 0.814364 1.93646 1.37551 1.37531C1.93666 0.814157 2.69774 0.498906 3.49133 0.498906L33.1752 0.498909C33.6168 0.498909 33.926 0.560093 34.1214 0.642437C34.3144 0.723827 34.3499 0.803043 34.3572 0.82609C34.3656 0.852781 34.3815 0.948864 34.2661 1.14577C34.151 1.34227 33.9301 1.59147 33.5666 1.87417Z"
+        fill="#636D80"
+        stroke="#636D80"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+}
 function IconVideoCamera({
   color = "currentColor",
   className,
@@ -2561,6 +2633,9 @@ export {
   XIcon,
   IconChevronDown,
   IconClapperboard,
+  IconMessageFull,
+  LightMessageBubbleArrow,
+  DarkMessageBubbleArrow,
   IconVideoCamera,
   IconPause,
   IconMusic,
