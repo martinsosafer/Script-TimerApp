@@ -213,7 +213,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
         userList={userList}
         filteredList={filteredList}
       />
-      <div className="-mt-24 scale-[70%]">
+      <div className="-mt-24 translate-x-80 scale-[70%] md:translate-x-0">
         <div className="flex w-max bg-gray-100">
           <div className="flex w-[220px] min-w-[220px] items-center justify-center border border-gray-400 px-4 py-2 text-center font-semibold">
             Name
@@ -318,22 +318,22 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
                 setFilteredList,
               })
             }
-            className="flex w-[120px] min-w-[120px] items-center justify-center border border-gray-400 px-1 py-2 text-center font-semibold"
+            className="hidden w-[120px] min-w-[120px] items-center justify-center border border-gray-400 px-1 py-2 text-center font-semibold md:flex"
           >
             Days Since Creation {isCreationAscending ? "↑" : "↓"}
           </button>
           <div className="flex w-[200px] min-w-[200px] items-center justify-center border border-gray-400 px-1 py-2 text-center font-semibold">
             Actions
           </div>
-          <div className="flex w-[290px] min-w-[290px] items-center justify-center border border-gray-400 px-1 py-2 text-center font-semibold">
+          <div className="hidden w-[290px] min-w-[290px] items-center justify-center border border-gray-400 px-1 py-2 text-center font-semibold md:flex">
             Subscription ID
           </div>
-          <div className="flex w-[80px] min-w-[80px] items-center justify-center border border-gray-400 px-4 py-2 text-center font-semibold">
+          <div className="hidden w-[80px] min-w-[80px] items-center justify-center border border-gray-400 px-4 py-2 text-center font-semibold md:flex">
             ID
           </div>
         </div>
 
-        <div className="h-[1200px] w-max overflow-y-scroll border">
+        <div className="h-[1200px] w-full overflow-scroll border md:overflow-y-scroll">
           <div className="flex w-full flex-col items-center">
             {filteredList.map((user) => (
               <div key={user.id} className="flex">
@@ -365,7 +365,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
                 <div className="flex w-[120px] min-w-[100px] items-center border px-2 py-2">
                   {daysWithCurrentPlan(user.updated_at ?? new Date())}
                 </div>
-                <div className="flex w-[120px] min-w-[100px] items-center border px-2 py-2">
+                <div className="hidden w-[120px] min-w-[100px] items-center border px-2 py-2 md:flex">
                   {daysSinceCreated(user.created_at)}
                 </div>
                 <div className="flex w-[200px] min-w-[200px] items-center justify-center border px-1 py-2">
@@ -404,7 +404,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
                   </select>
                 </div>
                 <button
-                  className="flex w-[290px] min-w-[290px] items-center justify-center overflow-auto border px-2 py-2"
+                  className="hidden w-[290px] min-w-[290px] items-center justify-center overflow-auto border px-2 py-2 md:flex"
                   onClick={() => {
                     setSelectedUserId(user.id);
                     setIsAddingPlanId(true);
@@ -414,7 +414,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userList, refetch }) => {
                 </button>
                 <button
                   id="copyBtn"
-                  className="flex w-[80px] min-w-[80px] items-center justify-center border px-4 py-2"
+                  className="hidden w-[80px] min-w-[80px] items-center justify-center border px-4 py-2 md:flex"
                   onClick={async () => {
                     await navigator.clipboard.writeText(user?.id ?? "");
                     toast({
