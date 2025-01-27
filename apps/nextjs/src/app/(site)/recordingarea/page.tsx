@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   title: "Recording Area",
   description: "Record audio, video or your screen",
 };
+
 async function getSavedAudios(userId: string) {
   try {
     const { blobs } = await list({
@@ -17,16 +18,12 @@ async function getSavedAudios(userId: string) {
     });
 
     return blobs.map((blob) => {
-      // Get the full path after RecordedAudio/userId/
       const fullPath = blob.pathname.split(`RecordedAudio/${userId}/`)[1];
-
-      // Extract the recording pattern using regex
       const recordingPattern = fullPath.match(
         /(recording-\d{2}\/\d{2}\/\d{4}-)/,
       );
       const filename = recordingPattern ? recordingPattern[1] : fullPath;
 
-      // Format the date
       const date = new Date(blob.uploadedAt);
       const formattedDate = `${date.getDate().toString().padStart(2, "0")}-${(
         date.getMonth() + 1
@@ -48,22 +45,19 @@ async function getSavedAudios(userId: string) {
     return [];
   }
 }
+
 async function getSavedWebcam(userId: string) {
   try {
     const { blobs } = await list({
       prefix: `RecordedWebcam/${userId}/`,
     });
     return blobs.map((blob) => {
-      // Get the full path after RecordedWebcam/userId/
       const fullPath = blob.pathname.split(`RecordedWebcam/${userId}/`)[1];
-
-      // Extract the recording pattern using regex
       const recordingPattern = fullPath.match(
         /(recording-\d{2}\/\d{2}\/\d{4}-)/,
       );
       const filename = recordingPattern ? recordingPattern[1] : fullPath;
 
-      // Format the date
       const date = new Date(blob.uploadedAt);
       const formattedDate = `${date.getDate().toString().padStart(2, "0")}-${(
         date.getMonth() + 1
@@ -85,6 +79,7 @@ async function getSavedWebcam(userId: string) {
     return [];
   }
 }
+
 async function getSavedScreen(userId: string) {
   try {
     const { blobs } = await list({
@@ -96,10 +91,11 @@ async function getSavedScreen(userId: string) {
       uploadedAt: blob.uploadedAt,
     }));
   } catch (error) {
-    console.error("Error fetching saved audios:", error);
+    console.error("Error fetching saved screens:", error);
     return [];
   }
 }
+
 export default async function IndexPage() {
   const session = await auth();
   const userId = session?.user.id;
@@ -116,7 +112,26 @@ export default async function IndexPage() {
 
     // Fetch all AI contents for the user
     aiContents = await getAllAIContent(userId);
-    console.log("AICONTENT", aiContents);
+
+    // Compare and combine savedAudios with aiContents
+    savedAudios = savedAudios.map((audioItem) => {
+      const matchingAIContents = aiContents.filter(
+        (aiItem) => aiItem.uploadUrl === audioItem.url,
+      );
+
+      if (matchingAIContents.length > 0) {
+        return {
+          ...audioItem,
+          aiContent: matchingAIContents.map(({ type, content }) => ({
+            type,
+            content,
+          })),
+        };
+      }
+
+      return audioItem;
+    });
+
     // Compare and combine savedWebcam with aiContents
     savedWebcam = savedWebcam.map((webcamItem) => {
       const matchingAIContents = aiContents.filter(
@@ -137,7 +152,7 @@ export default async function IndexPage() {
     });
   }
 
-  console.log("savedwebcam", JSON.stringify(savedWebcam, null, 2));
+  console.log("savedAudios", JSON.stringify(savedAudios, null, 2));
 
   return (
     <div className="min-h-screen w-full items-center justify-center ">

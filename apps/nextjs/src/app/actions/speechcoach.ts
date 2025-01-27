@@ -44,8 +44,6 @@ export async function getAIContent(
   const key = `user:${userId}:video:${uploadUrl}:${contentType}`;
   const content = await kv.get(key);
 
-  console.log("Raw content from KV:", content); // Debug log
-
   // If content exists and is already an object with the correct shape
   if (
     content &&
@@ -58,7 +56,6 @@ export async function getAIContent(
 
   // If content exists but only has type (missing content field)
   if (content && typeof content === "object" && "type" in content) {
-    console.error(`Content for ${key} is missing the content field:`, content);
     return null;
   }
 

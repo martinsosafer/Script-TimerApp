@@ -65,7 +65,7 @@ export function AIContentWrapper({
   const [contentOrder, setContentOrder] = useState<ContentType[]>([]);
   const [aiContent, setAIContent] = useState<AIContent[]>([]);
   const [isSaving, setIsSaving] = useState(false);
-  console.log("FILLERWORDS", sortedFillerWords);
+
   // Update content order based on props
   useEffect(() => {
     setContentOrder((prevOrder) => {
