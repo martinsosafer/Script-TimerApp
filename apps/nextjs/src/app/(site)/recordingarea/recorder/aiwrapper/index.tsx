@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from "react";
 
-
-
 import { Button } from "@voiceai/ui";
 import { IconBookPlus, IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 
-
-
 import { AIFeatureButtons } from "../aifeaturebutton";
-
 
 interface AIContentWrapperProps {
   userId?: string;
@@ -19,6 +14,7 @@ interface AIContentWrapperProps {
   summary: string | null;
   bulletPoints: string[];
   sortedWords: string[];
+  sortedFillerWords: string[];
   mainTheme: string | null;
   cutDowns: string | null;
   soundBites: string | null;
@@ -28,6 +24,7 @@ interface AIContentWrapperProps {
   onMainTheme: () => Promise<string>;
   onUsefulCutdowns: () => Promise<string>;
   onGenerateSoundBites: () => Promise<string>;
+  onSortFillerWords: () => Promise<string[]>;
 }
 
 type ContentType =
@@ -36,7 +33,8 @@ type ContentType =
   | "sortedWords"
   | "mainTheme"
   | "cutDowns"
-  | "soundBites";
+  | "soundBites"
+  | "sortedFillerWords";
 
 interface AIContent {
   type: ContentType;
@@ -54,8 +52,10 @@ export function AIContentWrapper({
   sortedWords,
   mainTheme,
   cutDowns,
+  sortedFillerWords,
   soundBites,
   onGenerateSummary,
+  onSortFillerWords,
   onGenerateBulletPoints,
   onSortWords,
   onMainTheme,
@@ -65,7 +65,7 @@ export function AIContentWrapper({
   const [contentOrder, setContentOrder] = useState<ContentType[]>([]);
   const [aiContent, setAIContent] = useState<AIContent[]>([]);
   const [isSaving, setIsSaving] = useState(false);
-
+  console.log("FILLERWORDS", sortedFillerWords);
   // Update content order based on props
   useEffect(() => {
     setContentOrder((prevOrder) => {
@@ -77,8 +77,13 @@ export function AIContentWrapper({
         newOrder.push("bulletPoints");
       if (sortedWords.length > 0 && !prevOrder.includes("sortedWords"))
         newOrder.push("sortedWords");
-      if (mainTheme && !prevOrder.includes("mainTheme"))
-        newOrder.push("mainTheme");
+      if (
+        sortedFillerWords &&
+        sortedFillerWords.length > 0 &&
+        !prevOrder.includes("sortedFillerWords")
+      )
+        if (mainTheme && !prevOrder.includes("mainTheme"))
+          newOrder.push("mainTheme");
       if (cutDowns && !prevOrder.includes("cutDowns"))
         newOrder.push("cutDowns");
       if (soundBites && !prevOrder.includes("soundBites"))
@@ -90,6 +95,7 @@ export function AIContentWrapper({
           (type === "summary" && summary) ||
           (type === "bulletPoints" && bulletPoints.length > 0) ||
           (type === "sortedWords" && sortedWords.length > 0) ||
+          (type === "sortedFillerWords" && sortedFillerWords.length > 0) ||
           (type === "mainTheme" && mainTheme) ||
           (type === "cutDowns" && cutDowns) ||
           (type === "soundBites" && soundBites)
@@ -102,8 +108,16 @@ export function AIContentWrapper({
 
       return newOrder;
     });
-  }, [summary, bulletPoints, sortedWords, mainTheme, cutDowns, soundBites]);
-  
+  }, [
+    summary,
+    bulletPoints,
+    sortedWords,
+    mainTheme,
+    cutDowns,
+    soundBites,
+    sortedFillerWords,
+  ]);
+
   const saveContent = async (
     type: ContentType,
     content: string | string[],
@@ -145,6 +159,7 @@ export function AIContentWrapper({
         "mainTheme",
         "cutDowns",
         "soundBites",
+        "sortedFillerWords",
       ];
 
       for (const type of contentToSave) {
@@ -156,6 +171,8 @@ export function AIContentWrapper({
               return bulletPoints;
             case "sortedWords":
               return sortedWords;
+            case "sortedFillerWords":
+              return sortedFillerWords;
             case "mainTheme":
               return mainTheme;
             case "cutDowns":
@@ -210,6 +227,8 @@ export function AIContentWrapper({
           return savedContent || bulletPoints;
         case "sortedWords":
           return savedContent || sortedWords;
+        case "sortedFillerWords":
+          return savedContent || sortedFillerWords;
         case "mainTheme":
           return savedContent || mainTheme;
         case "cutDowns":
@@ -252,6 +271,19 @@ export function AIContentWrapper({
         return (
           <div className="mt-4">
             <h3 className="text-lg font-semibold">Sorted Words:</h3>
+            <ul className="mt-2 list-disc pl-5">
+              {(Array.isArray(content) ? content : [content]).map(
+                (word, index) => (
+                  <li key={index}>{word}</li>
+                ),
+              )}
+            </ul>
+          </div>
+        );
+      case "sortedFillerWords":
+        return (
+          <div className="mt-4">
+            <h3 className="text-lg font-semibold">Filler Words:</h3>
             <ul className="mt-2 list-disc pl-5">
               {(Array.isArray(content) ? content : [content]).map(
                 (word, index) => (
@@ -305,6 +337,9 @@ export function AIContentWrapper({
               handleAction("bulletPoints", onGenerateBulletPoints)
             }
             onSortWords={() => handleAction("sortedWords", onSortWords)}
+            onSortFillerWords={() =>
+              handleAction("sortedFillerWords", onSortFillerWords)
+            }
             onMainTheme={() => handleAction("mainTheme", onMainTheme)}
             onUsefulCutdowns={() => handleAction("cutDowns", onUsefulCutdowns)}
             onGenerateSoundBites={() =>

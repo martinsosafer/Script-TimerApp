@@ -17,6 +17,15 @@ const AIFeedbackContent: React.FC<AIFeedbackContentProps> = ({
     return null;
   }
 
+  // Updated parseContent function to safely handle content type
+  const parseContent = (content: string | string[]): string[] => {
+    if (typeof content === "string") {
+      return content.split(/(\w+: \d+)/g).filter((item) => item.trim() !== "");
+    }
+    // If content is already an array, return it as is
+    return Array.isArray(content) ? content : [];
+  };
+
   const renderContent = () => {
     switch (type) {
       case "summary":
@@ -55,7 +64,25 @@ const AIFeedbackContent: React.FC<AIFeedbackContentProps> = ({
         return (
           <>
             <h5 className="text-sm font-semibold">Sorted Words:</h5>
-            <p className="mt-1 text-sm">{content as string}</p>
+            <ul className="mt-1 list-disc pl-5 text-sm">
+              {Array.isArray(content) ? (
+                content.map((word, index) => <li key={index}>{word}</li>)
+              ) : (
+                <li>{content}</li>
+              )}
+            </ul>
+          </>
+        );
+      case "sortedFillerWords":
+        const fillerWords = parseContent(content);
+        return (
+          <>
+            <h5 className="text-sm font-semibold">Filler Words:</h5>
+            <ul className="mt-1 list-disc pl-5 text-sm">
+              {fillerWords.map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
+            </ul>
           </>
         );
       case "mainTheme":

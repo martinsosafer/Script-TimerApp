@@ -67,6 +67,7 @@ export default function MicrophoneAndWebcamComponent({
     soundBites,
     isLoading,
     processTranscript,
+    sortedFillerWords,
   } = usePostProcessing();
 
   const [isRecordingComplete, setIsRecordingComplete] = useState(false);
@@ -160,7 +161,8 @@ export default function MicrophoneAndWebcamComponent({
     processTranscript(whisperTranscription, "useful-cutdowns");
   const handleGenerateSoundBites = () =>
     processTranscript(whisperTranscription, "sound-bites");
-
+  const handleSortFillerWords = () =>
+    processTranscript(whisperTranscription, "filler-counter");
   const PulseCircle = () => (
     <div
       className={`h-4 w-4 rounded-full ${
@@ -278,6 +280,7 @@ export default function MicrophoneAndWebcamComponent({
           mainTheme={mainTheme}
           cutDowns={cutDowns}
           soundBites={soundBites}
+          sortedFillerWords={sortedFillerWords}
           onGenerateSummary={handleGenerateSummary}
           onGenerateBulletPoints={handleGenerateBulletPoints}
           onSortWords={handleSortWords}
@@ -286,6 +289,7 @@ export default function MicrophoneAndWebcamComponent({
           onGenerateSoundBites={handleGenerateSoundBites}
           userId={userId}
           uploadUrl={uploadUrl}
+          onSortFillerWords={handleSortFillerWords}
         />
 
         <VideoHistory

@@ -40,6 +40,22 @@ export async function POST(req: Request) {
     Format each sound bite on a new line, preceded by a bullet point.
     
     Transcript:\n\n${transcript}`;
+  } else if (type === "filler-counter") {
+    systemPrompt =
+      "You are an expert speech analyzer focusing on filler words and phrases.";
+    userPrompt = `Analyze the following transcript for filler words and phrases. Include common fillers like "um", "uh", "like", "you know", "sort of", "kind of", "basically", and any other speech patterns that don't add substantive meaning. 
+
+    Please provide:
+    1. A list of all filler words/phrases found and their counts
+    2. The total number of filler words
+    3. The total word count
+    4. The percentage of filler words in the speech
+    
+    Format the response as a JSON object with these keys:
+    - fillerWords: array of {word: string, count: number}
+    - statistics: {totalFillers: number, totalWords: number, fillerPercentage: string}
+
+    Transcript:\n\n${transcript}`;
   } else {
     return NextResponse.json(
       { error: "Invalid content type" },
@@ -57,20 +73,21 @@ export async function POST(req: Request) {
     });
 
     let content = response.choices[0].message.content;
+
     if (type === "word-sorter") {
       const wordCounts = {};
       transcript
         .toLowerCase()
-        .replace(/[^\w\s]/g, "") // Remove punctuation
-        .split(/\s+/) // Split by whitespace
-        .filter((word) => word.trim() !== "") // Filter out empty strings
+        .replace(/[^\w\s]/g, "")
+        .split(/\s+/)
+        .filter((word) => word.trim() !== "")
         .forEach((word) => {
           wordCounts[word] = (wordCounts[word] || 0) + 1;
         });
 
       const sortedWords = Object.entries(wordCounts)
-        .filter(([_, count]) => count > 3) // Filter words occurring more than 3 times
-        .sort((a, b) => b[1] - a[1]) // Sort by frequency descending
+        .filter(([_, count]) => count > 3)
+        .sort((a, b) => b[1] - a[1])
         .map(([word, count]) => `${word}: ${count}`);
 
       if (sortedWords.length === 0) {
@@ -79,7 +96,25 @@ export async function POST(req: Request) {
       } else {
         content = sortedWords;
       }
+    } else if (type === "filler-counter") {
+      try {
+        if (typeof content === "string") {
+          content = JSON.parse(content);
+        }
+
+        // Transform to match sortedWords format exactly
+        content = content.fillerWords.map(
+          (item) => `${item.word}: ${item.count}`,
+        );
+      } catch (error) {
+        console.error("Error parsing filler counter response:", error);
+        return NextResponse.json(
+          { error: "Failed to analyze filler words" },
+          { status: 500 },
+        );
+      }
     }
+
     return NextResponse.json({ content });
   } catch (error) {
     console.error("Error in generate-content:", error);

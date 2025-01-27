@@ -4,6 +4,7 @@ type ContentType =
   | "summary"
   | "bulletPoints"
   | "sortedWords"
+  | "sortedFillerWords"
   | "mainTheme"
   | "cutDowns"
   | "soundBites";
