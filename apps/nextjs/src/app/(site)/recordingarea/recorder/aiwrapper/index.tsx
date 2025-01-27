@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
 
+
+
 import { Button } from "@voiceai/ui";
 import { IconBookPlus, IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 
+
+
 import { AIFeatureButtons } from "../aifeaturebutton";
+
 
 interface AIContentWrapperProps {
   userId?: string;
@@ -98,12 +103,41 @@ export function AIContentWrapper({
       return newOrder;
     });
   }, [summary, bulletPoints, sortedWords, mainTheme, cutDowns, soundBites]);
+  
+  const saveContent = async (
+    type: ContentType,
+    content: string | string[],
+    uploadUrl: string,
+  ) => {
+    if (userId && uploadUrl) {
+      try {
+        await fetch("/api/speechcoachai", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId,
+            contentType: type,
+            content,
+            uploadUrl,
+          }),
+        });
+        setAIContent((prev) => [
+          ...prev.filter((item) => item.type !== type),
+          { type, content },
+        ]);
+      } catch (error) {
+        console.error("Error saving AI content:", error);
+      }
+    }
+  };
+
   const saveAllContent = async () => {
     if (!userId || !uploadUrl) return;
 
     setIsSaving(true);
     try {
-      // Save each type of content that exists
       const contentToSave: ContentType[] = [
         "summary",
         "bulletPoints",
@@ -143,34 +177,6 @@ export function AIContentWrapper({
       setIsSaving(false);
     }
   };
-  const saveContent = async (
-    type: ContentType,
-    content: string | string[],
-    uploadUrl: string | null,
-  ) => {
-    if (userId && uploadUrl) {
-      try {
-        await fetch("/api/speechcoachai", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId,
-            contentType: type,
-            content,
-            uploadUrl,
-          }),
-        });
-        setAIContent((prev) => [
-          ...prev.filter((item) => item.type !== type),
-          { type, content },
-        ]);
-      } catch (error) {
-        console.error("Error saving AI content:", error);
-      }
-    }
-  };
 
   const handleAction = async (
     type: ContentType,
@@ -190,6 +196,7 @@ export function AIContentWrapper({
       console.error(`Error generating ${type}:`, error);
     }
   };
+
   const renderContent = (type: ContentType) => {
     // Get content from props or saved state
     const getContent = () => {

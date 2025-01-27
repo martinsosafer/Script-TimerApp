@@ -20,7 +20,7 @@ export async function saveAIContent(
   content: string | string[],
   uploadUrl?: string, // Add this parameter
 ): Promise<void> {
-  const key = `user:${userId}:${contentType}`;
+  const key = `user:${userId}:video:${uploadUrl}:${contentType}`;
   const contentObject: AIContent = {
     type: contentType,
     content: content,
@@ -38,8 +38,9 @@ export async function saveAIContent(
 export async function getAIContent(
   userId: string,
   contentType: ContentType,
+  uploadUrl: string,
 ): Promise<AIContent | null> {
-  const key = `user:${userId}:${contentType}`;
+  const key = `user:${userId}:video:${uploadUrl}:${contentType}`;
   const content = await kv.get(key);
 
   console.log("Raw content from KV:", content); // Debug log
@@ -77,25 +78,25 @@ export async function getAIContent(
 
   return null;
 }
-
 export async function getAllAIContent(userId: string): Promise<AIContent[]> {
-  const contentTypes: ContentType[] = [
-    "summary",
-    "bulletPoints",
-    "sortedWords",
-    "mainTheme",
-    "cutDowns",
-    "soundBites",
-  ];
+  const pattern = `user:${userId}:video:*`;
+  const keys = await kv.keys(pattern);
 
   const contents = await Promise.all(
-    contentTypes.map(async (type) => {
+    keys.map(async (key) => {
       try {
-        const content = await getAIContent(userId, type);
-        console.log(`Content for ${type}:`, content); // Debug log
-        return content;
+        const content = await kv.get(key);
+        if (
+          content &&
+          typeof content === "object" &&
+          "type" in content &&
+          "content" in content
+        ) {
+          return content as AIContent;
+        }
+        return null;
       } catch (error) {
-        console.error(`Error getting content for type ${type}:`, error);
+        console.error(`Error getting content for key ${key}:`, error);
         return null;
       }
     }),

@@ -116,7 +116,7 @@ export default async function IndexPage() {
 
     // Fetch all AI contents for the user
     aiContents = await getAllAIContent(userId);
-
+    console.log("AICONTENT", aiContents);
     // Compare and combine savedWebcam with aiContents
     savedWebcam = savedWebcam.map((webcamItem) => {
       const matchingAIContents = aiContents.filter(

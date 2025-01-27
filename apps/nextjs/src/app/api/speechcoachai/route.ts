@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
   try {
     const { userId, contentType, content, uploadUrl } = await request.json();
 
-    if (!userId || !contentType) {
+    if (!userId || !contentType || !uploadUrl) {
       return NextResponse.json(
         { error: "userId and contentType are required" },
         { status: 400 },
@@ -34,6 +34,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get("userId");
     const contentType = searchParams.get("contentType");
+    const uploadUrl = searchParams.get("uploadUrl");
 
     if (!userId) {
       return NextResponse.json(
@@ -42,12 +43,17 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    if (contentType) {
-      const content = await getAIContent(userId, contentType as any);
+    if (contentType && uploadUrl) {
+      const content = await getAIContent(userId, contentType as any, uploadUrl);
       return NextResponse.json(content || { error: "Content not found" });
-    } else {
+    } else if (!contentType && !uploadUrl) {
       const allContent = await getAllAIContent(userId);
       return NextResponse.json(allContent);
+    } else {
+      return NextResponse.json(
+        { error: "Invalid combination of parameters" },
+        { status: 400 },
+      );
     }
   } catch (error) {
     console.error("Error in GET handler:", error);
