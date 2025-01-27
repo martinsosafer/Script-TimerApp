@@ -17,7 +17,7 @@
     "@t3-oss/env-nextjs": "^0.7.1",
     "@voiceai/db": "workspace:^0.1.0",
     "@voiceai/email": "workspace:^0.1.0",
-    "next": "^14.0.1",
+    "next": "^14.2.23",
     "next-auth": "5.0.0-beta.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
