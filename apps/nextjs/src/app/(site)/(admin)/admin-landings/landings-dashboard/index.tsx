@@ -34,7 +34,7 @@ export default function LandingsDashboard() {
         >
           <span className="text-xl">+</span> Add a New Landing Page
         </button>
-        <div className="mt-8">
+        <div className="mt-8 translate-x-[340px] lg:translate-x-0">
           {isLoading && <div>Loading...</div>}
           {isError && <div>Error fetching data</div>}
           {allLandings && allLandings.length === 0 && (
@@ -43,30 +43,32 @@ export default function LandingsDashboard() {
           {allLandings && allLandings.length > 0 && (
             <div>
               <div className="mb-2 flex w-[1024px] text-lg">
-                <div className="w-[20%] p-1 font-bold">Title</div>
-                <div className="w-[40%] p-1 font-bold">Description</div>
-                <div className="w-[20%] p-1 font-bold">Type</div>
-                <div className="w-[10%] p-1 font-bold">Segment</div>
-                <div className="w-[10%] p-1 text-center font-bold">Actions</div>
+                <div className="w-[240px] p-1 font-bold">Title</div>
+                <div className="w-[400px] p-1 font-bold">Description</div>
+                <div className="w-[240px] p-1 font-bold">Type</div>
+                <div className="w-[140px] p-1 font-bold">Segment</div>
+                <div className="w-[140px] p-1 text-center font-bold">
+                  Actions
+                </div>
               </div>
             </div>
           )}
 
           {allLandings?.map((landing) => (
             <div key={landing.id} className="flex w-[1024px]">
-              <div className="w-[20%] border border-gray-300 p-1">
+              <div className="w-[240px] border border-gray-300 p-1">
                 {landing.title}
               </div>
-              <div className="w-[40%] border border-gray-300 p-1">
+              <div className="w-[400px] border border-gray-300 p-1">
                 {landing.description}
               </div>
-              <div className="w-[20%] border border-gray-300 p-1">
+              <div className="w-[240px] border border-gray-300 p-1">
                 {landing.lp_type}
               </div>
-              <div className="w-[10%] border border-gray-300 p-1">
+              <div className="w-[140px] border border-gray-300 p-1">
                 {landing.segment}
               </div>
-              <div className="flex w-[10%] justify-around p-2">
+              <div className="flex w-[140px] justify-around p-2">
                 <button
                   onClick={() => {
                     setSelectedLanding(landing as LandingPage);
