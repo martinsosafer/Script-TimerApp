@@ -1,3 +1,6 @@
+"use server";
+
+import { revalidatePath } from "next/cache";
 import { kv } from "@vercel/kv";
 
 type ContentType =
@@ -103,4 +106,7 @@ export async function getAllAIContent(userId: string): Promise<AIContent[]> {
   return contents.filter(
     (content): content is AIContent => content !== null && "content" in content,
   );
+}
+export async function revalidateRecordingPage() {
+  revalidatePath("/recordingarea"); // Update with your actual page path
 }

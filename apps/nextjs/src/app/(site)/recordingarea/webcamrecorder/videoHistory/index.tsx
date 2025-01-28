@@ -8,22 +8,45 @@ import Button from "~/app/(site)/components/button";
 import AIFeedbackContent from "./aiFeedback";
 
 const VideoHistory = ({
-  savedWebcam = [],
+  savedWebcam: initialSavedWebcam = [],
   displayVideoCount,
   onLoadMore,
   userId,
 }) => {
+  const [savedWebcam, setSavedWebcam] = useState(initialSavedWebcam);
+  const [loading, setLoading] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [expandedRecordings, setExpandedRecordings] = useState({});
 
-  // Sort the savedWebcam array by date and time
+  // Sync props with local state and handle loading
+  useEffect(() => {
+    setLoading(true);
+    setSavedWebcam(initialSavedWebcam);
+    const timer = setTimeout(() => setLoading(false), 300);
+    return () => clearTimeout(timer);
+  }, [initialSavedWebcam]);
+
+  const parseDate = (dateString) => {
+    const [datePart, timePart] = dateString.split(" ");
+    const [day, month, year] = datePart.split("-");
+    const [hour, minute] = timePart.split(":");
+    return new Date(
+      Number.parseInt(year),
+      Number.parseInt(month) - 1,
+      Number.parseInt(day),
+      Number.parseInt(hour),
+      Number.parseInt(minute),
+    );
+  };
+
+  // Sort recordings
   const sortedRecordings = useMemo(() => {
     return [...savedWebcam].sort((a, b) => {
-      const dateA = new Date(a.uploadedAt);
-      const dateB = new Date(b.uploadedAt);
-      return dateB - dateA; // Sort in descending order (newest first)
+      const dateA = parseDate(a.uploadedAt);
+      const dateB = parseDate(b.uploadedAt);
+      return dateB.getTime() - dateA.getTime();
     });
-  }, [savedWebcam]);
+  }, [savedWebcam, parseDate]); // Added parseDate to dependencies
 
   const displayedRecordings = sortedRecordings.slice(0, displayVideoCount);
 
@@ -37,6 +60,38 @@ const VideoHistory = ({
       [index]: !prev[index],
     }));
   };
+
+  const formatDate = (dateString) => {
+    try {
+      const date = parseDate(dateString);
+      if (isNaN(date.getTime())) {
+        throw new Error("Invalid date");
+      }
+      return date
+        .toLocaleString("en-US", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+        })
+        .replace(",", "");
+    } catch (error) {
+      console.error("Error parsing date:", error);
+      return dateString; // Fallback to original string if parsing fails
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="mt-[20px] flex justify-center py-4">
+        <div className="animate-pulse text-gray-500">
+          Updating recordings...
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="mt-[20px]">
@@ -55,7 +110,6 @@ const VideoHistory = ({
                 className="rounded-lg bg-gray-50 p-4"
               >
                 <div className="flex items-center">
-                  {/* Thumbnail */}
                   <div
                     className="h-32 w-48 cursor-pointer overflow-hidden rounded-md"
                     onClick={() => setSelectedVideo(recording)}
@@ -66,28 +120,16 @@ const VideoHistory = ({
                     />
                   </div>
 
-                  {/* Info */}
                   <div className="ml-4 flex flex-1 flex-col justify-center">
                     <span className="font-medium">{recording.filename}</span>
                   </div>
 
-                  {/* Upload Date */}
                   <div className="text-sm text-gray-500">
-                    {new Date(recording.uploadedAt)
-                      .toLocaleString("en-GB", {
-                        year: "numeric",
-                        month: "2-digit",
-                        day: "2-digit",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        hour12: false,
-                      })
-                      .replace(",", "")}
+                    {formatDate(recording.uploadedAt)}
                   </div>
                 </div>
 
-                {/* AI Feedback Toggle */}
-                {recording.aiContent && recording.aiContent.length > 0 && (
+                {recording.aiContent?.length > 0 && (
                   <div className="mt-4">
                     <motion.button
                       onClick={() => toggleAIFeedback(index)}
@@ -108,21 +150,33 @@ const VideoHistory = ({
                           exit={{ opacity: 0, height: 0 }}
                           className="overflow-hidden"
                         >
-                          {recording.aiContent.map((item, feedbackIndex) => (
-                            <motion.div
-                              key={feedbackIndex}
-                              initial={{ opacity: 0, y: -10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: -10 }}
-                              transition={{ delay: feedbackIndex * 0.1 }}
-                              className="mt-2 rounded-md bg-gray-100 p-3"
-                            >
-                              <AIFeedbackContent
-                                type={item.type}
-                                content={item.content}
-                              />
-                            </motion.div>
-                          ))}
+                          {recording.aiContent.map((item, feedbackIndex) => {
+                            const isEmpty =
+                              (Array.isArray(item.content) &&
+                                item.content.length === 0) ||
+                              (typeof item.content === "string" &&
+                                (item.content.includes("too short") ||
+                                  item.content.includes("lacks sufficient") ||
+                                  item.content.trim() === ""));
+
+                            if (isEmpty) return null;
+
+                            return (
+                              <motion.div
+                                key={feedbackIndex}
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                transition={{ delay: feedbackIndex * 0.1 }}
+                                className="mt-2 rounded-md bg-gray-100 p-3"
+                              >
+                                <AIFeedbackContent
+                                  type={item.type}
+                                  content={item.content}
+                                />
+                              </motion.div>
+                            );
+                          })}
                         </motion.div>
                       )}
                     </AnimatePresence>
@@ -142,7 +196,6 @@ const VideoHistory = ({
         <p className="text-gray-500">No saved webcam recordings yet.</p>
       )}
 
-      {/* Video Modal */}
       <AnimatePresence>
         {selectedVideo && (
           <motion.div
@@ -172,7 +225,6 @@ const VideoHistory = ({
                   src={selectedVideo.url}
                   className="w-full rounded-md"
                 />
-
                 <div className="mt-2 font-medium text-white">
                   {selectedVideo.filename}
                 </div>

@@ -18,7 +18,7 @@ interface AudioRecording {
 }
 
 interface AudioHistoryProps {
-  savedAudios: AudioRecording[];
+  savedAudios?: AudioRecording[];
   displayAudioCount: number;
   onLoadMore: () => void;
   userId: string | undefined;
@@ -30,20 +30,43 @@ const AudioHistory: React.FC<AudioHistoryProps> = ({
   onLoadMore,
   userId,
 }) => {
+  console.log("Audios", savedAudios);
   const [selectedAudio, setSelectedAudio] = useState<AudioRecording | null>(
     null,
   );
   const [expandedRecordings, setExpandedRecordings] = useState<
     Record<number, boolean>
   >({});
+  const [loading, setLoading] = useState(false);
+  const [localSavedAudios, setLocalSavedAudios] = useState(savedAudios);
+
+  useEffect(() => {
+    setLoading(true);
+    setLocalSavedAudios(savedAudios);
+    const timer = setTimeout(() => setLoading(false), 300);
+    return () => clearTimeout(timer);
+  }, [savedAudios]);
+
+  const parseDate = (dateString: string): Date => {
+    const [datePart, timePart] = dateString.split(" ");
+    const [day, month, year] = datePart.split("-");
+    const [hour, minute] = timePart.split(":");
+    return new Date(
+      Number.parseInt(year),
+      Number.parseInt(month) - 1,
+      Number.parseInt(day),
+      Number.parseInt(hour),
+      Number.parseInt(minute),
+    );
+  };
 
   const sortedRecordings = useMemo(() => {
-    return [...savedAudios].sort((a, b) => {
-      const dateA = new Date(a.uploadedAt);
-      const dateB = new Date(b.uploadedAt);
+    return [...localSavedAudios].sort((a, b) => {
+      const dateA = parseDate(a.uploadedAt);
+      const dateB = parseDate(b.uploadedAt);
       return dateB.getTime() - dateA.getTime(); // Sort in descending order (newest first)
     });
-  }, [savedAudios]);
+  }, [localSavedAudios, parseDate]); // Added parseDate to dependencies
 
   const displayedRecordings = sortedRecordings.slice(0, displayAudioCount);
 
@@ -57,6 +80,38 @@ const AudioHistory: React.FC<AudioHistoryProps> = ({
       [index]: !prev[index],
     }));
   };
+
+  const formatDate = (dateString: string): string => {
+    try {
+      const date = parseDate(dateString);
+      if (isNaN(date.getTime())) {
+        throw new Error("Invalid date");
+      }
+      return date
+        .toLocaleString("en-US", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+        })
+        .replace(",", "");
+    } catch (error) {
+      console.error("Error parsing date:", error);
+      return dateString; // Fallback to original string if parsing fails
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="mt-[20px] flex justify-center py-4">
+        <div className="animate-pulse text-gray-500">
+          Updating recordings...
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="mt-[20px]">
@@ -95,16 +150,7 @@ const AudioHistory: React.FC<AudioHistoryProps> = ({
 
                   {/* Upload Date */}
                   <div className="text-sm text-gray-500">
-                    {new Date(recording.uploadedAt)
-                      .toLocaleString("en-GB", {
-                        year: "numeric",
-                        month: "2-digit",
-                        day: "2-digit",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        hour12: false,
-                      })
-                      .replace(",", "")}
+                    {formatDate(recording.uploadedAt)}
                   </div>
                 </div>
 

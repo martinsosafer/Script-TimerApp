@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 
 import { IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 
+import { revalidateRecordingPage } from "~/app/actions/speechcoach";
 import { poppins, roboto } from "~/app/fonts";
 import { formatTime } from "~/lib/formattime";
 import Button from "../../components/button";
@@ -125,6 +126,8 @@ export default function MicrophoneAndWebcamComponent({
       if (uploadedUrl) {
         console.log("Recording uploaded successfully:", uploadedUrl);
         setUploadedVideoUrl(uploadedUrl);
+        // Trigger page revalidation
+        await revalidateRecordingPage();
         alert("Recording saved successfully!");
       }
     } else {
