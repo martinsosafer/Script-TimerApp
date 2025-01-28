@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import type { Session } from "next-auth";
 
 import CheckoutLoginModal from "~/app/(site)/components/modals/checkout-login-modal";
 import UpgradeModal from "~/app/(site)/components/modals/upgrade-modal";
-import { useSharedState } from "~/app/context/state";
 import { roboto } from "~/app/fonts";
 import {
   DESCRIPTION,
@@ -202,10 +202,11 @@ export default function PlansCards({
   session: Session | null;
   interval: string | undefined;
 }) {
-  const { setProductId } = useSharedState();
   const [isUpgrading, setIsUpgrading] = useState(false);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [priceId, setPriceId] = useState("");
+
+  const router = useRouter();
 
   return (
     <section
@@ -228,8 +229,7 @@ export default function PlansCards({
           setIsUpgrading(true);
         }}
         noSessionCheckout={() => {
-          setProductId(productIds.EDUCATION![period]);
-          return setIsCheckingOut(true);
+          router.push("/register?origin=checkout");
         }}
       />
       <RegularCard
@@ -242,8 +242,7 @@ export default function PlansCards({
           setIsUpgrading(true);
         }}
         noSessionCheckout={() => {
-          setProductId(productIds.EDUCATION![period]);
-          return setIsCheckingOut(true);
+          router.push("/register?origin=checkout");
         }}
       />
       <RegularCard
@@ -256,8 +255,7 @@ export default function PlansCards({
           setIsUpgrading(true);
         }}
         noSessionCheckout={() => {
-          setProductId(productIds.EDUCATION![period]);
-          return setIsCheckingOut(true);
+          router.push("/register?origin=checkout");
         }}
       />
       {isUpgrading && (

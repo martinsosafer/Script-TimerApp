@@ -107,7 +107,7 @@ export default function Explore({
               productId={null}
               priceId={null}
               session={session}
-              noSessionCheckout={() => router.push("#plan-cards")}
+              noSessionCheckout={() => router.push("/register?origin=checkout")}
               type="primary"
             />
           </span>
@@ -117,7 +117,7 @@ export default function Explore({
               productId={PRODUCTS_ID.EDUCATION![period]}
               priceId={PRICES_ID.EDUCATION![period]}
               session={session}
-              noSessionCheckout={() => router.push("#plan-cards")}
+              noSessionCheckout={() => router.push("/register?origin=checkout")}
               type="primary"
             />
           </span>
@@ -127,7 +127,7 @@ export default function Explore({
               productId={PRODUCTS_ID.CREATOR![period]}
               priceId={PRICES_ID.CREATOR![period]}
               session={session}
-              noSessionCheckout={() => router.push("#plan-cards")}
+              noSessionCheckout={() => router.push("/register?origin=checkout")}
               type="accent"
             />
           </span>
