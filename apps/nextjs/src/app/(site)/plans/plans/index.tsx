@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import type { Session } from "@voiceai/auth";
 
+import UpgradeModal from "../../components/modals/upgrade-modal";
 import Explore from "../explore";
 import MonthlyYearlyToogle from "./monthly-yearly-toogle";
 import PlansCards from "./plans-cards";
@@ -22,6 +23,10 @@ interface PlansProps {
 
 export default function Plans({ session, subscription }: PlansProps) {
   const [period, setPeriod] = useState<"monthly" | "yearly">("yearly");
+  const [isUpgrading, setIsUpgrading] = useState(false);
+  const [priceId, setPriceId] = useState("");
+
+  console.log("priceId", priceId);
 
   return (
     <>
@@ -33,12 +38,27 @@ export default function Plans({ session, subscription }: PlansProps) {
         period={period}
         session={session}
         interval={subscription?.interval}
+        isUpgrading={isUpgrading}
+        setIsUpgrading={setIsUpgrading}
+        priceId={priceId}
+        setPriceId={setPriceId}
       />
       <Explore
         session={session}
         period={period}
         interval={subscription?.interval}
+        isUpgrading={isUpgrading}
+        setIsUpgrading={setIsUpgrading}
+        priceId={priceId}
+        setPriceId={setPriceId}
       />
+      {isUpgrading && (
+        <UpgradeModal
+          onClose={() => setIsUpgrading(false)}
+          session={session}
+          priceId={priceId}
+        />
+      )}
     </>
   );
 }
