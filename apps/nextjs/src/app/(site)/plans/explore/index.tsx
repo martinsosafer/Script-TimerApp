@@ -1,5 +1,6 @@
 "use client";
 
+import type { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -16,14 +17,31 @@ import AddOnModal from "../../components/modals/add-ons";
 import CheckoutButton from "../plans/plans-cards/checkout-button";
 import { setHasPlan } from "../utils";
 
+const productIds =
+  process.env.NEXT_PUBLIC_ENVIRONMENT === "production"
+    ? PRODUCTS_ID
+    : TEST_PRODUCTS_ID;
+const priceIds =
+  process.env.NEXT_PUBLIC_ENVIRONMENT === "production"
+    ? PRICES_ID
+    : TEST_PRICES_ID;
+
 export default function Explore({
   session,
   period,
   interval,
+  isUpgrading,
+  setIsUpgrading,
+  priceId,
+  setPriceId,
 }: {
   session: Session | null;
   period: "monthly" | "yearly";
   interval: string | undefined;
+  isUpgrading: boolean;
+  setIsUpgrading: Dispatch<SetStateAction<boolean>>;
+  priceId: string;
+  setPriceId: (value: string) => void;
 }) {
   const [addOnType, setAddOnType] = useState<
     "EDUCATION" | "CREATOR" | "BUSINESS" | null
@@ -114,9 +132,13 @@ export default function Explore({
           <span className="w-[150px] text-center">
             <CheckoutButton
               hasPlan={setHasPlan(session, "EDUCATION", interval, period)}
-              productId={PRODUCTS_ID.EDUCATION![period]}
-              priceId={PRICES_ID.EDUCATION![period]}
+              productId={productIds.EDUCATION?.[period]}
+              priceId={priceIds.EDUCATION?.[period]}
               session={session}
+              upgradeAction={() => {
+                setPriceId(priceIds.EDUCATION![period]!);
+                setIsUpgrading(true);
+              }}
               noSessionCheckout={() => router.push("/register?origin=checkout")}
               type="primary"
             />
@@ -124,9 +146,13 @@ export default function Explore({
           <span className="w-[150px] text-center">
             <CheckoutButton
               hasPlan={setHasPlan(session, "CREATOR", interval, period)}
-              productId={PRODUCTS_ID.CREATOR![period]}
-              priceId={PRICES_ID.CREATOR![period]}
+              productId={productIds.CREATOR?.[period]}
+              priceId={priceIds.CREATOR?.[period]}
               session={session}
+              upgradeAction={() => {
+                setPriceId(priceIds.CREATOR![period]!);
+                setIsUpgrading(true);
+              }}
               noSessionCheckout={() => router.push("/register?origin=checkout")}
               type="accent"
             />
@@ -134,9 +160,13 @@ export default function Explore({
           <span className="w-[150px] text-center">
             <CheckoutButton
               hasPlan={setHasPlan(session, "BUSINESS", interval, period)}
-              productId={PRODUCTS_ID.BUSINESS![period]}
-              priceId={PRICES_ID.BUSINESS![period]}
+              productId={productIds.BUSINESS?.[period]}
+              priceId={priceIds.BUSINESS?.[period]}
               session={session}
+              upgradeAction={() => {
+                setPriceId(priceIds.BUSINESS![period]!);
+                setIsUpgrading(true);
+              }}
               noSessionCheckout={() => router.push("#plan-cards")}
               type="primary"
             />

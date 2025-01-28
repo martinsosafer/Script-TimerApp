@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 
 import { auth } from "@voiceai/auth";
 
-import Logo from "../(site)/components/logo";
 import AnimatedGifs from "../signin/animtadgifs";
 import { LoginWithEmailForm } from "../signin/email-login";
 import FormSwitcher from "../signin/formswitcher";
