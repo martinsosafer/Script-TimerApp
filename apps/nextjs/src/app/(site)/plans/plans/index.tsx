@@ -26,8 +26,6 @@ export default function Plans({ session, subscription }: PlansProps) {
   const [isUpgrading, setIsUpgrading] = useState(false);
   const [priceId, setPriceId] = useState("");
 
-  console.log("priceId", priceId);
-
   return (
     <>
       <MonthlyYearlyToogle period={period} setPeriod={setPeriod} />

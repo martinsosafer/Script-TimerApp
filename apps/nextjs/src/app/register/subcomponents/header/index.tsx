@@ -15,11 +15,20 @@ export default function Header() {
     <div className="flex flex-col items-center justify-center space-y-2 text-center">
       <Logo />
       <div className="justify-center text-center">
-        <h3 className="text-cp-secondary justify-center text-center font-poppins text-[20px] font-normal leading-[28px]">
-          {isCheckingOut
-            ? "Let's get started with your personalized & upgraded work space"
-            : "Bring your projects to life"}
-        </h3>
+        {isCheckingOut ? (
+          <>
+            <h3 className="justify-center text-center font-poppins text-2xl font-semibold leading-[28px] text-black">
+              To upgrade
+            </h3>
+            <h3 className="mt-1 justify-center text-center font-poppins text-2xl font-semibold leading-[28px] text-black">
+              Log in & choose your plan
+            </h3>
+          </>
+        ) : (
+          <h3 className="text-cp-secondary justify-center text-center font-poppins text-xl font-normal leading-[28px]">
+            Bring your projects to life
+          </h3>
+        )}
       </div>
     </div>
   );
