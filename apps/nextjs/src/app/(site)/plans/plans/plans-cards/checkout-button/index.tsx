@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import type { Dispatch, SetStateAction } from "react";
 
 import type { Session } from "@voiceai/auth";
 

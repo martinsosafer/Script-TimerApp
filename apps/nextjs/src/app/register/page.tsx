@@ -3,12 +3,12 @@ import { redirect } from "next/navigation";
 
 import { auth } from "@voiceai/auth";
 
-import Logo from "../(site)/components/logo";
 import AnimatedGifs from "../signin/animtadgifs";
 import { LoginWithEmailForm } from "../signin/email-login";
 import FormSwitcher from "../signin/formswitcher";
 import GoogleForm from "./google-form";
 import RegisterForm from "./register-form";
+import Header from "./subcomponents/header";
 
 export default async function Register() {
   const session = await auth();
@@ -26,14 +26,7 @@ export default async function Register() {
       {/* Form moved to the right */}
       <div className="p-4">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-          <div className="flex flex-col items-center justify-center space-y-2 text-center">
-            <Logo />
-            <div className="justify-center text-center">
-              <h3 className="text-cp-secondary justify-center text-center font-poppins text-[20px] font-normal leading-[28px]">
-                Bring your projects to life
-              </h3>
-            </div>
-          </div>
+          <Header />
           <div>
             <div className="flex items-center justify-center">
               <FormSwitcher highlightSignUp={false} highlightRegister={true} />

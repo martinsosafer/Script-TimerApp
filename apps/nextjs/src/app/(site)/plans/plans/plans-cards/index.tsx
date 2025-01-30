@@ -1,9 +1,7 @@
-import { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import type { Session } from "next-auth";
 
-import CheckoutLoginModal from "~/app/(site)/components/modals/checkout-login-modal";
-import UpgradeModal from "~/app/(site)/components/modals/upgrade-modal";
 import { useSharedState } from "~/app/context/state";
 import { roboto } from "~/app/fonts";
 import {
@@ -197,15 +195,19 @@ export default function PlansCards({
   period,
   session,
   interval,
+  setIsUpgrading,
+  setPriceId,
 }: {
   period: "monthly" | "yearly";
   session: Session | null;
   interval: string | undefined;
+  isUpgrading: boolean;
+  setIsUpgrading: (value: boolean) => void;
+  priceId: string;
+  setPriceId: (value: string) => void;
 }) {
+  const router = useRouter();
   const { setProductId } = useSharedState();
-  const [isUpgrading, setIsUpgrading] = useState(false);
-  const [isCheckingOut, setIsCheckingOut] = useState(false);
-  const [priceId, setPriceId] = useState("");
 
   return (
     <section
@@ -229,7 +231,7 @@ export default function PlansCards({
         }}
         noSessionCheckout={() => {
           setProductId(productIds.EDUCATION![period]);
-          return setIsCheckingOut(true);
+          router.push("/register?origin=checkout");
         }}
       />
       <RegularCard
@@ -242,8 +244,8 @@ export default function PlansCards({
           setIsUpgrading(true);
         }}
         noSessionCheckout={() => {
-          setProductId(productIds.EDUCATION![period]);
-          return setIsCheckingOut(true);
+          setProductId(productIds.CREATOR![period]);
+          router.push("/register?origin=checkout");
         }}
       />
       <RegularCard
@@ -256,20 +258,10 @@ export default function PlansCards({
           setIsUpgrading(true);
         }}
         noSessionCheckout={() => {
-          setProductId(productIds.EDUCATION![period]);
-          return setIsCheckingOut(true);
+          setProductId(productIds.BUSINESS![period]);
+          router.push("/register?origin=checkout");
         }}
       />
-      {isUpgrading && (
-        <UpgradeModal
-          onClose={() => setIsUpgrading(false)}
-          session={session}
-          priceId={priceId}
-        />
-      )}
-      {isCheckingOut && (
-        <CheckoutLoginModal onClose={() => setIsCheckingOut(false)} />
-      )}
     </section>
   );
 }

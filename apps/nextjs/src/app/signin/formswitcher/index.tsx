@@ -1,15 +1,24 @@
+"use client";
+
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 export default function FormSwitcher({
   highlightSignUp = false,
   highlightRegister = false,
 }) {
+  const searchParams = useSearchParams();
+
+  const origin = searchParams.get("origin");
+
+  const isCheckingOut = origin === "checkout";
+
   return (
     <div style={{ textAlign: "center", margin: "20px" }}>
       <div className="relative inline-block">
         {/* Log In link */}
         <Link
-          href="/signin"
+          href={isCheckingOut ? "/signin?origin=checkout" : "/signin"}
           className={`mr-16 font-poppins font-medium ${
             highlightSignUp ? "text-primary" : "text-slate-500"
           }`}
@@ -19,7 +28,7 @@ export default function FormSwitcher({
 
         {/* Sign Up link */}
         <Link
-          href="/register"
+          href={isCheckingOut ? "/register?origin=checkout" : "/register"}
           className={`ml-16 font-poppins font-medium ${
             highlightRegister ? "text-primary" : "text-slate-500"
           }`}
