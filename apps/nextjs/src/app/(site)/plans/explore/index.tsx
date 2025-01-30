@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import type { Session } from "next-auth";
 
+import { useSharedState } from "~/app/context/state";
 import { roboto } from "~/app/fonts";
 import {
   PRICES_ID,
@@ -48,6 +49,8 @@ export default function Explore({
   >(null);
 
   const router = useRouter();
+
+  const { setProductId } = useSharedState();
 
   return (
     <>
@@ -125,7 +128,9 @@ export default function Explore({
               productId={null}
               priceId={null}
               session={session}
-              noSessionCheckout={() => router.push("/register?origin=checkout")}
+              noSessionCheckout={() => {
+                router.push("/register?origin=checkout");
+              }}
               type="primary"
             />
           </span>
@@ -139,7 +144,10 @@ export default function Explore({
                 setPriceId(priceIds.EDUCATION![period]!);
                 setIsUpgrading(true);
               }}
-              noSessionCheckout={() => router.push("/register?origin=checkout")}
+              noSessionCheckout={() => {
+                setProductId(productIds.EDUCATION![period]);
+                router.push("/register?origin=checkout");
+              }}
               type="primary"
             />
           </span>
@@ -153,7 +161,10 @@ export default function Explore({
                 setPriceId(priceIds.CREATOR![period]!);
                 setIsUpgrading(true);
               }}
-              noSessionCheckout={() => router.push("/register?origin=checkout")}
+              noSessionCheckout={() => {
+                setProductId(productIds.CREATOR![period]);
+                router.push("/register?origin=checkout");
+              }}
               type="accent"
             />
           </span>
@@ -167,7 +178,10 @@ export default function Explore({
                 setPriceId(priceIds.BUSINESS![period]!);
                 setIsUpgrading(true);
               }}
-              noSessionCheckout={() => router.push("#plan-cards")}
+              noSessionCheckout={() => {
+                setProductId(productIds.BUSINESS![period]);
+                router.push("/register?origin=checkout");
+              }}
               type="primary"
             />
           </span>

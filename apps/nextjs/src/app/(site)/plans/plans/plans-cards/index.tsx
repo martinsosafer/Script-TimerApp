@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import type { Session } from "next-auth";
 
+import { useSharedState } from "~/app/context/state";
 import { roboto } from "~/app/fonts";
 import {
   DESCRIPTION,
@@ -194,9 +195,7 @@ export default function PlansCards({
   period,
   session,
   interval,
-  isUpgrading,
   setIsUpgrading,
-  priceId,
   setPriceId,
 }: {
   period: "monthly" | "yearly";
@@ -208,6 +207,7 @@ export default function PlansCards({
   setPriceId: (value: string) => void;
 }) {
   const router = useRouter();
+  const { setProductId } = useSharedState();
 
   return (
     <section
@@ -230,6 +230,7 @@ export default function PlansCards({
           setIsUpgrading(true);
         }}
         noSessionCheckout={() => {
+          setProductId(productIds.EDUCATION![period]);
           router.push("/register?origin=checkout");
         }}
       />
@@ -243,6 +244,7 @@ export default function PlansCards({
           setIsUpgrading(true);
         }}
         noSessionCheckout={() => {
+          setProductId(productIds.CREATOR![period]);
           router.push("/register?origin=checkout");
         }}
       />
@@ -256,6 +258,7 @@ export default function PlansCards({
           setIsUpgrading(true);
         }}
         noSessionCheckout={() => {
+          setProductId(productIds.BUSINESS![period]);
           router.push("/register?origin=checkout");
         }}
       />
