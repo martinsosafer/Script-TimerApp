@@ -22,6 +22,10 @@ export default function PromptsDashboard() {
     refetch,
   } = api.prompts.listAllPrompts.useQuery();
 
+  const { data: categories } = api.prompts.listAllPromptCategories.useQuery();
+  const { data: subcategories } =
+    api.prompts.listAllPromptSunCategories.useQuery();
+
   return (
     <>
       <div className="mb-20 flex w-[1200px] flex-col items-center">
@@ -33,6 +37,7 @@ export default function PromptsDashboard() {
         >
           <span className="text-xl">+</span> Add a New Prompt
         </button>
+
         <div className="mt-8">
           {isLoading && <div>Loading...</div>}
           {isError && <div>Error fetching data</div>}
@@ -40,9 +45,9 @@ export default function PromptsDashboard() {
           {allPrompts && allPrompts.length > 0 && (
             <div>
               <div className="mb-2 flex w-full text-lg">
-                <div className="w-[20%] p-1 font-bold">Name</div>
+                <div className="w-[20%] p-1 font-bold">Prompt Name</div>
                 <div className="w-[40%] p-1 font-bold">Description</div>
-                <div className="w-[20%] p-1 font-bold">Type</div>
+                <div className="w-[20%] p-1 font-bold">Category</div>
                 <div className="w-[10%] p-1 font-bold">AI Type</div>
                 <div className="w-[10%] p-1 text-center font-bold">Actions</div>
               </div>
@@ -58,7 +63,7 @@ export default function PromptsDashboard() {
                 {prompt.description}
               </div>
               <div className="w-[20%] border border-gray-300 p-1">
-                {prompt.type}
+                {categories?.find((cat) => cat.id === prompt.category_id)?.name}
               </div>
               <div className="w-[10%] border border-gray-300 p-1">
                 {prompt.ai_model_type}
@@ -94,9 +99,12 @@ export default function PromptsDashboard() {
             setPromptModalOpen(false);
           }}
           prompt={selectedPrompt}
+          categories={categories ?? []}
+          subcategories={subcategories ?? []}
           refetch={refetch}
         />
       )}
+
       {isDeletingPrompt && (
         <DeletePromptModal
           onClose={() => setIsDeletingPrompt(false)}

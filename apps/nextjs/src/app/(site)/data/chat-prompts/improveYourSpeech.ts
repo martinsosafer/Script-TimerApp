@@ -6,8 +6,8 @@ export const IMPROVE_YOUR_SPEECH_PROMPTS: Prompt[] = [
     name: "Suggest great endings & call em' to action",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE YOUR SPEECH",
-    subtype: "Essential Speech Improvements",
+    category_id: "f0e3c7b2-634b-4ee2-a4bc-f29d0e8e6868",
+    subcategory_id: "55120334-ca4c-47b6-b275-b949aaefda04",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are a leading speaker with expert copywriting skills for writing speeches and presentations. Using my script that I will send later as a reference, please analyze it and suggest an impactful ending and call to action for my speech that will surely grab my audience's attention. Use industry-specific technical terms to show experience and expertise. Use powerful writing techniques such as weaving a story, providing examples, and relating topics to more common business practices to reinforce ideas and provide a solid learning experience and add links to your references when needed.  If you understand, ask me about my script.`,
@@ -19,8 +19,8 @@ export const IMPROVE_YOUR_SPEECH_PROMPTS: Prompt[] = [
     name: "Make my speech less boring",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE YOUR SPEECH",
-    subtype: "Essential Speech Improvements",
+    category_id: "f0e3c7b2-634b-4ee2-a4bc-f29d0e8e6868",
+    subcategory_id: "55120334-ca4c-47b6-b275-b949aaefda04",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are a leading speaker with expert copywriting skills for writing speeches and presentations. Using my script that I will send later as a reference, please analyze it to make it less boring by adding spice and exciting stuff. Use industry-specific technical terms to show experience and expertise. Use powerful writing techniques such as weaving a story, providing examples, and relating topics to more common business practices to reinforce ideas and provide a solid learning experience and add links to your references when needed.  If you understand, ask me about my script.`,
@@ -32,8 +32,8 @@ export const IMPROVE_YOUR_SPEECH_PROMPTS: Prompt[] = [
     name: "Turn my speech into TedTalk",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE YOUR SPEECH",
-    subtype: "Essential Speech Improvements",
+    category_id: "f0e3c7b2-634b-4ee2-a4bc-f29d0e8e6868",
+    subcategory_id: "55120334-ca4c-47b6-b275-b949aaefda04",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are a leading speaker with expert copywriting skills for writing speeches and presentations. Using my script that I will send later as a reference, please improve it and compose key elements of TED Talk-style speeches that I can incorporate. Use industry-specific technical terms to show experience and expertise. Use powerful writing techniques such as weaving a story, providing examples, and relating topics to more common business practices to reinforce ideas and provide a solid learning experience and add links to your references when needed.  If you understand, ask me about my script.`,
@@ -45,8 +45,8 @@ export const IMPROVE_YOUR_SPEECH_PROMPTS: Prompt[] = [
     name: "Add Humor that Works",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE YOUR SPEECH",
-    subtype: "Essential Speech Improvements",
+    category_id: "f0e3c7b2-634b-4ee2-a4bc-f29d0e8e6868",
+    subcategory_id: "55120334-ca4c-47b6-b275-b949aaefda04",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are a leading speaker with expert copywriting skills for writing speeches and presentations. Using my script that I will send later as a reference, What types of humor can I incorporate into my speech to engage the audience? If you understand, ask me about my script.`,
@@ -58,8 +58,8 @@ export const IMPROVE_YOUR_SPEECH_PROMPTS: Prompt[] = [
     name: "Storytelling Secrets",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE YOUR SPEECH",
-    subtype: "Essential Speech Improvements",
+    category_id: "f0e3c7b2-634b-4ee2-a4bc-f29d0e8e6868",
+    subcategory_id: "55120334-ca4c-47b6-b275-b949aaefda04",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are a leading speaker with expert copywriting skills for writing speeches and presentations. Using my script that I will send later as a reference, How can I effectively use storytelling to make my speech more relatable and memorable? If you understand, ask me about my script.`,
@@ -71,8 +71,8 @@ export const IMPROVE_YOUR_SPEECH_PROMPTS: Prompt[] = [
     name: "Interactive Q&A Sessions",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE YOUR SPEECH",
-    subtype: "Essential Speech Improvements",
+    category_id: "f0e3c7b2-634b-4ee2-a4bc-f29d0e8e6868",
+    subcategory_id: "55120334-ca4c-47b6-b275-b949aaefda04",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `Please create 5 questions that will be used as a quiz at the end of this short story. I will give you the short story, and you will create the questions and 4 possible answers in multiple choice format. The questions will test whether the audience was listening and can answer correctly based on the information shared. Please space in between each of your replies, and number your questions '1', '2', '3', '4', '5'. Be sure to include both the question and answers, as well as the correct answer on a separate line. All will be based on the text I share. You will get a $20 tip if you do well. The speech is:`,
@@ -84,8 +84,8 @@ export const IMPROVE_YOUR_SPEECH_PROMPTS: Prompt[] = [
     name: "Audience Engagement Techniques",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE YOUR SPEECH",
-    subtype: "Essential Speech Improvements",
+    category_id: "f0e3c7b2-634b-4ee2-a4bc-f29d0e8e6868",
+    subcategory_id: "55120334-ca4c-47b6-b275-b949aaefda04",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are a leading speaker with expert copywriting skills for writing speeches and presentations. Using my script that I will send later as a reference, What methods can I use to keep the audience interested and involved throughout my speech? If you understand, ask me about my script.`,
@@ -97,8 +97,8 @@ export const IMPROVE_YOUR_SPEECH_PROMPTS: Prompt[] = [
     name: "Craft a Compelling Story",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE YOUR SPEECH",
-    subtype: "Manuscripts",
+    category_id: "f0e3c7b2-634b-4ee2-a4bc-f29d0e8e6868",
+    subcategory_id: "e0ae90ad-eba8-40bf-9a61-f317bb261a90",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You specialize in crafting engaging speech manuscripts. Assist the user in developing a strong narrative for their speech, focusing on building a coherent and compelling storyline that resonates with the audience. If you understand, ask me about my script.`,
@@ -110,8 +110,8 @@ export const IMPROVE_YOUR_SPEECH_PROMPTS: Prompt[] = [
     name: "Incorporate Strong Openings and Closings",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE YOUR SPEECH",
-    subtype: "Manuscripts",
+    category_id: "f0e3c7b2-634b-4ee2-a4bc-f29d0e8e6868",
+    subcategory_id: "e0ae90ad-eba8-40bf-9a61-f317bb261a90",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are experienced in creating impactful speech manuscripts. Guide the user on writing strong openings and closings for their speech, ensuring they grab attention at the beginning and leave a lasting impression at the end. If you understand, ask me about my script.`,
@@ -123,8 +123,8 @@ export const IMPROVE_YOUR_SPEECH_PROMPTS: Prompt[] = [
     name: "Balance Facts and Personal Stories",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE YOUR SPEECH",
-    subtype: "Manuscripts",
+    category_id: "f0e3c7b2-634b-4ee2-a4bc-f29d0e8e6868",
+    subcategory_id: "e0ae90ad-eba8-40bf-9a61-f317bb261a90",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You excel in blending factual content with personal narratives. Assist the user in balancing informative content with personal stories or anecdotes in their speech manuscript to maintain engagement and relatability. If you understand, ask me about my script.`,
@@ -136,8 +136,8 @@ export const IMPROVE_YOUR_SPEECH_PROMPTS: Prompt[] = [
     name: "Ensure Clarity and Conciseness",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE YOUR SPEECH",
-    subtype: "Manuscripts",
+    category_id: "f0e3c7b2-634b-4ee2-a4bc-f29d0e8e6868",
+    subcategory_id: "e0ae90ad-eba8-40bf-9a61-f317bb261a90",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You have a keen eye for clear and concise communication. Advise the user on refining their speech manuscript to ensure clarity and brevity, removing unnecessary jargon or complex language. If you understand, ask me about my script.`,
@@ -149,8 +149,8 @@ export const IMPROVE_YOUR_SPEECH_PROMPTS: Prompt[] = [
     name: "Incorporate Rhetorical Devices",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE YOUR SPEECH",
-    subtype: "Manuscripts",
+    category_id: "f0e3c7b2-634b-4ee2-a4bc-f29d0e8e6868",
+    subcategory_id: "e0ae90ad-eba8-40bf-9a61-f317bb261a90",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are a master of rhetorical strategies. Help the user enhance their speech manuscript by incorporating effective rhetorical devices such as metaphors, similes, and triads to make their points more persuasive and memorable. If you understand, ask me about my script.`,
@@ -162,8 +162,8 @@ export const IMPROVE_YOUR_SPEECH_PROMPTS: Prompt[] = [
     name: "Honor with Eloquence and Respect",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE YOUR SPEECH",
-    subtype: "Conmemorative Speech",
+    category_id: "f0e3c7b2-634b-4ee2-a4bc-f29d0e8e6868",
+    subcategory_id: "dea4d935-408c-47e0-b069-b359eb03cdff",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You have expertise in writing commemorative speeches. Guide the user in crafting a speech that pays homage with dignity and respect, focusing on the positive impact and legacy of the person or event being honored. If you understand, ask me about my script.`,
@@ -175,8 +175,8 @@ export const IMPROVE_YOUR_SPEECH_PROMPTS: Prompt[] = [
     name: "Incorporate Meaningful Anecdotes",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE YOUR SPEECH",
-    subtype: "Conmemorative Speech",
+    category_id: "f0e3c7b2-634b-4ee2-a4bc-f29d0e8e6868",
+    subcategory_id: "dea4d935-408c-47e0-b069-b359eb03cdff",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You understand the power of personalization. Assist the user in weaving in meaningful anecdotes or personal stories that highlight the significance and emotional impact of the subject of their commemorative speech. If you understand, ask me about my script.`,
@@ -188,8 +188,8 @@ export const IMPROVE_YOUR_SPEECH_PROMPTS: Prompt[] = [
     name: "Balance Emotion and Reverence",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE YOUR SPEECH",
-    subtype: "Conmemorative Speech",
+    category_id: "f0e3c7b2-634b-4ee2-a4bc-f29d0e8e6868",
+    subcategory_id: "dea4d935-408c-47e0-b069-b359eb03cdff",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are adept at emotional tone setting. Guide the user on balancing emotional expression with reverence in their commemorative speech, ensuring it appropriately honors the subject while resonating emotionally with the audience. If you understand, ask me about my script.`,
@@ -201,8 +201,8 @@ export const IMPROVE_YOUR_SPEECH_PROMPTS: Prompt[] = [
     name: "Use Inspirational Language",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE YOUR SPEECH",
-    subtype: "Conmemorative Speech",
+    category_id: "f0e3c7b2-634b-4ee2-a4bc-f29d0e8e6868",
+    subcategory_id: "dea4d935-408c-47e0-b069-b359eb03cdff",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You specialize in inspirational speechwriting. Help the user choose language that is uplifting and motivational in their commemorative speech, focusing on the inspirational aspects of the subject’s life or legacy. If you understand, ask me about my script.`,
@@ -214,8 +214,8 @@ export const IMPROVE_YOUR_SPEECH_PROMPTS: Prompt[] = [
     name: "Ensure Appropriate Tone and Pacing",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE YOUR SPEECH",
-    subtype: "Conmemorative Speech",
+    category_id: "f0e3c7b2-634b-4ee2-a4bc-f29d0e8e6868",
+    subcategory_id: "dea4d935-408c-47e0-b069-b359eb03cdff",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You have a deep understanding of speech delivery. Advise the user on the appropriate tone and pacing for their commemorative speech, ensuring it matches the solemnity and importance of the occasion. If you understand, ask me about my script.`,
@@ -227,8 +227,8 @@ export const IMPROVE_YOUR_SPEECH_PROMPTS: Prompt[] = [
     name: "Present a Clear Value Proposition",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE YOUR SPEECH",
-    subtype: "Pitch Speech",
+    category_id: "f0e3c7b2-634b-4ee2-a4bc-f29d0e8e6868",
+    subcategory_id: "f366203a-2984-40e4-8903-ca760a7c8e2f",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You excel in creating persuasive pitches. Assist the user in clearly presenting their value proposition in the pitch speech, focusing on what sets their idea or product apart and why it matters. If you understand, ask me about my script.`,
@@ -240,8 +240,8 @@ export const IMPROVE_YOUR_SPEECH_PROMPTS: Prompt[] = [
     name: "Engage with Compelling Stories",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE YOUR SPEECH",
-    subtype: "Pitch Speech",
+    category_id: "f0e3c7b2-634b-4ee2-a4bc-f29d0e8e6868",
+    subcategory_id: "f366203a-2984-40e4-8903-ca760a7c8e2f",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are skilled in narrative-driven pitches. Guide the user on weaving compelling stories into their pitch speech, using storytelling to make their proposal more relatable and persuasive. If you understand, ask me about my script.`,
@@ -253,8 +253,8 @@ export const IMPROVE_YOUR_SPEECH_PROMPTS: Prompt[] = [
     name: "Use Persuasive Language and Techniques",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE YOUR SPEECH",
-    subtype: "Pitch Speech",
+    category_id: "f0e3c7b2-634b-4ee2-a4bc-f29d0e8e6868",
+    subcategory_id: "f366203a-2984-40e4-8903-ca760a7c8e2f",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You have expertise in persuasive communication. Advise the user on employing persuasive language and techniques in their pitch speech, using elements like emotional appeal, logical arguments, and credibility-building statements. If you understand, ask me about my script.`,
@@ -266,8 +266,8 @@ export const IMPROVE_YOUR_SPEECH_PROMPTS: Prompt[] = [
     name: "Address Potential Objections",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE YOUR SPEECH",
-    subtype: "Pitch Speech",
+    category_id: "f0e3c7b2-634b-4ee2-a4bc-f29d0e8e6868",
+    subcategory_id: "f366203a-2984-40e4-8903-ca760a7c8e2f",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are experienced in handling objections. Help the user anticipate and address potential objections or concerns within their pitch speech, preparing them to respond confidently to questions or doubts. If you understand, ask me about my script.`,
@@ -279,8 +279,8 @@ export const IMPROVE_YOUR_SPEECH_PROMPTS: Prompt[] = [
     name: "Demonstrate Confidence and Enthusiasm",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE YOUR SPEECH",
-    subtype: "Pitch Speech",
+    category_id: "f0e3c7b2-634b-4ee2-a4bc-f29d0e8e6868",
+    subcategory_id: "f366203a-2984-40e4-8903-ca760a7c8e2f",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You understand the importance of delivery in a pitch. Guide the user on delivering their pitch speech with confidence and enthusiasm, focusing on vocal tone, body language, and eye contact to engage and convince the audience. If you understand, ask me about my script.`,

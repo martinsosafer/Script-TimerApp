@@ -58,7 +58,7 @@ export function LoginWithEmailForm() {
           {loading ? (
             <IconSpinner className="h-6 w-6 animate-spin" />
           ) : (
-            "Sign In with Email"
+            "Send me a link"
           )}
         </button>
       </form>

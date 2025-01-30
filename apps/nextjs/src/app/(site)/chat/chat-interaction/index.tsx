@@ -2,44 +2,54 @@
 
 import type { FormEvent } from "react";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import type { CoreMessage } from "ai";
 import { readStreamableValue } from "ai/rsc";
 
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
-import type {
-  Prompt,
-  PromptSubType,
-  PromptType,
-} from "~/app/(site)/data/chat-prompts/types";
-import {
-  boostYourVideoScriptSubtypes,
-  types as tabs,
-} from "~/app/(site)/data/chat-prompts/types";
+import Tabs from "~/app/(site)/components/tabs";
+import type { Prompt } from "~/app/(site)/data/chat-prompts/types";
 import { clearChats } from "~/app/actions/newChatActions";
 import deductOpenAiCredits from "~/app/actions/openAiCredits";
+import { poppins, roboto } from "~/app/fonts";
 import { nanoid } from "~/utils/helpers";
 import { continueConversation } from "../../../actions/aiActions";
+import type {
+  PromptCategory,
+  PromptSubcategory,
+} from "../../(admin)/admin-prompt-categories/types";
 import ClearChatHistoryModal from "../../components/modals/clear-chat-history";
 import EditChatSubjectModal from "../../components/modals/edit-chat-subject";
 import NoSessionModal from "../../components/modals/no-session-modal";
+import { YOUR_OWN_PROMPT } from "../../data/chat-prompts";
 import ChatFeedback from "./chat-feedback";
-import GoToOldChat from "./go-to-old-chat";
 import PromptInput from "./prompt-input";
-import Prompter from "./prompter";
 import PromptsSelector from "./promptSelector";
-import SearchPrompts from "./seach-prompts";
 import type { Chat, ChatMessage } from "./types";
-import { getChatHistory } from "./utils";
-import WelcomeMessage from "./welcome-message/welcome-message";
+import { getChatHistory, replaceWordInString } from "./utils";
 
 interface ChatProps {
   userId: string | undefined;
   openAiCredits: number;
+  prompts: Prompt[];
+  categories: PromptCategory[];
+  subcategories: PromptSubcategory[];
 }
 
-export default function ChatInteraction({ userId, openAiCredits }: ChatProps) {
-  const [selectedCard, setSelectedCard] = useState<Prompt | undefined>();
+export default function ChatInteraction({
+  userId,
+  openAiCredits,
+  prompts,
+  categories,
+  subcategories,
+}: ChatProps) {
+  const [selectedPrompt, setSelectedPrompt] = useState<Prompt | undefined>();
+
+  const [additionalFields, setAdditionalFields] = useState<Record<
+    string,
+    string
+  > | null>(null);
   const [promptInput, setPromptInput] = useState<string>("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [chatHistory, setChatHistory] = useState<Chat[]>([]);
@@ -62,12 +72,33 @@ export default function ChatInteraction({ userId, openAiCredits }: ChatProps) {
 
   const [credits, setCredits] = useState(openAiCredits);
 
-  const [selectedTab, setSelectedTab] = useState<PromptType>(tabs[3]);
-  const [selectedPill, setSelectedPill] = useState<PromptSubType>(
-    boostYourVideoScriptSubtypes[0],
-  );
+  const [selectedCategory, setSelectedCategory] = useState<
+    PromptCategory | undefined
+  >(categories.find((category) => category.name === "IMPROVE YOUR SPEECH"));
+  const [selectedSubCategory, setSelectedSubCategory] = useState<
+    PromptSubcategory | undefined
+  >();
 
   const [isInputMinimized, setIsInputMinimized] = useState(false);
+
+  const [isUsingMagicPrompt, setIsUsingMagicPrompt] = useState(true);
+
+  const router = useRouter();
+
+  function newChat() {
+    router.push("#chatInteraction");
+    setPromptInput("");
+    setMessages([]);
+    setFeedbackInput("");
+    setSelectedChatHistory(undefined);
+    setFeedbackChatId(undefined);
+    setSelectedPrompt(undefined);
+    setSelectedCategory(
+      categories.find((category) => category.name === "IMPROVE YOUR SPEECH"),
+    );
+    setSelectedSubCategory(undefined);
+    setIsInputMinimized(false);
+  }
 
   useEffect(() => {
     setPromptInput("");
@@ -75,7 +106,7 @@ export default function ChatInteraction({ userId, openAiCredits }: ChatProps) {
     setFeedbackInput("");
     setSelectedChatHistory(undefined);
     setFeedbackChatId(undefined);
-  }, [selectedCard]);
+  }, [selectedPrompt]);
 
   useEffect(() => {
     if (userId) {
@@ -101,10 +132,14 @@ export default function ChatInteraction({ userId, openAiCredits }: ChatProps) {
       try {
         e.preventDefault();
 
+        const systemMessage = selectedPrompt?.additional_fields
+          ? replaceWordInString(selectedPrompt.prompt_ai, additionalFields!)
+          : selectedPrompt?.prompt_ai;
+
         const newMessages: CoreMessage[] = [
           ...messages,
           {
-            content: selectedCard?.prompt_ai ?? "",
+            content: systemMessage ?? "",
             role: "system",
           },
           {
@@ -117,7 +152,7 @@ export default function ChatInteraction({ userId, openAiCredits }: ChatProps) {
         setMessages(newMessages);
         setPromptInput("");
         setFeedbackInput("");
-        setSelectedCard(undefined);
+        setSelectedPrompt(undefined);
 
         const { value } = await continueConversation(
           newMessages,
@@ -142,39 +177,77 @@ export default function ChatInteraction({ userId, openAiCredits }: ChatProps) {
     }
   }
 
+  const promptOptions = [
+    {
+      label: "Use Our Magic Prompts",
+      active: isUsingMagicPrompt,
+      action: () => {
+        setIsUsingMagicPrompt(true);
+        newChat();
+      },
+    },
+    {
+      label: "Use Your Own Prompts",
+      active: !isUsingMagicPrompt,
+      action: () => {
+        setIsUsingMagicPrompt(false);
+        setSelectedPrompt(YOUR_OWN_PROMPT);
+      },
+    },
+  ];
+
   return (
-    <div className="flex w-full flex-col items-center">
-      <SearchPrompts
-        setSelectedCard={setSelectedCard}
-        setSelectedPill={setSelectedPill}
-        setSelectedTab={setSelectedTab}
-      />
-      <PromptsSelector
-        selectedCard={selectedCard}
-        setSelectedCard={setSelectedCard}
-        selectedPill={selectedPill}
-        setSelectedPill={setSelectedPill}
-        selectedTab={selectedTab}
-        setSelectedTab={setSelectedTab}
-        setIsInputMinimized={setIsInputMinimized}
-      />
-      <Prompter uiPrompt={selectedCard?.prompt_display} />
-      <PromptInput
-        value={promptInput}
-        onChange={setPromptInput}
-        selectedCardName={selectedCard?.name}
-        onSubmit={async (e) => {
-          const chatId = feedbackChatId ?? nanoid();
-          await handleSubmitChat(e, chatId);
-          await getChatHistory({ userId, setChatHistory });
-          setFeedbackChatId(chatId);
-        }}
-        loadingMessages={isLoading}
-        isEnabled={Boolean(selectedCard) && promptInput.length > 0}
-        userId={userId}
-        isInputMinimized={isInputMinimized}
-        setIsInputMinimized={setIsInputMinimized}
-      />
+    <div className={`${poppins.className} flex w-full flex-col items-center`}>
+      <div
+        className="mt-5 flex w-full flex-col items-center justify-center rounded-lg bg-white p-3 lg:mt-6 lg:px-[42px] lg:py-8"
+        id="chatInteraction"
+      >
+        <Tabs options={promptOptions} />
+        {isUsingMagicPrompt && (
+          <p
+            className={`${roboto.className} bg-cp-accent-lightest mt-7 w-full rounded-lg p-4 text-[16px] shadow-md lg:p-6 lg:text-lg`}
+          >
+            Use the quick-search bar or follow the steps below to get the best
+            results with our pre built prompts.
+          </p>
+        )}
+        {isUsingMagicPrompt && (
+          <PromptsSelector
+            selectedPrompt={selectedPrompt}
+            setSelectedPrompt={setSelectedPrompt}
+            selectedSubCategory={selectedSubCategory}
+            setSelectedSubCategory={setSelectedSubCategory}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+            setIsInputMinimized={setIsInputMinimized}
+            prompts={prompts}
+            categories={categories}
+            subcategories={subcategories}
+          />
+        )}
+
+        <PromptInput
+          value={promptInput}
+          onChange={setPromptInput}
+          selectedPromptName={selectedPrompt?.name}
+          onSubmit={async (e) => {
+            const chatId = feedbackChatId ?? nanoid();
+            await handleSubmitChat(e, chatId);
+            await getChatHistory({ userId, setChatHistory });
+            setFeedbackChatId(chatId);
+          }}
+          loadingMessages={isLoading}
+          isEnabled={Boolean(selectedPrompt) && promptInput.length > 0}
+          userId={userId}
+          isInputMinimized={isInputMinimized}
+          setIsInputMinimized={setIsInputMinimized}
+          prompt={selectedPrompt}
+          setAdditionalFields={setAdditionalFields}
+          additionalFields={additionalFields}
+          isUsingMagicPrompt={isUsingMagicPrompt}
+        />
+      </div>
+
       <ChatFeedback
         chat={messages}
         chatHistory={chatHistory}
@@ -190,8 +263,9 @@ export default function ChatInteraction({ userId, openAiCredits }: ChatProps) {
         setSelectedChatHistory={setSelectedChatHistory}
         loadingMessages={isLoading}
         setIsEditingChatSubject={setIsEditingChatSubject}
+        onNewChat={newChat}
       />
-      <GoToOldChat />
+
       {isDeletingHistory && (
         <ClearChatHistoryModal
           onClose={() => setIsDeletingHistory(false)}

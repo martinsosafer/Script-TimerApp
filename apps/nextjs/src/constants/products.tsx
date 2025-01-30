@@ -1,9 +1,68 @@
+import { roboto } from "~/app/fonts";
+
 export const DESCRIPTION: Record<string, string> = {
-  FREE: "Good for hobbyist",
-  EDUCATION: "Discounted for .edu emails",
-  CREATOR: "Ideal for creatives professionals",
-  BUSINESS: "Best for brand marketers",
+  FREE: "Amazing trial",
+  EDUCATION: "Perfect for your urgent project",
+  CREATOR: "Ideal for professionals",
+  BUSINESS: "For growing brands",
 };
+
+export function getDetails(
+  type: "FREE" | "EDUCATION" | "CREATOR" | "BUSINESS",
+): JSX.Element {
+  if (type === "FREE") {
+    return (
+      <div
+        className={`${roboto.className} mt-[10px] flex flex-col items-center p-2 text-[14px]`}
+      >
+        <span>5 Voices Limit</span>
+        <span>Script Support</span>
+        <span>Image Limit</span>
+        <span>Plagiarism Coach</span>
+        <span>Product Training</span>
+      </div>
+    );
+  } else if (type === "EDUCATION") {
+    return (
+      <div
+        className={`${roboto.className} mt-[10px] flex flex-col items-center p-2 text-[14px]`}
+      >
+        <span>100 + Voices</span>
+        <span>Script Writing</span>
+        <span>Image Creation</span>
+        <span>Plagiarism Detection</span>
+        <span>Training</span>
+      </div>
+    );
+  } else if (type === "CREATOR") {
+    return (
+      <div
+        className={`${roboto.className} mt-[10px] flex flex-col items-center p-2 text-[14px]`}
+      >
+        <span className="font-semibold">Everything in</span>
+        <span className="font-semibold">previous, plus:</span>
+        <span className="mt-2">2-4x More</span>
+        <span>150 Built-in Prompts</span>
+        <span>Sound Effects</span>
+        <span>Full Training</span>
+      </div>
+    );
+  } else {
+    return (
+      <div
+        className={`${roboto.className} mt-[10px] flex flex-col items-center p-2 text-center text-[14px]`}
+      >
+        <span className="font-semibold">Everything in</span>
+        <span className="font-semibold">Creator, plus:</span>
+        <span className="mt-2">Producer Level</span>
+        <span>150+ Marketing Prompts</span>
+        <span>Speech Coach AI</span>
+        <span>Sound & Music</span>
+        <span>Advanced Training</span>
+      </div>
+    );
+  }
+}
 
 interface Price {
   monthly: string;
@@ -71,7 +130,7 @@ export const ADD_ON_TEST_PRICES_ID: Record<string, ProductId> = {
 // Standart Products prices
 export const PRICE: Record<string, Price> = {
   FREE: { monthly: "Free", yearly: "Free" },
-  EDUCATION: { monthly: "$9", yearly: "$6.58", total: "$79/year" },
+  EDUCATION: { monthly: "$9", yearly: "$9", total: "$79/year" },
   CREATOR: { monthly: "$19", yearly: "$14.75", total: "$177/year" },
   BUSINESS: { monthly: "$39", yearly: "$24.75", total: "$297/year" },
 };

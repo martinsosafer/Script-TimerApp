@@ -2,31 +2,21 @@ import { useState } from "react";
 
 import { IconPencilLine, IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 
+import type {
+  PromptCategory,
+  PromptSubcategory,
+} from "~/app/(site)/(admin)/admin-prompt-categories/types";
 import {
   addPrompt,
   updatePrompt,
 } from "~/app/(site)/(admin)/admin-prompts/actions";
 import type { Prompt } from "~/app/(site)/(admin)/admin-prompts/types";
-import {
-  boostYourVideoScriptSubtypes,
-  enhanceYourPresentationSubtypes,
-  headlinesAndopeningSubtypes,
-  improveSalesSubtypes,
-  improveYourSpeechsubtypes,
-  types,
-} from "~/app/(site)/data/chat-prompts/types";
-
-const subtypes: Record<string, string[]> = {
-  "HEADLINES & OPENINGS": [...headlinesAndopeningSubtypes],
-  "IMPROVE YOUR SPEECH": [...improveYourSpeechsubtypes],
-  "ENHANCE YOUR PRESENTATION": [...enhanceYourPresentationSubtypes],
-  "BOOST YOUR VIDEO SCRIPT": [...boostYourVideoScriptSubtypes],
-  "IMPROVE SALES": [...improveSalesSubtypes],
-};
 
 interface ModalProps {
   onClose: () => void;
   prompt?: Prompt;
+  categories: PromptCategory[] | [];
+  subcategories: PromptSubcategory[] | [];
   refetch: () => void;
 }
 
@@ -35,17 +25,29 @@ const aiTypes = ["CHAT", "IMAGE", "VOICE", "OTHER"];
 export default function AdminPromptModal({
   onClose,
   prompt,
+  categories,
+  subcategories,
   refetch,
 }: ModalProps) {
+  console.log("categories", categories);
+  console.log("subcategories", subcategories);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [selectedAiType, setSelectedAiType] = useState<string | undefined>(
     () => prompt?.ai_model_type,
   );
-  const [selectedType, setSelectedType] = useState<string | undefined>(() =>
-    selectedAiType === "CHAT" ? prompt?.type : undefined,
+  const [selectedCategory, setSelectedCategory] = useState<
+    PromptCategory | undefined
+  >(() =>
+    selectedAiType === "CHAT"
+      ? categories.find((cat) => cat.id === prompt?.category_id)
+      : undefined,
   );
-  const [selectedSubType, setSelectedSubType] = useState<string | undefined>(
-    () => (selectedAiType === "CHAT" ? prompt?.subtype : undefined),
+  const [selectedSubCategory, setSelectedSubCategory] = useState<
+    PromptSubcategory | undefined
+  >(() =>
+    selectedAiType === "CHAT"
+      ? subcategories.find((cat) => cat.id === prompt?.subcategory_id)
+      : undefined,
   );
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -53,12 +55,16 @@ export default function AdminPromptModal({
     e.preventDefault();
     const form = new FormData(e.currentTarget);
     if (prompt) {
-      await updatePrompt(form, prompt.id);
+      await updatePrompt(
+        form,
+        prompt.id,
+        selectedCategory!.id!,
+        selectedSubCategory!.id!,
+      );
       refetch();
       return onClose();
     }
-    const newPrompt = await addPrompt(form);
-    console.log("newPrompt", newPrompt);
+    await addPrompt(form, selectedCategory!.id!, selectedSubCategory!.id!);
     refetch();
     onClose();
     setIsLoading(false);
@@ -103,8 +109,8 @@ export default function AdminPromptModal({
                 className="w-full rounded-md border-2 border-primary p-2"
                 onChange={(e) => {
                   setSelectedAiType(e.target.value);
-                  setSelectedType(undefined);
-                  setSelectedSubType(undefined);
+                  setSelectedCategory(undefined);
+                  setSelectedSubCategory(undefined);
                 }}
               >
                 <option value="" hidden>
@@ -119,45 +125,58 @@ export default function AdminPromptModal({
               {selectedAiType === "CHAT" && (
                 <>
                   <label htmlFor="type" className="text-sm font-semibold">
-                    Chat Prompt Type
+                    Chat Prompt Category
                   </label>
                   <select
                     name="type"
-                    defaultValue={selectedAiType === "CHAT" ? prompt?.type : ""}
+                    defaultValue={selectedCategory?.name}
                     className="w-full rounded-md border-2 border-primary p-2"
                     disabled={selectedAiType === "CHAT" ? false : true}
                     onChange={(e) => {
-                      setSelectedType(e.target.value);
+                      const category = categories.find(
+                        (cat) => cat.name === e.target.value,
+                      );
+                      setSelectedCategory(category);
                     }}
                   >
                     <option value="" hidden>
-                      Select Chat Prompt Type
+                      Select Chat Prompt Category
                     </option>
-                    {types.map((type) => (
-                      <option key={type} value={type}>
-                        {type}
+                    {categories.map((cat) => (
+                      <option key={cat.id} value={cat.name}>
+                        {cat.name}
                       </option>
                     ))}
                   </select>
                   <label htmlFor="subtype" className="text-sm font-semibold">
-                    Chat Prompt SubType
+                    Chat Prompt SubCategory
                   </label>
                   <select
                     name="subtype"
-                    defaultValue={prompt?.subtype}
+                    defaultValue={selectedSubCategory?.name}
                     className="w-full rounded-md border-2 border-primary p-2"
                     disabled={selectedAiType === "CHAT" ? false : true}
+                    onChange={(e) => {
+                      const subCategory = subcategories.find(
+                        (subCat) => subCat.name === e.target.value,
+                      );
+                      setSelectedSubCategory(subCategory);
+                    }}
                   >
                     <option value="" hidden>
                       Select Chat Prompt SubType
                     </option>
 
-                    {selectedType &&
-                      subtypes[selectedType]?.map((subtype) => (
-                        <option key={subtype} value={subtype}>
-                          {subtype}
-                        </option>
-                      ))}
+                    {selectedCategory &&
+                      subcategories
+                        .filter(
+                          (subCat) => subCat.categoryId === selectedCategory.id,
+                        )
+                        .map((subCat) => (
+                          <option key={subCat.id} value={subCat.name}>
+                            {subCat.name}
+                          </option>
+                        ))}
                   </select>
                 </>
               )}
@@ -183,6 +202,16 @@ export default function AdminPromptModal({
                 rows={6}
                 className="w-full rounded-md border-2 border-primary p-2"
               />
+              <label htmlFor="additional" className="text-sm font-semibold">
+                Additional inputs, separate each item with a comma.
+              </label>
+              <input
+                type="text"
+                name="additional"
+                defaultValue={prompt?.additional_fields?.join(", ")}
+                placeholder={"Additional fileds"}
+                className="w-full rounded-md border-2 border-primary p-2"
+              />
             </div>
           </div>
 
@@ -200,7 +229,7 @@ export default function AdminPromptModal({
               {isLoading ? (
                 <IconSpinner className="h-6 w-6 animate-spin" />
               ) : prompt ? (
-                "Edit Propmt"
+                "Edit Prompt"
               ) : (
                 "Save Prompt"
               )}

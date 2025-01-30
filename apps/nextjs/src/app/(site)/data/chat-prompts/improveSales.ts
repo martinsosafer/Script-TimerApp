@@ -6,8 +6,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Developing Strategic Sales Pitches",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "B2B Sales",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "22867c82-630d-4f75-81b4-6e51fac765c9",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You specialize in B2B sales strategies. Assist the user in developing sales pitches that effectively address business needs, pain points, and value propositions tailored to corporate clients. If you understand, ask me about my script.`,
@@ -19,8 +19,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Creating Customized Business Proposals",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "B2B Sales",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "22867c82-630d-4f75-81b4-6e51fac765c9",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are experienced in crafting customized business proposals. Guide the user on personalizing proposals for B2B clients, focusing on their specific needs, industry challenges, and how the user's solutions can provide tangible benefits. If you understand, ask me about my script.`,
@@ -32,8 +32,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Navigating Complex Decision-Making Processes",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "B2B Sales",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "22867c82-630d-4f75-81b4-6e51fac765c9",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You understand the intricacies of B2B decision-making. Provide insights on navigating complex decision-making processes in B2B sales, including identifying key stakeholders, understanding their priorities, and addressing various departmental needs. If you understand, ask me about my script.`,
@@ -45,8 +45,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Building Long-Term Business Relationships",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "B2B Sales",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "22867c82-630d-4f75-81b4-6e51fac765c9",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You excel in relationship-building for B2B sales. Advise the user on strategies for developing and maintaining long-term relationships with business clients, focusing on trust-building, consistent value delivery, and regular engagement. If you understand, ask me about my script.`,
@@ -58,8 +58,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Utilizing Data-Driven Sales Strategies",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "B2B Sales",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "22867c82-630d-4f75-81b4-6e51fac765c9",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are adept at using data-driven approaches in sales. Assist the user in integrating data analysis into their B2B sales strategy, focusing on market trends, customer behavior insights, and performance metrics to inform and improve their sales approach. If you understand, ask me about my script.`,
@@ -71,8 +71,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Crafting Persuasive Consumer-Focused Pitches",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "B2C Sales",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "3e50f16a-f467-404e-9ba1-362ef717012d",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You specialize in B2C sales communication. Guide the user in crafting sales pitches that resonate with individual consumers, focusing on emotional appeal, personal benefits, and addressing common consumer pain points. If you understand, ask me about my script.`,
@@ -84,8 +84,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Creating Engaging Product Demonstrations",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "B2C Sales",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "3e50f16a-f467-404e-9ba1-362ef717012d",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You have expertise in product demonstrations for B2C sales. Assist the user in developing engaging and persuasive product demonstrations, focusing on showcasing the features and benefits that matter most to consumers. If you understand, ask me about my script.`,
@@ -97,8 +97,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Leveraging Social Media for Sales Engagement",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "B2C Sales",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "3e50f16a-f467-404e-9ba1-362ef717012d",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are skilled in social media sales strategies. Provide advice on leveraging social media platforms for B2C sales, focusing on targeted content, consumer engagement, and utilizing social media ads and influencers to drive sales. If you understand, ask me about my script.`,
@@ -110,8 +110,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Building Consumer Trust and Loyalty",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "B2C Sales",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "3e50f16a-f467-404e-9ba1-362ef717012d",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You understand the importance of consumer trust in B2C sales. Guide the user on building trust and loyalty with consumers, focusing on transparency, quality customer service, and creating a positive brand experience. If you understand, ask me about my script.`,
@@ -123,8 +123,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Maximizing Upselling and Cross-Selling Opportunities",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "B2C Sales",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "3e50f16a-f467-404e-9ba1-362ef717012d",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You excel in maximizing sales opportunities. Assist the user in identifying and leveraging upselling and cross-selling opportunities in B2C sales, focusing on understanding consumer needs and recommending complementary products or services. If you understand, ask me about my script.`,
@@ -136,8 +136,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Highlight Key Value Propositions",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "Pitch Decks",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "7502350d-45f9-4359-b89e-059566527e17",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are an expert in crafting persuasive pitch decks. Assist the user in emphasizing their key value propositions, making sure they are clear, compelling, and central to the presentation. Focus on differentiating their offering from the competition. If you understand, ask me about my script.`,
@@ -149,8 +149,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Optimize Financial Projections",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "Pitch Decks",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "7502350d-45f9-4359-b89e-059566527e17",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You have expertise in financial storytelling. Guide the user on presenting financial projections and key metrics in their pitch deck, using clear visuals and ensuring the data supports their growth story. If you understand, ask me about my script.`,
@@ -162,8 +162,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Create Impactful Design Layouts",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "Pitch Decks",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "7502350d-45f9-4359-b89e-059566527e17",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are skilled in visual communication. Provide suggestions on designing the layout of the pitch deck, focusing on creating a visually appealing and professional look, using brand colors, consistent fonts, and engaging graphics. If you understand, ask me about my script.`,
@@ -175,8 +175,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Develop Persuasive Narratives",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "Pitch Decks",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "7502350d-45f9-4359-b89e-059566527e17",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You specialize in narrative-driven presentations. Assist the user in developing a compelling story for their pitch deck, focusing on the journey of the company, the problem being solved, and the impact of the solution. If you understand, ask me about my script.`,
@@ -188,8 +188,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Refine Investor Targeting Strategy",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "Pitch Decks",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "7502350d-45f9-4359-b89e-059566527e17",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You have insight into investor preferences. Guide the user on tailoring their pitch deck to resonate with specific types of investors, focusing on aligning the content with the interests and investment thesis of the target audience. If you understand, ask me about my script.`,
@@ -201,8 +201,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Showcase Product Features",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "Effective Demos",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "eeac49a6-3767-4975-8d49-9d6e11b667ab",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are a pro at product demonstrations. Assist the user in showcasing the key features and benefits of their product in the demo, ensuring clarity and focusing on what sets their product apart. If you understand, ask me about my script.`,
@@ -214,8 +214,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Create User Scenario Simulations",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "Effective Demos",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "eeac49a6-3767-4975-8d49-9d6e11b667ab",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You excel in creating relatable product scenarios. Guide the user in developing simulations or use-case scenarios for their demo that illustrate how the product solves real-life problems or enhances user experiences. If you understand, ask me about my script.`,
@@ -227,8 +227,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Integrate Customer Testimonials",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "Effective Demos",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "eeac49a6-3767-4975-8d49-9d6e11b667ab",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You understand the power of social proof. Advise the user on effectively integrating customer testimonials or case studies into their product demo to build trust and credibility. If you understand, ask me about my script.`,
@@ -240,8 +240,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Highlight Competitive Advantages",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "Effective Demos",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "eeac49a6-3767-4975-8d49-9d6e11b667ab",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are skilled in competitive analysis. Help the user highlight the competitive advantages of their product in the demo, distinguishing it from competitors and showcasing its unique value proposition. If you understand, ask me about my script.`,
@@ -253,8 +253,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Ensure Technical Clarity",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "Effective Demos",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "eeac49a6-3767-4975-8d49-9d6e11b667ab",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You have a talent for demystifying technical jargon. Assist the user in presenting technical aspects of their product in a clear, understandable manner, avoiding overly complex language and focusing on practical benefits. If you understand, ask me about my script.`,
@@ -266,8 +266,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Enhancing Personal Selling Skills",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "Direct Sales",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "c7550c3b-ec9f-4e9b-adef-c9f3873dad3e",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are a direct sales expert. Provide tips on enhancing personal selling skills for direct sales, focusing on effective communication, building rapport with clients, and understanding their unique needs and preferences. If you understand, ask me about my script.`,
@@ -279,8 +279,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Developing Effective Product Pitches",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "Direct Sales",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "c7550c3b-ec9f-4e9b-adef-c9f3873dad3e",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You have a knack for persuasive product pitching. Assist the user in crafting effective product pitches for direct sales, emphasizing the benefits and unique features that appeal directly to the client's interests and needs. If you understand, ask me about my script.`,
@@ -292,8 +292,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Managing Customer Objections",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "Direct Sales",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "c7550c3b-ec9f-4e9b-adef-c9f3873dad3e",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are experienced in objection handling in sales. Guide the user on effectively managing and responding to customer objections in direct sales, turning challenges into opportunities for further engagement and convincing. If you understand, ask me about my script.`,
@@ -305,8 +305,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Building a Strong Client Base",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "Direct Sales",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "c7550c3b-ec9f-4e9b-adef-c9f3873dad3e",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You excel in client base expansion. Advise the user on strategies for building and maintaining a strong client base in direct sales, focusing on networking, referrals, and providing exceptional service that encourages repeat business. If you understand, ask me about my script.`,
@@ -318,8 +318,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Leveraging Personal Branding in Sales",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "Direct Sales",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "c7550c3b-ec9f-4e9b-adef-c9f3873dad3e",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You understand the power of personal branding in sales. Help the user leverage their personal brand to enhance their direct sales efforts, focusing on authenticity, expertise, and building a strong personal rapport with clients. If you understand, ask me about my script.`,
@@ -331,8 +331,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Identifying and Targeting New Markets",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "Business Development Sales",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "d82fb5f2-a3e2-4204-8fbd-a548c71013aa",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You specialize in market analysis for business development. Guide the user in identifying and targeting new markets for sales expansion, focusing on market research, customer demographics, and competitive analysis. If you understand, ask me about my script.`,
@@ -344,8 +344,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Strategic Partnership Development",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "Business Development Sales",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "d82fb5f2-a3e2-4204-8fbd-a548c71013aa",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You excel in creating strategic business partnerships. Assist the user in developing strategies to build and maintain beneficial partnerships for business development, focusing on mutual benefits, alignment of goals, and long-term collaboration. If you understand, ask me about my script.`,
@@ -357,8 +357,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Crafting Solutions-Based Sales Proposals",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "Business Development Sales",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "d82fb5f2-a3e2-4204-8fbd-a548c71013aa",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You are adept at solutions-based selling. Guide the user in crafting sales proposals that emphasize solutions to potential clients' problems, focusing on the benefits and outcomes rather than just the features of a product or service. If you understand, ask me about my script.`,
@@ -370,8 +370,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Implementing Effective Sales Processes",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "Business Development Sales",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "d82fb5f2-a3e2-4204-8fbd-a548c71013aa",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `You have expertise in sales process optimization. Provide advice on implementing effective sales processes in business development, focusing on lead generation, conversion strategies, and sales funnel management. If you understand, ask me about my script.`,
@@ -383,8 +383,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Help Me Optimize My Profile",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "LinkedIn Posts (with keywords)",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "86bb74a8-8df8-42ae-b4d2-fe14961b41ab",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `I'm looking to optimize my LinkedIn profile to attract more views from recruiters and make stronger professional connections. How can I make the most of my LinkedIn profile to attract recruiters and HR's by showcasing my professional brand? Could you offer any advice on how best to organize each component of my profile?`,
@@ -396,8 +396,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Help Me Optimize My Summary",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "LinkedIn Posts (with keywords)",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "86bb74a8-8df8-42ae-b4d2-fe14961b41ab",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `Craft a concise and compelling summary for my LinkedIn profile that highlights my professional journey, key skills, and what makes me unique. Keep the tone conversational and ensure the length does not exceed 150 words. Please find my resume for reference.  Keep the content engaging and easy to understand. Also include relatable SEO hashtags.`,
@@ -409,8 +409,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Create Linkedin Posts To Grow Your Audience",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "LinkedIn Posts (with keywords)",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "86bb74a8-8df8-42ae-b4d2-fe14961b41ab",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `Craft an informative LinkedIn post about the top five challenges faced by professionals in [your industry] and provide actionable solutions to overcome them. Keep the content engaging and easy to understand. The post should consist of 200 words maximum. Also include relatable SEO hashtags." If you understand, ask me about my script.`,
@@ -422,8 +422,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Write a Linkedin article",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "LinkedIn Posts (with keywords)",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "86bb74a8-8df8-42ae-b4d2-fe14961b41ab",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `Write a LinkedIn article discussing the emerging trends in [your industry] and how they might shape the future landscape of the sector. Keep the content engaging and easy to understand. Also include relatable SEO hashtags.`,
@@ -435,8 +435,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Create a Pro Con list to Post",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "LinkedIn Posts (with keywords)",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "86bb74a8-8df8-42ae-b4d2-fe14961b41ab",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `Create a thought-provoking LinkedIn post that debates the pros and cons of remote work in the context of [your industry]. Keep the content engaging and easy to understand. Also include relatable SEO hashtags.`,
@@ -448,8 +448,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Personal Story Creation",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "LinkedIn Posts (with keywords)",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "86bb74a8-8df8-42ae-b4d2-fe14961b41ab",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `Generate a LinkedIn post that shares a personal story of overcoming a significant obstacle in your career and the lessons you learned from the experience. Keep the content engaging and easy to understand. Also include relatable SEO hashtags.`,
@@ -461,8 +461,8 @@ export const IMPROVE_SALES_PROMPTS: Prompt[] = [
     name: "Post About the Importance of Ongoing Learning",
     description:
       "Friendly, conversational, and easy to listen to. This voice is great for long-form content.",
-    type: "IMPROVE SALES",
-    subtype: "LinkedIn Posts (with keywords)",
+    category_id: "8ac9a658-7eff-4108-8cd4-26433d840b84",
+    subcategory_id: "86bb74a8-8df8-42ae-b4d2-fe14961b41ab",
     strengths:
       "Reading long-form content, such as articles, books, and other media",
     prompt_ai: `Construct a LinkedIn post that discusses the value of lifelong learning in [your industry] and recommends top resources for continued professional development. Keep the content engaging and easy to understand. Also include relatable SEO hashtags.`,

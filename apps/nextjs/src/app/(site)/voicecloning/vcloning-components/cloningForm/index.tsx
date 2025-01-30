@@ -110,8 +110,8 @@ export default function VoiceCloningForm({
     }
 
     try {
-      // Upload file to Vercel Blob
-      const uploadedFile = await upload(formData.file.name, formData.file, {
+      const filename = `ClonedVoices/${formData.file.name}`;
+      const uploadedFile = await upload(filename, formData.file, {
         access: "public",
         handleUploadUrl: "/api/upload", // This will be the API route on your backend
       });
