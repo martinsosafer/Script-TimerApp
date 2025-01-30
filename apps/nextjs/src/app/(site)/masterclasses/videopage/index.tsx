@@ -54,7 +54,7 @@ export default function VideoPage({
               {currentVideo.number}
             </div>
             <h1
-              className={`text-cp-primary text-[34px] font-bold leading-[41px] ${poppins.className}`}
+              className={`text-cp-primary mt-10 text-[34px] font-bold leading-[41px] lg:mt-0 ${poppins.className}`}
             >
               {currentVideo.title}
             </h1>
@@ -189,7 +189,7 @@ function VideoListItem({
           className={`object-cover ${isDisabled ? "grayscale" : ""}`}
         />
       </div>
-      <div className="flex-1">
+      <div className="lg:flex-1">
         <div className="mb-2 flex items-center gap-2">
           <div className="flex h-8 w-10 items-center justify-center rounded-r-full bg-blue-600 text-white">
             {video.number}

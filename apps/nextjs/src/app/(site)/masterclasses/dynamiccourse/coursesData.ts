@@ -2,9 +2,7 @@ export const CourseData = [
   {
     id: 1,
     title: "Stories that Transform Marketing",
-    text: `Customers are drawn to people that make them feel seen and understood. 
-The right story, delivered at the right time, helps customers connect the dots 
-between their problems and your products in a way that even a fleet of experienced salespeople cannot.
+    text: `Customers are drawn to people that make them feel seen and understood. The right story, delivered at the right time, helps customers connect the dots between their problems and your products in a way that even a fleet of experienced salespeople cannot.
 
 In this course, learn the components of a great sales story, and how to tailor narratives to different situations.`,
     modules: 12,
