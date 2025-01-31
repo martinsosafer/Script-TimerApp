@@ -198,7 +198,7 @@ export function useAudioRecorder(userId: string | undefined) {
         const filename = `RecordedAudio/${userId}/recording-${formattedDate}.wav`;
         const uploadedFile = await upload(filename, blob, {
           access: "public",
-          handleUploadUrl: "/api/upload",
+          handleUploadUrl: "/api/uploadspeech",
         });
 
         setUploadUrl(uploadedFile.url);

@@ -218,14 +218,15 @@ export function useWebcamRecorder(userId: string | undefined) {
   }, [stopTimer]);
 
   const uploadToVercelBlob = useCallback(
-    async (blob: Blob) => {
+    async (blob: Blob, customName: string) => {
       try {
-        const now = new Date();
-        const formattedDate = `${now.getDate().toString().padStart(2, "0")}/${(now.getMonth() + 1).toString().padStart(2, "0")}/${now.getFullYear()}`;
-        const filename = `RecordedWebcam/${userId}/recording-${formattedDate}.mp4`;
+        // Sanitize the custom name to remove invalid characters
+        const sanitizedName = customName.replace(/[^a-zA-Z0-9]/g, "_");
+        const filename = `RecordedWebcam/${userId}/${sanitizedName}.mp4`;
+
         const uploadedFile = await upload(filename, blob, {
           access: "public",
-          handleUploadUrl: "/api/upload",
+          handleUploadUrl: "/api/uploadspeech",
         });
 
         setUploadUrl(uploadedFile.url);
@@ -238,7 +239,6 @@ export function useWebcamRecorder(userId: string | undefined) {
     },
     [userId],
   );
-
   useEffect(() => {
     return () => {
       if (timerRef.current) {

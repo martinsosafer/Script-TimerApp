@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import {
   IconMusic as Music,
+  IconTrash as TrashIcon,
   IconXCircle as X,
 } from "@voiceai/ui/@/components/ui/icons";
 import { Separator } from "@voiceai/ui/@/components/ui/separator";
@@ -92,9 +93,6 @@ const AudioHistory: React.FC<AudioHistoryProps> = ({
           year: "numeric",
           month: "2-digit",
           day: "2-digit",
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: true,
         })
         .replace(",", "");
     } catch (error) {
@@ -112,7 +110,34 @@ const AudioHistory: React.FC<AudioHistoryProps> = ({
       </div>
     );
   }
+  const handleDelete = async (urlToDelete: string) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this recording?",
+    );
+    if (!confirmDelete) return;
 
+    try {
+      const response = await fetch("/api/deletespeech", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ url: urlToDelete }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete recording");
+      }
+
+      // Optimistically update UI
+      setLocalSavedAudios((prev) =>
+        prev.filter((rec) => rec.url !== urlToDelete),
+      );
+    } catch (error) {
+      console.error("Delete error:", error);
+      alert(error.message || "Failed to delete recording.");
+    }
+  };
   return (
     <div className="mt-[20px]">
       <Separator className="bg-cp-primary mb-8 h-1" />
@@ -149,8 +174,17 @@ const AudioHistory: React.FC<AudioHistoryProps> = ({
                   </div>
 
                   {/* Upload Date */}
-                  <div className="text-sm text-gray-500">
-                    {formatDate(recording.uploadedAt)}
+                  <div className="ml-4 flex items-center gap-4">
+                    <div className="text-sm text-gray-500">
+                      {formatDate(recording.uploadedAt)}
+                    </div>
+                    <button
+                      onClick={() => handleDelete(recording.url)}
+                      className="text-red-500 hover:text-red-700"
+                      aria-label="Delete recording"
+                    >
+                      <TrashIcon className="h-5 w-5" />
+                    </button>
                   </div>
                 </div>
 
@@ -176,21 +210,33 @@ const AudioHistory: React.FC<AudioHistoryProps> = ({
                           exit={{ opacity: 0, height: 0 }}
                           className="overflow-hidden"
                         >
-                          {recording.aiContent.map((item, feedbackIndex) => (
-                            <motion.div
-                              key={feedbackIndex}
-                              initial={{ opacity: 0, y: -10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: -10 }}
-                              transition={{ delay: feedbackIndex * 0.1 }}
-                              className="mt-2 rounded-md bg-gray-100 p-3"
-                            >
-                              <AIFeedbackContent
-                                type={item.type}
-                                content={item.content}
-                              />
-                            </motion.div>
-                          ))}
+                          {recording.aiContent.map((item, feedbackIndex) => {
+                            const isEmpty =
+                              (Array.isArray(item.content) &&
+                                item.content.length === 0) ||
+                              (typeof item.content === "string" &&
+                                (item.content.includes("too short") ||
+                                  item.content.includes("lacks sufficient") ||
+                                  item.content.trim() === ""));
+
+                            if (isEmpty) return null;
+
+                            return (
+                              <motion.div
+                                key={feedbackIndex}
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                transition={{ delay: feedbackIndex * 0.1 }}
+                                className="mt-2 rounded-md bg-gray-100 p-3"
+                              >
+                                <AIFeedbackContent
+                                  type={item.type}
+                                  content={item.content}
+                                />
+                              </motion.div>
+                            );
+                          })}
                         </motion.div>
                       )}
                     </AnimatePresence>

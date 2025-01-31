@@ -1,7 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-import { IconXCircle as X } from "@voiceai/ui/@/components/ui/icons";
+import {
+  IconTrash as TrashIcon,
+  IconXCircle as X,
+} from "@voiceai/ui/@/components/ui/icons";
 import { Separator } from "@voiceai/ui/@/components/ui/separator";
 
 import Button from "~/app/(site)/components/button";
@@ -38,6 +41,32 @@ const VideoHistory = ({
       Number.parseInt(minute),
     );
   };
+  const handleDelete = async (urlToDelete: string) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this recording?",
+    );
+    if (!confirmDelete) return;
+
+    try {
+      const response = await fetch("/api/deletespeech", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ url: urlToDelete }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete recording");
+      }
+
+      // Optimistically update UI
+      setSavedWebcam((prev) => prev.filter((rec) => rec.url !== urlToDelete));
+    } catch (error) {
+      console.error("Delete error:", error);
+      alert(error.message || "Failed to delete recording.");
+    }
+  };
 
   // Sort recordings
   const sortedRecordings = useMemo(() => {
@@ -72,9 +101,6 @@ const VideoHistory = ({
           year: "numeric",
           month: "2-digit",
           day: "2-digit",
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: true,
         })
         .replace(",", "");
     } catch (error) {
@@ -124,8 +150,17 @@ const VideoHistory = ({
                     <span className="font-medium">{recording.filename}</span>
                   </div>
 
-                  <div className="text-sm text-gray-500">
-                    {formatDate(recording.uploadedAt)}
+                  <div className="ml-4 flex items-center gap-4">
+                    <div className="text-sm text-gray-500">
+                      {formatDate(recording.uploadedAt)}
+                    </div>
+                    <button
+                      onClick={() => handleDelete(recording.url)}
+                      className="text-red-500 hover:text-red-700"
+                      aria-label="Delete recording"
+                    >
+                      <TrashIcon className="h-5 w-5" />
+                    </button>
                   </div>
                 </div>
 

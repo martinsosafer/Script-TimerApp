@@ -17,6 +17,7 @@ import { AIContentWrapper } from "../recorder/aiwrapper";
 import { AudioControls } from "../recorder/audiocontrols";
 import { RecordButton } from "../recorder/recordbutton";
 import { TranscriptDisplay } from "../recorder/transcriptDisplay";
+import { SaveRecording } from "../saverecording/saverecording";
 import VideoHistory from "./videoHistory";
 import { VideoPreview } from "./VideoPreview";
 
@@ -76,7 +77,8 @@ export default function MicrophoneAndWebcamComponent({
   const [displayVideoCount, setDisplayVideoCount] = useState(3);
   const [countdown, setCountdown] = useState<number | null>(null);
   const [uploadedVideoUrl, setUploadedVideoUrl] = useState<string | null>(null);
-
+  const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
+  const [speechName, setSpeechName] = useState<string | null>(null);
   const loadMoreVideos = () => {
     setDisplayVideoCount((prevCount) => prevCount + 3);
   };
@@ -120,16 +122,9 @@ export default function MicrophoneAndWebcamComponent({
     alert("Transcript copied to clipboard!");
   };
 
-  const handleSave = async () => {
+  const handleSave = () => {
     if (recordingBlob) {
-      const uploadedUrl = await uploadToVercelBlob(recordingBlob);
-      if (uploadedUrl) {
-        console.log("Recording uploaded successfully:", uploadedUrl);
-        setUploadedVideoUrl(uploadedUrl);
-        // Trigger page revalidation
-        await revalidateRecordingPage();
-        alert("Recording saved successfully!");
-      }
+      setIsRenameModalOpen(true); // Open the modal
     } else {
       alert("No recording to save. Please record something first.");
     }
@@ -297,6 +292,17 @@ export default function MicrophoneAndWebcamComponent({
           userId={userId}
         />
       </div>
+      <SaveRecording
+        isRenameModalOpen={isRenameModalOpen}
+        setIsRenameModalOpen={setIsRenameModalOpen}
+        recordingBlob={recordingBlob}
+        uploadToVercelBlob={uploadToVercelBlob}
+        setUploadedVideoUrl={setUploadedVideoUrl}
+        revalidateRecordingPage={revalidateRecordingPage}
+        isLoading={isLoading}
+        speechName={speechName}
+        setSpeechName={setSpeechName}
+      />
     </div>
   );
 }
