@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { upload } from "@vercel/blob/client";
 
-export function useAudioRecorder(userId: string | undefined) {
+export function useAudioRecorder(
+  userId: string | undefined,
+  audioDurationLimit: number,
+) {
   const [isRecording, setIsRecording] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
@@ -191,16 +194,16 @@ export function useAudioRecorder(userId: string | undefined) {
   }, [stopTimer]);
 
   const uploadToVercelBlob = useCallback(
-    async (blob: Blob) => {
+    async (blob: Blob, customName: string) => {
       try {
-        const now = new Date();
-        const formattedDate = `${now.getDate().toString().padStart(2, "0")}/${(now.getMonth() + 1).toString().padStart(2, "0")}/${now.getFullYear()}`;
-        const filename = `RecordedAudio/${userId}/recording-${formattedDate}.wav`;
+        // Sanitize the custom name to remove invalid characters
+        const sanitizedName = customName.replace(/[^a-zA-Z0-9]/g, "_");
+        const filename = `RecordedAudio/${userId}/${sanitizedName}.mp4`;
+
         const uploadedFile = await upload(filename, blob, {
           access: "public",
           handleUploadUrl: "/api/uploadspeech",
         });
-
         setUploadUrl(uploadedFile.url);
         return uploadedFile.url;
       } catch (error) {
@@ -219,7 +222,11 @@ export function useAudioRecorder(userId: string | undefined) {
       }
     };
   }, []);
-
+  useEffect(() => {
+    if (isRecording && !isPaused && timer >= audioDurationLimit) {
+      stopRecording();
+    }
+  }, [timer, isRecording, isPaused, audioDurationLimit, stopRecording]);
   return {
     isRecording,
     audioUrl,

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
+import { SubscriptionData } from "~/lib/types";
 import MicrophoneComponent from "../recorder";
 import WebcamRecorder from "../webcamrecorder";
 
@@ -11,6 +12,11 @@ interface SelectorProps {
   userId: string | undefined;
   savedAudios: SavedBlob[];
   savedWebcam: SavedBlob[];
+  subData: SubscriptionData | null | undefined;
+  currentAudioCount: number; // New prop
+  audioLimit: number; // New prop
+  audioDurationLimit: number; // New prop
+  isSaveDisabled: boolean;
 }
 
 interface SavedBlob {
@@ -25,6 +31,11 @@ export default function ModeSelectorRecorder({
   userId,
   savedAudios,
   savedWebcam,
+  subData,
+  currentAudioCount,
+  audioLimit,
+  audioDurationLimit,
+  isSaveDisabled,
 }: SelectorProps) {
   const [activeMode, setActiveMode] = useState(initialMode);
 
@@ -38,7 +49,14 @@ export default function ModeSelectorRecorder({
         return <WebcamRecorder userId={userId} savedWebcam={savedWebcam} />;
       case "audio":
         return (
-          <MicrophoneComponent userId={userId} savedAudios={savedAudios} />
+          <MicrophoneComponent
+            userId={userId}
+            savedAudios={savedAudios}
+            currentAudioCount={currentAudioCount}
+            audioLimit={audioLimit}
+            audioDurationLimit={audioDurationLimit}
+            isSaveDisabled={isSaveDisabled}
+          />
         );
       default:
         return <WebcamRecorder userId={userId} savedWebcam={savedWebcam} />;

@@ -11,6 +11,7 @@ import { DeviceSelector } from "../deviceSelector";
 import { useAudioRecorder } from "../hooks/useAudioRecorder";
 import { usePostProcessing } from "../hooks/usePostProcess";
 import { useTranscription } from "../hooks/useTranscription";
+import { SaveRecording } from "../saverecording/saverecording";
 import { AIFeatureButtons } from "./aifeaturebutton";
 import { AIContentWrapper } from "./aiwrapper";
 import { AudioControls } from "./audiocontrols";
@@ -23,12 +24,20 @@ interface MicrophoneProps {
   userId: string | undefined;
   savedAudios: { url: string; filename: string; uploadedAt: string }[];
   savedWebcam: { url: string; filename: string; uploadedAt: string }[];
+  currentAudioCount: number;
+  audioLimit: number;
+  audioDurationLimit: number;
+  isSaveDisabled: boolean;
 }
 
 export default function MicrophoneComponent({
   userId,
   savedAudios,
   savedWebcam,
+  isSaveDisabled,
+  currentAudioCount,
+  audioLimit,
+  audioDurationLimit,
 }: MicrophoneProps) {
   const {
     isRecording,
@@ -46,7 +55,7 @@ export default function MicrophoneComponent({
     resumeRecording,
     isPaused,
     isRendering,
-  } = useAudioRecorder(userId);
+  } = useAudioRecorder(userId, audioDurationLimit);
 
   const {
     transcript,
@@ -65,7 +74,8 @@ export default function MicrophoneComponent({
     processTranscript,
     sortedFillerWords,
   } = usePostProcessing();
-
+  const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
+  const [speechName, setSpeechName] = useState("");
   const [isRecordingComplete, setIsRecordingComplete] = useState(false);
   const [showingRecordedAudio, setShowingRecordedAudio] = useState(false);
   const [displayAudioCount, setDisplayAudioCount] = useState(3);
@@ -117,15 +127,17 @@ export default function MicrophoneComponent({
     alert("Transcript copied to clipboard!");
   };
 
-  const handleSave = async () => {
+  const handleSave = () => {
+    // Check if the user has reached their recording limit
+    if (currentAudioCount >= audioLimit) {
+      alert(
+        `You've reached your recording limit (${currentAudioCount}/${audioLimit}).`,
+      );
+      return;
+    }
+
     if (audioBlob) {
-      const uploadedUrl = await uploadToVercelBlob(audioBlob);
-      if (uploadedUrl) {
-        console.log("Recording uploaded successfully:", uploadedUrl);
-        setUploadedAudioUrl(uploadedUrl);
-        await revalidateRecordingPage();
-        alert("Recording saved successfully!");
-      }
+      setIsRenameModalOpen(true); // Open the modal
     } else {
       alert("No recording to save. Please record something first.");
     }
@@ -183,6 +195,24 @@ export default function MicrophoneComponent({
             Please ensure good audio quality and avoid background noise.
           </p>
         </div>
+        <div className="mt-4 text-center">
+          <div className="text-sm text-gray-600">
+            Recordings remaining:{" "}
+            <span className="font-bold">
+              {Math.max(0, audioLimit - currentAudioCount)}/{audioLimit}
+            </span>
+          </div>
+          <div className="text-sm text-gray-600">
+            Maximum recording duration:{" "}
+            <span className="font-bold">{audioDurationLimit} seconds</span>
+          </div>
+          {currentAudioCount >= audioLimit && (
+            <div className="mt-2 text-sm text-red-500">
+              You've reached your recording limit. Upgrade your plan to record
+              more.
+            </div>
+          )}
+        </div>
 
         <div className="flex flex-col items-center space-y-4">
           <div className="flex w-full justify-start">
@@ -196,7 +226,14 @@ export default function MicrophoneComponent({
         <div className="flex items-center justify-center space-x-4">
           <PulseCircle />
           <div className="text-center text-gray-700">
-            {isRecording && <>Recording... {formatTime(timer)}</>}
+            {isRecording && (
+              <>
+                Recording... {formatTime(timer)}
+                <span className="ml-2 text-sm">
+                  (Max: {formatTime(audioDurationLimit)})
+                </span>
+              </>
+            )}
           </div>
         </div>
         <RecordButton
@@ -244,6 +281,7 @@ export default function MicrophoneComponent({
           onCopyTranscript={handleCopyTranscript}
           onSave={handleSave}
           isLoading={isLoading}
+          isSaveDisabled={isSaveDisabled}
         />
 
         <AIContentWrapper
@@ -275,6 +313,17 @@ export default function MicrophoneComponent({
           userId={userId}
         />
       </div>
+      <SaveRecording
+        isRenameModalOpen={isRenameModalOpen}
+        setIsRenameModalOpen={setIsRenameModalOpen}
+        recordingBlob={audioBlob}
+        uploadToVercelBlob={uploadToVercelBlob}
+        setUploadedVideoUrl={setUploadedAudioUrl} // Rename to setUploadedAudioUrl if needed
+        revalidateRecordingPage={revalidateRecordingPage}
+        isLoading={isLoading}
+        speechName={speechName}
+        setSpeechName={setSpeechName}
+      />
     </div>
   );
 }

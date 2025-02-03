@@ -10,7 +10,34 @@ export const metadata: Metadata = {
   title: "Recording Area",
   description: "Record audio, video or your screen",
 };
+const AUDIO_RECORDING_LIMITS: Record<string, number> = {
+  FREE: 3,
+  FREE_TRIAL: 5,
+  STUDENT: 3,
+  CREATOR: 15,
+  BUSINESS: 20,
+  STUDENTCLMO: 10,
+  CREATORCLMO: 15,
+  BUSINESSCLMO: 20,
+  STUDENTCLYR: 10,
+  CREATORCLYR: 15,
+  BUSINESSCLYR: 20,
+};
 
+const AUDIO_DURATION_LIMITS: Record<string, number> = {
+  // in seconds
+  FREE: 180,
+  FREE_TRIAL: 300,
+  STUDENT: 10,
+  CREATOR: 900,
+  BUSINESS: 1200,
+  STUDENTCLMO: 600,
+  CREATORCLMO: 900,
+  BUSINESSCLMO: 1200,
+  STUDENTCLYR: 600,
+  CREATORCLYR: 900,
+  BUSINESSCLYR: 1200,
+};
 async function getSavedAudios(userId: string) {
   try {
     const { blobs } = await list({
@@ -100,15 +127,34 @@ export default async function IndexPage() {
   const session = await auth();
   const userId = session?.user.id;
 
+  const subData = session?.user.subscription?.status;
+
   let savedAudios = [];
   let savedWebcam = [];
   let savedScreen = [];
   let aiContents = [];
 
+  // Initialize limit-related variables
+  let currentAudioCount = 0;
+  let audioLimit = 0;
+  let audioDurationLimit = 0;
+
   if (userId) {
     savedAudios = await getSavedAudios(userId);
     savedWebcam = await getSavedWebcam(userId);
     savedScreen = await getSavedScreen(userId);
+
+    // Calculate current audio count
+    currentAudioCount = savedAudios.length;
+
+    // Determine the user's plan (default to FREE if no subscription)
+    const userPlan = subData || "FREE";
+
+    // Get the audio limits based on the user's plan
+    audioLimit =
+      AUDIO_RECORDING_LIMITS[userPlan] || AUDIO_RECORDING_LIMITS.FREE;
+    audioDurationLimit =
+      AUDIO_DURATION_LIMITS[userPlan] || AUDIO_DURATION_LIMITS.FREE;
 
     // Fetch all AI contents for the user
     aiContents = await getAllAIContent(userId);
@@ -152,7 +198,7 @@ export default async function IndexPage() {
     });
   }
 
-  console.log("savedAudios", JSON.stringify(savedAudios, null, 2));
+  const isSaveDisabled = currentAudioCount >= audioLimit;
 
   return (
     <div className="min-h-screen w-full items-center justify-center ">
@@ -173,6 +219,12 @@ export default async function IndexPage() {
           savedAudios={savedAudios}
           savedWebcam={savedWebcam}
           savedScreen={savedScreen}
+          subData={subData}
+          // Pass the new props for audio limits
+          currentAudioCount={currentAudioCount}
+          audioLimit={audioLimit}
+          audioDurationLimit={audioDurationLimit}
+          isSaveDisabled={isSaveDisabled}
         />
       </div>
     </div>
