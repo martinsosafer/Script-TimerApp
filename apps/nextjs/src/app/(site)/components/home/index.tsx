@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import type { Session } from "@voiceai/auth";
 
@@ -27,6 +28,19 @@ export default function Home({
 }) {
   const [openTrialModal, setOpenTrialModal] = useState(trialExpiration);
   const [openModal, setOpenModal] = useState(false);
+  const origin = useSearchParams().get("origin");
+  const router = useRouter();
+
+  if (
+    (session &&
+      session.user.subscription?.status === "FREE_TRIAL" &&
+      origin === "login") ||
+    (session &&
+      session.user.subscription?.status === "FREE" &&
+      origin === "login")
+  ) {
+    router.push("/plans-lp");
+  }
 
   useEffect(() => {
     if (!user) {
