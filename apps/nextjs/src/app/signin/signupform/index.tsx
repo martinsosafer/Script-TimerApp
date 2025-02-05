@@ -16,7 +16,7 @@ export default function SignUpForm() {
       <form
         action={async () => {
           "use server";
-          await signIn("google", { redirectTo: "/" });
+          await signIn("google", { redirectTo: "/?origin=login" });
         }}
       >
         <button className="flex w-full items-center justify-center gap-3 rounded-md bg-slate-100 px-3 py-1.5 text-black shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] ">
