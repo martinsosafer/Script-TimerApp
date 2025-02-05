@@ -43,7 +43,7 @@ export async function POST(req: Request) {
   } else if (type === "filler-counter") {
     systemPrompt =
       "You are an expert speech analyzer focusing on filler words and phrases.";
-    userPrompt = `Analyze the following transcript for filler words and phrases. Include common fillers like "um", "uh", "like", "you know", "sort of", "kind of", "basically", and any other speech patterns that don't add substantive meaning. 
+    userPrompt = `Analyze the following transcript for filler words and phrases. Include common fillers like "um", "uh", "like", "you know", "sort of", "kind of", "basically", and any other speech patterns that don't add substantive meaning. If you dont find any please provide feedback to the user
 
     Please provide:
     1. A list of all filler words/phrases found and their counts
@@ -102,10 +102,15 @@ export async function POST(req: Request) {
           content = JSON.parse(content);
         }
 
-        // Transform to match sortedWords format exactly
-        content = content.fillerWords.map(
-          (item) => `${item.word}: ${item.count}`,
-        );
+        // Check if no filler words were found
+        if (content.fillerWords.length === 0) {
+          content = ["No filler words detected! Great job!"];
+        } else {
+          // Transform to array of "word: count" strings
+          content = content.fillerWords.map(
+            (item) => `${item.word}: ${item.count}`,
+          );
+        }
       } catch (error) {
         console.error("Error parsing filler counter response:", error);
         return NextResponse.json(

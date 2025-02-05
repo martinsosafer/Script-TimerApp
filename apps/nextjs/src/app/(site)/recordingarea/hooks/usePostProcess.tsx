@@ -74,5 +74,12 @@ export function usePostProcessing() {
     soundBites,
     isLoading,
     processTranscript,
+    setSummary,
+    setBulletPoints,
+    setSortedWords,
+    setMainTheme,
+    setCutDowns,
+    setSoundBites,
+    setSortedFillerWords,
   };
 }

@@ -244,5 +244,7 @@ export function useAudioRecorder(
     pauseRecording,
     resumeRecording,
     isPaused,
+    setWhisperTranscription,
+    setIsProcessingWhisper,
   };
 }

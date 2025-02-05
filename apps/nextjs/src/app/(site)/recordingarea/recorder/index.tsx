@@ -55,6 +55,8 @@ export default function MicrophoneComponent({
     resumeRecording,
     isPaused,
     isRendering,
+    setWhisperTranscription,
+    setIsProcessingWhisper,
   } = useAudioRecorder(userId, audioDurationLimit);
 
   const {
@@ -62,6 +64,9 @@ export default function MicrophoneComponent({
     completeTranscript,
     startTranscription,
     stopTranscription,
+
+    setCompleteTranscript,
+    setTranscript,
   } = useTranscription();
   const {
     summary,
@@ -73,6 +78,14 @@ export default function MicrophoneComponent({
     isLoading,
     processTranscript,
     sortedFillerWords,
+
+    setSummary,
+    setBulletPoints,
+    setSortedWords,
+    setMainTheme,
+    setCutDowns,
+    setSoundBites,
+    setSortedFillerWords,
   } = usePostProcessing();
   const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
   const [speechName, setSpeechName] = useState("");
@@ -85,6 +98,18 @@ export default function MicrophoneComponent({
     setDisplayAudioCount((prevCount) => prevCount + 3);
   };
   const handleStart = () => {
+    setCompleteTranscript("");
+    setTranscript("");
+    setWhisperTranscription(null);
+    setIsProcessingWhisper(false);
+    // Reset AI-generated content states
+    setSummary("");
+    setBulletPoints([]);
+    setSortedWords([]);
+    setMainTheme("");
+    setCutDowns("");
+    setSoundBites("");
+    setSortedFillerWords([]);
     setCountdown(3);
     const countdownInterval = setInterval(() => {
       setCountdown((prevCount) => {

@@ -38,6 +38,34 @@ const AUDIO_DURATION_LIMITS: Record<string, number> = {
   CREATORCLYR: 900,
   BUSINESSCLYR: 1200,
 };
+const WEBCAM_RECORDING_LIMITS: Record<string, number> = {
+  FREE: 2,
+  FREE_TRIAL: 3,
+  STUDENT: 2,
+  CREATOR: 10,
+  BUSINESS: 15,
+  STUDENTCLMO: 5,
+  CREATORCLMO: 10,
+  BUSINESSCLMO: 15,
+  STUDENTCLYR: 5,
+  CREATORCLYR: 10,
+  BUSINESSCLYR: 15,
+};
+
+const WEBCAM_DURATION_LIMITS: Record<string, number> = {
+  FREE: 120,
+  FREE_TRIAL: 180,
+  STUDENT: 1000,
+  CREATOR: 600,
+  BUSINESS: 900,
+  STUDENTCLMO: 300,
+  CREATORCLMO: 600,
+  BUSINESSCLMO: 900,
+  STUDENTCLYR: 300,
+  CREATORCLYR: 600,
+  BUSINESSCLYR: 900,
+};
+
 async function getSavedAudios(userId: string) {
   try {
     const { blobs } = await list({
@@ -134,11 +162,13 @@ export default async function IndexPage() {
   let savedScreen = [];
   let aiContents = [];
 
-  // Initialize limit-related variables
+  // Initialize limit variables for both audio and webcam
   let currentAudioCount = 0;
   let audioLimit = 0;
   let audioDurationLimit = 0;
-
+  let currentWebcamCount = 0;
+  let webcamLimit = 0;
+  let webcamDurationLimit = 0;
   if (userId) {
     savedAudios = await getSavedAudios(userId);
     savedWebcam = await getSavedWebcam(userId);
@@ -150,11 +180,18 @@ export default async function IndexPage() {
     // Determine the user's plan (default to FREE if no subscription)
     const userPlan = subData || "FREE";
 
-    // Get the audio limits based on the user's plan
+    // Audio limits calculation
+    currentAudioCount = savedAudios.length;
     audioLimit =
       AUDIO_RECORDING_LIMITS[userPlan] || AUDIO_RECORDING_LIMITS.FREE;
     audioDurationLimit =
       AUDIO_DURATION_LIMITS[userPlan] || AUDIO_DURATION_LIMITS.FREE;
+    // Webcam limits calculation
+    currentWebcamCount = savedWebcam.length;
+    webcamLimit =
+      WEBCAM_RECORDING_LIMITS[userPlan] || WEBCAM_RECORDING_LIMITS.FREE;
+    webcamDurationLimit =
+      WEBCAM_DURATION_LIMITS[userPlan] || WEBCAM_DURATION_LIMITS.FREE;
 
     // Fetch all AI contents for the user
     aiContents = await getAllAIContent(userId);
@@ -199,7 +236,7 @@ export default async function IndexPage() {
   }
 
   const isSaveDisabled = currentAudioCount >= audioLimit;
-
+  const isWebcamSaveDisabled = currentWebcamCount >= webcamLimit;
   return (
     <div className="min-h-screen w-full items-center justify-center ">
       <div className="flex flex-col py-[60px]">
@@ -225,6 +262,10 @@ export default async function IndexPage() {
           audioLimit={audioLimit}
           audioDurationLimit={audioDurationLimit}
           isSaveDisabled={isSaveDisabled}
+          currentWebcamCount={currentWebcamCount}
+          webcamLimit={webcamLimit}
+          webcamDurationLimit={webcamDurationLimit}
+          isWebcamSaveDisabled={isWebcamSaveDisabled}
         />
       </div>
     </div>

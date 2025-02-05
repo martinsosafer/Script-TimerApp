@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 
-import { Button } from "@voiceai/ui";
+import {
+  Button,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@voiceai/ui";
 import { IconBookPlus, IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 
 import { AIFeatureButtons } from "../aifeaturebutton";
@@ -62,6 +68,7 @@ export function AIContentWrapper({
   onUsefulCutdowns,
   onGenerateSoundBites,
 }: AIContentWrapperProps) {
+  console.log("fillerwords", sortedFillerWords);
   const [contentOrder, setContentOrder] = useState<ContentType[]>([]);
   const [aiContent, setAIContent] = useState<AIContent[]>([]);
   const [isSaving, setIsSaving] = useState(false);
@@ -81,9 +88,11 @@ export function AIContentWrapper({
         sortedFillerWords &&
         sortedFillerWords.length > 0 &&
         !prevOrder.includes("sortedFillerWords")
-      )
-        if (mainTheme && !prevOrder.includes("mainTheme"))
-          newOrder.push("mainTheme");
+      ) {
+        newOrder.push("sortedFillerWords");
+      }
+      if (mainTheme && !prevOrder.includes("mainTheme"))
+        newOrder.push("mainTheme");
       if (cutDowns && !prevOrder.includes("cutDowns"))
         newOrder.push("cutDowns");
       if (soundBites && !prevOrder.includes("soundBites"))
@@ -281,16 +290,26 @@ export function AIContentWrapper({
           </div>
         );
       case "sortedFillerWords":
+        const fillerContent = getContent();
+        if (!fillerContent) return null;
+
         return (
           <div className="mt-4">
             <h3 className="text-lg font-semibold">Filler Words:</h3>
-            <ul className="mt-2 list-disc pl-5">
-              {(Array.isArray(content) ? content : [content]).map(
-                (word, index) => (
-                  <li key={index}>{word}</li>
-                ),
-              )}
-            </ul>
+            {typeof fillerContent === "string" ? (
+              <p className="mt-2">{fillerContent}</p>
+            ) : (
+              <ul className="mt-2 list-disc pl-5">
+                {(Array.isArray(fillerContent)
+                  ? fillerContent
+                  : [fillerContent]
+                )
+                  .filter((word) => word !== null && word !== undefined)
+                  .map((word, index) => (
+                    <li key={index}>{word}</li>
+                  ))}
+              </ul>
+            )}
           </div>
         );
       case "mainTheme":
@@ -349,24 +368,39 @@ export function AIContentWrapper({
             audioUrl={null}
             videoUrl={uploadUrl}
           />
-          <Button
-            variant="outline"
-            onClick={saveAllContent}
-            disabled={!uploadUrl || isSaving}
-            className="flex items-center gap-2"
-          >
-            {isSaving ? (
-              <>
-                <IconSpinner className="h-4 w-4 animate-spin" />
-                Saving...
-              </>
-            ) : (
-              <>
-                <IconBookPlus className="h-4 w-4" />
-                Save All
-              </>
-            )}
-          </Button>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span>
+                  {" "}
+                  {/* Wrap in span to allow tooltip on disabled button */}
+                  <Button
+                    variant="outline"
+                    onClick={saveAllContent}
+                    disabled={!uploadUrl || isSaving}
+                    className="flex items-center gap-2"
+                  >
+                    {isSaving ? (
+                      <>
+                        <IconSpinner className="h-4 w-4 animate-spin" />
+                        Saving...
+                      </>
+                    ) : (
+                      <>
+                        <IconBookPlus className="h-4 w-4" />
+                        Save AI Feature
+                      </>
+                    )}
+                  </Button>
+                </span>
+              </TooltipTrigger>
+              <TooltipContent side="bottom" align="center">
+                <p>
+                  To save the AI feature, you need to save your recording first.
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       )}
       {isLoading && (

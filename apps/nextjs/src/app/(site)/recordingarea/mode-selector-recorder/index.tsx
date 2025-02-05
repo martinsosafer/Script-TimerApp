@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-import { SubscriptionData } from "~/lib/types";
+import type { SubscriptionData } from "~/lib/types";
 import MicrophoneComponent from "../recorder";
 import WebcamRecorder from "../webcamrecorder";
 
@@ -13,10 +13,18 @@ interface SelectorProps {
   savedAudios: SavedBlob[];
   savedWebcam: SavedBlob[];
   subData: SubscriptionData | null | undefined;
-  currentAudioCount: number; // New prop
-  audioLimit: number; // New prop
-  audioDurationLimit: number; // New prop
-  isSaveDisabled: boolean;
+
+  // Audio limit props
+  currentAudioCount: number;
+  audioLimit: number;
+  audioDurationLimit: number;
+  isAudioSaveDisabled: boolean;
+
+  // Webcam limit props
+  currentWebcamCount: number;
+  webcamLimit: number;
+  webcamDurationLimit: number;
+  isWebcamSaveDisabled: boolean;
 }
 
 interface SavedBlob {
@@ -32,10 +40,18 @@ export default function ModeSelectorRecorder({
   savedAudios,
   savedWebcam,
   subData,
+
+  // Audio limit props
   currentAudioCount,
   audioLimit,
   audioDurationLimit,
-  isSaveDisabled,
+  isAudioSaveDisabled,
+
+  // Webcam limit props
+  currentWebcamCount,
+  webcamLimit,
+  webcamDurationLimit,
+  isWebcamSaveDisabled,
 }: SelectorProps) {
   const [activeMode, setActiveMode] = useState(initialMode);
 
@@ -46,7 +62,16 @@ export default function ModeSelectorRecorder({
   const renderComponent = () => {
     switch (activeMode) {
       case "video":
-        return <WebcamRecorder userId={userId} savedWebcam={savedWebcam} />;
+        return (
+          <WebcamRecorder
+            userId={userId}
+            savedWebcam={savedWebcam}
+            currentWebcamCount={currentWebcamCount}
+            webcamLimit={webcamLimit}
+            webcamDurationLimit={webcamDurationLimit}
+            isWebcamSaveDisabled={isWebcamSaveDisabled}
+          />
+        );
       case "audio":
         return (
           <MicrophoneComponent
@@ -55,11 +80,20 @@ export default function ModeSelectorRecorder({
             currentAudioCount={currentAudioCount}
             audioLimit={audioLimit}
             audioDurationLimit={audioDurationLimit}
-            isSaveDisabled={isSaveDisabled}
+            isSaveDisabled={isAudioSaveDisabled}
           />
         );
       default:
-        return <WebcamRecorder userId={userId} savedWebcam={savedWebcam} />;
+        return (
+          <WebcamRecorder
+            userId={userId}
+            savedWebcam={savedWebcam}
+            currentWebcamCount={currentWebcamCount}
+            webcamLimit={webcamLimit}
+            webcamDurationLimit={webcamDurationLimit}
+            isWebcamSaveDisabled={isWebcamSaveDisabled}
+          />
+        );
     }
   };
 

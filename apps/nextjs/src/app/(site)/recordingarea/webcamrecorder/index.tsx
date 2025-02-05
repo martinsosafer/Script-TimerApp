@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 
@@ -25,11 +25,19 @@ interface WebcamRecorderProps {
   userId: string | undefined;
   savedWebcam: { url: string; filename: string; uploadedAt: string }[];
   aiContent: [];
+  currentWebcamCount: number;
+  webcamLimit: number;
+  webcamDurationLimit: number;
+  isWebcamSaveDisabled: boolean;
 }
 
 export default function MicrophoneAndWebcamComponent({
   userId,
   savedWebcam,
+  currentWebcamCount,
+  webcamLimit,
+  webcamDurationLimit,
+  isWebcamSaveDisabled,
 }: WebcamRecorderProps) {
   const {
     isRecording,
@@ -51,6 +59,8 @@ export default function MicrophoneAndWebcamComponent({
     stream,
     isPaused,
     isRendering,
+    setWhisperTranscription,
+    setIsProcessingWhisper,
   } = useWebcamRecorder(userId);
 
   const {
@@ -58,6 +68,8 @@ export default function MicrophoneAndWebcamComponent({
     completeTranscript,
     startTranscription,
     stopTranscription,
+    setCompleteTranscript,
+    setTranscript,
   } = useTranscription();
 
   const {
@@ -70,6 +82,13 @@ export default function MicrophoneAndWebcamComponent({
     isLoading,
     processTranscript,
     sortedFillerWords,
+    setSummary,
+    setBulletPoints,
+    setSortedWords,
+    setMainTheme,
+    setCutDowns,
+    setSoundBites,
+    setSortedFillerWords,
   } = usePostProcessing();
 
   const [isRecordingComplete, setIsRecordingComplete] = useState(false);
@@ -84,8 +103,22 @@ export default function MicrophoneAndWebcamComponent({
   };
 
   const displayedRecordings = savedWebcam.slice(0, displayVideoCount);
-
   const handleStart = () => {
+    // Reset the transcript-related states
+    setCompleteTranscript("");
+    setTranscript("");
+    setWhisperTranscription(null);
+    setIsProcessingWhisper(false);
+    // Reset AI-generated content states
+    setSummary("");
+    setBulletPoints([]);
+    setSortedWords([]);
+    setMainTheme("");
+    setCutDowns("");
+    setSoundBites("");
+    setSortedFillerWords([]);
+
+    // Start the countdown and recording logic
     setCountdown(3);
     const countdownInterval = setInterval(() => {
       setCountdown((prevCount) => {
@@ -110,13 +143,18 @@ export default function MicrophoneAndWebcamComponent({
     }
   };
 
-  const handleStop = () => {
+  // Also wrap handleStop in useCallback to prevent infinite loops
+  const handleStop = useCallback(() => {
     stopRecording();
     stopTranscription();
     setIsRecordingComplete(true);
     setShowingRecordedVideo(true);
-  };
-
+  }, [stopRecording, stopTranscription]);
+  useEffect(() => {
+    if (isRecording && timer >= webcamDurationLimit) {
+      handleStop();
+    }
+  }, [timer, isRecording, webcamDurationLimit, handleStop]);
   const handleCopyTranscript = () => {
     navigator.clipboard.writeText(completeTranscript + transcript);
     alert("Transcript copied to clipboard!");
@@ -191,6 +229,24 @@ export default function MicrophoneAndWebcamComponent({
             Please ensure good audio and lighting quality.
           </p>
         </div>
+        <div className="mt-4 text-center">
+          <div className="text-sm text-gray-600">
+            Recordings remaining:{" "}
+            <span className="font-bold">
+              {Math.max(0, webcamLimit - currentWebcamCount)}/{webcamLimit}
+            </span>
+          </div>
+          <div className="text-sm text-gray-600">
+            Maximum recording duration:{" "}
+            <span className="font-bold">{webcamDurationLimit} seconds</span>
+          </div>
+          {currentWebcamCount >= webcamLimit && (
+            <div className="mt-2 text-sm text-red-500">
+              You've reached your recording limit. Upgrade your plan to record
+              more.
+            </div>
+          )}
+        </div>
         <div className="flex flex-col items-center space-y-4">
           <div className="flex w-full justify-between">
             <DeviceSelector
@@ -262,6 +318,7 @@ export default function MicrophoneAndWebcamComponent({
           onSave={handleSave}
           isLoading={isLoading}
           disableAudio={true}
+          isWebcamSaveDisabled={isWebcamSaveDisabled}
         />
         <AIContentWrapper
           whisperTranscription={whisperTranscription}
