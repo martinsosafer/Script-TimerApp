@@ -41,7 +41,7 @@ export default function LoginForm() {
 
           return (window.location.href = url as string);
         }
-        router.push("/");
+        router.push("/?origin=login");
         router.refresh();
       }
     } catch (error) {

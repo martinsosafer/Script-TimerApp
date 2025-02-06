@@ -35,7 +35,7 @@ export async function createUser({
 
   await signIn("resend", {
     email: email,
-    redirectTo: "/",
+    redirectTo: "/?origin=login",
   });
 }
 
