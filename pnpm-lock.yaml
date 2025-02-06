@@ -258,6 +258,9 @@ importers:
       lottie-react:
         specifier: ^2.4.0
         version: 2.4.0(react-dom@18.2.0)(react@18.2.0)
+      mixpanel-browser:
+        specifier: ^2.60.0
+        version: 2.60.0
       next:
         specifier: ^14.2.23
         version: 14.2.23(react-dom@18.2.0)(react@18.2.0)
@@ -349,6 +352,9 @@ importers:
       '@types/file-saver':
         specifier: ^2.0.7
         version: 2.0.7
+      '@types/mixpanel-browser':
+        specifier: ^2.51.0
+        version: 2.51.0
       '@types/node':
         specifier: ^18.18.8
         version: 18.19.45
@@ -5674,6 +5680,10 @@ packages:
       picomatch: 2.3.1
     dev: true
 
+  /@rrweb/types@2.0.0-alpha.18:
+    resolution: {integrity: sha512-iMH3amHthJZ9x3gGmBPmdfim7wLGygC2GciIkw2A6SO8giSn8PHYtRT8OKNH4V+k3SZ6RSnYHcTQxBA7pSWZ3Q==}
+    dev: false
+
   /@segment/analytics-core@1.6.0:
     resolution: {integrity: sha512-bn9X++IScUfpT7aJGjKU/yJAu/Ko2sYD6HsKA70Z2560E89x30pqgqboVKY8kootvQnT4UKCJiUr5NDMgjmWdQ==}
     dependencies:
@@ -6391,6 +6401,10 @@ packages:
       '@types/node': 18.19.45
     dev: false
 
+  /@types/css-font-loading-module@0.0.7:
+    resolution: {integrity: sha512-nl09VhutdjINdWyXxHWN/w9zlNCfr60JUqJbd24YXUuCwgeL0TpFSdElCwb6cxfB6ybE19Gjj4g0jsgkXxKv1Q==}
+    dev: false
+
   /@types/debug@4.1.12:
     resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
     dependencies:
@@ -6496,6 +6510,10 @@ packages:
 
   /@types/minimatch@5.1.2:
     resolution: {integrity: sha512-K0VQKziLUWkVKiRVrx4a40iPaxTUefQmjtkQofBkYRcoaaL/8rhwDWww9qWbrgicNOgnpIsMxyNIUM4+n6dUIA==}
+    dev: true
+
+  /@types/mixpanel-browser@2.51.0:
+    resolution: {integrity: sha512-or4HZRDmqMJ1OP+O6h4hB+tVDKJffpVi2bFxi/Gem5TGnE94I7OtWKXtrwdDfSGhfOLL+WQIOUOxUZHAzHNi8A==}
     dev: true
 
   /@types/ms@0.7.34:
@@ -7097,6 +7115,10 @@ packages:
   /@xmldom/xmldom@0.8.10:
     resolution: {integrity: sha512-2WALfTl4xo2SkGCYRt6rDTFfk9R1czmBvUQy12gK2KuRKIpWEhcbbzy8EZXtz/jkRqHX8bFEc6FC1HjX4TUWYw==}
     engines: {node: '>=10.0.0'}
+
+  /@xstate/fsm@1.6.5:
+    resolution: {integrity: sha512-b5o1I6aLNeYlU/3CPlj/Z91ybk1gUsKT+5NAJI+2W4UjvS5KLG28K9v5UvNoFVjHV8PajVZ00RH3vnjyQO7ZAw==}
+    dev: false
 
   /abbrev@1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
@@ -14898,6 +14920,16 @@ packages:
       minipass: 3.1.6
       yallist: 4.0.0
 
+  /mitt@3.0.1:
+    resolution: {integrity: sha512-vKivATfr97l2/QBCYAkXYDbrIWPM2IIKEl7YPhjCvKlG3kE2gm+uBo6nEXK3M5/Ffh/FLpKExzOQ3JJoJGFKBw==}
+    dev: false
+
+  /mixpanel-browser@2.60.0:
+    resolution: {integrity: sha512-oys+/EnmFEyJqQkmNqb6wI7qTyVQUfxibvzct5HxI8QvQw/hMXqt2UENem1MqCBDTakAaJvgXNeajG4UulIPqA==}
+    dependencies:
+      rrweb: 2.0.0-alpha.13
+    dev: false
+
   /mkdirp@0.5.6:
     resolution: {integrity: sha512-FP+p8RB8OWpF3YZBCrP5gtADmtXApB5AMLn+vdyA+PyxCjrCs00mjyUozssO33cwDeT3wNGdLxJ5M//YqtHAJw==}
     hasBin: true
@@ -17497,6 +17529,31 @@ packages:
 
   /rope-sequence@1.3.4:
     resolution: {integrity: sha512-UT5EDe2cu2E/6O4igUr5PSFs23nvvukicWHx6GnOPlHAiiYbzNuCRQCuiUdHJQcqKalLKlrYJnjY0ySGsXNQXQ==}
+    dev: false
+
+  /rrdom@2.0.0-alpha.18:
+    resolution: {integrity: sha512-fSFzFFxbqAViITyYVA4Z0o5G6p1nEqEr/N8vdgSKie9Rn0FJxDSNJgjV0yiCIzcDs0QR+hpvgFhpbdZ6JIr5Nw==}
+    dependencies:
+      rrweb-snapshot: 2.0.0-alpha.18
+    dev: false
+
+  /rrweb-snapshot@2.0.0-alpha.18:
+    resolution: {integrity: sha512-hBHZL/NfgQX6wO1D9mpwqFu1NJPpim+moIcKhFEjVTZVRUfCln+LOugRc4teVTCISYHN8Cw5e2iNTWCSm+SkoA==}
+    dependencies:
+      postcss: 8.4.41
+    dev: false
+
+  /rrweb@2.0.0-alpha.13:
+    resolution: {integrity: sha512-a8GXOCnzWHNaVZPa7hsrLZtNZ3CGjiL+YrkpLo0TfmxGLhjNZbWY2r7pE06p+FcjFNlgUVTmFrSJbK3kO7yxvw==}
+    dependencies:
+      '@rrweb/types': 2.0.0-alpha.18
+      '@types/css-font-loading-module': 0.0.7
+      '@xstate/fsm': 1.6.5
+      base64-arraybuffer: 1.0.2
+      fflate: 0.4.8
+      mitt: 3.0.1
+      rrdom: 2.0.0-alpha.18
+      rrweb-snapshot: 2.0.0-alpha.18
     dev: false
 
   /run-async@2.4.1:
