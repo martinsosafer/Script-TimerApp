@@ -68,7 +68,6 @@ export default async function Layout(props: { children: React.ReactNode }) {
         </MonthlySpecialProvider>
         <Toaster />
         <Footer />
-        <IdentifyAnalytics />
       </TRPCReactProvider>
     </div>
   );
