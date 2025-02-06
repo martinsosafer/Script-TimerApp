@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins, Roboto } from "next/font/google";
 
-import { PageAnalytics } from "./analytics";
+import { IdentifyAnalytics, PageAnalytics } from "./analytics";
 import { ContextWrapper } from "./context/state";
 import GoogleAnalytics from "./GoogleAnalytics";
 
@@ -54,6 +54,7 @@ export default function Layout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" className="h-full w-full">
       <head>
+        <MixpanelInitializer />
         <GoogleAnalytics />
         <MetaPixel />
       </head>
@@ -70,9 +71,8 @@ export default function Layout(props: { children: React.ReactNode }) {
         ].join(" ")}
       >
         <TRPCReactProvider headers={headers()}>
-          <ContextWrapper>
-            {children} <MixpanelInitializer />
-          </ContextWrapper>
+          <IdentifyAnalytics />
+          <ContextWrapper>{children}</ContextWrapper>
         </TRPCReactProvider>
         <Squid />
         <noscript>
@@ -85,8 +85,6 @@ export default function Layout(props: { children: React.ReactNode }) {
           />
         </noscript>
       </body>
-
-      <PageAnalytics />
     </html>
   );
 }
