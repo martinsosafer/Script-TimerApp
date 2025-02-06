@@ -10,6 +10,7 @@ import "~/styles/globals.css";
 import { headers } from "next/headers";
 
 import MetaPixel from "./MetaPixel";
+import MixpanelInitializer from "./mixpanel";
 import { TRPCReactProvider } from "./providers";
 import Squid from "./SquidAnalitycs";
 
@@ -69,7 +70,9 @@ export default function Layout(props: { children: React.ReactNode }) {
         ].join(" ")}
       >
         <TRPCReactProvider headers={headers()}>
-          <ContextWrapper>{children}</ContextWrapper>
+          <ContextWrapper>
+            {children} <MixpanelInitializer />
+          </ContextWrapper>
         </TRPCReactProvider>
         <Squid />
         <noscript>
