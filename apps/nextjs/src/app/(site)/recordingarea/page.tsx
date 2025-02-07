@@ -55,7 +55,7 @@ const WEBCAM_RECORDING_LIMITS: Record<string, number> = {
 const WEBCAM_DURATION_LIMITS: Record<string, number> = {
   FREE: 120,
   FREE_TRIAL: 180,
-  STUDENT: 1000,
+  STUDENT: 10,
   CREATOR: 600,
   BUSINESS: 900,
   STUDENTCLMO: 300,
