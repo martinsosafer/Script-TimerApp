@@ -8,7 +8,7 @@ export function usePostProcessing() {
   const [cutDowns, setCutDowns] = useState("");
   const [soundBites, setSoundBites] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
+  const [sortedFillerWords, setSortedFillerWords] = useState([]);
   const processTranscript = useCallback(
     async (whisperTranscription: string | null, type: string) => {
       setIsLoading(true);
@@ -24,7 +24,7 @@ export function usePostProcessing() {
           }),
         });
         const data = await response.json();
-        console.log("CUTDOWN", data);
+
         switch (type) {
           case "summary":
             setSummary(data.content);
@@ -36,6 +36,10 @@ export function usePostProcessing() {
             break;
           case "word-sorter":
             setSortedWords(data.content);
+            break;
+
+          case "filler-counter":
+            setSortedFillerWords(data.content);
             break;
           case "main-topic":
             setMainTheme(data.content);
@@ -66,8 +70,16 @@ export function usePostProcessing() {
     sortedWords,
     mainTheme,
     cutDowns,
+    sortedFillerWords,
     soundBites,
     isLoading,
     processTranscript,
+    setSummary,
+    setBulletPoints,
+    setSortedWords,
+    setMainTheme,
+    setCutDowns,
+    setSoundBites,
+    setSortedFillerWords,
   };
 }

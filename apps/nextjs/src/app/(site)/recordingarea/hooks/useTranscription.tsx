@@ -3,6 +3,7 @@ import { useCallback, useRef, useState } from "react";
 export function useTranscription() {
   const [transcript, setTranscript] = useState("");
   const [completeTranscript, setCompleteTranscript] = useState("");
+
   const recognitionRef = useRef<any>(null);
 
   const startTranscription = useCallback(() => {
@@ -50,5 +51,8 @@ export function useTranscription() {
     completeTranscript,
     startTranscription,
     stopTranscription,
+    setCompleteTranscript,
+    setTranscript,
+    setCompleteTranscript,
   };
 }

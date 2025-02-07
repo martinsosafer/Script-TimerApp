@@ -19,7 +19,7 @@ export async function POST(req: Request) {
     userPrompt = `Please provide a bullet point list of key points from the following transcript:\n\n${transcript}`;
   } else if (type === "word-sorter") {
     systemPrompt = "You are a helpful assistant that analyzes text.";
-    userPrompt = `Please count the frequency of each word in the following transcript and return a list of words in descending order by frequency:\n\n${transcript} if you are not able to get the words please tell the user that word sotter only works when you repeat more than 3 words`;
+    userPrompt = `Please count the frequency of each word in the following transcript and return a list of words in descending order by frequency:\n\n${transcript} if you are not able to get the words please tell the user that word sotter only works when you repeat more than 3 words.Please do not forget about telling the user that they need a longer speech in order "word-sorter works!`;
   } else if (type === "main-topic") {
     systemPrompt =
       "You are an intelligent assistant that extracts the main topic of a presentation.";
@@ -39,6 +39,22 @@ export async function POST(req: Request) {
     
     Format each sound bite on a new line, preceded by a bullet point.
     
+    Transcript:\n\n${transcript}`;
+  } else if (type === "filler-counter") {
+    systemPrompt =
+      "You are an expert speech analyzer focusing on filler words and phrases.";
+    userPrompt = `Analyze the following transcript for filler words and phrases. Include common fillers like "um", "uh", "like", "you know", "sort of", "kind of", "basically", and any other speech patterns that don't add substantive meaning. If you dont find any please provide feedback to the user
+
+    Please provide:
+    1. A list of all filler words/phrases found and their counts
+    2. The total number of filler words
+    3. The total word count
+    4. The percentage of filler words in the speech
+    
+    Format the response as a JSON object with these keys:
+    - fillerWords: array of {word: string, count: number}
+    - statistics: {totalFillers: number, totalWords: number, fillerPercentage: string}
+
     Transcript:\n\n${transcript}`;
   } else {
     return NextResponse.json(
@@ -62,17 +78,46 @@ export async function POST(req: Request) {
       const wordCounts = {};
       transcript
         .toLowerCase()
-        .replace(/[^\w\s]/g, "") // Remove punctuation
-        .split(/\s+/) // Split by whitespace
-        .filter((word) => word.trim() !== "") // Filter out empty strings
+        .replace(/[^\w\s]/g, "")
+        .split(/\s+/)
+        .filter((word) => word.trim() !== "")
         .forEach((word) => {
           wordCounts[word] = (wordCounts[word] || 0) + 1;
         });
 
-      content = Object.entries(wordCounts)
-        .filter(([_, count]) => count > 3) // Filter words occurring more than 3 times
-        .sort((a, b) => b[1] - a[1]) // Sort by frequency descending
+      const sortedWords = Object.entries(wordCounts)
+        .filter(([_, count]) => count > 3)
+        .sort((a, b) => b[1] - a[1])
         .map(([word, count]) => `${word}: ${count}`);
+
+      if (sortedWords.length === 0) {
+        content =
+          "The text is too short or lacks sufficient repeated words. Please provide a longer transcript with repeated words for the word-sorter to work.";
+      } else {
+        content = sortedWords;
+      }
+    } else if (type === "filler-counter") {
+      try {
+        if (typeof content === "string") {
+          content = JSON.parse(content);
+        }
+
+        // Check if no filler words were found
+        if (content.fillerWords.length === 0) {
+          content = ["No filler words detected! Great job!"];
+        } else {
+          // Transform to array of "word: count" strings
+          content = content.fillerWords.map(
+            (item) => `${item.word}: ${item.count}`,
+          );
+        }
+      } catch (error) {
+        console.error("Error parsing filler counter response:", error);
+        return NextResponse.json(
+          { error: "Failed to analyze filler words" },
+          { status: 500 },
+        );
+      }
     }
 
     return NextResponse.json({ content });
