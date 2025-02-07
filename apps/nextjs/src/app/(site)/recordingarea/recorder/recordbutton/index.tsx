@@ -11,6 +11,7 @@ import {
 } from "@voiceai/ui/@/components/ui/icons";
 
 import Button from "~/app/(site)/components/button";
+import NoSessionModal from "~/app/(site)/components/modals/no-session-modal";
 
 interface RecordButtonProps {
   isRecording: boolean;
@@ -18,6 +19,7 @@ interface RecordButtonProps {
   onStart: () => void;
   onPauseResume: () => void;
   onStop: () => void;
+  userId?: string;
 }
 
 export function RecordButton({
@@ -26,10 +28,11 @@ export function RecordButton({
   onStart,
   onPauseResume,
   onStop,
+  userId,
 }: RecordButtonProps) {
   const [showTeleprompter, setShowTeleprompter] = useState(false);
   const [teleprompterText, setTeleprompterText] = useState("");
-
+  const [noSessionModalOpen, setNoSessionModalOpen] = useState(false);
   return (
     <div className="relative w-full">
       <div className="flex flex-col space-y-4">
@@ -39,7 +42,13 @@ export function RecordButton({
               <Button
                 label="Start Recording"
                 type="accent"
-                onClick={onStart}
+                onClick={() => {
+                  if (!userId) {
+                    setNoSessionModalOpen(true);
+                  } else {
+                    onStart();
+                  }
+                }}
                 icon={IconMic2}
                 iconColor="#FFFFFF"
               />
@@ -101,6 +110,11 @@ export function RecordButton({
           )}
         </AnimatePresence>
       </div>
+      <NoSessionModal
+        openModal={noSessionModalOpen}
+        setOpenModal={setNoSessionModalOpen}
+        page="recorder"
+      />
     </div>
   );
 }

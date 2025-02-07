@@ -154,7 +154,7 @@ async function getSavedScreen(userId: string) {
 export default async function IndexPage() {
   const session = await auth();
   const userId = session?.user.id;
-
+  const userEmail = session?.user.email;
   const subData = session?.user.subscription?.status;
 
   let savedAudios = [];
@@ -266,6 +266,7 @@ export default async function IndexPage() {
           webcamLimit={webcamLimit}
           webcamDurationLimit={webcamDurationLimit}
           isWebcamSaveDisabled={isWebcamSaveDisabled}
+          userEmail={userEmail}
         />
       </div>
     </div>

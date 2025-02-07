@@ -1,3 +1,4 @@
+// app/share/audio/share-audio-client.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -7,22 +8,22 @@ import MotionTransition from "~/app/(site)/components/herosection/MotionTransiti
 import { RevealText } from "~/app/animations/RevealText";
 import { poppins } from "~/app/fonts";
 
-export default function ShareVideoClient({
+export default function ShareAudioClient({
   initialUrl,
   sharedByEmail,
 }: {
   initialUrl?: string;
   sharedByEmail?: string;
 }) {
-  const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
 
   useEffect(() => {
     if (typeof initialUrl === "string") {
-      setVideoUrl(decodeURIComponent(initialUrl));
+      setAudioUrl(decodeURIComponent(initialUrl));
     }
   }, [initialUrl]);
 
-  if (!videoUrl) {
+  if (!audioUrl) {
     return (
       <div className="flex h-screen items-center justify-center bg-gradient-to-tr from-black to-blue-500">
         <div className="text-2xl font-bold text-white">Loading...</div>
@@ -37,16 +38,21 @@ export default function ShareVideoClient({
       <RevealText>
         {sharedByEmail && (
           <p className="mb-6 mt-6 text-center text-[35px] font-bold leading-[38.5px]">
-            This video was shared by{" "}
+            This audio was shared by{" "}
             <span className="text-cp-secondary">{sharedByEmail}</span>
           </p>
         )}
       </RevealText>
       <MotionTransition>
-        <div className="w-full max-w-3xl rounded-lg bg-black bg-opacity-50 p-4 shadow-2xl">
-          <video controls className="mx-auto w-full rounded-lg" src={videoUrl}>
-            Your browser does not support the video tag.
-          </video>
+        <div className="w-full max-w-md rounded-lg bg-black bg-opacity-50 p-4 shadow-2xl">
+          <audio
+            controls
+            className="mx-auto w-full"
+            style={{ minWidth: "300px" }}
+          >
+            <source src={audioUrl} type="audio/mpeg" />
+            Your browser does not support the audio element.
+          </audio>
         </div>
       </MotionTransition>
       <div className="mt-8 max-w-2xl text-center">

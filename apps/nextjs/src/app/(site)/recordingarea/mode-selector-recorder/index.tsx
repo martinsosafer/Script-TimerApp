@@ -13,7 +13,7 @@ interface SelectorProps {
   savedAudios: SavedBlob[];
   savedWebcam: SavedBlob[];
   subData: SubscriptionData | null | undefined;
-
+  userEmail: string | undefined;
   // Audio limit props
   currentAudioCount: number;
   audioLimit: number;
@@ -40,7 +40,7 @@ export default function ModeSelectorRecorder({
   savedAudios,
   savedWebcam,
   subData,
-
+  userEmail,
   // Audio limit props
   currentAudioCount,
   audioLimit,
@@ -70,6 +70,7 @@ export default function ModeSelectorRecorder({
             webcamLimit={webcamLimit}
             webcamDurationLimit={webcamDurationLimit}
             isWebcamSaveDisabled={isWebcamSaveDisabled}
+            userEmail={userEmail}
           />
         );
       case "audio":
@@ -81,6 +82,7 @@ export default function ModeSelectorRecorder({
             audioLimit={audioLimit}
             audioDurationLimit={audioDurationLimit}
             isSaveDisabled={isAudioSaveDisabled}
+            userEmail={userEmail}
           />
         );
       default:
@@ -92,6 +94,7 @@ export default function ModeSelectorRecorder({
             webcamLimit={webcamLimit}
             webcamDurationLimit={webcamDurationLimit}
             isWebcamSaveDisabled={isWebcamSaveDisabled}
+            userEmail={userEmail}
           />
         );
     }

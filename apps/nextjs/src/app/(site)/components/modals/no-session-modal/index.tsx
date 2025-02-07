@@ -34,6 +34,7 @@ interface FreeModalProps {
     | "plagiarism"
     | "translator"
     | "clone"
+    | "recorder"
     | "image";
 }
 
@@ -108,6 +109,17 @@ const pageData: Record<
     subMessage: "Please log in, so I can deliver that with a smile",
   },
   clone: {
+    image: HeroImage,
+    list: [
+      "Listen to your scripts with over 120 different voices",
+      "Customize voice tones and accents",
+      "Export audio files for use in projects",
+      "Clone voices with just an example audio",
+    ],
+    message: "Voice Cloning",
+    subMessage: "",
+  },
+  recorder: {
     image: HeroImage,
     list: [
       "Listen to your scripts with over 120 different voices",

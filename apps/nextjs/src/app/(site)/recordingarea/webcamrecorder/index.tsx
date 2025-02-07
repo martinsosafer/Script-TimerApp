@@ -29,6 +29,7 @@ interface WebcamRecorderProps {
   webcamLimit: number;
   webcamDurationLimit: number;
   isWebcamSaveDisabled: boolean;
+  userEmail: string;
 }
 
 export default function MicrophoneAndWebcamComponent({
@@ -38,6 +39,7 @@ export default function MicrophoneAndWebcamComponent({
   webcamLimit,
   webcamDurationLimit,
   isWebcamSaveDisabled,
+  userEmail,
 }: WebcamRecorderProps) {
   const {
     isRecording,
@@ -212,7 +214,8 @@ export default function MicrophoneAndWebcamComponent({
   );
   function generateShareableLink(blobUrl: string) {
     const encodedBlobUrl = encodeURIComponent(blobUrl);
-    return `/share/video?url=${encodedBlobUrl}`;
+    const encodedEmail = encodeURIComponent(userEmail);
+    return `/share/video?url=${encodedBlobUrl}&email=${encodedEmail}`;
   }
   return (
     <div
@@ -281,6 +284,7 @@ export default function MicrophoneAndWebcamComponent({
           onStart={handleStart}
           onPauseResume={handlePauseResume}
           onStop={handleStop}
+          userId={userId}
         />
         <TranscriptDisplay
           isProcessingWhisper={isProcessingWhisper}

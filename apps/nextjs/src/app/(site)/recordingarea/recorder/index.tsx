@@ -28,6 +28,7 @@ interface MicrophoneProps {
   audioLimit: number;
   audioDurationLimit: number;
   isSaveDisabled: boolean;
+  userEmail: string;
 }
 
 export default function MicrophoneComponent({
@@ -38,6 +39,7 @@ export default function MicrophoneComponent({
   currentAudioCount,
   audioLimit,
   audioDurationLimit,
+  userEmail,
 }: MicrophoneProps) {
   const {
     isRecording,
@@ -196,13 +198,9 @@ export default function MicrophoneComponent({
   );
 
   function generateShareableLink(blobUrl: string) {
-    const baseUrl = "https://voiceai-git-recordingarea-script-timer.vercel.app";
-    if (!baseUrl) {
-      console.error("NEXT_PUBLIC_HOST_URL is not defined in the environment.");
-      return "";
-    }
     const encodedBlobUrl = encodeURIComponent(blobUrl);
-    return `${baseUrl}/share/audio?url=${encodedBlobUrl}`;
+    const encodedEmail = encodeURIComponent(userEmail);
+    return `/share/audio?url=${encodedBlobUrl}&email=${encodedEmail}`;
   }
 
   return (
@@ -267,6 +265,7 @@ export default function MicrophoneComponent({
           onStart={handleStart}
           onPauseResume={handlePauseResume}
           onStop={handleStop}
+          userId={userId}
         />
 
         <TranscriptDisplay

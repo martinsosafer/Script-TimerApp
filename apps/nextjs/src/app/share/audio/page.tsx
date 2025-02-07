@@ -1,6 +1,6 @@
-import ShareVideoClient from "./share-video-client";
+import ShareAudioClient from "./share-audio";
 
-export default function ShareVideoPage({
+export default function ShareAudioPage({
   searchParams,
 }: {
   searchParams: Record<string, string | string[] | undefined>;
@@ -8,5 +8,5 @@ export default function ShareVideoPage({
   const url = searchParams.url as string | undefined;
   const email = searchParams.email as string | undefined;
 
-  return <ShareVideoClient initialUrl={url} sharedByEmail={email} />;
+  return <ShareAudioClient initialUrl={url} sharedByEmail={email} />;
 }
