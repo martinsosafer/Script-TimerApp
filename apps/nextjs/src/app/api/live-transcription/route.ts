@@ -7,11 +7,8 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+export const runtime = "edge"; // or 'nodejs' if you prefer
+export const dynamic = "force-dynamic"; // Ensure the route is dynamically rendered
 
 export async function POST(req: NextRequest) {
   try {
