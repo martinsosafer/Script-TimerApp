@@ -98,17 +98,34 @@ export async function POST(req: Request) {
       }
     } else if (type === "filler-counter") {
       try {
+        console.log("OpenAI Response:", content);
+
         if (typeof content === "string") {
-          content = JSON.parse(content);
+          // Check if the content is a valid JSON string
+          try {
+            content = JSON.parse(content);
+          } catch (error) {
+            console.error("Error parsing JSON:", error);
+            return NextResponse.json(
+              { error: "Invalid JSON response from OpenAI" },
+              { status: 500 },
+            );
+          }
         }
 
         // Check if no filler words were found
-        if (content.fillerWords.length === 0) {
+        if (content.fillerWords && content.fillerWords.length === 0) {
           content = ["No filler words detected! Great job!"];
-        } else {
+        } else if (content.fillerWords) {
           // Transform to array of "word: count" strings
           content = content.fillerWords.map(
             (item) => `${item.word}: ${item.count}`,
+          );
+        } else {
+          console.error("Unexpected response structure:", content);
+          return NextResponse.json(
+            { error: "Unexpected response structure from OpenAI" },
+            { status: 500 },
           );
         }
       } catch (error) {
