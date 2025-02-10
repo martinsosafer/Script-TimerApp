@@ -1,10 +1,17 @@
-import type { NextRequest } from "next/server";
+import { Readable } from "stream";
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 import OpenAI from "openai";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
 
 export async function POST(req: NextRequest) {
   try {
@@ -18,36 +25,40 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    console.log("Received audio file:", file.name, file.type, file.size);
+    // Validate file size
+    if (file.size > 4.5 * 1024 * 1024) {
+      return NextResponse.json(
+        { error: "File size exceeds 4.5MB limit" },
+        { status: 413 },
+      );
+    }
 
-    // Convert the File to a Buffer before sending to OpenAI
+    // Convert to Buffer instead of Readable stream
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    const transcription = await openai.audio.transcriptions.create({
-      file: new File([buffer], file.name, { type: file.type }),
-      model: "whisper-1",
-      response_format: "verbose_json",
-      prompt:
-        "Please transcribe the audio, including all filler words like 'um', 'uh', 'er', 'ah', 'like', 'okay', and 'you know'.",
+    // Create File object for OpenAI API
+    const openAIFile = new File([buffer], file.name, {
+      type: file.type,
+      lastModified: Date.now(),
     });
 
-    // Return the transcription as is, focusing on the inclusion of filler words
-    return NextResponse.json(
-      {
-        transcription: transcription.text,
-        segments: transcription.segments,
-      },
-      { status: 200 },
-    );
+    const transcription = await openai.audio.transcriptions.create({
+      file: openAIFile,
+      model: "whisper-1",
+      response_format: "verbose_json",
+      prompt: "Include all filler words like 'um', 'uh', etc.",
+    });
+
+    return NextResponse.json({
+      transcription: transcription.text,
+      segments: transcription.segments,
+    });
   } catch (error) {
-    console.error("OpenAI API Error:", error);
+    console.error("Transcription error:", error);
     return NextResponse.json(
-      {
-        error:
-          error instanceof Error ? error.message : "Failed to process audio",
-      },
-      { status: 500 },
+      { error: error.message },
+      { status: error.status || 500 },
     );
   }
 }

@@ -1,29 +1,39 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { upload } from "@vercel/blob/client";
 
-// Add these new utility functions
-const CHUNK_SIZE = 25 * 1024 * 1024; // 25MB in bytes
+// Reduce chunk duration to keep WAV files under Vercel's 4.5MB limit
+const CHUNK_DURATION = 30; // Reduced from 60 to 30 seconds
 
-function splitAudioBuffer(
-  buffer: AudioBuffer,
-  chunkDuration: number,
-): AudioBuffer[] {
+// Modified splitAudioBuffer to create mono audio
+function splitAudioBuffer(buffer: AudioBuffer): AudioBuffer[] {
   const chunks: AudioBuffer[] = [];
-  const chunkSamples = chunkDuration * buffer.sampleRate;
+  const chunkSamples = CHUNK_DURATION * buffer.sampleRate;
   const totalChunks = Math.ceil(buffer.length / chunkSamples);
 
   for (let i = 0; i < totalChunks; i++) {
     const start = i * chunkSamples;
     const end = Math.min((i + 1) * chunkSamples, buffer.length);
+
+    // Create mono buffer instead of multi-channel
     const chunkBuffer = new AudioContext().createBuffer(
-      buffer.numberOfChannels,
+      1, // MONO
       end - start,
       buffer.sampleRate,
     );
 
+    // Mix down all channels to mono
+    const mixedData = new Float32Array(end - start);
     for (let channel = 0; channel < buffer.numberOfChannels; channel++) {
       const channelData = buffer.getChannelData(channel).subarray(start, end);
-      chunkBuffer.copyToChannel(channelData, channel);
+      for (let j = 0; j < channelData.length; j++) {
+        mixedData[j] += channelData[j];
+      }
+    }
+
+    // Normalize and copy to mono channel
+    const monoChannel = chunkBuffer.getChannelData(0);
+    for (let j = 0; j < mixedData.length; j++) {
+      monoChannel[j] = mixedData[j] / buffer.numberOfChannels;
     }
 
     chunks.push(chunkBuffer);
@@ -31,7 +41,13 @@ function splitAudioBuffer(
 
   return chunks;
 }
-
+async function validateChunkSize(wavBlob: Blob) {
+  if (wavBlob.size > 4 * 1024 * 1024) {
+    throw new Error(
+      `Chunk size ${wavBlob.size} exceeds Vercel limit. Reduce chunk duration.`,
+    );
+  }
+}
 async function transcribeAudioChunk(chunk: Blob): Promise<string> {
   const formData = new FormData();
   formData.append("file", chunk, "chunk.wav");
@@ -221,11 +237,14 @@ export function useWebcamRecorder(userId: string | undefined) {
                 await recordingBlob.arrayBuffer(),
               );
 
-              const audioChunks = splitAudioBuffer(audioBuffer, 60); // Split into 60-second chunks
+              const audioChunks = splitAudioBuffer(audioBuffer);
               let fullTranscription = "";
 
               for (const chunk of audioChunks) {
                 const wavBlob = await audioBufferToWav(chunk);
+                await validateChunkSize(wavBlob); // Check size before sending
+
+                // Add random prefix to avoid cached responses
                 const chunkTranscription = await transcribeAudioChunk(wavBlob);
                 fullTranscription += chunkTranscription + " ";
               }
@@ -233,12 +252,11 @@ export function useWebcamRecorder(userId: string | undefined) {
               setWhisperTranscription(fullTranscription.trim());
             } catch (error) {
               console.error("Audio processing failed:", error);
-              alert("Failed to process audio. Using fallback transcription.");
+              alert(`Processing error: ${error.message}`);
             } finally {
               setIsProcessingWhisper(false);
             }
           };
-
           // Start audio processing without blocking video rendering
           processAudio();
           resolve();
