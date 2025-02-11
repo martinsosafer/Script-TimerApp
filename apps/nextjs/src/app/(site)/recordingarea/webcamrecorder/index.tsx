@@ -217,6 +217,11 @@ export default function MicrophoneAndWebcamComponent({
     const encodedEmail = encodeURIComponent(userEmail);
     return `/share/video?url=${encodedBlobUrl}&email=${encodedEmail}`;
   }
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds} min`;
+  };
   return (
     <div
       className={`mb-20 flex h-full w-full items-center justify-center bg-gray-100 ${poppins.className}`}
@@ -241,7 +246,7 @@ export default function MicrophoneAndWebcamComponent({
           </div>
           <div className="text-sm text-gray-600">
             Maximum recording duration:{" "}
-            <span className="font-bold">{webcamDurationLimit} seconds</span>
+            <span className="font-bold">{formatTime(webcamDurationLimit)}</span>
           </div>
           {currentWebcamCount >= webcamLimit && (
             <div className="mt-2 text-sm text-red-500">

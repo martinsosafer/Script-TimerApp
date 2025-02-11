@@ -202,7 +202,11 @@ export default function MicrophoneComponent({
     const encodedEmail = encodeURIComponent(userEmail);
     return `/share/audio?url=${encodedBlobUrl}&email=${encodedEmail}`;
   }
-
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds} min`;
+  };
   return (
     <div
       className={`mb-20 flex h-full w-full items-center justify-center bg-gray-100 ${poppins.className}`}
@@ -227,7 +231,7 @@ export default function MicrophoneComponent({
           </div>
           <div className="text-sm text-gray-600">
             Maximum recording duration:{" "}
-            <span className="font-bold">{audioDurationLimit} seconds</span>
+            <span className="font-bold">{formatTime(audioDurationLimit)}</span>
           </div>
           {currentAudioCount >= audioLimit && (
             <div className="mt-2 text-sm text-red-500">
