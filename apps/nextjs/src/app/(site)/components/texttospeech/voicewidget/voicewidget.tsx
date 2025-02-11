@@ -293,7 +293,7 @@ function VoiceWidget({
           }`}
           onClick={handleShowCustom}
         >
-          Custom
+          Cloned Voices
         </button>
       </div>
 
@@ -348,15 +348,15 @@ function VoiceWidget({
           </div>
         </div>
       )}
-      {isModalOpen && (
+      {/* {isModalOpen && (
         <CelebrityModal
           setIsModalOpen={setIsModalOpen}
           page="home"
           onClose={() => setIsModalOpen(false)}
           openModal={true}
-          position={{ x: 490, y: 520 }}
+          position={{ x: 530, y: 520 }}
         />
-      )}
+      )} */}
     </div>
   );
 }
