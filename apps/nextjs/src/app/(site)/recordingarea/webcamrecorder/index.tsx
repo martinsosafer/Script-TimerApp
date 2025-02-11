@@ -1,9 +1,10 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 
+import { revalidateRecordingPage } from "~/app/actions/speechcoach";
 import { poppins, roboto } from "~/app/fonts";
 import { formatTime } from "~/lib/formattime";
 import Button from "../../components/button";
@@ -16,17 +17,29 @@ import { AIContentWrapper } from "../recorder/aiwrapper";
 import { AudioControls } from "../recorder/audiocontrols";
 import { RecordButton } from "../recorder/recordbutton";
 import { TranscriptDisplay } from "../recorder/transcriptDisplay";
+import { SaveRecording } from "../saverecording/saverecording";
 import VideoHistory from "./videoHistory";
 import { VideoPreview } from "./VideoPreview";
 
 interface WebcamRecorderProps {
   userId: string | undefined;
   savedWebcam: { url: string; filename: string; uploadedAt: string }[];
+  aiContent: [];
+  currentWebcamCount: number;
+  webcamLimit: number;
+  webcamDurationLimit: number;
+  isWebcamSaveDisabled: boolean;
+  userEmail: string;
 }
 
 export default function MicrophoneAndWebcamComponent({
   userId,
   savedWebcam,
+  currentWebcamCount,
+  webcamLimit,
+  webcamDurationLimit,
+  isWebcamSaveDisabled,
+  userEmail,
 }: WebcamRecorderProps) {
   const {
     isRecording,
@@ -48,6 +61,8 @@ export default function MicrophoneAndWebcamComponent({
     stream,
     isPaused,
     isRendering,
+    setWhisperTranscription,
+    setIsProcessingWhisper,
   } = useWebcamRecorder(userId);
 
   const {
@@ -55,6 +70,8 @@ export default function MicrophoneAndWebcamComponent({
     completeTranscript,
     startTranscription,
     stopTranscription,
+    setCompleteTranscript,
+    setTranscript,
   } = useTranscription();
 
   const {
@@ -66,20 +83,44 @@ export default function MicrophoneAndWebcamComponent({
     soundBites,
     isLoading,
     processTranscript,
+    sortedFillerWords,
+    setSummary,
+    setBulletPoints,
+    setSortedWords,
+    setMainTheme,
+    setCutDowns,
+    setSoundBites,
+    setSortedFillerWords,
   } = usePostProcessing();
 
   const [isRecordingComplete, setIsRecordingComplete] = useState(false);
   const [showingRecordedVideo, setShowingRecordedVideo] = useState(false);
   const [displayVideoCount, setDisplayVideoCount] = useState(3);
   const [countdown, setCountdown] = useState<number | null>(null);
-
+  const [uploadedVideoUrl, setUploadedVideoUrl] = useState<string | null>(null);
+  const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
+  const [speechName, setSpeechName] = useState<string | null>(null);
   const loadMoreVideos = () => {
     setDisplayVideoCount((prevCount) => prevCount + 3);
   };
 
   const displayedRecordings = savedWebcam.slice(0, displayVideoCount);
-
   const handleStart = () => {
+    // Reset the transcript-related states
+    setCompleteTranscript("");
+    setTranscript("");
+    setWhisperTranscription(null);
+    setIsProcessingWhisper(false);
+    // Reset AI-generated content states
+    setSummary("");
+    setBulletPoints([]);
+    setSortedWords([]);
+    setMainTheme("");
+    setCutDowns("");
+    setSoundBites("");
+    setSortedFillerWords([]);
+
+    // Start the countdown and recording logic
     setCountdown(3);
     const countdownInterval = setInterval(() => {
       setCountdown((prevCount) => {
@@ -104,25 +145,26 @@ export default function MicrophoneAndWebcamComponent({
     }
   };
 
-  const handleStop = () => {
+  // Also wrap handleStop in useCallback to prevent infinite loops
+  const handleStop = useCallback(() => {
     stopRecording();
     stopTranscription();
     setIsRecordingComplete(true);
     setShowingRecordedVideo(true);
-  };
-
+  }, [stopRecording, stopTranscription]);
+  useEffect(() => {
+    if (isRecording && timer >= webcamDurationLimit) {
+      handleStop();
+    }
+  }, [timer, isRecording, webcamDurationLimit, handleStop]);
   const handleCopyTranscript = () => {
     navigator.clipboard.writeText(completeTranscript + transcript);
     alert("Transcript copied to clipboard!");
   };
 
-  const handleSave = async () => {
+  const handleSave = () => {
     if (recordingBlob) {
-      const uploadedUrl = await uploadToVercelBlob(recordingBlob);
-      if (uploadedUrl) {
-        console.log("Recording uploaded successfully:", uploadedUrl);
-        alert("Recording saved successfully!");
-      }
+      setIsRenameModalOpen(true); // Open the modal
     } else {
       alert("No recording to save. Please record something first.");
     }
@@ -157,7 +199,8 @@ export default function MicrophoneAndWebcamComponent({
     processTranscript(whisperTranscription, "useful-cutdowns");
   const handleGenerateSoundBites = () =>
     processTranscript(whisperTranscription, "sound-bites");
-
+  const handleSortFillerWords = () =>
+    processTranscript(whisperTranscription, "filler-counter");
   const PulseCircle = () => (
     <div
       className={`h-4 w-4 rounded-full ${
@@ -171,8 +214,14 @@ export default function MicrophoneAndWebcamComponent({
   );
   function generateShareableLink(blobUrl: string) {
     const encodedBlobUrl = encodeURIComponent(blobUrl);
-    return `/share/video?url=${encodedBlobUrl}`;
+    const encodedEmail = encodeURIComponent(userEmail);
+    return `/share/video?url=${encodedBlobUrl}&email=${encodedEmail}`;
   }
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds} min`;
+  };
   return (
     <div
       className={`mb-20 flex h-full w-full items-center justify-center bg-gray-100 ${poppins.className}`}
@@ -187,6 +236,24 @@ export default function MicrophoneAndWebcamComponent({
           >
             Please ensure good audio and lighting quality.
           </p>
+        </div>
+        <div className="mt-4 text-center">
+          <div className="text-sm text-gray-600">
+            Recordings remaining:{" "}
+            <span className="font-bold">
+              {Math.max(0, webcamLimit - currentWebcamCount)}/{webcamLimit}
+            </span>
+          </div>
+          <div className="text-sm text-gray-600">
+            Maximum recording duration:{" "}
+            <span className="font-bold">{formatTime(webcamDurationLimit)}</span>
+          </div>
+          {currentWebcamCount >= webcamLimit && (
+            <div className="mt-2 text-sm text-red-500">
+              You've reached your recording limit. Upgrade your plan to record
+              more.
+            </div>
+          )}
         </div>
         <div className="flex flex-col items-center space-y-4">
           <div className="flex w-full justify-between">
@@ -222,6 +289,7 @@ export default function MicrophoneAndWebcamComponent({
           onStart={handleStart}
           onPauseResume={handlePauseResume}
           onStop={handleStop}
+          userId={userId}
         />
         <TranscriptDisplay
           isProcessingWhisper={isProcessingWhisper}
@@ -240,14 +308,16 @@ export default function MicrophoneAndWebcamComponent({
             >
               View uploaded file
             </a>
-            <a
-              href={generateShareableLink(uploadUrl)}
-              className="ml-2 text-blue-500 hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Share this recording
-            </a>
+            {(uploadedVideoUrl || uploadUrl) && (
+              <a
+                href={generateShareableLink(uploadedVideoUrl || uploadUrl)}
+                className="ml-2 text-blue-500 hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Share this recording
+              </a>
+            )}
           </div>
         )}
         <AudioControls
@@ -257,6 +327,7 @@ export default function MicrophoneAndWebcamComponent({
           onSave={handleSave}
           isLoading={isLoading}
           disableAudio={true}
+          isWebcamSaveDisabled={isWebcamSaveDisabled}
         />
         <AIContentWrapper
           whisperTranscription={whisperTranscription}
@@ -268,20 +339,36 @@ export default function MicrophoneAndWebcamComponent({
           mainTheme={mainTheme}
           cutDowns={cutDowns}
           soundBites={soundBites}
+          sortedFillerWords={sortedFillerWords}
           onGenerateSummary={handleGenerateSummary}
           onGenerateBulletPoints={handleGenerateBulletPoints}
           onSortWords={handleSortWords}
           onMainTheme={handleMainTheme}
           onUsefulCutdowns={handleUsefulCutdowns}
           onGenerateSoundBites={handleGenerateSoundBites}
+          userId={userId}
+          uploadUrl={uploadUrl}
+          onSortFillerWords={handleSortFillerWords}
         />
 
         <VideoHistory
           savedWebcam={savedWebcam}
           displayVideoCount={displayVideoCount}
           onLoadMore={loadMoreVideos}
+          userId={userId}
         />
       </div>
+      <SaveRecording
+        isRenameModalOpen={isRenameModalOpen}
+        setIsRenameModalOpen={setIsRenameModalOpen}
+        recordingBlob={recordingBlob}
+        uploadToVercelBlob={uploadToVercelBlob}
+        setUploadedVideoUrl={setUploadedVideoUrl}
+        revalidateRecordingPage={revalidateRecordingPage}
+        isLoading={isLoading}
+        speechName={speechName}
+        setSpeechName={setSpeechName}
+      />
     </div>
   );
 }

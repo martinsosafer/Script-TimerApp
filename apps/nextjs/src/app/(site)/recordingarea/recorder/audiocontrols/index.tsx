@@ -13,6 +13,8 @@ interface AudioControlsProps {
   onSave: () => void;
   isLoading: boolean;
   disableAudio?: boolean; // New optional prop
+  isSaveDisabled: boolean;
+  isWebcamSaveDisabled: boolean;
 }
 
 export function AudioControls({
@@ -21,7 +23,9 @@ export function AudioControls({
   onCopyTranscript,
   onSave,
   isLoading,
-  disableAudio = false, // Default value
+  disableAudio = false,
+  isSaveDisabled,
+  isWebcamSaveDisabled,
 }: AudioControlsProps) {
   if (!audioUrl) return null;
 
@@ -54,7 +58,7 @@ export function AudioControls({
           onClick={onSave}
           icon={IconSave}
           iconColor="#FFFFFF"
-          disabled={isLoading}
+          disabled={isLoading || isSaveDisabled || isWebcamSaveDisabled}
         />
       </div>
     </div>

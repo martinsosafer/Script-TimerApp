@@ -3,45 +3,99 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
+import type { SubscriptionData } from "~/lib/types";
 import MicrophoneComponent from "../recorder";
 import WebcamRecorder from "../webcamrecorder";
 
 interface SelectorProps {
-  initialMode?: "audio" | "video";
+  initialMode?: "video" | "audio";
   userId: string | undefined;
   savedAudios: SavedBlob[];
   savedWebcam: SavedBlob[];
+  subData: SubscriptionData | null | undefined;
+  userEmail: string | undefined;
+  // Audio limit props
+  currentAudioCount: number;
+  audioLimit: number;
+  audioDurationLimit: number;
+  isAudioSaveDisabled: boolean;
+
+  // Webcam limit props
+  currentWebcamCount: number;
+  webcamLimit: number;
+  webcamDurationLimit: number;
+  isWebcamSaveDisabled: boolean;
 }
 
 interface SavedBlob {
   url: string;
   filename: string;
   uploadedAt: string;
+  aiContent: [];
 }
 
 export default function ModeSelectorRecorder({
-  initialMode = "audio",
+  initialMode = "video",
   userId,
   savedAudios,
   savedWebcam,
+  subData,
+  userEmail,
+  // Audio limit props
+  currentAudioCount,
+  audioLimit,
+  audioDurationLimit,
+  isAudioSaveDisabled,
+
+  // Webcam limit props
+  currentWebcamCount,
+  webcamLimit,
+  webcamDurationLimit,
+  isWebcamSaveDisabled,
 }: SelectorProps) {
   const [activeMode, setActiveMode] = useState(initialMode);
 
-  const handleModeChange = (mode: "audio" | "video") => {
+  const handleModeChange = (mode: "video" | "audio") => {
     setActiveMode(mode);
   };
 
   const renderComponent = () => {
     switch (activeMode) {
+      case "video":
+        return (
+          <WebcamRecorder
+            userId={userId}
+            savedWebcam={savedWebcam}
+            currentWebcamCount={currentWebcamCount}
+            webcamLimit={webcamLimit}
+            webcamDurationLimit={webcamDurationLimit}
+            isWebcamSaveDisabled={isWebcamSaveDisabled}
+            userEmail={userEmail}
+          />
+        );
       case "audio":
         return (
-          <MicrophoneComponent userId={userId} savedAudios={savedAudios} />
+          <MicrophoneComponent
+            userId={userId}
+            savedAudios={savedAudios}
+            currentAudioCount={currentAudioCount}
+            audioLimit={audioLimit}
+            audioDurationLimit={audioDurationLimit}
+            isSaveDisabled={isAudioSaveDisabled}
+            userEmail={userEmail}
+          />
         );
-      case "video":
-        return <WebcamRecorder userId={userId} savedWebcam={savedWebcam} />;
       default:
         return (
-          <MicrophoneComponent userId={userId} savedAudios={savedAudios} />
+          <WebcamRecorder
+            userId={userId}
+            savedWebcam={savedWebcam}
+            currentWebcamCount={currentWebcamCount}
+            webcamLimit={webcamLimit}
+            webcamDurationLimit={webcamDurationLimit}
+            isWebcamSaveDisabled={isWebcamSaveDisabled}
+            userEmail={userEmail}
+          />
         );
     }
   };
@@ -52,19 +106,15 @@ export default function ModeSelectorRecorder({
         <div className="mx-auto mb-3 max-w-[500px] border-b">
           <div className="mt-5 lg:mt-10">
             <div className="flex justify-center space-x-6">
-              {["audio", "video"].map((mode) => (
+              {["video", "audio"].map((mode) => (
                 <motion.button
                   key={mode}
                   className={`relative px-1 py-4 text-base transition-colors
-                    ${
-                      activeMode === mode
-                        ? "font-bold text-primary"
-                        : "font-normal text-gray-600 hover:text-gray-900"
-                    }
+                    ${activeMode === mode ? "font-bold text-primary" : "font-normal text-gray-600 hover:text-gray-900"}
                   `}
-                  onClick={() => handleModeChange(mode as "audio" | "video")}
+                  onClick={() => handleModeChange(mode as "video" | "audio")}
                 >
-                  {mode === "audio" ? "Audio Recorder" : "Video Recorder"}
+                  {mode === "video" ? "Video Recorder" : "Audio Recorder"}
                   {activeMode === mode && (
                     <motion.div
                       className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"

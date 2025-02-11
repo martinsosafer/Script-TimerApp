@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 
 import { auth } from "@voiceai/auth";
 
-import getOpenAiCredits from "../chat/actions";
+import { getOpenAiCredits } from "../chat/actions";
 import PageHeader from "../components/page-header";
 import AudioTranslatorPage from "./audiotranslate";
 

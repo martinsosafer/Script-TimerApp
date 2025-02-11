@@ -26,16 +26,17 @@ interface AIFeatureButtonsProps {
   onMainTheme: () => void;
   onUsefulCutdowns: () => void;
   onGenerateSoundBites: () => void;
+  onSortFillerWords: () => void;
   isLoading: boolean;
   audioUrl: string | null;
   videoUrl: string | null;
 }
 
-type AIFeature = {
+interface AIFeature {
   label: string;
   action: () => void;
   description: string;
-};
+}
 
 export function AIFeatureButtons({
   onGenerateSummary,
@@ -44,6 +45,7 @@ export function AIFeatureButtons({
   onMainTheme,
   onUsefulCutdowns,
   onGenerateSoundBites,
+  onSortFillerWords,
   isLoading,
   audioUrl,
   videoUrl,
@@ -52,7 +54,7 @@ export function AIFeatureButtons({
     undefined,
   );
 
-  const features: { [key: string]: AIFeature } = {
+  const features: Record<string, AIFeature> = {
     summary: {
       label: "Generate Summary",
       action: onGenerateSummary,
@@ -67,6 +69,11 @@ export function AIFeatureButtons({
       label: "Word Sorter",
       action: onSortWords,
       description: "Sort and analyze word usage",
+    },
+    FillerWords: {
+      label: "Filler Words ",
+      action: onSortFillerWords,
+      description: "Count how many filler words you have used",
     },
     mainTheme: {
       label: "Main Theme",
