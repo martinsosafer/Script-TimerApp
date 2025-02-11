@@ -390,6 +390,8 @@ function TextEditor({
 
       setCredits(aiCredits - prompt.length);
       editor.commands.setContent(data.data);
+      const translatedText = editor.getText();
+      onChange(translatedText);
       toast({
         title: "Translation Complete",
         description: "Your text has been translated successfully.",
