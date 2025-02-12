@@ -37,7 +37,7 @@ export function DeviceSelector({
   };
 
   return (
-    <div className="relative w-[180px]">
+    <div className="relative w-[300px]">
       {/* Select Trigger */}
       <div
         className={`flex w-full items-center justify-between rounded-md border p-2 ${
