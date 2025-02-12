@@ -2,27 +2,43 @@ import type { StaticImageData } from "next/image";
 
 import {
   AimHigherThan,
+  AiToolsThatSalesAndMarketersNeed,
+  AnalyzeVistualCalls,
+  AnMBAInSalesUsingChatGPT,
   AskRelatableQuestions,
   Breakdown,
+  BuildBetterCustomerJourneysWithAI,
   BuildRapportByBeingReal,
   ContinueTransforming,
+  ContinuingToStrengthen,
   ControlTheRoom,
   CourseOverview,
+  CreateAnElegantPresentation,
+  CreateExplainerVideosHeyGen,
   CreateImpactInYour,
   CustomerJourney,
+  DesignAndLayoutYourLandingPage,
   DiscoverThePain,
   ElevatorPitch,
   Empathy,
   EngageAndEstablish,
   EpicCaptureStory,
   ExecDec,
+  ExpandYourCareer,
+  ExploreUsingAiToCreate,
+  ExploreUsingAiToCreate2,
+  GenerateALeadMagnetWithAI,
+  HowToSparkBrandAwarenessWithAIGFX,
   IdentifyYourProspect,
+  IntegrateSoftwareWithZapier,
+  InternalSmartPages,
   Intro,
   LearnToLove,
   LeverageBenefits,
   LeverageDifferent,
   Listen,
   LoseYourAgenda,
+  MakeAProductDemoVideo,
   MicroStories,
   MountainTop,
   NextSteps,
@@ -31,12 +47,15 @@ import {
   PostProductionSecrets,
   RapportBuildingIs,
   RelaxMirrorAnd,
+  RepurposingContentForGlobalAudience,
   RetainAndGrow,
   ScriptTemplates,
   SelectingTheRight,
   ShutDownTheDistractions,
+  SocialMediaPostsForYourBusinessWithAI,
   SpiceUpYourPitch,
   Story,
+  TellYourCustomersAGreatStory,
   The5Emotions,
   The10Commandments,
   The10Lights,
@@ -833,6 +852,272 @@ const videoCardData: Video[] = [
       "https://player.vimeo.com/video/949303163?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
       "Remember, building rapport is a skill that can be honed and improved through practice and active learning.",
+  },
+  //Customer Journey Mapping With Generative AI
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "1",
+    image: AiToolsThatSalesAndMarketersNeed,
+    title: "AI tools that Sales and Marketers Need",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053883585?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "The explosion of AI is helping and replacing marketing professionals. As a marketer, it means you need to step up your game and learn AI tools. As a brand, it means your sales will thrive or die based on the stories you tell more than ever before.",
+  },
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "2",
+    image: ExploreUsingAiToCreate,
+    title: "Explore the Customer Journey GFX Cut",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053884730?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "It's not the strongest species that survive, or the most intelligent ones, but the ones that are most responsive to change. And we see that in companies because the ones that don't adapt are the ones that fail.",
+  },
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "3",
+    image: BuildBetterCustomerJourneysWithAI,
+    title: "Build Better Customers Journeys with AI",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053885965?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "When you have a strong story and you're building it faster and getting brand awareness, you can actually charge more for your products because you're more valuable in the eyes of consumers.",
+  },
+
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "4",
+    image: HowToSparkBrandAwarenessWithAIGFX,
+    title: "How to spark brand awareness with AI GFX",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053886930?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "Now we're at the Top of Funnel, and the next few videos are going to be focused on creating scripts that create videos, webinars, podcasts, social media, and drive SEO to your website.",
+  },
+
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "5",
+    image: SocialMediaPostsForYourBusinessWithAI,
+    title: "Social Media Posts for your Business with AI",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053883585?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "Now that you have a great script and you've created your podcast video or long form content, take advantage of that incredible ability in AI to expand on it and create more value. ",
+  },
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "6",
+    image: GenerateALeadMagnetWithAI,
+    title: "Generate Interest with SEO and Blogs",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053888405?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "This will keep you from failing when creating content and save you thousands of dollars. You want to start with what people want to know in your industry and create and deliver content about those areas. ",
+  },
+
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "7",
+    image: GenerateALeadMagnetWithAI,
+    title: "Generate a Lead Magnet With AI",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053890108?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "Simple and consumable tools, tips, and lessons are best. They're called lead magnets. It's information that people care about and they care enough that they'll give you their contact information to have a look. ",
+  },
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "8",
+    image: InternalSmartPages,
+    title: "Internal Smart Pages on Social Platforms GFX",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053890791?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "We're now entering the middle stages of the funnel, where price only wins in the absence of value. So, adding value is paramount to everything else. Otherwise, you lose to the lowest price.",
+  },
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "9",
+    image: DesignAndLayoutYourLandingPage,
+    title: "Design and Lay out your Landing Page and Website",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053891633?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "For some people, a view-only page is not enough. So to build trust, you need a landing page to capture leads. And now, let's go further. This is exciting. You can design a $10,000 website in minutes with no code and AI. ",
+  },
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "10",
+    image: AnMBAInSalesUsingChatGPT,
+    title: "An MBA in Sales using ChatGPT",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053892653?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "This video is kind of like earning an MBA in sales. It's here, because your job is so hard today. At the same time, consumers want to buy without help and in less time, they want more value and higher service. So you need to walk in prepared. ",
+  },
+
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "11",
+    image: IntegrateSoftwareWithZapier,
+    title: "Integrate Software with Zapier",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053894141?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "You need to get emails sent and drip campaigns started. I'd like to share with you how to cut integration expenses in half, or even more, using AI.",
+  },
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "12",
+    image: CreateExplainerVideosHeyGen,
+    title: "Create Explainer Videos for Customer with HeyGen",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053896532?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "A digital version of me can deliver video after video after video. Now, the software category that we're looking at is new and maybe even just a little bit creepy, seeing myself in a video saying things I didn't say before. ",
+  },
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "13",
+    image: MakeAProductDemoVideo,
+    title: "Make a Product Demo video with Descript",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053897645?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "How would you like 20 pieces of content with about two minutes of work? Well, that's why OpusClip is here to help you. You can start with one long video and get multiple video clips in editing, from long videos, like maybe it's your CEO or executive speech, a podcast, interviews, webinars.",
+  },
+
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "14",
+    image: TellYourCustomersAGreatStory,
+    title: "Tell your Customers a Great Story with these 10 rules",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053898396?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "Even with the tools that AI delivers, you need to be excellent at storytelling to open doors and keep them open and elevate your career. Others might just be using tools. The ability to create is unique and it's human. AI is not able to do this for you yet. So, it's so important to use the rules of great story so you can create them for you, your brand, and your company.",
+  },
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "15",
+    image: ExploreUsingAiToCreate2,
+    title: "Explore Using AI to Create Great Product demos With Guidde",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053900595?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "As you may have seen in my course on sales narratives, there's a cadence and emotions you need to deliver when you demo. This is a tool that compliments that cadence and saves hours of time, and possibly saves your designer from doing the work. It's a plugin for Chrome called Guidde. ",
+  },
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "16",
+    image: AnalyzeVistualCalls,
+    title: "Analyze Virtual Calls with Fireflies for Discovery Sessions",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053901304?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "So now you've got a prospect that's aware, educated on a solution, and has been given information on how you benefit them, if you have VDRs, now is when the sales team will talk to your client and likely have a deeper discovery call, and then craft a proposal or even a full presentation. So with Fireflies, instead of spending hours on the phone with a client frantically taking notes, you can let Fireflies do its job.",
+  },
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "17",
+    image: CreateAnElegantPresentation,
+    title: "Create an Elegant Presentation",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053901908?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "So in this part of the customer journey, you've had a great discovery call and it's time to create a killer presentation. So that's where we introduce Gamma. Gamma creates pitch decks to help you really elegantly create presentations, and infographics.",
+  },
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "18",
+    image: RepurposingContentForGlobalAudience,
+    title: "Repurposing Content for a Global Audience",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053902476?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "Most design programs, like Photoshop, are for pros, and Canva was created to be different. It was made for everyone to use, and it has advanced. It's become extremely popular because it's so useful and simple to use. And it also now has AI tools inside.",
+  },
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "19",
+    image: ExpandYourCareer,
+    title: "Expand your career by Building a CV with AI",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053903984?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "Now that you can leverage AI to efficiently create or repurpose content and implement strategies to establish yourself as a thought leader in your industry, you might just want a promotion. So let's take a minute and use AI to create your resume.",
+  },
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "20",
+    image: ContinuingToStrengthen,
+    title: "Continuing to strengthen customer journeys with AI",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053905611?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "Now you're able to create a funnel with organic content, from scripts, to emails, to designs, to videos, and help you create every step of the customer journey. For next steps, I would love to help you perfect your pitch and your story.",
   },
 ];
 
