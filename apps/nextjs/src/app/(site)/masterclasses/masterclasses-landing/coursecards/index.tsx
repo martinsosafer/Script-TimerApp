@@ -109,7 +109,7 @@ export default function CourseListing({
 
   return (
     <div
-      className={`bg-cp-primary h-[3008px] lg:min-h-[2331px]  ${poppins.className}`}
+      className={`bg-cp-primary h-[3008px] lg:h-[2600px]  ${poppins.className}`}
     >
       <div className="mx-auto max-w-[944px] items-center space-y-8 py-[60px]">
         <div className=" mx-[24px] text-start">

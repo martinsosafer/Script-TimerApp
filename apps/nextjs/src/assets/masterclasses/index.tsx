@@ -60,3 +60,25 @@ export { default as AskRelatableQuestions } from "./Building Rapport on Virtual 
 export { default as LearnToLove } from "./Building Rapport on Virtual Sales Calls/9.LoveToQuestionTheirAnswers.png";
 export { default as WhatToAvoid } from "./Building Rapport on Virtual Sales Calls/10.WhatToAvoid.png";
 export { default as RapportBuildingIs } from "./Building Rapport on Virtual Sales Calls/11.RapportBuildingisaLearnedTrait.png";
+//
+// Customer Journey Mapping With Generative AI
+export { default as AiToolsThatSalesAndMarketersNeed } from "./Customer Journey Mapping With Generative AI/Ai Tools That Sales And Marketers Need.png";
+export { default as ExploreUsingAiToCreate } from "./Customer Journey Mapping With Generative AI/Explore Using Ai to Create.png";
+export { default as BuildBetterCustomerJourneysWithAI } from "./Customer Journey Mapping With Generative AI/Build Better Customer Journeys With AI.png";
+export { default as HowToSparkBrandAwarenessWithAIGFX } from "./Customer Journey Mapping With Generative AI/How to Spark Brand Awareness With AI GFX.png";
+export { default as SocialMediaPostsForYourBusinessWithAI } from "./Customer Journey Mapping With Generative AI/Social Media Posts For Your Business With AI.png";
+export { default as GenerateInterestWithSEOAndBlogs } from "./Customer Journey Mapping With Generative AI/Generate Interest With SEO and Blogs.png";
+export { default as GenerateALeadMagnetWithAI } from "./Customer Journey Mapping With Generative AI/Generate a Lead Magnet With AI.png";
+export { default as InternalSmartPages } from "./Customer Journey Mapping With Generative AI/Internal Smart Pages.png";
+export { default as DesignAndLayoutYourLandingPage } from "./Customer Journey Mapping With Generative AI/Design and Layout Your Landing Page.png";
+export { default as AnMBAInSalesUsingChatGPT } from "./Customer Journey Mapping With Generative AI/An MBA in Sales Using ChatGPT.png";
+export { default as IntegrateSoftwareWithZapier } from "./Customer Journey Mapping With Generative AI/Integrate Software With Zapier.png";
+export { default as CreateExplainerVideosHeyGen } from "./Customer Journey Mapping With Generative AI/Create Explainer Videos HeyGen.png";
+export { default as MakeAProductDemoVideo } from "./Customer Journey Mapping With Generative AI/Make a Product Demo Video.png";
+export { default as TellYourCustomersAGreatStory } from "./Customer Journey Mapping With Generative AI/Tell Your Customers a Great Story.png";
+export { default as ExploreUsingAiToCreate2 } from "./Customer Journey Mapping With Generative AI//Explore Using Ai to Create.png"; // Added "2" to avoid duplicate name
+export { default as AnalyzeVistualCalls } from "./Customer Journey Mapping With Generative AI/Analyze Vistual Calls.png";
+export { default as CreateAnElegantPresentation } from "./Customer Journey Mapping With Generative AI/Create an Elegant Presentation.png";
+export { default as RepurposingContentForGlobalAudience } from "./Customer Journey Mapping With Generative AI/Repurposing Content For Global Audience.png";
+export { default as ExpandYourCareer } from "./Customer Journey Mapping With Generative AI/Expand Your Career.png";
+export { default as ContinuingToStrengthen } from "./Customer Journey Mapping With Generative AI/Continuing to Strengthen.png";
