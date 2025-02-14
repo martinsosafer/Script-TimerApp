@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence } from "framer-motion";
 import type { Session } from "next-auth";
@@ -20,6 +21,7 @@ import {
 } from "@voiceai/ui/@/components/ui/icons";
 
 import { RevealText } from "~/app/animations/RevealText";
+import ScriptTimerLogo from "../../../../../public/ScriptTimerLogo.png";
 import Logo from "../logo";
 import { MobileNav } from "../mobile-navbar";
 import ImagesNavItem from "./imaimages-nav-item";
@@ -58,8 +60,15 @@ export default function NewNavBar({ signOut, signIn, session }: NavBarProps) {
       >
         <RevealText>
           {/* Adjust alignment wrapper */}
-          <div className="ml-3 mt-2  flex items-center justify-center">
-            <Logo coColor="white" producerColor="black" />
+          <div className="ml-3 mt-2 flex items-center justify-center">
+            <Image
+              src={ScriptTimerLogo}
+              alt="Script-Timer AI Logo"
+              width={200}
+              height={60}
+              priority
+              className="h-auto w-auto"
+            />
           </div>
         </RevealText>
       </Link>
