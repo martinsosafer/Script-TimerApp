@@ -11,7 +11,7 @@ export default function RegisterForm() {
 
   const searchParams = useSearchParams();
 
-  const code = searchParams.get("amp;code");
+  const code = searchParams.get("code");
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");

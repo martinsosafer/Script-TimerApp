@@ -7,7 +7,7 @@ import { RegisterFormWithGoogle } from "../actions";
 export default function GoogleForm() {
   const searchParams = useSearchParams();
 
-  const code = searchParams.get("amp;code");
+  const code = searchParams.get("code");
 
   if (code) {
     return null;
