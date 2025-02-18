@@ -4,66 +4,17 @@ import { list } from "@vercel/blob";
 import { auth } from "@voiceai/auth";
 
 import { getAllAIContent } from "~/app/actions/speechcoach";
+import {
+  AUDIO_DURATION_LIMITS,
+  AUDIO_RECORDING_LIMITS,
+  WEBCAM_DURATION_LIMITS,
+  WEBCAM_RECORDING_LIMITS,
+} from "~/constants/credits";
 import ModeSelectorRecorder from "./mode-selector-recorder";
 
 export const metadata: Metadata = {
   title: "Recording Area",
   description: "Record audio, video or your screen",
-};
-const AUDIO_RECORDING_LIMITS: Record<string, number> = {
-  FREE: 0,
-  FREE_TRIAL: 0,
-  STUDENT: 3,
-  CREATOR: 5,
-  BUSINESS: 10,
-  STUDENTCLMO: 3,
-  CREATORCLMO: 5,
-  BUSINESSCLMO: 10,
-  STUDENTCLYR: 3,
-  CREATORCLYR: 5,
-  BUSINESSCLYR: 10,
-};
-
-const AUDIO_DURATION_LIMITS: Record<string, number> = {
-  // in seconds
-  FREE: 0,
-  FREE_TRIAL: 0,
-  STUDENT: 300,
-  CREATOR: 480,
-  BUSINESS: 600,
-  STUDENTCLMO: 300,
-  CREATORCLMO: 480,
-  BUSINESSCLMO: 600,
-  STUDENTCLYR: 300,
-  CREATORCLYR: 480,
-  BUSINESSCLYR: 600,
-};
-const WEBCAM_RECORDING_LIMITS: Record<string, number> = {
-  FREE: 0,
-  FREE_TRIAL: 0,
-  STUDENT: 3,
-  CREATOR: 5,
-  BUSINESS: 10,
-  STUDENTCLMO: 3,
-  CREATORCLMO: 5,
-  BUSINESSCLMO: 10,
-  STUDENTCLYR: 3,
-  CREATORCLYR: 5,
-  BUSINESSCLYR: 10,
-};
-
-const WEBCAM_DURATION_LIMITS: Record<string, number> = {
-  FREE: 0,
-  FREE_TRIAL: 0,
-  STUDENT: 300,
-  CREATOR: 480,
-  BUSINESS: 600,
-  STUDENTCLMO: 300,
-  CREATORCLMO: 480,
-  BUSINESSCLMO: 600,
-  STUDENTCLYR: 300,
-  CREATORCLYR: 480,
-  BUSINESSCLYR: 600,
 };
 
 async function getSavedAudios(userId: string) {
