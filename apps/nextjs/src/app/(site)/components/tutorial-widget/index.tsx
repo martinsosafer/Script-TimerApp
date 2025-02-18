@@ -11,7 +11,7 @@ import TutorialsModal from "../modals/tutorials-modal";
 const pagesVideos: Record<string, string> = {
   "/texttovoice": "1036835445",
   "/chat": "1036841246",
-  "/masterclasses": "1036832186",
+  "/masterclasses": "1056542509",
   "/plagiarism-detector": "1036834353",
   "/image-generator": "1036840393",
 };

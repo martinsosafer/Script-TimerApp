@@ -7,6 +7,7 @@ import {
   IconFileType,
   IconHistory,
   IconLibraryBig,
+  IconMic,
   IconMic2,
 } from "@voiceai/ui/@/components/ui/icons";
 
@@ -81,6 +82,23 @@ export default function TextToVoiceNavItem() {
                       </div>
                       <p className="font-normal text-gray-500">
                         Upload an Audio File and we will translate it
+                      </p>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href={`/speechcoach`}
+                      className="-mx-2 block rounded-lg p-2 font-semibold text-gray-800 transition duration-300 ease-in-out hover:bg-gradient-to-br hover:from-indigo-200 hover:via-blue-200 hover:to-orange-200 hover:text-indigo-600 dark:text-secondary-foreground dark:hover:bg-gradient-to-br dark:hover:from-gray-800 dark:hover:via-gray-700 dark:hover:to-gray-600 dark:hover:text-indigo-600"
+                    >
+                      <div className="flex items-center">
+                        <span>
+                          <IconMic />
+                        </span>
+                        <span className="ml-1">Speech Coach</span>
+                      </div>
+                      <p className="font-normal text-gray-500">
+                        Record your speech and receive AI feedback for
+                        improvement
                       </p>
                     </Link>
                   </li>
