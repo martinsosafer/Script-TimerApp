@@ -29,7 +29,23 @@ export default function Home({
   const [openTrialModal, setOpenTrialModal] = useState(trialExpiration);
   const [openModal, setOpenModal] = useState(false);
   const origin = useSearchParams().get("origin");
+  const appSumoCode = useSearchParams().get("appSumoCode");
   const router = useRouter();
+
+  useEffect(() => {
+    async function updateSumoUser() {
+      if (appSumoCode) {
+        await fetch("/api/auth/appSumoRegister", {
+          method: "POST",
+          body: JSON.stringify({ appSumoCode, userId: user }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+      }
+    }
+    updateSumoUser();
+  }, []);
 
   if (
     (session &&
