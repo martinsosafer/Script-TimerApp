@@ -12,7 +12,7 @@ import { createUser } from "./actions";
 export function LoginWithEmailForm() {
   const searchParams = useSearchParams();
 
-  const code = searchParams.get("amp;code");
+  const code = searchParams.get("code");
 
   const [loading, setLoading] = React.useState(false);
   async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
