@@ -13,6 +13,7 @@ import { db, tableCreator } from "@voiceai/db";
 import {
   checkAndInsertCredits,
   CreateCognitoEntry,
+  inserAppSumoUserCredits,
   insertSubscription,
   moveToFreeOrAddExpiration,
 } from "./actions";
@@ -60,7 +61,7 @@ export const {
       async authorize(credentials) {
         const { email, password } = credentials;
         const user = await db.query.users.findFirst({
-          where: (users, { eq }) => eq(users.email, email),
+          where: (users, { eq }) => eq(users.email, email as string),
         });
 
         const isAuthed = await bcrypt.compare(
@@ -98,23 +99,33 @@ export const {
         throw new Error("User ID is missing");
       }
 
+      const appSumoSubscription = await db.query.appSumoSubscription.findFirst({
+        where: (appSumoSubscription, { eq }) =>
+          eq(appSumoSubscription.userId, userId),
+      });
+
       const subscriptionStatus = await db.query.subscriptions.findFirst({
         where: (subscriptions, { eq }) => eq(subscriptions.userId, userId),
       });
 
-      // We check if the user is on a free trial and move them to the free plan if the trial is over, or add an expiration date if it doesn't exist and still within the trial period.
-      if (subscriptionStatus?.status === "FREE_TRIAL") {
-        await moveToFreeOrAddExpiration(subscriptionStatus, userId);
+      if (appSumoSubscription) {
+        const tier = appSumoSubscription.tier?.toString() as "1" | "2";
+        await inserAppSumoUserCredits(userId, tier);
       }
+      if (!appSumoSubscription) {
+        // We check if the user is on a free trial and move them to the free plan if the trial is over, or add an expiration date if it doesn't exist and still within the trial period.
+        if (subscriptionStatus?.status === "FREE_TRIAL") {
+          await moveToFreeOrAddExpiration(subscriptionStatus, userId);
+        }
 
-      // If the user doesn't have a subscription, we insert one with the default values.
-      if (!subscriptionStatus) {
-        await insertSubscription(userId);
+        // If the user doesn't have a subscription, we insert one with the default values.
+        if (!subscriptionStatus) {
+          await insertSubscription(userId);
+        }
+
+        // We check if the user has credits and insert them if they don't depending on the plan they are on.
+        await checkAndInsertCredits(userId);
       }
-
-      // We check if the user has credits and insert them if they don't depending on the plan they are on.
-      await checkAndInsertCredits(userId);
-
       const dbUser = await db.query.users.findFirst({
         where: (users, { eq }) => eq(users.id, userId),
       });
@@ -126,15 +137,21 @@ export const {
             Last: dbUser?.name?.split(" ")[1] ?? "",
           },
           EnterYourEmail: dbUser?.email,
-          YoureWorkingOn: "",
+          YoureWorkingOn: dbUser?.app_sumo_license_key ? "AppSumo User" : "",
         };
         await CreateCognitoEntry(payload, userId);
       }
 
       const subscription = {
         userId,
-        status: subscriptionStatus?.status ?? "FREE_TRIAL",
-        planId: subscriptionStatus?.plan_id ?? "initial_plan_id",
+        status:
+          appSumoSubscription?.tier?.toString() ??
+          subscriptionStatus?.status ??
+          "FREE_TRIAL",
+        planId:
+          appSumoSubscription?.plan_id ??
+          subscriptionStatus?.plan_id ??
+          "initial_plan_id",
         trialExpiration: subscriptionStatus?.free_trial_expiration ?? null,
       };
 

@@ -2,12 +2,16 @@
 
 import { useState } from "react";
 import type { FormEvent } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { IconEye, IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 
 export default function RegisterForm() {
   const router = useRouter();
+
+  const searchParams = useSearchParams();
+
+  const code = searchParams.get("amp;code");
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -23,12 +27,13 @@ export default function RegisterForm() {
     const formData = new FormData(event.currentTarget);
 
     try {
-      const response = await fetch("/api/auth/register", {
+      const response = await fetch(`/api/auth/register/`, {
         method: "POST",
         body: JSON.stringify({
           name: formData.get("fullName"),
           email: formData.get("email"),
           password: formData.get("password"),
+          ...(code ? { appSumoCode: code } : {}),
         }),
       });
       if (!response.ok) {

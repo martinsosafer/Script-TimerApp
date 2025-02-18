@@ -20,11 +20,7 @@ export const status = pgEnum("status", [
   "CREATORCLYR",
   "BUSINESSCLYR",
 ]);
-const licenseStatus = pgEnum("license_status", [
-  "inactive",
-  "active",
-  "deactivated",
-]);
+
 export const subscriptions = pgTable("subscription", {
   id: uuid("id").notNull().primaryKey().defaultRandom(),
   userId: text("user_id")
@@ -33,8 +29,6 @@ export const subscriptions = pgTable("subscription", {
     .unique(),
   plan: plan("plan").notNull(),
   plan_id: text("plan_id").notNull().default("initial_plan_id"),
-  license_key: text("license_key"),
-  license_status: licenseStatus("license_status").default("inactive"),
   status: status("status").notNull().default("INACTIVE"),
   favorite_voices: jsonb("favorite_voices").default([]),
   custom_voices: jsonb("custom_voices").default([]),

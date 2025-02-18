@@ -58,7 +58,12 @@ export default function ProfileNavItem({
                         <span className="mt-0.5">Upgrade Subscription</span>
                       </div>
                       <p className="font-normal text-gray-500">
-                        Current Plan: <strong>{plan ?? ""}</strong>
+                        Current Plan:{" "}
+                        {plan === "1" || plan === "2" ? (
+                          <strong>AppSumo Tier {plan ?? ""} </strong>
+                        ) : (
+                          <strong>{plan ?? ""}</strong>
+                        )}
                       </p>
                     </Link>
                   </li>

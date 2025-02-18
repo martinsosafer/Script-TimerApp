@@ -179,6 +179,62 @@ export async function checkAndInsertCredits(userId: string) {
   }
 }
 
+export async function inserAppSumoUserCredits(userId: string, tier: "1" | "2") {
+  const clCreditStatus = await db.query.clCredits.findFirst({
+    where: (clCredits, { eq }) => eq(clCredits.userId, userId),
+  });
+  if (!clCreditStatus) {
+    await db
+      .insert(schema.clCredits)
+      .values({
+        userId,
+        credits: STARTING_CL_CREDITS[tier],
+      })
+      .execute();
+  }
+  const imgCreditStatus = await db.query.imgCredit.findFirst({
+    where: (imgCredit, { eq }) => eq(imgCredit.userId, userId),
+  });
+
+  if (!imgCreditStatus) {
+    await db
+      .insert(schema.imgCredit)
+      .values({
+        userId,
+        credits: STARTING_IMG_CREDITS[tier],
+      })
+      .execute();
+  }
+
+  const openAiCreditStatus = await db.query.openAiCredit.findFirst({
+    where: (openAiCredit, { eq }) => eq(openAiCredit.userId, userId),
+  });
+
+  if (!openAiCreditStatus) {
+    await db
+      .insert(schema.openAiCredit)
+      .values({
+        userId,
+        credits: STARTING_OPENAI_CREDITS[tier],
+      })
+      .execute();
+  }
+
+  const elevenLabsCreditStatus = await db.query.elevenLabsCredit.findFirst({
+    where: (elevenLabsCredit, { eq }) => eq(elevenLabsCredit.userId, userId),
+  });
+
+  if (!elevenLabsCreditStatus) {
+    await db
+      .insert(schema.elevenLabsCredit)
+      .values({
+        userId,
+        credits: STARTING_11CL_CREDITS[tier],
+      })
+      .execute();
+  }
+}
+
 interface EntryPayload {
   YourName: {
     First: string;
