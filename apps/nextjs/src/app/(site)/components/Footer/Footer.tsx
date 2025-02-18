@@ -1,7 +1,9 @@
 import React from "react";
+import Image from "next/image";
 import Link from "next/link";
 
 import { RevealText } from "~/app/animations/RevealText";
+import ScriptTimerLogo from "../../../../../public/ScriptTimerLogo.png";
 import { footerData, footerSocialNetworks } from "./FooterData";
 
 export default function Footer() {
@@ -13,16 +15,14 @@ export default function Footer() {
           className="flex flex-col font-poppins text-primary-foreground"
         >
           <RevealText>
-            {/* Container for better alignment */}
-            <div className="flex flex-col items-start">
-              {/* Main title */}
-              <span className="text-left font-poppins text-4xl font-bold">
-                Co-Producer
-              </span>
-              {/* Subtitle positioned directly below the main title */}
-              <span className=" text-left text-sm text-white">
-                created by Script-Timer.
-              </span>
+            <div className="flex items-center justify-start">
+              <Image
+                src={ScriptTimerLogo}
+                alt="Script-Timer AI Logo"
+                width={200}
+                height={60}
+                className="h-auto w-auto"
+              />
             </div>
           </RevealText>
         </Link>
