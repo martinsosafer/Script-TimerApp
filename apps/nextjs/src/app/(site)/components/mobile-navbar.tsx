@@ -7,26 +7,20 @@ import { AnimatePresence, motion } from "framer-motion";
 import IconUserRound, {
   FileImageIcon,
   IconArrowBigUp,
-  IconArrowRight,
   IconAudioLines,
   IconBot,
   IconChevronDown,
-  IconChevronRight,
   IconClone,
   IconCopyright,
   IconEar,
   IconFileStack,
   IconGlobe,
-  IconHandshake,
   IconHistory,
   IconLibraryBig,
-  IconLightbulb,
   IconMic2,
   IconMonitorPlay,
   IconPencilLine,
   IconPocketKnife,
-  IconXCircle,
-  XIcon as LogOut,
 } from "@voiceai/ui/@/components/ui/icons";
 
 import { poppins } from "~/app/fonts";
@@ -248,7 +242,11 @@ export function MobileNav({
                   <div className="font-bold">Upgrade Subscription</div>
                   <div className="text-sm text-blue-200">
                     Current plan:{" "}
-                    <span className="font-semibold">{plan ?? ""}</span>
+                    {plan === "1" || plan === "2" ? (
+                      <strong>AppSumo Tier {plan ?? ""} </strong>
+                    ) : (
+                      <strong>{plan ?? ""}</strong>
+                    )}
                   </div>
                 </div>
               </div>

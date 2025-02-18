@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useSearchParams } from "next/navigation";
 
 import { IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 
@@ -9,6 +10,10 @@ import { IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 import { createUser } from "./actions";
 
 export function LoginWithEmailForm() {
+  const searchParams = useSearchParams();
+
+  const code = searchParams.get("code");
+
   const [loading, setLoading] = React.useState(false);
   async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
     setLoading(true);
@@ -16,7 +21,7 @@ export function LoginWithEmailForm() {
       event.preventDefault();
       const formData = new FormData(event.currentTarget);
       const email = formData.get("email") as string;
-      await createUser({ email });
+      await createUser({ email, appSumoCode: code });
     } catch (error) {
       alert(
         "An error occurred while signing in. Please check your credentials",

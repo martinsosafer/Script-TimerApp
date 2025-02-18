@@ -19,6 +19,7 @@ export const users = pgTable("user", {
   reset_token: text("reset_token"),
   reset_token_expires: timestamp("reset_token_expires", { mode: "date" }),
   cognito_entry: boolean("cognito_entry").default(false),
+  app_sumo_license_key: text("app_sumo_license_key"),
   created_at: timestamp("created_at").notNull().defaultNow(),
   updated_at: timestamp("updated_at").notNull().defaultNow(),
 });

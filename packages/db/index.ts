@@ -2,6 +2,7 @@ import { neon, neonConfig } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 
 import * as elevenLabsCredit from "./schema/11LabsCredits";
+import * as appSumoSubscription from "./schema/appSumoSubscrition";
 import * as auth from "./schema/auth";
 import * as clCredit from "./schema/copyLeaksCredit";
 import * as credit from "./schema/credit";
@@ -37,6 +38,7 @@ export const schema = {
   ...landingPage,
   ...promptCategory,
   ...promptSubcategory,
+  ...appSumoSubscription,
 };
 
 export { pgTable as tableCreator } from "./schema/_table";

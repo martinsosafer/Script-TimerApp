@@ -12,7 +12,9 @@ type Plan =
   | "BUSINESSCLMO"
   | "STUDENTCLYR"
   | "CREATORCLYR"
-  | "BUSINESSCLYR";
+  | "BUSINESSCLYR"
+  | "1"
+  | "2";
 
 export const STARTING_CL_CREDITS: Record<Plan, number> = {
   INACTIVE: 0,
@@ -29,6 +31,8 @@ export const STARTING_CL_CREDITS: Record<Plan, number> = {
   STUDENTCLYR: 40,
   CREATORCLYR: 60,
   BUSINESSCLYR: 80,
+  "1": 7,
+  "2": 7,
 };
 
 export const STARTING_IMG_CREDITS = {
@@ -46,6 +50,8 @@ export const STARTING_IMG_CREDITS = {
   STUDENTCLYR: 25,
   CREATORCLYR: 50,
   BUSINESSCLYR: 100,
+  "1": 50,
+  "2": 50,
 };
 
 export const STARTING_11CL_CREDITS = {
@@ -63,6 +69,8 @@ export const STARTING_11CL_CREDITS = {
   STUDENTCLYR: 40000,
   CREATORCLYR: 80000,
   BUSINESSCLYR: 125000,
+  "1": 80000,
+  "2": 80000,
 };
 
 export const STARTING_OPENAI_CREDITS = {
@@ -80,6 +88,8 @@ export const STARTING_OPENAI_CREDITS = {
   STUDENTCLYR: 200000,
   CREATORCLYR: 400000,
   BUSINESSCLYR: 1000000,
+  "1": 400000,
+  "2": 400000,
 };
 export const AUDIO_RECORDING_LIMITS: Record<Plan, number> = {
   INACTIVE: 0,
