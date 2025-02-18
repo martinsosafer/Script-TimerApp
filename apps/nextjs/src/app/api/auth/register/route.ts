@@ -1,21 +1,20 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 
-import { CreateCognitoEntry } from "@voiceai/auth/actions";
-import { db, schema } from "@voiceai/db";
+import { db, eq, schema } from "@voiceai/db";
 
 import {
-  STARTING_11CL_CREDITS,
-  STARTING_CL_CREDITS,
-  STARTING_IMG_CREDITS,
-  STARTING_OPENAI_CREDITS,
-} from "../../../../constants/credits";
+  fetchTemporaryToken,
+  fetchUserLicense,
+} from "../../../actions/appSumoLicenceActions";
+import type { LicenceResponse, TokenResponse } from "./types";
 
 interface User {
   name: string;
   email: string;
   password: string;
   workingOn?: string;
+  appSumoCode?: string;
 }
 
 function uuid() {
@@ -32,68 +31,51 @@ export async function POST(request: Request) {
       name,
       email,
       password: userPassword,
-      workingOn,
+      appSumoCode,
     } = (await request.json()) as User;
 
-    const fistName = name?.toString().split(" ")[0];
-    const lastName = name?.toString().split(" ")[1];
-    const cognitoPayload = {
-      YourName: { First: fistName ?? "", Last: lastName ?? "" },
-      EnterYourEmail: email,
-      YoureWorkingOn: workingOn ?? "",
-    };
+    let appSumoLicenseKey;
+
+    if (appSumoCode) {
+      const appSumoToken = (await fetchTemporaryToken(
+        appSumoCode,
+      )) as TokenResponse;
+      if (!appSumoToken) {
+        return new Response(
+          JSON.stringify({
+            error: "Invalid AppSumo code",
+          }),
+          {
+            status: 400,
+          },
+        );
+      }
+      const appSumoLicense = (await fetchUserLicense(
+        appSumoToken.access_token,
+      )) as LicenceResponse;
+      appSumoLicenseKey = appSumoLicense.license_key;
+    }
 
     const password = await bcrypt.hash(userPassword, 10);
     const id = uuid();
 
-    const newUser = await db
-      .insert(schema.users)
-      .values({ id, name, email: email.toLowerCase(), password })
-      .execute();
+    const userPayload = {
+      id,
+      name,
+      email: email.toLowerCase(),
+      password,
+      ...(appSumoLicenseKey ? { app_sumo_license_key: appSumoLicenseKey } : {}),
+    };
 
-    await db
-      .insert(schema.subscriptions)
-      .values({
-        userId: id,
-        plan: "STARTER",
-        status: "FREE_TRIAL",
-        free_trial_expiration: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
-      })
-      .execute();
+    const newUser = await db.insert(schema.users).values(userPayload).execute();
 
-    await db
-      .insert(schema.clCredits)
-      .values({
-        userId: id,
-        credits: STARTING_CL_CREDITS.FREE_TRIAL,
-      })
-      .execute();
-
-    await db
-      .insert(schema.imgCredit)
-      .values({
-        userId: id,
-        credits: STARTING_IMG_CREDITS.FREE_TRIAL,
-      })
-      .execute();
-
-    await db
-      .insert(schema.openAiCredit)
-      .values({
-        userId: id,
-        credits: STARTING_OPENAI_CREDITS.FREE_TRIAL,
-      })
-      .execute();
-
-    await db
-      .insert(schema.elevenLabsCredit)
-      .values({
-        userId: id,
-        credits: STARTING_11CL_CREDITS.FREE_TRIAL,
-      })
-      .execute();
-
-    await CreateCognitoEntry(cognitoPayload, id);
+    if (appSumoLicenseKey) {
+      await db
+        .update(schema.appSumoSubscription)
+        .set({ userId: id })
+        .where(eq(schema.appSumoSubscription.license_key, appSumoLicenseKey))
+        .execute();
+    }
 
     return new Response(JSON.stringify(newUser));
   } catch (error) {

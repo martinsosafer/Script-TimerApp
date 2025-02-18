@@ -33,11 +33,6 @@ export default async function Register() {
             </div>
 
             <RegisterForm />
-            <div className="relative">
-              <div className="text-md relative mb-2 mt-2 flex justify-center">
-                <span className="bg-background px-2 text-black">or</span>
-              </div>
-            </div>
             <GoogleForm />
             <div className="relative">
               <div className="text-md relative mb-2 mt-2 flex justify-center">

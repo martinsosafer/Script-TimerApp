@@ -17,9 +17,11 @@ const schema = z.object({
 export async function createUser({
   email,
   name,
+  appSumoCode,
 }: {
   email: string;
   name?: string;
+  appSumoCode: string | null;
 }) {
   const validatedFields = schema.safeParse({
     email: email,
@@ -32,10 +34,11 @@ export async function createUser({
       message: "Please enter a valid email",
     };
   }
+  const redirectURL = appSumoCode ? `/?appSumoCode=${appSumoCode}` : "/";
 
   await signIn("resend", {
     email: email,
-    redirectTo: "/?origin=login",
+    redirectTo: redirectURL,
   });
 }
 
