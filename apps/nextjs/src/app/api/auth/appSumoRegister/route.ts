@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
 
 import { db, eq, schema } from "@voiceai/db";
 
