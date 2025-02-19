@@ -18,7 +18,6 @@ export async function fetchTemporaryToken(code: string) {
 
   return response.json();
 }
-
 export async function fetchUserLicense(accessToken: string) {
   const response = await fetch(
     `https://appsumo.com/openid/license_key/?access_token=${accessToken}`,
