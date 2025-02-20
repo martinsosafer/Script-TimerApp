@@ -18,7 +18,7 @@ export default async function IndexPage() {
 
   // Use planId instead of plan
   const basePlan = subData?.status ?? "FREE";
-
+  console.log("BASEEEPLANN", basePlan);
   // Define customVoiceLimit based on the basePlan
   const customVoiceLimit = ["CREATOR", "CREATORCLMO", "CREATORCLYR"].includes(
     basePlan,
