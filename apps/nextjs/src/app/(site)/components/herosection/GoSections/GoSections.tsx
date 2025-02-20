@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { motion, useAnimation, useInView } from "framer-motion";
+import type { SectionProps } from "./goSections.types";
 
 import { poppins } from "~/app/fonts";
 // Images
@@ -74,7 +75,7 @@ export default function GoSection() {
   );
 }
 
-function Section({ title, description, imageUrl, imagePosition }) {
+function Section({ title, description, imageUrl, imagePosition }: SectionProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, threshold: 0.01 });
   const controls = useAnimation();
