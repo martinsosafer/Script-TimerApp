@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { motion, useAnimation, useInView } from "framer-motion";
-import type { SectionProps } from "./goSections.types";
+import type { SectionProps } from "./types";
 
 import { poppins } from "~/app/fonts";
 // Images
