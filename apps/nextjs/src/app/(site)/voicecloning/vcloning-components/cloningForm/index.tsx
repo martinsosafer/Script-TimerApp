@@ -11,11 +11,14 @@ import FreeModal from "~/app/(site)/components/free-modal";
 import LoadingDots from "~/app/(site)/components/loadingdots";
 import { api } from "~/utils/api";
 import AudioRecorderModal from "../cloningRmodal";
+import { SubscriptionData } from "~/lib/types";
 
 export default function VoiceCloningForm({
   onVoiceCreated,
   subData,
   setOpenNoSessionModal,
+}: {
+  subData: SubscriptionData | null | undefined;
 }) {
   const router = useRouter();
   const allowedStatuses = [
@@ -113,7 +116,7 @@ export default function VoiceCloningForm({
       const filename = `ClonedVoices/${formData.file.name}`;
       const uploadedFile = await upload(filename, formData.file, {
         access: "public",
-        handleUploadUrl: "/api/upload", // This will be the API route on your backend
+        handleUploadUrl: "/api/uploadspeech", // This will be the API route on your backend
       });
 
       // Submit the form data with the uploaded file URL

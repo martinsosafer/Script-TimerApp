@@ -3,6 +3,7 @@
 import * as React from "react";
 
 import NoSessionModal from "~/app/(site)/components/modals/no-session-modal";
+import { SubscriptionData } from "~/lib/types";
 import { api } from "~/utils/api";
 import CustomVoiceCards from "../cloningCard";
 import VoiceCloningForm from "../cloningForm";
