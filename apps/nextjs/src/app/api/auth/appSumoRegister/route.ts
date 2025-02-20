@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { CreateCognitoEntry } from "@voiceai/auth/actions";
 import { db, eq, schema } from "@voiceai/db";
 
 import {
@@ -11,11 +12,12 @@ import type { LicenceResponse, TokenResponse } from "../register/types";
 interface User {
   userId: string;
   appSumoCode: string;
+  userMail: string;
 }
 
 export async function POST(request: Request) {
   try {
-    const { appSumoCode, userId } = (await request.json()) as User;
+    const { appSumoCode, userId, userMail } = (await request.json()) as User;
 
     const appSumoToken = (await fetchTemporaryToken(
       appSumoCode,
@@ -61,6 +63,15 @@ export async function POST(request: Request) {
           .where(eq(schema.subscriptions.userId, userId))
           .execute();
       }
+      const payload = {
+        YourName: {
+          First: "",
+          Last: "",
+        },
+        EnterYourEmail: userMail,
+        YoureWorkingOn: "AppSumo User",
+      };
+      await CreateCognitoEntry(payload, userId);
     }
 
     return new Response("App Sumo user updated");

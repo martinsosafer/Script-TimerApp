@@ -32,7 +32,7 @@ export const STARTING_CL_CREDITS: Record<Plan, number> = {
   CREATORCLYR: 60,
   BUSINESSCLYR: 80,
   "1": 7,
-  "2": 7,
+  "2": 8,
 };
 
 export const STARTING_IMG_CREDITS = {
@@ -51,7 +51,7 @@ export const STARTING_IMG_CREDITS = {
   CREATORCLYR: 50,
   BUSINESSCLYR: 100,
   "1": 50,
-  "2": 50,
+  "2": 100,
 };
 
 export const STARTING_11CL_CREDITS = {
@@ -69,8 +69,8 @@ export const STARTING_11CL_CREDITS = {
   STUDENTCLYR: 40000,
   CREATORCLYR: 80000,
   BUSINESSCLYR: 125000,
-  "1": 80000,
-  "2": 80000,
+  "1": 50000,
+  "2": 100000,
 };
 
 export const STARTING_OPENAI_CREDITS = {
@@ -88,8 +88,8 @@ export const STARTING_OPENAI_CREDITS = {
   STUDENTCLYR: 200000,
   CREATORCLYR: 400000,
   BUSINESSCLYR: 1000000,
-  "1": 400000,
-  "2": 400000,
+  "1": 200000,
+  "2": 750000,
 };
 export const AUDIO_RECORDING_LIMITS: Record<Plan, number> = {
   INACTIVE: 0,
@@ -106,6 +106,8 @@ export const AUDIO_RECORDING_LIMITS: Record<Plan, number> = {
   STUDENTCLYR: 3,
   CREATORCLYR: 5,
   BUSINESSCLYR: 10,
+  "1": 10,
+  "2": 10,
 };
 
 export const AUDIO_DURATION_LIMITS: Record<Plan, number> = {
@@ -123,6 +125,8 @@ export const AUDIO_DURATION_LIMITS: Record<Plan, number> = {
   STUDENTCLYR: 300,
   CREATORCLYR: 480,
   BUSINESSCLYR: 600,
+  "1": 600,
+  "2": 600,
 };
 
 export const WEBCAM_RECORDING_LIMITS: Record<Plan, number> = {
@@ -140,6 +144,8 @@ export const WEBCAM_RECORDING_LIMITS: Record<Plan, number> = {
   STUDENTCLYR: 3,
   CREATORCLYR: 5,
   BUSINESSCLYR: 10,
+  "1": 10,
+  "2": 10,
 };
 
 export const WEBCAM_DURATION_LIMITS: Record<Plan, number> = {
@@ -157,4 +163,6 @@ export const WEBCAM_DURATION_LIMITS: Record<Plan, number> = {
   STUDENTCLYR: 300,
   CREATORCLYR: 480,
   BUSINESSCLYR: 600,
+  "1": 600,
+  "2": 600,
 };
