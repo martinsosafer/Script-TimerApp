@@ -19,10 +19,12 @@ import TrialExpirationModal from "../modals/trial-expiration-modal";
 
 export default function Home({
   user,
+  userMail,
   trialExpiration,
   session,
 }: {
   user: string;
+  userMail: string;
   trialExpiration: boolean;
   session: Session | null | undefined;
 }) {
@@ -37,14 +39,16 @@ export default function Home({
       if (appSumoCode) {
         await fetch("/api/auth/appSumoRegister", {
           method: "POST",
-          body: JSON.stringify({ appSumoCode, userId: user }),
+          body: JSON.stringify({ appSumoCode, userId: user, userMail }),
           headers: {
             "Content-Type": "application/json",
           },
         });
       }
     }
-    updateSumoUser();
+    if (appSumoCode) {
+      updateSumoUser();
+    }
   }, []);
 
   if (
