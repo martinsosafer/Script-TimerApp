@@ -100,7 +100,7 @@ export default function NewNavBar({ signOut, signIn, session }: NavBarProps) {
         </ul>
       </nav>
 
-      <nav className="mr-4 sm:block md:hidden lg:hidden xl:hidden">
+      <nav className="mr-4 block lg:hidden">
         <button
           className="inline-flex items-center px-4 py-2 font-bold text-white hover:text-blue-100"
           onClick={toggleMenu}
