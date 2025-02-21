@@ -44,11 +44,11 @@ export default function HeroSection() {
   return (
     <div className={`${poppins.className}`}>
       <div
-        className={`from-cp-primary relative mx-auto bg-gradient-to-br to-[#000000]  `}
+        className={`from-cp-primary relative mx-auto flex justify-center bg-gradient-to-br to-[#000000] lg:h-[554px]`}
       >
-        <div className="grid items-center justify-center   gap-[24px] lg:grid-cols-2 lg:gap-[82px] lg:px-[248px]">
+        <div className="flex max-w-[1024px] flex-col items-center justify-items-center gap-[24px] py-[24px] lg:flex-row lg:justify-between lg:gap-[90px]">
           {/* Text Content */}
-          <div className="mt-6  h-[266px]  w-[312px] lg:mb-[72px] lg:mt-[68px] lg:h-[414px] lg:w-[409px] lg:text-start">
+          <div className="h-[266px]  w-[312px] lg:h-[414px] lg:w-[409px] lg:text-start">
             <RevealText>
               <div className="h-[76px] lg:h-[210px] lg:w-[409px]">
                 <h1 className="mb-[16px] text-[32px]  font-bold leading-[38.3px] text-white lg:mb-6 lg:text-[58px]  lg:leading-[70px]">
@@ -58,7 +58,7 @@ export default function HeroSection() {
               </div>
             </RevealText>
             <RevealText>
-              <div className="  h-[125px] lg:mb-[40px] lg:h-[112px]  lg:w-[409px] ">
+              <div className="  h-[125px] lg:mb-[36px] lg:h-[112px]  lg:w-[409px] ">
                 <p className="text-[18px] font-normal leading-[25px] text-white lg:text-[20px] lg:leading-[28px]">
                   The tools supported by AI will automate{" "}
                   <br className="hidden lg:block" />
@@ -80,7 +80,7 @@ export default function HeroSection() {
           </div>
 
           {/* Hero Image & Button */}
-          <MotionTransition className="flex flex-col justify-start lg:mt-[60px]">
+          <MotionTransition className="flex flex-col justify-start lg:mt-[42px]">
             <button onClick={toggleModal} className="w-full">
               <div className="flex h-[391px] w-[312px] flex-col items-center pb-6  lg:h-[452px] lg:w-[439px]">
                 <div className="relative h-[331px] w-[312px]  lg:h-[368px] lg:w-[452px]">

@@ -48,6 +48,7 @@ export default function Home({
     }
     if (appSumoCode) {
       updateSumoUser();
+      window.location.reload();
     }
   }, []);
 
