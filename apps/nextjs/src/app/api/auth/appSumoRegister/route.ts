@@ -62,6 +62,22 @@ export async function POST(request: Request) {
           .delete(schema.subscriptions)
           .where(eq(schema.subscriptions.userId, userId))
           .execute();
+        await db
+          .delete(schema.elevenLabsCredit)
+          .where(eq(schema.elevenLabsCredit.userId, userId))
+          .execute();
+        await db
+          .delete(schema.imgCredit)
+          .where(eq(schema.imgCredit.userId, userId))
+          .execute();
+        await db
+          .delete(schema.openAiCredit)
+          .where(eq(schema.openAiCredit.userId, userId))
+          .execute();
+        await db
+          .delete(schema.clCredits)
+          .where(eq(schema.appSumoSubscription.userId, userId))
+          .execute();
       }
       const payload = {
         YourName: {
