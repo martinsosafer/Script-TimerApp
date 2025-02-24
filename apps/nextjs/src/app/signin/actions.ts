@@ -11,11 +11,21 @@ const schema = z.object({
     })
     .email()
     .min(1),
+  name: z.string().min(1).optional(),
 });
 
-export async function createUser(formData: FormData) {
+export async function createUser({
+  email,
+  name,
+  appSumoCode,
+}: {
+  email: string;
+  name?: string;
+  appSumoCode: string | null;
+}) {
   const validatedFields = schema.safeParse({
-    email: formData.get("email"),
+    email: email,
+    ...(name ? { name } : {}),
   });
 
   // Return early if the form data is invalid
@@ -24,10 +34,11 @@ export async function createUser(formData: FormData) {
       message: "Please enter a valid email",
     };
   }
+  const redirectURL = appSumoCode ? `/?appSumoCode=${appSumoCode}` : "/";
 
   await signIn("resend", {
-    email: formData.get("email"),
-    redirectTo: "/",
+    email: email,
+    redirectTo: redirectURL,
   });
 }
 

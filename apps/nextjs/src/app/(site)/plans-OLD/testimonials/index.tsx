@@ -1,0 +1,108 @@
+import Image from "next/image";
+
+import {
+  FacebookIcon,
+  MapPinIcon,
+  StarIcon,
+} from "@voiceai/ui/@/components/ui/icons";
+
+import { roboto } from "~/app/fonts";
+import David from "../../../(site)/components/herosection/Testimonials/Testimonialspic/DavidJoo.jpg";
+import Jill from "../../../(site)/components/herosection/Testimonials/Testimonialspic/Jill.png";
+import Susan from "../../../(site)/components/herosection/Testimonials/Testimonialspic/Susan.png";
+
+const ratings = [
+  { icon: "G", score: "4.8", reviews: "200+ Reviews" },
+  {
+    icon: <FacebookIcon className="h-6 w-6" />,
+    score: "4.6",
+    reviews: "400+ Reviews",
+  },
+  {
+    icon: <MapPinIcon className="h-6 w-6" />,
+    score: "4.8",
+    reviews: "100+ Reviews",
+  },
+  {
+    icon: <StarIcon className="h-6 w-6" />,
+    score: "4.7",
+    reviews: "200+ Reviews",
+  },
+];
+
+const testimonials = [
+  {
+    quote: "You got us started down the amazing path we are on. THANK YOU!",
+    author: "David J",
+    position: "CEO ",
+    image: David,
+  },
+  {
+    quote:
+      "We are overwhelmed with thanks... Thank you for your support and tools!",
+    author: "Susan C",
+    position: "Senior Marketing Lead",
+    image: Susan,
+  },
+  {
+    quote:
+      "We are so pleased! Productivity quadrupled. Output is faster, more accurate, and more effective.",
+    author: "Jill B",
+    position: "CEO",
+    image: Jill,
+  },
+];
+
+export default function PricingTestimonials() {
+  return (
+    <div
+      className={`${roboto.className} bg-cp-primary mb-5 mt-[100px] w-full p-10 text-white`}
+    >
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-8 grid grid-cols-2 gap-4 rounded-lg bg-white p-6 text-black md:grid-cols-4">
+          {ratings.map((rating, index) => (
+            <div key={index} className="flex items-center space-x-2">
+              <div className="bg-cp-primary flex h-10 w-10 items-center justify-center rounded-full p-2 text-white">
+                {typeof rating.icon === "string" ? rating.icon : rating.icon}
+              </div>
+              <div>
+                <div className="text-2xl font-bold">{rating.score}</div>
+                <div className="text-sm">{rating.reviews}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="grid gap-8 md:grid-cols-3">
+          {testimonials.map((testimonial, index) => (
+            <div key={index} className="space-y-4">
+              <div className="flex">
+                {Array.from(Array(5)).map((_, i) => (
+                  <StarIcon
+                    key={i}
+                    className="h-5 w-5 fill-current text-yellow-400"
+                  />
+                ))}
+              </div>
+              <div className="flex h-40 flex-col justify-between">
+                <p className="text-lg">&quot;{testimonial.quote}&quot;</p>
+                <div className="flex items-center space-x-4">
+                  <Image
+                    src={testimonial.image}
+                    alt={testimonial.author}
+                    className="h-12 w-12 rounded-full"
+                  />
+                  <div>
+                    <div className="font-semibold">{testimonial.author}</div>
+                    <div className="text-sm opacity-75">
+                      {testimonial.position}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}

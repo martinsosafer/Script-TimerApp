@@ -29,9 +29,11 @@ import { SpeedButton } from "../../components/texttospeech/Tab2/buttonmenu.tsx/s
 export function ScriptAI({
   subData,
   initialCredits,
+  openAiCredits,
 }: {
   subData: SubscriptionData | null | undefined;
   initialCredits: number;
+  openAiCredits: number;
 }) {
   const {
     subscriptionData,
@@ -162,6 +164,7 @@ export function ScriptAI({
     cursor: "not-allowed",
     opacity: 0.6,
   };
+
   return (
     <>
       <div className=" mb-32 h-full   flex-col md:flex">
@@ -212,6 +215,7 @@ export function ScriptAI({
                 onCopy={onCopy}
                 isCopied={isCopied}
                 refetchCredits={refetchCredits}
+                openAiCredits={openAiCredits}
               />
             </div>
           </div>

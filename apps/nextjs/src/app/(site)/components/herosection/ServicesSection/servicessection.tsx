@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 import { Button } from "@voiceai/ui";
 import { Card, CardContent } from "@voiceai/ui/@/components/ui/card";
@@ -10,6 +11,8 @@ import {
   IconAudioLines,
   IconBookPlus,
   IconBrainCog,
+  IconChevronLeft,
+  IconChevronRight,
   IconClone,
   IconCopyright,
   IconEar,
@@ -40,20 +43,39 @@ const iconComponents = {
   FileImageIcon,
   IconCopyright,
 };
-
 export default function ServiceSection() {
   const [currentPage, setCurrentPage] = useState(0);
   const [fade, setFade] = useState(false);
+  const [itemsPerPage, setItemsPerPage] = useState(3);
 
-  const itemsPerPage = 6;
+  useEffect(() => {
+    const handleResize = () => {
+      setItemsPerPage(window.innerWidth >= 1040 ? 6 : 3);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const totalPages = Math.ceil(servicesData.length / itemsPerPage);
 
   const handlePageChange = (index: number) => {
-    setFade(true); // Trigger fade-out
+    setFade(true);
     setTimeout(() => {
       setCurrentPage(index);
-      setFade(false); // Trigger fade-in
-    }, 300); // Match this with the fade-out duration
+      setFade(false);
+    }, 300);
+  };
+
+  const handleNextPage = () => {
+    const newPage = (currentPage + 1) % totalPages;
+    handlePageChange(newPage);
+  };
+
+  const handlePrevPage = () => {
+    const newPage = (currentPage - 1 + totalPages) % totalPages;
+    handlePageChange(newPage);
   };
 
   const currentServices = servicesData.slice(
@@ -62,15 +84,18 @@ export default function ServiceSection() {
   );
 
   return (
-    <div className={`${poppins.className} w-full bg-[#E2E8F0]`}>
-      <div className="flex flex-col items-center justify-center px-4 py-8 sm:px-6 sm:py-12 md:px-8 md:py-16 lg:px-[83px] lg:py-[60px]">
-        <h2 className="text-cp-primary text-center text-2xl font-bold leading-tight sm:text-3xl md:text-4xl lg:text-[42px] lg:leading-[50px]">
+    <div
+      className={`${poppins.className} h-full w-full items-center justify-center bg-[#E2E8F0] py-[32px] lg:py-[60px] `}
+    >
+      <div className="mx-auto h-[68px] w-[263px] lg:h-[50px] lg:w-[478px] ">
+        <h2 className="text-cp-primary text-center text-[28px] font-bold leading-[34px]  lg:whitespace-nowrap lg:text-[42px] lg:leading-[50px] ">
           Bring Your Ideas to Life
         </h2>
-
+      </div>
+      <div className=" mx-auto  mt-6 h-[305px] w-[312px] flex-col items-center justify-center lg:mx-auto lg:h-[467px] lg:w-[1274px] lg:items-center lg:justify-center lg:px-[83px] ">
         <div
           className={cn(
-            "mt-8 grid grid-cols-1 gap-4 sm:mt-12 sm:gap-6 md:grid-cols-2 lg:mt-[48px]",
+            "mt-8 grid grid-cols-1 gap-4 lg:mt-[48px] lg:grid-cols-2 lg:gap-6 lg:px-[120px]",
             fade ? "opacity-0 transition-opacity duration-300" : "opacity-100",
           )}
         >
@@ -80,41 +105,72 @@ export default function ServiceSection() {
             return (
               <Card
                 key={service.id}
-                className="rounded-lg border-none shadow-sm transition-shadow hover:shadow-md"
+                className="h-[94px] w-[312px] rounded-lg border-none shadow-sm transition-shadow hover:shadow-md lg:flex lg:h-[125px] lg:w-[417px] lg:items-center lg:justify-center"
               >
-                <CardContent className="flex items-center p-4 sm:p-6 md:p-[15px] lg:p-[40px]">
-                  <div className="flex flex-row items-center space-y-2 text-left sm:space-y-4">
-                    <Icon className="text-cp-secondary h-12 w-12 flex-shrink-0 sm:h-16 sm:w-16 lg:h-[70px] lg:w-[70px]" />
-                    <div className="ml-3 flex flex-col items-start">
-                      <h3 className="text-cp-primary text-lg font-bold leading-tight sm:text-xl md:text-[20px] md:leading-[28px]">
-                        {service.title}
-                      </h3>
-                      <p className="mt-1 text-sm font-normal leading-snug text-black sm:text-base md:text-[16px] md:leading-[22.5px]">
-                        {service.description}
-                      </p>
+                <Link
+                  href={service.link}
+                  target="_blank"
+                  className="h-full w-full"
+                >
+                  <CardContent className="flex h-[95px] items-center p-[21px] lg:h-full lg:w-full lg:p-[28px]">
+                    <div className="flex w-full items-start gap-3">
+                      <Icon className="text-cp-secondary h-[52px] w-[52px] flex-shrink-0 lg:h-[70px] lg:w-[70px]" />
+                      <div className="mt-1 flex flex-col gap-1 lg:mt-0">
+                        <h3 className="text-cp-primary text-[15px] font-bold leading-[21px] lg:text-[20px] lg:leading-[28px]">
+                          {service.title}
+                        </h3>
+                        <p className="text-[16px] font-normal leading-[17px] text-black lg:text-[16px] lg:leading-[22.5px]">
+                          {service.description}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </CardContent>
+                  </CardContent>
+                </Link>
               </Card>
             );
           })}
         </div>
+      </div>
+      <div className="mx-auto mt-6 flex items-center justify-center gap-4 lg:mt-[16px]">
+        {/* Mobile navigation with dots */}
+        <div className="flex items-center justify-center gap-4">
+          <Button
+            variant="outline"
+            size="icon"
+            className="h-10 w-10 rounded-full"
+            onClick={handlePrevPage}
+          >
+            <IconChevronLeft className="h-6 w-6" />
+            <span className="sr-only">Previous page</span>
+          </Button>
 
-        <div className="mt-6 flex justify-center gap-4 sm:mt-8 lg:mt-[16px]">
-          {Array.from({ length: totalPages }).map((_, index) => (
-            <Button
-              key={index}
-              variant="ghost"
-              size="icon"
-              className={cn(
-                "h-2 w-2 rounded-full p-0",
-                currentPage === index ? "bg-blue-600" : "bg-blue-200",
-              )}
-              onClick={() => handlePageChange(index)}
-            >
-              <span className="sr-only">Page {index + 1}</span>
-            </Button>
-          ))}
+          {/* Pagination dots */}
+          <div className="flex items-center justify-center gap-2">
+            {Array.from({ length: totalPages }).map((_, index) => (
+              <Button
+                key={index}
+                variant="ghost"
+                size="icon"
+                className={cn(
+                  "h-3 w-3 rounded-full p-0",
+                  currentPage === index ? "bg-blue-600" : "bg-blue-200",
+                )}
+                onClick={() => handlePageChange(index)}
+              >
+                <span className="sr-only">Page {index + 1}</span>
+              </Button>
+            ))}
+          </div>
+
+          <Button
+            variant="outline"
+            size="icon"
+            className="h-10 w-10 rounded-full"
+            onClick={handleNextPage}
+          >
+            <IconChevronRight className="h-6 w-6" />
+            <span className="sr-only">Next page</span>
+          </Button>
         </div>
       </div>
     </div>

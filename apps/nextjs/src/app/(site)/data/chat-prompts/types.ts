@@ -61,7 +61,10 @@ export interface Prompt {
   prompt_display: string;
   prompt_ai: string;
   strengths?: string;
-  type: PromptType;
-  subtype: PromptSubType;
+  ai_model_type?: "CHAT" | "IMAGE" | "VOICE" | "OTHER" | undefined;
+  category_id?: string;
+  subcategory_id?: string;
+  additional_fields?: string[];
   icon: string;
+  created_at?: Date;
 }

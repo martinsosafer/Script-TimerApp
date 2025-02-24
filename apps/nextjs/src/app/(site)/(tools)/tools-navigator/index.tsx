@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter } from "next/navigation";
 
+import { roboto } from "~/app/fonts";
 import Tabs from "../../components/tabs";
 
 export default function ToolsNavigator() {
@@ -20,7 +21,7 @@ export default function ToolsNavigator() {
       action: () => router.push("/word-counter"),
     },
     {
-      label: "Autocapitalize",
+      label: "Auto Capitalize/Case",
       active: pathname === "/autocapitalize",
       action: () => router.push("/autocapitalize"),
     },
@@ -30,15 +31,31 @@ export default function ToolsNavigator() {
       action: () => router.push("/word-sorter"),
     },
     {
-      label: "Hemingway",
+      label: "Hemingway App Scorer",
       active: pathname === "/grade-level",
       action: () => router.push("/grade-level"),
     },
   ];
 
   return (
-    <div className="flex items-center justify-center gap-4">
-      <Tabs options={tools} />
-    </div>
+    <>
+      <div className="hidden items-center justify-center gap-4 lg:flex">
+        <Tabs options={tools} />
+      </div>
+      <select
+        className={`${roboto.className}text-[16px] border-cp-primary text-cp-primary w-full rounded-[4px] border bg-white px-4 py-6 font-bold lg:hidden`}
+      >
+        {tools.map((tool) => (
+          <option
+            key={tool.label}
+            value={tool.label}
+            selected={tool.active}
+            onClick={tool.action}
+          >
+            {tool.label}
+          </option>
+        ))}
+      </select>
+    </>
   );
 }

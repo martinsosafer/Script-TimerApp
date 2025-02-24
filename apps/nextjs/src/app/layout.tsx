@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
 import { Poppins, Roboto } from "next/font/google";
 
-import { PageAnalytics } from "./analytics";
+import { IdentifyAnalytics, PageAnalytics } from "./analytics";
 import { ContextWrapper } from "./context/state";
 import GoogleAnalytics from "./GoogleAnalytics";
 
 import "~/styles/globals.css";
 
+import { headers } from "next/headers";
+
+import MetaPixel from "./MetaPixel";
+import MixpanelInitializer from "./mixpanel";
+import { TRPCReactProvider } from "./providers";
 import Squid from "./SquidAnalitycs";
 
 const poppins = Poppins({
@@ -48,7 +53,11 @@ export default function Layout(props: { children: React.ReactNode }) {
   const { children } = props;
   return (
     <html lang="en" className="h-full w-full">
-      <GoogleAnalytics />
+      <head>
+        <MixpanelInitializer />
+        <GoogleAnalytics />
+        <MetaPixel />
+      </head>
       <body
         className={[
           "font-poppins",
@@ -61,11 +70,21 @@ export default function Layout(props: { children: React.ReactNode }) {
           roboto.variable,
         ].join(" ")}
       >
-        <ContextWrapper>{children}</ContextWrapper>
+        <TRPCReactProvider headers={headers()}>
+          <IdentifyAnalytics />
+          <ContextWrapper>{children}</ContextWrapper>
+        </TRPCReactProvider>
         <Squid />
+        <noscript>
+          <img
+            height="1"
+            width="1"
+            style={{ display: "none" }}
+            src="https://www.facebook.com/tr?id=2607599612759264&ev=PageView&noscript=1"
+            alt=""
+          />
+        </noscript>
       </body>
-
-      <PageAnalytics />
     </html>
   );
 }

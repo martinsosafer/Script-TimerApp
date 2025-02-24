@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 export default async function LandingPage() {
   const session = await auth();
   const userId = session?.user.id ?? "";
+  const userMail = session?.user.email ?? "";
   await monthlyCreditsReset(userId);
   const trialExpiration =
     session?.user.subscription?.trialExpiration &&
@@ -30,6 +31,11 @@ export default async function LandingPage() {
   const trialNextToExpire = daysToExpire ? daysToExpire <= 2 : false;
 
   return (
-    <Home user={userId} trialExpiration={trialNextToExpire} session={session} />
+    <Home
+      user={userId}
+      userMail={userMail}
+      trialExpiration={trialNextToExpire}
+      session={session}
+    />
   );
 }

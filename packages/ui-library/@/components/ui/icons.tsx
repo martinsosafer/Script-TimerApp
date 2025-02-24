@@ -488,6 +488,28 @@ function IconMessage({ className, ...props }: React.ComponentProps<"svg">) {
   );
 }
 
+function IconMessageFull({ className, ...props }: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cn("h-4 w-4", className)}
+      {...props}
+    >
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+      <path d="M13 8H7" />
+      <path d="M17 12H7" />
+    </svg>
+  );
+}
+
 function IconTrash({ className, ...props }: React.ComponentProps<"svg">) {
   return (
     <svg
@@ -2151,6 +2173,90 @@ function IconPocketKnife({ className, ...props }: React.ComponentProps<"svg">) {
     </svg>
   );
 }
+
+function IconFooterPhone({ className, ...props }: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      width="19"
+      height="20"
+      viewBox="0 0 19 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn("lucide lucide-siren", className)}
+      {...props}
+    >
+      <path
+        d="M17.6669 14.0994V16.5994C17.6679 16.8315 17.6203 17.0612 17.5274 17.2739C17.4344 17.4865 17.298 17.6774 17.127 17.8343C16.956 17.9912 16.7541 18.1107 16.5342 18.185C16.3144 18.2594 16.0814 18.287 15.8503 18.2661C13.286 17.9875 10.8228 17.1112 8.6586 15.7078C6.64513 14.4283 4.93805 12.7212 3.6586 10.7078C2.25025 8.53377 1.37381 6.05859 1.10027 3.48276C1.07945 3.25232 1.10683 3.02006 1.18069 2.80078C1.25454 2.5815 1.37325 2.38 1.52924 2.20911C1.68524 2.03822 1.87511 1.90169 2.08676 1.8082C2.29842 1.71471 2.52722 1.66631 2.7586 1.6661H5.2586C5.66303 1.66212 6.0551 1.80533 6.36174 2.06904C6.66838 2.33275 6.86867 2.69897 6.92527 3.09943C7.03079 3.89949 7.22648 4.68504 7.5086 5.4411C7.62072 5.73937 7.64499 6.06353 7.57853 6.37516C7.51206 6.6868 7.35766 6.97286 7.1336 7.19943L6.07527 8.25776C7.26157 10.3441 8.98898 12.0715 11.0753 13.2578L12.1336 12.1994C12.3602 11.9754 12.6462 11.821 12.9579 11.7545C13.2695 11.688 13.5937 11.7123 13.8919 11.8244C14.648 12.1066 15.4335 12.3022 16.2336 12.4078C16.6384 12.4649 17.0081 12.6688 17.2724 12.9807C17.5367 13.2926 17.6771 13.6907 17.6669 14.0994Z"
+        stroke="white"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+}
+
+function IconFooterMail({ className, ...props }: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      width="21"
+      height="20"
+      viewBox="0 0 21 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn("lucide lucide-siren", className)}
+      {...props}
+    >
+      <path
+        d="M17.0002 3.33398H3.66691C2.74644 3.33398 2.00024 4.08018 2.00024 5.00065V15.0007C2.00024 15.9211 2.74644 16.6673 3.66691 16.6673H17.0002C17.9207 16.6673 18.6669 15.9211 18.6669 15.0007V5.00065C18.6669 4.08018 17.9207 3.33398 17.0002 3.33398Z"
+        stroke="white"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M18.6669 5.83398L11.1919 10.584C10.9346 10.7452 10.6372 10.8307 10.3336 10.8307C10.03 10.8307 9.73252 10.7452 9.47524 10.584L2.00024 5.83398"
+        stroke="white"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+}
+
+function IconFooterLocation({
+  className,
+  ...props
+}: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      width="21"
+      height="20"
+      viewBox="0 0 21 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn("lucide lucide-siren", className)}
+      {...props}
+    >
+      <path
+        d="M17.0001 8.33268C17.0001 12.4935 12.3842 16.8269 10.8342 18.1652C10.6899 18.2738 10.5141 18.3325 10.3334 18.3325C10.1527 18.3325 9.97698 18.2738 9.83258 18.1652C8.28258 16.8269 3.66675 12.4935 3.66675 8.33268C3.66675 6.56457 4.36913 4.86888 5.61937 3.61864C6.86961 2.36839 8.5653 1.66602 10.3334 1.66602C12.1015 1.66602 13.7972 2.36839 15.0475 3.61864C16.2977 4.86888 17.0001 6.56457 17.0001 8.33268Z"
+        stroke="white"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M10.3335 10.834C11.7142 10.834 12.8335 9.7147 12.8335 8.33398C12.8335 6.95327 11.7142 5.83398 10.3335 5.83398C8.95278 5.83398 7.8335 6.95327 7.8335 8.33398C7.8335 9.7147 8.95278 10.834 10.3335 10.834Z"
+        stroke="white"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+}
+
 function IconCircleStop({ className, ...props }: React.ComponentProps<"svg">) {
   return (
     <svg
@@ -2163,15 +2269,58 @@ function IconCircleStop({ className, ...props }: React.ComponentProps<"svg">) {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className={cn("lucide lucide-circle-stop", className)}
+      className={cn("lucide lucide-arrow-left", className)}
       {...props}
     >
-      <circle cx="12" cy="12" r="10" />
-      <rect x="9" y="9" width="6" height="6" rx="1" />
+      <path d="m12 19-7-7 7-7" />
+      <path d="M19 12H5" />
     </svg>
   );
 }
-function IconSilence({ className, ...props }: React.ComponentProps<"svg">) {
+function TalkIcon({
+  color = "#0066FF",
+  className,
+  ...props
+}: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={`h-4 w-4 ${className}`}
+      {...props}
+    >
+      <path
+        d="M8.8 20.0008V15.9008L10.7 16.1008C11.2531 16.0701 11.7766 15.8407 12.1742 15.4549C12.5717 15.0691 12.8167 14.5528 12.864 14.0008V8.30081C12.8706 6.86015 12.3047 5.47587 11.2907 4.45248C10.2767 3.4291 8.89766 2.85044 7.457 2.84381C6.01634 2.83718 4.63206 3.40312 3.60867 4.41713C2.58529 5.43114 2.00663 6.81015 2 8.25081C2 11.0508 2.656 11.3048 3 12.8008C3.23248 13.7043 3.24243 14.6506 3.029 15.5588L2 20.0008"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M19.7998 17.8003C21.2056 16.3943 21.9956 14.4876 21.9962 12.4994C21.9968 10.5111 21.2078 8.60404 19.8028 7.19727"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M17.0001 15.0004C17.3273 14.6733 17.5863 14.2846 17.7623 13.8567C17.9383 13.4288 18.0278 12.9703 18.0254 12.5077C18.0231 12.045 17.9291 11.5874 17.7488 11.1614C17.5685 10.7353 17.3055 10.3492 16.9751 10.0254"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+function BurgerIcon({
+  color = "currentColor",
+  className,
+  ...props
+}: React.ComponentProps<"svg">) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -2179,20 +2328,24 @@ function IconSilence({ className, ...props }: React.ComponentProps<"svg">) {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
+      stroke={color}
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className={cn("lucide lucide-message-circle-off", className)}
+      className={`h-4 w-4 ${className}`}
       {...props}
     >
-      <path d="M20.5 14.9A9 9 0 0 0 9.1 3.5" />
-      <path d="m2 2 20 20" />
-      <path d="M5.6 5.6C3 8.3 2.2 12.5 4 16l-2 6 6-2c3.4 1.8 7.6 1.1 10.3-1.7" />
+      <line x1="4" x2="20" y1="12" y2="12" />
+      <line x1="4" x2="20" y1="6" y2="6" />
+      <line x1="4" x2="20" y1="18" y2="18" />
     </svg>
   );
 }
-function IconCameraVideo({ className, ...props }: React.ComponentProps<"svg">) {
+function XIcon({
+  color = "currentColor",
+  className,
+  ...props
+}: React.ComponentProps<"svg">) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -2200,11 +2353,134 @@ function IconCameraVideo({ className, ...props }: React.ComponentProps<"svg">) {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
+      stroke={color}
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className={cn("lucide lucide-cctv", className)}
+      className={`h-4 w-4 ${className}`}
+      {...props}
+    >
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </svg>
+  );
+}
+function IconChevronDown({
+  color = "currentColor",
+  className,
+  ...props
+}: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={`h-4 w-4 ${className}`}
+      {...props}
+    >
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  );
+}
+function IconClapperboard({
+  color = "currentColor",
+  className,
+  ...props
+}: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={`h-4 w-4 ${className}`}
+      {...props}
+    >
+      <path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3Z" />
+      <path d="m6.2 5.3 3.1 3.9" />
+      <path d="m12.4 3.4 3.1 4" />
+      <path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" />
+    </svg>
+  );
+}
+
+function LightMessageBubbleArrow({
+  className,
+  ...props
+}: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      width="35"
+      height="29"
+      viewBox="0 0 35 29"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={`${className}`}
+      {...props}
+    >
+      <path
+        d="M1.29665 1.87417L1.2967 1.8741L1.30415 1.88012L32.3811 27.021C33.119 27.5938 33.6131 27.6279 33.8572 27.5217C34.0821 27.424 34.3642 27.0809 34.3642 26.1905L34.3642 3.49112C34.3642 2.69754 34.0489 1.93646 33.4878 1.37531C32.9266 0.814157 32.1655 0.498906 31.372 0.498906L1.68812 0.498909C1.24653 0.498909 0.937253 0.560093 0.741923 0.642437C0.548859 0.723827 0.513387 0.803043 0.506109 0.82609C0.49768 0.852781 0.481785 0.948864 0.597147 1.14577C0.712268 1.34227 0.93318 1.59147 1.29665 1.87417Z"
+        fill="#E2E8F0"
+        stroke="#E2E8F0"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+}
+
+function DarkMessageBubbleArrow({
+  className,
+  ...props
+}: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      width="35"
+      height="29"
+      viewBox="0 0 35 29"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={`${className}`}
+      {...props}
+    >
+      <path
+        d="M33.5666 1.87417L33.5666 1.8741L33.5591 1.88012L2.48223 27.021C1.74425 27.5938 1.25015 27.6279 1.00605 27.5217C0.781204 27.424 0.499111 27.0809 0.499111 26.1905L0.499113 3.49112C0.499113 2.69754 0.814364 1.93646 1.37551 1.37531C1.93666 0.814157 2.69774 0.498906 3.49133 0.498906L33.1752 0.498909C33.6168 0.498909 33.926 0.560093 34.1214 0.642437C34.3144 0.723827 34.3499 0.803043 34.3572 0.82609C34.3656 0.852781 34.3815 0.948864 34.2661 1.14577C34.151 1.34227 33.9301 1.59147 33.5666 1.87417Z"
+        fill="#636D80"
+        stroke="#636D80"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+}
+function IconVideoCamera({
+  color = "currentColor",
+  className,
+  ...props
+}: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={`h-4 w-4 ${className}`}
       {...props}
     >
       <path d="M16.75 12h3.632a1 1 0 0 1 .894 1.447l-2.034 4.069a1 1 0 0 1-1.708.134l-2.124-2.97" />
@@ -2215,6 +2491,69 @@ function IconCameraVideo({ className, ...props }: React.ComponentProps<"svg">) {
     </svg>
   );
 }
+function IconPause({ className, ...props }: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cn("h-4 w-4", className)}
+      {...props}
+    >
+      <rect x="14" y="4" width="4" height="16" rx="1" />
+      <rect x="6" y="4" width="4" height="16" rx="1" />
+    </svg>
+  );
+}
+function IconMusic({ className, ...props }: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cn("h-4 w-4", className)}
+      {...props}
+    >
+      <path d="M9 18V5l12-2v13" />
+      <circle cx="6" cy="18" r="3" />
+      <circle cx="18" cy="16" r="3" />
+    </svg>
+  );
+}
+function IconMic({ className, ...props }: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cn("h-4 w-4", className)}
+      {...props}
+    >
+      <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+      <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+      <line x1="12" x2="12" y1="19" y2="22" />
+    </svg>
+  );
+}
+
 export {
   IconEdit,
   IconNextChat,
@@ -2307,7 +2646,20 @@ export {
   IconClipboard,
   IconPocketKnife,
   IconCrowm,
+  IconFooterPhone,
+  IconFooterMail,
+  IconFooterLocation,
   IconCircleStop,
-  IconSilence,
-  IconCameraVideo,
+  TalkIcon,
+  BurgerIcon,
+  XIcon,
+  IconChevronDown,
+  IconClapperboard,
+  IconMessageFull,
+  LightMessageBubbleArrow,
+  DarkMessageBubbleArrow,
+  IconVideoCamera,
+  IconPause,
+  IconMusic,
+  IconMic,
 };

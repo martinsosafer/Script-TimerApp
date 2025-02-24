@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import type { Session } from "@voiceai/auth";
 
+import EmailLoginSection from "~/app/lp/sections/email-login-section";
 import CounterData from "../herosection/CounterData/CounterData";
 import FAQAccordion from "../herosection/FaqAccordion";
 import GoSections from "../herosection/GoSections/GoSections";
@@ -17,15 +19,49 @@ import TrialExpirationModal from "../modals/trial-expiration-modal";
 
 export default function Home({
   user,
+  userMail,
   trialExpiration,
   session,
 }: {
   user: string;
+  userMail: string;
   trialExpiration: boolean;
   session: Session | null | undefined;
 }) {
   const [openTrialModal, setOpenTrialModal] = useState(trialExpiration);
   const [openModal, setOpenModal] = useState(false);
+  const origin = useSearchParams().get("origin");
+  const appSumoCode = useSearchParams().get("appSumoCode");
+  const router = useRouter();
+
+  useEffect(() => {
+    async function updateSumoUser() {
+      if (appSumoCode) {
+        await fetch("/api/auth/appSumoRegister", {
+          method: "POST",
+          body: JSON.stringify({ appSumoCode, userId: user, userMail }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+      }
+    }
+    if (appSumoCode) {
+      updateSumoUser();
+      router.push("/");
+    }
+  }, []);
+
+  if (
+    (session &&
+      session.user.subscription?.status === "FREE_TRIAL" &&
+      origin === "login") ||
+    (session &&
+      session.user.subscription?.status === "FREE" &&
+      origin === "login")
+  ) {
+    router.push("/plans-lp");
+  }
 
   useEffect(() => {
     if (!user) {
@@ -42,6 +78,7 @@ export default function Home({
     <>
       <HeroSection />
       <MarqueeLogos />
+      {!session && <EmailLoginSection />}
       <ServiceSection />
       <CounterData />
       <GoSections />

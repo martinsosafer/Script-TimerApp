@@ -1,9 +1,12 @@
 "use client";
 
+import type { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import type { Session } from "next-auth";
 
+import { useSharedState } from "~/app/context/state";
 import { roboto } from "~/app/fonts";
 import {
   PRICES_ID,
@@ -15,18 +18,39 @@ import AddOnModal from "../../components/modals/add-ons";
 import CheckoutButton from "../plans/plans-cards/checkout-button";
 import { setHasPlan } from "../utils";
 
+const productIds =
+  process.env.NEXT_PUBLIC_ENVIRONMENT === "production"
+    ? PRODUCTS_ID
+    : TEST_PRODUCTS_ID;
+const priceIds =
+  process.env.NEXT_PUBLIC_ENVIRONMENT === "production"
+    ? PRICES_ID
+    : TEST_PRICES_ID;
+
 export default function Explore({
   session,
   period,
   interval,
+  isUpgrading,
+  setIsUpgrading,
+  priceId,
+  setPriceId,
 }: {
   session: Session | null;
   period: "monthly" | "yearly";
   interval: string | undefined;
+  isUpgrading: boolean;
+  setIsUpgrading: Dispatch<SetStateAction<boolean>>;
+  priceId: string;
+  setPriceId: (value: string) => void;
 }) {
   const [addOnType, setAddOnType] = useState<
     "EDUCATION" | "CREATOR" | "BUSINESS" | null
   >(null);
+
+  const router = useRouter();
+
+  const { setProductId } = useSharedState();
 
   return (
     <>
@@ -39,7 +63,7 @@ export default function Explore({
         >
           <div className="w-[205px]" />
           <span className="w-[122px] text-center">FREE</span>
-          <span className="w-[122px] text-center">EDUCATION</span>
+          <span className="w-[122px] text-center">ONE WEEK</span>
           <span className="w-[122px] text-center">CREATOR</span>
           <span className="w-[122px] text-center">BUSINESS</span>
         </div>
@@ -48,6 +72,9 @@ export default function Explore({
         </div>
         <div className="relative mt-[48px] h-[242px] w-[893px]">
           <Image alt="Voice Ai" src="/Script Writing.png" fill />
+        </div>
+        <div className="relative mt-[48px] h-[242px] w-[893px]">
+          <Image alt="Voice Ai" src="/Speech Coach.png" fill />
         </div>
         <div className="relative mt-[48px] h-[242px] w-[893px]">
           <Image alt="Voice Ai" src="/Images (Experimental).png" fill />
@@ -92,7 +119,7 @@ export default function Explore({
           className={`${roboto.className} mb-0 mt-[8px] flex w-[893px] justify-around gap-1 text-[18px] font-bold`}
         >
           <div className="w-[220px]" />
-          <span className="w-[140px] text-center">
+          <span className="w-[150px] text-center">
             <CheckoutButton
               hasPlan={
                 session?.user.subscription?.status === "FREE_TRIAL" ||
@@ -101,33 +128,60 @@ export default function Explore({
               productId={null}
               priceId={null}
               session={session}
+              noSessionCheckout={() => {
+                router.push("/register?origin=checkout");
+              }}
               type="primary"
             />
           </span>
-          <span className="w-[140px] text-center">
+          <span className="w-[150px] text-center">
             <CheckoutButton
               hasPlan={setHasPlan(session, "EDUCATION", interval, period)}
-              productId={PRODUCTS_ID.EDUCATION![period]}
-              priceId={PRICES_ID.EDUCATION![period]}
+              productId={productIds.EDUCATION?.[period]}
+              priceId={priceIds.EDUCATION?.[period]}
               session={session}
+              upgradeAction={() => {
+                setPriceId(priceIds.EDUCATION![period]!);
+                setIsUpgrading(true);
+              }}
+              noSessionCheckout={() => {
+                setProductId(productIds.EDUCATION![period]);
+                router.push("/register?origin=checkout");
+              }}
               type="primary"
             />
           </span>
-          <span className="w-[140px] text-center">
+          <span className="w-[150px] text-center">
             <CheckoutButton
               hasPlan={setHasPlan(session, "CREATOR", interval, period)}
-              productId={PRODUCTS_ID.CREATOR![period]}
-              priceId={PRICES_ID.CREATOR![period]}
+              productId={productIds.CREATOR?.[period]}
+              priceId={priceIds.CREATOR?.[period]}
               session={session}
+              upgradeAction={() => {
+                setPriceId(priceIds.CREATOR![period]!);
+                setIsUpgrading(true);
+              }}
+              noSessionCheckout={() => {
+                setProductId(productIds.CREATOR![period]);
+                router.push("/register?origin=checkout");
+              }}
               type="accent"
             />
           </span>
-          <span className="w-[140px] text-center">
+          <span className="w-[150px] text-center">
             <CheckoutButton
               hasPlan={setHasPlan(session, "BUSINESS", interval, period)}
-              productId={PRODUCTS_ID.BUSINESS![period]}
-              priceId={PRICES_ID.BUSINESS![period]}
+              productId={productIds.BUSINESS?.[period]}
+              priceId={priceIds.BUSINESS?.[period]}
               session={session}
+              upgradeAction={() => {
+                setPriceId(priceIds.BUSINESS![period]!);
+                setIsUpgrading(true);
+              }}
+              noSessionCheckout={() => {
+                setProductId(productIds.BUSINESS![period]);
+                router.push("/register?origin=checkout");
+              }}
               type="primary"
             />
           </span>

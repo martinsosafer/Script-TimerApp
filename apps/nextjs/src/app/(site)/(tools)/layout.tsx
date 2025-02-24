@@ -10,10 +10,10 @@ export const metadata: Metadata = {
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="bg-cp-background flex w-full flex-col items-center">
+    <div className="bg-cp-background flex w-full flex-col items-center p-6 lg:p-0">
       <PageHeader
         title="Free tools"
-        subtitle="Easy to use to help you with your script"
+        subtitle="Easy to use tools to improve your script"
       />
       <ToolsNavigator />
       {children}

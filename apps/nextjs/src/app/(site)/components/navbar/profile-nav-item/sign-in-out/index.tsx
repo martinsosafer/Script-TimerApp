@@ -1,5 +1,7 @@
 import { useRouter } from "next/navigation";
 
+import { trackEventMixpanel } from "~/app/analytics";
+
 interface Props {
   onSignInOut: () => Promise<void>;
   label: string;
@@ -12,17 +14,26 @@ export default function SignInOut({
   color = "dark",
 }: Props) {
   const router = useRouter();
+
+  const handleClick = async () => {
+    await onSignInOut();
+
+    // Track the sign-in or sign-out event
+    trackEventMixpanel("Sign In button", {
+      buttonId: label.toLowerCase().replace(" ", "-"),
+    });
+
+    if (label === "Sign in") {
+      router.push("/signin");
+    } else {
+      router.push("/");
+    }
+  };
+
   return (
     <button
       className={`group/signout flex items-center py-2 font-semibold ${color === "light" ? "text-white" : ""}`}
-      onClick={async () => {
-        await onSignInOut();
-        if (label === "Sign in") {
-          router.push("/signin");
-        } else {
-          router.push("/");
-        }
-      }}
+      onClick={handleClick}
     >
       <span className="mr-2 font-poppins group-hover/signout:opacity-60">
         {label}

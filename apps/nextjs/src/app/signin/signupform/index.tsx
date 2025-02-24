@@ -1,6 +1,7 @@
 import { signIn } from "@voiceai/auth";
 import { cn } from "@voiceai/ui/@/lib/utils";
 
+import { LoginWithEmailForm } from "../email-login";
 import LoginForm from "../form-login";
 
 export default function SignUpForm() {
@@ -8,16 +9,14 @@ export default function SignUpForm() {
     <div className={cn("grid gap-2")}>
       <LoginForm />
 
-      <div className="relative">
-        <div className="text-md relative flex justify-center">
-          <span className="bg-background px-2 text-black">or</span>
-        </div>
+      <div className="text-md flex justify-center">
+        <span className="text-md bg-background px-2 text-black">or</span>
       </div>
 
       <form
         action={async () => {
           "use server";
-          await signIn("google", { redirectTo: "/" });
+          await signIn("google", { redirectTo: "/?origin=login" });
         }}
       >
         <button className="flex w-full items-center justify-center gap-3 rounded-md bg-slate-100 px-3 py-1.5 text-black shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] ">
@@ -51,6 +50,10 @@ export default function SignUpForm() {
           </span>
         </button>
       </form>
+      <div className="text-md flex justify-center">
+        <span className="text-md bg-background px-2 text-black">or</span>
+      </div>
+      <LoginWithEmailForm />
     </div>
   );
 }

@@ -2,27 +2,43 @@ import type { StaticImageData } from "next/image";
 
 import {
   AimHigherThan,
+  AiToolsThatSalesAndMarketersNeed,
+  AnalyzeVistualCalls,
+  AnMBAInSalesUsingChatGPT,
   AskRelatableQuestions,
   Breakdown,
+  BuildBetterCustomerJourneysWithAI,
   BuildRapportByBeingReal,
   ContinueTransforming,
+  ContinuingToStrengthen,
   ControlTheRoom,
   CourseOverview,
+  CreateAnElegantPresentation,
+  CreateExplainerVideosHeyGen,
   CreateImpactInYour,
   CustomerJourney,
+  DesignAndLayoutYourLandingPage,
   DiscoverThePain,
   ElevatorPitch,
   Empathy,
   EngageAndEstablish,
   EpicCaptureStory,
   ExecDec,
+  ExpandYourCareer,
+  ExploreUsingAiToCreate,
+  ExploreUsingAiToCreate2,
+  GenerateALeadMagnetWithAI,
+  HowToSparkBrandAwarenessWithAIGFX,
   IdentifyYourProspect,
+  IntegrateSoftwareWithZapier,
+  InternalSmartPages,
   Intro,
   LearnToLove,
   LeverageBenefits,
   LeverageDifferent,
   Listen,
   LoseYourAgenda,
+  MakeAProductDemoVideo,
   MicroStories,
   MountainTop,
   NextSteps,
@@ -31,12 +47,15 @@ import {
   PostProductionSecrets,
   RapportBuildingIs,
   RelaxMirrorAnd,
+  RepurposingContentForGlobalAudience,
   RetainAndGrow,
   ScriptTemplates,
   SelectingTheRight,
   ShutDownTheDistractions,
+  SocialMediaPostsForYourBusinessWithAI,
   SpiceUpYourPitch,
   Story,
+  TellYourCustomersAGreatStory,
   The5Emotions,
   The10Commandments,
   The10Lights,
@@ -61,11 +80,12 @@ import {
 } from "~/assets/masterclasses";
 
 const MauryPic =
-  "https://media.licdn.com/dms/image/D4E03AQEllFdlVv9JvQ/profile-displayphoto-shrink_800_800/0/1710177885632?e=1722470400&v=beta&t=ZytZa0Mnwzlgci64KNB9kux2hUyhB2iek-RsoF_Tc50";
+  "https://8ipgp5xevb8hkgbh.public.blob.vercel-storage.com/Images/MauryProfile-DQEwqsYnn5Zn6cYJmG4KRghwWCcGMe.jpg";
 
 export interface Video {
   id: number;
   image: StaticImageData;
+  number: string;
   title: string;
   name: string;
   videoUrl: string;
@@ -79,6 +99,7 @@ const videoCardData: Video[] = [
   {
     course: "Stories That Transform Marketing",
     id: 1,
+    number: "1",
     image: WhySalesStories,
     title: "Why Sales Stories Are Important",
     name: "Maury Rogow",
@@ -90,7 +111,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "Stories That Transform Marketing",
-    id: 2,
+    id: 1,
+    number: "2",
     image: SelectingTheRight,
     title: "Selecting The Right Story",
     name: "Maury Rogow",
@@ -102,7 +124,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "Stories That Transform Marketing",
-    id: 3,
+    id: 1,
+    number: "3",
     image: The10Commandments,
     title: "The 10 commandments of Great Sales Stories",
     name: "Maury Rogow",
@@ -114,7 +137,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "Stories That Transform Marketing",
-    id: 4,
+    id: 1,
+    number: "4",
     image: The5Emotions,
     title: "The Five Emotions that Drive a Great Story",
     name: "Maury Rogow",
@@ -126,7 +150,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "Stories That Transform Marketing",
-    id: 5,
+    id: 1,
+    number: "5",
     image: ElevatorPitch,
     title: "Elevator Pitch Story",
     name: "Maury Rogow",
@@ -138,7 +163,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "Stories That Transform Marketing",
-    id: 6,
+    id: 1,
+    number: "6",
     image: EpicCaptureStory,
     title: "Epic Capture Story",
     name: "Maury Rogow",
@@ -150,7 +176,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "Stories That Transform Marketing",
-    id: 7,
+    id: 1,
+    number: "7",
     image: OpeningAStory,
     title: "Opening a Story With SCIPAB",
     name: "Maury Rogow",
@@ -162,7 +189,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "Stories That Transform Marketing",
-    id: 8,
+    id: 1,
+    number: "8",
     image: UnicornSales,
     title: "Unicorn Sales Story",
     name: "Maury Rogow",
@@ -174,7 +202,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "Stories That Transform Marketing",
-    id: 9,
+    id: 1,
+    number: "9",
     image: Wiifm,
     title: "WIIFM-demo story",
     name: "Maury Rogow",
@@ -186,7 +215,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "Stories That Transform Marketing",
-    id: 10,
+    id: 1,
+    number: "10",
     image: TheCloser,
     title: "The closer story",
     name: "Maury Rogow",
@@ -198,7 +228,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "Stories That Transform Marketing",
-    id: 11,
+    id: 1,
+    number: "11",
     image: RetainAndGrow,
     title: "Retain and Grow-together stories",
     name: "Maury Rogow",
@@ -210,7 +241,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "Stories That Transform Marketing",
-    id: 12,
+    id: 1,
+    number: "12",
     image: NextSteps,
     title: "Next Steps",
     name: "Maury Rogow",
@@ -223,7 +255,8 @@ const videoCardData: Video[] = [
   //How to Create Stunning Videos
   {
     course: "How to Create Stunning Videos",
-    id: 1,
+    id: 2,
+    number: "1",
     image: CourseOverview,
     title: "Course Overview",
     name: "Maury Rogow",
@@ -236,6 +269,7 @@ const videoCardData: Video[] = [
   {
     course: "How to Create Stunning Videos",
     id: 2,
+    number: "2",
     image: WhyStoryWorks,
     title: "Why Story Works ",
     name: "Maury Rogow",
@@ -247,7 +281,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "How to Create Stunning Videos",
-    id: 3,
+    id: 2,
+    number: "3",
     image: TheQuest,
     title: "The Quest",
     name: "Maury Rogow",
@@ -259,7 +294,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "How to Create Stunning Videos",
-    id: 4,
+    id: 2,
+    number: "4",
     image: CustomerJourney,
     title: "Customer Journey Value Ladder",
     name: "Maury Rogow",
@@ -271,7 +307,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "How to Create Stunning Videos",
-    id: 5,
+    id: 2,
+    number: "5",
     image: The10Lights,
     title: "The 10 Commandments",
     name: "Maury Rogow",
@@ -282,7 +319,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "How to Create Stunning Videos",
-    id: 6,
+    id: 2,
+    number: "6",
     image: TheStuff,
     title: "The STUFF",
     name: "Maury Rogow",
@@ -294,7 +332,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "How to Create Stunning Videos",
-    id: 7,
+    id: 2,
+    number: "7",
     image: TheCreativeBrief,
     title: "The Creative Brief",
     name: "Maury Rogow",
@@ -306,7 +345,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "How to Create Stunning Videos",
-    id: 8,
+    id: 2,
+    number: "8",
     image: TheIdeaFactory,
     title: " The Idea Factory",
     name: "Maury Rogow",
@@ -317,7 +357,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "How to Create Stunning Videos",
-    id: 9,
+    id: 2,
+    number: "9",
     image: ScriptTemplates,
     title: "Script Templates",
     name: "Maury Rogow",
@@ -329,7 +370,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "How to Create Stunning Videos",
-    id: 10,
+    id: 2,
+    number: "10",
     image: TheArtOfPostProduction,
     title: "The Art Of Post Production",
     name: "Maury Rogow",
@@ -342,7 +384,8 @@ const videoCardData: Video[] = [
 
   {
     course: "How to Create Stunning Videos",
-    id: 11,
+    id: 2,
+    number: "11",
     image: PostProductionSecrets,
     title: " Post Production Secrets",
     name: "Maury Rogow",
@@ -355,7 +398,8 @@ const videoCardData: Video[] = [
   //Present and Win Your Audience
   {
     course: "Present and Win Your Audience",
-    id: 1,
+    id: 3,
+    number: "1",
     image: Intro,
     title: "Intro",
     name: "Maury Rogow",
@@ -367,7 +411,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "Present and Win Your Audience",
-    id: 2,
+    id: 3,
+    number: "2",
     image: WhatNotToDo,
     title: "What Not To Do",
     name: "Maury Rogow",
@@ -380,6 +425,7 @@ const videoCardData: Video[] = [
   {
     course: "Present and Win Your Audience",
     id: 3,
+    number: "3",
     image: Breakdown,
     title: "Breakdown",
     name: "Maury Rogow",
@@ -391,7 +437,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "Present and Win Your Audience",
-    id: 4,
+    id: 3,
+    number: "4",
     image: DiscoverThePain,
     title: "Discover the Pain",
     name: "Maury Rogow",
@@ -403,7 +450,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "Present and Win Your Audience",
-    id: 5,
+    id: 3,
+    number: "5",
     image: Empathy,
     title: "Empathy",
     name: "Maury Rogow",
@@ -415,7 +463,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "Present and Win Your Audience",
-    id: 6,
+    id: 3,
+    number: "6",
     image: MountainTop,
     title: "Mountain Top",
     name: "Maury Rogow",
@@ -427,7 +476,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "Present and Win Your Audience",
-    id: 7,
+    id: 3,
+    number: "7",
     image: OnTeam,
     title: "On Team",
     name: "Maury Rogow",
@@ -439,7 +489,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "Present and Win Your Audience",
-    id: 8,
+    id: 3,
+    number: "8",
     image: Story,
     title: "Story",
     name: "Maury Rogow",
@@ -451,7 +502,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "Present and Win Your Audience",
-    id: 9,
+    id: 3,
+    number: "9",
     image: MicroStories,
     title: "Micro Stories",
     name: "Maury Rogow",
@@ -463,7 +515,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "Present and Win Your Audience",
-    id: 10,
+    id: 3,
+    number: "10",
     image: ExecDec,
     title: "Exec Dec",
     name: "Maury Rogow",
@@ -475,7 +528,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "Present and Win Your Audience",
-    id: 11,
+    id: 3,
+    number: "11",
     image: Listen,
     title: "Listen",
     name: "Maury Rogow",
@@ -487,7 +541,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "Present and Win Your Audience",
-    id: 12,
+    id: 3,
+    number: "12",
     image: LeverageBenefits,
     title: "Leverage Benefits",
     name: "Maury Rogow",
@@ -499,7 +554,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "Present and Win Your Audience",
-    id: 13,
+    id: 3,
+    number: "13",
     image: NextSteps,
     title: "Next Steps",
     name: "Maury Rogow",
@@ -512,7 +568,8 @@ const videoCardData: Video[] = [
   //Delivering a Great Virtual Sales Pitch
   {
     course: "Create with Hollywood Movie Storylines",
-    id: 1,
+    id: 4,
+    number: "1",
     image: WhatMakesAGreatSpeech,
     title: "What Makes a Great Sales Pitch",
     name: "Maury Rogow",
@@ -524,7 +581,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "Create with Hollywood Movie Storylines",
-    id: 2,
+    id: 4,
+    number: "2",
     image: TheElementsOfA,
     title: "The Elements of a Great Sales Pitch",
     name: "Maury Rogow",
@@ -536,7 +594,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "Create with Hollywood Movie Storylines",
-    id: 3,
+    id: 4,
+    number: "3",
     image: EngageAndEstablish,
     title: "Engage and Establish to Gain Prospects",
     name: "Maury Rogow",
@@ -549,6 +608,7 @@ const videoCardData: Video[] = [
   {
     course: "Create with Hollywood Movie Storylines",
     id: 4,
+    number: "4",
     image: IdentifyYourProspect,
     title: "Identify your Prospect's Biggest Pain Point",
     name: "Maury Rogow",
@@ -560,7 +620,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "Create with Hollywood Movie Storylines",
-    id: 5,
+    id: 4,
+    number: "5",
     image: CreateImpactInYour,
     title: "Create Impact in Your Sales Pitch",
     name: "Maury Rogow",
@@ -572,7 +633,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "Create with Hollywood Movie Storylines",
-    id: 6,
+    id: 4,
+    number: "6",
     image: AimHigherThan,
     title: "Aim higher than closing the Deal",
     name: "Maury Rogow",
@@ -584,7 +646,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "Create with Hollywood Movie Storylines",
-    id: 7,
+    id: 4,
+    number: "7",
     image: UpgradeYourPitch,
     title: "Upgrade your Pitch With Five Key Emotions",
     name: "Maury Rogow",
@@ -596,7 +659,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "Create with Hollywood Movie Storylines",
-    id: 8,
+    id: 4,
+    number: "8",
     image: LeverageDifferent,
     title: "Leverage Different Learning Styles",
     name: "Maury Rogow",
@@ -608,7 +672,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "Create with Hollywood Movie Storylines",
-    id: 9,
+    id: 4,
+    number: "9",
     image: SpiceUpYourPitch,
     title: "Spice Up Your Pitch",
     name: "Maury Rogow",
@@ -620,7 +685,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "Create with Hollywood Movie Storylines",
-    id: 10,
+    id: 4,
+    number: "10",
     image: TurnObstacleInto,
     title: "Turn Obstacles Into Opportunities",
     name: "Maury Rogow",
@@ -632,7 +698,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "Create with Hollywood Movie Storylines",
-    id: 11,
+    id: 4,
+    number: "11",
     image: ContinueTransforming,
     title: "Continue Transforming Your Great Pitch",
     name: "Maury Rogow",
@@ -645,7 +712,8 @@ const videoCardData: Video[] = [
   //Building Rapport on Virtual Sales Calls
   {
     course: "How to Build Rapport with Your Audience",
-    id: 1,
+    id: 5,
+    number: "1",
     image: WhyIsBuildingRapportCriticalTo,
     title: "Why is Building Rapport Critical To Remote Selling",
     name: "Maury Rogow",
@@ -657,7 +725,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "How to Build Rapport with Your Audience",
-    id: 2,
+    id: 5,
+    number: "2",
     image: LoseYourAgenda,
     title: "Lose Your Agenda",
     name: "Maury Rogow",
@@ -669,7 +738,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "How to Build Rapport with Your Audience",
-    id: 3,
+    id: 5,
+    number: "3",
     image: ShutDownTheDistractions,
     title: "Shut Down the Distractions",
     name: "Maury Rogow",
@@ -681,7 +751,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "How to Build Rapport with Your Audience",
-    id: 4,
+    id: 5,
+    number: "4",
     image: ControlTheRoom,
     title: "Control the Room",
     name: "Maury Rogow",
@@ -694,6 +765,7 @@ const videoCardData: Video[] = [
   {
     course: "How to Build Rapport with Your Audience",
     id: 5,
+    number: "5",
     image: WintThePerson,
     title: "Win the Person, Not the Sale",
     name: "Maury Rogow",
@@ -705,7 +777,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "How to Build Rapport with Your Audience",
-    id: 6,
+    id: 5,
+    number: "6",
     image: BuildRapportByBeingReal,
     title: "Build Rapport By Being Real",
     name: "Maury Rogow",
@@ -717,7 +790,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "How to Build Rapport with Your Audience",
-    id: 7,
+    id: 5,
+    number: "7",
     image: RelaxMirrorAnd,
     title: "Relax,Mirror, and Reiterate",
     name: "Maury Rogow",
@@ -729,7 +803,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "How to Build Rapport with Your Audience",
-    id: 8,
+    id: 5,
+    number: "8",
     image: AskRelatableQuestions,
     title: "Ask Relatable Questions",
     name: "Maury Rogow",
@@ -741,7 +816,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "How to Build Rapport with Your Audience",
-    id: 9,
+    id: 5,
+    number: "9",
     image: LearnToLove,
     title: "Learn to Love to Question Their Answers",
     name: "Maury Rogow",
@@ -753,7 +829,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "How to Build Rapport with Your Audience",
-    id: 10,
+    id: 5,
+    number: "10",
     image: WhatToAvoid,
     title: "What to Avoid",
     name: "Maury Rogow",
@@ -765,7 +842,8 @@ const videoCardData: Video[] = [
   },
   {
     course: "How to Build Rapport with Your Audience",
-    id: 11,
+    id: 5,
+    number: "11",
     image: RapportBuildingIs,
     title: "Rapport Building is a Learned Trait",
     name: "Maury Rogow",
@@ -774,6 +852,272 @@ const videoCardData: Video[] = [
       "https://player.vimeo.com/video/949303163?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
       "Remember, building rapport is a skill that can be honed and improved through practice and active learning.",
+  },
+  //Customer Journey Mapping With Generative AI
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "1",
+    image: AiToolsThatSalesAndMarketersNeed,
+    title: "AI tools that Sales and Marketers Need",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053883585?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "The explosion of AI is helping and replacing marketing professionals. As a marketer, it means you need to step up your game and learn AI tools. As a brand, it means your sales will thrive or die based on the stories you tell more than ever before.",
+  },
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "2",
+    image: ExploreUsingAiToCreate,
+    title: "Explore the Customer Journey GFX Cut",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053884730?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "It's not the strongest species that survive, or the most intelligent ones, but the ones that are most responsive to change. And we see that in companies because the ones that don't adapt are the ones that fail.",
+  },
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "3",
+    image: BuildBetterCustomerJourneysWithAI,
+    title: "Build Better Customers Journeys with AI",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053885965?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "When you have a strong story and you're building it faster and getting brand awareness, you can actually charge more for your products because you're more valuable in the eyes of consumers.",
+  },
+
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "4",
+    image: HowToSparkBrandAwarenessWithAIGFX,
+    title: "How to spark brand awareness with AI GFX",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053886930?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "Now we're at the Top of Funnel, and the next few videos are going to be focused on creating scripts that create videos, webinars, podcasts, social media, and drive SEO to your website.",
+  },
+
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "5",
+    image: SocialMediaPostsForYourBusinessWithAI,
+    title: "Social Media Posts for your Business with AI",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053883585?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "Now that you have a great script and you've created your podcast video or long form content, take advantage of that incredible ability in AI to expand on it and create more value. ",
+  },
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "6",
+    image: GenerateALeadMagnetWithAI,
+    title: "Generate Interest with SEO and Blogs",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053888405?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "This will keep you from failing when creating content and save you thousands of dollars. You want to start with what people want to know in your industry and create and deliver content about those areas. ",
+  },
+
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "7",
+    image: GenerateALeadMagnetWithAI,
+    title: "Generate a Lead Magnet With AI",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053890108?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "Simple and consumable tools, tips, and lessons are best. They're called lead magnets. It's information that people care about and they care enough that they'll give you their contact information to have a look. ",
+  },
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "8",
+    image: InternalSmartPages,
+    title: "Internal Smart Pages on Social Platforms GFX",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053890791?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "We're now entering the middle stages of the funnel, where price only wins in the absence of value. So, adding value is paramount to everything else. Otherwise, you lose to the lowest price.",
+  },
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "9",
+    image: DesignAndLayoutYourLandingPage,
+    title: "Design and Lay out your Landing Page and Website",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053891633?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "For some people, a view-only page is not enough. So to build trust, you need a landing page to capture leads. And now, let's go further. This is exciting. You can design a $10,000 website in minutes with no code and AI. ",
+  },
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "10",
+    image: AnMBAInSalesUsingChatGPT,
+    title: "An MBA in Sales using ChatGPT",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053892653?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "This video is kind of like earning an MBA in sales. It's here, because your job is so hard today. At the same time, consumers want to buy without help and in less time, they want more value and higher service. So you need to walk in prepared. ",
+  },
+
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "11",
+    image: IntegrateSoftwareWithZapier,
+    title: "Integrate Software with Zapier",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053894141?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "You need to get emails sent and drip campaigns started. I'd like to share with you how to cut integration expenses in half, or even more, using AI.",
+  },
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "12",
+    image: CreateExplainerVideosHeyGen,
+    title: "Create Explainer Videos for Customer with HeyGen",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053896532?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "A digital version of me can deliver video after video after video. Now, the software category that we're looking at is new and maybe even just a little bit creepy, seeing myself in a video saying things I didn't say before. ",
+  },
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "13",
+    image: MakeAProductDemoVideo,
+    title: "Make a Product Demo video with Descript",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053897645?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "How would you like 20 pieces of content with about two minutes of work? Well, that's why OpusClip is here to help you. You can start with one long video and get multiple video clips in editing, from long videos, like maybe it's your CEO or executive speech, a podcast, interviews, webinars.",
+  },
+
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "14",
+    image: TellYourCustomersAGreatStory,
+    title: "Tell your Customers a Great Story with these 10 rules",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053898396?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "Even with the tools that AI delivers, you need to be excellent at storytelling to open doors and keep them open and elevate your career. Others might just be using tools. The ability to create is unique and it's human. AI is not able to do this for you yet. So, it's so important to use the rules of great story so you can create them for you, your brand, and your company.",
+  },
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "15",
+    image: ExploreUsingAiToCreate2,
+    title: "Explore Using AI to Create Great Product demos With Guidde",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053900595?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "As you may have seen in my course on sales narratives, there's a cadence and emotions you need to deliver when you demo. This is a tool that compliments that cadence and saves hours of time, and possibly saves your designer from doing the work. It's a plugin for Chrome called Guidde. ",
+  },
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "16",
+    image: AnalyzeVistualCalls,
+    title: "Analyze Virtual Calls with Fireflies for Discovery Sessions",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053901304?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "So now you've got a prospect that's aware, educated on a solution, and has been given information on how you benefit them, if you have VDRs, now is when the sales team will talk to your client and likely have a deeper discovery call, and then craft a proposal or even a full presentation. So with Fireflies, instead of spending hours on the phone with a client frantically taking notes, you can let Fireflies do its job.",
+  },
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "17",
+    image: CreateAnElegantPresentation,
+    title: "Create an Elegant Presentation",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053901908?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "So in this part of the customer journey, you've had a great discovery call and it's time to create a killer presentation. So that's where we introduce Gamma. Gamma creates pitch decks to help you really elegantly create presentations, and infographics.",
+  },
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "18",
+    image: RepurposingContentForGlobalAudience,
+    title: "Repurposing Content for a Global Audience",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053902476?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "Most design programs, like Photoshop, are for pros, and Canva was created to be different. It was made for everyone to use, and it has advanced. It's become extremely popular because it's so useful and simple to use. And it also now has AI tools inside.",
+  },
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "19",
+    image: ExpandYourCareer,
+    title: "Expand your career by Building a CV with AI",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053903984?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "Now that you can leverage AI to efficiently create or repurpose content and implement strategies to establish yourself as a thought leader in your industry, you might just want a promotion. So let's take a minute and use AI to create your resume.",
+  },
+  {
+    course: "Customer Journey Mapping With Generative AI",
+    id: 6,
+    number: "20",
+    image: ContinuingToStrengthen,
+    title: "Continuing to strengthen customer journeys with AI",
+    name: "Maury Rogow",
+    avatarUrl: MauryPic,
+    videoUrl:
+      "https://player.vimeo.com/video/1053905611?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+    description:
+      "Now you're able to create a funnel with organic content, from scripts, to emails, to designs, to videos, and help you create every step of the customer journey. For next steps, I would love to help you perfect your pitch and your story.",
   },
 ];
 

@@ -1,5 +1,6 @@
 import { authRouter } from "./router/auth";
 import { historyRouter } from "./router/history";
+import { landingsRouter } from "./router/landings";
 import { monthlySpecialsRouter } from "./router/monthlySpecials";
 import { promptsRouter } from "./router/prompts";
 import { scriptRouter } from "./router/script";
@@ -19,6 +20,7 @@ export const appRouter = createTRPCRouter({
   user: userRouter,
   prompts: promptsRouter,
   specials: monthlySpecialsRouter,
+  landings: landingsRouter,
 });
 
 // export type definition of API
