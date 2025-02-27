@@ -305,3 +305,6 @@ export default function NoSessionModal({
     </div>
   );
 }
+
+// Make condition for page:home?
+// Leave as it was for other pages
