@@ -21,6 +21,7 @@ import MasterclassImg from "../modalimgs/MastarclassesImg.png";
 import PlagImg from "../modalimgs/PlagiarismImg.png";
 import StoryBoardImg from "../modalimgs/StoryboardImg.png";
 import TranslatorImg from "../modalimgs/TranslatorImg.png";
+import RegisterFormModal from "./register-form-modal/registerFormModal";
 
 interface FreeModalProps {
   subData?: SubscriptionData | null | undefined;
@@ -141,6 +142,7 @@ const pageData: Record<
     subMessage: "Please login and let's create your images!",
   },
 };
+
 export default function NoSessionModal({
   setOpenModal,
   openModal,
@@ -166,6 +168,7 @@ export default function NoSessionModal({
     setIsPlaying(!isPlaying);
   };
   const currentPage = pageData[page];
+
   return (
     <div
       className={`fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50 p-4 backdrop-blur ${poppins.className}`}
@@ -249,7 +252,7 @@ export default function NoSessionModal({
                   </p>
                 )}
               </div>
-              <div className="w-full lg:h-[192px] lg:w-[375px]">
+              {/* <div className="w-full lg:h-[192px] lg:w-[375px]">
                 <p className="mb-2 text-left text-[16px] font-bold leading-[22.4px] lg:text-[20px] lg:leading-[28px]">
                   Let's do it!:
                 </p>
@@ -262,21 +265,23 @@ export default function NoSessionModal({
                     ))}
                   </ul>
                 </div>
-              </div>
+              </div> */}
             </div>
 
             {/* Placed the button at the bottom with padding alignment */}
-            <div className="mt-6 flex w-full flex-col items-center lg:mt-10 lg:w-[375px]">
+            {/* <div className="mt-6 flex w-full flex-col items-center lg:mt-10 lg:w-[375px]">
               <button className="bg-cp-secondary mb-2 h-10 w-full rounded-md px-4 py-1 text-sm font-bold uppercase leading-tight text-white hover:bg-orange-500 lg:mb-[8px] lg:h-[45px] lg:w-[375px] lg:px-[24px] lg:py-[2px] lg:text-base lg:leading-[20px]">
                 <Link href="/signin">LOGIN-FREE</Link>
               </button>
               <p className="text-center font-poppins text-xs font-normal leading-snug lg:text-[14px] lg:leading-5">
                 Free trial. No credit card needed.
               </p>
-            </div>
+            </div> */}
+            <RegisterFormModal />
           </div>
         </div>
       </div>
+
       <button
         onClick={() => setOpenModal(false)}
         className="absolute right-4 top-4 text-white hover:text-gray-300 focus:outline-none"

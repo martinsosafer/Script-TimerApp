@@ -29,7 +29,7 @@ export default function Home({
   session: Session | null | undefined;
 }) {
   const [openTrialModal, setOpenTrialModal] = useState(trialExpiration);
-  const [openModal, setOpenModal] = useState(false);
+  const [openModal, setOpenModal] = useState(true);
   const origin = useSearchParams().get("origin");
   const appSumoCode = useSearchParams().get("appSumoCode");
   const router = useRouter();
@@ -63,16 +63,16 @@ export default function Home({
     router.push("/plans-lp");
   }
 
-  useEffect(() => {
-    if (!user) {
-      const timer = setTimeout(() => {
-        setOpenModal(true);
-      }, 15000); // 15 seconds
+  // useEffect(() => {
+  //   if (!user) {
+  //     const timer = setTimeout(() => {
+  //       setOpenModal(true);
+  //     }, 15000); // 15 seconds
 
-      // Clean up the timer if component unmounts or modal is closed
-      return () => clearTimeout(timer);
-    }
-  }, [user]);
+  //     // Clean up the timer if component unmounts or modal is closed
+  //     return () => clearTimeout(timer);
+  //   }
+  // }, [user]);
 
   return (
     <>
