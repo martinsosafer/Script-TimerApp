@@ -2,7 +2,6 @@ import { redirect } from "next/navigation";
 import { Stripe } from "stripe";
 
 import { auth } from "@voiceai/auth";
-import { db } from "@voiceai/db";
 import {
   IconPencilLine,
   IconUserRound,
@@ -34,23 +33,12 @@ async function getSubscription(planId: string | null | undefined) {
     return undefined;
   }
 }
-async function getAppSumoDetails(userId: string) {
-  return await db.query.appSumoSubscription.findFirst({
-    where: (appSumoSubscription, { eq }) =>
-      eq(appSumoSubscription.userId, userId),
-  });
-}
+
 export default async function MyProfile() {
   const session = await auth();
-  const isAppSumo = ["1", "2"].includes(
-    session?.user.subscription?.status || "",
+  const subscription = await getSubscription(
+    session?.user.subscription?.planId,
   );
-
-  // Get both types of subscriptions
-  const stripeSubscription = await getSubscription(
-    isAppSumo ? null : session?.user.subscription?.planId,
-  );
-  const appSumoSubscription = await getAppSumoDetails(session?.user.id || "");
 
   const credits = await getCredits(session?.user.id ?? "");
 
@@ -78,9 +66,8 @@ export default async function MyProfile() {
             </div>
           </div>
           <SubscriptionDetails
-            subscription={isAppSumo ? appSumoSubscription : stripeSubscription}
+            subscription={subscription as I_Subscription}
             credits={credits?.[0]}
-            isAppSumo={isAppSumo}
           />
         </div>
       </div>

@@ -103,13 +103,13 @@ export default function ModeSelectorRecorder({
   return (
     <div className="flex w-full flex-col items-center rounded-lg">
       <div className="w-full">
-        <div className="mx-auto mb-3 max-w-[500px] border-b">
-          <div className="mt-5 lg:mt-10">
+        <div className="mx-auto  max-w-[300px] border-b">
+          <div className=" ">
             <div className="flex justify-center space-x-6">
               {["video", "audio"].map((mode) => (
                 <motion.button
                   key={mode}
-                  className={`relative px-1 py-4 text-base transition-colors
+                  className={`relative px-1 py-3 text-[16px] leading-[22.4px] transition-colors
                     ${activeMode === mode ? "font-bold text-primary" : "font-normal text-gray-600 hover:text-gray-900"}
                   `}
                   onClick={() => handleModeChange(mode as "video" | "audio")}
@@ -139,7 +139,7 @@ export default function ModeSelectorRecorder({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            className="mt-[60px] min-h-[calc(100vh-200px)]"
+            className=" min-h-[calc(100vh)]"
           >
             <div className="h-full w-full">{renderComponent()}</div>
           </motion.div>
