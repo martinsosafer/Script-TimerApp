@@ -224,19 +224,22 @@ export default function MicrophoneAndWebcamComponent({
   };
   return (
     <div
-      className={`mb-20 flex h-full w-full items-center justify-center bg-gray-100 ${poppins.className}`}
+      className={`mb-20 flex h-full w-full items-center justify-center  ${poppins.className}`}
     >
-      <div className="mt-[70px] w-[680px] space-y-4 rounded-lg bg-white p-6 shadow-md">
-        <div className="flex flex-col items-center">
+      <div className="mt-[40px] w-[944px]  rounded-lg  ">
+        <div className="mb-6 flex flex-col items-center">
           <h2 className="text-cp-primary text-[28px] font-bold leading-[33.6px]">
             Record with Video!
           </h2>
+        </div>
+        <div className="bg-cp-accent-lightest flex items-center  rounded-lg lg:h-[73px]  lg:w-[944px] ">
           <p
-            className={`${roboto.className}  text-[18px] font-normal leading-[25px]`}
+            className={`${roboto.className}  ml-6 text-[18px] font-normal leading-[25px]`}
           >
             Please ensure good audio and lighting quality.
           </p>
         </div>
+
         <div className="mt-4 text-center">
           <div className="text-sm text-gray-600">
             Recordings remaining:{" "}

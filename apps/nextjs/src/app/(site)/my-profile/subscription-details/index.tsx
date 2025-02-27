@@ -26,6 +26,7 @@ type Credits = Record<
       userId: string;
     } | null
   >;
+
 interface SubscriptionDetailsProps {
   subscription: I_Subscription;
   credits?: Credits | null | undefined;
@@ -138,7 +139,25 @@ export default function SubscriptionDetails({
                   | "img_credit"
                   | "openai_credit"
               }
-              subscription={subscriptionData?.status ?? "FREE"}
+              subscription={
+                (subscriptionData?.status as
+                  | "1"
+                  | "2"
+                  | "INACTIVE"
+                  | "ACTIVE"
+                  | "STUDENT"
+                  | "CREATOR"
+                  | "FREE_TRIAL"
+                  | "PAUSED"
+                  | "FREE"
+                  | "BUSINESS"
+                  | "STUDENTCLMO"
+                  | "CREATORCLMO"
+                  | "BUSINESSCLMO"
+                  | "STUDENTCLYR"
+                  | "CREATORCLYR"
+                  | "BUSINESSCLYR") ?? "FREE"
+              }
             />
           );
         })}

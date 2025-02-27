@@ -25,9 +25,7 @@ async function getSubscription(planId: string | null | undefined) {
   const stripe = new Stripe(stripeSecretKey);
 
   try {
-    const subscription = await stripe.subscriptions.retrieve(planId);
-    console.log("SubscriptionInfo:", subscription);
-    return subscription;
+    return await stripe.subscriptions.retrieve(planId);
   } catch (e) {
     console.error(e);
     return undefined;
@@ -36,9 +34,19 @@ async function getSubscription(planId: string | null | undefined) {
 
 export default async function MyProfile() {
   const session = await auth();
-  const subscription = await getSubscription(
-    session?.user.subscription?.planId,
+
+  // Check if user is an AppSumo subscriber
+  const isAppSumo = ["1", "2"].includes(
+    session?.user.subscription?.status ?? "",
   );
+
+  // Fetch subscription data based on type
+  let subscription;
+  if (isAppSumo) {
+    subscription = session?.user.subscription;
+  } else {
+    subscription = await getSubscription(session?.user.subscription?.planId);
+  }
 
   const credits = await getCredits(session?.user.id ?? "");
 
@@ -68,6 +76,7 @@ export default async function MyProfile() {
           <SubscriptionDetails
             subscription={subscription as I_Subscription}
             credits={credits?.[0]}
+            isAppSumo={["1", "2"].includes(subscription?.status ?? "")}
           />
         </div>
       </div>
