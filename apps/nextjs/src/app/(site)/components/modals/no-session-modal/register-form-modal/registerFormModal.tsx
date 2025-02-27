@@ -33,8 +33,6 @@ const RegisterFormModal = () => {
     setLoading(false);
   }
 
-  console.log("values", values);
-
   return (
     <div className="flex w-full flex-col gap-10 px-6 lg:px-16">
       <div className="flex flex-col gap-4">
@@ -71,17 +69,22 @@ const RegisterFormModal = () => {
           />
         </div>
       </div>
-      <Button
-        label="Open my immediate access!"
-        type="accent"
-        onClick={async () => await handleLogin()}
-        icon={
-          loading
-            ? () => <IconSpinner className=" animate-spin" />
-            : () => <IconArrowRight />
-        }
-        className="gap-2 text-xs lg:w-full lg:gap-3 lg:px-1 lg:text-base lg:h-[42px]"
-      />
+      <div className="flex flex-col gap-2">
+        <Button
+          label="Open my immediate access!"
+          type="accent"
+          onClick={async () => await handleLogin()}
+          icon={
+            loading
+              ? () => <IconSpinner className=" animate-spin" />
+              : () => <IconArrowRight />
+          }
+          className="gap-2 text-xs lg:w-full lg:gap-3 lg:px-1 lg:text-base"
+        />
+        <p className="text-center font-poppins text-xs font-normal leading-snug lg:text-[14px] lg:leading-5">
+          Free trial. No credit card needed.
+        </p>
+      </div>
     </div>
   );
 };
