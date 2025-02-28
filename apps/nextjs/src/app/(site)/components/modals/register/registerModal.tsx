@@ -7,8 +7,10 @@ import {
 } from "@voiceai/ui/@/components/ui/icons";
 
 import { poppins } from "~/app/fonts";
+import { RegisterFormWithGoogle } from "~/app/register/actions";
 import { createUser } from "~/app/signin/actions";
-import RegisterFormModal from "./register-form-modal/registerFormModal";
+
+// import RegisterFormModal from "./register-form-modal/registerFormModal";
 
 interface RegisterModalProps {
   // subData?: SubscriptionData | null | undefined;
@@ -32,7 +34,8 @@ export default function RegisterModal({
   // page,
 }: RegisterModalProps) {
   const [loading, setLoading] = useState(false);
-  async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
+
+  async function handleEmailLink(event: React.FormEvent<HTMLFormElement>) {
     setLoading(true);
     try {
       event.preventDefault();
@@ -46,6 +49,10 @@ export default function RegisterModal({
       console.log("ERROR", error);
     }
     setLoading(false);
+  }
+
+  async function handleGoogleSignUp() {
+    await RegisterFormWithGoogle(code);
   }
 
   if (!openModal) {
@@ -66,8 +73,8 @@ export default function RegisterModal({
           </div>
 
           {/* Right section */}
-          <div className="bg-cp-primary z-10 flex h-[402px] w-full flex-col items-center justify-between px-3 py-4 text-white lg:h-full lg:w-[525px] lg:pb-[60px]">
-            <div className="flex w-full flex-col items-center justify-start lg:w-[375px] lg:px-[75px] lg:pt-[60px]">
+          <div className="bg-cp-primary z-10 flex h-[402px] w-full flex-col items-center justify-between px-4 py-4 text-white lg:h-full lg:w-[525px] lg:px-[64px] lg:py-14">
+            <div className="flex w-full flex-col items-center justify-start lg:w-[375px] lg:px-[75px]">
               <div className="flex w-full flex-col items-center gap-2 lg:h-[85px] lg:w-[375px]">
                 <h2 className="text-center text-xl font-bold leading-[28px] lg:text-[24px] lg:leading-[33.6px]">
                   Happy to help!
@@ -77,55 +84,88 @@ export default function RegisterModal({
                 </p>
               </div>
             </div>
-            {/* <RegisterFormModal /> */}
 
-            {/* Email link form */}
-            <div className="w-full">
-              <div className="relative mb-4 mt-1">
-                <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t" />
+            <div className="flex w-full flex-col items-center gap-4 lg:gap-7">
+              {/* Email link form */}
+              <div className="w-full">
+                <div className="relative mb-4 mt-1">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="w-full border-t" />
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-background px-2 text-muted-foreground">
+                      EMAIL ME A LINK
+                    </span>
+                  </div>
                 </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-background px-2 text-muted-foreground">
-                    EMAIL ME A LINK
-                  </span>
-                </div>
+                <form
+                  onSubmit={handleEmailLink}
+                  className="mx-auto flex w-full flex-col space-y-4"
+                >
+                  <div className="flex flex-col space-y-2">
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="name@example.com"
+                      className="rounded-md border border-gray-300 px-3 py-2 text-[0.9rem] text-black"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="bg-cp-secondary flex h-[42px] items-center justify-center rounded-md py-2 text-[0.9rem] font-semibold text-white"
+                  >
+                    {loading ? (
+                      <IconSpinner className="h-6 w-6 animate-spin" />
+                    ) : (
+                      "Email my immediate access"
+                    )}
+                  </button>
+                </form>
               </div>
+
+              <p>or</p>
+
+              {/* Google button */}
               <form
-                onSubmit={handleLogin}
+                action={handleGoogleSignUp}
                 className="mx-auto flex w-full max-w-md flex-col space-y-4"
               >
-                <div className="flex flex-col space-y-2">
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="name@example.com"
-                    className="rounded-md border border-gray-300 px-3 py-2 text-[0.9rem]"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="bg-cp-secondary flex h-[42px] items-center justify-center rounded-md py-2 text-[0.9rem] font-semibold text-white"
-                >
-                  {loading ? (
-                    <IconSpinner className="h-6 w-6 animate-spin" />
-                  ) : (
-                    "Email my immediate access"
-                  )}
+                <button className="flex h-[42px] w-full items-center justify-center gap-3 rounded-md bg-slate-100 px-3 py-1.5 text-black shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] ">
+                  <svg
+                    className="h-5 w-5"
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    width="24"
+                  >
+                    <path
+                      d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                      fill="#4285F4"
+                    />
+                    <path
+                      d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                      fill="#34A853"
+                    />
+                    <path
+                      d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                      fill="#FBBC05"
+                    />
+                    <path
+                      d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                      fill="#EA4335"
+                    />
+                    <path d="M1 1h22v22H1z" fill="none" />
+                  </svg>
+                  <span className="text-sm font-semibold leading-6">
+                    Sign up with Google
+                  </span>
                 </button>
               </form>
-            </div>
 
-            <p className="text-center font-poppins text-xs font-normal leading-snug lg:text-[14px] lg:leading-5">
-              Free trial. No credit card needed.
-            </p>
-
-            {/* Placed the button at the bottom with padding alignment */}
-            {/* <div className="flex w-full flex-col items-center lg:mt-10 lg:w-[375px]">
               <p className="text-center font-poppins text-xs font-normal leading-snug lg:text-[14px] lg:leading-5">
                 Free trial. No credit card needed.
               </p>
-            </div> */}
+            </div>
           </div>
         </div>
       </div>
