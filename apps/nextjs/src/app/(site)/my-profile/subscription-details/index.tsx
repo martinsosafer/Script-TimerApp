@@ -2,8 +2,11 @@
 
 import { useRouter } from "next/navigation";
 
+import type {
+  I_AppSumoSubscription,
+  I_Subscription,
+} from "~/constants/types/subscriptions";
 import { api } from "~/utils/api";
-import type { I_Subscription } from "../../plans-OLD/types";
 import CreditRow from "../credits-row";
 
 type Credits = Record<
@@ -28,7 +31,7 @@ type Credits = Record<
   >;
 
 interface SubscriptionDetailsProps {
-  subscription: I_Subscription | any;
+  subscription: I_Subscription | I_AppSumoSubscription | undefined;
   credits?: Credits | null | undefined;
   isAppSumo: boolean;
 }
@@ -38,8 +41,10 @@ export default function SubscriptionDetails({
   credits,
   isAppSumo,
 }: SubscriptionDetailsProps) {
-  const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
+  //const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
   const router = useRouter();
+
+  console.log("subscriotionData", subscription);
 
   function getBillingDate(date: number) {
     return new Date(date * 1000).toLocaleDateString();
@@ -73,7 +78,7 @@ export default function SubscriptionDetails({
         </div>
         <div className="flex flex-col">
           <span className="px-2 text-xs text-gray-400">License Key</span>
-          <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
+          <div className="flex h-[40px] w-[350px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
             {subscription?.license_key || "N/A"}
           </div>
         </div>
@@ -100,14 +105,14 @@ export default function SubscriptionDetails({
       <div className="mt-3 flex gap-4 px-12 py-2">
         <div className="flex flex-col">
           <span className="px-2 text-xs text-gray-400">Plan</span>
-          <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
-            {subscriptionData?.status}
+          <div className="flex h-[40px] w-[300px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
+            {subscription?.status}
           </div>
         </div>
         <div className="flex flex-col">
           <span className="px-2 text-xs text-gray-400">Status</span>
-          <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
-            {subscriptionData?.status === ("FREE" || "FREE_TRIAL")
+          <div className="flex h-[40px] w-[300px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
+            {subscription?.status === ("FREE" || "FREE_TRIAL")
               ? "No Subscription"
               : subscription?.plan?.active
                 ? "Active"
@@ -118,7 +123,7 @@ export default function SubscriptionDetails({
       <div className="flex gap-4 px-12 py-2">
         <div className="flex flex-col">
           <span className="px-2 text-xs text-gray-400">Next Billing Date</span>
-          <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
+          <div className="flex h-[40px] w-[300px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
             {subscription?.current_period_end
               ? getBillingDate(subscription?.current_period_end)
               : "No Billing Date"}
@@ -128,7 +133,7 @@ export default function SubscriptionDetails({
           <span className="px-2 text-xs text-gray-400">
             Next Billing Amount
           </span>
-          <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
+          <div className="flex h-[40px] w-[300px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
             {getBillingAmount(subscription?.plan?.amount ?? 0)}
           </div>
         </div>
@@ -149,7 +154,7 @@ export default function SubscriptionDetails({
       <div className="flex w-full items-start justify-between">
         <div>{isAppSumo ? renderAppSumoDetails() : renderStripeDetails()}</div>
         <button
-          className="mt-10 flex h-[40px] w-[200px] items-center justify-center rounded-lg bg-blue-200 p-4 text-primary hover:bg-blue-300 hover:font-semibold"
+          className="mt-10 flex w-[200px] items-center justify-center rounded-lg bg-blue-200 px-4 py-2 text-primary hover:bg-blue-300 hover:font-semibold"
           onClick={() =>
             router.push(isAppSumo ? "https://appsumo.com" : "/plans")
           }
@@ -179,18 +184,23 @@ export default function SubscriptionDetails({
                   | "img_credit"
                   | "openai_credit"
               }
-              subscription={subscriptionData?.status ?? "FREE"}
+              subscription={
+                (isAppSumo ? subscription?.tier : subscription?.status) ??
+                "FREE"
+              }
             />
           );
         })}
       </div>
       <div className="flex gap-4 px-12 py-2">
-        <div className="flex flex-col">
-          <span className="px-2 text-xs text-gray-400">Reset In</span>
-          <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
-            {`Reset In ${getDaysLeftInMonth()} ${getDaysLeftInMonth() === 1 ? "day" : "days"}`}
+        {!isAppSumo && (
+          <div className="flex flex-col">
+            <span className="px-2 text-xs text-gray-400">Reset In</span>
+            <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
+              {`Reset In ${getDaysLeftInMonth()} ${getDaysLeftInMonth() === 1 ? "day" : "days"}`}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
