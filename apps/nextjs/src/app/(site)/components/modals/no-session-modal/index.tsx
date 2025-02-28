@@ -141,6 +141,7 @@ const pageData: Record<
     subMessage: "Please login and let's create your images!",
   },
 };
+
 export default function NoSessionModal({
   setOpenModal,
   openModal,
