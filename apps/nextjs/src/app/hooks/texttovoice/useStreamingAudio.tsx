@@ -92,9 +92,13 @@ const useStreamingAudio = () => {
       });
 
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Error response from API:", errorText);
-        throw new Error("Failed to fetch the text-to-speech stream.");
+        // Parse the error response as JSON
+        const errorData = await response.json();
+        console.error("Error response from API:", errorData);
+        // Throw the server's error message
+        throw new Error(
+          errorData.error || "Failed to fetch the text-to-speech stream.",
+        );
       }
 
       const responseBody = response.body;
@@ -133,8 +137,8 @@ const useStreamingAudio = () => {
           console.error("Error streaming audio:", error);
           setLoading(false);
           toast({
-            title: "Something went wrong",
-            description: "Please try again later",
+            title: "Error",
+            description: error.message || "Please try again later",
           });
         });
 
@@ -233,9 +237,15 @@ const useStreamingAudio = () => {
     } catch (error) {
       console.error("Error streaming audio:", error);
       setLoading(false);
+      // Use the actual error message from the server
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Please try again later.";
+
       toast({
-        title: "Something went wrong",
-        description: "Please try again later",
+        title: "Error",
+        description: errorMessage,
       });
     }
   };
