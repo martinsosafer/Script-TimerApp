@@ -3,6 +3,7 @@ import type { Dispatch, SetStateAction } from "react";
 import { HappyToHelpDraw } from "@voiceai/ui/@/components/ui/icons";
 
 import { poppins } from "~/app/fonts";
+import RegisterFormModal from "./register-form-modal/registerFormModal";
 
 interface RegisterModalProps {
   // subData?: SubscriptionData | null | undefined;
@@ -43,44 +44,34 @@ export default function RegisterModal({
           </div>
 
           {/* Right section */}
-          <div className="bg-cp-primary z-10 flex h-[402px] w-full flex-col items-center pb-8 text-white lg:h-full lg:w-[525px] lg:pb-[60px]">
-            <div className="flex w-full flex-grow flex-col items-center justify-start px-4 pt-8 lg:w-[375px] lg:px-[75px] lg:pt-[60px]">
-              <div className="mb-6 w-full items-center lg:mb-[44px] lg:h-[85px] lg:w-[375px]">
-                <h2 className="mb-2 text-center text-xl font-bold leading-tight lg:text-[24px] lg:leading-[33.6px]">
-                  {/* {currentPage?.message} */}
+          <div className="bg-cp-primary z-10 flex h-[402px] w-full flex-col items-center justify-between px-6 py-4 text-white lg:h-full lg:w-[525px] lg:pb-[60px]">
+            <div className="flex w-full flex-col items-center justify-start lg:w-[375px] lg:px-[75px] lg:pt-[60px]">
+              <div className="flex w-full flex-col items-center gap-2 lg:h-[85px] lg:w-[375px]">
+                <h2 className="text-center text-xl font-bold leading-[28px] lg:text-[24px] lg:leading-[33.6px]">
+                  Happy to help!
                 </h2>
-                {/* {currentPage?.subMessage && (
-                  <p className="text-center text-sm font-bold leading-snug lg:text-[16px] lg:leading-[22px]">
-                    {currentPage.subMessage.split("\n").map((line, index) => (
-                      <React.Fragment key={index}>
-                        {line}
-                        <br />
-                      </React.Fragment>
-                    ))}
-                  </p>
-                )} */}
+                <p className="text-center text-sm lg:text-[16px] lg:leading-[22px]">
+                  Let's get you in the app:
+                </p>
               </div>
               <div className="w-full lg:h-[192px] lg:w-[375px]">
-                <p className="mb-2 text-left text-[16px] font-bold leading-[22.4px] lg:text-[20px] lg:leading-[28px]">
-                  Let's do it!:
-                </p>
-                <div className="lg:h-[149px] lg:w-[374px]">
+                {/* <p className="mb-2 text-left text-[16px] font-bold leading-[22.4px] lg:text-[16px] lg:leading-[28px]">
+                Let's get you in the app:
+                </p> */}
+                {/* <div className="lg:h-[149px] lg:w-[374px]">
                   <ul className="list-inside list-disc font-roboto text-[14px]  leading-[19px] lg:text-lg">
-                    {/* {currentPage?.list.map((item, index) => (
-                      <li key={index} className="mb-2 ml-3">
-                        {item}
-                      </li>
-                    ))} */}
                   </ul>
-                </div>
+                </div> */}
               </div>
             </div>
+            <RegisterFormModal />
+
+            <p className="text-center font-poppins text-xs font-normal leading-snug lg:text-[14px] lg:leading-5">
+              Free trial. No credit card needed.
+            </p>
 
             {/* Placed the button at the bottom with padding alignment */}
-            {/* <div className="mt-6 flex w-full flex-col items-center lg:mt-10 lg:w-[375px]">
-              <button className="bg-cp-secondary mb-2 h-10 w-full rounded-md px-4 py-1 text-sm font-bold uppercase leading-tight text-white hover:bg-orange-500 lg:mb-[8px] lg:h-[45px] lg:w-[375px] lg:px-[24px] lg:py-[2px] lg:text-base lg:leading-[20px]">
-                <Link href="/signin">LOGIN-FREE</Link>
-              </button>
+            {/* <div className="flex w-full flex-col items-center lg:mt-10 lg:w-[375px]">
               <p className="text-center font-poppins text-xs font-normal leading-snug lg:text-[14px] lg:leading-5">
                 Free trial. No credit card needed.
               </p>

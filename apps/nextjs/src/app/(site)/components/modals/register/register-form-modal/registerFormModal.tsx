@@ -34,12 +34,15 @@ const RegisterFormModal = () => {
   }
 
   return (
-    <div className="flex w-full flex-col gap-10 px-6 lg:px-16">
-      <div className="flex flex-col gap-4">
+    <div className="flex w-full flex-col gap-5 lg:px-16">
+      <div className="gap-0.3 flex flex-col">
+        <p className="text-left text-[16px] font-bold leading-[22.4px] lg:text-[16px] lg:leading-[28px]">
+          Your email
+        </p>
         <div>
           <label
             htmlFor="name"
-            className={`${roboto.className} text-[14px] font-bold text-white`}
+            className={`${roboto.className} text-[11px] font-bold text-white`}
           >
             Name
           </label>
@@ -49,13 +52,13 @@ const RegisterFormModal = () => {
             value={values.name}
             onChange={handleChange}
             name="name"
-            className={`h-[42px] w-full rounded border border-[#898F98] bg-white px-2 text-black`}
+            className={`h-[38px] w-full rounded border border-[#898F98] bg-white px-2 text-sm text-black`}
           />
         </div>
         <div>
           <label
             htmlFor="name"
-            className={`${roboto.className} text-[14px] font-bold text-white`}
+            className={`${roboto.className} text-[11px] font-bold text-white`}
           >
             Email
           </label>
@@ -65,13 +68,13 @@ const RegisterFormModal = () => {
             value={values.email}
             onChange={handleChange}
             name="email"
-            className={`h-[42px] w-full rounded border border-[#898F98] bg-white px-2 text-black`}
+            className={`h-[38px] w-full rounded border border-[#898F98] bg-white px-2 text-sm text-black`}
           />
         </div>
       </div>
       <div className="flex flex-col gap-2">
         <Button
-          label="Open my immediate access!"
+          label="Email my immediate access!"
           type="accent"
           onClick={async () => await handleLogin()}
           icon={
@@ -79,11 +82,9 @@ const RegisterFormModal = () => {
               ? () => <IconSpinner className=" animate-spin" />
               : () => <IconArrowRight />
           }
+          height="h-[38px]"
           className="gap-2 text-xs lg:w-full lg:gap-3 lg:px-1 lg:text-base"
         />
-        <p className="text-center font-poppins text-xs font-normal leading-snug lg:text-[14px] lg:leading-5">
-          Free trial. No credit card needed.
-        </p>
       </div>
     </div>
   );
