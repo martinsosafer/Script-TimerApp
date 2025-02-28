@@ -15,7 +15,9 @@ interface CreditRowProps {
     | "BUSINESSCLYR"
     | "INACTIVE"
     | "ACTIVE"
-    | "PAUSED";
+    | "PAUSED"
+    | "1"
+    | "2";
   type: "cl_credit" | "11labs_credit" | "img_credit" | "openai_credit";
   creditsLeft: number;
 }
