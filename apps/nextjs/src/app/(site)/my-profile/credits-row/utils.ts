@@ -256,4 +256,40 @@ export const displayData = {
       credits: 0,
     },
   },
+  "1": {
+    cl_credit: {
+      label: "Pagiarism and AI detector",
+      credits: 7,
+    },
+    "11labs_credit": {
+      label: "Voice",
+      credits: 50000,
+    },
+    img_credit: {
+      label: "Images",
+      credits: 50,
+    },
+    openai_credit: {
+      label: "Script coach",
+      credits: 200000,
+    },
+  },
+  "2": {
+    cl_credit: {
+      label: "Pagiarism and AI detector",
+      credits: 8,
+    },
+    "11labs_credit": {
+      label: "Voice",
+      credits: 100000,
+    },
+    img_credit: {
+      label: "Images",
+      credits: 100,
+    },
+    openai_credit: {
+      label: "Script coach",
+      credits: 750000,
+    },
+  },
 };
