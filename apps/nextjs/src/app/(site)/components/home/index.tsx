@@ -15,6 +15,7 @@ import ServiceSection from "../herosection/ServicesSection/servicessection";
 import Testimonials from "../herosection/Testimonials/Testimonials";
 import VideoBlock from "../herosection/VideoBlock";
 import NoSessionModal from "../modals/no-session-modal";
+import RegisterModal from "../modals/register/registerModal";
 import TrialExpirationModal from "../modals/trial-expiration-modal";
 
 export default function Home({
@@ -85,11 +86,12 @@ export default function Home({
       <Testimonials />
       <VideoBlock />
       <FAQAccordion />
-      <NoSessionModal
+      {/* <NoSessionModal
         openModal={openModal}
         setOpenModal={setOpenModal}
         page="home"
-      />
+      /> */}
+      <RegisterModal openModal={openModal} setOpenModal={setOpenModal} />
       <TrialExpirationModal
         openModal={openTrialModal}
         setOpenModal={setOpenTrialModal}
