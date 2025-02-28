@@ -10,6 +10,7 @@ import {
   WEBCAM_DURATION_LIMITS,
   WEBCAM_RECORDING_LIMITS,
 } from "~/constants/credits";
+import PageHeader from "../components/page-header";
 import ModeSelectorRecorder from "./mode-selector-recorder";
 
 export const metadata: Metadata = {
@@ -189,19 +190,12 @@ export default async function IndexPage() {
   const isSaveDisabled = currentAudioCount >= audioLimit;
   const isWebcamSaveDisabled = currentWebcamCount >= webcamLimit;
   return (
-    <div className="min-h-screen w-full items-center justify-center ">
-      <div className="flex flex-col py-[60px]">
-        <div className="flex flex-col items-center">
-          <h2
-            className={`text-cp-primary  font-poppins text-[42px] font-bold leading-[50px] `}
-          >
-            Record and Get Feedback
-          </h2>
-          <p className="text-center text-[16px] font-bold leading-[22.4px] text-black">
-            Speak freely and record yourself, then get instant feedback on areas
-            to improve your delivery
-          </p>
-        </div>
+    <>
+      <div>
+        <PageHeader
+          title="Record and Get Feedback"
+          subtitle="Speak freely and record yourself, then get instant feedback on areas to improve your delivery."
+        />
         <ModeSelectorRecorder
           userId={userId}
           savedAudios={savedAudios}
@@ -220,6 +214,6 @@ export default async function IndexPage() {
           userEmail={userEmail}
         />
       </div>
-    </div>
+    </>
   );
 }

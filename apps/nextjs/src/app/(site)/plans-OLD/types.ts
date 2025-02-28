@@ -51,3 +51,10 @@ export interface I_Subscription {
   days_until_due: number | null;
   plan?: Plan;
 }
+export interface I_AppSumoSubscription {
+  userId: string;
+  tier: number;
+  license_key: string;
+  created_at: Date;
+}
+export type SubscriptionType = I_Subscription | I_AppSumoSubscription | null;

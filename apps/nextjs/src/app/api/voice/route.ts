@@ -1,14 +1,21 @@
 import { NextResponse } from "next/server";
 
+
+
 import { auth } from "@voiceai/auth";
 import { db, eq, schema } from "@voiceai/db";
 import { elevenLabsCredit } from "@voiceai/db/schema/11LabsCredits";
 
-function addWatermark(message: string) {
-  const prefix = "Voice test by Co-Producer";
-  const suffix = "Thank you for testing Co-Producer";
 
-  return `${prefix} - ${message} -  - ${suffix}`;
+
+
+
+function addWatermark(message: string) {
+  // const prefix = "Voice test";
+  const suffix =
+    "Unlock our best voices! Create your best scripts and videos. Click 'Upgrade Now' and thank you for trying Script Timer AI!";
+
+  return `${message} -  - ${suffix}`;
 }
 
 export async function POST(req: { json: () => any }) {
