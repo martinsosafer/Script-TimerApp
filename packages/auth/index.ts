@@ -128,7 +128,7 @@ export const {
             .execute();
           await db
             .delete(schema.clCredits)
-            .where(eq(schema.appSumoSubscription.userId, userId))
+            .where(eq(schema.clCredits.userId, userId))
             .execute();
         }
         const tier = appSumoSubscription.tier?.toString() as "1" | "2";
