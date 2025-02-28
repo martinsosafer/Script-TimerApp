@@ -44,7 +44,7 @@ export default function RegisterModal({
           </div>
 
           {/* Right section */}
-          <div className="bg-cp-primary z-10 flex h-[402px] w-full flex-col items-center justify-between px-6 py-4 text-white lg:h-full lg:w-[525px] lg:pb-[60px]">
+          <div className="bg-cp-primary z-10 flex h-[402px] w-full flex-col items-center justify-between px-3 py-4 text-white lg:h-full lg:w-[525px] lg:pb-[60px]">
             <div className="flex w-full flex-col items-center justify-start lg:w-[375px] lg:px-[75px] lg:pt-[60px]">
               <div className="flex w-full flex-col items-center gap-2 lg:h-[85px] lg:w-[375px]">
                 <h2 className="text-center text-xl font-bold leading-[28px] lg:text-[24px] lg:leading-[33.6px]">
