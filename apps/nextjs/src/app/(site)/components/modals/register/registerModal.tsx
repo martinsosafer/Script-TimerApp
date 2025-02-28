@@ -13,22 +13,11 @@ import { createUser } from "~/app/signin/actions";
 interface RegisterModalProps {
   openModal: boolean;
   setOpenModal: Dispatch<SetStateAction<boolean>>;
-  //   page:
-  //     | "home"
-  //     | "voice"
-  //     | "chat"
-  //     | "courses"
-  //     | "plagiarism"
-  //     | "translator"
-  //     | "clone"
-  //     | "recorder"
-  //     | "image";
 }
 
 export default function RegisterModal({
   setOpenModal,
   openModal,
-  // page,
 }: RegisterModalProps) {
   const [loading, setLoading] = useState(false);
 
