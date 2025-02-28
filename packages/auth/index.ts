@@ -8,7 +8,7 @@ import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import bcrypt from "bcryptjs";
 import NextAuth from "next-auth";
 
-import { db, tableCreator } from "@voiceai/db";
+import { db, eq, schema, tableCreator } from "@voiceai/db";
 
 import {
   checkAndInsertCredits,
@@ -109,6 +109,28 @@ export const {
       });
 
       if (appSumoSubscription) {
+        if (subscriptionStatus) {
+          await db
+            .delete(schema.subscriptions)
+            .where(eq(schema.subscriptions.userId, userId))
+            .execute();
+          await db
+            .delete(schema.elevenLabsCredit)
+            .where(eq(schema.elevenLabsCredit.userId, userId))
+            .execute();
+          await db
+            .delete(schema.imgCredit)
+            .where(eq(schema.imgCredit.userId, userId))
+            .execute();
+          await db
+            .delete(schema.openAiCredit)
+            .where(eq(schema.openAiCredit.userId, userId))
+            .execute();
+          await db
+            .delete(schema.clCredits)
+            .where(eq(schema.clCredits.userId, userId))
+            .execute();
+        }
         const tier = appSumoSubscription.tier?.toString() as "1" | "2";
         await inserAppSumoUserCredits(userId, tier);
       }

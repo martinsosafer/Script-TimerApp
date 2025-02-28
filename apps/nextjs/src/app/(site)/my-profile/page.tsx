@@ -2,13 +2,12 @@ import { redirect } from "next/navigation";
 import { Stripe } from "stripe";
 
 import { auth } from "@voiceai/auth";
-import { db } from "@voiceai/db";
+import { and, db } from "@voiceai/db";
 import {
   IconPencilLine,
   IconUserRound,
 } from "@voiceai/ui/@/components/ui/icons";
 
-import type { I_Subscription } from "../plans-OLD/types";
 import { getCredits } from "./actions";
 import SubscriptionDetails from "./subscription-details";
 
@@ -37,20 +36,24 @@ async function getSubscription(planId: string | null | undefined) {
 async function getAppSumoDetails(userId: string) {
   return await db.query.appSumoSubscription.findFirst({
     where: (appSumoSubscription, { eq }) =>
-      eq(appSumoSubscription.userId, userId),
+      and(
+        eq(appSumoSubscription.userId, userId),
+        eq(appSumoSubscription.license_status, "active"),
+      ),
   });
 }
+
 export default async function MyProfile() {
   const session = await auth();
   const isAppSumo = ["1", "2"].includes(
-    session?.user.subscription?.status || "",
+    session?.user.subscription?.status ?? "",
   );
 
   // Get both types of subscriptions
   const stripeSubscription = await getSubscription(
     isAppSumo ? null : session?.user.subscription?.planId,
   );
-  const appSumoSubscription = await getAppSumoDetails(session?.user.id || "");
+  const appSumoSubscription = await getAppSumoDetails(session?.user.id ?? "");
 
   const credits = await getCredits(session?.user.id ?? "");
 
