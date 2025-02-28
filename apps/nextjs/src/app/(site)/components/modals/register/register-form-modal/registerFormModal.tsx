@@ -52,7 +52,7 @@ const RegisterFormModal = () => {
             value={values.name}
             onChange={handleChange}
             name="name"
-            className={`h-[38px] w-full rounded border border-[#898F98] bg-white px-2 text-sm text-black`}
+            className={`h-[38px] w-full rounded border border-[#898F98] bg-white px-2 text-[0.8rem] text-black`}
           />
         </div>
         <div>
@@ -68,7 +68,7 @@ const RegisterFormModal = () => {
             value={values.email}
             onChange={handleChange}
             name="email"
-            className={`h-[38px] w-full rounded border border-[#898F98] bg-white px-2 text-sm text-black`}
+            className={`h-[38px] w-full rounded border border-[#898F98] bg-white px-2 text-[0.8rem] text-black`}
           />
         </div>
       </div>

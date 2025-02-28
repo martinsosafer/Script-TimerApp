@@ -1,8 +1,13 @@
+import { useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 
-import { HappyToHelpDraw } from "@voiceai/ui/@/components/ui/icons";
+import {
+  HappyToHelpDraw,
+  IconSpinner,
+} from "@voiceai/ui/@/components/ui/icons";
 
 import { poppins } from "~/app/fonts";
+import { createUser } from "~/app/signin/actions";
 import RegisterFormModal from "./register-form-modal/registerFormModal";
 
 interface RegisterModalProps {
@@ -26,6 +31,23 @@ export default function RegisterModal({
   openModal,
   // page,
 }: RegisterModalProps) {
+  const [loading, setLoading] = useState(false);
+  async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
+    setLoading(true);
+    try {
+      event.preventDefault();
+      const formData = new FormData(event.currentTarget);
+      const email = formData.get("email") as string;
+      await createUser({ email, appSumoCode: code });
+    } catch (error) {
+      alert(
+        "An error occurred while signing in. Please check your credentials",
+      );
+      console.log("ERROR", error);
+    }
+    setLoading(false);
+  }
+
   if (!openModal) {
     return null;
   }
@@ -54,17 +76,45 @@ export default function RegisterModal({
                   Let's get you in the app:
                 </p>
               </div>
-              <div className="w-full lg:h-[192px] lg:w-[375px]">
-                {/* <p className="mb-2 text-left text-[16px] font-bold leading-[22.4px] lg:text-[16px] lg:leading-[28px]">
-                Let's get you in the app:
-                </p> */}
-                {/* <div className="lg:h-[149px] lg:w-[374px]">
-                  <ul className="list-inside list-disc font-roboto text-[14px]  leading-[19px] lg:text-lg">
-                  </ul>
-                </div> */}
-              </div>
             </div>
-            <RegisterFormModal />
+            {/* <RegisterFormModal /> */}
+
+            {/* Email link form */}
+            <div className="w-full">
+              <div className="relative mb-4 mt-1">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-background px-2 text-muted-foreground">
+                    EMAIL ME A LINK
+                  </span>
+                </div>
+              </div>
+              <form
+                onSubmit={handleLogin}
+                className="mx-auto flex w-full max-w-md flex-col space-y-4"
+              >
+                <div className="flex flex-col space-y-2">
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="name@example.com"
+                    className="rounded-md border border-gray-300 px-3 py-2 text-[0.9rem]"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="bg-cp-secondary flex h-[42px] items-center justify-center rounded-md py-2 text-[0.9rem] font-semibold text-white"
+                >
+                  {loading ? (
+                    <IconSpinner className="h-6 w-6 animate-spin" />
+                  ) : (
+                    "Email my immediate access"
+                  )}
+                </button>
+              </form>
+            </div>
 
             <p className="text-center font-poppins text-xs font-normal leading-snug lg:text-[14px] lg:leading-5">
               Free trial. No credit card needed.
