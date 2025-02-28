@@ -10,10 +10,7 @@ import { poppins } from "~/app/fonts";
 import { RegisterFormWithGoogle } from "~/app/register/actions";
 import { createUser } from "~/app/signin/actions";
 
-// import RegisterFormModal from "./register-form-modal/registerFormModal";
-
 interface RegisterModalProps {
-  // subData?: SubscriptionData | null | undefined;
   openModal: boolean;
   setOpenModal: Dispatch<SetStateAction<boolean>>;
   //   page:
@@ -41,7 +38,7 @@ export default function RegisterModal({
       event.preventDefault();
       const formData = new FormData(event.currentTarget);
       const email = formData.get("email") as string;
-      await createUser({ email, appSumoCode: code });
+      await createUser({ email, appSumoCode: null });
     } catch (error) {
       alert(
         "An error occurred while signing in. Please check your credentials",
@@ -52,7 +49,7 @@ export default function RegisterModal({
   }
 
   async function handleGoogleSignUp() {
-    await RegisterFormWithGoogle(code);
+    await RegisterFormWithGoogle(null);
   }
 
   if (!openModal) {

@@ -14,7 +14,6 @@ import MarqueeLogos from "../herosection/MarqueeLogos";
 import ServiceSection from "../herosection/ServicesSection/servicessection";
 import Testimonials from "../herosection/Testimonials/Testimonials";
 import VideoBlock from "../herosection/VideoBlock";
-import NoSessionModal from "../modals/no-session-modal";
 import RegisterModal from "../modals/register/registerModal";
 import TrialExpirationModal from "../modals/trial-expiration-modal";
 
@@ -30,7 +29,7 @@ export default function Home({
   session: Session | null | undefined;
 }) {
   const [openTrialModal, setOpenTrialModal] = useState(trialExpiration);
-  const [openModal, setOpenModal] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
   const origin = useSearchParams().get("origin");
   const appSumoCode = useSearchParams().get("appSumoCode");
   const router = useRouter();
@@ -64,16 +63,11 @@ export default function Home({
     router.push("/plans-lp");
   }
 
-  // useEffect(() => {
-  //   if (!user) {
-  //     const timer = setTimeout(() => {
-  //       setOpenModal(true);
-  //     }, 15000); // 15 seconds
-
-  //     // Clean up the timer if component unmounts or modal is closed
-  //     return () => clearTimeout(timer);
-  //   }
-  // }, [user]);
+  useEffect(() => {
+    if (!user) {
+      setOpenModal(true);
+    }
+  }, [user]);
 
   return (
     <>
@@ -86,11 +80,6 @@ export default function Home({
       <Testimonials />
       <VideoBlock />
       <FAQAccordion />
-      {/* <NoSessionModal
-        openModal={openModal}
-        setOpenModal={setOpenModal}
-        page="home"
-      /> */}
       <RegisterModal openModal={openModal} setOpenModal={setOpenModal} />
       <TrialExpirationModal
         openModal={openTrialModal}
