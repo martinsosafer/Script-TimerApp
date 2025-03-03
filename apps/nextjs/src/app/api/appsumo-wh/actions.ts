@@ -84,10 +84,14 @@ class AppSumoSubscription {
         )
         .execute();
 
+      console.log("UPGRADE OR DOWNGRADE", subscription);
+
       const user = await db.query.users.findFirst({
         where: (users, { eq }) =>
           eq(users.app_sumo_license_key, data.license_key),
       });
+
+      console.log("USER", user);
 
       if (user) {
         await updateCredits(user.id, data.tier);
