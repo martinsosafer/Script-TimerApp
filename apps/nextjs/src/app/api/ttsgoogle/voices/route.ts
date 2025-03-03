@@ -3,7 +3,6 @@ import { TextToSpeechClient } from "@google-cloud/text-to-speech";
 
 export async function GET() {
   try {
-    // Create a client with credentials from environment variables
     const client = new TextToSpeechClient({
       credentials: {
         client_email: process.env.GOOGLE_CLOUD_CLIENT_EMAIL,
@@ -15,10 +14,15 @@ export async function GET() {
       projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
     });
 
-    // List all available voices
     const [response] = await client.listVoices({});
 
-    return NextResponse.json({ voices: response.voices || [] });
+    // Filter voices to include all English variants
+    const englishVoices =
+      response.voices?.filter((voice) =>
+        voice.languageCodes?.some((code) => code.startsWith("en-")),
+      ) || [];
+
+    return NextResponse.json({ voices: englishVoices });
   } catch (error) {
     console.error("Error fetching voices:", error);
     return NextResponse.json(
