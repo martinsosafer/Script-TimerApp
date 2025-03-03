@@ -84,7 +84,13 @@ class AppSumoSubscription {
         )
         .execute();
 
-      console.log("UPGRADE OR DOWNGRADE", subscription);
+      await db
+        .update(schema.users)
+        .set({
+          app_sumo_license_key: data.license_key,
+        })
+        .where(eq(schema.users.app_sumo_license_key, data.prev_license_key!))
+        .execute();
 
       const user = await db.query.users.findFirst({
         where: (users, { eq }) =>
