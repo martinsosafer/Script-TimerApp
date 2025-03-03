@@ -26,4 +26,5 @@ export const appSumoSubscription = pgTable("app_sumo_subscription", {
   custom_voices: jsonb("custom_voices").default([]),
   metadata: jsonb("metadata"),
   created_at: timestamp("created_at").notNull().defaultNow(),
+  current_period_start: timestamp("current_period_start").defaultNow(),
 });

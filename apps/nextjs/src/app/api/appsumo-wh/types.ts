@@ -6,7 +6,7 @@ export interface WhResponse {
   event: "purchase" | "activate" | "deactivate" | "upgrade" | "downgrade";
   plan_id: string;
   status: "inactive" | "active" | "deactivated";
-  tier?: 1 | 2 | 3;
+  tier: 1 | 2;
   created_at: Date;
   updated_at: Date;
 }
