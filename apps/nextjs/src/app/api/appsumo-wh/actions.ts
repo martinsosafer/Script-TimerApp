@@ -84,13 +84,17 @@ class AppSumoSubscription {
         )
         .execute();
 
-      const user = await db.query.users.findFirst({
-        where: (users, { eq }) =>
-          eq(users.app_sumo_license_key, data.license_key),
-      });
+      const updatedUser = await db
+        .update(schema.users)
+        .set({
+          app_sumo_license_key: data.license_key,
+        })
+        .where(eq(schema.users.app_sumo_license_key, data.prev_license_key!))
+        .returning()
+        .execute();
 
-      if (user) {
-        await updateCredits(user.id, data.tier);
+      if (updatedUser) {
+        await updateCredits(updatedUser[0]!.id, data.tier);
       }
 
       return subscription;
