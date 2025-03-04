@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
+import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -21,6 +22,7 @@ import MasterclassImg from "../modalimgs/MastarclassesImg.png";
 import PlagImg from "../modalimgs/PlagiarismImg.png";
 import StoryBoardImg from "../modalimgs/StoryboardImg.png";
 import TranslatorImg from "../modalimgs/TranslatorImg.png";
+import EmailOrGoogleForm from "./email-or-google-form";
 
 interface FreeModalProps {
   subData?: SubscriptionData | null | undefined;
@@ -41,22 +43,34 @@ interface FreeModalProps {
 const pageData: Record<
   string,
   {
-    image: StaticImageData;
+    image: StaticImport;
     list: string[];
     message: string;
     subMessage: string;
   }
 > = {
+  // Old home data
+  // home: {
+  //   image: HeroImage,
+  //   list: [
+  //     "Save your scripts and voice overs",
+  //     "Clone and translate your voice",
+  //     "Create scripts, images for videos, social media, presentations...",
+  //     "Learn in Masterclasses seen by 70,000 professionals",
+  //   ],
+  //   message: "Great to see you here!",
+  //   subMessage: "Please log in and enjoy the full app!",
+  // },
   home: {
-    image: HeroImage,
+    image: StoryBoardImg,
     list: [
       "Save your scripts and voice overs",
       "Clone and translate your voice",
       "Create scripts, images for videos, social media, presentations...",
       "Learn in Masterclasses seen by 70,000 professionals",
     ],
-    message: "Great to see you here!",
-    subMessage: "Please log in and enjoy the full app!",
+    message: "Happy to help!",
+    subMessage: "Let's get you in the app:",
   },
   voice: {
     image: HeroImage,
@@ -147,10 +161,6 @@ export default function NoSessionModal({
   openModal,
   page,
 }: FreeModalProps) {
-  if (!openModal) {
-    return null;
-  }
-
   const [isPlaying, setIsPlaying] = useState(false);
   const [audio] = useState(
     new Audio(
@@ -166,7 +176,13 @@ export default function NoSessionModal({
     }
     setIsPlaying(!isPlaying);
   };
+
   const currentPage = pageData[page];
+
+  if (!openModal) {
+    return null;
+  }
+
   return (
     <div
       className={`fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50 p-4 backdrop-blur ${poppins.className}`}
@@ -175,7 +191,8 @@ export default function NoSessionModal({
         <div className="flex h-full flex-col lg:flex-row">
           {/* Left section */}
           <div className="flex h-[151px] w-full flex-col items-center justify-center bg-[#F5F5F7] lg:h-full lg:w-[400px]">
-            {page === "home" || page === "voice" ? (
+            {/* {page === "home" || page === "voice" ? ( */}
+            {page === "voice" ? (
               <div className="flex h-full w-full flex-col items-center justify-center px-4 pt-8 lg:h-[442px] lg:w-[328px] lg:px-[36px] lg:pt-[52px]">
                 <Card className="h-[79px] w-full rounded-lg border border-black lg:w-[241px]">
                   <CardContent className="flex h-full w-full items-center justify-between px-3 py-4 lg:px-[12px] lg:py-[18px]">
@@ -212,7 +229,7 @@ export default function NoSessionModal({
                 <div className="mb-8 mt-6 lg:mb-[52px] lg:mt-[33px]">
                   <div className="relative h-64 w-64 px-6 lg:h-[330px] lg:w-[330px] lg:px-[35px]">
                     <Image
-                      src={currentPage?.image}
+                      src={currentPage?.image ?? ""}
                       alt="Cartoon character, hero of co-producer!"
                       fill
                       className="object-cover"
@@ -221,10 +238,10 @@ export default function NoSessionModal({
                 </div>
               </div>
             ) : (
-              // Render this div with an image if page is not "home" or "voice"
+              // Render this div with an image if page is not "voice"
               <div className="lh:mt-0 relative mt-16 flex h-64 w-64 items-center justify-center lg:h-[330px] lg:w-[330px]">
                 <Image
-                  src={currentPage?.image}
+                  src={currentPage?.image ?? ""}
                   alt="Alternate content image"
                   className="h-full w-full object-cover"
                 />
@@ -250,27 +267,34 @@ export default function NoSessionModal({
                   </p>
                 )}
               </div>
-              <div className="w-full lg:h-[192px] lg:w-[375px]">
-                <p className="mb-2 text-left text-[16px] font-bold leading-[22.4px] lg:text-[20px] lg:leading-[28px]">
-                  Let's do it!:
-                </p>
-                <div className="lg:h-[149px] lg:w-[374px]">
-                  <ul className="list-inside list-disc font-roboto text-[14px]  leading-[19px] lg:text-lg">
-                    {currentPage?.list.map((item, index) => (
-                      <li key={index} className="mb-2 ml-3">
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
+
+              {page !== "home" ? (
+                <div className="w-full lg:h-[192px] lg:w-[375px]">
+                  <p className="mb-2 text-left text-[16px] font-bold leading-[22.4px] lg:text-[20px] lg:leading-[28px]">
+                    Let's do it!:
+                  </p>
+                  <div className="lg:h-[149px] lg:w-[374px]">
+                    <ul className="list-inside list-disc font-roboto text-[14px]  leading-[19px] lg:text-lg">
+                      {currentPage?.list.map((item, index) => (
+                        <li key={index} className="mb-2 ml-3">
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
-              </div>
+              ) : null}
             </div>
+
+            {page === "home" ? <EmailOrGoogleForm /> : null}
 
             {/* Placed the button at the bottom with padding alignment */}
             <div className="mt-6 flex w-full flex-col items-center lg:mt-10 lg:w-[375px]">
-              <button className="bg-cp-secondary mb-2 h-10 w-full rounded-md px-4 py-1 text-sm font-bold uppercase leading-tight text-white hover:bg-orange-500 lg:mb-[8px] lg:h-[45px] lg:w-[375px] lg:px-[24px] lg:py-[2px] lg:text-base lg:leading-[20px]">
-                <Link href="/signin">LOGIN-FREE</Link>
-              </button>
+              {page !== "home" ? (
+                <button className="bg-cp-secondary mb-2 h-10 w-full rounded-md px-4 py-1 text-sm font-bold uppercase leading-tight text-white hover:bg-orange-500 lg:mb-[8px] lg:h-[45px] lg:w-[375px] lg:px-[24px] lg:py-[2px] lg:text-base lg:leading-[20px]">
+                  <Link href="/signin">LOGIN-FREE</Link>
+                </button>
+              ) : null}
               <p className="text-center font-poppins text-xs font-normal leading-snug lg:text-[14px] lg:leading-5">
                 Free trial. No credit card needed.
               </p>
@@ -278,6 +302,7 @@ export default function NoSessionModal({
           </div>
         </div>
       </div>
+
       <button
         onClick={() => setOpenModal(false)}
         className="absolute right-4 top-4 text-white hover:text-gray-300 focus:outline-none"
