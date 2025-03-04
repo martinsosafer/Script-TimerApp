@@ -305,11 +305,26 @@ export const voiceRouter = createTRPCRouter({
         description: z.string().min(1),
         picture: z.string().optional(),
         gender: z.enum(["MALE", "FEMALE", "OTHER"]).optional(),
-        type: z.enum(["11LABS", "OTHER"]).optional(),
+        type: z.enum(["11LABS", "GOOGLE", "OTHER"]).optional(),
         active: z.boolean().default(true),
-        metadata: z.record(z.unknown()).optional(),
+        metadata: z
+          .record(z.unknown())
+          .superRefine((val, ctx) => {
+            if (
+              val.type === "GOOGLE" &&
+              (!val.language_code || !val.ssml_gender)
+            ) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message:
+                  "Google voices require language_code and ssml_gender in metadata",
+              });
+            }
+            return val;
+          })
+          .optional(),
         rank: z.number().default(0),
-        celebrity: z.boolean().default(false), // New field added
+        celebrity: z.boolean().default(false),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -337,7 +352,7 @@ export const voiceRouter = createTRPCRouter({
             active: input.active ?? true,
             metadata: input.metadata ?? {},
             rank: input.rank ?? 0,
-            celebrity: input.celebrity ?? false, // New field added
+            celebrity: input.celebrity ?? false,
           })
           .execute();
 

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { api } from "~/utils/api";
 
 export default function VoiceForm() {
-  const { mutateAsync: newVoice } = api.voice.newVoice.useMutation({
+  const { mutateAsync: createVoice } = api.voice.newVoice.useMutation({
     onSuccess(data) {
       console.log("Voice Created", data);
     },
@@ -18,11 +18,13 @@ export default function VoiceForm() {
     description: string;
     picture?: string;
     gender?: "MALE" | "FEMALE" | "OTHER";
-    type?: "11LABS" | "OTHER";
+    type?: "11LABS" | "GOOGLE" | "OTHER";
     active?: boolean;
     metadata?: Record<string, unknown>;
     rank: number;
-    celebrity: boolean; // New field added
+    celebrity: boolean;
+    languageCode?: string;
+    ssmlGender?: "MALE" | "FEMALE" | "NEUTRAL";
   }>({
     external_id: "",
     name: "",
@@ -33,7 +35,9 @@ export default function VoiceForm() {
     active: true,
     metadata: {},
     rank: 0,
-    celebrity: false, // Default value
+    celebrity: false,
+    languageCode: "en-US",
+    ssmlGender: "NEUTRAL",
   });
 
   const handleChange = (
@@ -42,7 +46,8 @@ export default function VoiceForm() {
     >,
   ) => {
     const { name, value, type } = e.target;
-    let newValue = type === "checkbox" ? e.target.checked : value;
+    let newValue =
+      type === "checkbox" ? (e.target as HTMLInputElement).checked : value;
 
     if (name === "metadata") {
       try {
@@ -63,10 +68,22 @@ export default function VoiceForm() {
     }));
   };
 
+  const handleGoogleParamsChange = (field: string, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+      metadata: {
+        ...prev.metadata,
+        ...(field === "languageCode" && { language_code: value }),
+        ...(field === "ssmlGender" && { ssml_gender: value }),
+      },
+    }));
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await newVoice(formData);
+      await createVoice(formData);
     } catch (error) {
       console.error("Error creating voice", error);
     }
@@ -143,9 +160,40 @@ export default function VoiceForm() {
           className="input-field"
         >
           <option value="11LABS">11LABS</option>
+          <option value="GOOGLE">Google</option>
           <option value="OTHER">Other</option>
         </select>
       </div>
+      {formData.type === "GOOGLE" && (
+        <>
+          <div className="mb-4">
+            <input
+              type="text"
+              placeholder="Language Code (e.g., en-US)"
+              value={formData.languageCode}
+              onChange={(e) =>
+                handleGoogleParamsChange("languageCode", e.target.value)
+              }
+              className="input-field"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <select
+              value={formData.ssmlGender}
+              onChange={(e) =>
+                handleGoogleParamsChange("ssmlGender", e.target.value)
+              }
+              className="input-field"
+              required
+            >
+              <option value="MALE">Male</option>
+              <option value="FEMALE">Female</option>
+              <option value="NEUTRAL">Neutral</option>
+            </select>
+          </div>
+        </>
+      )}
       <div className="mb-4">
         <input
           type="checkbox"
