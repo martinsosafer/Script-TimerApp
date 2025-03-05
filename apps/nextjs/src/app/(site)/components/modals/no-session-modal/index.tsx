@@ -49,18 +49,6 @@ const pageData: Record<
     subMessage: string;
   }
 > = {
-  // Old data
-  // home: {
-  //   image: HeroImage,
-  //   list: [
-  //     "Save your scripts and voice overs",
-  //     "Clone and translate your voice",
-  //     "Create scripts, images for videos, social media, presentations...",
-  //     "Learn in Masterclasses seen by 70,000 professionals",
-  //   ],
-  //   message: "Great to see you here!",
-  //   subMessage: "Please log in and enjoy the full app!",
-  // },
   home: {
     image: StoryBoardImg,
     list: [
@@ -100,7 +88,7 @@ const pageData: Record<
       "Transform your career learning Storytelling,AI,Pitch Matery,Rapport",
     ],
     message: "Excited to learn together!",
-    subMessage: "Please log in and join our Story University!",
+    subMessage: "Let's get you in the app:",
   },
   plagiarism: {
     image: PlagImg,
@@ -110,7 +98,7 @@ const pageData: Record<
       "Save time and increase knowledge with our included Source Search",
     ],
     message: "I'll check that text for you now",
-    subMessage: "please log in below!",
+    subMessage: "Let's get you in the app:",
   },
   translator: {
     image: TranslatorImg,
@@ -120,7 +108,7 @@ const pageData: Record<
       "Translate into audio and text",
     ],
     message: "Happy to translate that for you!",
-    subMessage: "Please log in, so I can deliver that with a smile",
+    subMessage: "Let's get you in the app:",
   },
   clone: {
     image: HeroImage,
@@ -130,8 +118,8 @@ const pageData: Record<
       "Export audio files for use in projects",
       "Clone voices with just an example audio",
     ],
-    message: "Voice Cloning",
-    subMessage: "",
+    message: "Happy to help!",
+    subMessage: "Let's get you in the app:",
   },
   recorder: {
     image: HeroImage,
@@ -179,7 +167,17 @@ export default function NoSessionModal({
 
   const currentPage = pageData[page];
 
-  const showEmailLinkOrGoogleForm = ["home"];
+  const showEmailLinkOrGoogleForm = [
+    "home",
+    "chat",
+    "image",
+    "plagiarism",
+    "recorder",
+    "courses",
+    "voice",
+    "translator",
+    "clone",
+  ];
 
   if (!openModal) {
     return null;
@@ -241,7 +239,7 @@ export default function NoSessionModal({
               </div>
             ) : (
               // Render this div with an image if page is not "voice"
-              <div className="lh:mt-0 relative mt-16 flex h-64 w-64 items-center justify-center lg:h-[330px] lg:w-[330px]">
+              <div className="relative mt-16 flex h-64 w-64 items-center justify-center lg:mt-0 lg:h-[330px] lg:w-[330px]">
                 <Image
                   src={currentPage?.image ?? ""}
                   alt="Alternate content image"
@@ -253,8 +251,8 @@ export default function NoSessionModal({
 
           {/* Right section */}
           <div className="bg-cp-primary z-10 flex h-[402px] w-full flex-col items-center pb-8 text-white lg:h-full lg:w-[525px] lg:pb-[60px]">
-            <div className="flex w-full flex-grow flex-col items-center justify-start px-4 pt-8 lg:w-[375px] lg:px-[75px] lg:pt-[60px]">
-              <div className="mb-6 w-full items-center lg:mb-[44px] lg:h-[85px] lg:w-[375px]">
+            <div className="flex w-full flex-grow flex-col items-center justify-start px-4 pt-5 lg:w-[375px] lg:px-[75px] lg:pt-[60px]">
+              <div className="w-full items-center pb-2 lg:mb-[44px] lg:h-[85px] lg:w-[375px]">
                 <h2 className="mb-2 text-center text-xl font-bold leading-tight lg:text-[24px] lg:leading-[33.6px]">
                   {currentPage?.message}
                 </h2>
@@ -293,7 +291,7 @@ export default function NoSessionModal({
             ) : null}
 
             {/* Placed the button at the bottom with padding alignment */}
-            <div className="mt-6 flex w-full flex-col items-center lg:mt-10 lg:w-[375px]">
+            <div className="flex w-full flex-col items-center pt-2 lg:w-[375px] lg:pt-6">
               {!showEmailLinkOrGoogleForm.includes(page) ? (
                 <button className="bg-cp-secondary mb-2 h-10 w-full rounded-md px-4 py-1 text-sm font-bold uppercase leading-tight text-white hover:bg-orange-500 lg:mb-[8px] lg:h-[45px] lg:w-[375px] lg:px-[24px] lg:py-[2px] lg:text-base lg:leading-[20px]">
                   <Link href="/signin">LOGIN-FREE</Link>
@@ -330,3 +328,56 @@ export default function NoSessionModal({
     </div>
   );
 }
+
+// Old data
+// home: {
+//   image: HeroImage,
+//   list: [
+//     "Save your scripts and voice overs",
+//     "Clone and translate your voice",
+//     "Create scripts, images for videos, social media, presentations...",
+//     "Learn in Masterclasses seen by 70,000 professionals",
+//   ],
+//   message: "Great to see you here!",
+//   subMessage: "Please log in and enjoy the full app!",
+// },
+// clone: {
+//   image: HeroImage,
+//   list: [
+//     "Listen to your scripts with over 120 different voices",
+//     "Customize voice tones and accents",
+//     "Export audio files for use in projects",
+//     "Clone voices with just an example audio",
+//   ],
+//   message: "Voice Cloning",
+//   subMessage: "",
+// },
+// translator: {
+//   image: TranslatorImg,
+//   list: [
+//     "Translate documents,Audio or Videos",
+//     "Support for over 70 languages",
+//     "Translate into audio and text",
+//   ],
+//   message: "Happy to translate that for you!",
+//   subMessage: "Please log in, so I can deliver that with a smile",
+// },
+// plagiarism: {
+//   image: PlagImg,
+//   list: [
+//     "Assure originality with 99.12% accuracy",
+//     "Improve your copywritting with AI & plagiarism detectors",
+//     "Save time and increase knowledge with our included Source Search",
+//   ],
+//   message: "I'll check that text for you now",
+//   subMessage: "please log in below!",
+// },
+// courses: {
+//   image: MasterclassImg,
+//   list: [
+//     "Learn in Masterclasses seen by 70,000 professionals",
+//     "Transform your career learning Storytelling,AI,Pitch Matery,Rapport",
+//   ],
+//   message: "Excited to learn together!",
+//   subMessage: "Please log in and join our Story University!",
+// },
