@@ -51,15 +51,32 @@ export default function VoiceForm() {
 
     if (name === "metadata") {
       try {
-        newValue = JSON.parse(newValue);
+        newValue = JSON.parse(value); // Parse the JSON string
       } catch (error) {
         console.error("Error parsing metadata JSON:", error);
+        return; // Don't update state if JSON is invalid
       }
     } else if (name === "rank") {
-      newValue = parseFloat(newValue);
+      newValue = parseFloat(value);
       if (isNaN(newValue)) {
         newValue = 0;
       }
+    }
+
+    // Handle gender changes for Google Voices
+    if (name === "gender" && formData.type === "GOOGLE") {
+      setFormData((prev) => ({
+        ...prev,
+        gender: newValue,
+        metadata: {
+          ...prev.metadata,
+          labels: {
+            ...prev.metadata?.labels,
+            gender: newValue, // Update gender in metadata.labels
+          },
+        },
+      }));
+      return;
     }
 
     setFormData((prevData) => ({
@@ -74,8 +91,12 @@ export default function VoiceForm() {
       [field]: value,
       metadata: {
         ...prev.metadata,
-        ...(field === "languageCode" && { language_code: value }),
-        ...(field === "ssmlGender" && { ssml_gender: value }),
+        labels: {
+          ...prev.metadata?.labels,
+          ...(field === "languageCode" && { language_code: value }),
+          ...(field === "ssmlGender" && { ssml_gender: value }),
+          ...(field === "gender" && { gender: value }), // Add gender to labels
+        },
       },
     }));
   };
