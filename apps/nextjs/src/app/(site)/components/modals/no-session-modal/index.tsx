@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import type { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -49,7 +49,7 @@ const pageData: Record<
     subMessage: string;
   }
 > = {
-  // Old home data
+  // Old data
   // home: {
   //   image: HeroImage,
   //   list: [
@@ -179,6 +179,8 @@ export default function NoSessionModal({
 
   const currentPage = pageData[page];
 
+  const showEmailLinkOrGoogleForm = ["home"];
+
   if (!openModal) {
     return null;
   }
@@ -268,7 +270,7 @@ export default function NoSessionModal({
                 )}
               </div>
 
-              {page !== "home" ? (
+              {!showEmailLinkOrGoogleForm.includes(page) ? (
                 <div className="w-full lg:h-[192px] lg:w-[375px]">
                   <p className="mb-2 text-left text-[16px] font-bold leading-[22.4px] lg:text-[20px] lg:leading-[28px]">
                     Let's do it!:
@@ -286,11 +288,13 @@ export default function NoSessionModal({
               ) : null}
             </div>
 
-            {page === "home" ? <EmailOrGoogleForm /> : null}
+            {showEmailLinkOrGoogleForm.includes(page) ? (
+              <EmailOrGoogleForm />
+            ) : null}
 
             {/* Placed the button at the bottom with padding alignment */}
             <div className="mt-6 flex w-full flex-col items-center lg:mt-10 lg:w-[375px]">
-              {page !== "home" ? (
+              {!showEmailLinkOrGoogleForm.includes(page) ? (
                 <button className="bg-cp-secondary mb-2 h-10 w-full rounded-md px-4 py-1 text-sm font-bold uppercase leading-tight text-white hover:bg-orange-500 lg:mb-[8px] lg:h-[45px] lg:w-[375px] lg:px-[24px] lg:py-[2px] lg:text-base lg:leading-[20px]">
                   <Link href="/signin">LOGIN-FREE</Link>
                 </button>
