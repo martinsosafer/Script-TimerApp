@@ -14,7 +14,7 @@ import MarqueeLogos from "../herosection/MarqueeLogos";
 import ServiceSection from "../herosection/ServicesSection/servicessection";
 import Testimonials from "../herosection/Testimonials/Testimonials";
 import VideoBlock from "../herosection/VideoBlock";
-import RegisterModal from "../modals/register/registerModal";
+import NoSessionModal from "../modals/no-session-modal";
 import TrialExpirationModal from "../modals/trial-expiration-modal";
 
 export default function Home({
@@ -65,7 +65,13 @@ export default function Home({
 
   useEffect(() => {
     if (!user) {
-      setOpenModal(true);
+      const timer = setTimeout(() => {
+        setOpenModal(true);
+      }, 30000); // 30 seconds
+      // Clean up the timer if component unmounts or modal is closed
+      return () => {
+        clearTimeout(timer);
+      };
     }
   }, [user]);
 
@@ -80,7 +86,11 @@ export default function Home({
       <Testimonials />
       <VideoBlock />
       <FAQAccordion />
-      <RegisterModal openModal={openModal} setOpenModal={setOpenModal} />
+      <NoSessionModal
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+        page="home"
+      />
       <TrialExpirationModal
         openModal={openTrialModal}
         setOpenModal={setOpenTrialModal}
