@@ -129,8 +129,8 @@ const pageData: Record<
       "Export audio files for use in projects",
       "Clone voices with just an example audio",
     ],
-    message: "Voice Cloning",
-    subMessage: "",
+    message: "Happy to help!",
+    subMessage: "Let's get you in the app:",
   },
   image: {
     image: StoryBoardImg,
@@ -341,7 +341,7 @@ export default function NoSessionModal({
 //   message: "Great to see you here!",
 //   subMessage: "Please log in and enjoy the full app!",
 // },
-// clone: {
+// voice: {
 //   image: HeroImage,
 //   list: [
 //     "Listen to your scripts with over 120 different voices",
@@ -349,18 +349,27 @@ export default function NoSessionModal({
 //     "Export audio files for use in projects",
 //     "Clone voices with just an example audio",
 //   ],
-//   message: "Voice Cloning",
-//   subMessage: "",
+//   message: "Almost there ! ",
+//   subMessage: "Please create a free account to listen \nto your script!",
 // },
-// translator: {
-//   image: TranslatorImg,
+// chat: {
+//   image: ScriptCoachImg,
 //   list: [
-//     "Translate documents,Audio or Videos",
-//     "Support for over 70 languages",
-//     "Translate into audio and text",
+//     "Upgrade your scripts in seconds",
+//     "Increase the value of your work with AI coaching",
+//     "Hundreds of built-in formulas: from TED Talks to sales pitches.",
 //   ],
-//   message: "Happy to translate that for you!",
-//   subMessage: "Please log in, so I can deliver that with a smile",
+//   message: "I'd love to deliver that to you",
+//   subMessage: "Please sign up and start creating with me!",
+// },
+// courses: {
+//   image: MasterclassImg,
+//   list: [
+//     "Learn in Masterclasses seen by 70,000 professionals",
+//     "Transform your career learning Storytelling,AI,Pitch Matery,Rapport",
+//   ],
+//   message: "Excited to learn together!",
+//   subMessage: "Please log in and join our Story University!",
 // },
 // plagiarism: {
 //   image: PlagImg,
@@ -372,12 +381,45 @@ export default function NoSessionModal({
 //   message: "I'll check that text for you now",
 //   subMessage: "please log in below!",
 // },
-// courses: {
-//   image: MasterclassImg,
+// translator: {
+//   image: TranslatorImg,
 //   list: [
-//     "Learn in Masterclasses seen by 70,000 professionals",
-//     "Transform your career learning Storytelling,AI,Pitch Matery,Rapport",
+//     "Translate documents,Audio or Videos",
+//     "Support for over 70 languages",
+//     "Translate into audio and text",
 //   ],
-//   message: "Excited to learn together!",
-//   subMessage: "Please log in and join our Story University!",
+//   message: "Happy to translate that for you!",
+//   subMessage: "Please log in, so I can deliver that with a smile",
+// },
+// clone: {
+//   image: HeroImage,
+//   list: [
+//     "Listen to your scripts with over 120 different voices",
+//     "Customize voice tones and accents",
+//     "Export audio files for use in projects",
+//     "Clone voices with just an example audio",
+//   ],
+//   message: "Voice Cloning",
+//   subMessage: "",
+// },
+// recorder: {
+//   image: HeroImage,
+//   list: [
+//     "Listen to your scripts with over 120 different voices",
+//     "Customize voice tones and accents",
+//     "Export audio files for use in projects",
+//     "Clone voices with just an example audio",
+//   ],
+//   message: "Voice Cloning",
+//   subMessage: "",
+// },
+// image: {
+//   image: StoryBoardImg,
+//   list: [
+//     "Upgrade your visuals in seconds",
+//     "Increase the value of your scripts",
+//     "The right images can tell your story",
+//   ],
+//   message: "Happy to help!",
+//   subMessage: "Please login and let's create your images!",
 // },
