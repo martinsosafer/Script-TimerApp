@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 
+import { signIn } from "@voiceai/auth";
 import { IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 
-import { RegisterFormWithGoogle } from "~/app/register/actions";
 import { createUser } from "~/app/signin/actions";
+import { handleGoogleSignIn } from "./actions";
 
 const EmailOrGoogleForm = () => {
   const [loading, setLoading] = useState(false);
@@ -22,10 +23,6 @@ const EmailOrGoogleForm = () => {
       console.log("ERROR", error);
     }
     setLoading(false);
-  }
-
-  async function handleGoogleSignUp() {
-    await RegisterFormWithGoogle(null);
   }
 
   return (
@@ -71,7 +68,7 @@ const EmailOrGoogleForm = () => {
 
       {/* Google button */}
       <form
-        action={handleGoogleSignUp}
+        action={handleGoogleSignIn}
         className="mx-auto flex w-full max-w-md flex-col space-y-4"
       >
         <button className="flex h-[42px] w-full items-center justify-center gap-3 rounded-md bg-slate-100 px-3 py-1.5 text-black shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] ">
