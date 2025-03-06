@@ -14,14 +14,16 @@ export async function GET() {
       projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
     });
 
+    // Fetch all voices
     const [response] = await client.listVoices({});
 
-    // Filter voices to include all English variants
+    // Filter voices to include only English variants
     const englishVoices =
       response.voices?.filter((voice) =>
         voice.languageCodes?.some((code) => code.startsWith("en-")),
       ) || [];
 
+    // Return the voices with their full names and details
     return NextResponse.json({ voices: englishVoices });
   } catch (error) {
     console.error("Error fetching voices:", error);
