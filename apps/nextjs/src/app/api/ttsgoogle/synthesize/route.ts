@@ -3,7 +3,7 @@ import { TextToSpeechClient } from "@google-cloud/text-to-speech";
 
 export async function POST(request: NextRequest) {
   try {
-    const { text, voice } = await request.json();
+    const { text, voice, languageCode } = await request.json();
 
     if (!text || !voice) {
       return new Response(
@@ -15,8 +15,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Extract language code from the voice name (assuming format like "en-US-Standard-A")
-    const languageCode = voice.split("-").slice(0, 2).join("-");
+    // Use the provided languageCode instead of extracting it from the voice name
+    const effectiveLanguageCode =
+      languageCode || voice.split("-").slice(0, 2).join("-");
 
     // Create a client with credentials from environment variables
     const client = new TextToSpeechClient({
@@ -35,10 +36,15 @@ export async function POST(request: NextRequest) {
       input: { text },
       voice: {
         name: voice,
-        languageCode: languageCode, // Add the language code here
+        languageCode: effectiveLanguageCode, // Use the provided or extracted language code
       },
       audioConfig: { audioEncoding: "MP3" },
     };
+
+    console.log(
+      "Synthesis request:",
+      JSON.stringify(synthesisRequest, null, 2),
+    );
 
     // Create a readable stream to stream the audio data
     const readable = new ReadableStream({
@@ -83,7 +89,10 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Error synthesizing speech:", error);
     return new Response(
-      JSON.stringify({ error: "Failed to synthesize speech" }),
+      JSON.stringify({
+        error: "Failed to synthesize speech",
+        details: error instanceof Error ? error.message : String(error),
+      }),
       {
         status: 500,
         headers: { "Content-Type": "application/json" },

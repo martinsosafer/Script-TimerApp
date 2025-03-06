@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@voiceai/ui";
 import Textarea from "@voiceai/ui/@/components/textarea-autosize";
@@ -37,6 +37,7 @@ export default function TextToSpeech() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Fetch voices on component mount
   useEffect(() => {
@@ -70,6 +71,10 @@ export default function TextToSpeech() {
   // Handle play button click
   const handlePlay = async () => {
     if (isPlaying) {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
       setIsPlaying(false);
       return;
     }
@@ -77,15 +82,42 @@ export default function TextToSpeech() {
     setIsLoading(true);
 
     try {
+      // Find the selected voice object to send both name and languageCode
+      const selectedVoiceObj = voices.find(
+        (voice) => voice.name === selectedVoice,
+      );
+
+      if (!selectedVoiceObj) {
+        throw new Error("Selected voice not found");
+      }
+
       const response = await fetch("/api/ttsgoogle/synthesize", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text, voice: selectedVoice }),
+        body: JSON.stringify({
+          text,
+          voice: selectedVoice,
+          languageCode: selectedVoiceObj.languageCodes[0], // Send the language code directly
+        }),
       });
 
       if (!response.ok) throw new Error("Failed to synthesize speech");
 
-      // Handle audio playback logic here (omitted for brevity)
+      // Create a blob from the streaming response
+      const blob = await response.blob();
+      const audioUrl = URL.createObjectURL(blob);
+
+      // Create or use existing audio element
+      if (!audioRef.current) {
+        audioRef.current = new Audio();
+      }
+
+      audioRef.current.src = audioUrl;
+      audioRef.current.onended = () => {
+        setIsPlaying(false);
+      };
+
+      audioRef.current.play();
       setIsPlaying(true);
     } catch (error) {
       console.error("Error playing audio:", error);
