@@ -8,6 +8,7 @@ import {
   IconUserRound,
 } from "@voiceai/ui/@/components/ui/icons";
 
+import type { I_AppSumoSubscription } from "~/constants/types/subscriptions";
 import { getCredits } from "./actions";
 import SubscriptionDetails from "./subscription-details";
 
@@ -26,7 +27,6 @@ async function getSubscription(planId: string | null | undefined) {
 
   try {
     const subscription = await stripe.subscriptions.retrieve(planId);
-    console.log("SubscriptionInfo:", subscription);
     return subscription;
   } catch (e) {
     console.error(e);
@@ -53,7 +53,8 @@ export default async function MyProfile() {
   const stripeSubscription = await getSubscription(
     isAppSumo ? null : session?.user.subscription?.planId,
   );
-  const appSumoSubscription = await getAppSumoDetails(session?.user.id ?? "");
+  const appSumoSubscription: I_AppSumoSubscription | undefined =
+    await getAppSumoDetails(session?.user.id ?? "");
 
   const credits = await getCredits(session?.user.id ?? "");
 

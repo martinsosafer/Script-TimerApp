@@ -6,7 +6,6 @@ import type {
   I_AppSumoSubscription,
   I_Subscription,
 } from "~/constants/types/subscriptions";
-import { api } from "~/utils/api";
 import CreditRow from "../credits-row";
 
 type Credits = Record<
@@ -31,7 +30,7 @@ type Credits = Record<
   >;
 
 interface SubscriptionDetailsProps {
-  subscription: I_Subscription | I_AppSumoSubscription | undefined;
+  subscription: I_AppSumoSubscription | I_Subscription | undefined;
   credits?: Credits | null | undefined;
   isAppSumo: boolean;
 }
@@ -43,8 +42,6 @@ export default function SubscriptionDetails({
 }: SubscriptionDetailsProps) {
   //const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
   const router = useRouter();
-
-  console.log("subscriotionData", subscription);
 
   function getBillingDate(date: number) {
     return new Date(date * 1000).toLocaleDateString();
@@ -73,13 +70,16 @@ export default function SubscriptionDetails({
         <div className="flex flex-col">
           <span className="px-2 text-xs text-gray-400">Plan Tier</span>
           <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
-            Tier {subscription?.tier}
+            Tier {(subscription as I_AppSumoSubscription)?.tier} -{" "}
+            {(subscription as I_AppSumoSubscription)?.tier === 1
+              ? "1 year of access"
+              : "2 years of access"}
           </div>
         </div>
         <div className="flex flex-col">
           <span className="px-2 text-xs text-gray-400">License Key</span>
           <div className="flex h-[40px] w-[350px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
-            {subscription?.license_key || "N/A"}
+            {(subscription as I_AppSumoSubscription)?.license_key || "N/A"}
           </div>
         </div>
       </div>
@@ -93,7 +93,9 @@ export default function SubscriptionDetails({
         <div className="flex flex-col">
           <span className="px-2 text-xs text-gray-400">Purchase Date</span>
           <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
-            {new Date(subscription?.created_at).toLocaleDateString()}
+            {(
+              subscription as I_AppSumoSubscription
+            )?.created_at?.toLocaleDateString() ?? "N/A"}
           </div>
         </div>
       </div>
@@ -106,15 +108,16 @@ export default function SubscriptionDetails({
         <div className="flex flex-col">
           <span className="px-2 text-xs text-gray-400">Plan</span>
           <div className="flex h-[40px] w-[300px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
-            {subscription?.status}
+            {(subscription as I_Subscription)?.status}
           </div>
         </div>
         <div className="flex flex-col">
           <span className="px-2 text-xs text-gray-400">Status</span>
           <div className="flex h-[40px] w-[300px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
-            {subscription?.status === ("FREE" || "FREE_TRIAL")
+            {(subscription as I_Subscription)?.status ===
+            ("FREE" || "FREE_TRIAL")
               ? "No Subscription"
-              : subscription?.plan?.active
+              : (subscription as I_Subscription)?.plan?.active
                 ? "Active"
                 : "Inactive"}
           </div>
@@ -124,8 +127,10 @@ export default function SubscriptionDetails({
         <div className="flex flex-col">
           <span className="px-2 text-xs text-gray-400">Next Billing Date</span>
           <div className="flex h-[40px] w-[300px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
-            {subscription?.current_period_end
-              ? getBillingDate(subscription?.current_period_end)
+            {(subscription as I_Subscription)?.current_period_end
+              ? getBillingDate(
+                  (subscription as I_Subscription)?.current_period_end,
+                )
               : "No Billing Date"}
           </div>
         </div>
@@ -134,7 +139,9 @@ export default function SubscriptionDetails({
             Next Billing Amount
           </span>
           <div className="flex h-[40px] w-[300px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
-            {getBillingAmount(subscription?.plan?.amount ?? 0)}
+            {getBillingAmount(
+              (subscription as I_Subscription)?.plan?.amount ?? 0,
+            )}
           </div>
         </div>
       </div>
@@ -185,8 +192,11 @@ export default function SubscriptionDetails({
                   | "openai_credit"
               }
               subscription={
-                (isAppSumo ? subscription?.tier : subscription?.status) ??
-                "FREE"
+                (isAppSumo
+                  ? ((
+                      subscription as I_AppSumoSubscription
+                    )?.tier?.toString() as "1" | "2")
+                  : (subscription as I_Subscription)?.status) ?? "FREE"
               }
             />
           );
