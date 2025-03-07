@@ -53,6 +53,7 @@ export default function PromptInput({
     <div className={`${roboto.className} flex w-full flex-col items-center`}>
       <form
         onSubmit={(e) => {
+          e.preventDefault();
           setIsInputMinimized(true);
           router.push(`#chatFeedback`);
           onSubmit(e);
