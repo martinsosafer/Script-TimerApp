@@ -73,7 +73,7 @@ export default function HeroSection() {
             <RevealText>
               <div className="flex justify-center ">
                 <p className="text-cp-secondary-lightest text-center text-[18px]  font-bold leading-[25px] lg:text-[20px] lg:leading-[28px]">
-                  What do you want to create?.
+                  What do you want to create?
                 </p>
               </div>
             </RevealText>
