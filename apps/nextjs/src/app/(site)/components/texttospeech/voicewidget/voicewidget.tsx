@@ -26,6 +26,7 @@ function VoiceWidget({
   const { data: celebrityVoices = [], isLoading: isQueryLoading } = subData
     ? api.voice.listCelebrity.useQuery({ name: "" })
     : api.voice.PubliclistCelebrity.useQuery({ name: "" });
+
   const [currentPage, setCurrentPage] = useState(1);
   const [currentFavPage, setCurrentFavPage] = useState(1);
   const [currentCelebrityPage, setCurrentCelebrityPage] = useState(1);
@@ -34,7 +35,6 @@ function VoiceWidget({
   const [showFavorites, setShowFavorites] = useState(false);
   const [showCelebrities, setShowCelebrities] = useState(false);
   const [showCustom, setShowCustom] = useState(false);
-  //Celeb modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const isGenderFiltered = filter === "MALE" || filter === "FEMALE";
@@ -72,15 +72,15 @@ function VoiceWidget({
     favEndIndex,
   );
 
-  const celebStartIndex = (currentCelebrityPage - 1) * pageSize; // Added
+  const celebStartIndex = (currentCelebrityPage - 1) * pageSize;
   const celebEndIndex = Math.min(
     celebStartIndex + pageSize,
     celebrityVoices?.length || 0,
-  ); // Added
+  );
   const paginatedCelebrityVoices = celebrityVoices?.slice(
     celebStartIndex,
     celebEndIndex,
-  ); // Added
+  );
 
   const totalPages = Math.ceil((filteredVoices?.length || 0) / pageSize);
   const totalFavPages = Math.ceil(
@@ -88,18 +88,17 @@ function VoiceWidget({
   );
   const totalCelebrityPages = Math.ceil(
     (celebrityVoices?.length || 0) / pageSize,
-  ); // Added
+  );
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
     setCurrentPage(1);
     setCurrentFavPage(1);
-    setCurrentCelebrityPage(1); // Added
+    setCurrentCelebrityPage(1);
   };
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-    console.log("Current Page:", pageNumber);
   };
 
   const handleFavPageChange = (pageNumber) => {
@@ -107,7 +106,6 @@ function VoiceWidget({
   };
 
   const handleCelebrityPageChange = (pageNumber) => {
-    // Added
     setCurrentCelebrityPage(pageNumber);
   };
 
@@ -118,7 +116,7 @@ function VoiceWidget({
     setFilter("MALE");
     setCurrentPage(1);
     setCurrentFavPage(1);
-    setCurrentCelebrityPage(1); // Added
+    setCurrentCelebrityPage(1);
     setSearchQuery("");
     setIsModalOpen(false);
   };
@@ -130,7 +128,7 @@ function VoiceWidget({
     setFilter("FEMALE");
     setCurrentPage(1);
     setCurrentFavPage(1);
-    setCurrentCelebrityPage(1); // Added
+    setCurrentCelebrityPage(1);
     setSearchQuery("");
     setIsModalOpen(false);
   };
@@ -143,7 +141,7 @@ function VoiceWidget({
     setFilter(null);
     setCurrentPage(1);
     setCurrentFavPage(1);
-    setCurrentCelebrityPage(1); // Added
+    setCurrentCelebrityPage(1);
     setIsModalOpen(false);
   };
 
@@ -153,7 +151,7 @@ function VoiceWidget({
     setShowCustom(false);
     setCurrentPage(1);
     setCurrentFavPage(1);
-    setCurrentCelebrityPage(1); // Added
+    setCurrentCelebrityPage(1);
     setSearchQuery("");
     setFilter(null);
     setIsModalOpen(false);
@@ -165,11 +163,12 @@ function VoiceWidget({
     setShowCustom(false);
     setCurrentPage(1);
     setCurrentFavPage(1);
-    setCurrentCelebrityPage(1); // Added
+    setCurrentCelebrityPage(1);
     setSearchQuery("");
     setFilter(null);
     setIsModalOpen(true);
   };
+
   const handleShowCustom = () => {
     setShowCelebrities(false);
     setShowCustom(true);
@@ -179,6 +178,7 @@ function VoiceWidget({
     setFilter(null);
     setIsModalOpen(false);
   };
+
   const renderPagination = (currentPage, totalPages, onPageChange) => {
     const pageNumbers = [];
     const maxButtons = 4;
@@ -348,15 +348,6 @@ function VoiceWidget({
           </div>
         </div>
       )}
-      {/* {isModalOpen && (
-        <CelebrityModal
-          setIsModalOpen={setIsModalOpen}
-          page="home"
-          onClose={() => setIsModalOpen(false)}
-          openModal={true}
-          position={{ x: 530, y: 520 }}
-        />
-      )} */}
     </div>
   );
 }

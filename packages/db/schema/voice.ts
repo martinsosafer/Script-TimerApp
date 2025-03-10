@@ -10,7 +10,7 @@ import {
 
 import { pgTable } from "./_table";
 
-export const voiceType = pgEnum("voice_type", ["11LABS", "OTHER"]);
+export const voiceType = pgEnum("voice_type", ["11LABS", "GOOGLE", "OTHER"]);
 export const voiceGender = pgEnum("voice_gender", ["MALE", "FEMALE", "OTHER"]);
 
 export const voices = pgTable("voice", {
@@ -29,4 +29,3 @@ export const voices = pgTable("voice", {
   created_at: timestamp("created_at").notNull().defaultNow(),
   updated_at: timestamp("updated_at").notNull().defaultNow(),
 });
-

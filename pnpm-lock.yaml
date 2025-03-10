@@ -153,6 +153,9 @@ importers:
       '@google-cloud/speech':
         specifier: ^6.7.0
         version: 6.7.0
+      '@google-cloud/text-to-speech':
+        specifier: ^5.8.1
+        version: 5.8.1
       '@next/third-parties':
         specifier: ^14.2.23
         version: 14.2.23(next@14.2.23)(react@18.2.0)
@@ -222,6 +225,9 @@ importers:
       ai:
         specifier: ^3.1.37
         version: 3.3.14(openai@4.4.0)(react@18.2.0)(svelte@4.2.18)(vue@3.4.38)(zod@3.23.8)
+      axios:
+        specifier: ^1.6.0
+        version: 1.7.4
       bcrypt:
         specifier: ^5.1.1
         version: 5.1.1
@@ -272,7 +278,7 @@ importers:
         version: 4.4.0
       plagiarism-checker:
         specifier: ^4.0.0
-        version: 4.0.0(axios@0.21.4)
+        version: 4.0.0(axios@1.7.4)
       pnpm:
         specifier: ^8.12.0
         version: 8.15.9
@@ -3599,6 +3605,16 @@ packages:
       pumpify: 2.0.1
       stream-events: 1.0.5
       uuid: 9.0.1
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+    dev: false
+
+  /@google-cloud/text-to-speech@5.8.1:
+    resolution: {integrity: sha512-HXyZBtfQq+ETSLwWV/k3zFRWSzt+KEfiC5/OqXNNUed+lU/LEyN0CsqqEmkFfkL8BPsVIMAK2xiYCaDsKENukg==}
+    engines: {node: '>=14.0.0'}
+    dependencies:
+      google-gax: 4.4.1
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -7730,14 +7746,6 @@ packages:
   /axe-core@4.10.0:
     resolution: {integrity: sha512-Mr2ZakwQ7XUAjp7pAwQWRhhK8mQQ6JAaNWSjmjxil0R8BPioMtQsTLOolGYkji1rcL++3dCqZA3zWqpT+9Ew6g==}
     engines: {node: '>=4'}
-    dev: false
-
-  /axios@0.21.4:
-    resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
-    dependencies:
-      follow-redirects: 1.15.6
-    transitivePeerDependencies:
-      - debug
     dev: false
 
   /axios@1.7.4:
@@ -16058,12 +16066,12 @@ packages:
       find-up: 3.0.0
     dev: false
 
-  /plagiarism-checker@4.0.0(axios@0.21.4):
+  /plagiarism-checker@4.0.0(axios@1.7.4):
     resolution: {integrity: sha512-X9kJLnFcl6efJG1GHK61ecY/XU7I3nSXO7BwXEFNnNENaBi2kVHG+SFTLdIGw2khd0kmWLBtnP9LLqCnbKl4+A==}
     peerDependencies:
       axios: ^0.21.1
     dependencies:
-      axios: 0.21.4
+      axios: 1.7.4
       rimraf: 3.0.2
     dev: false
 
