@@ -176,12 +176,12 @@ export const History = ({ ...rest }) => {
       <TableBody>
         {!isLoading &&
           data?.map((history, index) => (
-            <TableRow key={history.credit_id}>
+            <TableRow key={history.history_id}>
               <TableCell>{history.prompt}</TableCell>
-              <TableCell>{history.credits}</TableCell>
+              <TableCell>-{history.prompt.length}</TableCell>
               <TableCell>{history.created_at.toDateString()}</TableCell>
 
-              <TableCell>{history.metadata.voice_actor ?? ""}</TableCell>
+              <TableCell>{history.voice_name ?? "" ?? ""}</TableCell>
               <TableCell>
                 <button
                   type="button"

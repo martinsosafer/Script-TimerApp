@@ -5,6 +5,11 @@ import { auth } from "@voiceai/auth";
 import { db, eq, schema } from "@voiceai/db";
 import { elevenLabsCredit } from "@voiceai/db/schema/11LabsCredits";
 
+function addWatermark(message: string) {
+  const suffix = "Thank you for using Co-Producer";
+  return `${message} -  - ${suffix}`;
+}
+
 export async function POST(req: Request) {
   try {
     const session = await auth();
@@ -70,17 +75,45 @@ export async function POST(req: Request) {
       })
       .where(eq(elevenLabsCredit.userId, userId));
 
+    // Apply watermark if needed
+    let message = body.text;
+    if (
+      ![
+        "BUSINESS",
+        "STUDENT",
+        "CREATOR",
+        "STUDENTCLMO",
+        "STUDENTCLMO",
+        "CREATORCLMO",
+        "BUSINESSCLMO",
+        "STUDENTCLYR",
+        "CREATORCLYR",
+        "BUSINESSCLYR",
+      ].includes(subscription?.status)
+    ) {
+      message = addWatermark(message);
+    }
+
     let audioStream: ReadableStream;
     let generationType: "11LABS" | "GOOGLE";
+    let generationMetadata: any;
 
     if (voice.type === "11LABS") {
-      const { stream } = await handleElevenLabsGeneration(body);
+      const { stream, metadata } = await handleElevenLabsGeneration({
+        ...body,
+        text: message, // Use the potentially watermarked message
+      });
       audioStream = stream;
       generationType = "11LABS";
+      generationMetadata = metadata;
     } else if (voice.type === "GOOGLE") {
-      const { stream } = await handleGoogleGeneration(body);
+      const { stream, metadata } = await handleGoogleGeneration({
+        ...body,
+        text: message, // Use the potentially watermarked message
+      });
       audioStream = stream;
       generationType = "GOOGLE";
+      generationMetadata = metadata;
     } else {
       return new NextResponse(
         JSON.stringify({ error: "Unsupported voice type." }),
@@ -88,7 +121,62 @@ export async function POST(req: Request) {
       );
     }
 
-    return new NextResponse(audioStream, {
+    // Save the audio data for generation records
+    const reader = audioStream.getReader();
+    const audioChunks: Uint8Array[] = [];
+
+    const modifiedStream = new ReadableStream({
+      async start(controller) {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) {
+            break;
+          }
+          controller.enqueue(value);
+
+          // Collect the audio chunks to save later
+          audioChunks.push(value);
+        }
+        controller.close();
+
+        // Convert collected audio chunks to base64
+        const audioBase64 = Buffer.concat(audioChunks).toString("base64");
+
+        // Save generation to the database after the stream completes
+        const generationId = await db
+          .insert(schema.generations)
+          .values({
+            userId: userId,
+            type: generationType, // Ensure this is correctly set for both 11LABS and GOOGLE
+            prompt: body.text,
+            response: audioBase64,
+            metadata: generationMetadata,
+          })
+          .returning({ generationId: schema.generations.id })
+          .then((res) => res?.[0]?.generationId);
+
+        if (!generationId) throw new Error("Error creating voice");
+
+        const creditsUsed = body.text.length; // Assuming each character equals one credit
+        await db.insert(schema.credits).values({
+          userId: userId,
+          generationId: generationId, // Link to the generation ID
+          type: generationType, // Specify the type based on your enum
+          credits: -creditsUsed, // Negative value to show deduction
+          metadata: {
+            length: body.text.length,
+            description: `${generationType} voice generation credit usage`,
+          },
+          created_at: new Date(),
+          updated_at: new Date(),
+        });
+      },
+      cancel() {
+        reader.cancel();
+      },
+    });
+
+    return new NextResponse(modifiedStream, {
       headers: {
         "Content-Type": "audio/mpeg",
       },
@@ -132,7 +220,7 @@ async function handleElevenLabsGeneration(body: any) {
     throw new Error(`ElevenLabs API error: ${errorText}`);
   }
 
-  return { stream: response.body };
+  return { stream: response.body, metadata: data };
 }
 
 async function handleGoogleGeneration(body: any) {
@@ -146,14 +234,16 @@ async function handleGoogleGeneration(body: any) {
 
   const languageCode = body.voice_id.split("-").slice(0, 2).join("-");
 
-  const [response] = await client.synthesizeSpeech({
+  const request = {
     input: { text: body.text },
     voice: {
       name: body.voice_id,
       languageCode: languageCode,
     },
     audioConfig: { audioEncoding: "MP3" },
-  });
+  };
+
+  const [response] = await client.synthesizeSpeech(request);
 
   if (!response.audioContent) {
     throw new Error("Google TTS returned no audio content");
@@ -167,7 +257,13 @@ async function handleGoogleGeneration(body: any) {
     },
   });
 
-  return { stream };
+  return {
+    stream,
+    metadata: {
+      ...request,
+      voice_actor: body.voice_id, // Add voice_actor here
+    },
+  };
 }
 
 function getMaxMessageLength(subscriptionStatus: string | undefined) {
