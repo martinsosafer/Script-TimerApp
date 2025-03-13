@@ -96,7 +96,7 @@ export default function ImageGenerator({
   ];
 
   return (
-    <div className="flex w-[1024px] flex-col items-center">
+    <div className="flex w-[1024px] max-w-[96%] flex-col items-center">
       <Tabs options={options} />
       {/* <PromptSelector
         isMagicPrompt={isMagicPrompt}
@@ -111,7 +111,7 @@ export default function ImageGenerator({
                 setNoSessionModalOpen(true);
               }
         }
-        className="mt-12 flex w-full flex-col items-center"
+        className="flex w-full flex-col items-center pt-8"
       >
         {!isMagicPrompt && (
           <>
@@ -121,9 +121,9 @@ export default function ImageGenerator({
             >
               Enter Your Own Prompt
             </label>
-            <div className="mb-4 w-full rounded-md border border-gray-300 bg-gray-50 p-4">
+            <div className="w-full rounded-md border border-gray-300 bg-gray-50 p-4 pb-4">
               <textarea
-                className="mb-2 block w-full bg-gray-50 text-sm text-gray-900 placeholder:text-lg focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400"
+                className="block w-full bg-gray-50 pb-2 text-sm text-gray-900 placeholder:text-lg focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400"
                 rows={8}
                 name="prompt"
                 id="prompt"
@@ -134,7 +134,7 @@ export default function ImageGenerator({
         )}
         <label
           htmlFor="text"
-          className="mb-2 text-lg font-semibold text-primary"
+          className="pb-2 text-base font-semibold text-primary lg:text-lg"
         >
           Enter your scene description.
         </label>
