@@ -46,6 +46,11 @@ const AudioStreamButtons = ({
 
   const handleCreate = async () => {
     try {
+      setLoading(true);
+
+      const characterCount = script.replace(/<[^>]+>/g, "").length;
+      refetchCredits((prev) => Math.max(0, prev - characterCount));
+
       await handleStreaming({
         userPlan: subData.status,
         voice_id: selectedModel.external_id,
@@ -56,9 +61,20 @@ const AudioStreamButtons = ({
         setLoading,
         audioRef,
       });
-      await refetchCredits();
+
+      // 3. Force credit refresh with retries
+      let retries = 3;
+      while (retries > 0) {
+        await refetchCredits();
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        retries--;
+      }
     } catch (e) {
-      console.log("catcherror", e);
+      console.error("Creation error:", e);
+
+      refetchCredits(true);
+    } finally {
+      setLoading(false);
     }
   };
 
