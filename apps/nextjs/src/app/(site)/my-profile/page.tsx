@@ -57,7 +57,7 @@ export default async function MyProfile() {
     await getAppSumoDetails(session?.user.id ?? "");
 
   const credits = await getCredits(session?.user.id ?? "");
-
+  console.log("creditssss", credits);
   if (!session) {
     redirect("/");
   }

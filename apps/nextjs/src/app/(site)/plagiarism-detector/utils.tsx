@@ -4,13 +4,13 @@ export function consumedCreditsWarning(text: string) {
   if (credits === 1) {
     return (
       <span className="rounded-md bg-red-200 px-4 py-2 text-sm">
-        This scan will consume <strong>{credits}</strong> credit.
+        This scan will consume <strong>{credits * 250}</strong> credit.
       </span>
     );
   } else {
     return (
       <span className="rounded-md bg-red-200 px-4 py-2 text-sm">
-        This scan will consume <strong>{credits}</strong> credits.
+        This scan will consume <strong>{credits * 250}</strong> credits.
       </span>
     );
   }

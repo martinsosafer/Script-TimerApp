@@ -13,6 +13,7 @@ import { users } from "./auth";
 export const generationType = pgEnum("generation_type", [
   "11LABS",
   "OPENAI",
+  "GOOGLE",
   "OTHER",
 ]);
 

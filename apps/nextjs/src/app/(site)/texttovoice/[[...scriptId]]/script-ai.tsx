@@ -14,6 +14,7 @@ import { IconClose, Icons } from "@voiceai/ui/@/components/ui/icons";
 import { Tabs } from "@voiceai/ui/@/components/ui/tabs";
 import { useCopyToClipboard } from "@voiceai/ui/@/hooks/use-copy-to-clipboard";
 
+import { poppins } from "~/app/fonts";
 import { useGenerateVoice } from "~/app/hooks/texttovoice/useGenerateVoice";
 import { useReviseScript } from "~/app/hooks/texttovoice/useRevisedScript";
 import { useScriptDetails } from "~/app/hooks/texttovoice/useScriptDetails";
@@ -25,6 +26,7 @@ import NoSessionModal from "../../components/modals/no-session-modal";
 import TabOne from "../../components/texttospeech/Tab1";
 import TabTwo from "../../components/texttospeech/Tab2";
 import { SpeedButton } from "../../components/texttospeech/Tab2/buttonmenu.tsx/speedbutton";
+import { characters, getTotalCredits } from "./utils";
 
 export function ScriptAI({
   subData,
@@ -50,22 +52,25 @@ export function ScriptAI({
   const [similarity, setSimilarity] = React.useState([0.5]);
   const [stability, setStability] = React.useState([0.5]);
   const [loading, setLoading] = React.useState(false);
+
   // If script is selected from URL path parameter, load in state from db
   const { scriptId } = useParams();
 
-  //scriptdetials
+  // Script details
   useScriptDetails(scriptId, setScript);
 
-  //handle change for editor so it sets changes to the text area
+  // Handle change for editor
   const handleEditorChange = (content) => {
-    setScript(content); // Update the script state with the content from the editor
+    setScript(content);
   };
+
   // Revise script grammar/spelling with AI
   const { revisedScript, checkAndPublish, setRevisedScript } =
     useReviseScript(setLoading);
 
-  //Save voice on db and generate it
+  // Save voice on db and generate it
   const { generateVoice, error } = useGenerateVoice(setLoading);
+
   // Generate audio voice
   const [audio, setAudio] = React.useState<string>("");
   const [openFreeModal, setOpenFreeModal] = React.useState(false);
@@ -86,6 +91,7 @@ export function ScriptAI({
     if (isCopied) return;
     copyToClipboard(revisedScript);
   };
+
   const { wordCount, minutes, formattedSeconds, speedCategory } =
     calculateLengthTime(script);
 
@@ -94,20 +100,55 @@ export function ScriptAI({
   // Function to refetch credits
   const refetchCredits = async () => {
     try {
-      // Assuming we have the user's ID available (adjust as needed)
       const userId = subData?.userId;
-      if (!userId) return; // Ensure userId is available
-      const newCredits = await fetchUserCredits(userId); // Refetch the credits
-      setCredits(newCredits); // Update the state with the new credits
+      if (!userId) return;
+      const newCredits = await fetchUserCredits(userId);
+      setCredits(newCredits);
     } catch (error) {
       console.error("Error refetching credits:", error);
     }
   };
+
   React.useEffect(() => {
     if (subData) {
       refetchCredits();
     }
   }, [subData]);
+
+  const totalCredits = getTotalCredits(subData?.status);
+
+  // Header subtitle content
+  const subtitleContent = subData?.status ? (
+    <div>
+      <p className="font-base mb-2 text-center">
+        This is where you choose and create your voice overs. On your current
+        plan, <br />
+        <span className="text-cp-primary font-semibold">{subData.status}</span>,
+        you are entitled to{" "}
+        <span className="text-cp-primary font-bold">
+          {characters[subData.status]}
+        </span>{" "}
+        per script.
+      </p>
+      <p className="font-base mb-2 text-center">
+        You have <span className="text-cp-primary font-bold">{credits}</span>{" "}
+        characters left of{" "}
+        <span className="text-cp-primary font-bold">{totalCredits}</span> total
+        monthly characters.
+      </p>
+    </div>
+  ) : (
+    <div className="flex flex-col">
+      <p className="font-base text-center">
+        This is where you choose and create your voice overs.
+      </p>
+      <p className="font-base mb-2 text-center">
+        Log in to Script Timer and start creating now.
+      </p>
+    </div>
+  );
+
+  // Styles
   const containerStyle = {
     position: "relative",
     bottom: "40px",
@@ -124,24 +165,24 @@ export function ScriptAI({
     padding: "10px",
     borderRadius: "8px",
     zIndex: 0,
-    opacity: 1, // Always fully visible
+    opacity: 1,
     transition: "opacity 0.5s ease-in-out",
     border: "1px solid black",
   };
 
   const audioStyle = {
     flex: 1,
-    height: "50px", // Slightly smaller height
+    height: "50px",
     backgroundColor: "transparent",
     border: "none",
   };
 
   const buttonStyle = {
     backgroundColor: "#F97316",
-    border: "1px solid black", // Subtle black border
-    borderRadius: "4px", // Square corners
+    border: "1px solid black",
+    borderRadius: "4px",
     color: "white",
-    padding: "8px", // Padding around the icon
+    padding: "8px",
     cursor: "pointer",
     fontFamily: "Poppins, sans-serif",
     fontWeight: "bold",
@@ -149,27 +190,41 @@ export function ScriptAI({
     alignItems: "center",
     justifyContent: "center",
     transition: "background-color 0.3s",
-    width: "40px", // Square size
-    height: "40px", // Square size
+    width: "40px",
+    height: "40px",
     marginLeft: "4px",
   };
 
   const buttonHoverStyle = {
     ...buttonStyle,
-    backgroundColor: "#e76f00", // Darker on hover
+    backgroundColor: "#e76f00",
   };
+
   const disabledButtonStyle = {
     ...buttonStyle,
-    backgroundColor: "#f7a07a", // Lighter orange
+    backgroundColor: "#f7a07a",
     cursor: "not-allowed",
     opacity: 0.6,
   };
 
   return (
     <>
-      <div className=" mb-32 h-full   flex-col md:flex">
+      {/* Integrated Header */}
+      <header
+        className={`my-3 flex w-full flex-col items-center justify-center p-6 lg:mb-[40px] lg:mt-[60px] lg:p-0 ${poppins.className}`}
+      >
+        <h2 className="text-cp-primary w-full text-center text-[28px] font-bold lg:w-[650px] lg:text-[42px]">
+          Text to Voice
+        </h2>
+        <h4 className="mt-[12px] w-full text-center text-[14px] lg:w-[650px] lg:text-[16px]">
+          {subtitleContent}
+        </h4>
+      </header>
+
+      {/* Main Content */}
+      <div className="mb-32 h-full flex-col md:flex">
         <Tabs defaultValue="complete" className="flex-1">
-          <div className="container mb-4 h-full ">
+          <div className="container mb-4 h-full">
             <div className="grid h-full items-stretch gap-6 md:grid-cols-[400px_1fr]">
               <TabOne
                 setSelectedModel={setSelectedModel}
@@ -220,10 +275,10 @@ export function ScriptAI({
             </div>
           </div>
         </Tabs>
+
+        {/* Audio Controls */}
         <div style={containerStyle} className="mt-14">
           <audio ref={audioRef} controls="controls" style={audioStyle} />
-
-          {/* Controls container */}
           <div
             className="controls-container"
             style={{ display: "flex", gap: "10px" }}
@@ -234,7 +289,6 @@ export function ScriptAI({
               buttonHoverStyle={buttonHoverStyle}
               disabledButtonStyle={disabledButtonStyle}
             />
-
             <HoverCard>
               <HoverCardTrigger asChild>
                 <button
@@ -284,8 +338,6 @@ export function ScriptAI({
                 </HoverCardContent>
               )}
             </HoverCard>
-
-            {/* Close Button */}
             <button
               onClick={handleCloseAudio}
               style={buttonStyle}
@@ -301,7 +353,6 @@ export function ScriptAI({
               <IconClose width={24} style={{ color: "white" }} />
             </button>
           </div>
-
           {showConfetti && (
             <ReactConfetti
               width={window.innerWidth}
@@ -316,6 +367,8 @@ export function ScriptAI({
           )}
         </div>
       </div>
+
+      {/* No Session Modal */}
       <NoSessionModal
         subData={subData}
         openModal={openFreeModal}

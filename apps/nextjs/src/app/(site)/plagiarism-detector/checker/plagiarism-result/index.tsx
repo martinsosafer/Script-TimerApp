@@ -43,7 +43,7 @@ export default function PlagiarismResult({ result }: PlagiarismResultProps) {
         </div>
         <div className="rounded-sm bg-red-200 p-2">
           {" "}
-          Credits consumed: <strong>{credits_used}</strong>
+          Credits consumed: <strong>{credits_used * 250}</strong>
         </div>
       </div>
       <div className="mt-4 font-semibold">{`Your content is extremely similar to what we found at this link${internet.length === 1 ? "" : "s"}:`}</div>

@@ -1,28 +1,17 @@
 import { NextResponse } from "next/server";
-
-
+import { TextToSpeechClient } from "@google-cloud/text-to-speech";
 
 import { auth } from "@voiceai/auth";
 import { db, eq, schema } from "@voiceai/db";
 import { elevenLabsCredit } from "@voiceai/db/schema/11LabsCredits";
 
-
-
-
-
 function addWatermark(message: string) {
-  // const prefix = "Voice test";
-  const suffix =
-    "Unlock our best voices! Create your best scripts and videos. Click 'Upgrade Now' and thank you for trying Script Timer AI!";
-
+  const suffix = "Thank you for using Script-Timer ai";
   return `${message} -  - ${suffix}`;
 }
 
-export async function POST(req: { json: () => any }) {
+export async function POST(req: Request) {
   try {
-    console.log("Received request:", req);
-
-    // Get the authenticated user
     const session = await auth();
     const userId = session?.user.id;
 
@@ -40,20 +29,8 @@ export async function POST(req: { json: () => any }) {
       where: eq(schema.subscriptions.userId, userId),
     });
 
-    // Determine max message length based on subscription
-    let maxMessageLength = 1000; // Default maximum message length for free users
-
-    if (subscription?.status === "FREE_TRIAL") {
-      maxMessageLength = 1600; // Updated maximum message length for free trials
-    } else if (subscription?.status === "STUDENT") {
-      maxMessageLength = 2000;
-    } else if (subscription?.status === "CREATOR") {
-      maxMessageLength = 5000;
-    } else if (subscription?.status === "BUSINESS") {
-      maxMessageLength = 10000;
-    }
-
-    // Check message length
+    // Check message length based on subscription
+    const maxMessageLength = getMaxMessageLength(subscription?.status);
     if (body.text.length > maxMessageLength) {
       return new NextResponse(
         JSON.stringify({
@@ -63,7 +40,19 @@ export async function POST(req: { json: () => any }) {
       );
     }
 
-    // Fetch user credits from elevenLabsCredit table
+    // Fetch voice details
+    const voice = await db.query.voices.findFirst({
+      where: eq(schema.voices.external_id, body.voice_id),
+    });
+
+    if (!voice) {
+      return new NextResponse(JSON.stringify({ error: "Voice not found." }), {
+        status: 404,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    // Check user credits
     const userCredits = await db.query.elevenLabsCredit.findFirst({
       where: eq(elevenLabsCredit.userId, userId),
     });
@@ -77,15 +66,16 @@ export async function POST(req: { json: () => any }) {
       );
     }
 
-    // Subtract credits
+    // Deduct credits
     await db
       .update(elevenLabsCredit)
       .set({
         credits: userCredits.credits - body.text.length,
-        updated_at: new Date(), // Ensure fields are correctly updated
+        updated_at: new Date(),
       })
       .where(eq(elevenLabsCredit.userId, userId));
 
+    // Apply watermark if needed
     let message = body.text;
     if (
       ![
@@ -104,66 +94,38 @@ export async function POST(req: { json: () => any }) {
       message = addWatermark(message);
     }
 
-    const data = {
-      model_id: "eleven_multilingual_v2",
-      text: message,
-      voice_actor: body.voice_actor,
-      voice_settings: {
-        similarity_boost: body.similarity,
-        stability: body.stability,
-      },
-    };
+    let audioStream: ReadableStream;
+    let generationType: "11LABS" | "GOOGLE";
+    let generationMetadata: any;
 
-    // Try with the first API key (e.g., for cloned voices)
-    let response = await fetch(
-      `https://api.elevenlabs.io/v1/text-to-speech/${body.voice_id}/stream`,
-      {
-        method: "POST",
-        headers: {
-          accept: "audio/mpeg",
-          "xi-api-key": process.env.INTEGRATION_11LABS_API_KEY ?? "",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      },
-    );
-
-    // If the first attempt fails, try with the second API key (e.g., for standard voices)
-    if (!response.ok) {
-      console.error(
-        "Failed with CLONE_11LABS_API_KEY, trying with STANDARD_11LABS_API_KEY...",
+    if (voice.type === "11LABS") {
+      const { stream, metadata } = await handleElevenLabsGeneration({
+        ...body,
+        text: message, // Use the potentially watermarked message
+      });
+      audioStream = stream;
+      generationType = "11LABS";
+      generationMetadata = metadata;
+    } else if (voice.type === "GOOGLE") {
+      const { stream, metadata } = await handleGoogleGeneration({
+        ...body,
+        text: message, // Use the potentially watermarked message
+      });
+      audioStream = stream;
+      generationType = "GOOGLE";
+      generationMetadata = metadata;
+    } else {
+      return new NextResponse(
+        JSON.stringify({ error: "Unsupported voice type." }),
+        { status: 400, headers: { "Content-Type": "application/json" } },
       );
-
-      response = await fetch(
-        `https://api.elevenlabs.io/v1/text-to-speech/${body.voice_id}/stream`,
-        {
-          method: "POST",
-          headers: {
-            accept: "audio/mpeg",
-            "xi-api-key": process.env.CLONE_11LABS_API_KEY ?? "",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        },
-      );
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Error response from ElevenLabs:", errorText);
-        throw new Error(
-          "Failed to fetch the text-to-speech stream with both API keys.",
-        );
-      }
     }
 
-    const responseBody = response.body;
-    if (!responseBody) {
-      throw new Error("Response body is null.");
-    }
-
-    const reader = responseBody.getReader();
+    // Save the audio data for generation records
+    const reader = audioStream.getReader();
     const audioChunks: Uint8Array[] = [];
-    const stream = new ReadableStream({
+
+    const modifiedStream = new ReadableStream({
       async start(controller) {
         while (true) {
           const { done, value } = await reader.read();
@@ -185,27 +147,28 @@ export async function POST(req: { json: () => any }) {
           .insert(schema.generations)
           .values({
             userId: userId,
-            type: "11LABS",
+            type: generationType, // Ensure this is correctly set for both 11LABS and GOOGLE
             prompt: body.text,
             response: audioBase64,
-            metadata: data,
+            metadata: generationMetadata,
           })
           .returning({ generationId: schema.generations.id })
           .then((res) => res?.[0]?.generationId);
 
         if (!generationId) throw new Error("Error creating voice");
+
         const creditsUsed = body.text.length; // Assuming each character equals one credit
         await db.insert(schema.credits).values({
           userId: userId,
           generationId: generationId, // Link to the generation ID
-          type: "11LABS", // Specify the type based on your enum
+          type: generationType, // Specify the type based on your enum
           credits: -creditsUsed, // Negative value to show deduction
           metadata: {
             length: body.text.length,
-            description: "Voice generation credit usage",
+            description: `${generationType} voice generation credit usage`,
           },
-          created_at: new Date(), // Automatically handles timestamp
-          updated_at: new Date(), // Automatically handles timestamp
+          created_at: new Date(),
+          updated_at: new Date(),
         });
       },
       cancel() {
@@ -213,17 +176,107 @@ export async function POST(req: { json: () => any }) {
       },
     });
 
-    return new NextResponse(stream, {
-      status: 200,
+    return new NextResponse(modifiedStream, {
       headers: {
         "Content-Type": "audio/mpeg",
       },
     });
-  } catch (e) {
-    console.error("ERROR STREAMING", e);
-    return new NextResponse(JSON.stringify({ error: e.message }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+  } catch (error) {
+    console.error("ERROR STREAMING", error);
+    return new NextResponse(
+      JSON.stringify({ error: error.message || "Internal Server Error" }),
+      { status: 500, headers: { "Content-Type": "application/json" } },
+    );
+  }
+}
+
+// Helper functions
+async function handleElevenLabsGeneration(body: any) {
+  const data = {
+    model_id: "eleven_multilingual_v2",
+    text: body.text,
+    voice_actor: body.voice_actor,
+    voice_settings: {
+      similarity_boost: body.similarity,
+      stability: body.stability,
+    },
+  };
+
+  const response = await fetch(
+    `https://api.elevenlabs.io/v1/text-to-speech/${body.voice_id}/stream`,
+    {
+      method: "POST",
+      headers: {
+        accept: "audio/mpeg",
+        "xi-api-key": process.env.INTEGRATION_11LABS_API_KEY ?? "",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    },
+  );
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`ElevenLabs API error: ${errorText}`);
+  }
+
+  return { stream: response.body, metadata: data };
+}
+
+async function handleGoogleGeneration(body: any) {
+  const client = new TextToSpeechClient({
+    credentials: {
+      client_email: process.env.GOOGLE_CLOUD_CLIENT_EMAIL,
+      private_key: process.env.GOOGLE_CLOUD_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+    },
+    projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
+  });
+
+  const languageCode = body.voice_id.split("-").slice(0, 2).join("-");
+
+  const request = {
+    input: { text: body.text },
+    voice: {
+      name: body.voice_id,
+      languageCode: languageCode,
+    },
+    audioConfig: { audioEncoding: "MP3" },
+  };
+
+  const [response] = await client.synthesizeSpeech(request);
+
+  if (!response.audioContent) {
+    throw new Error("Google TTS returned no audio content");
+  }
+
+  const audioData = new Uint8Array(response.audioContent as Buffer);
+  const stream = new ReadableStream({
+    start(controller) {
+      controller.enqueue(audioData);
+      controller.close();
+    },
+  });
+
+  return {
+    stream,
+    metadata: {
+      ...request,
+      voice_actor: body.voice_id, // Add voice_actor here
+    },
+  };
+}
+
+function getMaxMessageLength(subscriptionStatus: string | undefined) {
+  switch (subscriptionStatus) {
+    case "FREE_TRIAL":
+      return 1600;
+    case "STUDENT":
+      return 2000;
+    case "CREATOR":
+      return 5000;
+    case "BUSINESS":
+      return 10000;
+    default:
+      return 1000;
   }
 }

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { and, desc, eq, schema } from "@voiceai/db";
+import { and, desc, eq, schema, sql } from "@voiceai/db";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
@@ -8,22 +8,29 @@ export const historyRouter = createTRPCRouter({
   list: protectedProcedure.query(async ({ ctx }) => {
     return await ctx.db
       .select({
-        credit_id: schema.credits.id,
         history_id: schema.generations.id,
-        type: schema.credits.type,
-        credits: schema.credits.credits,
+        type: schema.generations.type,
         created_at: schema.generations.created_at,
         prompt: schema.generations.prompt,
         metadata: schema.generations.metadata,
+        voice_name: sql<string>`CASE
+        WHEN ${schema.generations.type} = 'GOOGLE' THEN ${schema.voices.name}
+        ELSE ${schema.generations.metadata}->>'voice_actor' 
+      END`.as("voice_name"),
       })
-      .from(schema.generations) // Start from generations table
+      .from(schema.generations)
       .leftJoin(
-        schema.credits,
-        eq(schema.credits.generationId, schema.generations.id),
+        schema.voices,
+        and(
+          eq(
+            schema.voices.external_id,
+            sql`${schema.generations.metadata}->>'voice_actor'`,
+          ),
+          eq(schema.generations.type, "GOOGLE"),
+        ),
       )
       .where(eq(schema.generations.userId, ctx.session.user.id))
-      .orderBy(desc(schema.generations.created_at)) // Order by generations' created_at only
-      .limit(100);
+      .orderBy(desc(schema.generations.created_at));
   }),
   download: protectedProcedure
     .input(
