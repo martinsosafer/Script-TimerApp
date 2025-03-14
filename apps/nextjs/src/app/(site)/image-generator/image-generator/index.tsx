@@ -172,6 +172,8 @@ export default function ImageGenerator({
           )}
         </button>
       </form>
+
+      {/* Image box */}
       <div className="relative my-6 flex h-[600px] w-full items-center justify-center border border-gray-300">
         {image ? (
           <>
@@ -195,6 +197,7 @@ export default function ImageGenerator({
           <IconNoImage className="h-10 w-10" />
         )}
       </div>
+
       {noSessionModalOpen && (
         <NoSessionModal
           openModal={noSessionModalOpen}
@@ -202,6 +205,7 @@ export default function ImageGenerator({
           setOpenModal={setNoSessionModalOpen}
         />
       )}
+
       {openDownloadWarning && (
         <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50 p-4 backdrop-blur">
           <div className="w-[500px] rounded-md bg-white p-8">

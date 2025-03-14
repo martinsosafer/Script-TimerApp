@@ -8,6 +8,8 @@ import { nanoid } from "~/utils/helpers";
 
 export const maxDuration = 60;
 
+// export const runtime = "edge";
+
 export async function POST(req: Request): Promise<Response> {
   const session = await auth();
 
@@ -19,6 +21,8 @@ export async function POST(req: Request): Promise<Response> {
 
     // "fal-ai/flux-lora"
     // "fal-ai/imagen3/fast"
+    // "fal-ai/flux/dev"
+    // "fal-ai/janus"
     const response = await fal.subscribe("fal-ai/flux-lora", {
       input: {
         prompt: data.text,
@@ -58,28 +62,14 @@ export async function POST(req: Request): Promise<Response> {
 
 // OpenAi Dall-E code //
 
-// import { kv } from "@vercel/kv";
 // import OpenAI from "openai";
-
-// import { auth } from "@voiceai/auth";
-// import { db, eq, schema, sql } from "@voiceai/db";
-
-// import { nanoid } from "~/utils/helpers";
-
-// export const maxDuration = 60;
-
-// // export const runtime = "edge";
 
 // const openai = new OpenAI({
 //   apiKey: process.env.OPENAI_API_KEY!,
 // });
 
 // export async function POST(req: Request): Promise<Response> {
-//   const session = await auth();
 
-//   if (!session) {
-//     return new Response("Unauthorized", { status: 401 });
-//   }
 //   try {
 //     const data = (await req.json()) as { text: string };
 
