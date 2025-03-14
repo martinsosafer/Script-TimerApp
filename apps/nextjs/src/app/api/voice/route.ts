@@ -101,7 +101,7 @@ export async function POST(req: Request) {
     if (voice.type === "11LABS") {
       const { stream, metadata } = await handleElevenLabsGeneration({
         ...body,
-        text: message, // Use the potentially watermarked message
+        text: message,
       });
       audioStream = stream;
       generationType = "11LABS";
@@ -109,7 +109,7 @@ export async function POST(req: Request) {
     } else if (voice.type === "GOOGLE") {
       const { stream, metadata } = await handleGoogleGeneration({
         ...body,
-        text: message, // Use the potentially watermarked message
+        text: message,
       });
       audioStream = stream;
       generationType = "GOOGLE";
@@ -133,21 +133,17 @@ export async function POST(req: Request) {
             break;
           }
           controller.enqueue(value);
-
-          // Collect the audio chunks to save later
           audioChunks.push(value);
         }
         controller.close();
 
-        // Convert collected audio chunks to base64
         const audioBase64 = Buffer.concat(audioChunks).toString("base64");
 
-        // Save generation to the database after the stream completes
         const generationId = await db
           .insert(schema.generations)
           .values({
             userId: userId,
-            type: generationType, // Ensure this is correctly set for both 11LABS and GOOGLE
+            type: generationType,
             prompt: body.text,
             response: audioBase64,
             metadata: generationMetadata,
@@ -157,12 +153,12 @@ export async function POST(req: Request) {
 
         if (!generationId) throw new Error("Error creating voice");
 
-        const creditsUsed = body.text.length; // Assuming each character equals one credit
+        const creditsUsed = body.text.length;
         await db.insert(schema.credits).values({
           userId: userId,
-          generationId: generationId, // Link to the generation ID
-          type: generationType, // Specify the type based on your enum
-          credits: -creditsUsed, // Negative value to show deduction
+          generationId: generationId,
+          type: generationType,
+          credits: -creditsUsed,
           metadata: {
             length: body.text.length,
             description: `${generationType} voice generation credit usage`,
@@ -179,6 +175,8 @@ export async function POST(req: Request) {
     return new NextResponse(modifiedStream, {
       headers: {
         "Content-Type": "audio/mpeg",
+        "Access-Control-Allow-Origin": "*", // Add CORS for iOS compatibility
+        "Cache-Control": "no-cache",
       },
     });
   } catch (error) {
@@ -261,7 +259,7 @@ async function handleGoogleGeneration(body: any) {
     stream,
     metadata: {
       ...request,
-      voice_actor: body.voice_id, // Add voice_actor here
+      voice_actor: body.voice_id,
     },
   };
 }
