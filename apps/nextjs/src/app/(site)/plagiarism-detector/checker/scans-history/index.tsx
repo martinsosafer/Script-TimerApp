@@ -108,7 +108,7 @@ export default function ScansHistory({
       </div>
       <div className="flex h-10 w-full items-center justify-center rounded-md bg-primary text-white">
         {" "}
-        {creditsLeft} credits left
+        {creditsLeft ? creditsLeft * 250 : "No"} credits left
       </div>
     </div>
   );

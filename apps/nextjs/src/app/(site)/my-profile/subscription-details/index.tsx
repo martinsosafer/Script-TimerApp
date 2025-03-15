@@ -33,12 +33,14 @@ interface SubscriptionDetailsProps {
   subscription: I_AppSumoSubscription | I_Subscription | undefined;
   credits?: Credits | null | undefined;
   isAppSumo: boolean;
+  plan?: string;
 }
 
 export default function SubscriptionDetails({
   subscription,
   credits,
   isAppSumo,
+  plan,
 }: SubscriptionDetailsProps) {
   //const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
   const router = useRouter();
@@ -108,7 +110,7 @@ export default function SubscriptionDetails({
         <div className="flex flex-col">
           <span className="px-2 text-xs text-gray-400">Plan</span>
           <div className="flex h-[40px] w-[300px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
-            {(subscription as I_Subscription)?.status}
+            {plan}
           </div>
         </div>
         <div className="flex flex-col">
@@ -196,7 +198,7 @@ export default function SubscriptionDetails({
                   ? ((
                       subscription as I_AppSumoSubscription
                     )?.tier?.toString() as "1" | "2")
-                  : (subscription as I_Subscription)?.status) ?? "FREE"
+                  : (subscription as I_Subscription)?.status) ?? plan
               }
             />
           );

@@ -41,12 +41,15 @@ export default function CreditRow({
   const displayedCreditsLeft =
     type === "cl_credit" ? creditsLeft * 250 : creditsLeft;
 
+  const displayedCreditsUsed =
+    type === "cl_credit" ? creditsUsed * 250 : creditsUsed;
+
   return (
     <div className="mt-3 flex gap-4 px-12 py-2">
       <div className="flex flex-col">
         <span className="px-2 text-xs text-gray-400">{label} credits used</span>
         <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
-          {creditsUsed}
+          {displayedCreditsUsed}
         </div>
       </div>
       <div className="flex flex-col">
