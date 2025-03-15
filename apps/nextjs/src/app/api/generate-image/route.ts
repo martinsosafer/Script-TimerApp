@@ -19,15 +19,12 @@ export async function POST(req: Request): Promise<Response> {
   try {
     const data = (await req.json()) as { text: string };
 
-    // "fal-ai/flux-lora"
-    // "fal-ai/imagen3/fast"
-    // "fal-ai/flux/dev"
-    // "fal-ai/janus"
-    const response = await fal.subscribe("fal-ai/flux-lora", {
+    const response = await fal.subscribe("fal-ai/luma-photon", {
       input: {
         prompt: data.text,
-        image_size: { width: 1792, height: 1024 },
-        num_images: 1,
+        // image_size: { width: 1792, height: 1024 },
+        // num_images: 1,
+        aspect_ratio: "16:9"
       },
       logs: true,
     });

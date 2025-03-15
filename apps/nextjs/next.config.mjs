@@ -27,6 +27,7 @@ const config = {
       "images.pexels.com",
       "8ipgp5xevb8hkgbh.public.blob.vercel-storage.com",
       "v3.fal.media",
+      "fal.media"
     ],
   },
 

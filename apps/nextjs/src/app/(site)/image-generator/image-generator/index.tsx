@@ -113,6 +113,7 @@ export default function ImageGenerator({
         }
         className="flex w-full flex-col items-center gap-1 pt-4"
       >
+        {/* Own Prompt */}
         {!isMagicPrompt && (
           <>
             <label
@@ -132,6 +133,8 @@ export default function ImageGenerator({
             </div>
           </>
         )}
+
+        {/* Description prompt */}
         <label
           htmlFor="text"
           className="pb-2 pt-1 text-base font-semibold text-primary lg:pt-4 lg:text-lg"
@@ -181,7 +184,7 @@ export default function ImageGenerator({
               src={image ?? ""}
               fill
               objectFit="cover"
-              alt="Generates Image"
+              alt="Generated Image"
             />
             <button onClick={() => downloadImage(image)}>
               <IconDownload
