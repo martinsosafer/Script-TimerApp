@@ -85,6 +85,7 @@ export default async function MyProfile() {
             subscription={isAppSumo ? appSumoSubscription : stripeSubscription}
             credits={credits?.[0]}
             isAppSumo={isAppSumo}
+            plan={session?.user.subscription?.status}
           />
         </div>
       </div>
