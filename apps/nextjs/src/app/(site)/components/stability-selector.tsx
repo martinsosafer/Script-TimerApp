@@ -14,28 +14,33 @@ import { Slider } from "@voiceai/ui/@/components/ui/slider";
 interface StabilitySelectorProps {
   value: SliderProps["value"];
   onValueChange?: SliderProps["onValueChange"];
-  disabled?: boolean; // Add disabled prop
+  disabled?: boolean;
 }
 
 export function StabilitySelector({
   value,
   onValueChange,
-  disabled = false, // Default to false
+  disabled = false,
 }: StabilitySelectorProps) {
   return (
-    <div
-      className={`mt-1 grid gap-2 ${disabled ? "cursor-not-allowed opacity-50" : ""}`}
-    >
+    <div className={`mt-1 grid gap-2 ${disabled ? "cursor-not-allowed" : ""}`}>
       <HoverCard openDelay={200}>
         <HoverCardTrigger asChild>
-          <div className="grid gap-4">
+          <div className={`grid gap-4 ${disabled ? "opacity-50" : ""}`}>
             <div className="flex items-center justify-between">
-              <Label
-                htmlFor="top-p"
-                className={disabled ? "text-muted-foreground" : ""}
-              >
-                Stability
-              </Label>
+              <div className="flex items-center gap-2">
+                <Label
+                  htmlFor="top-p"
+                  className={disabled ? "text-muted-foreground" : ""}
+                >
+                  Stability
+                </Label>
+                {disabled && (
+                  <span className="text-cp-primary text-[12px] font-bold">
+                    Modulation is not available for this voice
+                  </span>
+                )}
+              </div>
               <span className="w-12 rounded-md border border-transparent px-2 py-0.5 text-right text-sm text-muted-foreground hover:border-border">
                 {value}
               </span>
@@ -48,7 +53,7 @@ export function StabilitySelector({
               onValueChange={onValueChange}
               className="[&_[role=slider]]:h-4 [&_[role=slider]]:w-4"
               aria-label="Top P"
-              disabled={disabled} // Disable the slider
+              disabled={disabled}
             />
           </div>
         </HoverCardTrigger>

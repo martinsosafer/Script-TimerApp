@@ -9,7 +9,10 @@ const useStreamingAudio = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const toggleAudioRef = useRef<HTMLButtonElement>(null);
 
-  const isFirefox = navigator.userAgent.toLowerCase().includes("firefox");
+  // Feature detection for MediaSource support (replaces user-agent sniffing)
+  const isMediaSourceSupported =
+    typeof MediaSource !== "undefined" &&
+    MediaSource.isTypeSupported("audio/mpeg");
 
   const handleStreaming = async ({
     voice_id,
@@ -92,10 +95,8 @@ const useStreamingAudio = () => {
       });
 
       if (!response.ok) {
-        // Parse the error response as JSON
         const errorData = await response.json();
         console.error("Error response from API:", errorData);
-        // Throw the server's error message
         throw new Error(
           errorData.error || "Failed to fetch the text-to-speech stream.",
         );
@@ -106,8 +107,8 @@ const useStreamingAudio = () => {
         throw new Error("Response body is null.");
       }
 
-      if (isFirefox) {
-        // Firefox-specific streaming logic
+      if (!isMediaSourceSupported) {
+        // Fallback for browsers without MediaSource support (iOS, Firefox, etc.)
         const reader = responseBody.getReader();
         const audioChunks: Uint8Array[] = [];
 
@@ -144,7 +145,7 @@ const useStreamingAudio = () => {
 
         setShowPlayer(true);
       } else {
-        // Other browsers' streaming logic (e.g., Chrome, Edge)
+        // MediaSource streaming for supported browsers (Chrome, Edge, etc.)
         const mediaSource = new MediaSource();
         const objectUrl = URL.createObjectURL(mediaSource);
         setAudioSource(objectUrl);
@@ -237,7 +238,6 @@ const useStreamingAudio = () => {
     } catch (error) {
       console.error("Error streaming audio:", error);
       setLoading(false);
-      // Use the actual error message from the server
       const errorMessage =
         error instanceof Error
           ? error.message

@@ -73,15 +73,15 @@ export function consumedCreditsWarning(text: string, creditsLeft: number) {
   if (credits === 1) {
     return (
       <span className="rounded-md bg-red-200 px-4 py-2 text-sm">
-        This scan will consume <strong>{credits}</strong> credit. - Credits
-        left: <strong>{creditsLeft}</strong>
+        This scan will consume <strong>{credits * 250}</strong> credit. -
+        Credits left: <strong>{creditsLeft}</strong>
       </span>
     );
   } else {
     return (
       <span className="rounded-md bg-red-200 px-4 py-2 text-sm">
-        This scan will consume <strong>{credits}</strong> credits. - Credits
-        left: <strong>{creditsLeft}</strong>
+        This scan will consume <strong>{credits * 250}</strong> credits. -
+        Credits left: <strong>{creditsLeft * 250}</strong>
       </span>
     );
   }
