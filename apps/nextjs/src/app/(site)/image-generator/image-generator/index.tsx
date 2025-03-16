@@ -96,7 +96,7 @@ export default function ImageGenerator({
   ];
 
   return (
-    <div className="flex w-[1024px] flex-col items-center">
+    <div className="flex w-[1024px] max-w-[96%] flex-col items-center pb-6">
       <Tabs options={options} />
       {/* <PromptSelector
         isMagicPrompt={isMagicPrompt}
@@ -111,19 +111,20 @@ export default function ImageGenerator({
                 setNoSessionModalOpen(true);
               }
         }
-        className="mt-12 flex w-full flex-col items-center"
+        className="flex w-full flex-col items-center gap-1 pt-4"
       >
+        {/* Own Prompt */}
         {!isMagicPrompt && (
           <>
             <label
               htmlFor="prompt"
-              className="mb-2 text-lg font-semibold text-primary"
+              className="pb-2 font-semibold text-primary lg:pt-4 lg:text-lg "
             >
               Enter Your Own Prompt
             </label>
-            <div className="mb-4 w-full rounded-md border border-gray-300 bg-gray-50 p-4">
+            <div className="w-full rounded-md border border-gray-300 bg-gray-50 p-4">
               <textarea
-                className="mb-2 block w-full bg-gray-50 text-sm text-gray-900 placeholder:text-lg focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400"
+                className="block w-full bg-gray-50 pb-2 text-sm text-gray-900 placeholder:text-lg focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400"
                 rows={8}
                 name="prompt"
                 id="prompt"
@@ -132,9 +133,11 @@ export default function ImageGenerator({
             </div>
           </>
         )}
+
+        {/* Description prompt */}
         <label
           htmlFor="text"
-          className="mb-2 text-lg font-semibold text-primary"
+          className="pb-2 pt-1 text-base font-semibold text-primary lg:pt-4 lg:text-lg"
         >
           Enter your scene description.
         </label>
@@ -172,6 +175,8 @@ export default function ImageGenerator({
           )}
         </button>
       </form>
+
+      {/* Image box */}
       <div className="relative my-6 flex h-[600px] w-full items-center justify-center border border-gray-300">
         {image ? (
           <>
@@ -179,7 +184,7 @@ export default function ImageGenerator({
               src={image ?? ""}
               fill
               objectFit="cover"
-              alt="Generates Image"
+              alt="Generated Image"
             />
             <button onClick={() => downloadImage(image)}>
               <IconDownload
@@ -195,6 +200,7 @@ export default function ImageGenerator({
           <IconNoImage className="h-10 w-10" />
         )}
       </div>
+
       {noSessionModalOpen && (
         <NoSessionModal
           openModal={noSessionModalOpen}
@@ -202,6 +208,7 @@ export default function ImageGenerator({
           setOpenModal={setNoSessionModalOpen}
         />
       )}
+
       {openDownloadWarning && (
         <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50 p-4 backdrop-blur">
           <div className="w-[500px] rounded-md bg-white p-8">
