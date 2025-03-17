@@ -45,11 +45,14 @@ export async function POST(req: Request) {
       where: eq(schema.voices.external_id, body.voice_id),
     });
 
-    if (!voice) {
-      return new NextResponse(JSON.stringify({ error: "Voice not found." }), {
-        status: 404,
-        headers: { "Content-Type": "application/json" },
-      });
+    // Special handling for cloned voices which might not be in the voices table
+    let voiceType = voice?.type || "11LABS";
+    if (!voice && body.voice_id) {
+      // Assume it's a cloned voice from 11Labs if not found in the database
+      console.log(
+        "Voice not found in database, assuming it's a cloned 11Labs voice",
+      );
+      voiceType = "11LABS_CLONED";
     }
 
     // Check user credits
@@ -98,25 +101,34 @@ export async function POST(req: Request) {
     let generationType: "11LABS" | "GOOGLE";
     let generationMetadata: any;
 
-    if (voice.type === "11LABS") {
+    if (voiceType === "11LABS" || voiceType === "11LABS_CLONED") {
+      console.log(
+        `Processing ${voiceType === "11LABS_CLONED" ? "cloned" : "standard"} 11Labs voice`,
+      );
+
       const { stream, metadata } = await handleElevenLabsGeneration({
         ...body,
         text: message,
+        isCloned: voiceType === "11LABS_CLONED",
       });
+
       audioStream = stream;
       generationType = "11LABS";
       generationMetadata = metadata;
-    } else if (voice.type === "GOOGLE") {
+    } else if (voiceType === "GOOGLE") {
+      console.log("Processing Google voice");
+
       const { stream, metadata } = await handleGoogleGeneration({
         ...body,
         text: message,
       });
+
       audioStream = stream;
       generationType = "GOOGLE";
       generationMetadata = metadata;
     } else {
       return new NextResponse(
-        JSON.stringify({ error: "Unsupported voice type." }),
+        JSON.stringify({ error: `Unsupported voice type: ${voiceType}` }),
         { status: 400, headers: { "Content-Type": "application/json" } },
       );
     }
@@ -200,25 +212,67 @@ async function handleElevenLabsGeneration(body: any) {
     },
   };
 
-  const response = await fetch(
+  // Determine which API key to try first based on whether it's a cloned voice
+  const firstApiKey = body.isCloned
+    ? process.env.CLONE_11LABS_API_KEY
+    : process.env.INTEGRATION_11LABS_API_KEY;
+
+  const secondApiKey = body.isCloned
+    ? process.env.INTEGRATION_11LABS_API_KEY
+    : process.env.CLONE_11LABS_API_KEY;
+
+  console.log(
+    `Attempting 11Labs TTS with ${body.isCloned ? "CLONE" : "INTEGRATION"} API key first`,
+  );
+
+  // First attempt with the appropriate API key
+  let response = await fetch(
     `https://api.elevenlabs.io/v1/text-to-speech/${body.voice_id}/stream`,
     {
       method: "POST",
       headers: {
         accept: "audio/mpeg",
-        "xi-api-key": process.env.INTEGRATION_11LABS_API_KEY ?? "",
+        "xi-api-key": firstApiKey ?? "",
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     },
   );
 
+  // If the first attempt fails, try with the second API key
   if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`ElevenLabs API error: ${errorText}`);
+    console.error(
+      `Failed with ${body.isCloned ? "CLONE" : "INTEGRATION"}_11LABS_API_KEY, trying with ${body.isCloned ? "INTEGRATION" : "CLONE"}_11LABS_API_KEY...`,
+    );
+
+    response = await fetch(
+      `https://api.elevenlabs.io/v1/text-to-speech/${body.voice_id}/stream`,
+      {
+        method: "POST",
+        headers: {
+          accept: "audio/mpeg",
+          "xi-api-key": secondApiKey ?? "",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      },
+    );
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Error response from ElevenLabs:", errorText);
+      throw new Error(
+        `Failed to fetch the text-to-speech stream for voice ID ${body.voice_id} with both API keys.`,
+      );
+    }
   }
 
-  return { stream: response.body, metadata: data };
+  const responseBody = response.body;
+  if (!responseBody) {
+    throw new Error("Response body is null.");
+  }
+
+  return { stream: responseBody, metadata: data };
 }
 
 async function handleGoogleGeneration(body: any) {
