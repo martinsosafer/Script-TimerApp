@@ -37,17 +37,14 @@ export const sendVerificationRequest = async ({
             padding: 30px;
         }
         .header {
-            background-color: #0066FF;
-            color: white;
             text-align: center;
-            padding: 15px;
-            border-radius: 20px;
             margin-bottom: 20px;
         }
         .header h1 {
             margin: 0;
-            font-size: 22px;
-            font-weight: 500;
+            font-size: 24px;
+            font-weight: 600;
+            color: #0066FF;
             font-family: 'Poppins', sans-serif, Arial, sans-serif;
         }
         .features {
@@ -86,7 +83,7 @@ export const sendVerificationRequest = async ({
         }
         .footer {
             margin-top: 15px;
-            text-align: left; /* Aligned to the left */
+            text-align: left;
             font-size: 11px;
             color: #000000;
             font-family: 'Poppins', sans-serif, Arial, sans-serif;
@@ -113,19 +110,19 @@ export const sendVerificationRequest = async ({
         <p>We are happy you're here! Co-Producer (by Script-Timer) makes it easy to save time and money creating.</p>
 
         <!-- Button with inline styles -->
-      <a href="${url}" 
-   style="display: inline-block; 
-          width: auto; 
-          padding: 10px 20px; 
-          background-color: #FF9900; 
-          color: #FFFFFF !important; /* Ensures white text */
-          text-align: center; 
-          text-decoration: none; 
-          border-radius: 5px; 
-          font-weight: 700; 
-          font-family: 'Poppins', sans-serif, Arial, sans-serif; 
-          font-size: 16px; 
-          margin: 20px 0;">
+        <a href="${url}" 
+           style="display: inline-block; 
+                  width: auto; 
+                  padding: 10px 20px; 
+                  background-color: #FF9900; 
+                  color: #FFFFFF !important; 
+                  text-align: center; 
+                  text-decoration: none; 
+                  border-radius: 5px; 
+                  font-weight: 700; 
+                  font-family: 'Poppins', sans-serif, Arial, sans-serif; 
+                  font-size: 16px; 
+                  margin: 20px 0;">
            Click here to login
         </a>
 
