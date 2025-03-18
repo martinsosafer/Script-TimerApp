@@ -1,18 +1,16 @@
 import { NextResponse } from "next/server";
 import { put } from "@vercel/blob";
 
-export const config = {
-  api: {
-    bodyParser: false, // Disable default JSON parsing
-  },
-};
+// Use the new route segment config instead of export const config
+export const dynamic = "force-dynamic"; // Force dynamic route behavior
+export const runtime = "nodejs"; // Specify the runtime environment
 
-export async function POST(request) {
+export async function POST(request: Request) {
   try {
     // Parse FormData from the request
     const formData = await request.formData();
-    const file = formData.get("file");
-    const filename = formData.get("filename");
+    const file = formData.get("file") as File;
+    const filename = formData.get("filename") as string;
 
     // Validate required fields
     if (!filename || !file) {
@@ -35,7 +33,7 @@ export async function POST(request) {
       url: blob.url,
       downloadUrl: blob.downloadUrl,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error uploading to Vercel Blob:", error);
     return NextResponse.json(
       { success: false, error: error.message },
