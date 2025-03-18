@@ -77,6 +77,7 @@ export default function AudioTranslate({
 
         // Determine the correct MIME type based on file extension
         const detectedContentType = getAudioMimeType(selectedFile.name);
+        console.log(`Detected content type: ${detectedContentType}`);
 
         // Create FormData for the blob upload
         const blobFormData = new FormData();
@@ -85,6 +86,9 @@ export default function AudioTranslate({
 
         setUploadProgress(30);
 
+        console.log(
+          `Uploading file: ${filename}, size: ${selectedFile.size} bytes`,
+        );
         // Upload to your blob upload endpoint
         const uploadResponse = await fetch("/api/translatorblob", {
           method: "POST",
@@ -92,8 +96,10 @@ export default function AudioTranslate({
         });
 
         if (!uploadResponse.ok) {
+          const errorText = await uploadResponse.text();
+          console.error("Blob upload error response:", errorText);
           throw new Error(
-            `Failed to upload file: ${uploadResponse.statusText}`,
+            `Failed to upload file: ${uploadResponse.status} ${uploadResponse.statusText}`,
           );
         }
 
@@ -102,13 +108,17 @@ export default function AudioTranslate({
         contentType =
           uploadData.contentType || detectedContentType || selectedFile.type;
 
+        console.log(
+          `File uploaded successfully. URL: ${blobUrl.substring(0, 30)}..., Content-Type: ${contentType}`,
+        );
         setUploadProgress(75);
       } catch (error) {
         console.error("Error uploading to Vercel Blob:", error);
-        throw new Error("Failed to upload audio file. Please try again.");
+        throw new Error(`Failed to upload audio file: ${error.message}`);
       }
 
       // Now process the audio via the blob URL
+      console.log("Starting audio processing...");
       const response = await fetch("/api/translatorAudio", {
         method: "POST",
         headers: {
@@ -124,14 +134,27 @@ export default function AudioTranslate({
       setUploadingToBlob(false);
       setUploadProgress(100);
 
-      if (!response.ok) {
-        const errorData = await response.json();
+      // Get the full response text first for debugging
+      const responseText = await response.text();
+      console.log(`API response: ${response.status} ${response.statusText}`);
+
+      // Parse the JSON if possible
+      let data;
+      try {
+        data = JSON.parse(responseText);
+      } catch (e) {
+        console.error("Failed to parse response as JSON:", responseText);
         throw new Error(
-          errorData.error || `Server error: ${response.statusText}`,
+          `Invalid response from server: ${responseText.substring(0, 100)}`,
         );
       }
 
-      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(
+          data.error ||
+            `Server error: ${response.status} ${response.statusText}`,
+        );
+      }
 
       if (data.success) {
         setGeneratedTranslation(data.data.text);
@@ -157,7 +180,6 @@ export default function AudioTranslate({
       setUploadProgress(0);
     }
   };
-
   const handleFileChange = (event) => {
     const file = event.target.files?.[0];
     setFileError("");
