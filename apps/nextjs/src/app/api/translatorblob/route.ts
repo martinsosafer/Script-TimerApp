@@ -5,12 +5,7 @@ export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
-// Configure Next.js to handle file uploads
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+// Remove the deprecated config export
 
 export async function POST(request: Request) {
   try {
