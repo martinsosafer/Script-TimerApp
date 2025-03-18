@@ -1,12 +1,10 @@
 import { NextResponse } from "next/server";
 import { put } from "@vercel/blob";
 
-export const config = {
-  api: {
-    bodyParser: false,
-    responseLimit: "30mb",
-  },
-};
+// New configuration format for App Router
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+export const maxDuration = 60; // For longer uploads if needed
 
 // Map of file extensions to MIME types
 const mimeTypes = {
