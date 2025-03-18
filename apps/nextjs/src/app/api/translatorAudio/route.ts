@@ -20,8 +20,11 @@ export async function POST(req: Request) {
     );
   }
 
-  formData.append("model", "whisper-1");
-  formData.append("response_type", "verbose_json");
+  // Create a new FormData instance for the OpenAI API request
+  const openAIFormData = new FormData();
+  openAIFormData.append("file", file);
+  openAIFormData.append("model", "whisper-1");
+  openAIFormData.append("response_format", "json"); // Changed from response_type to response_format
 
   try {
     const response = await fetch(
@@ -31,15 +34,18 @@ export async function POST(req: Request) {
         headers: {
           Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
         },
-        body: formData,
+        body: openAIFormData,
       },
     );
 
-    const data = await response.json();
-
+    // Check if response is OK before trying to parse JSON
     if (!response.ok) {
-      throw new Error(data.error.message || "Failed to transcribe audio");
+      const errorText = await response.text();
+      console.error("OpenAI API error response:", errorText);
+      throw new Error(`API returned ${response.status}: ${errorText}`);
     }
+
+    const data = await response.json();
 
     return NextResponse.json(
       {

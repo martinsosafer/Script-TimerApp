@@ -5,14 +5,14 @@ import ToolsNavigator from "./tools-navigator";
 
 export const metadata: Metadata = {
   title: "Scipt Timer Tools",
-  description: "Free tools",
+  description: "Valuable tools",
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="bg-cp-background flex w-full flex-col items-center p-6 lg:p-0">
       <PageHeader
-        title="Free tools"
+        title="Valuable tools"
         subtitle="Easy to use tools to improve your script"
       />
       <ToolsNavigator />
