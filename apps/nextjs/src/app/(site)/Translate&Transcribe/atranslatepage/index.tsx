@@ -1,15 +1,33 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
 
 import { IconEar, IconFlag } from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
-import FreeModal from "~/app/(site)/components/free-modal"; // Import the FreeModal
+import FreeModal from "~/app/(site)/components/free-modal";
 import LoadingDots from "~/app/(site)/components/loadingdots";
 import deductOpenAiCredits from "~/app/actions/openAiCredits";
 import languages from "~/lib/languages";
+
+// Max file size increased to 25MB since we're using Vercel Blob
+const MAX_FILE_SIZE = 25 * 1024 * 1024;
+
+// Map file extensions to MIME types
+const getAudioMimeType = (filename) => {
+  const ext = filename.split(".").pop().toLowerCase();
+  const mimeTypes = {
+    m4a: "audio/mp4", // m4a is actually a container format for MP4 audio
+    mp3: "audio/mpeg",
+    webm: "audio/webm",
+    mp4: "audio/mp4",
+    mpga: "audio/mpeg",
+    wav: "audio/wav",
+    mpeg: "audio/mpeg",
+  };
+
+  return mimeTypes[ext] || null;
+};
 
 export default function AudioTranslate({
   subData,
@@ -17,25 +35,22 @@ export default function AudioTranslate({
   openAiCredits,
 }) {
   const [loading, setLoading] = React.useState(false);
-  const [language, setLanguage] = React.useState<string>(languages[0]?.value);
-  const [generatedTranslation, setGeneratedTranslation] =
-    React.useState<string>("");
-  const [selectedFile, setSelectedFile] = React.useState<File | undefined>(
-    undefined,
-  );
-  const [showFreeModal, setShowFreeModal] = React.useState(false); // State for showing the FreeModal
+  const [uploadingToBlob, setUploadingToBlob] = React.useState(false);
+  const [language, setLanguage] = React.useState(languages[0]?.value);
+  const [generatedTranslation, setGeneratedTranslation] = React.useState("");
+  const [selectedFile, setSelectedFile] = React.useState(undefined);
+  const [showFreeModal, setShowFreeModal] = React.useState(false);
+  const [fileError, setFileError] = React.useState("");
+  const [uploadProgress, setUploadProgress] = React.useState(0);
 
   const [credits, setcredits] = React.useState(openAiCredits);
 
   const translateAudio = async () => {
     setGeneratedTranslation("");
     setLoading(true);
-
-    const formData = new FormData();
-    if (selectedFile) {
-      formData.append("file", selectedFile);
-    }
-    formData.append("language", language);
+    setFileError("");
+    setUploadingToBlob(true);
+    setUploadProgress(0);
 
     if (credits < 60) {
       toast({
@@ -43,47 +58,156 @@ export default function AudioTranslate({
         description: "You do not have enough credits for this translation.",
       });
       setLoading(false);
-    } else {
+      setUploadingToBlob(false);
+      return;
+    }
+
+    try {
+      // First, upload the file to Vercel Blob
+      let blobUrl;
+      let contentType;
+
       try {
-        const response = await fetch("/api/translatorAudio", {
+        // Show progress at different stages
+        setUploadProgress(10);
+
+        // Generate a unique filename with timestamp
+        const timestamp = new Date().getTime();
+        const filename = `${timestamp}-${selectedFile.name}`;
+
+        // Determine the correct MIME type based on file extension
+        const detectedContentType = getAudioMimeType(selectedFile.name);
+
+        // Create FormData for the blob upload
+        const blobFormData = new FormData();
+        blobFormData.append("file", selectedFile);
+        blobFormData.append("filename", filename);
+
+        setUploadProgress(30);
+
+        // Upload to your blob upload endpoint
+        const uploadResponse = await fetch("/api/translatorblob", {
           method: "POST",
-          body: formData,
+          body: blobFormData,
         });
 
-        const data = await response.json();
-
-        if (data.success as boolean) {
-          setGeneratedTranslation(data.data.text);
-          setcredits(credits - data.data.text.length * 3);
-          await deductOpenAiCredits(data.data.text.length * 3);
-        } else {
-          console.error("Error transcribing audio:", data.error);
-          toast({ title: "Error transcribing audio", description: data.error });
+        if (!uploadResponse.ok) {
+          throw new Error(
+            `Failed to upload file: ${uploadResponse.statusText}`,
+          );
         }
+
+        const uploadData = await uploadResponse.json();
+        blobUrl = uploadData.url;
+        contentType =
+          uploadData.contentType || detectedContentType || selectedFile.type;
+
+        setUploadProgress(75);
       } catch (error) {
-        console.error("Error transcribing audio:", error);
-        toast({
-          title: "Error transcribing audio",
-          description: (error as Error).message,
-        });
-      } finally {
-        setLoading(false);
+        console.error("Error uploading to Vercel Blob:", error);
+        throw new Error("Failed to upload audio file. Please try again.");
       }
+
+      // Now process the audio via the blob URL
+      const response = await fetch("/api/translatorAudio", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          blobUrl,
+          language,
+          contentType,
+        }),
+      });
+
+      setUploadingToBlob(false);
+      setUploadProgress(100);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          errorData.error || `Server error: ${response.statusText}`,
+        );
+      }
+
+      const data = await response.json();
+
+      if (data.success) {
+        setGeneratedTranslation(data.data.text);
+        const creditCost = data.data.text.length * 3;
+        setcredits((prevCredits) => prevCredits - creditCost);
+        await deductOpenAiCredits(creditCost);
+      } else {
+        console.error("Error transcribing audio:", data.error);
+        throw new Error(data.error || "Unknown error occurred");
+      }
+    } catch (error) {
+      console.error("Error in translation process:", error);
+      toast({
+        title: "Error processing audio",
+        description:
+          error instanceof Error
+            ? error.message
+            : "Failed to process audio file",
+      });
+    } finally {
+      setLoading(false);
+      setUploadingToBlob(false);
+      setUploadProgress(0);
     }
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (event) => {
     const file = event.target.files?.[0];
+    setFileError("");
+
     if (file) {
+      // Get file extension
+      const fileExtension = file.name.split(".").pop().toLowerCase();
+      const validExtensions = [
+        "m4a",
+        "mp3",
+        "webm",
+        "mp4",
+        "mpga",
+        "wav",
+        "mpeg",
+      ];
+
+      // Check if extension is valid
+      if (
+        !validExtensions.includes(fileExtension) &&
+        !file.type.startsWith("audio/")
+      ) {
+        setFileError(
+          "Please upload a valid audio file (.m4a, .mp3, .webm, .mp4, .mpga, .wav, or .mpeg)",
+        );
+        return;
+      }
+
+      // Check file size
+      if (file.size > MAX_FILE_SIZE) {
+        setFileError(
+          `File size exceeds the maximum limit of ${MAX_FILE_SIZE / (1024 * 1024)}MB`,
+        );
+        return;
+      }
+
       setSelectedFile(file);
     }
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleChange = (event) => {
     setLanguage(event.target.value);
   };
 
   const handleTranslateClick = () => {
+    if (!selectedFile) {
+      setFileError("Please select an audio file to translate");
+      return;
+    }
+
     if (!subData) {
       setOpenNoSessionModal();
     } else if (
@@ -114,11 +238,14 @@ export default function AudioTranslate({
       <input
         className="mb-2 block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400"
         type="file"
-        accept="audio/*"
+        accept=".m4a,.mp3,.webm,.mp4,.mpga,.wav,.mpeg,audio/*"
         onChange={handleFileChange}
+        disabled={loading}
       />
+      {fileError && <p className="my-1 text-sm text-red-500">{fileError}</p>}
       <p className="my-2 text-sm text-gray-500 dark:text-gray-300">
-        Accepted file formats: m4a, mp3, webm, mp4, mpga, wav, and mpeg.
+        Accepted file formats: m4a, mp3, webm, mp4, mpga, wav, and mpeg. Maximum
+        file size: 25MB.
       </p>
 
       <div className="mb-5 flex items-center space-x-3">
@@ -132,6 +259,7 @@ export default function AudioTranslate({
         className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-black focus:ring-black dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-black dark:focus:ring-black"
         onChange={handleChange}
         value={language}
+        disabled={loading}
       >
         {languages.map((language) => (
           <option key={language.value} value={language.value}>
@@ -140,10 +268,26 @@ export default function AudioTranslate({
         ))}
       </select>
 
+      {uploadingToBlob && uploadProgress > 0 && (
+        <div className="mt-4">
+          <div className="mb-1 flex justify-between">
+            <span className="text-sm text-gray-700">Uploading file...</span>
+            <span className="text-sm text-gray-700">{uploadProgress}%</span>
+          </div>
+          <div className="h-2 w-full rounded-full bg-gray-200">
+            <div
+              className="h-2 rounded-full bg-blue-600"
+              style={{ width: `${uploadProgress}%` }}
+            ></div>
+          </div>
+        </div>
+      )}
+
       {!loading && (
         <button
-          className="mt-8 w-full rounded-xl bg-primary px-4 py-2 font-medium text-white hover:bg-primary/80 sm:mt-10"
-          onClick={handleTranslateClick} // Modified to use handleTranslateClick
+          className="mt-8 w-full rounded-xl bg-primary px-4 py-2 font-medium text-white hover:bg-primary/80 disabled:cursor-not-allowed disabled:bg-gray-400 sm:mt-10"
+          onClick={handleTranslateClick}
+          disabled={!selectedFile || loading}
         >
           Translate &rarr;
         </button>
@@ -196,7 +340,7 @@ export default function AudioTranslate({
         <FreeModal
           openModal={showFreeModal}
           setOpenModal={setShowFreeModal}
-          plan="Student" // You can adjust this as needed
+          plan="Student"
         />
       )}
     </div>
