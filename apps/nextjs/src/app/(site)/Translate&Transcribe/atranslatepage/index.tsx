@@ -187,7 +187,7 @@ export default function AudioTranslate({
                 .catch((err) => console.error("Failed to copy text: ", err));
             }}
           >
-            Copy and open Text to Voice.
+            Copy and open Text to Voice
           </button>
         </div>
       )}

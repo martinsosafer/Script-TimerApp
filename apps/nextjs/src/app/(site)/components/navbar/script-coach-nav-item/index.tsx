@@ -76,7 +76,7 @@ export default function ScriptCoachNavItem() {
                         <span>
                           <IconPocketKnife className="h-4 w-4" />
                         </span>
-                        <span className="ml-1">Free Tools</span>
+                        <span className="ml-1">Valuable Tools</span>
                       </div>
                       <p className="font-normal text-gray-500">
                         Easy to use tools to help you with your script.
