@@ -29,8 +29,14 @@ export async function POST(req: Request) {
       where: eq(schema.subscriptions.userId, userId),
     });
 
+    const appSumoSubscription = await db.query.appSumoSubscription.findFirst({
+      where: eq(schema.appSumoSubscription.userId, userId),
+    });
+
     // Check message length based on subscription
-    const maxMessageLength = getMaxMessageLength(subscription?.status);
+    const maxMessageLength = getMaxMessageLength(
+      appSumoSubscription ? appSumoSubscription.tier : subscription?.status,
+    );
     if (body.text.length > maxMessageLength) {
       return new NextResponse(
         JSON.stringify({
@@ -92,7 +98,11 @@ export async function POST(req: Request) {
         "STUDENTCLYR",
         "CREATORCLYR",
         "BUSINESSCLYR",
-      ].includes(subscription?.status)
+        "1",
+        "2",
+      ].includes(
+        appSumoSubscription ? appSumoSubscription?.tier : subscription?.status,
+      )
     ) {
       message = addWatermark(message);
     }
@@ -327,6 +337,10 @@ function getMaxMessageLength(subscriptionStatus: string | undefined) {
     case "CREATOR":
       return 5000;
     case "BUSINESS":
+      return 10000;
+    case "1":
+      return 5000;
+    case "2":
       return 10000;
     default:
       return 1000;
