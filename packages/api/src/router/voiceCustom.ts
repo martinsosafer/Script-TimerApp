@@ -66,12 +66,12 @@ export const voiceCustomRouter = createTRPCRouter({
         // Add logging to verify the plan value
         console.log(
           "User subscription plan:",
-          subscription?.plan ?? appSumoSubscription?.tier,
+          subscription?.status ?? appSumoSubscription?.tier,
         );
 
         const plan = appSumoSubscription
           ? appSumoSubscription.tier
-          : subscription?.plan;
+          : subscription?.status;
         const customVoiceLimit =
           voicesAmount[plan as keyof typeof voicesAmount];
 
