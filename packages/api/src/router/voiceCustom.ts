@@ -10,6 +10,24 @@ import {
   TRPCError,
 } from "../trpc";
 
+const voicesAmount: Record<string, number> = {
+  FREE: 0,
+  STUDENT: 0,
+  CREATOR: 3,
+  BUSINESS: 5,
+  STUDENTCLMO: 0,
+  CREATORCLMO: 3,
+  BUSINESSCLMO: 5,
+  STUDENTCLYR: 0,
+  CREATORCLYR: 3,
+  BUSINESSCLYR: 5,
+  INACTIVE: 0,
+  ACTIVE: 0,
+  PAUSED: 0,
+  "1": 1,
+  "2": 2,
+};
+
 const MAX_FILE_SIZE_MB = 8;
 const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 export const voiceCustomRouter = createTRPCRouter({
@@ -33,8 +51,12 @@ export const voiceCustomRouter = createTRPCRouter({
         const subscription = await ctx.db.query.subscriptions.findFirst({
           where: eq(schema.subscriptions.userId, userId),
         });
+        const appSumoSubscription =
+          await ctx.db.query.appSumoSubscription.findFirst({
+            where: eq(schema.appSumoSubscription.userId, userId),
+          });
 
-        if (!subscription) {
+        if (!subscription && !appSumoSubscription) {
           throw new TRPCError({
             code: "NOT_FOUND",
             message: "Subscription not found for the user",
@@ -42,19 +64,16 @@ export const voiceCustomRouter = createTRPCRouter({
         }
 
         // Add logging to verify the plan value
-        console.log("User subscription plan:", subscription.plan);
+        console.log(
+          "User subscription plan:",
+          subscription?.plan ?? appSumoSubscription?.tier,
+        );
 
-        const customVoiceLimit = [
-          "CREATOR",
-          "CREATORCLMO",
-          "CREATORCLYR",
-        ].includes(subscription.status)
-          ? 3
-          : ["BUSINESS", "BUSINESSCLMO", "BUSINESSCLYR"].includes(
-                subscription.status,
-              )
-            ? 5
-            : 0;
+        const plan = appSumoSubscription
+          ? appSumoSubscription.tier
+          : subscription?.plan;
+        const customVoiceLimit =
+          voicesAmount[plan as keyof typeof voicesAmount];
 
         // Log the custom voice limit for debugging
         console.log("Custom voice limit for the user:", customVoiceLimit);
@@ -66,9 +85,11 @@ export const voiceCustomRouter = createTRPCRouter({
           });
         }
 
-        const currentCustomVoices = subscription.custom_voices || [];
+        const currentCustomVoices =
+          (subscription?.custom_voices ?? appSumoSubscription?.custom_voices) ||
+          [];
 
-        if (currentCustomVoices.length >= customVoiceLimit) {
+        if (currentCustomVoices.length >= (customVoiceLimit ?? 0)) {
           throw new TRPCError({
             code: "FORBIDDEN",
             message: `You have reached the limit of ${customVoiceLimit} custom voices for your plan`,
@@ -115,6 +136,8 @@ export const voiceCustomRouter = createTRPCRouter({
             body: form,
           },
         );
+
+        console.log("ElevenLabs response:", elevenLabsResponse);
 
         const data = await elevenLabsResponse.json();
 
@@ -163,9 +186,20 @@ export const voiceCustomRouter = createTRPCRouter({
         ];
 
         await ctx.db
-          .update(schema.subscriptions)
+          .update(
+            appSumoSubscription
+              ? schema.appSumoSubscription
+              : schema.subscriptions,
+          )
           .set({ custom_voices: updatedCustomVoices })
-          .where(eq(schema.subscriptions.userId, userId))
+          .where(
+            eq(
+              appSumoSubscription
+                ? schema.appSumoSubscription.userId
+                : schema.subscriptions.userId,
+              userId,
+            ),
+          )
           .execute();
 
         return newVoice;
@@ -218,7 +252,12 @@ export const voiceCustomRouter = createTRPCRouter({
           where: eq(schema.subscriptions.userId, userId),
         });
 
-        if (!subscription) {
+        const appSumoSubscription =
+          await ctx.db.query.appSumoSubscription.findFirst({
+            where: eq(schema.appSumoSubscription.userId, userId),
+          });
+
+        if (!subscription && !appSumoSubscription) {
           throw new TRPCError({
             code: "NOT_FOUND",
             message: "Subscription not found for the user",
@@ -226,14 +265,27 @@ export const voiceCustomRouter = createTRPCRouter({
         }
 
         // Update the subscription to remove the deleted voice
-        const updatedCustomVoices = (subscription.custom_voices || []).filter(
-          (voice) => voice.external_id !== input.voiceId,
-        );
+        const updatedCustomVoices = (
+          appSumoSubscription
+            ? appSumoSubscription.custom_voices
+            : subscription.custom_voices || []
+        ).filter((voice) => voice.external_id !== input.voiceId);
 
         await ctx.db
-          .update(schema.subscriptions)
+          .update(
+            appSumoSubscription
+              ? schema.appSumoSubscription
+              : schema.subscriptions,
+          )
           .set({ custom_voices: updatedCustomVoices })
-          .where(eq(schema.subscriptions.userId, userId))
+          .where(
+            eq(
+              appSumoSubscription
+                ? schema.appSumoSubscription.userId
+                : schema.subscriptions.userId,
+              userId,
+            ),
+          )
           .execute();
 
         return { success: true, message: "Voice deleted successfully" };
@@ -257,7 +309,12 @@ export const voiceCustomRouter = createTRPCRouter({
         where: eq(schema.subscriptions.userId, userId),
       });
 
-      if (!subscription) {
+      const appSumoSubscription =
+        await ctx.db.query.appSumoSubscription.findFirst({
+          where: eq(schema.appSumoSubscription.userId, userId),
+        });
+
+      if (!subscription && !appSumoSubscription) {
         throw new TRPCError({
           code: "NOT_FOUND",
           message: "Subscription not found for the user",

@@ -9,9 +9,9 @@ import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 import FreeModal from "~/app/(site)/components/free-modal";
 import LoadingDots from "~/app/(site)/components/loadingdots";
+import type { SubscriptionData } from "~/lib/types";
 import { api } from "~/utils/api";
 import AudioRecorderModal from "../cloningRmodal";
-import { SubscriptionData } from "~/lib/types";
 
 export default function VoiceCloningForm({
   onVoiceCreated,
@@ -28,6 +28,8 @@ export default function VoiceCloningForm({
     "BUSINESSCLMO",
     "CREATORCLYR",
     "BUSINESSCLYR",
+    "1",
+    "2",
   ];
   const { mutateAsync: newCustomVoice } =
     api.voiceCustom.newCustomVoice.useMutation({
