@@ -39,6 +39,8 @@ export const History = ({ ...rest }) => {
   const [loadingDownload, setLoadingDownload] = React.useState({});
   const { data, isLoading, refetch } = api.history.list.useQuery();
   const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
+
+  console.log("Subscription Data HISTORY: ", subscriptionData);
   const isSubscriptionActive =
     subscriptionData &&
     (subscriptionData.status === "CREATORCLMO" ||
@@ -49,7 +51,9 @@ export const History = ({ ...rest }) => {
       subscriptionData.status === "BUSINESSCLYR" ||
       subscriptionData.status === "CREATOR" ||
       subscriptionData.status === "STUDENT" ||
-      subscriptionData.status === "BUSINESS");
+      subscriptionData.status === "BUSINESS" ||
+      subscriptionData.status == 1 ||
+      subscriptionData.status == 2);
 
   const { mutateAsync: downloadGeneration } = api.history.download.useMutation({
     onSuccess(data) {

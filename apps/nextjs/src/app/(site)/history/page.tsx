@@ -48,7 +48,9 @@ export default async function HistoryPage() {
             This is where you choose and create your voice overs. On your
             current plan, <br />
             <span className="text-cp-primary font-semibold">
-              {subData.status}
+              {subData.status == "1" || subData.status == "2"
+                ? `AppSumo Tier ${subData.status}`
+                : subData.status}
             </span>
             , you are entitled to{" "}
             <span className="text-cp-primary font-bold">

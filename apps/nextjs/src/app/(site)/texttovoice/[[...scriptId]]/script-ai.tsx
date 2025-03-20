@@ -123,8 +123,12 @@ export function ScriptAI({
       <p className="font-base mb-2 text-center">
         This is where you choose and create your voice overs. On your current
         plan, <br />
-        <span className="text-cp-primary font-semibold">{subData.status}</span>,
-        you are entitled to{" "}
+        <span className="text-cp-primary font-semibold">
+          {subData.status == 1 || subData.status == 2
+            ? `AppSumoTier ${subData.status}`
+            : subData.status}
+        </span>
+        , you are entitled to{" "}
         <span className="text-cp-primary font-bold">
           {characters[subData.status]}
         </span>{" "}

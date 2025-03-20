@@ -37,6 +37,9 @@ export async function POST(req: Request) {
     const maxMessageLength = getMaxMessageLength(
       appSumoSubscription ? appSumoSubscription.tier : subscription?.status,
     );
+
+    console.log(`Max message length for user: ${maxMessageLength}`);
+
     if (body.text.length > maxMessageLength) {
       return new NextResponse(
         JSON.stringify({
@@ -98,11 +101,8 @@ export async function POST(req: Request) {
         "STUDENTCLYR",
         "CREATORCLYR",
         "BUSINESSCLYR",
-        "1",
-        "2",
-      ].includes(
-        appSumoSubscription ? appSumoSubscription?.tier : subscription?.status,
-      )
+      ].includes(subscription?.status) ||
+      (appSumoSubscription?.tier != 1 && appSumoSubscription?.tier != 2)
     ) {
       message = addWatermark(message);
     }
@@ -328,7 +328,7 @@ async function handleGoogleGeneration(body: any) {
   };
 }
 
-function getMaxMessageLength(subscriptionStatus: string | undefined) {
+function getMaxMessageLength(subscriptionStatus: string | number | undefined) {
   switch (subscriptionStatus) {
     case "FREE_TRIAL":
       return 1600;
@@ -338,9 +338,9 @@ function getMaxMessageLength(subscriptionStatus: string | undefined) {
       return 5000;
     case "BUSINESS":
       return 10000;
-    case "1":
+    case 1:
       return 5000;
-    case "2":
+    case 2:
       return 10000;
     default:
       return 1000;

@@ -15,7 +15,9 @@ export function useSubscription() {
 
   const isSubscriptionActive =
     subscriptionData &&
-    ["CREATOR", "STUDENT", "BUSINESS"].includes(subscriptionData.status);
+    ["CREATOR", "STUDENT", "BUSINESS", "1", "2"].includes(
+      String(subscriptionData.tier) ?? subscriptionData.plan,
+    );
 
   const refreshSubscriptionData = () => {
     refetch();

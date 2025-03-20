@@ -52,6 +52,8 @@ const useStreamingAudio = () => {
       BUSINESS: 10000,
       BUSINESSCLMO: 10000,
       BUSINESSCLYR: 10000,
+      "1": 5000,
+      "2": 5000,
     };
 
     if (message.length > charLimit[userPlan]) {
@@ -67,6 +69,8 @@ const useStreamingAudio = () => {
         BUSINESS: "Your plan only supports up to 10000 characters",
         BUSINESSCLMO: "Your plan only supports up to 10000 characters",
         BUSINESSCLYR: "Your plan only supports up to 10000 characters",
+        "1": "Your plan only supports up to 5000 characters",
+        "2": "Your plan only supports up to 5000 characters",
       };
 
       setLoading(false);

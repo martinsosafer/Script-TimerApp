@@ -91,19 +91,28 @@ export const voiceRouter = createTRPCRouter({
         where: eq(schema.subscriptions.userId, ctx.session.user.id),
       });
 
+      const appSumoSubscription =
+        await ctx.db.query.appSumoSubscription.findFirst({
+          where: eq(schema.appSumoSubscription.userId, ctx.session.user.id),
+        });
+
+      const status = appSumoSubscription?.tier ?? subscription?.status;
+
       let maxVoices = 5; // Maximum number of voices for free users
       if (
-        subscription?.status === "FREE" ||
-        subscription?.status === "STUDENT" ||
-        subscription?.status === "CREATOR" ||
-        subscription?.status === "BUSINESS" ||
-        subscription?.status === "FREE_TRIAL" ||
-        subscription?.status === "STUDENTCLMO" ||
-        subscription?.status === "CREATORCLMO" ||
-        subscription?.status === "BUSINESSCLMO" ||
-        subscription?.status === "STUDENTCLYR" ||
-        subscription?.status === "CREATORCLYR" ||
-        subscription?.status === "BUSINESSCLYR"
+        status === "FREE" ||
+        status === "STUDENT" ||
+        status === "CREATOR" ||
+        status === "BUSINESS" ||
+        status === "FREE_TRIAL" ||
+        status === "STUDENTCLMO" ||
+        status === "CREATORCLMO" ||
+        status === "BUSINESSCLMO" ||
+        status === "STUDENTCLYR" ||
+        status === "CREATORCLYR" ||
+        status === "BUSINESSCLYR" ||
+        status == 1 ||
+        status == 2
       ) {
         // If user has an active subscription, set maximum voices to a higher value
         maxVoices = Number.MAX_SAFE_INTEGER; // Set to a very large number
@@ -144,12 +153,21 @@ export const voiceRouter = createTRPCRouter({
         where: eq(schema.subscriptions.userId, ctx.session.user.id),
       });
 
+      const appSumoSubscription =
+        await ctx.db.query.appSumoSubscription.findFirst({
+          where: eq(schema.appSumoSubscription.userId, ctx.session.user.id),
+        });
+
+      const status = appSumoSubscription?.tier ?? subscription?.status;
+
       let maxVoices = 5; // Maximum number of voices for free users
       if (
-        subscription?.status === "STUDENT" ||
-        subscription?.status === "CREATOR" ||
-        subscription?.status === "BUSINESS" ||
-        subscription?.status === "FREE_TRIAL"
+        status === "STUDENT" ||
+        status === "CREATOR" ||
+        status === "BUSINESS" ||
+        status === "FREE_TRIAL" ||
+        status == 1 ||
+        status == 2
       ) {
         // If user has an active subscription, set maximum voices to a higher value
         maxVoices = Number.MAX_SAFE_INTEGER; // Set to a very large number
@@ -182,17 +200,25 @@ export const voiceRouter = createTRPCRouter({
           where: eq(schema.subscriptions.userId, ctx.session.user.id),
         });
 
+        const appSumoSubscription =
+          await ctx.db.query.appSumoSubscription.findFirst({
+            where: eq(schema.appSumoSubscription.userId, ctx.session.user.id),
+          });
+
+        const status = appSumoSubscription?.tier ?? subscription?.status;
+
         let maxMessageLength = 300; // Default maximum message length for free users
 
-        if (
-          subscription?.status === "FREE_TRIAL" ||
-          subscription?.status === "STUDENT"
-        ) {
+        if (status === "FREE_TRIAL" || status === "STUDENT") {
           maxMessageLength = 2000;
-        } else if (subscription?.status === "CREATOR") {
+        } else if (status === "CREATOR") {
           maxMessageLength = 5000;
-        } else if (subscription?.status === "BUSINESS") {
+        } else if (status === "BUSINESS") {
           maxMessageLength = 10000;
+        } else if (status == 1) {
+          maxMessageLength = 5000;
+        } else if (status == 2) {
+          maxMessageLength = 5000;
         }
 
         if (input.message.length > maxMessageLength) {
@@ -208,7 +234,8 @@ export const voiceRouter = createTRPCRouter({
         let message = input.message;
 
         if (
-          !["BUSINESS", "STUDENT", "CREATOR"].includes(subscription?.status)
+          !["BUSINESS", "STUDENT", "CREATOR"].includes(status) ||
+          (status != 1 && status != 2)
         ) {
           message = addWatermark(message);
         }
@@ -391,14 +418,21 @@ export const voiceRouter = createTRPCRouter({
           where: eq(schema.subscriptions.userId, userId),
         });
 
-        if (!subscription) {
+        const appSumoSubscription =
+          await ctx.db.query.appSumoSubscription.findFirst({
+            where: eq(schema.appSumoSubscription.userId, ctx.session.user.id),
+          });
+
+        if (!subscription && !appSumoSubscription) {
           throw new TRPCError({
             code: "NOT_FOUND",
             message: "Subscription not found for the user",
           });
         }
 
-        const currentFavorites = subscription.favorite_voices || [];
+        const currentFavorites = appSumoSubscription
+          ? appSumoSubscription.favorite_voices
+          : subscription?.favorite_voices || [];
 
         // Check if the voice is already in the list of favorites
         const isAlreadyFavorite = currentFavorites.some(
@@ -418,9 +452,20 @@ export const voiceRouter = createTRPCRouter({
             .execute();
 
           await ctx.db
-            .update(schema.subscriptions)
+            .update(
+              appSumoSubscription
+                ? schema.appSumoSubscription
+                : schema.subscriptions,
+            )
             .set({ favorite_voices: updatedFavorites })
-            .where(eq(schema.subscriptions.userId, userId))
+            .where(
+              eq(
+                appSumoSubscription
+                  ? schema.appSumoSubscription.userId
+                  : schema.subscriptions.userId,
+                userId,
+              ),
+            )
             .execute();
 
           return { success: true };
@@ -435,9 +480,20 @@ export const voiceRouter = createTRPCRouter({
             .execute();
 
           await ctx.db
-            .update(schema.subscriptions)
+            .update(
+              appSumoSubscription
+                ? schema.appSumoSubscription
+                : schema.subscriptions,
+            )
             .set({ favorite_voices: updatedFavorites })
-            .where(eq(schema.subscriptions.userId, userId))
+            .where(
+              eq(
+                appSumoSubscription
+                  ? schema.appSumoSubscription.userId
+                  : schema.subscriptions.userId,
+                userId,
+              ),
+            )
             .execute();
 
           return { success: true };

@@ -20,8 +20,15 @@ export const subscriptionRouter = createTRPCRouter({
     return await ctx.subscription; // Use the subscription data from the context
   }),
   mySubscription: protectedProcedure.query(async ({ ctx }) => {
-    return await ctx.db.query.subscriptions.findFirst({
+    const appSumoSubscription =
+      await ctx.db.query.appSumoSubscription.findFirst({
+        where: eq(schema.appSumoSubscription.userId, ctx.session.user.id),
+      });
+
+    const regularSubscription = await ctx.db.query.subscriptions.findFirst({
       where: eq(schema.subscriptions.userId, ctx.session.user.id),
     });
+
+    return appSumoSubscription ?? regularSubscription;
   }),
 });
