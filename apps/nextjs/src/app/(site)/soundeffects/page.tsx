@@ -11,7 +11,7 @@ import { SoundEffectsGenerator } from "./soundeffectComponent";
 import { characters, getTotalCredits } from "./utils";
 
 export const metadata: Metadata = {
-  title: "Special Effects and Music",
+  title: "Sound Effects and Music",
   description: "AI-powered sound effects and music generation.",
 };
 
@@ -41,45 +41,64 @@ export default async function SoundEffectsPage() {
 
   const subtitle = (
     <>
-      {subData?.status ? (
-        <div>
-          <p className="font-base mb-2 text-center">
-            Generate custom sound effects and background music using AI. Your
-            current plan (
-            <span className="text-cp-secondary font-semibold">
-              {subData.status}
-            </span>
-            ) includes{" "}
-            <span className="text-cp-secondary font-bold">
-              {characters[subData.status]}
-            </span>{" "}
-            monthly credits.
-          </p>
-          <p className="font-base mb-2 text-center">
-            Remaining credits:{" "}
-            <span className="text-cp-secondary font-bold">{credits}</span>/
-            <span className="text-cp-secondary font-bold">{totalCredits}</span>
-          </p>
-          <p className="text-base font-semibold text-black">
-            1 seconds = 40 credits
-          </p>
-        </div>
-      ) : (
-        <div className="flex flex-col">
-          <p className="font-base text-center">
-            Create custom sound effects and background music with AI
-          </p>
-          <p className="font-base mb-2 text-center">
-            Sign in to start creating soundscapes
-          </p>
-        </div>
-      )}
+      <p>The ultimate hub for downloadable and AI-generated sounds.</p>
+      {!subData?.status ? (
+        <p className="font-base mb-2 text-center">
+          Sign in to start creating soundscapes.
+        </p>
+      ) : null}
     </>
   );
 
+  // const subtitle = (
+  //   <>
+  //     {subData?.status ? (
+  //       <div>
+  //         <p className="font-base mb-2 text-center">
+  //           Generate custom sound effects and background music using AI. Your
+  //           current plan (
+  //           <span className="text-cp-secondary font-semibold">
+  //             {subData.status}
+  //           </span>
+  //           ) includes{" "}
+  //           <span className="text-cp-secondary font-bold">
+  //             {characters[subData.status]}
+  //           </span>{" "}
+  //           monthly credits.
+  //         </p>
+  //         <p className="font-base mb-2 text-center">
+  //           Remaining credits:{" "}
+  //           <span className="text-cp-secondary font-bold">{credits}</span>/
+  //           <span className="text-cp-secondary font-bold">{totalCredits}</span>
+  //         </p>
+  //         <p className="text-base font-semibold text-black">
+  //           1 seconds = 40 credits
+  //         </p>
+  //       </div>
+  //     ) : (
+  //       <div className="flex flex-col">
+  //         <p className="font-base text-center">
+  //           Create custom sound effects and background music with AI
+  //         </p>
+  //         <p className="font-base mb-2 text-center">
+  //           Sign in to start creating soundscapes
+  //         </p>
+  //       </div>
+  //     )}
+  //   </>
+  // );
+
   return (
-    <div className="container mx-auto px-4">
-      <PageHeader title="Special Effects & Music" subtitle={subtitle} />
+    <div className="container px-4">
+      <PageHeader title="Sound Effects & Music" subtitle={subtitle} />
+      <div className="flex justify-center">
+        <p
+          className={`bg-cp-accent-lightest w-full rounded-lg px-[24px] py-[12px] text-sm leading-[25px] text-[#212121]  lg:max-w-[1024px]`}
+        >
+          You can enjoy our collection of downloadable sound effects and music,
+          or create your own using prompts.
+        </p>
+      </div>
       <div className="mx-auto flex max-w-3xl justify-center">
         <PromptingGuideAccordion />
       </div>
