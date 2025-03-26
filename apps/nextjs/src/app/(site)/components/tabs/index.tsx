@@ -14,7 +14,7 @@ export default function Tabs({ options }: { options: Option[] }) {
           <button
             key={index}
             onClick={option.action}
-            className={`p-2 lg:h-[49px] lg:min-w-[184px] lg:p-3 lg:text-[18px] ${roboto.className} ${option.active ? "text-cp-primary border-cp-primary border-b-2 font-bold" : "border-b border-[#6B7588] text-[#212121]"}`}
+            className={`p-2 text-xs md:min-w-[140px] md:text-sm lg:h-[49px] lg:min-w-[184px] lg:p-3 lg:text-[18px] ${roboto.className} ${option.active ? "text-cp-primary border-cp-primary border-b-2 font-bold" : "border-b border-[#6B7588] text-[#212121]"}`}
           >
             {option.label}
           </button>

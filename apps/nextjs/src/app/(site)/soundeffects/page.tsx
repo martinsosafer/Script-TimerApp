@@ -1,4 +1,5 @@
-import * as React from "react";
+// import * as React from "react";
+
 import type { Metadata } from "next";
 
 import { auth } from "@voiceai/auth";
@@ -8,6 +9,7 @@ import { set11LabsCreditsBasedOnPlan } from "~/lib/set11labsCredits";
 import PageHeader from "../components/page-header";
 import { PromptingGuideAccordion } from "./SEAccordion/PromptingSoundGuideAccordion";
 import { SoundEffectsGenerator } from "./soundeffectComponent";
+import SoundEffectsMenu from "./soundEffectsMenu/soundEffectsMenu";
 import { characters, getTotalCredits } from "./utils";
 
 export const metadata: Metadata = {
@@ -100,10 +102,12 @@ export default async function SoundEffectsPage() {
           or create your own using prompts.
         </p>
 
-        <div className="flex w-full max-w-5xl flex-col items-center gap-4 rounded-lg  border-gray-800 bg-white pb-8 shadow-xl">
+        {/* <div className="flex w-full max-w-5xl flex-col items-center gap-4 rounded-lg  border-gray-800 bg-white pb-8 shadow-xl">
+          <Tabs options={tabsOptions} />
           <PromptingGuideAccordion />
           <SoundEffectsGenerator subData={subData} credits={credits} />
-        </div>
+        </div> */}
+        <SoundEffectsMenu subData={subData} credits={credits} />
       </section>
     </div>
   );
