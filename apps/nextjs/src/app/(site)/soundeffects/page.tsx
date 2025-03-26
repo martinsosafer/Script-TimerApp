@@ -89,20 +89,22 @@ export default async function SoundEffectsPage() {
   // );
 
   return (
-    <div className="container px-4">
+    <div className="container px-4 pb-14">
       <PageHeader title="Sound Effects & Music" subtitle={subtitle} />
-      <div className="flex justify-center">
+
+      <section className="flex w-full flex-col items-center gap-4">
         <p
-          className={`bg-cp-accent-lightest w-full rounded-lg px-[24px] py-[12px] text-sm leading-[25px] text-[#212121]  lg:max-w-[1024px]`}
+          className={`bg-cp-accent-lightest w-full rounded-lg px-[12px] py-[8px] text-xs leading-[25px] text-[#212121] shadow-md lg:max-w-5xl lg:px-[24px] lg:py-[12px] lg:text-sm`}
         >
           You can enjoy our collection of downloadable sound effects and music,
           or create your own using prompts.
         </p>
-      </div>
-      <div className="mx-auto flex max-w-3xl justify-center">
-        <PromptingGuideAccordion />
-      </div>
-      <SoundEffectsGenerator subData={subData} credits={credits} />
+
+        <div className="flex w-full max-w-5xl flex-col items-center gap-4 rounded-lg  border-gray-800 bg-white pb-8 shadow-xl">
+          <PromptingGuideAccordion />
+          <SoundEffectsGenerator subData={subData} credits={credits} />
+        </div>
+      </section>
     </div>
   );
 }

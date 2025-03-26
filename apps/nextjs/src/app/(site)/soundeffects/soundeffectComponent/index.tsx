@@ -65,7 +65,7 @@ export function SoundEffectsGenerator() {
   };
 
   return (
-    <div className="mx-auto mb-20 mt-10 max-w-md rounded-lg bg-white p-6 shadow-xl">
+    <div className="max-w-md rounded-lg bg-white p-6 shadow-xl">
       <h2
         className={`mb-6 text-center text-2xl font-bold ${poppins.className}`}
       >
