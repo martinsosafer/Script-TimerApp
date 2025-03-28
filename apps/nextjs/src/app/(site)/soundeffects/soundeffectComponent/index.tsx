@@ -20,7 +20,7 @@ export function SoundEffectsGenerator() {
   const [duration, setDuration] = useState(1.1);
   const [promptInfluence, setPromptInfluence] = useState(0.5);
   const [audioUrl, setAudioUrl] = useState("");
-  const [manualDuration, setManualDuration] = useState(false);
+  const [isManualDuration, setIsManualDuration] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -36,8 +36,8 @@ export function SoundEffectsGenerator() {
         prompt_influence: promptInfluence,
       };
 
-      // Only include duration_seconds if manualDuration is true
-      if (manualDuration) {
+      // Only include duration_seconds if isManualDuration is true
+      if (isManualDuration) {
         requestBody.duration_seconds = duration;
       }
 
@@ -70,8 +70,8 @@ export function SoundEffectsGenerator() {
         {"Enter your prompt, and we'll create a sound for you"}
       </h3>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-        <div>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+        <div className="pb-3">
           <Label
             htmlFor="text"
             className="color-[#212121] text-sm font-semibold"
@@ -89,19 +89,25 @@ export function SoundEffectsGenerator() {
           />
         </div>
 
-        <div className="flex items-center space-x-2">
-          <input
-            type="checkbox"
-            id="manualDuration"
-            checked={manualDuration}
-            onChange={(e) => setManualDuration(e.target.checked)}
-            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-          />
-          <Label htmlFor="manualDuration">Set duration manually</Label>
-        </div>
-        {manualDuration && (
-          <div>
-            <Label htmlFor="duration">Duration (seconds)</Label>
+        {/* Sliders */}
+        <div className="flex w-full items-center justify-between gap-6">
+          {/* Duration */}
+          <div
+            className={`flex w-[50%] flex-col gap-2 ${!isManualDuration ? "bg-gray-200" : null} rounded-md p-3`}
+          >
+            <div className="flex items-center justify-between">
+              <Label
+                htmlFor="duration"
+                className={`${!isManualDuration ? "text-gray-400" : null}`}
+              >
+                Duration (seconds)
+              </Label>
+              <span
+                className={`text-sm ${!isManualDuration ? "text-gray-400" : null}`}
+              >
+                {duration}s
+              </span>
+            </div>
             <Slider
               id="duration"
               min={1}
@@ -109,35 +115,61 @@ export function SoundEffectsGenerator() {
               step={1}
               value={[duration]}
               onValueChange={(value) => setDuration(value[0])}
+              disabled={!isManualDuration}
             />
-            <span className="text-sm text-gray-500">{duration}s</span>
           </div>
-        )}
-        <div>
-          <div className="flex items-center justify-between">
-            <Label htmlFor="promptInfluence">Prompt Influence</Label>
-            <HoverCard openDelay={200}>
-              <HoverCardTrigger>
-                <IconInfo className="h-4 w-4 cursor-help text-gray-500" />
-              </HoverCardTrigger>
-              <HoverCardContent className="w-[320px] text-sm" side="top">
-                <p>High: More literal interpretation of the prompt</p>
-                <p>Low: More creative interpretation with added variations</p>
-              </HoverCardContent>
-            </HoverCard>
+          {/* Prompt Influence */}
+          <div className="flex w-[50%] flex-col gap-2 p-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1">
+                <Label htmlFor="promptInfluence">Prompt Influence</Label>
+                <HoverCard openDelay={200}>
+                  <HoverCardTrigger>
+                    <IconInfo className="h-4 w-4 cursor-help text-gray-500" />
+                  </HoverCardTrigger>
+                  <HoverCardContent className="w-[320px] text-sm" side="top">
+                    <p>High: More literal interpretation of the prompt</p>
+                    <p>
+                      Low: More creative interpretation with added variations
+                    </p>
+                  </HoverCardContent>
+                </HoverCard>
+              </div>
+              <span className="text-sm">{promptInfluence.toFixed(1)}</span>
+            </div>
+            <Slider
+              id="promptInfluence"
+              min={0}
+              max={1}
+              step={0.1}
+              value={[promptInfluence]}
+              onValueChange={(value) => setPromptInfluence(value[0])}
+            />
           </div>
-          <Slider
-            id="promptInfluence"
-            min={0}
-            max={1}
-            step={0.1}
-            value={[promptInfluence]}
-            onValueChange={(value) => setPromptInfluence(value[0])}
-          />
-          <span className="text-sm text-gray-500">
-            {promptInfluence.toFixed(1)}
-          </span>
         </div>
+        {/* Manual Duration Checkbox */}
+        <div className="flex items-center gap-2 pl-1">
+          <input
+            type="checkbox"
+            id="isManualDuration"
+            checked={isManualDuration}
+            onChange={(e) => setIsManualDuration(e.target.checked)}
+            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+          />
+          <Label htmlFor="isManualDuration">Set duration manually</Label>
+        </div>
+
+        {/* Credits Info */}
+        <div className="bg-cp-background w-full rounded-lg p-2 text-center text-sm">
+          <p>
+            <strong>1 second=40 credits</strong> - Credits remaining: 
+            <strong>10000</strong>
+          </p>
+          <p>
+            Your current plan includes <strong>10000</strong> credits
+          </p>
+        </div>
+
         <Button type="submit" className="w-full" disabled={isLoading}>
           {isLoading ? (
             <div className="flex items-center justify-center">

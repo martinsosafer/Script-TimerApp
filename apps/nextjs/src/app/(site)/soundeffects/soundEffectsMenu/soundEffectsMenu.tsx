@@ -45,7 +45,7 @@ const SoundEffectsMenu = ({ subData, credits }: SoundEffectsMenuProps) => {
   };
 
   return (
-    <div className="flex w-full max-w-5xl flex-col items-center gap-5 rounded-xl  border-gray-800 bg-white px-5 pb-5 shadow-xl">
+    <div className="flex w-full max-w-5xl flex-col items-center gap-5 rounded-xl  border-gray-800 bg-white p-3 shadow-xl lg:px-6 lg:pb-6 lg:pt-2">
       <Tabs options={tabsOptions} />
       {handleSelection(selected)}
     </div>
