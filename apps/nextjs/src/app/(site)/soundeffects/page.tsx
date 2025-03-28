@@ -39,7 +39,7 @@ export default async function SoundEffectsPage() {
 
   const subData = session?.user.subscription;
 
-  const totalCredits = getTotalCredits(subData?.status);
+  // const totalCredits = getTotalCredits(subData?.status);
 
   const subtitle = (
     <>
@@ -91,7 +91,7 @@ export default async function SoundEffectsPage() {
   // );
 
   return (
-    <div className="container px-4 pb-14">
+    <main className="bg-cp-background px-4 pb-14">
       <PageHeader title="Sound Effects & Music" subtitle={subtitle} />
 
       <section className="flex w-full flex-col items-center gap-4">
@@ -109,6 +109,6 @@ export default async function SoundEffectsPage() {
         </div> */}
         <SoundEffectsMenu subData={subData} credits={credits} />
       </section>
-    </div>
+    </main>
   );
 }
