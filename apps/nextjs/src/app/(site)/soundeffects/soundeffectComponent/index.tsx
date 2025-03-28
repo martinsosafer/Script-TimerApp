@@ -65,23 +65,30 @@ export function SoundEffectsGenerator() {
   };
 
   return (
-    <div className="max-w-md rounded-lg bg-white p-6 shadow-xl">
-      <h2
-        className={`mb-6 text-center text-2xl font-bold ${poppins.className}`}
-      >
-        Sound Effects Generator
-      </h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="flex w-full flex-col gap-7 pt-5">
+      <h3 className={`font-bold text-[#636D80] ${poppins.className}`}>
+        {"Enter your prompt, and we'll create a sound for you"}
+      </h3>
+
+      <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         <div>
-          <Label htmlFor="text">Text Description</Label>
+          <Label
+            htmlFor="text"
+            className="color-[#212121] text-sm font-semibold"
+          >
+            Sound Description
+          </Label>
           <Input
             id="text"
             value={text}
             onChange={(e) => setText(e.target.value)}
             placeholder="Describe your sound effect"
             required
+            className="h-[48px] text-base"
+            autoComplete="off"
           />
         </div>
+
         <div className="flex items-center space-x-2">
           <input
             type="checkbox"
@@ -142,6 +149,7 @@ export function SoundEffectsGenerator() {
           )}
         </Button>
       </form>
+
       {audioUrl && (
         <div className="mt-6">
           <h3 className="mb-2 text-lg font-semibold">

@@ -1,35 +1,21 @@
-"use client";
-
-import * as React from "react";
-
-import { Button } from "@voiceai/ui";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@voiceai/ui/@/components/ui/accordion";
-import { IconChevronDown } from "@voiceai/ui/@/components/ui/icons";
-
-const PromptingGuideContent = React.lazy(() => import("./PromptContent"));
 
 export function PromptingGuideAccordion() {
-  const [isLoaded, setIsLoaded] = React.useState(false);
-
-  const handleLoad = () => {
-    setIsLoaded(true);
-  };
-
   return (
-    <section className="bg-cp-background flex w-full flex-col rounded-lg px-5 py-6">
+    <section className="bg-cp-background flex w-full flex-col rounded-lg px-5 py-6 shadow-md">
       <h3 className="text-left font-bold">Prompting guide</h3>
 
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="item-1" className="border-[#898F98]">
-          <AccordionTrigger className="px-0 text-sm text-[#212121] lg:text-base lg:px-3">
+          <AccordionTrigger className="px-0 text-sm text-[#212121] lg:px-3 lg:text-base">
             Simple effects
           </AccordionTrigger>
-          <AccordionContent className="text-xs text-[#212121] px-1 lg:text-sm lg:px-6">
+          <AccordionContent className="px-1 text-xs text-[#212121] lg:px-6 lg:text-sm">
             <>
               <p>For basic sound effects, use clear, concise descriptions:</p>
               <p>{`• "Glass shattering on concrete"`}</p>
@@ -40,10 +26,10 @@ export function PromptingGuideAccordion() {
         </AccordionItem>
 
         <AccordionItem value="item-2" className="border-[#898F98]">
-          <AccordionTrigger className="px-0 text-sm text-[#212121] lg:text-base lg:px-3">
+          <AccordionTrigger className="px-0 text-sm text-[#212121] lg:px-3 lg:text-base">
             Complex sequences
           </AccordionTrigger>
-          <AccordionContent className="text-xs text-[#212121] px-1 lg:text-sm lg:px-6">
+          <AccordionContent className="px-1 text-xs text-[#212121] lg:px-6 lg:text-sm">
             <>
               <p>
                 For multi-part sound effects, describe the sequence of events:
@@ -57,10 +43,10 @@ export function PromptingGuideAccordion() {
         </AccordionItem>
 
         <AccordionItem value="item-3" className="border-[#898F98]">
-          <AccordionTrigger className="px-0 text-sm text-[#212121] lg:text-base lg:px-3">
+          <AccordionTrigger className="px-0 text-sm text-[#212121] lg:px-3 lg:text-base">
             Musical elements
           </AccordionTrigger>
-          <AccordionContent className="text-xs text-[#212121] px-1 lg:text-sm lg:px-6">
+          <AccordionContent className="px-1 text-xs text-[#212121] lg:px-6 lg:text-sm">
             <>
               <p>The API also supports generation of musical components:</p>
               <p>{`• "90s hip-hop drum loop, 90 BPM"`}</p>
@@ -71,10 +57,10 @@ export function PromptingGuideAccordion() {
         </AccordionItem>
 
         <AccordionItem value="item-4" className="border-[#898F98]">
-          <AccordionTrigger className="px-0 text-sm text-[#212121] lg:text-base lg:px-3">
+          <AccordionTrigger className="px-0 text-sm text-[#212121] lg:px-3 lg:text-base">
             Audio terminology
           </AccordionTrigger>
-          <AccordionContent className="text-xs text-[#212121] px-1 lg:text-sm lg:px-6">
+          <AccordionContent className="px-1 text-xs text-[#212121] lg:px-6 lg:text-sm">
             <>
               <p>Common terms that can enhance your prompts:</p>
               <p>
@@ -114,40 +100,6 @@ export function PromptingGuideAccordion() {
           </AccordionContent>
         </AccordionItem>
       </Accordion>
-
-      {/* <Accordion type="single" collapsible className="w-full max-w-xl">
-        <AccordionItem value="prompting-guide">
-          <AccordionTrigger className="flex justify-center">
-            <div className="flex items-center">
-              Prompting Guide
-              {!isLoaded && (
-                <Button
-                  variant="default"
-                  size="sm"
-                  className="ml-2"
-                  onClick={handleLoad}
-                >
-                  Load
-                  <IconChevronDown className="ml-2 h-4 w-4" />
-                </Button>
-              )}
-            </div>
-          </AccordionTrigger>
-          <AccordionContent>
-            {isLoaded ? (
-              <React.Suspense
-                fallback={<div className="py-4 text-center">Loading...</div>}
-              >
-                <PromptingGuideContent />
-              </React.Suspense>
-            ) : (
-              <div className="py-4 text-center">
-                Click "Load" to view the Prompting Guide
-              </div>
-            )}
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion> */}
     </section>
   );
 }

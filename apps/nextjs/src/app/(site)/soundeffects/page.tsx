@@ -7,7 +7,7 @@ import { auth } from "@voiceai/auth";
 import { fetchUserCredits } from "~/lib/get11LabsCredits";
 import { set11LabsCreditsBasedOnPlan } from "~/lib/set11labsCredits";
 import PageHeader from "../components/page-header";
-import { PromptingGuideAccordion } from "./SEAccordion/PromptingSoundGuideAccordion";
+import { PromptingGuideAccordion } from "./promptingGuideAccordion/PromptingGuideAccordion";
 import { SoundEffectsGenerator } from "./soundeffectComponent";
 import SoundEffectsMenu from "./soundEffectsMenu/soundEffectsMenu";
 import { characters, getTotalCredits } from "./utils";

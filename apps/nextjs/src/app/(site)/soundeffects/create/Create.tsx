@@ -1,4 +1,4 @@
-import { PromptingGuideAccordion } from "../SEAccordion/PromptingSoundGuideAccordion";
+import { PromptingGuideAccordion } from "../promptingGuideAccordion/PromptingGuideAccordion";
 import { SoundEffectsGenerator } from "../soundeffectComponent";
 import type { SubData } from "../types";
 import { getTotalCredits } from "../utils";
@@ -14,7 +14,7 @@ const Create = ({ subData, credits }: CreateProps) => {
   return (
     <>
       <PromptingGuideAccordion />
-      {/* <SoundEffectsGenerator subData={subData} credits={credits} /> */}
+      <SoundEffectsGenerator subData={subData} credits={credits} />
     </>
   );
 };
