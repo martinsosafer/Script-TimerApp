@@ -21,25 +21,28 @@ export default async function SoundEffectsPage() {
   const session = await auth();
 
   // Initialize credits variable
-  let credits = 0;
+  // let credits = 0;
 
-  if (session?.user.id && session?.user.subscription?.status) {
-    // Set credits based on the user's subscription plan
-    await set11LabsCreditsBasedOnPlan(
-      session.user.id,
-      session.user.subscription.status,
-    );
+  // if (session?.user.id && session?.user.subscription?.status) {
+  //   // Set credits based on the user's subscription plan
+  //   await set11LabsCreditsBasedOnPlan(
+  //     session.user.id,
+  //     session.user.subscription.status,
+  //   );
 
-    try {
-      credits = await fetchUserCredits(session.user.id);
-    } catch (error) {
-      console.error("Error fetching user credits:", error);
-    }
-  }
+  //   try {
+  //     credits = await fetchUserCredits(session.user.id);
+  //   } catch (error) {
+  //     console.error("Error fetching user credits:", error);
+  //   }
+  // }
 
   const subData = session?.user.subscription;
 
   // const totalCredits = getTotalCredits(subData?.status);
+
+  // console.log("credits", credits);
+  // console.log("totalCredits", totalCredits);
 
   const subtitle = (
     <>
@@ -107,7 +110,7 @@ export default async function SoundEffectsPage() {
           <PromptingGuideAccordion />
           <SoundEffectsGenerator subData={subData} credits={credits} />
         </div> */}
-        <SoundEffectsMenu subData={subData} credits={credits} />
+        <SoundEffectsMenu subData={subData} />
       </section>
     </main>
   );

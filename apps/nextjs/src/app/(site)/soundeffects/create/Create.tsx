@@ -1,20 +1,12 @@
 import { PromptingGuideAccordion } from "../promptingGuideAccordion/PromptingGuideAccordion";
 import { SoundEffectsGenerator } from "../soundeffectComponent";
-import type { SubData } from "../types";
-import { getTotalCredits } from "../utils";
+import type { SessionProps } from "../types";
 
-interface CreateProps {
-  subData: SubData | null | undefined;
-  credits: number;
-}
-
-const Create = ({ subData, credits }: CreateProps) => {
-  const totalCredits = getTotalCredits(subData?.status);
-
+const Create = ({ subData }: SessionProps) => {
   return (
     <>
       <PromptingGuideAccordion />
-      <SoundEffectsGenerator subData={subData} credits={credits} />
+      <SoundEffectsGenerator subData={subData} />
     </>
   );
 };

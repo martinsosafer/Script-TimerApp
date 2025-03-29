@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "@voiceai/ui";
 import {
@@ -14,8 +14,11 @@ import { Label } from "@voiceai/ui/@/components/ui/label";
 import { Slider } from "@voiceai/ui/@/components/ui/slider";
 
 import { poppins } from "~/app/fonts";
+import { getUserCredits } from "../actions";
+import type { SessionProps } from "../types";
+import { getTotalCredits } from "../utils";
 
-export function SoundEffectsGenerator() {
+export function SoundEffectsGenerator({ subData }: SessionProps) {
   const [text, setText] = useState("");
   const [duration, setDuration] = useState(1.1);
   const [promptInfluence, setPromptInfluence] = useState(0.5);
@@ -23,9 +26,32 @@ export function SoundEffectsGenerator() {
   const [isManualDuration, setIsManualDuration] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  const [credits, setCredits] = useState<number | undefined>(0);
+  const [isLoadingCredits, setIsLoadingCredits] = useState(false);
+
+  const totalCredits = getTotalCredits(subData?.status);
+
+  // Update user credits
+  const creditsUpdate = async () => {
+    const updatedCredits = await getUserCredits(subData?.userId!);
+    setCredits(updatedCredits?.credits);
+    setIsLoadingCredits(false);
+  };
+
+  useEffect(() => {
+    if (subData?.userId) {
+      setIsLoadingCredits(true);
+      creditsUpdate().catch((error) => {
+        setIsLoadingCredits(false);
+        console.error(error);
+      });
+    }
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setIsLoadingCredits(true);
     try {
       const requestBody: {
         text: string;
@@ -35,7 +61,6 @@ export function SoundEffectsGenerator() {
         text,
         prompt_influence: promptInfluence,
       };
-
       // Only include duration_seconds if isManualDuration is true
       if (isManualDuration) {
         requestBody.duration_seconds = duration;
@@ -56,6 +81,7 @@ export function SoundEffectsGenerator() {
       const audioBlob = await response.blob();
       const url = URL.createObjectURL(audioBlob);
       setAudioUrl(url);
+      await creditsUpdate();
     } catch (error) {
       console.error("Error:", error);
       alert("Failed to generate sound effect");
@@ -160,17 +186,26 @@ export function SoundEffectsGenerator() {
         </div>
 
         {/* Credits Info */}
-        <div className="bg-cp-background w-full rounded-lg p-2 text-center text-sm">
-          <p>
-            <strong>1 second=40 credits</strong> - Credits remaining: 
-            <strong>10000</strong>
-          </p>
-          <p>
-            Your current plan includes <strong>10000</strong> credits
-          </p>
-        </div>
+        {subData?.userId ? (
+          <div className="bg-cp-background w-full rounded-lg p-2 text-center text-sm">
+            <p>
+              <strong>1 second=40 credits</strong> - Credits remaining: 
+              <strong>{isLoadingCredits ? "..." : credits}</strong>
+            </p>
+            <p>
+              Your current plan (<strong>{subData?.status}</strong>) includes 
+              <strong>{totalCredits}</strong> credits
+            </p>
+          </div>
+        ) : null}
 
-        <Button type="submit" className="w-full" disabled={isLoading}>
+        <Button
+          type="submit"
+          className="w-full"
+          variant="accent"
+          size="lg"
+          disabled={text.length === 0 || isLoading}
+        >
           {isLoading ? (
             <div className="flex items-center justify-center">
               <div className="h-4 w-4 animate-spin rounded-full border-2 border-gray-400 border-t-transparent"></div>
@@ -195,3 +230,6 @@ export function SoundEffectsGenerator() {
     </div>
   );
 }
+
+// Add modal for non logged users
+// Move audio player to box with robot (outside box)
