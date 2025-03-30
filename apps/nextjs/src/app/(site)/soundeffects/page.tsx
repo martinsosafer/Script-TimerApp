@@ -7,8 +7,8 @@ import { auth } from "@voiceai/auth";
 import { fetchUserCredits } from "~/lib/get11LabsCredits";
 import { set11LabsCreditsBasedOnPlan } from "~/lib/set11labsCredits";
 import PageHeader from "../components/page-header";
-import { PromptingGuideAccordion } from "./promptingGuideAccordion/PromptingGuideAccordion";
-import { SoundEffectsGenerator } from "./soundeffectComponent";
+import { PromptingGuideAccordion } from "./soundEffectsMenu/create/promptingGuideAccordion/PromptingGuideAccordion";
+import { SoundEffectsGenerator } from "./soundEffectsMenu/create/soundeffectsGenerator/SoundEffectsGenerator";
 import SoundEffectsMenu from "./soundEffectsMenu/soundEffectsMenu";
 import { characters, getTotalCredits } from "./utils";
 

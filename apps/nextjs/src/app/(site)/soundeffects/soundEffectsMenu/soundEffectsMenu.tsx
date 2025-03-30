@@ -3,8 +3,8 @@
 import { useState } from "react";
 
 import Tabs from "../../components/tabs";
-import Create from "../create/Create";
 import type { SessionProps } from "../types";
+import Create from "./create/Create";
 
 const SoundEffectsMenu = ({ subData }: SessionProps) => {
   const [selected, setSelected] = useState<number>(2);
