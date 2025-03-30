@@ -116,36 +116,50 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
         </div>
 
         {/* Sliders */}
-        <div className="flex w-full items-center justify-between gap-6">
+        <div className="flex w-full flex-col items-start justify-between gap-6 lg:flex-row">
           {/* Duration */}
-          <div
-            className={`flex w-[50%] flex-col gap-2 ${!isManualDuration ? "bg-gray-200" : null} rounded-md p-3`}
-          >
-            <div className="flex items-center justify-between">
-              <Label
-                htmlFor="duration"
-                className={`${!isManualDuration ? "text-gray-400" : null}`}
-              >
-                Duration (seconds)
-              </Label>
-              <span
-                className={`text-sm ${!isManualDuration ? "text-gray-400" : null}`}
-              >
-                {duration}s
-              </span>
+          <div className="flex w-full flex-col gap-3 lg:w-[50%] ">
+            <div
+              className={`flex flex-col gap-2 ${!isManualDuration ? "bg-gray-200" : null} rounded-md p-3`}
+            >
+              <div className="flex items-center justify-between">
+                <Label
+                  htmlFor="duration"
+                  className={`${!isManualDuration ? "text-gray-400" : null}`}
+                >
+                  Duration (seconds)
+                </Label>
+                <span
+                  className={`text-sm ${!isManualDuration ? "text-gray-400" : null}`}
+                >
+                  {duration}s
+                </span>
+              </div>
+              <Slider
+                id="duration"
+                min={1}
+                max={30}
+                step={1}
+                value={[duration]}
+                onValueChange={(value) => setDuration(value[0])}
+                disabled={!isManualDuration}
+              />
             </div>
-            <Slider
-              id="duration"
-              min={1}
-              max={30}
-              step={1}
-              value={[duration]}
-              onValueChange={(value) => setDuration(value[0])}
-              disabled={!isManualDuration}
-            />
+            {/* Manual Duration Checkbox */}
+            <div className="flex items-center gap-2 pl-1">
+              <input
+                type="checkbox"
+                id="isManualDuration"
+                checked={isManualDuration}
+                onChange={(e) => setIsManualDuration(e.target.checked)}
+                className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+              />
+              <Label htmlFor="isManualDuration">Set duration manually</Label>
+            </div>
           </div>
+
           {/* Prompt Influence */}
-          <div className="flex w-[50%] flex-col gap-2 p-3">
+          <div className="flex lg:w-[50%] w-full flex-col gap-2 p-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1">
                 <Label htmlFor="promptInfluence">Prompt Influence</Label>
@@ -172,17 +186,6 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
               onValueChange={(value) => setPromptInfluence(value[0])}
             />
           </div>
-        </div>
-        {/* Manual Duration Checkbox */}
-        <div className="flex items-center gap-2 pl-1">
-          <input
-            type="checkbox"
-            id="isManualDuration"
-            checked={isManualDuration}
-            onChange={(e) => setIsManualDuration(e.target.checked)}
-            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-          />
-          <Label htmlFor="isManualDuration">Set duration manually</Label>
         </div>
 
         {/* Credits Info */}
