@@ -24,18 +24,20 @@ export async function getSoundEffectsBlob() {
     const { blobs } = await list({
       prefix: `sound-effects`,
     });
-    const fullList = await JSON.parse(JSON.stringify(blobs));
-    const listByFolders = fullList.reduce((acc, blob) => {
-      const folder = blob.pathname.split("/")[1];
-      if (folder !== "" && !acc[folder]) {
-        acc[folder] = [];
-      }
-      if (folder !== "" && !Array.isArray(Object.values(acc[folder])[0])) {
-        acc[folder].push(blob);
-      }
-      return acc;
-    }, {});
-
+    const fullList = (await JSON.parse(JSON.stringify(blobs))) as Blob[];
+    const listByFolders = fullList.reduce(
+      (acc: Record<string, Blob[]>, blob) => {
+        const folder = blob.pathname.split("/")[1]!;
+        if (folder !== "" && !acc[folder]) {
+          acc[folder] = [];
+        }
+        if (folder !== "" && !Array.isArray(Object.values(acc[folder]!)[0])) {
+          acc[folder]!.push(blob);
+        }
+        return acc;
+      },
+      {},
+    );
     const soundEffectsArray = Object.entries(listByFolders).map(
       ([type, sounds]) => {
         return { type, sounds };

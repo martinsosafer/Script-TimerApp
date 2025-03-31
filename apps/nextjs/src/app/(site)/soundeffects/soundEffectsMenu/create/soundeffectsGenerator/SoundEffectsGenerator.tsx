@@ -8,11 +8,10 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@voiceai/ui/@/components/ui/hover-card";
-import { IconCheck, IconInfo } from "@voiceai/ui/@/components/ui/icons";
+import { IconBot, IconInfo } from "@voiceai/ui/@/components/ui/icons";
 import { Input } from "@voiceai/ui/@/components/ui/input";
 import { Label } from "@voiceai/ui/@/components/ui/label";
 import { Slider } from "@voiceai/ui/@/components/ui/slider";
-import Bot from "@voiceai/ui/@/svg-components/Bot";
 
 import { poppins } from "~/app/fonts";
 import NoSessionModal from "../../../../components/modals/no-session-modal";
@@ -235,7 +234,7 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
 
         {audioUrl && (
           <div className="pt-6">
-            <Bot />
+            <IconBot />
             <h3 className="mb-2 text-lg font-semibold">
               Generated Sound Effect:
             </h3>
