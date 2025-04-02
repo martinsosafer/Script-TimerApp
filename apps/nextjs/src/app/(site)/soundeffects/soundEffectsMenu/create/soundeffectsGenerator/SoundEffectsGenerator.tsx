@@ -14,7 +14,7 @@ import { Label } from "@voiceai/ui/@/components/ui/label";
 import { Slider } from "@voiceai/ui/@/components/ui/slider";
 
 import { poppins } from "~/app/fonts";
-import { api } from "~/utils/api";
+// import { api } from "~/utils/api";
 import NoSessionModal from "../../../../components/modals/no-session-modal";
 import { getUserCredits } from "../../../actions";
 import type { SessionProps } from "../../../types";
