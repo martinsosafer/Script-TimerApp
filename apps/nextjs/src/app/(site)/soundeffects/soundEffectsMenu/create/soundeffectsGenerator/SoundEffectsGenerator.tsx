@@ -14,6 +14,7 @@ import { Label } from "@voiceai/ui/@/components/ui/label";
 import { Slider } from "@voiceai/ui/@/components/ui/slider";
 
 import { poppins } from "~/app/fonts";
+import { api } from "~/utils/api";
 import NoSessionModal from "../../../../components/modals/no-session-modal";
 import { getUserCredits } from "../../../actions";
 import type { SessionProps } from "../../../types";
@@ -30,6 +31,12 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
 
   const [credits, setCredits] = useState<number | undefined>(0);
   const [isLoadingCredits, setIsLoadingCredits] = useState(false);
+
+  // const { data: userData, isSuccess } = api.auth.getSession.useQuery();
+  // // const userPlan = userData?.user.subscription?.status;
+
+  // console.log("userData", userData?.user?.id);
+  // console.log("IsSuccess", isSuccess);
 
   const totalCredits = getTotalCredits(subData?.status);
 

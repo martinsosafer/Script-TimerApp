@@ -40,7 +40,7 @@ export async function getSoundEffectsBlob() {
     );
     const soundEffectsArray = Object.entries(listByFolders).map(
       ([type, sounds]) => {
-        return { type, sounds };
+        return { type, sounds: sounds.slice(1) };
       },
     );
 
