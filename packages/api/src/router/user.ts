@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { db, desc, eq, schema, sql } from "@voiceai/db";
+import { and, db, desc, eq, not, or, schema, sql } from "@voiceai/db";
 import { elevenLabsCredit } from "@voiceai/db/schema/11LabsCredits";
 import { clCredits } from "@voiceai/db/schema/copyLeaksCredit";
 
@@ -172,6 +172,58 @@ export const userRouter = createTRPCRouter({
         schema.imgCredit.credits,
       )
       .orderBy(desc(schema.users.created_at));
+  }),
+  voiceGenerationUsage: protectedProcedure.query(async ({ ctx }) => {
+    return await ctx.db
+      .select({
+        email: schema.users.email,
+        status: schema.subscriptions.status,
+        generationType: schema.generations.type,
+        createdAt: schema.generations.created_at,
+        // Add AppSumo info
+        isAppSumo:
+          sql<boolean>`CASE WHEN ${schema.appSumoSubscription.id} IS NOT NULL THEN true ELSE false END`.as(
+            "is_app_sumo",
+          ),
+        appSumoPlan: schema.appSumoSubscription.plan_id,
+        appSumoTier: schema.appSumoSubscription.tier,
+      })
+      .from(schema.users)
+      .innerJoin(schema.subscriptions, () =>
+        eq(schema.users.id, schema.subscriptions.userId),
+      )
+      .innerJoin(schema.generations, () =>
+        eq(schema.users.id, schema.generations.userId),
+      )
+      // Left join to include AppSumo data if it exists
+      .leftJoin(schema.appSumoSubscription, () =>
+        eq(schema.users.id, schema.appSumoSubscription.userId),
+      )
+      .where(
+        and(
+          not(
+            or(
+              eq(schema.subscriptions.status, "FREE"),
+              eq(schema.subscriptions.status, "FREE_TRIAL"),
+            ),
+          ),
+          or(
+            eq(schema.generations.type, "11LABS"),
+            eq(schema.generations.type, "GOOGLE"),
+          ),
+        ),
+      )
+      .groupBy(
+        schema.users.email,
+        schema.subscriptions.status,
+        schema.generations.type,
+        schema.generations.created_at,
+        // Add AppSumo columns to GROUP BY
+        schema.appSumoSubscription.id,
+        schema.appSumoSubscription.plan_id,
+        schema.appSumoSubscription.tier,
+      )
+      .orderBy(desc(schema.generations.created_at));
   }),
 
   giveSubscription: protectedProcedure
