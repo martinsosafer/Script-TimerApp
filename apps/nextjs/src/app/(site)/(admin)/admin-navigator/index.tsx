@@ -17,7 +17,7 @@ export default function AdminNavigator() {
     "Voice Clone": "/adminclone",
     Voices: "/adminvoices",
     "Landing Pages": "/admin-landings",
-    Generation: "/admin-voicegeneration",
+    "Voice Generation": "/admin-voicegeneration",
   };
 
   const adminPages = [
@@ -57,7 +57,7 @@ export default function AdminNavigator() {
       action: () => router.push("/admin-landings"),
     },
     {
-      label: "Voice-Generation",
+      label: "Voice Generation",
       active: pathname === "/admin-voicegeneration",
       action: () => router.push("/admin-voicegeneration"),
     },
