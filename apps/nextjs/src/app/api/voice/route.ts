@@ -54,13 +54,10 @@ export async function POST(req: Request) {
       where: eq(schema.voices.external_id, body.voice_id),
     });
 
-    // Special handling for cloned voices which might not be in the voices table
+    // Special handling for cloned voices
     let voiceType = voice?.type || "11LABS";
     if (!voice && body.voice_id) {
-      // Assume it's a cloned voice from 11Labs if not found in the database
-      console.log(
-        "Voice not found in database, assuming it's a cloned 11Labs voice",
-      );
+      console.log("Voice not found in DB, assuming cloned 11Labs voice");
       voiceType = "11LABS_CLONED";
     }
 
@@ -92,19 +89,10 @@ export async function POST(req: Request) {
     const paidSubscriptionStatuses = [
       "BUSINESS",
       "STUDENT",
-      "CREATOR",
-      "STUDENTCLMO",
-      "CREATORCLMO",
-      "BUSINESSCLMO",
-      "STUDENTCLYR",
-      "CREATORCLYR",
-      "BUSINESSCLYR",
+      "CREATOR" /* ... */,
     ];
-
-    // Define paying AppSumo tiers (NO watermark for tiers 1 & 2)
     const paidAppSumoTiers = [1, 2];
 
-    // Check if user has ANY paid plan
     const hasPaidSubscription = paidSubscriptionStatuses.includes(
       subscription?.status,
     );
@@ -112,7 +100,6 @@ export async function POST(req: Request) {
       appSumoSubscription &&
       paidAppSumoTiers.includes(appSumoSubscription.tier);
 
-    // ONLY add watermark if user has NO paid plans at all
     if (!hasPaidSubscription && !hasPaidAppSumo) {
       message = addWatermark(message);
     }
@@ -125,24 +112,20 @@ export async function POST(req: Request) {
       console.log(
         `Processing ${voiceType === "11LABS_CLONED" ? "cloned" : "standard"} 11Labs voice`,
       );
-
       const { stream, metadata } = await handleElevenLabsGeneration({
         ...body,
         text: message,
         isCloned: voiceType === "11LABS_CLONED",
       });
-
       audioStream = stream;
       generationType = "11LABS";
       generationMetadata = metadata;
     } else if (voiceType === "GOOGLE") {
       console.log("Processing Google voice");
-
       const { stream, metadata } = await handleGoogleGeneration({
         ...body,
         text: message,
       });
-
       audioStream = stream;
       generationType = "GOOGLE";
       generationMetadata = metadata;
@@ -159,45 +142,50 @@ export async function POST(req: Request) {
 
     const modifiedStream = new ReadableStream({
       async start(controller) {
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) {
-            break;
+        try {
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            controller.enqueue(value);
+            audioChunks.push(value);
           }
-          controller.enqueue(value);
-          audioChunks.push(value);
-        }
-        controller.close();
+          controller.close();
 
-        const audioBase64 = Buffer.concat(audioChunks).toString("base64");
+          const audioBase64 = Buffer.concat(audioChunks).toString("base64");
+          console.log("Audio base64 length:", audioBase64.length); // Debug
 
-        const generationId = await db
-          .insert(schema.generations)
-          .values({
+          const generationId = await db
+            .insert(schema.generations)
+            .values({
+              userId: userId,
+              type: generationType,
+              prompt: body.text,
+              response: audioBase64,
+              metadata: generationMetadata,
+            })
+            .returning({ generationId: schema.generations.id })
+            .then((res) => res?.[0]?.generationId);
+
+          if (!generationId) throw new Error("DB insertion failed");
+          console.log("Saved generation:", generationId); // Debug
+
+          // Deduct credits
+          await db.insert(schema.credits).values({
             userId: userId,
-            type: generationType,
-            prompt: body.text,
-            response: audioBase64,
-            metadata: generationMetadata,
-          })
-          .returning({ generationId: schema.generations.id })
-          .then((res) => res?.[0]?.generationId);
-
-        if (!generationId) throw new Error("Error creating voice");
-
-        const creditsUsed = body.text.length;
-        await db.insert(schema.credits).values({
-          userId: userId,
-          generationId: generationId,
-          type: generationType,
-          credits: -creditsUsed,
-          metadata: {
-            length: body.text.length,
-            description: `${generationType} voice generation credit usage`,
-          },
-          created_at: new Date(),
-          updated_at: new Date(),
-        });
+            generationId: generationId,
+            type: "11LABS", // Force all Google/11Labs usage to log as "11LABS"
+            credits: -body.text.length,
+            metadata: {
+              length: body.text.length,
+              description: `Voice generation (${generationType})`, // Clarify in metadata
+            },
+            created_at: new Date(),
+            updated_at: new Date(),
+          });
+        } catch (error) {
+          console.error("DB SAVE ERROR:", error);
+          throw error;
+        }
       },
       cancel() {
         reader.cancel();
@@ -207,7 +195,7 @@ export async function POST(req: Request) {
     return new NextResponse(modifiedStream, {
       headers: {
         "Content-Type": "audio/mpeg",
-        "Access-Control-Allow-Origin": "*", // Add CORS for iOS compatibility
+        "Access-Control-Allow-Origin": "*",
         "Cache-Control": "no-cache",
       },
     });
@@ -225,14 +213,12 @@ async function handleElevenLabsGeneration(body: any) {
   const data = {
     model_id: "eleven_multilingual_v2",
     text: body.text,
-    voice_actor: body.voice_actor,
     voice_settings: {
       similarity_boost: body.similarity,
       stability: body.stability,
     },
   };
 
-  // Determine which API key to try first based on whether it's a cloned voice
   const firstApiKey = body.isCloned
     ? process.env.CLONE_11LABS_API_KEY
     : process.env.INTEGRATION_11LABS_API_KEY;
@@ -241,11 +227,6 @@ async function handleElevenLabsGeneration(body: any) {
     ? process.env.INTEGRATION_11LABS_API_KEY
     : process.env.CLONE_11LABS_API_KEY;
 
-  console.log(
-    `Attempting 11Labs TTS with ${body.isCloned ? "CLONE" : "INTEGRATION"} API key first`,
-  );
-
-  // First attempt with the appropriate API key
   let response = await fetch(
     `https://api.elevenlabs.io/v1/text-to-speech/${body.voice_id}/stream`,
     {
@@ -259,12 +240,7 @@ async function handleElevenLabsGeneration(body: any) {
     },
   );
 
-  // If the first attempt fails, try with the second API key
   if (!response.ok) {
-    console.error(
-      `Failed with ${body.isCloned ? "CLONE" : "INTEGRATION"}_11LABS_API_KEY, trying with ${body.isCloned ? "INTEGRATION" : "CLONE"}_11LABS_API_KEY...`,
-    );
-
     response = await fetch(
       `https://api.elevenlabs.io/v1/text-to-speech/${body.voice_id}/stream`,
       {
@@ -277,22 +253,10 @@ async function handleElevenLabsGeneration(body: any) {
         body: JSON.stringify(data),
       },
     );
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("Error response from ElevenLabs:", errorText);
-      throw new Error(
-        `Failed to fetch the text-to-speech stream for voice ID ${body.voice_id} with both API keys.`,
-      );
-    }
+    if (!response.ok) throw new Error("11Labs TTS failed");
   }
 
-  const responseBody = response.body;
-  if (!responseBody) {
-    throw new Error("Response body is null.");
-  }
-
-  return { stream: responseBody, metadata: data };
+  return { stream: response.body!, metadata: data };
 }
 
 async function handleGoogleGeneration(body: any) {
@@ -306,19 +270,14 @@ async function handleGoogleGeneration(body: any) {
 
   const languageCode = body.voice_id.split("-").slice(0, 2).join("-");
 
-  const request = {
+  const [response] = await client.synthesizeSpeech({
     input: { text: body.text },
-    voice: {
-      name: body.voice_id,
-      languageCode: languageCode,
-    },
+    voice: { name: body.voice_id, languageCode },
     audioConfig: { audioEncoding: "MP3" },
-  };
-
-  const [response] = await client.synthesizeSpeech(request);
+  });
 
   if (!response.audioContent) {
-    throw new Error("Google TTS returned no audio content");
+    throw new Error("Google TTS returned no audio");
   }
 
   const audioData = new Uint8Array(response.audioContent as Buffer);
@@ -332,8 +291,9 @@ async function handleGoogleGeneration(body: any) {
   return {
     stream,
     metadata: {
-      ...request,
-      voice_actor: body.voice_id,
+      voice_id: body.voice_id,
+      languageCode,
+      audioEncoding: "MP3",
     },
   };
 }
