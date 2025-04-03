@@ -89,21 +89,31 @@ export async function POST(req: Request) {
 
     // Apply watermark if needed
     let message = body.text;
-    if (
-      ![
-        "BUSINESS",
-        "STUDENT",
-        "CREATOR",
-        "STUDENTCLMO",
-        "STUDENTCLMO",
-        "CREATORCLMO",
-        "BUSINESSCLMO",
-        "STUDENTCLYR",
-        "CREATORCLYR",
-        "BUSINESSCLYR",
-      ].includes(subscription?.status) ||
-      (appSumoSubscription?.tier != 1 && appSumoSubscription?.tier != 2)
-    ) {
+    const paidSubscriptionStatuses = [
+      "BUSINESS",
+      "STUDENT",
+      "CREATOR",
+      "STUDENTCLMO",
+      "CREATORCLMO",
+      "BUSINESSCLMO",
+      "STUDENTCLYR",
+      "CREATORCLYR",
+      "BUSINESSCLYR",
+    ];
+
+    // Define paying AppSumo tiers (NO watermark for tiers 1 & 2)
+    const paidAppSumoTiers = [1, 2];
+
+    // Check if user has ANY paid plan
+    const hasPaidSubscription = paidSubscriptionStatuses.includes(
+      subscription?.status,
+    );
+    const hasPaidAppSumo =
+      appSumoSubscription &&
+      paidAppSumoTiers.includes(appSumoSubscription.tier);
+
+    // ONLY add watermark if user has NO paid plans at all
+    if (!hasPaidSubscription && !hasPaidAppSumo) {
       message = addWatermark(message);
     }
 
