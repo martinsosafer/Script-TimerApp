@@ -3001,6 +3001,251 @@ function IconWooshes({ className, ...props }: React.ComponentProps<"svg">) {
     </svg>
   );
 }
+function IconCinematic({ className, ...props }: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      width="53"
+      height="52"
+      viewBox="0 0 53 52"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn("h-15 w-15", className)}
+      {...props}
+    >
+      <path
+        d="M41.6667 6.5H11.3333C8.9401 6.5 7 8.4401 7 10.8333V41.1667C7 43.5599 8.9401 45.5 11.3333 45.5H41.6667C44.0599 45.5 46 43.5599 46 41.1667V10.8333C46 8.4401 44.0599 6.5 41.6667 6.5Z"
+        stroke="#3385FF"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M15.6641 6.5V45.5"
+        stroke="#3385FF"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M7 16.25H15.6667"
+        stroke="#3385FF"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M7 26H46"
+        stroke="#3385FF"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M7 35.75H15.6667"
+        stroke="#3385FF"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M37.3359 6.5V45.5"
+        stroke="#3385FF"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M37.3359 16.25H46.0026"
+        stroke="#3385FF"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M37.3359 35.75H46.0026"
+        stroke="#3385FF"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+function IconHipHop({ className, ...props }: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      width="53"
+      height="52"
+      viewBox="0 0 53 52"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn("h-15 w-15", className)}
+      {...props}
+    >
+      <path
+        d="M9.16406 19.5V10.8333C9.16406 9.68406 9.62061 8.58186 10.4333 7.7692C11.2459 6.95655 12.3481 6.5 13.4974 6.5H39.4974C40.6467 6.5 41.7489 6.95655 42.5615 7.7692C43.3742 8.58186 43.8307 9.68406 43.8307 10.8333V19.5"
+        stroke="#3385FF"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M17.8359 17.333V19.4997"
+        stroke="#3385FF"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M26.5 17.333V19.4997"
+        stroke="#3385FF"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M35.1641 17.333V19.4997"
+        stroke="#3385FF"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M43.8359 19.5H9.16927C6.77604 19.5 4.83594 21.4401 4.83594 23.8333V41.1667C4.83594 43.5599 6.77604 45.5 9.16927 45.5H43.8359C46.2292 45.5 48.1693 43.5599 48.1693 41.1667V23.8333C48.1693 21.4401 46.2292 19.5 43.8359 19.5Z"
+        stroke="#3385FF"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M17.8333 36.8337C20.2266 36.8337 22.1667 34.8936 22.1667 32.5003C22.1667 30.1071 20.2266 28.167 17.8333 28.167C15.4401 28.167 13.5 30.1071 13.5 32.5003C13.5 34.8936 15.4401 36.8337 17.8333 36.8337Z"
+        stroke="#3385FF"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M35.1693 36.8337C37.5625 36.8337 39.5026 34.8936 39.5026 32.5003C39.5026 30.1071 37.5625 28.167 35.1693 28.167C32.776 28.167 30.8359 30.1071 30.8359 32.5003C30.8359 34.8936 32.776 36.8337 35.1693 36.8337Z"
+        stroke="#3385FF"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+function IconPop({ className, ...props }: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      width="53"
+      height="52"
+      viewBox="0 0 53 52"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn("h-15 w-15", className)}
+      {...props}
+    >
+      <path
+        d="M24.3351 16.4688L11.3481 34.2138C11.0425 34.6312 10.8964 35.1442 10.9361 35.66C10.9758 36.1758 11.1988 36.6604 11.5647 37.0261L13.3349 38.7984C13.7062 39.1693 14.1994 39.3928 14.723 39.4275C15.2466 39.4621 15.765 39.3056 16.1819 38.9869L33.1967 25.9999"
+        stroke="#3385FF"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M36.2479 45.8773C34.0813 44.417 31.6373 43.3337 28.6646 43.3337C24.2056 43.3337 20.1539 48.4383 15.6646 47.667C11.1753 46.8957 9.65209 40.3675 12.4146 37.917"
+        stroke="#3385FF"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M35.1693 25.9997C41.1524 25.9997 46.0026 21.1494 46.0026 15.1663C46.0026 9.18326 41.1524 4.33301 35.1693 4.33301C29.1862 4.33301 24.3359 9.18326 24.3359 15.1663C24.3359 21.1494 29.1862 25.9997 35.1693 25.9997Z"
+        stroke="#3385FF"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+function IconTechnical({ className, ...props }: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      width="53"
+      height="52"
+      viewBox="0 0 53 52"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn("h-15 w-15", className)}
+      {...props}
+    >
+      <path
+        d="M43.8359 8.66699H9.16927C6.77604 8.66699 4.83594 10.6071 4.83594 13.0003V39.0003C4.83594 41.3936 6.77604 43.3337 9.16927 43.3337H43.8359C46.2292 43.3337 48.1693 41.3936 48.1693 39.0003V13.0003C48.1693 10.6071 46.2292 8.66699 43.8359 8.66699Z"
+        stroke="#3385FF"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M13.5 17.333H22.1667"
+        stroke="#3385FF"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M30.8359 17.333H30.8576"
+        stroke="#3385FF"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M39.5 17.333H39.5217"
+        stroke="#3385FF"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M4.83594 26H48.1693"
+        stroke="#3385FF"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M13.5 26V34.6667"
+        stroke="#3385FF"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M22.1641 26V34.6667"
+        stroke="#3385FF"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M30.8359 26V34.6667"
+        stroke="#3385FF"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M39.5 26V34.6667"
+        stroke="#3385FF"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 export {
   IconEdit,
@@ -3120,4 +3365,8 @@ export {
   IconTechnology,
   IconVideogames,
   IconWooshes,
+  IconCinematic,
+  IconHipHop,
+  IconPop,
+  IconTechnical,
 };

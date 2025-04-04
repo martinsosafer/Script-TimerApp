@@ -8,7 +8,7 @@ import AudioPlayerList from "../audioPlayerList/AudioPlayerList";
 import type { Blob } from "../types";
 import { formatSoundNameFromUrl } from "../utils";
 
-interface CardsMenuProps {
+interface CardListProps {
   data: SoundType[] | undefined;
   icons: JSX.Element[];
   isLoading: boolean;
@@ -21,18 +21,15 @@ interface SoundType {
   sounds: Blob[];
 }
 
-const CardsMenu = ({
+const CardList = ({
   data,
   icons,
   isLoading,
   isError,
   title,
-}: CardsMenuProps) => {
+}: CardListProps) => {
   const [searchValue, setSearchValue] = useState<string>("");
   const [selectedType, setSelectedType] = useState<SoundType | null>(null);
-
-  // console.log("selectedSection", selectedType);
-  // console.log("data", data);
 
   const handleSearchBar = () => {
     const filteredData = data?.flatMap((section) =>
@@ -128,7 +125,7 @@ const CardsMenu = ({
       {searchValue ? (
         <div className="w-full px-10">{handleSearchBar()}</div>
       ) : (
-        <div className="grid w-full grid-cols-[repeat(auto-fill,minmax(160px,1fr))] justify-items-center gap-x-5 gap-y-10 py-3 max-sm:grid-cols-[repeat(auto-fill,minmax(140px,1fr))] max-sm:gap-x-2 max-sm:gap-y-6">
+        <div className="grid w-full grid-cols-[repeat(auto-fit,minmax(160px,1fr))] justify-items-center gap-x-5 gap-y-10 py-3 max-sm:grid-cols-[repeat(auto-fill,minmax(140px,1fr))] max-sm:gap-x-2 max-sm:gap-y-6">
           {data?.map((section, i) => (
             <button
               key={i}
@@ -149,4 +146,4 @@ const CardsMenu = ({
   );
 };
 
-export default CardsMenu;
+export default CardList;

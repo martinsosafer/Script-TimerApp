@@ -1,16 +1,9 @@
-// import * as React from "react";
-
 import type { Metadata } from "next";
 
 import { auth } from "@voiceai/auth";
 
-import { fetchUserCredits } from "~/lib/get11LabsCredits";
-import { set11LabsCreditsBasedOnPlan } from "~/lib/set11labsCredits";
 import PageHeader from "../components/page-header";
-import { PromptingGuideAccordion } from "./soundEffectsMenu/create/promptingGuideAccordion/PromptingGuideAccordion";
-import { SoundEffectsGenerator } from "./soundEffectsMenu/create/soundeffectsGenerator/SoundEffectsGenerator";
 import SoundEffectsMenu from "./soundEffectsMenu/soundEffectsMenu";
-import { characters, getTotalCredits } from "./utils";
 
 export const metadata: Metadata = {
   title: "Sound Effects and Music",
@@ -20,29 +13,7 @@ export const metadata: Metadata = {
 export default async function SoundEffectsPage() {
   const session = await auth();
 
-  // Initialize credits variable
-  // let credits = 0;
-
-  // if (session?.user.id && session?.user.subscription?.status) {
-  //   // Set credits based on the user's subscription plan
-  //   await set11LabsCreditsBasedOnPlan(
-  //     session.user.id,
-  //     session.user.subscription.status,
-  //   );
-
-  //   try {
-  //     credits = await fetchUserCredits(session.user.id);
-  //   } catch (error) {
-  //     console.error("Error fetching user credits:", error);
-  //   }
-  // }
-
   const subData = session?.user.subscription;
-
-  // const totalCredits = getTotalCredits(subData?.status);
-
-  // console.log("credits", credits);
-  // console.log("totalCredits", totalCredits);
 
   const subtitle = (
     <>
@@ -54,44 +25,6 @@ export default async function SoundEffectsPage() {
       ) : null}
     </>
   );
-
-  // const subtitle = (
-  //   <>
-  //     {subData?.status ? (
-  //       <div>
-  //         <p className="font-base mb-2 text-center">
-  //           Generate custom sound effects and background music using AI. Your
-  //           current plan (
-  //           <span className="text-cp-secondary font-semibold">
-  //             {subData.status}
-  //           </span>
-  //           ) includes{" "}
-  //           <span className="text-cp-secondary font-bold">
-  //             {characters[subData.status]}
-  //           </span>{" "}
-  //           monthly credits.
-  //         </p>
-  //         <p className="font-base mb-2 text-center">
-  //           Remaining credits:{" "}
-  //           <span className="text-cp-secondary font-bold">{credits}</span>/
-  //           <span className="text-cp-secondary font-bold">{totalCredits}</span>
-  //         </p>
-  //         <p className="text-base font-semibold text-black">
-  //           1 seconds = 40 credits
-  //         </p>
-  //       </div>
-  //     ) : (
-  //       <div className="flex flex-col">
-  //         <p className="font-base text-center">
-  //           Create custom sound effects and background music with AI
-  //         </p>
-  //         <p className="font-base mb-2 text-center">
-  //           Sign in to start creating soundscapes
-  //         </p>
-  //       </div>
-  //     )}
-  //   </>
-  // );
 
   return (
     <main className="bg-cp-background px-4 pb-14">

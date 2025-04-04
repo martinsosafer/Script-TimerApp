@@ -18,10 +18,10 @@ export async function getUserCredits(userId: string) {
   }
 }
 
-export async function getSoundEffectsBlob() {
+export async function getSoundsBlob(prefix: string) {
   try {
     const { blobs } = await list({
-      prefix: `sound-effects`,
+      prefix: prefix,
     });
     const fullList = (await JSON.parse(JSON.stringify(blobs))) as Blob[];
     const listByFolders = fullList.reduce(

@@ -1,4 +1,3 @@
-import React from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import {
@@ -14,8 +13,8 @@ import {
   IconWooshes,
 } from "@voiceai/ui/@/components/ui/icons";
 
-import { getSoundEffectsBlob } from "../../actions";
-import CardsMenu from "../../cardsList/CardsList";
+import { getSoundsBlob } from "../../actions";
+import CardsMenu from "../../cardList/CardList";
 
 const SoundEffectsSection = () => {
   const {
@@ -24,7 +23,7 @@ const SoundEffectsSection = () => {
     isError: isErrorSoundEffects,
   } = useQuery({
     queryKey: ["soundEffectsBlob"],
-    queryFn: () => getSoundEffectsBlob(),
+    queryFn: () => getSoundsBlob("sound-effects"),
   });
 
   const icons = [

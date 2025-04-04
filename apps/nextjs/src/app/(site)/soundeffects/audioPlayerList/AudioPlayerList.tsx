@@ -59,5 +59,4 @@ const AudioPlayerList = ({ soundsList }: AudioPlayerListProps) => {
 export default AudioPlayerList;
 
 // ToDo:
-
 // Add to favorites functionality
