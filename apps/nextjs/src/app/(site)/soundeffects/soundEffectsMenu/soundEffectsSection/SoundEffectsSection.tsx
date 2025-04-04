@@ -20,8 +20,8 @@ import CardsMenu from "../../cardsMenu/CardsMenu";
 const SoundEffectsSection = () => {
   const {
     data: soundEffectsList,
-    isLoading,
-    isError,
+    isLoading: isLoadingSoundEffects,
+    isError: isErrorSoundEffects,
   } = useQuery({
     queryKey: ["soundEffectsBlob"],
     queryFn: () => getSoundEffectsBlob(),
@@ -40,7 +40,15 @@ const SoundEffectsSection = () => {
     <IconWooshes key="wooshes" />,
   ];
 
-  return <CardsMenu data={soundEffectsList} icons={icons} />;
+  return (
+    <CardsMenu
+      data={soundEffectsList}
+      icons={icons}
+      isLoading={isLoadingSoundEffects}
+      isError={isErrorSoundEffects}
+      title="Sound Effects"
+    />
+  );
 };
 
 export default SoundEffectsSection;

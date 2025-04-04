@@ -1,6 +1,8 @@
 import { useState } from "react";
 
+import { Button } from "@voiceai/ui";
 import {
+  IconChevronLeft,
   IconDownload,
   IconHeart,
   IconHeartFill,
@@ -13,6 +15,9 @@ import type { Blob } from "../types";
 interface CardsMenuProps {
   data: SoundType[] | undefined;
   icons: JSX.Element[];
+  isLoading: boolean;
+  isError: boolean;
+  title: string;
 }
 
 interface SoundType {
@@ -20,16 +25,21 @@ interface SoundType {
   sounds: Blob[];
 }
 
-const CardsMenu = ({ data, icons }: CardsMenuProps) => {
+const CardsMenu = ({
+  data,
+  icons,
+  isLoading,
+  isError,
+  title,
+}: CardsMenuProps) => {
   const [selectedType, setSelectedType] = useState<SoundType | null>(null);
 
   const audioPLayerStyle = {
-    // backgroundColor: "red",
     boxShadow: "0px 1px 3px 0px rgba(0,0,0,0.4)",
     borderRadius: "28px",
   };
 
-  console.log("selectedSection", selectedType);
+  // console.log("selectedSection", selectedType);
   // console.log("data", data);
 
   const formatSoundNameFromUrl = (pathname: string) => {
@@ -39,14 +49,44 @@ const CardsMenu = ({ data, icons }: CardsMenuProps) => {
     return formattedSoundName;
   };
 
+  if (isError) {
+    return (
+      <div className="flex h-[200px] w-full items-center justify-center">
+        <p className={`${poppins.className} text-lg font-bold`}>
+          Error loading {title}
+        </p>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex h-[200px] w-full items-center justify-center">
+        <p className={`${poppins.className} text-lg font-bold`}>
+          Loading {title}...
+        </p>
+      </div>
+    );
+  }
+
   if (selectedType) {
     return (
-      <div className="flex w-full flex-col gap-4 px-10 py-4">
-        <h2
-          className={`${poppins.className} text-center text-xl font-bold capitalize`}
-        >
-          {selectedType.type}
-        </h2>
+      <div className="flex w-full flex-col items-center gap-5 px-10 py-2">
+        <div className="flex w-full items-center justify-between">
+          <Button
+            variant="ghost"
+            className={`${poppins.className} w-min p-0 text-base text-primary hover:text-primary hover:opacity-80`}
+            onClick={() => setSelectedType(null)}
+          >
+            <IconChevronLeft className="h-7 w-7" />
+          </Button>
+          <h2
+            className={`${poppins.className} text-center text-xl font-bold capitalize`}
+          >
+            {selectedType.type}
+          </h2>
+          <div />
+        </div>
         <div className="flex w-full flex-col gap-3">
           {selectedType?.sounds?.map((sound) => (
             <div
@@ -81,6 +121,13 @@ const CardsMenu = ({ data, icons }: CardsMenuProps) => {
             </div>
           ))}
         </div>
+        <Button
+          variant="ghost"
+          className={`${poppins.className} w-min text-base text-primary hover:text-primary hover:opacity-80`}
+          onClick={() => setSelectedType(null)}
+        >
+          Go back
+        </Button>
       </div>
     );
   }
