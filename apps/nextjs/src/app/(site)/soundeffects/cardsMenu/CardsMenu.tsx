@@ -7,6 +7,7 @@ import {
   IconHeart,
   IconHeartFill,
   IconMusic,
+  IconSearch,
 } from "@voiceai/ui/@/components/ui/icons";
 
 import { poppins } from "~/app/fonts";
@@ -32,6 +33,7 @@ const CardsMenu = ({
   isError,
   title,
 }: CardsMenuProps) => {
+  const [searchValue, setSearchValue] = useState<string>("");
   const [selectedType, setSelectedType] = useState<SoundType | null>(null);
 
   const audioPLayerStyle = {
@@ -69,6 +71,7 @@ const CardsMenu = ({
     );
   }
 
+  // Audio player list
   if (selectedType) {
     return (
       <div className="flex w-full flex-col items-center gap-5 px-10 py-2">
@@ -132,21 +135,40 @@ const CardsMenu = ({
     );
   }
 
+  // Cards list
   return (
-    <div className="grid w-full grid-cols-[repeat(auto-fill,minmax(160px,1fr))] justify-items-center gap-x-5 gap-y-10 py-3 max-sm:grid-cols-[repeat(auto-fill,minmax(140px,1fr))] max-sm:gap-x-2 max-sm:gap-y-6">
-      {data?.map((section, i) => (
-        <button
-          key={i}
-          className="flex h-[108px] w-[140px] flex-col items-center justify-between rounded-lg p-3 shadow-md"
-          onClick={() => setSelectedType(section)}
-        >
-          <i>{icons[i]}</i>
-          <p className={`${poppins.className} text-sm font-bold capitalize`}>
-            {section.type}
-          </p>
-        </button>
-      ))}
-    </div>
+    <>
+      {/* Searchbar */}
+      <div
+        className={`flex w-full items-center gap-2 rounded-lg border-2 ${searchValue ? "border-[#212121]" : "border-[#898F98]"} bg-transparent p-2 lg:w-[46%]`}
+      >
+        <IconSearch
+          className={`h-5 w-5 ${searchValue ? "text-[#212121]" : "text-gray-400"}`}
+        />
+        <input
+          type="text"
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.currentTarget.value)}
+          className="w-full outline-none"
+          placeholder={`Search for ${title.toLowerCase()}`}
+        />
+      </div>
+
+      <div className="grid w-full grid-cols-[repeat(auto-fill,minmax(160px,1fr))] justify-items-center gap-x-5 gap-y-10 py-3 max-sm:grid-cols-[repeat(auto-fill,minmax(140px,1fr))] max-sm:gap-x-2 max-sm:gap-y-6">
+        {data?.map((section, i) => (
+          <button
+            key={i}
+            className="flex h-[108px] w-[140px] flex-col items-center justify-between rounded-lg p-3 shadow-md"
+            onClick={() => setSelectedType(section)}
+          >
+            <i>{icons[i]}</i>
+            <p className={`${poppins.className} text-sm font-bold capitalize`}>
+              {section.type}
+            </p>
+          </button>
+        ))}
+      </div>
+    </>
   );
 };
 
