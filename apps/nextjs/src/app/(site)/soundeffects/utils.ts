@@ -40,3 +40,11 @@ export const getTotalCredits = (status: string | undefined): number => {
       return 0;
   }
 };
+
+// Get sound or music name from URL
+export const formatSoundNameFromUrl = (pathname: string) => {
+  const splitPath = pathname.split("/");
+  const soundName = splitPath[splitPath.length - 1]?.split(".")[0];
+  const formattedSoundName = soundName?.replace(/-/g, " ");
+  return formattedSoundName;
+};

@@ -12,7 +12,6 @@ export async function getUserCredits(userId: string) {
     const credits = await db.query.elevenLabsCredit.findFirst({
       where: eq(elevenLabsCredit.userId, userId),
     });
-
     return credits;
   } catch (error) {
     console.error(error);
@@ -43,7 +42,6 @@ export async function getSoundEffectsBlob() {
         return { type, sounds: sounds.slice(1) };
       },
     );
-
     return soundEffectsArray;
   } catch (error) {
     console.error(error);

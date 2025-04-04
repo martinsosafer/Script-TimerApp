@@ -15,7 +15,7 @@ import {
 } from "@voiceai/ui/@/components/ui/icons";
 
 import { getSoundEffectsBlob } from "../../actions";
-import CardsMenu from "../../cardsMenu/CardsMenu";
+import CardsMenu from "../../cardsList/CardsList";
 
 const SoundEffectsSection = () => {
   const {
