@@ -19,6 +19,7 @@ import IconUserRound, {
   IconLibraryBig,
   IconMic2,
   IconMonitorPlay,
+  IconMusic,
   IconPencilLine,
   IconPocketKnife,
 } from "@voiceai/ui/@/components/ui/icons";
@@ -34,6 +35,21 @@ interface MobileNavProps {
   session: Session | null;
   plan: string | undefined;
 }
+
+interface MenuItem {
+  title: string;
+  href: string;
+  icon?: JSX.Element;
+  subItems?: SubMenuItem[];
+}
+
+interface SubMenuItem {
+  title: string;
+  description: string;
+  href: string;
+  icon?: JSX.Element;
+}
+
 export function MobileNav({
   isOpen,
   onClose,
@@ -71,7 +87,7 @@ export function MobileNav({
       ],
     },
     {
-      title: "Voice AI",
+      title: "Voice and Audio",
       href: "#",
       icon: <IconAudioLines className="h-5 w-5" />,
       subItems: [
@@ -104,6 +120,12 @@ export function MobileNav({
           description: "Voice to download and share",
           href: "/history",
           icon: <IconHistory className="h-5 w-5" />,
+        },
+        {
+          title: "Sound Effects & Music",
+          description: "Generate sounds or download...", // Ask Maury
+          href: "/soundeffects",
+          icon: <IconMusic className="h-5 w-5" />,
         },
       ],
     },
@@ -174,7 +196,7 @@ export function MobileNav({
                         <Link
                           key={subItem.title}
                           href={subItem.href}
-                          className="text-cp-primary block p-4 hover:bg-blue-800"
+                          className="text-cp-primary block px-4 py-3 hover:bg-blue-800"
                           onClick={onClose}
                         >
                           <div className="flex items-center gap-3">
