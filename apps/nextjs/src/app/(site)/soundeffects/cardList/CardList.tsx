@@ -73,7 +73,7 @@ const CardList = ({
   // Audio player list from cards
   if (selectedType) {
     return (
-      <div className="flex w-full flex-col items-center gap-5 px-10 py-2">
+      <div className="flex w-full flex-col items-center gap-5 px-10 py-2 max-md:p-0">
         <div className="flex w-full items-center justify-between">
           <Button
             variant="ghost"
@@ -108,7 +108,7 @@ const CardList = ({
     <>
       {/* Searchbar */}
       <div
-        className={`flex w-full items-center gap-2 rounded-lg border-2 ${searchValue ? "border-[#212121]" : "border-[#898F98]"} bg-transparent p-2 lg:w-[46%]`}
+        className={`flex w-full md:w-[70%] items-center gap-2 rounded-lg border-2 ${searchValue ? "border-[#212121]" : "border-[#898F98]"} bg-transparent p-2 lg:w-[46%] `}
       >
         <IconSearch
           className={`h-5 w-5 ${searchValue ? "text-[#212121]" : "text-gray-400"}`}
@@ -123,7 +123,7 @@ const CardList = ({
       </div>
 
       {searchValue ? (
-        <div className="w-full px-10">{handleSearchBar()}</div>
+        <div className="w-full lg:px-10">{handleSearchBar()}</div>
       ) : (
         <div className="grid w-full grid-cols-[repeat(auto-fit,minmax(160px,1fr))] justify-items-center gap-x-5 gap-y-10 py-3 max-sm:grid-cols-[repeat(auto-fill,minmax(140px,1fr))] max-sm:gap-x-2 max-sm:gap-y-6">
           {data?.map((section, i) => (

@@ -23,30 +23,30 @@ const AudioPlayerList = ({ soundsList }: AudioPlayerListProps) => {
       {soundsList?.map((sound: Blob) => (
         <div
           key={sound?.url}
-          className="flex w-full items-center justify-between rounded-lg p-4 shadow-md"
+          className="flex w-full items-center justify-between gap-2 rounded-lg p-4 shadow-md max-md:flex-col max-md:items-start max-sm:p-2"
         >
-          <div className="flex items-center gap-4 ">
-            <i className="rounded-full bg-[#7FB2FF] p-3">
-              <IconMusic className="h-6 w-6 text-white" />
+          <div className="flex items-center gap-4 max-sm:gap-2">
+            <i className="rounded-full bg-[#7FB2FF] p-3 max-md:p-2">
+              <IconMusic className="h-6 w-6 text-white max-md:h-5 max-md:w-5" />
             </i>
-            <p className={`${poppins.className} text-sm font-bold capitalize`}>
+            <p className={`${poppins.className} text-sm font-bold capitalize max-sm:text-xs`}>
               {formatSoundNameFromUrl(sound.pathname)}
             </p>
           </div>
 
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-8 max-md:w-full max-md:justify-between max-md:gap-4">
             <audio
               controls
               controlsList="nodownload noplaybackrate"
               src={sound.url}
               style={audioPLayerStyle}
             />
-            <div className="flex items-center gap-4">
-              <IconHeart className="text-primary" />
+            <div className="flex items-center gap-4 max-md:gap-3">
+              <IconHeart className="text-primary max-md:h-5 max-md:w-5" />
               {/* <IconHeartFill className="text-primary" /> */}
 
               <a href={sound.downloadUrl}>
-                <IconDownload className="h-7 w-7 text-primary" />
+                <IconDownload className="h-7 w-7 text-primary max-md:h-6 max-md:w-6" />
               </a>
             </div>
           </div>
