@@ -5,6 +5,7 @@ import {
 } from "@voiceai/ui/@/components/ui/icons";
 
 import { poppins } from "~/app/fonts";
+import { postSoundfxFavorite } from "../actions";
 import type { Blob } from "../types";
 import { formatSoundNameFromUrl } from "../utils";
 
@@ -18,6 +19,14 @@ const AudioPlayerList = ({ soundsList }: AudioPlayerListProps) => {
     borderRadius: "28px",
   };
 
+  const handleFavorite = async (sound: Blob) => {
+    try {
+      await postSoundfxFavorite(sound);
+    } catch (error) {
+      console.error("Error adding sound to favorites:", error);
+    }
+  };
+
   return (
     <div className="flex w-full flex-col gap-3">
       {soundsList?.map((sound: Blob) => (
@@ -29,7 +38,9 @@ const AudioPlayerList = ({ soundsList }: AudioPlayerListProps) => {
             <i className="rounded-full bg-[#7FB2FF] p-3 max-md:p-2">
               <IconMusic className="h-6 w-6 text-white max-md:h-5 max-md:w-5" />
             </i>
-            <p className={`${poppins.className} text-sm font-bold capitalize max-sm:text-xs`}>
+            <p
+              className={`${poppins.className} text-sm font-bold capitalize max-sm:text-xs`}
+            >
               {formatSoundNameFromUrl(sound.pathname)}
             </p>
           </div>
@@ -42,7 +53,9 @@ const AudioPlayerList = ({ soundsList }: AudioPlayerListProps) => {
               style={audioPLayerStyle}
             />
             <div className="flex items-center gap-4 max-md:gap-3">
-              <IconHeart className="text-primary max-md:h-5 max-md:w-5" />
+              <button onClick={() => handleFavorite(sound)}>
+                <IconHeart className="text-primary max-md:h-5 max-md:w-5" />
+              </button>
               {/* <IconHeartFill className="text-primary" /> */}
 
               <a href={sound.downloadUrl}>

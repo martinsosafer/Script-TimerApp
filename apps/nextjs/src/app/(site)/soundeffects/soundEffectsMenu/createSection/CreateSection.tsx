@@ -2,7 +2,7 @@ import type { SessionProps } from "../../types";
 import { PromptingGuideAccordion } from "./promptingGuideAccordion/PromptingGuideAccordion";
 import { SoundEffectsGenerator } from "./soundeffectsGenerator/SoundEffectsGenerator";
 
-const Create = ({ subData }: SessionProps) => {
+const CreateSection = ({ subData }: SessionProps) => {
   return (
     <>
       <PromptingGuideAccordion />
@@ -11,6 +11,6 @@ const Create = ({ subData }: SessionProps) => {
   );
 };
 
-export default Create;
+export default CreateSection;
 
 // Move audio player to box with robot (outside box)

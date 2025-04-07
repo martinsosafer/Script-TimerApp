@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { auth } from "@voiceai/auth";
 
 import PageHeader from "../components/page-header";
+import { getSoundfxFavorites } from "./actions";
 import SoundEffectsMenu from "./soundEffectsMenu/soundEffectsMenu";
 
 export const metadata: Metadata = {
@@ -12,6 +13,9 @@ export const metadata: Metadata = {
 
 export default async function SoundEffectsPage() {
   const session = await auth();
+  // const favorites = await getSoundfxFavorites(session?.user?.id ?? "");
+
+  // console.log("FAVORITES", favorites);
 
   const subData = session?.user.subscription;
 
