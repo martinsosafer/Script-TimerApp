@@ -1,26 +1,9 @@
-// ScriptAI.tsx
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
 import { useParams } from "next/navigation";
-import ArrowDownOnSquareIcon from "@heroicons/react/24/outline/ArrowDownOnSquareIcon";
-import { AnimatePresence, motion } from "framer-motion";
 import ReactConfetti from "react-confetti";
 
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@voiceai/ui/@/components/ui/hover-card";
-import {
-  IconClipboard,
-  IconHeadphones,
-  IconImage,
-  IconMusic,
-  Icons,
-  PencilIcon,
-} from "@voiceai/ui/@/components/ui/icons";
 import { Tabs } from "@voiceai/ui/@/components/ui/tabs";
 import { useCopyToClipboard } from "@voiceai/ui/@/hooks/use-copy-to-clipboard";
 
@@ -35,7 +18,8 @@ import { fetchUserCredits } from "~/lib/get11LabsCredits";
 import NoSessionModal from "../../components/modals/no-session-modal";
 import TabOne from "../../components/texttospeech/Tab1";
 import TabTwo from "../../components/texttospeech/Tab2";
-import { SpeedButton } from "../../components/texttospeech/Tab2/buttonmenu.tsx/speedbutton";
+import { ActionButtons } from "./actionbuttons";
+import { AudioPlayerControls } from "./audioplayer";
 import { characters, getTotalCredits } from "./utils";
 
 interface SubscriptionData {
@@ -59,7 +43,6 @@ export function ScriptAI({
     refreshSubscriptionData,
   } = useSubscription();
 
-  // Refs for scrolling
   const audioPlayerRef = React.useRef<HTMLDivElement>(null);
   const tabTwoRef = React.useRef<HTMLDivElement>(null);
   const actionButtonsRef = React.useRef<HTMLDivElement>(null);
@@ -75,14 +58,14 @@ export function ScriptAI({
   const { scriptId } = useParams();
   useScriptDetails(scriptId, setScript);
 
-  const handleEditorChange = (content) => {
+  const handleEditorChange = (content: string) => {
     setScript(content);
   };
 
   const { revisedScript, checkAndPublish, setRevisedScript } =
     useReviseScript(setLoading);
 
-  const { generateVoice, error } = useGenerateVoice(setLoading);
+  const { generateVoice } = useGenerateVoice(setLoading);
 
   const [audio, setAudio] = React.useState<string>("");
   const [openFreeModal, setOpenFreeModal] = React.useState(false);
@@ -97,7 +80,6 @@ export function ScriptAI({
     handleCloseAudio,
   } = useStreamingAudio();
 
-  // Smooth scroll to audio player
   React.useEffect(() => {
     if (showPlayer && audioPlayerRef.current) {
       audioPlayerRef.current.scrollIntoView({
@@ -106,23 +88,16 @@ export function ScriptAI({
       });
     }
   }, [showPlayer]);
-
-  // Scroll to Tab 2 function
-  const scrollToTab2 = () => {
-    if (tabTwoRef.current) {
-      tabTwoRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
+  const headerRef = React.useRef<HTMLHeadingElement>(null);
+  const scrollToHeader = () => {
+    headerRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
   };
 
   const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 });
-
-  const onCopy = () => {
-    if (isCopied) return;
-    copyToClipboard(revisedScript);
-  };
+  const onCopy = () => !isCopied && copyToClipboard(revisedScript);
 
   const { wordCount, minutes, formattedSeconds, speedCategory } =
     calculateLengthTime(script);
@@ -141,9 +116,7 @@ export function ScriptAI({
   };
 
   React.useEffect(() => {
-    if (subData) {
-      refetchCredits();
-    }
+    subData && refetchCredits();
   }, [subData]);
 
   const totalCredits = getTotalCredits(subData?.status);
@@ -182,16 +155,15 @@ export function ScriptAI({
     </div>
   );
 
-  const containerStyle = {
-    position: "relative",
-    bottom: "40px",
-    left: "65%",
+  const audioPlayerContainerStyle = {
+    position: "relative" as const,
+    bottom: "0px",
+    left: "66%",
     transform: "translateX(-50%)",
-    maxWidth: "570px",
-    width: "100%",
+    maxWidth: "700px",
+    width: "600px",
     height: "60px",
-    backgroundColor: "#BDF3F0",
-    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.1)",
+
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
@@ -203,108 +175,10 @@ export function ScriptAI({
     border: "none",
   };
 
-  const audioStyle = {
-    flex: 1,
-    height: "40px",
-    backgroundColor: "transparent",
-    border: "none",
-    "&::-webkit-media-controls-panel": {
-      backgroundColor: "transparent",
-    },
-    "&::-webkit-media-controls-play-button": {
-      backgroundColor: "#1E88E5",
-      borderRadius: "50%",
-      width: "30px",
-      height: "30px",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      margin: "0 10px",
-    },
-    "&::-webkit-media-controls-timeline": {
-      backgroundColor: "#ccc",
-      borderRadius: "25px",
-      height: "4px",
-    },
-  };
-
-  const buttonStyle = {
-    backgroundColor: "#1E88E5",
-    border: "none",
-    borderRadius: "8px",
-    color: "white",
-    padding: "8px",
-    cursor: "pointer",
-    fontFamily: "Poppins, sans-serif",
-    fontWeight: "bold",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    transition: "background-color 0.3s",
-    width: "40px",
-    height: "40px",
-    marginLeft: "8px",
-  };
-
-  const buttonHoverStyle = {
-    ...buttonStyle,
-    backgroundColor: "#1976D2",
-  };
-
-  const disabledButtonStyle = {
-    ...buttonStyle,
-    backgroundColor: "#90CAF9",
-    cursor: "not-allowed",
-    opacity: 0.6,
-  };
-
-  // Action Buttons data
-  const buttonData = [
-    {
-      icon: <PencilIcon className="h-5 w-5" />,
-      text: "Rewrite Your Script",
-      bgColor: "bg-blue-100",
-      textColor: "text-blue-600",
-      action: () => scrollToTab2(),
-      isLink: false,
-    },
-    {
-      icon: <IconHeadphones className="h-5 w-5" />,
-      text: "Record Yourself & Get Immediate Feedback",
-      bgColor: "bg-amber-100",
-      textColor: "text-amber-600",
-      href: "/record",
-      isLink: true,
-    },
-    {
-      icon: <IconClipboard className="h-5 w-5" />,
-      text: "Translate Your Script",
-      bgColor: "bg-teal-100",
-      textColor: "text-teal-600",
-      href: "/translate",
-      isLink: true,
-    },
-    {
-      icon: <IconMusic className="h-5 w-5" />,
-      text: "Add Sound Effects & Music",
-      bgColor: "bg-orange-100",
-      textColor: "text-orange-600",
-      href: "/sound-effects",
-      isLink: true,
-    },
-    {
-      icon: <IconImage className="h-5 w-5" />,
-      text: "Create Images for Your Script",
-      bgColor: "bg-indigo-100",
-      textColor: "text-indigo-600",
-      href: "/create-images",
-      isLink: true,
-    },
-  ];
-
   return (
     <>
       <header
+        ref={headerRef}
         className={`my-3 flex w-full flex-col items-center justify-center p-6 lg:mb-[40px] lg:mt-[60px] lg:p-0 ${poppins.className}`}
       >
         {showConfetti && (
@@ -383,150 +257,21 @@ export function ScriptAI({
           </div>
         </Tabs>
 
-        {/* Audio Controls */}
-        <div ref={audioPlayerRef} style={containerStyle} className="mt-14">
-          <audio ref={audioRef} controls="controls" style={audioStyle} />
-          <div
-            className="controls-container"
-            style={{ display: "flex", gap: "10px" }}
-          >
-            <SpeedButton
-              audioRef={audioRef}
-              buttonStyle={buttonStyle}
-              buttonHoverStyle={buttonHoverStyle}
-              disabledButtonStyle={disabledButtonStyle}
-            />
-            <HoverCard>
-              <HoverCardTrigger asChild>
-                <button
-                  onClick={() => {
-                    if (downloadLink) {
-                      const anchor = document.createElement("a");
-                      anchor.href = downloadLink;
-                      anchor.download = "audio.mp3";
-                      anchor.click();
-                      URL.revokeObjectURL(downloadLink);
-                      setShowConfetti(true);
-                    }
-                  }}
-                  disabled={loading || !downloadLink}
-                  style={
-                    !downloadLink || loading ? disabledButtonStyle : buttonStyle
-                  }
-                  onMouseOver={(e) =>
-                    !downloadLink || loading
-                      ? null
-                      : (e.currentTarget.style.backgroundColor =
-                          buttonHoverStyle.backgroundColor)
-                  }
-                  onMouseOut={(e) =>
-                    !downloadLink || loading
-                      ? null
-                      : (e.currentTarget.style.backgroundColor =
-                          buttonStyle.backgroundColor)
-                  }
-                >
-                  {loading ? (
-                    <Icons.spinner
-                      className="h-6 w-6"
-                      style={{ color: "white" }}
-                    />
-                  ) : (
-                    <ArrowDownOnSquareIcon
-                      width={24}
-                      style={{ color: "white" }}
-                    />
-                  )}
-                </button>
-              </HoverCardTrigger>
-              {!isSubscriptionActive && (
-                <HoverCardContent className="w-[200px] text-sm" side="left">
-                  Download audio file.
-                </HoverCardContent>
-              )}
-            </HoverCard>
-          </div>
+        <div ref={audioPlayerRef} style={audioPlayerContainerStyle}>
+          <AudioPlayerControls
+            audioRef={audioRef}
+            downloadLink={downloadLink}
+            loading={loading}
+            isSubscriptionActive={isSubscriptionActive}
+            setShowConfetti={setShowConfetti}
+          />
         </div>
 
-        {/* Action Buttons - ADDED HERE */}
         <div ref={actionButtonsRef} className="w-full">
-          <AnimatePresence>
-            {showPlayer && (
-              <motion.div
-                className="mx-auto mb-12 mt-8 w-full max-w-md"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                <motion.h2
-                  className="mb-4 text-center text-2xl font-bold text-gray-800"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.1 }}
-                >
-                  Create high-impact scripts
-                </motion.h2>
-
-                <div className="space-y-3">
-                  {buttonData.map((button, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ y: 20, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{
-                        type: "spring",
-                        stiffness: 300,
-                        damping: 24,
-                        delay: index * 0.1,
-                      }}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      {button.isLink ? (
-                        <Link href={button.href || "#"} className="block">
-                          <div
-                            className={`flex items-center rounded-lg p-4 ${button.bgColor} transition-all hover:brightness-95`}
-                          >
-                            <div
-                              className={`flex h-8 w-8 items-center justify-center rounded-full ${button.textColor} bg-white`}
-                            >
-                              {button.icon}
-                            </div>
-                            <span
-                              className={`ml-3 font-medium ${button.textColor}`}
-                            >
-                              {button.text}
-                            </span>
-                          </div>
-                        </Link>
-                      ) : (
-                        <button
-                          onClick={button.action}
-                          className="w-full text-left"
-                        >
-                          <div
-                            className={`flex items-center rounded-lg p-4 ${button.bgColor} transition-all hover:brightness-95`}
-                          >
-                            <div
-                              className={`flex h-8 w-8 items-center justify-center rounded-full ${button.textColor} bg-white`}
-                            >
-                              {button.icon}
-                            </div>
-                            <span
-                              className={`ml-3 font-medium ${button.textColor}`}
-                            >
-                              {button.text}
-                            </span>
-                          </div>
-                        </button>
-                      )}
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <ActionButtons
+            showPlayer={showPlayer}
+            scrollToTab2={scrollToHeader}
+          />
         </div>
       </div>
 
