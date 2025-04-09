@@ -1,24 +1,30 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 import { Button } from "@voiceai/ui";
 import { IconChevronLeft, IconSearch } from "@voiceai/ui/@/components/ui/icons";
 
 import { poppins } from "~/app/fonts";
+import { getSoundfxFavorites } from "../actions";
 import AudioPlayerList from "../audioPlayerList/AudioPlayerList";
-import type { Blob } from "../types";
+import type { Blob, RefetchFavorites, SoundTypeNeon } from "../types";
 import { formatSoundNameFromUrl } from "../utils";
 
 interface CardListProps {
-  data: SoundType[] | undefined;
-  icons: JSX.Element[];
+  data: { type: string; sounds: SoundTypeNeon[] }[] | undefined;
+  icons: {
+    type: string;
+    icon: JSX.Element;
+  }[];
   isLoading: boolean;
   isError: boolean;
   title: string;
+  // refetchFavorites: RefetchFavorites["refetchFavorites"];
 }
 
 interface SoundType {
   type: string;
-  sounds: Blob[];
+  sounds: SoundTypeNeon[];
 }
 
 const CardList = ({
@@ -27,9 +33,25 @@ const CardList = ({
   isLoading,
   isError,
   title,
+  // refetchFavorites,
 }: CardListProps) => {
   const [searchValue, setSearchValue] = useState<string>("");
   const [selectedType, setSelectedType] = useState<SoundType | null>(null);
+
+  const handleIcon = (type: string) => {
+    const icon = icons.find((icon) => icon.type === type);
+    return icon ? icon.icon : null;
+  };
+  // console.log("data", data);
+  const {
+    data: soundfxFavoritesList,
+    isLoading: isLoadingFavorites,
+    isError: isErrorFavorites,
+    refetch: refetchFavorites,
+  } = useQuery({
+    queryKey: ["soundfxFavorites"],
+    queryFn: () => getSoundfxFavorites(),
+  });
 
   const handleSearchBar = () => {
     const filteredData = data?.flatMap((section) =>
@@ -47,7 +69,13 @@ const CardList = ({
         </div>
       );
     }
-    return <AudioPlayerList soundsList={filteredData} />;
+    return (
+      <AudioPlayerList
+        soundsList={filteredData}
+        soundfxFavoritesList={soundfxFavoritesList}
+        refetchFavorites={refetchFavorites}
+      />
+    );
   };
 
   if (isError) {
@@ -90,7 +118,11 @@ const CardList = ({
           <div />
         </div>
 
-        <AudioPlayerList soundsList={selectedType?.sounds} />
+        <AudioPlayerList
+          soundsList={selectedType?.sounds}
+          soundfxFavoritesList={soundfxFavoritesList}
+          refetchFavorites={refetchFavorites}
+        />
 
         <Button
           variant="ghost"
@@ -108,7 +140,7 @@ const CardList = ({
     <>
       {/* Searchbar */}
       <div
-        className={`flex w-full md:w-[70%] items-center gap-2 rounded-lg border-2 ${searchValue ? "border-[#212121]" : "border-[#898F98]"} bg-transparent p-2 lg:w-[46%] `}
+        className={`flex w-full items-center gap-2 rounded-lg border-2 md:w-[70%] ${searchValue ? "border-[#212121]" : "border-[#898F98]"} bg-transparent p-2 lg:w-[46%] `}
       >
         <IconSearch
           className={`h-5 w-5 ${searchValue ? "text-[#212121]" : "text-gray-400"}`}
@@ -132,7 +164,7 @@ const CardList = ({
               className="flex h-[108px] w-[140px] flex-col items-center justify-between rounded-lg p-3 shadow-md"
               onClick={() => setSelectedType(section)}
             >
-              <i>{icons[i]}</i>
+              <i>{handleIcon(section?.type)}</i>
               <p
                 className={`${poppins.className} text-sm font-bold capitalize text-[#212121]`}
               >

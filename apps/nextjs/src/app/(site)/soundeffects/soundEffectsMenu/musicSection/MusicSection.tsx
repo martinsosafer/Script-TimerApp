@@ -9,8 +9,9 @@ import {
 
 import { getSoundsBlob } from "../../actions";
 import CardsList from "../../cardList/CardList";
+import type { RefetchFavorites } from "../../types";
 
-const MusicSection = () => {
+const MusicSection = ({ refetchFavorites }: RefetchFavorites) => {
   const {
     data: musicList,
     isLoading: isLoadingMusic,
@@ -21,10 +22,10 @@ const MusicSection = () => {
   });
 
   const icons = [
-    <IconCinematic key="cinematic" />,
-    <IconHipHop key="hip-hop" />,
-    <IconPop key="pop" />,
-    <IconTechnical key="technical" />,
+    { type: "cinematic", icon: <IconCinematic /> },
+    { type: "hip-hop", icon: <IconHipHop /> },
+    { type: "pop", icon: <IconPop /> },
+    { type: "technical", icon: <IconTechnical /> },
   ];
 
   return (
@@ -34,6 +35,7 @@ const MusicSection = () => {
       isLoading={isLoadingMusic}
       isError={isErrorMusic}
       title="Music"
+      refetchFavorites={refetchFavorites}
     />
   );
 };

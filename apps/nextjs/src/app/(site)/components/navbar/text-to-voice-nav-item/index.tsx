@@ -149,7 +149,7 @@ export default function TextToVoiceNavItem() {
                         <span className="ml-1">Sound Effects & Music</span>
                       </div>
                       <p className="font-normal text-gray-500">
-                        Generate sounds or download...
+                        Generate and download sounds
                       </p>
                     </Link>
                   </li>

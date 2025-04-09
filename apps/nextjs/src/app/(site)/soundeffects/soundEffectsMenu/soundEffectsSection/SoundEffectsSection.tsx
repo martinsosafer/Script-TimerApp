@@ -13,39 +13,41 @@ import {
   IconWooshes,
 } from "@voiceai/ui/@/components/ui/icons";
 
-import { getSoundsBlob } from "../../actions";
-import CardsMenu from "../../cardList/CardList";
+import { getSoundfxList } from "../../actions";
+import CardsList from "../../cardList/CardList";
+import type { RefetchFavorites } from "../../types";
 
-const SoundEffectsSection = () => {
+const SoundEffectsSection = ({ refetchFavorites }: RefetchFavorites) => {
   const {
     data: soundEffectsList,
     isLoading: isLoadingSoundEffects,
     isError: isErrorSoundEffects,
   } = useQuery({
-    queryKey: ["soundEffectsBlob"],
-    queryFn: () => getSoundsBlob("sound-effects"),
+    queryKey: ["soundEffects"],
+    queryFn: () => getSoundfxList(),
   });
-
+  // console.log("soundEffectsList", soundEffectsList);
   const icons = [
-    <IconAlerts key="alerts" />,
-    <IconAmbient key="ambient" />,
-    <IconBassDrops key="bass-drops" />,
-    <IconClocks key="clocks" />,
-    <IconKeyboards key="keyboards" />,
-    <IconPeople key="people" />,
-    <IconSuspense key="suspense" />,
-    <IconTechnology key="technology" />,
-    <IconVideogames key="videogames" />,
-    <IconWooshes key="wooshes" />,
+    { type: "alarms", icon: <IconAlerts /> },
+    { type: "ambient", icon: <IconAmbient /> },
+    { type: "bass-drops", icon: <IconBassDrops /> },
+    { type: "clocks", icon: <IconClocks /> },
+    { type: "keyboards", icon: <IconKeyboards /> },
+    { type: "people", icon: <IconPeople /> },
+    { type: "suspense", icon: <IconSuspense /> },
+    { type: "technology", icon: <IconTechnology /> },
+    { type: "videogames", icon: <IconVideogames /> },
+    { type: "wooshes", icon: <IconWooshes /> },
   ];
 
   return (
-    <CardsMenu
+    <CardsList
       data={soundEffectsList}
       icons={icons}
       isLoading={isLoadingSoundEffects}
       isError={isErrorSoundEffects}
       title="Sound Effects"
+      // refetchFavorites={refetchFavorites}
     />
   );
 };

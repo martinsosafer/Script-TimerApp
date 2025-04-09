@@ -1,19 +1,26 @@
 import {
   IconDownload,
   IconHeart,
+  IconHeartFill,
   IconMusic,
 } from "@voiceai/ui/@/components/ui/icons";
 
 import { poppins } from "~/app/fonts";
 import { postSoundfxFavorite } from "../actions";
-import type { Blob } from "../types";
+import type { Blob, RefetchFavorites } from "../types";
 import { formatSoundNameFromUrl } from "../utils";
 
 interface AudioPlayerListProps {
   soundsList: Blob[] | undefined;
+  soundfxFavoritesList: string[] | undefined;
+  refetchFavorites: RefetchFavorites["refetchFavorites"];
 }
 
-const AudioPlayerList = ({ soundsList }: AudioPlayerListProps) => {
+const AudioPlayerList = ({
+  soundsList,
+  soundfxFavoritesList,
+  refetchFavorites,
+}: AudioPlayerListProps) => {
   const audioPLayerStyle = {
     boxShadow: "0px 1px 3px 0px rgba(0,0,0,0.4)",
     borderRadius: "28px",
@@ -22,6 +29,7 @@ const AudioPlayerList = ({ soundsList }: AudioPlayerListProps) => {
   const handleFavorite = async (sound: Blob) => {
     try {
       await postSoundfxFavorite(sound);
+      return refetchFavorites();
     } catch (error) {
       console.error("Error adding sound to favorites:", error);
     }
@@ -54,11 +62,13 @@ const AudioPlayerList = ({ soundsList }: AudioPlayerListProps) => {
             />
             <div className="flex items-center gap-4 max-md:gap-3">
               <button onClick={() => handleFavorite(sound)}>
-                <IconHeart className="text-primary max-md:h-5 max-md:w-5" />
+                {soundfxFavoritesList?.includes(sound?.id!) ? (
+                  <IconHeartFill className="text-primary" />
+                ) : (
+                  <IconHeart className="text-primary max-md:h-5 max-md:w-5" />
+                )}
               </button>
-              {/* <IconHeartFill className="text-primary" /> */}
-
-              <a href={sound.downloadUrl}>
+              <a href={sound.downloadUrl} className="cursor-pointer">
                 <IconDownload className="h-7 w-7 text-primary max-md:h-6 max-md:w-6" />
               </a>
             </div>
@@ -71,5 +81,3 @@ const AudioPlayerList = ({ soundsList }: AudioPlayerListProps) => {
 
 export default AudioPlayerList;
 
-// ToDo:
-// Add to favorites functionality

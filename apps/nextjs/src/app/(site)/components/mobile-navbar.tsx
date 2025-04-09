@@ -123,7 +123,7 @@ export function MobileNav({
         },
         {
           title: "Sound Effects & Music",
-          description: "Generate sounds or download...", // Ask Maury
+          description: "Generate and download sounds",
           href: "/soundeffects",
           icon: <IconMusic className="h-5 w-5" />,
         },
