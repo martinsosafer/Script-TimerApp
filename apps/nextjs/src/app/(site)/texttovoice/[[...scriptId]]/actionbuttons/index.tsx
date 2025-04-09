@@ -98,7 +98,7 @@ export function ActionButtons({
     },
     {
       icon: <IconBot className="h-5 w-5 text-teal-600" />,
-      text: "Translate Your Script",
+      text: "Get help for your script with our AI",
       bgColor: "bg-teal-500",
       iconBgColor: "bg-teal-200",
       textColor: "text-teal-600",
