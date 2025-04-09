@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -9,33 +10,77 @@ import {
   IconImage,
   IconMusic,
   PencilIcon,
+  StarIcon,
 } from "@voiceai/ui/@/components/ui/icons";
 
 import { poppins } from "~/app/fonts";
+import { AudioPlayerControls } from "../audioplayer";
 
 interface ActionButtonsProps {
   showPlayer: boolean;
   scrollToTab2: () => void;
+  audioRef: React.RefObject<HTMLAudioElement>;
+  downloadLink: string;
+  loading: boolean;
+  isSubscriptionActive: boolean;
+  setShowConfetti: (show: boolean) => void;
+  audioSource: string;
+  resetAudio: () => void;
 }
 
 export function ActionButtons({
   showPlayer,
   scrollToTab2,
+  audioRef,
+  downloadLink,
+  loading,
+  isSubscriptionActive,
+  setShowConfetti,
+  audioSource,
+  resetAudio,
 }: ActionButtonsProps) {
-  // Script stats data
   const scriptStats = {
     wordCount: 1,
     minutes: 0,
     seconds: 1,
     wordsPerSecond: 2.5,
-    performance: "Average", // Could be "Slowest", "Average", "Fastest"
+    performance: "Average",
   };
 
-  // Action Buttons data
+  // Improved audio handling with better state management
+  useEffect(() => {
+    if (!audioRef.current || !audioSource) return;
+
+    const handleAudioPlayback = async () => {
+      try {
+        // Only reset if we have a new audio source
+        if (audioRef.current?.src !== audioSource) {
+          resetAudio();
+          audioRef.current.src = audioSource;
+          await audioRef.current.load();
+        }
+
+        // Attempt playback with user gesture fallback
+        const playPromise = audioRef.current.play();
+
+        if (playPromise !== undefined) {
+          await playPromise;
+          setShowConfetti(true);
+        }
+      } catch (error) {
+        console.error("Audio playback error:", error);
+        // Autoplay was prevented - show UI for user to start playback
+      }
+    };
+
+    const timer = setTimeout(handleAudioPlayback, 100);
+    return () => clearTimeout(timer);
+  }, [audioSource, audioRef, setShowConfetti, resetAudio]);
+
   const buttonData = [
     {
       icon: <PencilIcon className="h-5 w-5 text-blue-600" />,
-      text: "Redo Script Timer",
+      text: "Rewrite Your Script",
       bgColor: "bg-blue-500",
       iconBgColor: "bg-blue-200",
       textColor: "text-blue-600",
@@ -44,7 +89,7 @@ export function ActionButtons({
     },
     {
       icon: <IconHeadphones className="h-5 w-5 text-amber-600" />,
-      text: "Listen to Your Script",
+      text: "Record Yourself & Get Immediate Feedback",
       bgColor: "bg-amber-500",
       iconBgColor: "bg-amber-200",
       textColor: "text-amber-600",
@@ -53,7 +98,7 @@ export function ActionButtons({
     },
     {
       icon: <IconBot className="h-5 w-5 text-teal-600" />,
-      text: "Immediate Feedback",
+      text: "Translate Your Script",
       bgColor: "bg-teal-500",
       iconBgColor: "bg-teal-200",
       textColor: "text-teal-600",
@@ -62,7 +107,7 @@ export function ActionButtons({
     },
     {
       icon: <IconMusic className="h-5 w-5 text-orange-600" />,
-      text: "Sound FX & Music",
+      text: "Add Sound Effects & Music",
       bgColor: "bg-orange-500",
       iconBgColor: "bg-orange-200",
       textColor: "text-orange-600",
@@ -71,7 +116,7 @@ export function ActionButtons({
     },
     {
       icon: <IconImage className="h-5 w-5 text-indigo-600" />,
-      text: "Create Images",
+      text: "Create Images for Your Script",
       bgColor: "bg-indigo-500",
       iconBgColor: "bg-indigo-200",
       textColor: "text-indigo-600",
@@ -92,57 +137,29 @@ export function ActionButtons({
             transition={{ duration: 0.3 }}
           >
             <div className="flex flex-col md:flex-row">
-              {/* Left Column - Script Stats */}
-              <div className="flex w-full flex-col items-center justify-center bg-slate-900 p-5 text-white md:w-1/2">
+              {/* Left Column - Stats & Player */}
+              <div className="flex w-full flex-col items-center justify-center  p-5 text-white md:w-1/2">
                 <div className="mb-3">
-                  <div className="relative">
-                    <img
-                      src="/placeholder.svg?height=80&width=80"
-                      alt="Star icon"
-                      className="h-16 w-16"
-                    />
-                  </div>
+                  <StarIcon className="h-16 w-16 text-yellow-400" />
                 </div>
-
-                <h2 className="mb-3 text-2xl font-bold">
+                <h2 className="mb-3 text-2xl font-bold text-black">
                   Great <span className="text-yellow-400">Work</span>
                 </h2>
-
                 <div className="mb-3 text-center">
                   <p className="mb-1">
                     Your script is{" "}
                     <span className="font-bold">{scriptStats.wordCount}</span>{" "}
                     word(s).
                   </p>
-                  <p className="mb-1">
-                    It will take{" "}
-                    <span className="font-bold">
-                      {scriptStats.minutes} minutes and {scriptStats.seconds}{" "}
-                      seconds
-                    </span>{" "}
-                    at{" "}
-                    <span className="font-bold">
-                      {scriptStats.wordsPerSecond}
-                    </span>{" "}
-                    words per second.
-                  </p>
                 </div>
-
-                <div className="w-full max-w-xs">
-                  <div className="relative h-1 w-full rounded-full bg-slate-700">
-                    <div className="absolute left-0 top-0 flex h-full w-full items-center justify-between px-1">
-                      <div className="h-2 w-2 rounded-full bg-blue-400"></div>
-                      <div className="h-2 w-2 rounded-full bg-blue-400"></div>
-                      <div className="h-4 w-4 rounded-full bg-yellow-400"></div>
-                      <div className="h-2 w-2 rounded-full bg-blue-400"></div>
-                      <div className="h-2 w-2 rounded-full bg-blue-400"></div>
-                    </div>
-                  </div>
-                  <div className="mt-2 flex justify-between text-xs">
-                    <span>Slowest</span>
-                    <span className="font-medium text-yellow-400">Average</span>
-                    <span>Fastest</span>
-                  </div>
+                <div className="ml-3 w-full px-4">
+                  <AudioPlayerControls
+                    audioRef={audioRef}
+                    downloadLink={downloadLink}
+                    loading={loading}
+                    isSubscriptionActive={isSubscriptionActive}
+                    setShowConfetti={setShowConfetti}
+                  />
                 </div>
               </div>
 
@@ -152,7 +169,6 @@ export function ActionButtons({
                   Create high-impact{" "}
                   <span className="text-yellow-500">scripts</span>
                 </h2>
-
                 <div className="space-y-2">
                   {buttonData.map((button, index) => (
                     <motion.div
@@ -173,7 +189,7 @@ export function ActionButtons({
                           href={button.href || "#"}
                           className="block w-full"
                         >
-                          <div className="flex items-center rounded-lg border border-gray-100 bg-white px-4 py-2 transition-all hover:bg-gray-50">
+                          <div className="flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 transition-all hover:bg-gray-50">
                             <div
                               className={`flex h-10 w-10 items-center justify-center rounded-full ${button.iconBgColor}`}
                             >
@@ -189,7 +205,7 @@ export function ActionButtons({
                           onClick={button.action}
                           className="w-full text-left"
                         >
-                          <div className="flex items-center rounded-lg border border-gray-100 bg-white px-4 py-2 transition-all hover:bg-gray-50">
+                          <div className="flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 transition-all hover:bg-gray-50">
                             <div
                               className={`flex h-10 w-10 items-center justify-center rounded-full ${button.iconBgColor}`}
                             >

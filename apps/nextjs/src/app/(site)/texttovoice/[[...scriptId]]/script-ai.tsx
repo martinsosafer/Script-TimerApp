@@ -78,6 +78,7 @@ export function ScriptAI({
     toggleAudioRef,
     handleStreaming,
     handleCloseAudio,
+    onAudioReady,
   } = useStreamingAudio();
 
   React.useEffect(() => {
@@ -154,25 +155,12 @@ export function ScriptAI({
       </p>
     </div>
   );
-
-  const audioPlayerContainerStyle = {
-    position: "relative" as const,
-    bottom: "0px",
-    left: "66%",
-    transform: "translateX(-50%)",
-    maxWidth: "700px",
-    width: "600px",
-    height: "60px",
-
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: "10px 15px",
-    borderRadius: "8px",
-    zIndex: 0,
-    opacity: 1,
-    transition: "opacity 0.5s ease-in-out",
-    border: "none",
+  const resetAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      audioRef.current.src = "";
+    }
   };
 
   return (
@@ -257,20 +245,18 @@ export function ScriptAI({
           </div>
         </Tabs>
 
-        <div ref={audioPlayerRef} style={audioPlayerContainerStyle}>
-          <AudioPlayerControls
+        {/* ActionButtons with all props */}
+        <div ref={actionButtonsRef} className="w-full">
+          <ActionButtons
+            showPlayer={showPlayer}
+            scrollToTab2={scrollToHeader}
             audioRef={audioRef}
             downloadLink={downloadLink}
             loading={loading}
             isSubscriptionActive={isSubscriptionActive}
             setShowConfetti={setShowConfetti}
-          />
-        </div>
-
-        <div ref={actionButtonsRef} className="w-full">
-          <ActionButtons
-            showPlayer={showPlayer}
-            scrollToTab2={scrollToHeader}
+            audioSource={audioSource} // Add this new prop
+            resetAudio={resetAudio}
           />
         </div>
       </div>
