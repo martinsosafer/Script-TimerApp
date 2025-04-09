@@ -16,7 +16,7 @@ export const sendVerificationRequest = async ({
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Co-Producer by Script-Timer</title>
+    <title>Welcome to Script-Timer</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
 
@@ -107,7 +107,7 @@ export const sendVerificationRequest = async ({
 
         <p>Hi,</p>
 
-        <p>We are happy you're here! Co-Producer (by Script-Timer) makes it easy to save time and money creating.</p>
+        <p>We are happy you're here! Script-Timer makes it easy to save time and money creating.</p>
 
         <!-- Button with inline styles -->
         <a href="${url}" 
