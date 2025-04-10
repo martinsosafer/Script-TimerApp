@@ -15,18 +15,18 @@ import {
 
 import { getSoundfxList } from "../../actions";
 import CardsList from "../../cardList/CardList";
-import type { RefetchFavorites } from "../../types";
+import type { SessionProps } from "../../types";
 
-const SoundEffectsSection = ({ refetchFavorites }: RefetchFavorites) => {
+const SoundEffectsSection = ({ subData }: SessionProps) => {
   const {
     data: soundEffectsList,
     isLoading: isLoadingSoundEffects,
     isError: isErrorSoundEffects,
   } = useQuery({
     queryKey: ["soundEffects"],
-    queryFn: () => getSoundfxList(),
+    queryFn: () => getSoundfxList("sound-effects"),
   });
-  // console.log("soundEffectsList", soundEffectsList);
+
   const icons = [
     { type: "alarms", icon: <IconAlerts /> },
     { type: "ambient", icon: <IconAmbient /> },
@@ -47,7 +47,7 @@ const SoundEffectsSection = ({ refetchFavorites }: RefetchFavorites) => {
       isLoading={isLoadingSoundEffects}
       isError={isErrorSoundEffects}
       title="Sound Effects"
-      // refetchFavorites={refetchFavorites}
+      subData={subData}
     />
   );
 };

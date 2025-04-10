@@ -3,12 +3,11 @@
 import { list } from "@vercel/blob";
 
 import { auth } from "@voiceai/auth";
-import { db, eq } from "@voiceai/db";
+import { and, db, eq } from "@voiceai/db";
 import { elevenLabsCredit } from "@voiceai/db/schema/11LabsCredits";
-import { users } from "@voiceai/db/schema/auth";
 import { soundfx, userToSoundfx } from "@voiceai/db/schema/soundEffects";
 
-import type { Blob, SoundTypeNeon } from "./types";
+import type { SoundTypeNeon, SubData } from "./types";
 
 export async function getUserCredits(userId: string) {
   try {
@@ -21,6 +20,7 @@ export async function getUserCredits(userId: string) {
   }
 }
 
+// Compare Vercel Blobs with Neon list and update dB
 export async function updateSoundfxFromVercel() {
   try {
     const soundEffectsBlobs = await list({
@@ -73,12 +73,12 @@ export async function updateSoundfxFromVercel() {
   }
 }
 
-// Get list of sound effects from dB
-export async function getSoundfxList() {
+// Get list of sound effects or music from dB
+export async function getSoundfxList(type: string) {
   try {
     const soundEffectsList = await db.query.soundfx.findMany();
     const soundfxOnlyList = soundEffectsList.filter((sound) => {
-      return sound.pathname.startsWith("sound-effects/");
+      return sound.pathname.startsWith(`${type}/`);
     });
     const soundEffectsBySecondName = soundfxOnlyList.reduce(
       (acc: Record<string, SoundTypeNeon[]>, sound) => {
@@ -107,60 +107,7 @@ export async function getSoundfxList() {
   }
 }
 
-// export async function getSoundsBlob(prefix: string) {
-//   try {
-//     const { blobs } = await list({
-//       prefix: prefix,
-//     });
-//     const fullList = (await JSON.parse(JSON.stringify(blobs))) as Blob[];
-//     const listByFolders = fullList.reduce(
-//       (acc: Record<string, Blob[]>, blob) => {
-//         const folder = blob.pathname.split("/")[1]!;
-//         if (folder !== "" && !acc[folder]) {
-//           acc[folder] = [];
-//         }
-//         if (folder !== "" && !Array.isArray(Object.values(acc[folder]!)[0])) {
-//           acc[folder]!.push(blob);
-//         }
-//         return acc;
-//       },
-//       {},
-//     );
-//     const soundEffectsArray = Object.entries(listByFolders).map(
-//       ([type, sounds]) => {
-//         return { type, sounds: sounds.slice(1) };
-//       },
-//     );
-//     return soundEffectsArray;
-//   } catch (error) {
-//     console.error("Error getting sound effects blobs", error);
-//   }
-// }
-
-// Post new sound effect or music to db
-export async function getOrPostSoundFx(soundBlob: Blob) {
-  try {
-    const existingSoundFx = await db.query.soundfx.findFirst({
-      where: eq(soundfx.pathname, soundBlob.pathname),
-    });
-    if (existingSoundFx) {
-      console.log("Sound effect already exists in DB", existingSoundFx?.id);
-      return existingSoundFx?.id;
-    }
-    const newSoundFx = await db
-      .insert(soundfx)
-      .values({
-        pathname: soundBlob.pathname,
-        url: soundBlob.url,
-        downloadurl: soundBlob.downloadUrl,
-      })
-      .returning({ soundfxId: soundfx.id });
-    return newSoundFx[0]?.soundfxId;
-  } catch (error) {
-    console.error("Error posting sound effect or music", error);
-  }
-}
-
+// Get list of favorites from dB
 export async function getSoundfxFavorites() {
   try {
     const session = await auth();
@@ -182,22 +129,58 @@ export async function getSoundfxFavorites() {
   }
 }
 
-export async function postSoundfxFavorite(soundBlob: Blob) {
+// Save sound effect or music to user favorites
+export async function postFavorite({
+  sound,
+  subData,
+}: {
+  sound: SoundTypeNeon;
+  subData: SubData | null | undefined;
+}) {
   try {
-    const session = await auth();
-    const userId = session?.user?.id;
+    const soundId = sound?.id;
+    const userId = subData?.userId;
 
-    const findOrCreateSoundfxId = await getOrPostSoundFx(soundBlob);
+    if (!userId) return;
 
     return await db
       .insert(userToSoundfx)
       .values({
-        userId: userId!,
-        soundfxId: findOrCreateSoundfxId!,
+        userId: userId,
+        soundfxId: soundId,
       })
       .execute();
   } catch (error) {
     console.error(error);
-    throw new Error("Error posting sound effects favorites");
+    throw new Error("Error posting sound effects favorite");
+  }
+}
+
+// Remove sound effect or music from user favorites
+export async function deleteFavorite({
+  sound,
+  subData,
+}: {
+  sound: SoundTypeNeon;
+  subData: SubData | null | undefined;
+}) {
+  try {
+    const soundId = sound?.id;
+    const userId = subData?.userId;
+
+    if (!userId) return;
+
+    return await db
+      .delete(userToSoundfx)
+      .where(
+        and(
+          eq(userToSoundfx.userId, userId),
+          eq(userToSoundfx.soundfxId, soundId),
+        ),
+      )
+      .execute();
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error deleting sound effects favorite");
   }
 }

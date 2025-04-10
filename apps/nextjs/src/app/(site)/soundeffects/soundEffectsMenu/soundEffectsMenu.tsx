@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+
 
 import Tabs from "../../components/tabs";
-import { getSoundfxFavorites } from "../actions";
 import type { SessionProps } from "../types";
 import CreateSection from "./createSection/CreateSection";
 import FavoritesSection from "./favoritesSection/FavoritesSection";
@@ -13,18 +12,6 @@ import SoundEffectsSection from "./soundEffectsSection/SoundEffectsSection";
 
 const SoundEffectsMenu = ({ subData }: SessionProps) => {
   const [selected, setSelected] = useState<number>(0);
-
-  const {
-    data: soundfxFavoritesList,
-    isLoading: isLoadingFavorites,
-    isError: isErrorFavorites,
-    refetch: refetchFavorites,
-  } = useQuery({
-    queryKey: ["soundfxFavorites"],
-    queryFn: () => getSoundfxFavorites(),
-  });
-
-  console.log("soundfxFavoritesList", soundfxFavoritesList);
 
   const tabsOptions = [
     {
@@ -50,10 +37,8 @@ const SoundEffectsMenu = ({ subData }: SessionProps) => {
   ];
 
   const handleSelection = (selected: number) => {
-    if (selected === 0)
-      return <SoundEffectsSection refetchFavorites={refetchFavorites} />;
-    if (selected === 1)
-      return <MusicSection refetchFavorites={refetchFavorites} />;
+    if (selected === 0) return <SoundEffectsSection subData={subData} />;
+    if (selected === 1) return <MusicSection subData={subData} />;
     if (selected === 2) return <CreateSection subData={subData} />;
     if (selected === 3) return <FavoritesSection subData={subData} />;
   };

@@ -7,7 +7,7 @@ import { IconChevronLeft, IconSearch } from "@voiceai/ui/@/components/ui/icons";
 import { poppins } from "~/app/fonts";
 import { getSoundfxFavorites } from "../actions";
 import AudioPlayerList from "../audioPlayerList/AudioPlayerList";
-import type { Blob, RefetchFavorites, SoundTypeNeon } from "../types";
+import type { SoundTypeNeon, SubData } from "../types";
 import { formatSoundNameFromUrl } from "../utils";
 
 interface CardListProps {
@@ -19,7 +19,7 @@ interface CardListProps {
   isLoading: boolean;
   isError: boolean;
   title: string;
-  // refetchFavorites: RefetchFavorites["refetchFavorites"];
+  subData: SubData | null | undefined;
 }
 
 interface SoundType {
@@ -33,7 +33,7 @@ const CardList = ({
   isLoading,
   isError,
   title,
-  // refetchFavorites,
+  subData,
 }: CardListProps) => {
   const [searchValue, setSearchValue] = useState<string>("");
   const [selectedType, setSelectedType] = useState<SoundType | null>(null);
@@ -42,11 +42,11 @@ const CardList = ({
     const icon = icons.find((icon) => icon.type === type);
     return icon ? icon.icon : null;
   };
-  // console.log("data", data);
+
   const {
-    data: soundfxFavoritesList,
-    isLoading: isLoadingFavorites,
-    isError: isErrorFavorites,
+    data: favoritesList,
+    // isLoading: isLoadingFavorites,
+    // isError: isErrorFavorites,
     refetch: refetchFavorites,
   } = useQuery({
     queryKey: ["soundfxFavorites"],
@@ -72,8 +72,9 @@ const CardList = ({
     return (
       <AudioPlayerList
         soundsList={filteredData}
-        soundfxFavoritesList={soundfxFavoritesList}
+        favoritesList={favoritesList}
         refetchFavorites={refetchFavorites}
+        subData={subData}
       />
     );
   };
@@ -120,8 +121,9 @@ const CardList = ({
 
         <AudioPlayerList
           soundsList={selectedType?.sounds}
-          soundfxFavoritesList={soundfxFavoritesList}
+          favoritesList={favoritesList}
           refetchFavorites={refetchFavorites}
+          subData={subData}
         />
 
         <Button

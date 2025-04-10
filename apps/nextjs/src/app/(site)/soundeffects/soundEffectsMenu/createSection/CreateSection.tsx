@@ -12,5 +12,3 @@ const CreateSection = ({ subData }: SessionProps) => {
 };
 
 export default CreateSection;
-
-// Move audio player to box with robot (outside box)

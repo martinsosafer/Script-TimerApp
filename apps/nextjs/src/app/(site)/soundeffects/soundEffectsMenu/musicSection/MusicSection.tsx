@@ -7,18 +7,18 @@ import {
   IconTechnical,
 } from "@voiceai/ui/@/components/ui/icons";
 
-import { getSoundsBlob } from "../../actions";
+import { getSoundfxList } from "../../actions";
 import CardsList from "../../cardList/CardList";
-import type { RefetchFavorites } from "../../types";
+import type { SessionProps } from "../../types";
 
-const MusicSection = ({ refetchFavorites }: RefetchFavorites) => {
+const MusicSection = ({ subData }: SessionProps) => {
   const {
     data: musicList,
     isLoading: isLoadingMusic,
     isError: isErrorMusic,
   } = useQuery({
-    queryKey: ["musicBlob"],
-    queryFn: () => getSoundsBlob("music"),
+    queryKey: ["music"],
+    queryFn: () => getSoundfxList("music"),
   });
 
   const icons = [
@@ -35,7 +35,7 @@ const MusicSection = ({ refetchFavorites }: RefetchFavorites) => {
       isLoading={isLoadingMusic}
       isError={isErrorMusic}
       title="Music"
-      refetchFavorites={refetchFavorites}
+      subData={subData}
     />
   );
 };

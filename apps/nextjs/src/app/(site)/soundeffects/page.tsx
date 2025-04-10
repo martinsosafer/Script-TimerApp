@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { auth } from "@voiceai/auth";
 
 import PageHeader from "../components/page-header";
-import { getSoundfxFavorites, updateSoundfxFromVercel } from "./actions";
+import { updateSoundfxFromVercel } from "./actions";
 import SoundEffectsMenu from "./soundEffectsMenu/soundEffectsMenu";
 
 export const metadata: Metadata = {
@@ -16,7 +16,7 @@ export default async function SoundEffectsPage() {
   const subData = session?.user.subscription;
 
   // Update Sound Effects and Music fom Vercel
-  await updateSoundfxFromVercel()
+  await updateSoundfxFromVercel();
 
   const subtitle = (
     <>
@@ -46,4 +46,3 @@ export default async function SoundEffectsPage() {
     </main>
   );
 }
-

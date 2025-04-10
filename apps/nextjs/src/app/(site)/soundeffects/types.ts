@@ -14,13 +14,13 @@ export interface SessionProps {
   subData: SubData | null | undefined;
 }
 
-export interface Blob {
-  downloadUrl: string;
-  pathname: string;
-  size: number;
-  uploadedAt: string;
-  url: string;
-}
+// export interface Blob {
+//   downloadUrl: string;
+//   pathname: string;
+//   size: number;
+//   uploadedAt: string;
+//   url: string;
+// }
 
 export interface SoundTypeNeon {
   id: string;

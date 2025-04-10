@@ -32,12 +32,6 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
   const [credits, setCredits] = useState<number | undefined>(0);
   const [isLoadingCredits, setIsLoadingCredits] = useState(false);
 
-  // const { data: userData, isSuccess } = api.auth.getSession.useQuery();
-  // // const userPlan = userData?.user.subscription?.status;
-
-  // console.log("userData", userData?.user?.id);
-  // console.log("IsSuccess", isSuccess);
-
   const totalCredits = getTotalCredits(subData?.status);
 
   // Update user credits
