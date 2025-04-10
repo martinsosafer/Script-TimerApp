@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -39,43 +39,46 @@ export function ActionButtons({
   audioSource,
   resetAudio,
 }: ActionButtonsProps) {
-  const scriptStats = {
-    wordCount: 1,
-    minutes: 0,
-    seconds: 1,
-    wordsPerSecond: 2.5,
-    performance: "Average",
-  };
+  const hasPlayedRef = useRef(false);
+  const prevAudioSourceRef = useRef<string | null>(null);
 
-  // Improved audio handling with better state management
+  // Handle audio playback exactly once when audio appears
   useEffect(() => {
-    if (!audioRef.current || !audioSource) return;
+    if (!showPlayer || !audioSource || !audioRef.current) {
+      // Reset flags when player is hidden
+      hasPlayedRef.current = false;
+      return;
+    }
 
-    const handleAudioPlayback = async () => {
-      try {
-        // Only reset if we have a new audio source
-        if (audioRef.current?.src !== audioSource) {
+    // Only play if we have a new audio source and haven't played yet
+    if (audioSource !== prevAudioSourceRef.current && !hasPlayedRef.current) {
+      const handlePlayback = async () => {
+        try {
+          // Reset and load new audio
           resetAudio();
-          audioRef.current.src = audioSource;
-          await audioRef.current.load();
+          audioRef.current!.src = audioSource;
+          await audioRef.current!.load();
+
+          // Attempt playback
+          const playPromise = audioRef.current!.play();
+
+          if (playPromise !== undefined) {
+            await playPromise;
+            setShowConfetti(true);
+            // Mark as played and store current source
+            hasPlayedRef.current = true;
+            prevAudioSourceRef.current = audioSource;
+          }
+        } catch (error) {
+          console.error("Playback error:", error);
+          // Fallback - let user click play button
         }
+      };
 
-        // Attempt playback with user gesture fallback
-        const playPromise = audioRef.current.play();
-
-        if (playPromise !== undefined) {
-          await playPromise;
-          setShowConfetti(true);
-        }
-      } catch (error) {
-        console.error("Audio playback error:", error);
-        // Autoplay was prevented - show UI for user to start playback
-      }
-    };
-
-    const timer = setTimeout(handleAudioPlayback, 100);
-    return () => clearTimeout(timer);
-  }, [audioSource, audioRef, setShowConfetti, resetAudio]);
+      const timer = setTimeout(handlePlayback, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [showPlayer, audioSource, audioRef, setShowConfetti, resetAudio]);
 
   const buttonData = [
     {
@@ -89,7 +92,7 @@ export function ActionButtons({
     },
     {
       icon: <IconHeadphones className="h-5 w-5 text-amber-600" />,
-      text: "Record Yourself & Get Immediate Feedback",
+      text: "Record & Get Feedback",
       bgColor: "bg-amber-500",
       iconBgColor: "bg-amber-200",
       textColor: "text-amber-600",
@@ -98,7 +101,7 @@ export function ActionButtons({
     },
     {
       icon: <IconBot className="h-5 w-5 text-teal-600" />,
-      text: "Get help for your script with our AI",
+      text: "Translate Your Script",
       bgColor: "bg-teal-500",
       iconBgColor: "bg-teal-200",
       textColor: "text-teal-600",
@@ -137,22 +140,18 @@ export function ActionButtons({
             transition={{ duration: 0.3 }}
           >
             <div className="flex flex-col md:flex-row">
-              {/* Left Column - Stats & Player */}
-              <div className="flex w-full flex-col items-center justify-center  p-5 text-white md:w-1/2">
+              {/* Left Column - Audio Player */}
+              <div className="flex w-full flex-col items-center justify-center bg-slate-900 p-5 text-white md:w-1/2">
                 <div className="mb-3">
                   <StarIcon className="h-16 w-16 text-yellow-400" />
                 </div>
-                <h2 className="mb-3 text-2xl font-bold text-black">
+                <h2 className="mb-3 text-2xl font-bold">
                   Great <span className="text-yellow-400">Work</span>
                 </h2>
                 <div className="mb-3 text-center">
-                  <p className="mb-1">
-                    Your script is{" "}
-                    <span className="font-bold">{scriptStats.wordCount}</span>{" "}
-                    word(s).
-                  </p>
+                  <p className="mb-1 text-white">Your audio is ready to play</p>
                 </div>
-                <div className="ml-3 w-full px-4">
+                <div className="w-full px-4">
                   <AudioPlayerControls
                     audioRef={audioRef}
                     downloadLink={downloadLink}
@@ -187,6 +186,8 @@ export function ActionButtons({
                       {button.isLink ? (
                         <Link
                           href={button.href || "#"}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="block w-full"
                         >
                           <div className="flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 transition-all hover:bg-gray-50">
