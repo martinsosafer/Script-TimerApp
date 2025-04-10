@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 
-
 import Tabs from "../../components/tabs";
 import type { SessionProps } from "../types";
 import CreateSection from "./createSection/CreateSection";
@@ -12,6 +11,8 @@ import SoundEffectsSection from "./soundEffectsSection/SoundEffectsSection";
 
 const SoundEffectsMenu = ({ subData }: SessionProps) => {
   const [selected, setSelected] = useState<number>(0);
+
+  const userId = subData?.userId;
 
   const tabsOptions = [
     {
@@ -37,10 +38,10 @@ const SoundEffectsMenu = ({ subData }: SessionProps) => {
   ];
 
   const handleSelection = (selected: number) => {
-    if (selected === 0) return <SoundEffectsSection subData={subData} />;
-    if (selected === 1) return <MusicSection subData={subData} />;
+    if (selected === 0) return <SoundEffectsSection userId={userId} />;
+    if (selected === 1) return <MusicSection userId={userId} />;
     if (selected === 2) return <CreateSection subData={subData} />;
-    if (selected === 3) return <FavoritesSection subData={subData} />;
+    if (selected === 3) return <FavoritesSection userId={userId} />;
   };
 
   return (

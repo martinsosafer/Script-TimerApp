@@ -7,7 +7,7 @@ import { IconChevronLeft, IconSearch } from "@voiceai/ui/@/components/ui/icons";
 import { poppins } from "~/app/fonts";
 import { getSoundfxFavorites } from "../actions";
 import AudioPlayerList from "../audioPlayerList/AudioPlayerList";
-import type { SoundTypeNeon, SubData } from "../types";
+import type { SoundTypeNeon } from "../types";
 import { formatSoundNameFromUrl } from "../utils";
 
 interface CardListProps {
@@ -19,7 +19,7 @@ interface CardListProps {
   isLoading: boolean;
   isError: boolean;
   title: string;
-  subData: SubData | null | undefined;
+  userId: string | undefined;
 }
 
 interface SoundType {
@@ -33,7 +33,7 @@ const CardList = ({
   isLoading,
   isError,
   title,
-  subData,
+  userId,
 }: CardListProps) => {
   const [searchValue, setSearchValue] = useState<string>("");
   const [selectedType, setSelectedType] = useState<SoundType | null>(null);
@@ -46,7 +46,7 @@ const CardList = ({
   const {
     data: favoritesList,
     // isLoading: isLoadingFavorites,
-    // isError: isErrorFavorites,
+    // isError: isErrorFavorites, // Show error toast?
     refetch: refetchFavorites,
   } = useQuery({
     queryKey: ["soundfxFavorites"],
@@ -74,7 +74,7 @@ const CardList = ({
         soundsList={filteredData}
         favoritesList={favoritesList}
         refetchFavorites={refetchFavorites}
-        subData={subData}
+        userId={userId}
       />
     );
   };
@@ -123,7 +123,7 @@ const CardList = ({
           soundsList={selectedType?.sounds}
           favoritesList={favoritesList}
           refetchFavorites={refetchFavorites}
-          subData={subData}
+          userId={userId}
         />
 
         <Button

@@ -132,14 +132,13 @@ export async function getSoundfxFavorites() {
 // Save sound effect or music to user favorites
 export async function postFavorite({
   sound,
-  subData,
+  userId,
 }: {
   sound: SoundTypeNeon;
-  subData: SubData | null | undefined;
+  userId: string | undefined;
 }) {
   try {
     const soundId = sound?.id;
-    const userId = subData?.userId;
 
     if (!userId) return;
 
@@ -159,14 +158,13 @@ export async function postFavorite({
 // Remove sound effect or music from user favorites
 export async function deleteFavorite({
   sound,
-  subData,
+  userId,
 }: {
   sound: SoundTypeNeon;
-  subData: SubData | null | undefined;
+  userId: string | undefined;
 }) {
   try {
     const soundId = sound?.id;
-    const userId = subData?.userId;
 
     if (!userId) return;
 

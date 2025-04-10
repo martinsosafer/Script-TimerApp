@@ -9,9 +9,8 @@ import {
 
 import { getSoundfxList } from "../../actions";
 import CardsList from "../../cardList/CardList";
-import type { SessionProps } from "../../types";
 
-const MusicSection = ({ subData }: SessionProps) => {
+const MusicSection = ({ userId }: { userId: string | undefined }) => {
   const {
     data: musicList,
     isLoading: isLoadingMusic,
@@ -35,7 +34,7 @@ const MusicSection = ({ subData }: SessionProps) => {
       isLoading={isLoadingMusic}
       isError={isErrorMusic}
       title="Music"
-      subData={subData}
+      userId={userId}
     />
   );
 };

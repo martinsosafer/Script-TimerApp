@@ -1,32 +1,32 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
+import NoSessionModal from "~/app/(site)/components/modals/no-session-modal";
 import { poppins } from "~/app/fonts";
 import { getSoundfxFavorites, getSoundfxList } from "../../actions";
 import AudioPlayerList from "../../audioPlayerList/AudioPlayerList";
-import type { SessionProps } from "../../types";
 
-const FavoritesSection = ({ subData }: SessionProps) => {
-  const {
-    data: soundEffectsList,
-    // isLoading: isLoadingSoundEffects,
-    // isError: isErrorSoundEffects,
-  } = useQuery({
+const FavoritesSection = ({ userId }: { userId: string | undefined }) => {
+  const [noSessionModalOpen, setNoSessionModalOpen] = useState<boolean>(true);
+
+  const { data: soundEffectsList } = useQuery({
     queryKey: ["soundEffects"],
     queryFn: () => getSoundfxList("sound-effects"),
+    enabled: !!userId,
   });
 
-  const {
-    data: musicList,
-    // isLoading: isLoadingMusic,
-    // isError: isErrorMusic,
-  } = useQuery({
+  const { data: musicList } = useQuery({
     queryKey: ["music"],
     queryFn: () => getSoundfxList("music"),
+    enabled: !!userId,
   });
 
   const fullListData = [...(soundEffectsList ?? []), ...(musicList ?? [])]
     .map((sound) => sound.sounds)
-    .flat();
+    .flat()
+    .sort((a, b) =>
+      a.pathname.split("/")[2]!.localeCompare(b.pathname.split("/")[2]!),
+    );
 
   const {
     data: favoritesList,
@@ -36,6 +36,7 @@ const FavoritesSection = ({ subData }: SessionProps) => {
   } = useQuery({
     queryKey: ["soundfxFavorites"],
     queryFn: () => getSoundfxFavorites(),
+    enabled: !!userId,
   });
 
   const favoritesSoundList = fullListData?.filter((sound) => {
@@ -43,6 +44,26 @@ const FavoritesSection = ({ subData }: SessionProps) => {
       return sound.id === favorite;
     });
   });
+
+  if (!userId) {
+    return (
+      <>
+        <div className="flex h-[200px] w-full items-center justify-center">
+          <p className={`${poppins.className} text-lg font-bold`}>
+            Please login to use favorites
+          </p>
+        </div>
+
+        {noSessionModalOpen && (
+          <NoSessionModal
+            openModal={noSessionModalOpen}
+            page="image"
+            setOpenModal={setNoSessionModalOpen}
+          />
+        )}
+      </>
+    );
+  }
 
   if (isErrorFavorites) {
     return (
@@ -69,7 +90,7 @@ const FavoritesSection = ({ subData }: SessionProps) => {
       soundsList={favoritesSoundList}
       favoritesList={favoritesList}
       refetchFavorites={refetchFavorites}
-      subData={subData}
+      userId={userId}
     />
   );
 };

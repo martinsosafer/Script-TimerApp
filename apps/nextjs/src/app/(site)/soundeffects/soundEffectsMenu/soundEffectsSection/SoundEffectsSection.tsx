@@ -15,9 +15,8 @@ import {
 
 import { getSoundfxList } from "../../actions";
 import CardsList from "../../cardList/CardList";
-import type { SessionProps } from "../../types";
 
-const SoundEffectsSection = ({ subData }: SessionProps) => {
+const SoundEffectsSection = ({ userId }: { userId: string | undefined }) => {
   const {
     data: soundEffectsList,
     isLoading: isLoadingSoundEffects,
@@ -47,7 +46,7 @@ const SoundEffectsSection = ({ subData }: SessionProps) => {
       isLoading={isLoadingSoundEffects}
       isError={isErrorSoundEffects}
       title="Sound Effects"
-      subData={subData}
+      userId={userId}
     />
   );
 };
