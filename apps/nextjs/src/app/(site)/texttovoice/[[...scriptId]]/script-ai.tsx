@@ -82,13 +82,16 @@ export function ScriptAI({
   } = useStreamingAudio();
 
   React.useEffect(() => {
-    if (showPlayer && audioPlayerRef.current) {
-      audioPlayerRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
+    if (showPlayer && actionButtonsRef.current) {
+      setTimeout(() => {
+        actionButtonsRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }, 300);
     }
-  }, [showPlayer]);
+  }, [showPlayer, audioSource]);
+
   const headerRef = React.useRef<HTMLHeadingElement>(null);
   const scrollToHeader = () => {
     headerRef.current?.scrollIntoView({
@@ -155,6 +158,7 @@ export function ScriptAI({
       </p>
     </div>
   );
+
   const resetAudio = () => {
     if (audioRef.current) {
       audioRef.current.pause();
@@ -255,7 +259,7 @@ export function ScriptAI({
             loading={loading}
             isSubscriptionActive={isSubscriptionActive}
             setShowConfetti={setShowConfetti}
-            audioSource={audioSource} // Add this new prop
+            audioSource={audioSource}
             resetAudio={resetAudio}
           />
         </div>
