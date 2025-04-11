@@ -169,11 +169,8 @@ export function ScriptAI({
 
   return (
     <>
-      <header
-        ref={headerRef}
-        className={`my-3 flex w-full flex-col items-center justify-center p-6 lg:mb-[40px] lg:mt-[60px] lg:p-0 ${poppins.className}`}
-      >
-        {showConfetti && (
+      {showConfetti && (
+        <div className="pointer-events-none fixed inset-0 z-[9999]">
           <ReactConfetti
             width={window.innerWidth}
             height={window.innerHeight}
@@ -183,8 +180,14 @@ export function ScriptAI({
             initialVelocityX={2}
             initialVelocityY={10}
             colors={["#0123e7", "#eb8806"]}
+            style={{ position: "fixed" }}
           />
-        )}
+        </div>
+      )}
+      <header
+        ref={headerRef}
+        className={`my-3 flex w-full flex-col items-center justify-center p-6 lg:mb-[40px] lg:mt-[60px] lg:p-0 ${poppins.className}`}
+      >
         <h2 className="text-cp-primary w-full text-center text-[28px] font-bold lg:w-[650px] lg:text-[42px]">
           Text to Voice
         </h2>
