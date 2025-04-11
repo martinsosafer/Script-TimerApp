@@ -133,7 +133,7 @@ export function ActionButtons({
       <AnimatePresence>
         {showPlayer && (
           <motion.div
-            className="mx-auto mt-4 w-full max-w-6xl overflow-hidden rounded-lg bg-white shadow-md"
+            className="mx-auto mt-4 w-full max-w-6xl overflow-hidden rounded-lg bg-gray-100 shadow-md"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -141,7 +141,7 @@ export function ActionButtons({
           >
             <div className="flex flex-col md:flex-row">
               {/* Left Column - Audio Player */}
-              <div className="flex w-full flex-col items-center justify-center bg-slate-900 p-5 text-white md:w-1/2">
+              <div className="flex w-full flex-col items-center justify-center p-5 text-black md:w-1/2">
                 <div className="mb-3">
                   <StarIcon className="h-16 w-16 text-yellow-400" />
                 </div>
@@ -149,7 +149,7 @@ export function ActionButtons({
                   Great <span className="text-yellow-400">Work</span>
                 </h2>
                 <div className="mb-3 text-center">
-                  <p className="mb-1 text-white">Your audio is ready to play</p>
+                  <p className="mb-1 text-black">Your audio is ready to play</p>
                 </div>
                 <div className="w-full px-4">
                   <AudioPlayerControls
