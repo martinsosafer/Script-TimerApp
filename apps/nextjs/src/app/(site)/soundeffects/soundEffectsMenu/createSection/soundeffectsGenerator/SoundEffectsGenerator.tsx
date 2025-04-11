@@ -8,13 +8,18 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@voiceai/ui/@/components/ui/hover-card";
-import { IconBot, IconInfo } from "@voiceai/ui/@/components/ui/icons";
+import {
+  IconBotBig,
+  IconDownload,
+  IconInfo,
+  IconMusic,
+} from "@voiceai/ui/@/components/ui/icons";
 import { Input } from "@voiceai/ui/@/components/ui/input";
 import { Label } from "@voiceai/ui/@/components/ui/label";
 import { Slider } from "@voiceai/ui/@/components/ui/slider";
+import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 import { poppins } from "~/app/fonts";
-// import { api } from "~/utils/api";
 import NoSessionModal from "../../../../components/modals/no-session-modal";
 import { getUserCredits } from "../../../actions";
 import type { SessionProps } from "../../../types";
@@ -33,6 +38,11 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
   const [isLoadingCredits, setIsLoadingCredits] = useState(false);
 
   const totalCredits = getTotalCredits(subData?.status);
+
+  const audioPLayerStyle = {
+    boxShadow: "0px 1px 3px 0px rgba(0,0,0,0.4)",
+    borderRadius: "28px",
+  };
 
   // Update user credits
   const creditsUpdate = async () => {
@@ -87,7 +97,10 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
       await creditsUpdate();
     } catch (error) {
       console.error("Error:", error);
-      alert("Failed to generate sound effect");
+      toast({
+        title: "Something went wrong",
+        description: "Please try again later",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -233,15 +246,45 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
           </Button>
         </form>
 
+        {/* Generated sound */}
         {audioUrl && (
-          <div className="pt-6">
-            <IconBot />
-            <h3 className="mb-2 text-lg font-semibold">
-              Generated Sound Effect:
-            </h3>
-            <audio controls src={audioUrl} className="w-full">
-              Your browser does not support the audio element.
-            </audio>
+          <div className="flex flex-col-reverse items-end justify-between pt-2 md:gap-5 lg:flex-row">
+            <div className="flex w-full items-center justify-between gap-2 rounded-lg p-4 shadow-md max-md:flex-col max-md:items-start max-sm:p-2 lg:max-h-[80px]">
+              <div className="flex items-center gap-4 max-sm:gap-2">
+                <i className="rounded-full bg-[#7FB2FF] p-3 max-md:p-2">
+                  <IconMusic className="h-6 w-6 text-white max-md:h-5 max-md:w-5" />
+                </i>
+                <p
+                  className={`${poppins.className} text-sm font-bold capitalize max-sm:text-xs`}
+                >
+                  {text}
+                </p>
+              </div>
+              <div className="flex items-center gap-8 max-md:w-full max-md:justify-between max-md:gap-2">
+                <audio
+                  controls
+                  controlsList="noplaybackrate"
+                  src={audioUrl}
+                  style={audioPLayerStyle}
+                />
+                <a
+                  href={audioUrl}
+                  download={`${text}.mp3`}
+                  className="cursor-pointer"
+                >
+                  <IconDownload className="h-7 w-7 text-primary max-md:h-6 max-md:w-6" />
+                </a>
+              </div>
+            </div>
+
+            <div className="relative ">
+              <p className="absolute right-[82px] top-[-8px] w-[220px] rounded-bl-md rounded-tl-md rounded-tr-md bg-[#7FB2FF] p-3 text-center text-sm text-[#212121] shadow-md max-sm:w-[200px] max-sm:p-2 max-sm:text-xs md:right-[90px] lg:right-[96px]">
+                Here is your customized sound!
+              </p>
+              <i>
+                <IconBotBig className="max-lg:h-[136px] max-sm:h-[100px]" />
+              </i>
+            </div>
           </div>
         )}
       </div>

@@ -45,12 +45,12 @@ const CardList = ({
 
   const {
     data: favoritesList,
-    // isLoading: isLoadingFavorites,
     // isError: isErrorFavorites, // Show error toast?
     refetch: refetchFavorites,
   } = useQuery({
     queryKey: ["soundfxFavorites"],
     queryFn: () => getSoundfxFavorites(),
+    enabled: !!userId,
   });
 
   const handleSearchBar = () => {
