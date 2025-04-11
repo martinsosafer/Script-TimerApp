@@ -5,7 +5,7 @@ import { Button } from "@voiceai/ui";
 import { IconChevronLeft, IconSearch } from "@voiceai/ui/@/components/ui/icons";
 
 import { poppins } from "~/app/fonts";
-import { getSoundfxFavorites } from "../actions";
+import { getFavorites } from "../actions";
 import AudioPlayerList from "../audioPlayerList/AudioPlayerList";
 import type { SoundTypeNeon } from "../types";
 import { formatSoundNameFromUrl } from "../utils";
@@ -49,7 +49,7 @@ const CardList = ({
     refetch: refetchFavorites,
   } = useQuery({
     queryKey: ["soundfxFavorites"],
-    queryFn: () => getSoundfxFavorites(),
+    queryFn: () => getFavorites(),
     enabled: !!userId,
   });
 

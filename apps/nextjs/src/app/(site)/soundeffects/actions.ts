@@ -7,7 +7,7 @@ import { and, db, eq } from "@voiceai/db";
 import { elevenLabsCredit } from "@voiceai/db/schema/11LabsCredits";
 import { soundfx, userToSoundfx } from "@voiceai/db/schema/soundEffects";
 
-import type { SoundTypeNeon, SubData } from "./types";
+import type { SoundTypeNeon } from "./types";
 
 export async function getUserCredits(userId: string) {
   try {
@@ -108,7 +108,7 @@ export async function getSoundfxList(type: string) {
 }
 
 // Get list of favorites from dB
-export async function getSoundfxFavorites() {
+export async function getFavorites() {
   try {
     const session = await auth();
     const userId = session?.user?.id;

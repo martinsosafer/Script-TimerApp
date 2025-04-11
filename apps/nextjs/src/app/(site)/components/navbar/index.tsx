@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useQueryClient } from "@tanstack/react-query";
 import { AnimatePresence } from "framer-motion";
 import type { Session } from "next-auth";
 import { useTheme } from "next-themes";
@@ -51,6 +52,9 @@ export default function NewNavBar({ signOut, signIn, session }: NavBarProps) {
   const toggleMenu = () => setIsOpen(!isOpen);
   // Get subscription info
   const subscriptionData = session?.user.subscription?.status;
+
+  const queryClient = useQueryClient();
+  // Apply queryClient.clear() to clear the cache on signOut //
 
   return (
     <header className="bg-cp-primary sticky top-0 z-50 flex h-[64px] w-full items-center justify-between lg:h-16 lg:px-8 lg:py-14">

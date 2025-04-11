@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import NoSessionModal from "~/app/(site)/components/modals/no-session-modal";
 import { poppins } from "~/app/fonts";
-import { getSoundfxFavorites, getSoundfxList } from "../../actions";
+import { getFavorites, getSoundfxList } from "../../actions";
 import AudioPlayerList from "../../audioPlayerList/AudioPlayerList";
 
 const FavoritesSection = ({ userId }: { userId: string | undefined }) => {
@@ -35,7 +35,7 @@ const FavoritesSection = ({ userId }: { userId: string | undefined }) => {
     refetch: refetchFavorites,
   } = useQuery({
     queryKey: ["soundfxFavorites"],
-    queryFn: () => getSoundfxFavorites(),
+    queryFn: () => getFavorites(),
     enabled: !!userId,
   });
 
