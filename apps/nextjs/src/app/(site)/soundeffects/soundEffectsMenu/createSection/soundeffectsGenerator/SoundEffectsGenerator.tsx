@@ -27,7 +27,7 @@ import { getTotalCredits } from "../../../utils";
 
 export function SoundEffectsGenerator({ subData }: SessionProps) {
   const [text, setText] = useState("");
-  const [duration, setDuration] = useState(1.1);
+  const [duration, setDuration] = useState(3);
   const [promptInfluence, setPromptInfluence] = useState(0.5);
   const [audioUrl, setAudioUrl] = useState("");
   const [isManualDuration, setIsManualDuration] = useState(false);
@@ -78,7 +78,6 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
       if (isManualDuration) {
         requestBody.duration_seconds = duration;
       }
-
       const response = await fetch("/api/soundEffects", {
         method: "POST",
         headers: {
@@ -86,11 +85,9 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
         },
         body: JSON.stringify(requestBody),
       });
-
       if (!response.ok) {
         throw new Error("Failed to generate sound effect");
       }
-
       const audioBlob = await response.blob();
       const url = URL.createObjectURL(audioBlob);
       setAudioUrl(url);
@@ -104,6 +101,11 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleSubDataStatus = (status: string | number) => {
+    if (status === 1 || status === 2) return `AppSumoTier ${status}`;
+    return status;
   };
 
   return (
@@ -222,7 +224,9 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
                 <strong>{isLoadingCredits ? "..." : credits}</strong>
               </p>
               <p>
-                Your current plan (<strong>{subData?.status}</strong>) includes 
+                Your current plan{" "}
+                <strong>{handleSubDataStatus(subData?.status)}</strong>{" "}
+                includes 
                 <strong>{totalCredits}</strong> credits
               </p>
             </div>

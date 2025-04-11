@@ -2,7 +2,11 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import { Button } from "@voiceai/ui";
-import { IconChevronLeft, IconSearch } from "@voiceai/ui/@/components/ui/icons";
+import {
+  IconChevronLeft,
+  IconClose,
+  IconSearch,
+} from "@voiceai/ui/@/components/ui/icons";
 
 import { poppins } from "~/app/fonts";
 import { getFavorites } from "../actions";
@@ -48,7 +52,7 @@ const CardList = ({
     // isError: isErrorFavorites, // Show error toast?
     refetch: refetchFavorites,
   } = useQuery({
-    queryKey: ["soundfxFavorites"],
+    queryKey: ["soundfxFavorites", userId],
     queryFn: () => getFavorites(),
     enabled: !!userId,
   });
@@ -154,6 +158,13 @@ const CardList = ({
           className="w-full outline-none"
           placeholder={`Search for ${title.toLowerCase()}`}
         />
+        {searchValue ? (
+          <button onClick={() => setSearchValue("")}>
+            <IconClose
+              className={`h-5 w-5 ${searchValue ? "text-[#212121]" : "text-gray-400"}`}
+            />
+          </button>
+        ) : null}
       </div>
 
       {searchValue ? (

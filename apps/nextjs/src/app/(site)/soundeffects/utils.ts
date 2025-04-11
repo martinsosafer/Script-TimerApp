@@ -10,6 +10,8 @@ export const characters: Record<string, string> = {
   STUDENTCLYR: "2000 characters",
   CREATORCLYR: "5000 characters",
   BUSINESSCLYR: "10000 characters",
+  "1": "5000 characters",
+  "2": "5000 characters",
 };
 
 // Function to get total credits based on the subscription status
@@ -19,7 +21,7 @@ export const getTotalCredits = (status: string | undefined): number => {
   switch (status) {
     case "FREE":
     case "FREE_TRIAL":
-      return 10000;
+      return 2000;
 
     case "STUDENT":
     case "STUDENTCLMO":
@@ -35,6 +37,10 @@ export const getTotalCredits = (status: string | undefined): number => {
     case "BUSINESSCLMO":
     case "BUSINESSCLYR":
       return 125000;
+    case "1":
+      return 50000;
+    case "2":
+      return 100000;
 
     default:
       return 0;
