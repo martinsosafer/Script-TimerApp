@@ -54,7 +54,10 @@ export default function NewNavBar({ signOut, signIn, session }: NavBarProps) {
   const subscriptionData = session?.user.subscription?.status;
 
   const queryClient = useQueryClient();
-  // Apply queryClient.clear() to clear the cache on signOut //
+  const handleSignOut = async () => {
+    queryClient.clear(); // Clear all cache
+    await signOut();
+  };
 
   return (
     <header className="bg-cp-primary sticky top-0 z-50 flex h-[64px] w-full items-center justify-between lg:h-16 lg:px-8 lg:py-14">
@@ -148,7 +151,7 @@ export default function NewNavBar({ signOut, signIn, session }: NavBarProps) {
           </li>
           <li>
             <ProfileNavItem
-              signOut={signOut}
+              signOut={handleSignOut}
               signIn={signIn}
               plan={subscriptionData}
               session={session}
