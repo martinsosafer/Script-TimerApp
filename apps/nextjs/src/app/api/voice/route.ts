@@ -10,7 +10,8 @@ function addWatermark(message: string) {
   return `${message} -  - ${suffix}`;
 }
 
-export const maxDuration = 480; // This function can run for a maximum of 480 seconds
+// Vercel endpoint execution limit
+export const maxDuration = 300; // This function can run for a maximum of 300 seconds
 
 export async function POST(req: Request) {
   try {
