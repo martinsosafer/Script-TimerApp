@@ -10,7 +10,7 @@ function addWatermark(message: string) {
   return `${message} -  - ${suffix}`;
 }
 
-export const maxDuration = 60; // This function can run for a maximum of 60 seconds
+export const maxDuration = 90; // This function can run for a maximum of 90 seconds
 
 export async function POST(req: Request) {
   try {
