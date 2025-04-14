@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import {
   IconDownload,
@@ -28,9 +28,21 @@ const AudioPlayerList = ({
 }: AudioPlayerListProps) => {
   const [noSessionModalOpen, setNoSessionModalOpen] = useState<boolean>(false);
 
+  const audioRefs = useRef<Map<string, HTMLAudioElement>>(new Map());
+
   const audioPLayerStyle = {
     boxShadow: "0px 1px 3px 0px rgba(0,0,0,0.4)",
     borderRadius: "28px",
+  };
+
+  // Pause and reset all other audios
+  const handlePlay = (id: string) => {
+    audioRefs.current.forEach((audio, key) => {
+      if (key !== id) {
+        audio.pause();
+        audio.currentTime = 0; // Reset to start
+      }
+    });
   };
 
   const handleFavorite = async (sound: SoundTypeNeon) => {
@@ -54,9 +66,9 @@ const AudioPlayerList = ({
   return (
     <>
       <div className="flex w-full flex-col gap-3">
-        {soundsList?.map((sound: SoundTypeNeon) => (
+        {soundsList?.map((sound: SoundTypeNeon, i) => (
           <div
-            key={sound?.url}
+            key={sound?.id}
             className="flex w-full items-center justify-between gap-2 rounded-lg p-4 shadow-md max-md:flex-col max-md:items-start max-sm:p-2"
           >
             <div className="flex items-center gap-4 max-sm:gap-2">
@@ -76,6 +88,13 @@ const AudioPlayerList = ({
                 controlsList="nodownload noplaybackrate"
                 src={sound.url}
                 style={audioPLayerStyle}
+                ref={(el) => {
+                  if (el) {
+                    audioRefs.current.set(sound?.id, el);
+                  }
+                }}
+                id={sound?.id}
+                onPlay={() => handlePlay(sound?.id)}
               />
               <div className="flex items-center gap-4 max-md:gap-3">
                 <button onClick={() => handleFavorite(sound)}>
