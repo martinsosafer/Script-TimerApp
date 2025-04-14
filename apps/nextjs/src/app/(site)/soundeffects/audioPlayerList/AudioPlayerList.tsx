@@ -35,7 +35,7 @@ const AudioPlayerList = ({
     borderRadius: "28px",
   };
 
-  // Pause and reset all other audios
+  // Reproduce one audio at a time
   const handlePlay = (id: string) => {
     audioRefs.current.forEach((audio, key) => {
       if (key !== id) {

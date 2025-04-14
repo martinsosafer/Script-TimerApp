@@ -32,6 +32,7 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
   const [audioUrl, setAudioUrl] = useState("");
   const [isManualDuration, setIsManualDuration] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [generatedSoundTitle, setGeneratedSoundTitle] = useState("");
   const [noSessionModalOpen, setNoSessionModalOpen] = useState<boolean>(false);
 
   const [credits, setCredits] = useState<number | undefined>(0);
@@ -45,8 +46,8 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
   };
 
   // Update user credits
-  const creditsUpdate = async () => {
-    const updatedCredits = await getUserCredits(subData?.userId!);
+  const creditsUpdate = async (userId: string) => {
+    const updatedCredits = await getUserCredits(userId);
     setCredits(updatedCredits?.credits);
     setIsLoadingCredits(false);
   };
@@ -54,7 +55,7 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
   useEffect(() => {
     if (subData?.userId) {
       setIsLoadingCredits(true);
-      creditsUpdate().catch((error) => {
+      creditsUpdate(subData?.userId).catch((error) => {
         setIsLoadingCredits(false);
         console.error(error);
       });
@@ -68,16 +69,17 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
     try {
       const requestBody: {
         text: string;
-        duration_seconds?: number;
+        duration_seconds: number;
         prompt_influence: number;
       } = {
         text,
+        duration_seconds: duration,
         prompt_influence: promptInfluence,
       };
       // Only include duration_seconds if isManualDuration is true
-      if (isManualDuration) {
-        requestBody.duration_seconds = duration;
-      }
+      // if (isManualDuration) {
+      //   requestBody.duration_seconds = duration;
+      // }
       const response = await fetch("/api/soundEffects", {
         method: "POST",
         headers: {
@@ -86,15 +88,20 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
         body: JSON.stringify(requestBody),
       });
       if (!response.ok) {
-        throw new Error("Failed to generate sound effect");
+        return toast({
+          title: "Something went wrong",
+          description: response.statusText || "Please try again later",
+        });
       }
       const audioBlob = await response.blob();
       const url = URL.createObjectURL(audioBlob);
       setAudioUrl(url);
-      await creditsUpdate();
+      setGeneratedSoundTitle(text);
+      setText("");
+      return await creditsUpdate(subData?.userId!);
     } catch (error) {
       console.error("Error:", error);
-      toast({
+      return toast({
         title: "Something went wrong",
         description: "Please try again later",
       });
@@ -167,7 +174,7 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
                 <Slider
                   id="duration"
                   min={1}
-                  max={30}
+                  max={22}
                   step={1}
                   value={[duration || 0]}
                   onValueChange={(value) => setDuration(value[0] || 0)}
@@ -251,7 +258,7 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
         </form>
 
         {/* Generated sound */}
-        {audioUrl && (
+        {audioUrl && !isLoading ? (
           <div className="flex flex-col-reverse items-end justify-between pt-2 md:gap-5 lg:flex-row">
             <div className="flex w-full items-center justify-between gap-2 rounded-lg p-4 shadow-md max-md:flex-col max-md:items-start max-sm:p-2 lg:max-h-[80px]">
               <div className="flex items-center gap-4 max-sm:gap-2">
@@ -261,13 +268,13 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
                 <p
                   className={`${poppins.className} text-sm font-bold capitalize max-sm:text-xs`}
                 >
-                  {text}
+                  {generatedSoundTitle}
                 </p>
               </div>
               <div className="flex items-center gap-8 max-md:w-full max-md:justify-between max-md:gap-2">
                 <audio
                   controls
-                  controlsList="noplaybackrate"
+                  controlsList="noplaybackrate nodownload"
                   src={audioUrl}
                   style={audioPLayerStyle}
                 />
@@ -290,7 +297,7 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
               </i>
             </div>
           </div>
-        )}
+        ) : null}
       </div>
 
       {noSessionModalOpen && (
