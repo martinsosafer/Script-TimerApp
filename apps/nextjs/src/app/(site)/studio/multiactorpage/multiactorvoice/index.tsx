@@ -10,13 +10,6 @@ import {
   AvatarImage,
 } from "@voiceai/ui/@/components/ui/avatar";
 import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@voiceai/ui/@/components/ui/card";
-import {
   IconSpinner as Loader2,
   IconMic as Mic,
   IconStop as Pause,
@@ -28,7 +21,7 @@ import {
 } from "@voiceai/ui/@/components/ui/icons";
 import { Input } from "@voiceai/ui/@/components/ui/input";
 import { ScrollArea } from "@voiceai/ui/@/components/ui/scroll-area";
-import { Slider } from "@voiceai/ui/@/components/ui/slider";
+import { Separator } from "@voiceai/ui/@/components/ui/separator";
 
 import useStreamingAudio from "~/app/hooks/texttovoice/useStreamingAudio";
 
@@ -50,6 +43,8 @@ interface ActorSection {
   audioUrl: string | null;
   audioBlob: Blob | null;
   isPlaying: boolean;
+  autoPlay: boolean;
+  isGenerating: boolean; // Added individual loading state
 }
 
 export default function MultiActorVoice({
@@ -67,11 +62,12 @@ export default function MultiActorVoice({
       audioUrl: null,
       audioBlob: null,
       isPlaying: false,
+      autoPlay: false,
+      isGenerating: false,
     },
   ]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [activeActorId, setActiveActorId] = useState<string | null>(null);
-  const [isGenerating, setIsGenerating] = useState(false);
   const [stability, setStability] = useState(0.5);
   const [similarity, setSimilarity] = useState(0.75);
   const [isMergingAudio, setIsMergingAudio] = useState(false);
@@ -79,6 +75,7 @@ export default function MultiActorVoice({
 
   const audioRefs = useRef<Record<string, HTMLAudioElement | null>>({});
   const mergedAudioRef = useRef<HTMLAudioElement | null>(null);
+  const dropdownRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const { handleStreaming } = useStreamingAudio();
 
@@ -86,7 +83,9 @@ export default function MultiActorVoice({
     ? allVoices.filter(
         (voice) =>
           voice.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          voice.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          voice.description
+            ?.toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
           voice.gender.toLowerCase().includes(searchQuery.toLowerCase()) ||
           voice.type.toLowerCase().includes(searchQuery.toLowerCase()),
       )
@@ -102,13 +101,14 @@ export default function MultiActorVoice({
         audioUrl: null,
         audioBlob: null,
         isPlaying: false,
+        autoPlay: false,
+        isGenerating: false,
       },
     ]);
   };
 
   const removeActor = (id: string) => {
     if (actors.length > 1) {
-      // Clean up audio URL if it exists
       const actor = actors.find((a) => a.id === id);
       if (actor?.audioUrl) {
         URL.revokeObjectURL(actor.audioUrl);
@@ -166,25 +166,20 @@ export default function MultiActorVoice({
     );
   };
 
-  const generateAudio = async (actor: ActorSection) => {
+  const generateAndPlayAudio = async (actor: ActorSection) => {
     if (!actor.voice || !actor.text.trim()) return;
 
-    setIsGenerating(true);
+    if (actor.audioUrl) {
+      togglePlayAudio(actor.id);
+      return;
+    }
 
-    // Create a custom streaming audio handler for this specific actor
-    const customStreamingHandler = {
-      setAudioSource: (url: string, blob: Blob) => {
-        setActors(
-          actors.map((a) =>
-            a.id === actor.id ? { ...a, audioUrl: url, audioBlob: blob } : a,
-          ),
-        );
-      },
-      setLoading: setIsGenerating,
-    };
+    // Set loading state for this specific actor only
+    setActors(
+      actors.map((a) => (a.id === actor.id ? { ...a, isGenerating: true } : a)),
+    );
 
     try {
-      // Modified version of handleStreaming that returns the audio blob
       const response = await fetch("/api/voice", {
         method: "POST",
         headers: {
@@ -199,16 +194,10 @@ export default function MultiActorVoice({
         }),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch audio");
-      }
+      if (!response.ok) throw new Error("Failed to fetch audio");
+      if (!response.body) throw new Error("Response body is null");
 
-      const responseBody = response.body;
-      if (!responseBody) {
-        throw new Error("Response body is null");
-      }
-
-      const reader = responseBody.getReader();
+      const reader = response.body.getReader();
       const audioChunks: Uint8Array[] = [];
 
       while (true) {
@@ -223,19 +212,28 @@ export default function MultiActorVoice({
       setActors(
         actors.map((a) =>
           a.id === actor.id
-            ? { ...a, audioUrl: objectUrl, audioBlob: audioBlob }
+            ? {
+                ...a,
+                audioUrl: objectUrl,
+                audioBlob: audioBlob,
+                autoPlay: true,
+                isGenerating: false,
+              }
             : a,
         ),
       );
     } catch (error) {
       console.error("Error generating audio:", error);
-    } finally {
-      setIsGenerating(false);
+      // Reset loading state on error
+      setActors(
+        actors.map((a) =>
+          a.id === actor.id ? { ...a, isGenerating: false } : a,
+        ),
+      );
     }
   };
 
   const mergeAudioFiles = async () => {
-    // Check if we have at least two audio files to merge
     const actorsWithAudio = actors.filter((actor) => actor.audioBlob);
     if (actorsWithAudio.length < 2) {
       console.error("Need at least two audio files to merge");
@@ -249,16 +247,13 @@ export default function MultiActorVoice({
         (window as any).webkitAudioContext)();
       const audioBuffers: AudioBuffer[] = [];
 
-      // Load all audio blobs into audio buffers
       for (const actor of actorsWithAudio) {
         if (!actor.audioBlob) continue;
-
         const arrayBuffer = await actor.audioBlob.arrayBuffer();
         const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
         audioBuffers.push(audioBuffer);
       }
 
-      // Calculate the total length of the merged audio
       const totalLength = audioBuffers.reduce(
         (acc, buffer) => acc + buffer.duration,
         0,
@@ -266,20 +261,17 @@ export default function MultiActorVoice({
       const sampleRate = audioBuffers[0].sampleRate;
       const numberOfChannels = audioBuffers[0].numberOfChannels;
 
-      // Create a new buffer for the merged audio
       const mergedBuffer = audioContext.createBuffer(
         numberOfChannels,
         totalLength * sampleRate,
         sampleRate,
       );
 
-      // Copy each buffer into the merged buffer
       let offset = 0;
       for (const buffer of audioBuffers) {
         for (let channel = 0; channel < numberOfChannels; channel++) {
           const mergedChannelData = mergedBuffer.getChannelData(channel);
           const bufferChannelData = buffer.getChannelData(channel);
-
           for (let i = 0; i < bufferChannelData.length; i++) {
             mergedChannelData[i + offset] = bufferChannelData[i];
           }
@@ -287,7 +279,6 @@ export default function MultiActorVoice({
         offset += buffer.length;
       }
 
-      // Convert the merged buffer to a blob
       const offlineContext = new OfflineAudioContext(
         numberOfChannels,
         mergedBuffer.length,
@@ -300,14 +291,9 @@ export default function MultiActorVoice({
       source.start(0);
 
       const renderedBuffer = await offlineContext.startRendering();
-
-      // Convert the rendered buffer to a WAV file
       const wavBlob = await bufferToWave(renderedBuffer, renderedBuffer.length);
 
-      // Create a URL for the merged audio
-      if (mergedAudioUrl) {
-        URL.revokeObjectURL(mergedAudioUrl);
-      }
+      if (mergedAudioUrl) URL.revokeObjectURL(mergedAudioUrl);
       const url = URL.createObjectURL(wavBlob);
       setMergedAudioUrl(url);
     } catch (error) {
@@ -317,7 +303,6 @@ export default function MultiActorVoice({
     }
   };
 
-  // Helper function to convert AudioBuffer to WAV Blob
   const bufferToWave = (abuffer: AudioBuffer, len: number) => {
     const numOfChan = abuffer.numberOfChannels;
     const length = len * numOfChan * 2 + 44;
@@ -329,38 +314,34 @@ export default function MultiActorVoice({
     let offset = 0;
     let pos = 0;
 
-    // write WAVE header
-    setUint32(0x46464952); // "RIFF"
-    setUint32(length - 8); // file length - 8
-    setUint32(0x45564157); // "WAVE"
-    setUint32(0x20746d66); // "fmt " chunk
-    setUint32(16); // length = 16
-    setUint16(1); // PCM (uncompressed)
+    setUint32(0x46464952);
+    setUint32(length - 8);
+    setUint32(0x45564157);
+    setUint32(0x20746d66);
+    setUint32(16);
+    setUint16(1);
     setUint16(numOfChan);
     setUint32(abuffer.sampleRate);
-    setUint32(abuffer.sampleRate * 2 * numOfChan); // avg. bytes/sec
-    setUint16(numOfChan * 2); // block-align
-    setUint16(16); // 16-bit
-    setUint32(0x61746164); // "data" chunk
-    setUint32(length - pos - 4); // chunk length
+    setUint32(abuffer.sampleRate * 2 * numOfChan);
+    setUint16(numOfChan * 2);
+    setUint16(16);
+    setUint32(0x61746164);
+    setUint32(length - pos - 4);
 
-    // write interleaved data
     for (i = 0; i < abuffer.numberOfChannels; i++) {
       channels.push(abuffer.getChannelData(i));
     }
 
     while (pos < length) {
       for (i = 0; i < numOfChan; i++) {
-        // interleave channels
-        sample = Math.max(-1, Math.min(1, channels[i][offset])); // clamp
-        sample = (0.5 + sample < 0 ? sample * 32768 : sample * 32767) | 0; // scale to 16-bit signed int
-        view.setInt16(pos, sample, true); // write 16-bit sample
+        sample = Math.max(-1, Math.min(1, channels[i][offset]));
+        sample = (0.5 + sample < 0 ? sample * 32768 : sample * 32767) | 0;
+        view.setInt16(pos, sample, true);
         pos += 2;
       }
-      offset++; // next source sample
+      offset++;
     }
 
-    // Helper function to set values
     function setUint16(data: number) {
       view.setUint16(pos, data, true);
       pos += 2;
@@ -374,18 +355,28 @@ export default function MultiActorVoice({
     return new Blob([buffer], { type: "audio/wav" });
   };
 
-  // Clean up audio URLs when component unmounts
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (activeActorId) {
+        const dropdown = dropdownRefs.current[activeActorId];
+        if (dropdown && !dropdown.contains(event.target as Node)) {
+          setActiveActorId(null);
+        }
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [activeActorId]);
+
   useEffect(() => {
     return () => {
       actors.forEach((actor) => {
-        if (actor.audioUrl) {
-          URL.revokeObjectURL(actor.audioUrl);
-        }
+        if (actor.audioUrl) URL.revokeObjectURL(actor.audioUrl);
       });
-
-      if (mergedAudioUrl) {
-        URL.revokeObjectURL(mergedAudioUrl);
-      }
+      if (mergedAudioUrl) URL.revokeObjectURL(mergedAudioUrl);
     };
   }, []);
 
@@ -394,278 +385,200 @@ export default function MultiActorVoice({
       <h1 className="mb-6 text-2xl font-bold">Multi-Actor Voice Generator</h1>
 
       <div className="grid gap-6">
-        {actors.map((actor, index) => (
-          <div key={actor.id} className="space-y-3">
-            <Card className="relative overflow-visible">
+        {actors.map((actor) => (
+          <div key={actor.id} className="rounded-lg border bg-card shadow-sm">
+            <div className="flex items-center gap-4 p-4">
+              <div className="relative">
+                <Avatar
+                  className="h-14 w-14 flex-shrink-0 cursor-pointer border"
+                  onClick={() =>
+                    setActiveActorId(
+                      activeActorId === actor.id ? null : actor.id,
+                    )
+                  }
+                >
+                  <AvatarImage
+                    src={
+                      actor.voice?.picture ||
+                      "/placeholder.svg?height=56&width=56" ||
+                      "/placeholder.svg"
+                    }
+                    alt={actor.voice?.name || "Select voice"}
+                  />
+                  <AvatarFallback className="text-lg">
+                    {actor.voice?.name?.substring(0, 2) || "?"}
+                  </AvatarFallback>
+                </Avatar>
+                {!actor.voice && (
+                  <div className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary">
+                    <Plus className="h-3 w-3 text-white" />
+                  </div>
+                )}
+
+                {activeActorId === actor.id && (
+                  <div
+                    ref={(el) => (dropdownRefs.current[actor.id] = el)}
+                    className="absolute left-0 top-16 z-50 w-64 rounded-md border bg-card shadow-lg"
+                  >
+                    <div className="p-2">
+                      <div className="relative mb-2">
+                        <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          placeholder="Search voices..."
+                          className="pl-8"
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                      </div>
+                      <ScrollArea className="h-[250px]">
+                        <div className="grid gap-1">
+                          {filteredVoices.map((voice) => (
+                            <button
+                              key={voice.id}
+                              className="flex w-full items-center gap-3 rounded-md p-2 text-left hover:bg-muted"
+                              onClick={() => updateActorVoice(actor.id, voice)}
+                            >
+                              <Avatar className="h-10 w-10 border">
+                                <AvatarImage
+                                  src={voice.picture || "/placeholder.svg"}
+                                  alt={voice.name}
+                                />
+                                <AvatarFallback>
+                                  {voice.name.substring(0, 2)}
+                                </AvatarFallback>
+                              </Avatar>
+                              <div>
+                                <p className="font-medium">{voice.name}</p>
+                                <p className="text-sm lowercase text-muted-foreground">
+                                  {voice.gender}
+                                </p>
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      </ScrollArea>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <Separator orientation="vertical" className="h-14" />
+
+              <Textarea
+                placeholder="Enter the text for this actor..."
+                className="min-h-[50px] flex-1 resize-none text-base"
+                value={actor.text}
+                onChange={(e) => updateActorText(actor.id, e.target.value)}
+              />
+
+              <Separator orientation="vertical" className="h-14" />
+
+              <Button
+                onClick={() => generateAndPlayAudio(actor)}
+                disabled={
+                  !actor.voice || !actor.text.trim() || actor.isGenerating
+                }
+                className="h-12 w-12 flex-shrink-0"
+                size="icon"
+                variant="outline"
+              >
+                {actor.isGenerating ? (
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                ) : actor.isPlaying ? (
+                  <Pause className="h-5 w-5" />
+                ) : (
+                  <Play className="h-5 w-5" />
+                )}
+              </Button>
+
+              {actor.audioUrl && (
+                <audio
+                  ref={(el) => (audioRefs.current[actor.id] = el)}
+                  src={actor.audioUrl}
+                  className="hidden"
+                  onEnded={() => handleAudioEnded(actor.id)}
+                  onLoadedData={() => {
+                    const audioElement = audioRefs.current[actor.id];
+                    if (audioElement && actor.autoPlay) {
+                      audioElement.play();
+                      setActors((prevActors) =>
+                        prevActors.map((a) =>
+                          a.id === actor.id
+                            ? { ...a, autoPlay: false, isPlaying: true }
+                            : a,
+                        ),
+                      );
+                    }
+                  }}
+                />
+              )}
+
               {actors.length > 1 && (
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="absolute right-2 top-2 h-8 w-8"
+                  className="h-10 w-10 flex-shrink-0"
                   onClick={() => removeActor(actor.id)}
                 >
-                  <X className="h-4 w-4" />
+                  <X className="h-5 w-5" />
                   <span className="sr-only">Remove actor</span>
                 </Button>
               )}
-
-              <CardHeader>
-                <CardTitle>Actor {index + 1}</CardTitle>
-              </CardHeader>
-
-              <CardContent className="space-y-4">
-                {/* Voice Selection */}
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    {actor.voice ? (
-                      <div className="flex w-full items-center gap-3 rounded-md border bg-card p-3 shadow-sm">
-                        <Avatar className="h-10 w-10 border">
-                          <AvatarImage
-                            src={actor.voice.picture}
-                            alt={actor.voice.name}
-                          />
-                          <AvatarFallback>
-                            {actor.voice.name.substring(0, 2)}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <p className="font-medium">{actor.voice.name}</p>
-                          <p className="text-sm text-muted-foreground">
-                            {actor.voice.type} • {actor.voice.gender}
-                          </p>
-                        </div>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="ml-auto"
-                          onClick={() => setActiveActorId(actor.id)}
-                        >
-                          Change
-                        </Button>
-                      </div>
-                    ) : (
-                      <Button
-                        variant="outline"
-                        className="h-14 w-full justify-start"
-                        onClick={() => setActiveActorId(actor.id)}
-                      >
-                        <Search className="mr-2 h-4 w-4" />
-                        Select a voice actor
-                      </Button>
-                    )}
-                  </div>
-
-                  {activeActorId === actor.id && (
-                    <Card className="absolute z-10 mt-1 w-full max-w-md shadow-lg">
-                      <CardHeader className="p-3">
-                        <div className="relative">
-                          <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                          <Input
-                            placeholder="Search voices..."
-                            className="pl-8"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                          />
-                        </div>
-                      </CardHeader>
-                      <CardContent className="p-0">
-                        <ScrollArea className="h-[300px]">
-                          <div className="grid gap-1 p-2">
-                            {filteredVoices.map((voice) => (
-                              <button
-                                key={voice.id}
-                                className="flex w-full items-center gap-3 rounded-md p-2 text-left hover:bg-muted"
-                                onClick={() =>
-                                  updateActorVoice(actor.id, voice)
-                                }
-                              >
-                                <Avatar className="h-10 w-10 border">
-                                  <AvatarImage
-                                    src={voice.picture}
-                                    alt={voice.name}
-                                  />
-                                  <AvatarFallback>
-                                    {voice.name.substring(0, 2)}
-                                  </AvatarFallback>
-                                </Avatar>
-                                <div>
-                                  <p className="font-medium">{voice.name}</p>
-                                  <p className="text-sm text-muted-foreground">
-                                    {voice.type} • {voice.gender}
-                                  </p>
-                                </div>
-                                {voice.favorite && (
-                                  <div className="ml-auto text-yellow-500">
-                                    ★
-                                  </div>
-                                )}
-                              </button>
-                            ))}
-                            {filteredVoices.length === 0 && (
-                              <div className="p-4 text-center text-muted-foreground">
-                                No voices found
-                              </div>
-                            )}
-                          </div>
-                        </ScrollArea>
-                      </CardContent>
-                    </Card>
-                  )}
-                </div>
-
-                {/* Text Input */}
-                <div>
-                  <Textarea
-                    placeholder="Enter the text for this actor..."
-                    className="min-h-[120px] w-full resize-y"
-                    value={actor.text}
-                    onChange={(e) => updateActorText(actor.id, e.target.value)}
-                  />
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    {actor.text.length} characters
-                  </p>
-                </div>
-              </CardContent>
-
-              <CardFooter>
-                <Button
-                  onClick={() => generateAudio(actor)}
-                  disabled={!actor.voice || !actor.text.trim() || isGenerating}
-                  className="w-full"
-                >
-                  {isGenerating ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Generating...
-                    </>
-                  ) : (
-                    <>
-                      <Mic className="mr-2 h-4 w-4" />
-                      Generate Voice
-                    </>
-                  )}
-                </Button>
-              </CardFooter>
-            </Card>
-
-            {/* Individual Audio Player */}
-            {actor.audioUrl && (
-              <Card className="bg-muted/40">
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-4">
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="h-10 w-10 rounded-full"
-                      onClick={() => togglePlayAudio(actor.id)}
-                    >
-                      {actor.isPlaying ? (
-                        <Pause className="h-4 w-4" />
-                      ) : (
-                        <Play className="h-4 w-4" />
-                      )}
-                    </Button>
-
-                    <div className="flex-1">
-                      <audio
-                        ref={(el) => (audioRefs.current[actor.id] = el)}
-                        src={actor.audioUrl}
-                        className="hidden"
-                        onEnded={() => handleAudioEnded(actor.id)}
-                      />
-                      <p className="mb-1 text-sm font-medium">
-                        {actor.voice?.name || "Voice"} -{" "}
-                        {actor.text.substring(0, 30)}...
-                      </p>
-                      <Slider
-                        disabled
-                        defaultValue={[0]}
-                        max={100}
-                        step={1}
-                        className="h-1.5"
-                      />
-                    </div>
-
-                    <Button variant="ghost" size="sm" asChild>
-                      <a
-                        href={actor.audioUrl}
-                        download={`${actor.voice?.name || "voice"}-clip.mp3`}
-                      >
-                        <Save className="h-4 w-4" />
-                      </a>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
+            </div>
           </div>
         ))}
 
         <Button
           variant="outline"
-          className="flex items-center justify-center gap-2"
+          className="flex items-center justify-center gap-2 py-6"
           onClick={addNewActor}
         >
-          <Plus className="h-4 w-4" />
+          <Plus className="h-5 w-5" />
           Add Another Actor
         </Button>
-      </div>
 
-      {/* Merge Audio Button */}
-      {actors.filter((actor) => actor.audioBlob).length >= 2 && (
-        <div className="mt-8">
-          <Card className="border-primary/20 bg-primary/5">
-            <CardContent className="p-6">
-              <div className="flex flex-col items-center gap-4">
-                <h3 className="text-lg font-medium">Combine All Audio Clips</h3>
-                <p className="max-w-md text-center text-sm text-muted-foreground">
-                  This will merge all generated audio clips into a single audio
-                  file, playing each actor's voice in sequence.
-                </p>
+        {actors.filter((actor) => actor.audioBlob).length >= 2 && (
+          <div className="mt-4 rounded-lg border bg-card p-4 shadow-sm">
+            <Button
+              variant="default"
+              className="w-full py-6 text-lg"
+              onClick={mergeAudioFiles}
+              disabled={isMergingAudio}
+            >
+              {isMergingAudio ? (
+                <>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  Merging Audio...
+                </>
+              ) : (
+                <>
+                  <Mic className="mr-2 h-5 w-5" />
+                  COMBINE ALL AUDIOS
+                </>
+              )}
+            </Button>
 
-                <Button
-                  variant="default"
-                  size="lg"
-                  className="mt-2"
-                  onClick={mergeAudioFiles}
-                  disabled={isMergingAudio}
-                >
-                  {isMergingAudio ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Merging Audio...
-                    </>
-                  ) : (
-                    <>
-                      <Mic className="mr-2 h-4 w-4" />
-                      Combine All Audio
-                    </>
-                  )}
-                </Button>
-
-                {mergedAudioUrl && (
-                  <div className="mt-4 w-full">
-                    <audio
-                      ref={mergedAudioRef}
-                      controls
-                      src={mergedAudioUrl}
-                      className="w-full"
-                    />
-                    <div className="mt-2 flex justify-end">
-                      <Button variant="outline" size="sm" asChild>
-                        <a href={mergedAudioUrl} download="combined-voices.wav">
-                          <Save className="mr-2 h-4 w-4" />
-                          Download Combined Audio
-                        </a>
-                      </Button>
-                    </div>
-                  </div>
-                )}
+            {mergedAudioUrl && (
+              <div className="mt-4 w-full">
+                <audio
+                  ref={mergedAudioRef}
+                  controls
+                  src={mergedAudioUrl}
+                  className="w-full"
+                />
+                <div className="mt-2 flex justify-end">
+                  <Button variant="outline" size="lg" asChild>
+                    <a href={mergedAudioUrl} download="combined-voices.wav">
+                      <Save className="mr-2 h-5 w-5" />
+                      Download Combined Audio
+                    </a>
+                  </Button>
+                </div>
               </div>
-            </CardContent>
-          </Card>
-        </div>
-      )}
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
