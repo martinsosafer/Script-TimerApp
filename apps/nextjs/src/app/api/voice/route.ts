@@ -10,6 +10,9 @@ function addWatermark(message: string) {
   return `${message} -  - ${suffix}`;
 }
 
+// Vercel endpoint execution limit
+export const maxDuration = 300; // This function can run for a maximum of 300 seconds
+
 // Helper function to split text into chunks
 function splitTextIntoChunks(text: string, maxChunkSize = 1000): string[] {
   // Try to split at sentence boundaries
