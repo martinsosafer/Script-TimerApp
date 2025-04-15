@@ -10,6 +10,41 @@ function addWatermark(message: string) {
   return `${message} -  - ${suffix}`;
 }
 
+// Helper function to split text into chunks
+function splitTextIntoChunks(text: string, maxChunkSize = 1000): string[] {
+  // Try to split at sentence boundaries
+  const sentences = text.match(/[^.!?]+[.!?]+/g) || [];
+  const chunks: string[] = [];
+  let currentChunk = "";
+
+  for (const sentence of sentences) {
+    // If adding this sentence would exceed the chunk size, start a new chunk
+    if (
+      currentChunk.length + sentence.length > maxChunkSize &&
+      currentChunk.length > 0
+    ) {
+      chunks.push(currentChunk);
+      currentChunk = sentence;
+    } else {
+      currentChunk += sentence;
+    }
+  }
+
+  // Add the last chunk if it's not empty
+  if (currentChunk.length > 0) {
+    chunks.push(currentChunk);
+  }
+
+  // If no sentences were found (or text has no punctuation), fall back to character-based splitting
+  if (chunks.length === 0) {
+    for (let i = 0; i < text.length; i += maxChunkSize) {
+      chunks.push(text.substring(i, i + maxChunkSize));
+    }
+  }
+
+  return chunks;
+}
+
 export async function POST(req: Request) {
   try {
     const session = await auth();
@@ -18,7 +53,10 @@ export async function POST(req: Request) {
     if (!userId) {
       return new NextResponse(
         JSON.stringify({ error: "User not authenticated." }),
-        { status: 401, headers: { "Content-Type": "application/json" } },
+        {
+          status: 401,
+          headers: { "Content-Type": "application/json" },
+        },
       );
     }
 
@@ -132,7 +170,10 @@ export async function POST(req: Request) {
     } else {
       return new NextResponse(
         JSON.stringify({ error: `Unsupported voice type: ${voiceType}` }),
-        { status: 400, headers: { "Content-Type": "application/json" } },
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        },
       );
     }
 
@@ -203,7 +244,10 @@ export async function POST(req: Request) {
     console.error("ERROR STREAMING", error);
     return new NextResponse(
       JSON.stringify({ error: error.message || "Internal Server Error" }),
-      { status: 500, headers: { "Content-Type": "application/json" } },
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      },
     );
   }
 }
@@ -270,21 +314,35 @@ async function handleGoogleGeneration(body: any) {
 
   const languageCode = body.voice_id.split("-").slice(0, 2).join("-");
 
-  const [response] = await client.synthesizeSpeech({
-    input: { text: body.text },
-    voice: { name: body.voice_id, languageCode },
-    audioConfig: { audioEncoding: "MP3" },
-  });
+  // Split text into manageable chunks to avoid timeouts
+  const textChunks = splitTextIntoChunks(body.text, 500); // 500 chars per chunk
 
-  if (!response.audioContent) {
-    throw new Error("Google TTS returned no audio");
-  }
-
-  const audioData = new Uint8Array(response.audioContent as Buffer);
+  // Create a streaming response
   const stream = new ReadableStream({
-    start(controller) {
-      controller.enqueue(audioData);
-      controller.close();
+    async start(controller) {
+      try {
+        // Process each chunk sequentially
+        for (const chunk of textChunks) {
+          const [response] = await client.synthesizeSpeech({
+            input: { text: chunk },
+            voice: { name: body.voice_id, languageCode },
+            audioConfig: { audioEncoding: "MP3" },
+          });
+
+          if (!response.audioContent) {
+            throw new Error("Google TTS returned no audio for chunk");
+          }
+
+          // Stream each chunk as it's generated
+          const audioData = new Uint8Array(response.audioContent as Buffer);
+          controller.enqueue(audioData);
+        }
+
+        controller.close();
+      } catch (error) {
+        console.error("Error in Google TTS streaming:", error);
+        controller.error(error);
+      }
     },
   });
 
@@ -294,6 +352,8 @@ async function handleGoogleGeneration(body: any) {
       voice_id: body.voice_id,
       languageCode,
       audioEncoding: "MP3",
+      chunked: true,
+      chunkCount: textChunks.length,
     },
   };
 }
