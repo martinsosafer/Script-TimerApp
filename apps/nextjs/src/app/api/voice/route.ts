@@ -361,6 +361,7 @@ async function handleGoogleGeneration(body: any) {
   };
 }
 
+// Update the getMaxMessageLength function to allow for larger texts with chunking
 function getMaxMessageLength(subscriptionStatus: string | number | undefined) {
   switch (subscriptionStatus) {
     case "FREE_TRIAL":
