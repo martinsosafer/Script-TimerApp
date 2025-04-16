@@ -21,7 +21,7 @@ import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 import { poppins } from "~/app/fonts";
 import NoSessionModal from "../../../../components/modals/no-session-modal";
-import { getUserCredits } from "../../../actions";
+import { getElevenLabsUserCredits } from "../../../actions";
 import type { SessionProps } from "../../../types";
 import { getTotalCredits } from "../../../utils";
 
@@ -47,7 +47,7 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
 
   // Update user credits
   const creditsUpdate = async (userId: string) => {
-    const updatedCredits = await getUserCredits(userId);
+    const updatedCredits = await getElevenLabsUserCredits(userId);
     setCredits(updatedCredits?.credits);
     setIsLoadingCredits(false);
   };
@@ -76,10 +76,7 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
         duration_seconds: duration,
         prompt_influence: promptInfluence,
       };
-      // Only include duration_seconds if isManualDuration is true
-      // if (isManualDuration) {
-      //   requestBody.duration_seconds = duration;
-      // }
+
       const response = await fetch("/api/soundEffects", {
         method: "POST",
         headers: {

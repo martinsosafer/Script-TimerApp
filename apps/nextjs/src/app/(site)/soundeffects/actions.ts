@@ -9,7 +9,7 @@ import { soundfx, userToSoundfx } from "@voiceai/db/schema/soundEffects";
 
 import type { SoundTypeNeon } from "./types";
 
-export async function getUserCredits(userId: string) {
+export async function getElevenLabsUserCredits(userId: string) {
   try {
     const credits = await db.query.elevenLabsCredit.findFirst({
       where: eq(elevenLabsCredit.userId, userId),
@@ -21,8 +21,11 @@ export async function getUserCredits(userId: string) {
 }
 
 // Compare Vercel Blobs with Neon list and update dB
+// Note: If you remove a sound from Vercel, it will not be removed from dB
+//      and it will not be removed from the user favorites (handle manually on Neon)
 export async function updateSoundfxFromVercel() {
   try {
+    // Get Vercel Blob Sound Effects
     const soundEffectsBlobs = await list({
       prefix: "sound-effects",
     });
@@ -30,7 +33,7 @@ export async function updateSoundfxFromVercel() {
       const folder = blob.pathname.split("/");
       return folder[2] && folder[2] !== "";
     });
-
+    // Get Vercel Blob Music
     const musicBlobs = await list({
       prefix: "music",
     });
@@ -38,11 +41,11 @@ export async function updateSoundfxFromVercel() {
       const folder = blob.pathname.split("/");
       return folder[2] && folder[2] !== "";
     });
-
+    // Combine both lists
     const allBlobs = [...noFolderSoundEffectsBlobs, ...noFolderMusicBlobs];
-
+    // Get list of sound effects and music from dB
     const soundfxListFromDb = await db.query.soundfx.findMany();
-
+    // Filter sounds not in the dB
     const missingSoundfx = allBlobs.filter((blob) => {
       return !soundfxListFromDb.some(
         (sound) => sound.pathname === blob.pathname,
@@ -50,10 +53,10 @@ export async function updateSoundfxFromVercel() {
     });
 
     if (missingSoundfx.length === 0) {
-      console.log("No new sound effects or music found");
+      console.log(">VercelBlob: No new sound effects or music found<");
       return;
     }
-
+    // Add new sounds to dB
     if (missingSoundfx.length > 0) {
       for (const soundBlob of missingSoundfx) {
         await db
@@ -65,11 +68,13 @@ export async function updateSoundfxFromVercel() {
           })
           .execute();
       }
-      return console.log("Sound Effects and Music updated from Vercel");
+      return console.log(">VercelBlob: Sound Effects and Music updated<");
     }
-    return console.log("Sound Effects and Music already up to date");
+    return console.log(
+      ">VercelBlob: Sound Effects and Music already up to date<",
+    );
   } catch (error) {
-    console.error("Error updating soundfx from Vercel", error);
+    console.error(">VercelBlob: Error updating soundfx<", error);
   }
 }
 

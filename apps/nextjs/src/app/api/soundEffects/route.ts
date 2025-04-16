@@ -1,3 +1,4 @@
+// import type { Readable } from "stream";
 import { NextResponse } from "next/server";
 import { ElevenLabsClient } from "elevenlabs";
 
@@ -72,6 +73,8 @@ export async function POST(req: Request) {
       })
       .where(eq(elevenLabsCredit.userId, userId));
 
+    // const base64 = await readableToBase64(response);
+
     // Create a generation record
     const generationId = await db
       .insert(schema.generations)
@@ -128,3 +131,17 @@ export async function POST(req: Request) {
     );
   }
 }
+
+// export async function readableToBase64(stream: ReadableStream): Promise<string> {
+//   const reader = stream.getReader();
+//   const chunks: Uint8Array[] = [];
+
+//   while (true) {
+//     const { done, value } = await reader.read();
+//     if (done) break;
+//     chunks.push(value);
+//   }
+
+//   const buffer = Buffer.concat(chunks.map((c) => Buffer.from(c)));
+//   return buffer.toString("base64");
+// }
