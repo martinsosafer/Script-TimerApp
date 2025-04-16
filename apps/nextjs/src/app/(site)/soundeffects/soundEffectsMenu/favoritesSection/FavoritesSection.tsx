@@ -85,6 +85,16 @@ const FavoritesSection = ({ userId }: { userId: string | undefined }) => {
     );
   }
 
+  if (!isLoadingFavorites && favoritesSoundList?.length === 0) {
+    return (
+      <div className="flex h-[200px] w-full items-center justify-center">
+        <p className={`${poppins.className} text-lg font-bold`}>
+          Add sound effects and music to your favorites list!
+        </p>
+      </div>
+    );
+  }
+
   return (
     <AudioPlayerList
       soundsList={favoritesSoundList}

@@ -277,7 +277,7 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
                 />
                 <a
                   href={audioUrl}
-                  download={`${text}.mp3`}
+                  download={`${generatedSoundTitle}.mp3`}
                   className="cursor-pointer"
                 >
                   <IconDownload className="h-7 w-7 text-primary max-md:h-6 max-md:w-6" />
