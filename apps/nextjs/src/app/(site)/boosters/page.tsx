@@ -2,6 +2,7 @@ import { auth } from "@voiceai/auth";
 import { IlustrationTodayOnly } from "@voiceai/ui/@/ilustrations";
 
 import { poppins, roboto } from "~/app/fonts";
+import BoosterCard from "./BoosterCard/BoosterCard";
 
 export default async function BoostersPage() {
   const session = await auth();
@@ -27,7 +28,8 @@ export default async function BoostersPage() {
           with a large discount
         </p>
       </header>
-      <main className="flex h-[500px] flex-col items-center gap-6 px-3 py-8">
+
+      <main className="flex flex-col items-center gap-6 px-3 py-8">
         <p
           className={`bg-cp-accent-lightest w-full rounded-lg px-[12px] py-[8px] text-sm/none leading-[25px] text-[#212121] shadow-md lg:max-w-5xl lg:px-[24px] lg:py-[12px]`}
         >
@@ -36,8 +38,7 @@ export default async function BoostersPage() {
           active).
         </p>
 
-        <h1 className="text-4xl font-bold">Boosters</h1>
-        <p className="mt-2 text-lg">Coming soon...</p>
+        <BoosterCard amount={300} title="Images Boost" price={77} />
       </main>
     </>
   );
