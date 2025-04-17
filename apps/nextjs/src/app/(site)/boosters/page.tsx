@@ -27,10 +27,18 @@ export default async function BoostersPage() {
           with a large discount
         </p>
       </header>
-      <div className="flex h-[500px] flex-col  items-center">
+      <main className="flex h-[500px] flex-col items-center gap-6 px-3 py-8">
+        <p
+          className={`bg-cp-accent-lightest w-full rounded-lg px-[12px] py-[8px] text-sm/none leading-[25px] text-[#212121] shadow-md lg:max-w-5xl lg:px-[24px] lg:py-[12px]`}
+        >
+          These credits are stored in your account and and can be used all year,
+          locking in discounted credits long term (as long as your membership is
+          active).
+        </p>
+
         <h1 className="text-4xl font-bold">Boosters</h1>
         <p className="mt-2 text-lg">Coming soon...</p>
-      </div>
+      </main>
     </>
   );
 }
