@@ -173,7 +173,7 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
                   min={1}
                   max={22}
                   step={1}
-                  value={[duration || 0]}
+                  value={[duration]}
                   onValueChange={(value) => setDuration(value[0] || 0)}
                   disabled={!isManualDuration}
                 />
@@ -216,6 +216,7 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
                 max={1}
                 step={0.1}
                 value={[promptInfluence]}
+                onValueChange={(value) => setPromptInfluence(value[0] || 0)}
               />
             </div>
           </div>
