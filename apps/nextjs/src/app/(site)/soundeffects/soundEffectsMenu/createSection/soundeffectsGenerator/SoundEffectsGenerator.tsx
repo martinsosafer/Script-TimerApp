@@ -94,7 +94,6 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
       const url = URL.createObjectURL(audioBlob);
       setAudioUrl(url);
       setGeneratedSoundTitle(text);
-      setText("");
       return await creditsUpdate(subData?.userId!);
     } catch (error) {
       console.error("Error:", error);
