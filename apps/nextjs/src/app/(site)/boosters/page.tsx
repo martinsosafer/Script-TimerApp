@@ -38,7 +38,20 @@ export default async function BoostersPage() {
           active).
         </p>
 
-        <BoosterCard amount={300} title="Images Boost" price={77} />
+        <BoosterCard
+          amount={300}
+          title="Images Boost"
+          price={77}
+          description="Create images like these for:"
+          detailsList={[
+            "Storyboards",
+            "Websites",
+            "Email",
+            "Book Covers",
+            "Social Media Posts",
+          ]}
+          descriptionEnd="and more!"
+        />
       </main>
     </>
   );
