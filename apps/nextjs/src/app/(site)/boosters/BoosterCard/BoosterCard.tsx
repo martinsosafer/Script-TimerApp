@@ -15,6 +15,9 @@ interface BoosterCardProps {
   description: string;
   detailsList: string[];
   descriptionEnd?: string;
+  imageMain: React.ReactNode;
+  imageBottomLeft?: React.ReactNode;
+  imageBottomRight?: React.ReactNode;
 }
 
 const BoosterCard = ({
@@ -25,12 +28,15 @@ const BoosterCard = ({
   description,
   detailsList,
   descriptionEnd,
+  imageMain,
+  imageBottomLeft,
+  imageBottomRight,
 }: BoosterCardProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <article
-      className={`bg-cp-primary grid w-full grid-cols-2 grid-rows-[32px_96px_100px_100px_280px] rounded-2xl p-10 shadow-lg lg:max-w-5xl ${isOpen ? "h-[690px]" : "h-[408px]"} overflow-y-hidden transition-[height] delay-200 ease-in-out`}
+      className={`bg-cp-primary grid w-full grid-cols-2 grid-rows-[30px_76px_130px_100px_316px_auto] gap-x-4 gap-y-2 rounded-2xl p-10 shadow-lg lg:max-w-5xl ${isOpen ? "h-[1072px]" : "h-[446px]"} overflow-y-hidden transition-[height] duration-500 ease-in-out`}
     >
       {/* Left side */}
       <p className="text-cp-accent-lightest col-start-1 col-end-3 text-lg">
@@ -39,7 +45,7 @@ const BoosterCard = ({
 
       <span className="col-start-1 col-end-2 flex items-baseline gap-1 self-end">
         <h2
-          className={`${poppins.className} text-cp-accent text-[50px]/[64px] font-bold`}
+          className={`${poppins.className} text-cp-accent text-[50px]/none font-bold`}
         >
           {amount}
         </h2>
@@ -92,19 +98,16 @@ const BoosterCard = ({
       </div>
 
       {/* Right side */}
-      <div className="relative z-0 col-start-2 col-end-3 row-start-3 row-end-6 w-[420px] justify-self-end ">
-        <Image
-          src={"/boostersImages/boost_images.png"}
-          alt="Booster images"
-          // width={410}
-          // height={472}
-          fill
-          // sizes="420px"
-          // style={{
-          //   objectFit: "contain",
-          // }}
-          className={`object-contain object-top`}
-        />
+      <div className="relative col-start-2 col-end-3 row-start-3 row-end-6 w-[458px] justify-self-end">
+        {imageMain}
+      </div>
+
+      {/* Bottom */}
+      <div className="relative col-start-1 col-end-2 row-start-6 row-end-7 mt-6 h-[270px] w-[458px] justify-self-start">
+        {imageBottomLeft}
+      </div>
+      <div className="relative col-start-2 col-end-3 row-start-6 row-end-7 mt-6 h-[270px] w-[458px] justify-self-end">
+        {imageBottomRight}
       </div>
     </article>
   );

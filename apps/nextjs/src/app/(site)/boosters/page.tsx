@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { auth } from "@voiceai/auth";
 import { IlustrationTodayOnly } from "@voiceai/ui/@/ilustrations";
 
@@ -51,6 +53,33 @@ export default async function BoostersPage() {
             "Social Media Posts",
           ]}
           descriptionEnd="and more!"
+          imageMain={
+            <Image
+              src={"/boostersImages/boosters_imageGeneration2.png"}
+              alt="image generation"
+              // width={410}
+              // height={472}
+              fill
+              className={`rounded-2xl object-contain object-top`}
+              priority
+            />
+          }
+          imageBottomLeft={
+            <Image
+              src={"/boostersImages/boosters_creationLab.png"}
+              alt="Creation Lab"
+              fill
+              className={`rounded-lg`}
+            />
+          }
+          imageBottomRight={
+            <Image
+              src={"/boostersImages/boosters_storyboard.png"}
+              alt="Storyboard"
+              fill
+              className={`rounded-lg`}
+            />
+          }
         />
       </main>
     </>
