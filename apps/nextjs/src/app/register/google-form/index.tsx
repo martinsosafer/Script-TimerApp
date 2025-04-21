@@ -19,14 +19,14 @@ export default function GoogleForm() {
 
   return (
     <>
-      <div className="relative">
+      {/* <div className="relative">
         <div className="text-md relative mb-2 mt-2 flex justify-center">
           <span className="bg-background px-2 text-black">or</span>
         </div>
-      </div>
+      </div> */}
       <form
         action={handleSignUp}
-        className="mx-auto flex w-full max-w-md flex-col space-y-4"
+        className="mx-auto flex w-full max-w-md flex-col space-y-4 pt-5"
       >
         <button className="flex w-full items-center justify-center gap-3 rounded-md bg-slate-100 px-3 py-1.5 text-black shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] ">
           <svg
