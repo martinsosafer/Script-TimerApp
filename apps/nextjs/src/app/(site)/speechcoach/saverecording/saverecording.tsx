@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react"; // Added import
+
 import { Button } from "@voiceai/ui/@/components/ui/button";
 import {
   Dialog,
@@ -38,6 +40,8 @@ export function SaveRecording({
   speechName,
   setSpeechName,
 }: SaveRecordingProps) {
+  const [isSubmitting, setIsSubmitting] = useState(false); // Added state
+
   return (
     <Dialog open={isRenameModalOpen} onOpenChange={setIsRenameModalOpen}>
       <DialogContent className="border-2 border-primary sm:max-w-[475px]">
@@ -80,29 +84,34 @@ export function SaveRecording({
             <Button
               className="border-2 border-primary font-semibold text-primary-foreground"
               size="lg"
-              disabled={!speechName || isLoading}
+              disabled={!speechName || isLoading || isSubmitting} // Modified disabled prop
               onClick={async () => {
-                if (recordingBlob && speechName) {
-                  try {
-                    const uploadedUrl = await uploadToVercelBlob(
-                      recordingBlob,
-                      speechName, // Custom name from input
-                    );
+                // Prevent multiple submissions
+                if (isSubmitting || isLoading || !recordingBlob || !speechName)
+                  return;
 
-                    if (uploadedUrl) {
-                      setUploadedVideoUrl(uploadedUrl);
-                      await revalidateRecordingPage();
-                      setIsRenameModalOpen(false);
-                      setSpeechName(""); // Reset input
-                      alert("Recording saved successfully!");
-                    }
-                  } catch (error) {
-                    alert("Failed to save recording. Please try again.");
+                setIsSubmitting(true);
+                try {
+                  const uploadedUrl = await uploadToVercelBlob(
+                    recordingBlob,
+                    speechName,
+                  );
+
+                  if (uploadedUrl) {
+                    setUploadedVideoUrl(uploadedUrl);
+                    await revalidateRecordingPage();
+                    setIsRenameModalOpen(false);
+                    setSpeechName("");
+                    alert("Recording saved successfully!");
                   }
+                } catch (error) {
+                  alert("Failed to save recording. Please try again.");
+                } finally {
+                  setIsSubmitting(false); // Reset submission state
                 }
               }}
             >
-              {isLoading ? (
+              {isLoading || isSubmitting ? ( // Show spinner for both loading states
                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
               ) : (
                 "Save Recording"

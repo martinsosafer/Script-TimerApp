@@ -30,7 +30,7 @@ export function AudioControls({
   if (!audioUrl) return null;
 
   return (
-    <div className="mt-6 text-center">
+    <div className="mb-6 mt-6 text-center">
       <audio
         controls
         src={audioUrl}
