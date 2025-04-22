@@ -7,6 +7,8 @@ const config = {
   ],
   rules: {
     "react/prop-types": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "jsx-a11y/media-has-caption": "off",
   },
   globals: {
     React: "writable",
