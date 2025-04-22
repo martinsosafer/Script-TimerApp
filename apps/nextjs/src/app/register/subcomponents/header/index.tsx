@@ -3,8 +3,6 @@
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 
-import Logo from "~/app/(site)/components/logo";
-
 export default function Header() {
   const searchParams = useSearchParams();
 
@@ -13,8 +11,7 @@ export default function Header() {
   const isCheckingOut = origin === "checkout";
 
   return (
-    <div className="flex flex-col items-center justify-center gap-6 text-center">
-      {/* <Logo /> */}
+    <div className="flex flex-col items-center justify-center gap-3 text-center">
       <div className="relative h-[48px] w-[287px] p-4">
         <Image
           src={"/ScriptTimerLogoPrimary.png"}

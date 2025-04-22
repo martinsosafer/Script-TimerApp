@@ -52,9 +52,9 @@ function CheckoutButton({
       return (window.location.href = url as string);
     }
 
-    if (upgradeAction) {
-      return upgradeAction();
-    }
+    // if (upgradeAction) {
+    //   return upgradeAction();
+    // }
 
     setIsLoading(true);
     await upgrade(

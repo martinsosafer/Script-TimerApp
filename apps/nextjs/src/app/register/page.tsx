@@ -32,7 +32,10 @@ export default async function Register() {
               <FormSwitcher highlightSignUp={false} highlightRegister={true} />
             </div>
 
-            {/* <RegisterForm /> */}
+            <RegisterForm />
+
+            <div className="bg-background pt-3 text-center text-black">or</div>
+
             <GoogleForm />
             <div className="relative">
               <div className="text-md relative mb-2 mt-2 flex justify-center">
