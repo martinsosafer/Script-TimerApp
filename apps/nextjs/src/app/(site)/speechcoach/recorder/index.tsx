@@ -6,19 +6,16 @@ import { IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 
 import { revalidateRecordingPage } from "~/app/actions/speechcoach";
 import { poppins, roboto } from "~/app/fonts";
-import { formatTime } from "~/lib/formattime";
 import { DeviceSelector } from "../deviceSelector";
 import { useAudioRecorder } from "../hooks/useAudioRecorder";
 import { usePostProcessing } from "../hooks/usePostProcess";
 import { useTranscription } from "../hooks/useTranscription";
 import { SaveRecording } from "../saverecording/saverecording";
-import { AIFeatureButtons } from "./aifeaturebutton";
 import { AIContentWrapper } from "./aiwrapper";
 import { AudioControls } from "./audiocontrols";
 import AudioHistory from "./audioHistory";
 import { RecordButton } from "./recordbutton";
 import { TranscriptDisplay } from "./transcriptDisplay";
-import VideoHistory from "./videoHistory";
 
 interface MicrophoneProps {
   userId: string | undefined;
