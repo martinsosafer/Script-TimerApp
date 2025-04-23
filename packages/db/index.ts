@@ -16,6 +16,7 @@ import * as promptCategory from "./schema/prompt_category";
 import * as promptSubcategory from "./schema/prompt_subcategory";
 import * as prompts from "./schema/prompts";
 import * as script from "./schema/script";
+import * as soundEffects from "./schema/soundEffects";
 import * as subscription from "./schema/subscription";
 import * as voice from "./schema/voice";
 import * as voiceCustom from "./schema/voiceCustom";
@@ -39,6 +40,7 @@ export const schema = {
   ...promptCategory,
   ...promptSubcategory,
   ...appSumoSubscription,
+  ...soundEffects,
 };
 
 export { pgTable as tableCreator } from "./schema/_table";

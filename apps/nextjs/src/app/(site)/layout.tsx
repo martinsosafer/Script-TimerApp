@@ -49,7 +49,7 @@ export default async function Layout(props: { children: React.ReactNode }) {
   const monthlySpecials = await getSpecials();
 
   return (
-    <div className="flex min-h-screen w-full flex-col justify-between bg-background">
+    <div className="bg-cp-background flex min-h-screen w-full flex-col justify-between">
       <Head>
         <meta name="referrer" content="origin" />
       </Head>
@@ -64,7 +64,7 @@ export default async function Layout(props: { children: React.ReactNode }) {
           monthlySpecials={monthlySpecials}
           session={session}
         >
-          <div>{props.children}</div>
+          {props.children}
         </MonthlySpecialProvider>
         <Toaster />
         <Footer />

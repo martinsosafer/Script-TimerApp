@@ -10,8 +10,8 @@ import {
 
 import { pgTable } from "./_table";
 
-export const voiceType = pgEnum("voice_type", ["11LABS", "GOOGLE", "OTHER"]);
-export const voiceGender = pgEnum("voice_gender", ["MALE", "FEMALE", "OTHER"]);
+export const voiceType = pgEnum("text", ["11LABS", "GOOGLE", "OTHER"]);
+export const voiceGender = pgEnum("text", ["MALE", "FEMALE", "OTHER"]);
 
 export const voices = pgTable("voice", {
   id: uuid("id").notNull().primaryKey().defaultRandom(),

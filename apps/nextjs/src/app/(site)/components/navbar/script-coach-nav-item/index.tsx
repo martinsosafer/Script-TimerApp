@@ -21,6 +21,7 @@ export default function ScriptCoachNavItem() {
         <span className="font-poppins text-sm font-medium">Script</span>
         <span className="font-poppins text-sm font-medium">Writing</span>
       </Link>
+
       <div className="absolute inset-x-0 bottom-0  mb-2 h-0.5 origin-left scale-x-0 transform bg-primary-foreground transition-transform duration-300 group-hover:scale-x-100" />
       <div className="invisible absolute -left-48 top-5 z-50 min-w-[300px] translate-y-0 transform opacity-0 transition duration-500 ease-in-out group-hover:visible group-hover:translate-y-5 group-hover:transform group-hover:opacity-100">
         <div className="relative top-6 w-full rounded-xl   bg-slate-100 p-6 shadow-xl dark:bg-primary-foreground ">
@@ -38,12 +39,12 @@ export default function ScriptCoachNavItem() {
                       href={`/chat`}
                       className="-mx-2 block rounded-lg p-2 font-semibold text-gray-800 transition duration-300 ease-in-out hover:bg-gradient-to-br hover:from-indigo-200 hover:via-blue-200 hover:to-orange-200 hover:text-indigo-600 dark:text-secondary-foreground dark:hover:bg-gradient-to-br dark:hover:from-gray-800 dark:hover:via-gray-700 dark:hover:to-gray-600 dark:hover:text-indigo-600"
                     >
-                      <div className="flex items-center ">
+                      <div className="flex items-center gap-1">
                         {" "}
                         {/* Envuelve el icono y el texto en un div flex */}
-                        <span>
-                          <IconBot />
-                        </span>
+                        <i>
+                          <IconBot className="h-5 w-5" />
+                        </i>
                         <span className="ml-1 ">Script-Coach</span>
                       </div>
                       <p className="font-normal text-gray-500">
@@ -56,7 +57,7 @@ export default function ScriptCoachNavItem() {
                       href={`/translatetext`}
                       className="-mx-2 block rounded-lg p-2 font-semibold text-gray-800 transition duration-300 ease-in-out hover:bg-gradient-to-br hover:from-indigo-200 hover:via-blue-200 hover:to-orange-200 hover:text-indigo-600 dark:text-secondary-foreground dark:hover:bg-gradient-to-br dark:hover:from-gray-800 dark:hover:via-gray-700 dark:hover:to-gray-600 dark:hover:text-indigo-600"
                     >
-                      <div className="flex items-center">
+                      <div className="flex items-center gap-1">
                         <span>
                           <IconGlobe className="h-4 w-4" />
                         </span>
@@ -72,7 +73,7 @@ export default function ScriptCoachNavItem() {
                       href={`/script-timer`}
                       className="-mx-2 block rounded-lg p-2 font-semibold text-gray-800 transition duration-300 ease-in-out hover:bg-gradient-to-br hover:from-indigo-200 hover:via-blue-200 hover:to-orange-200 hover:text-indigo-600 dark:text-secondary-foreground dark:hover:bg-gradient-to-br dark:hover:from-gray-800 dark:hover:via-gray-700 dark:hover:to-gray-600 dark:hover:text-indigo-600"
                     >
-                      <div className="flex items-center">
+                      <div className="flex items-center gap-1">
                         <span>
                           <IconPocketKnife className="h-4 w-4" />
                         </span>
