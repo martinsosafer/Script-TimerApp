@@ -35,6 +35,7 @@ export default function Explore({
   setIsUpgrading,
   priceId,
   setPriceId,
+  setSelectedPlan,
 }: {
   session: Session | null;
   period: "monthly" | "yearly";
@@ -43,6 +44,7 @@ export default function Explore({
   setIsUpgrading: Dispatch<SetStateAction<boolean>>;
   priceId: string;
   setPriceId: (value: string) => void;
+  setSelectedPlan: (value: string | null) => void;
 }) {
   const [addOnType, setAddOnType] = useState<
     "EDUCATION" | "CREATOR" | "BUSINESS" | null
@@ -132,6 +134,8 @@ export default function Explore({
                 router.push("/register?origin=checkout");
               }}
               type="primary"
+              setSelectedPlan={setSelectedPlan}
+              cardPlan={"FREE"}
             />
           </span>
           <span className="w-[150px] text-center">
@@ -149,6 +153,8 @@ export default function Explore({
                 router.push("/register?origin=checkout");
               }}
               type="primary"
+              setSelectedPlan={setSelectedPlan}
+              cardPlan={"EDUCATION"}
             />
           </span>
           <span className="w-[150px] text-center">
@@ -166,6 +172,8 @@ export default function Explore({
                 router.push("/register?origin=checkout");
               }}
               type="accent"
+              setSelectedPlan={setSelectedPlan}
+              cardPlan={"CREATOR"}
             />
           </span>
           <span className="w-[150px] text-center">
@@ -183,6 +191,8 @@ export default function Explore({
                 router.push("/register?origin=checkout");
               }}
               type="primary"
+              setSelectedPlan={setSelectedPlan}
+              cardPlan={"BUSINESS"}
             />
           </span>
         </div>
