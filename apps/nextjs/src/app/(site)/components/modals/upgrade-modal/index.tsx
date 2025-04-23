@@ -13,12 +13,16 @@ interface UpgradeProps {
   onClose: () => void;
   session: Session | null;
   priceId: string;
+  period: "monthly" | "yearly";
+  selectedPlan?: string | null;
 }
 
 export default function UpgradeModal({
   onClose,
   session,
   priceId,
+  period,
+  selectedPlan,
 }: UpgradeProps) {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -66,6 +70,14 @@ export default function UpgradeModal({
                   Your ability to create is about to improve.
                 </p>
               </div>
+              <p className={`${roboto.className} text-center text-[18px]`}>
+                You're about to change your current plan{" "}
+                {session?.user?.subscription?.status} to:
+              </p>
+              <p
+                className={`${roboto.className} text-cp-accent pt-3 text-center text-xl font-bold`}
+              >{`${selectedPlan} (${period})`}</p>
+
               <p
                 className={`${roboto.className} mt-8 w-[300px] text-center text-[18px]`}
               >

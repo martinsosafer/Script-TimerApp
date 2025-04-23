@@ -1,0 +1,137 @@
+import { useRef, useState } from "react";
+
+import {
+  IconDownload,
+  IconHeart,
+  IconHeartFill,
+  IconMusic,
+} from "@voiceai/ui/@/components/ui/icons";
+
+import { poppins } from "~/app/fonts";
+import NoSessionModal from "../../components/modals/no-session-modal";
+import { deleteFavorite, postFavorite } from "../actions";
+import type { RefetchFavorites, SoundTypeNeon } from "../types";
+import { formatSoundNameFromUrl } from "../utils";
+
+interface AudioPlayerListProps {
+  soundsList: SoundTypeNeon[] | undefined;
+  favoritesList: string[] | undefined;
+  refetchFavorites: RefetchFavorites["refetchFavorites"];
+  userId: string | undefined;
+}
+
+const AudioPlayerList = ({
+  soundsList,
+  favoritesList,
+  refetchFavorites,
+  userId,
+}: AudioPlayerListProps) => {
+  const [noSessionModalOpen, setNoSessionModalOpen] = useState<boolean>(false);
+
+  const audioRefs = useRef<Map<string, HTMLAudioElement>>(new Map());
+
+  const audioPLayerStyle = {
+    boxShadow: "0px 1px 3px 0px rgba(0,0,0,0.4)",
+    borderRadius: "28px",
+  };
+
+  // Reproduce one audio at a time
+  const handlePlay = (id: string) => {
+    audioRefs.current.forEach((audio, key) => {
+      if (key !== id) {
+        audio.pause();
+        audio.currentTime = 0; // Reset to start
+      }
+    });
+  };
+
+  const handleFavorite = async (sound: SoundTypeNeon) => {
+    try {
+      if (!userId) {
+        setNoSessionModalOpen(true);
+        return;
+      }
+      const isFavorite = favoritesList?.includes(sound?.id);
+      if (isFavorite) {
+        await deleteFavorite({ sound, userId });
+      } else {
+        await postFavorite({ sound, userId });
+      }
+      return refetchFavorites();
+    } catch (error) {
+      console.error("Error adding sound to favorites:", error);
+    }
+  };
+
+  return (
+    <>
+      <div className="flex w-full flex-col gap-3">
+        {soundsList?.map((sound: SoundTypeNeon, i) => (
+          <div
+            key={sound?.id}
+            className="flex w-full items-center justify-between gap-2 rounded-lg p-4 shadow-md max-md:flex-col max-md:items-start max-sm:p-2"
+          >
+            <div className="flex items-center gap-4 max-sm:gap-2">
+              <i className="rounded-full bg-[#7FB2FF] p-3 max-md:p-2">
+                <IconMusic className="h-6 w-6 text-white max-md:h-5 max-md:w-5" />
+              </i>
+              <p
+                className={`${poppins.className} text-sm font-bold capitalize max-sm:text-xs`}
+              >
+                {formatSoundNameFromUrl(sound.pathname)}
+              </p>
+            </div>
+
+            <div className="flex items-center gap-8 max-md:w-full max-md:justify-between max-md:gap-4">
+              <audio
+                controls
+                controlsList="nodownload noplaybackrate"
+                src={sound.url}
+                style={audioPLayerStyle}
+                ref={(el) => {
+                  if (el) {
+                    audioRefs.current.set(sound?.id, el);
+                  }
+                }}
+                id={sound?.id}
+                onPlay={() => handlePlay(sound?.id)}
+              />
+              <div className="flex items-center gap-4 max-md:gap-3">
+                <button onClick={() => handleFavorite(sound)}>
+                  {favoritesList?.includes(sound?.id) ? (
+                    <IconHeartFill className="text-primary" />
+                  ) : (
+                    <IconHeart className="text-primary max-md:h-5 max-md:w-5" />
+                  )}
+                </button>
+                {!userId ? (
+                  <button onClick={() => setNoSessionModalOpen(true)}>
+                    <IconDownload className="h-7 w-7 text-primary max-md:h-6 max-md:w-6" />
+                  </button>
+                ) : (
+                  <a
+                    href={sound.downloadurl}
+                    download={sound.pathname.split("/")[2]}
+                    className="cursor-pointer"
+                  >
+                    <IconDownload className="h-7 w-7 text-primary max-md:h-6 max-md:w-6" />
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {noSessionModalOpen && (
+        <NoSessionModal
+          openModal={noSessionModalOpen}
+          page="image"
+          setOpenModal={setNoSessionModalOpen}
+        />
+      )}
+    </>
+  );
+};
+
+export default AudioPlayerList;

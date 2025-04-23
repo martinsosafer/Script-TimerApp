@@ -1,9 +1,16 @@
+// import type { Readable } from "stream";
 import { NextResponse } from "next/server";
 import { ElevenLabsClient } from "elevenlabs";
 
 import { auth } from "@voiceai/auth";
 import { db, eq, schema } from "@voiceai/db";
 import { elevenLabsCredit } from "@voiceai/db/schema/11LabsCredits";
+
+interface ElevenLabsParams {
+  text: string;
+  duration_seconds: number;
+  prompt_influence: number;
+}
 
 export async function POST(req: Request) {
   try {
@@ -12,43 +19,17 @@ export async function POST(req: Request) {
     const userId = session?.user.id;
 
     if (!userId) {
-      return new NextResponse(
-        JSON.stringify({ error: "User not authenticated." }),
-        { status: 401, headers: { "Content-Type": "application/json" } },
+      return NextResponse.json(
+        { error: "User not authenticated" },
+        { status: 401, statusText: "User not authenticated" },
       );
     }
 
     // Parse request body
-    const { text, duration_seconds, prompt_influence } = await req.json();
-
-    // Initialize ElevenLabs client
-    const client = new ElevenLabsClient({
-      apiKey: process.env.INTEGRATION_11LABS_API_KEY,
-    });
-
-    // Prepare the request for ElevenLabs API
-    const elevenlabsRequest: {
-      text: string;
-      duration_seconds?: number;
-      prompt_influence: number;
-    } = {
-      text,
-      prompt_influence,
-    };
-
-    // Only include duration_seconds if it's provided
-    if (duration_seconds !== undefined) {
-      elevenlabsRequest.duration_seconds = duration_seconds;
-    }
-
-    // Process the sound effect request
-    const response = await client.textToSoundEffects.convert(elevenlabsRequest);
-
-    // Get the actual duration from the response (assuming ElevenLabs provides this)
-    const actualDuration = response.duration || duration_seconds || 1; // Fallback to 1 second if no duration is available
+    const elevenlabsRequest = (await req.json()) as ElevenLabsParams;
 
     // Calculate credits needed based on actual duration (1 second = 40 characters)
-    const creditsNeeded = Math.ceil(actualDuration * 40);
+    const creditsNeeded = Math.ceil(elevenlabsRequest.duration_seconds * 40);
 
     // Fetch user credits from elevenLabsCredit table
     const userCredits = await db.query.elevenLabsCredit.findFirst({
@@ -56,11 +37,30 @@ export async function POST(req: Request) {
     });
 
     if (!userCredits || userCredits.credits < creditsNeeded) {
-      return new NextResponse(
-        JSON.stringify({
-          error: "Not enough credits to process the request.",
-        }),
-        { status: 403, headers: { "Content-Type": "application/json" } },
+      return NextResponse.json(
+        { error: "Not enough credits to process the request" },
+        {
+          status: 403,
+          statusText: "Not enough credits to process the request",
+        },
+      );
+    }
+
+    // Initialize ElevenLabs client
+    const client = new ElevenLabsClient({
+      apiKey: process.env.INTEGRATION_11LABS_API_KEY,
+    });
+
+    // Process the sound effect request
+    const response = await client.textToSoundEffects.convert(elevenlabsRequest);
+
+    if (!response) {
+      return NextResponse.json(
+        { error: "Error generating the sound effect" },
+        {
+          status: 502,
+          statusText: "Error generating the sound effect",
+        },
       );
     }
 
@@ -73,17 +73,21 @@ export async function POST(req: Request) {
       })
       .where(eq(elevenLabsCredit.userId, userId));
 
+    // const base64 = await readableToBase64(response);
+
     // Create a generation record
     const generationId = await db
       .insert(schema.generations)
       .values({
         userId: userId,
         type: "11LABS",
-        prompt: text,
-        response: "", // We'll update this later if needed
+        prompt: elevenlabsRequest.text,
+        response: "", // Convert response to base64 if needed
         metadata: {
-          duration_seconds: actualDuration,
-          prompt_influence,
+          text: elevenlabsRequest.text,
+          duration_seconds: elevenlabsRequest.duration_seconds,
+          prompt_influence: elevenlabsRequest.prompt_influence,
+          type: "textToSoundEffects",
         },
       })
       .returning({ generationId: schema.generations.id })
@@ -94,19 +98,23 @@ export async function POST(req: Request) {
     }
 
     // Log the credit usage in the credits table with the generation ID
-    await db.insert(schema.credits).values({
+    const usedCredits = await db.insert(schema.credits).values({
       userId: userId,
       generationId: generationId,
       type: "11LABS",
       credits: -creditsNeeded,
       metadata: {
-        duration: actualDuration,
+        duration: elevenlabsRequest.duration_seconds,
         rate: 40, // characters per second
-        description: "Sound effect generation credit usage",
+        description: "Sound effect generation",
       },
       created_at: new Date(),
       updated_at: new Date(),
     });
+
+    if (!usedCredits) {
+      throw new Error("Failed to log credit usage");
+    }
 
     // Return the response as is, maintaining the original behavior
     return new NextResponse(response, {
@@ -118,8 +126,22 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error("Error generating sound effect:", error);
     return NextResponse.json(
-      { error: "Failed to generate sound effect" },
-      { status: 500 },
+      { error: error as string },
+      { status: 500, statusText: error as string },
     );
   }
 }
+
+// export async function readableToBase64(stream: ReadableStream): Promise<string> {
+//   const reader = stream.getReader();
+//   const chunks: Uint8Array[] = [];
+
+//   while (true) {
+//     const { done, value } = await reader.read();
+//     if (done) break;
+//     chunks.push(value);
+//   }
+
+//   const buffer = Buffer.concat(chunks.map((c) => Buffer.from(c)));
+//   return buffer.toString("base64");
+// }

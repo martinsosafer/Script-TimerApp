@@ -166,7 +166,7 @@ export default function ImageGenerator({
 
         <button
           type="submit"
-          className=" flex w-full items-center justify-center rounded-md bg-primary p-3 text-white"
+          className="flex w-full items-center justify-center rounded-md bg-primary p-3 text-white"
         >
           {loading ? (
             <IconSpinner className="h-6 w-6 animate-spin" />

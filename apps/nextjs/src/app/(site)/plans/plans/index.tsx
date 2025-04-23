@@ -26,6 +26,8 @@ export default function Plans({ session, subscription }: PlansProps) {
   const [isUpgrading, setIsUpgrading] = useState(false);
   const [priceId, setPriceId] = useState("");
 
+  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+
   return (
     <>
       <MonthlyYearlyToogle period={period} setPeriod={setPeriod} />
@@ -40,6 +42,7 @@ export default function Plans({ session, subscription }: PlansProps) {
         setIsUpgrading={setIsUpgrading}
         priceId={priceId}
         setPriceId={setPriceId}
+        setSelectedPlan={setSelectedPlan}
       />
       <Explore
         session={session}
@@ -49,12 +52,15 @@ export default function Plans({ session, subscription }: PlansProps) {
         setIsUpgrading={setIsUpgrading}
         priceId={priceId}
         setPriceId={setPriceId}
+        setSelectedPlan={setSelectedPlan}
       />
       {isUpgrading && (
         <UpgradeModal
           onClose={() => setIsUpgrading(false)}
           session={session}
           priceId={priceId}
+          period={period}
+          selectedPlan={selectedPlan}
         />
       )}
     </>
