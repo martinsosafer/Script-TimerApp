@@ -108,5 +108,5 @@ export async function getAllAIContent(userId: string): Promise<AIContent[]> {
   );
 }
 export async function revalidateRecordingPage() {
-  revalidatePath("/recordingarea"); // Update with your actual page path
+  revalidatePath("/speechcoach"); // Update with your actual page path
 }

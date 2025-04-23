@@ -1,4 +1,7 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import {
   Button,
@@ -9,6 +12,7 @@ import {
 } from "@voiceai/ui";
 import { IconBookPlus, IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 
+import { revalidateRecordingPage } from "~/app/actions/speechcoach";
 import { AIFeatureButtons } from "../aifeaturebutton";
 
 interface AIContentWrapperProps {
@@ -47,6 +51,11 @@ interface AIContent {
   content: string | string[];
 }
 
+interface ApiResponse {
+  success: boolean;
+  error?: string;
+}
+
 export function AIContentWrapper({
   userId,
   whisperTranscription,
@@ -68,17 +77,15 @@ export function AIContentWrapper({
   onUsefulCutdowns,
   onGenerateSoundBites,
 }: AIContentWrapperProps) {
-  console.log("fillerwords", sortedFillerWords);
+  const router = useRouter();
   const [contentOrder, setContentOrder] = useState<ContentType[]>([]);
   const [aiContent, setAIContent] = useState<AIContent[]>([]);
   const [isSaving, setIsSaving] = useState(false);
 
-  // Update content order based on props
   useEffect(() => {
     setContentOrder((prevOrder) => {
       const newOrder: ContentType[] = [];
 
-      // Check for new content that's not in the previous order
       if (summary && !prevOrder.includes("summary")) newOrder.push("summary");
       if (bulletPoints.length > 0 && !prevOrder.includes("bulletPoints"))
         newOrder.push("bulletPoints");
@@ -98,7 +105,6 @@ export function AIContentWrapper({
       if (soundBites && !prevOrder.includes("soundBites"))
         newOrder.push("soundBites");
 
-      // Add existing items that are still available
       prevOrder.forEach((type) => {
         if (
           (type === "summary" && summary) ||
@@ -134,7 +140,7 @@ export function AIContentWrapper({
   ) => {
     if (userId && uploadUrl) {
       try {
-        await fetch("/api/speechcoachai", {
+        const response = await fetch("/api/speechcoachai", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -146,10 +152,19 @@ export function AIContentWrapper({
             uploadUrl,
           }),
         });
-        setAIContent((prev) => [
-          ...prev.filter((item) => item.type !== type),
-          { type, content },
-        ]);
+
+        const result: ApiResponse = await response.json();
+
+        if (result.success) {
+          setAIContent((prev) => [
+            ...prev.filter((item) => item.type !== type),
+            { type, content },
+          ]);
+
+          // Trigger page revalidation and refresh
+          await revalidateRecordingPage();
+          router.refresh();
+        }
       } catch (error) {
         console.error("Error saving AI content:", error);
       }
@@ -224,7 +239,6 @@ export function AIContentWrapper({
   };
 
   const renderContent = (type: ContentType) => {
-    // Get content from props or saved state
     const getContent = () => {
       const savedContent = aiContent.find(
         (item) => item.type === type,
@@ -266,11 +280,11 @@ export function AIContentWrapper({
             <h3 className="text-lg font-semibold">Key Points:</h3>
             <ul className="mt-2 list-disc pl-5">
               {Array.isArray(content) && typeof content[0] === "string"
-                ? content[0] // Access the first element of the array
-                    .split("\n") // Split by line breaks
-                    .filter((line) => line.trim().startsWith("-")) // Keep lines starting with a dash
+                ? content[0]
+                    .split("\n")
+                    .filter((line) => line.trim().startsWith("-"))
                     .map((line, index) => (
-                      <li key={index}>{line.replace(/^-/, "").trim()}</li> // Clean up dashes and spaces
+                      <li key={index}>{line.replace(/^-/, "").trim()}</li>
                     ))
                 : null}
             </ul>
@@ -372,8 +386,6 @@ export function AIContentWrapper({
             <Tooltip>
               <TooltipTrigger asChild>
                 <span>
-                  {" "}
-                  {/* Wrap in span to allow tooltip on disabled button */}
                   <Button
                     variant="outline"
                     onClick={saveAllContent}
