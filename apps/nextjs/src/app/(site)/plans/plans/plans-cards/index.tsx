@@ -87,6 +87,7 @@ function RegularCard({
 
     return false;
   }
+
   return (
     <>
       {type === "CREATOR" ? (
