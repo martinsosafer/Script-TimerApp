@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import type { Session } from "@voiceai/auth";
 
-import UpgradeModal from "../../components/modals/upgrade-modal";
+// import UpgradeModal from "../../components/modals/upgrade-modal";
 import Explore from "../explore";
 import MonthlyYearlyToogle from "./monthly-yearly-toogle";
 import PlansCards from "./plans-cards";
@@ -50,13 +50,13 @@ export default function Plans({ session, subscription }: PlansProps) {
         priceId={priceId}
         setPriceId={setPriceId}
       />
-      {isUpgrading && (
+      {/* {isUpgrading && (
         <UpgradeModal
           onClose={() => setIsUpgrading(false)}
           session={session}
           priceId={priceId}
         />
-      )}
+      )} */}
     </>
   );
 }

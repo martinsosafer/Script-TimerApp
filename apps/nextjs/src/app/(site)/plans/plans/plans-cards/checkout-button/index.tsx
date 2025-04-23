@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import type { Dispatch, SetStateAction } from "react";
+// import type { Dispatch, SetStateAction } from "react";
 
 import type { Session } from "@voiceai/auth";
 
@@ -24,7 +24,7 @@ function CheckoutButton({
   hasPlan,
   session,
   type,
-  upgradeAction,
+  // upgradeAction,
   noSessionCheckout,
 }: CheckoutButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
