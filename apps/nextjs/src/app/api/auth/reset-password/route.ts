@@ -21,7 +21,7 @@ export async function POST(request: Request) {
 
   try {
     const existingUser = await db.query.users.findFirst({
-      where: (users, { eq }) => eq(users.email, email),
+      where: (users, { eq }) => eq(users.email, email.toLowerCase()),
     });
     if (!existingUser) {
       throw new Error("User with this email does not exist");
@@ -48,7 +48,7 @@ export async function POST(request: Request) {
   } catch (error) {
     return NextResponse.json(
       { error: error as string },
-      { status: 500, statusText: error as string }, //status 500 del lado del cliente se puede ver
+      { status: 412, statusText: error as string },
     );
   }
 }
