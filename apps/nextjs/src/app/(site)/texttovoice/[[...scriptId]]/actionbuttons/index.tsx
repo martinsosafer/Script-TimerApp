@@ -77,16 +77,26 @@ export function ActionButtons({
   const buttonData = [
     {
       icon: <PencilIcon className="h-5 w-5 text-blue-200" />,
-      text: "Rewrite Your Script",
+      text: "Redo Voice",
       bgColor: "bg-blue-500",
       iconBgColor: "bg-blue-700",
       textColor: "text-blue-200",
       action: () => scrollToTab2(),
       isLink: false,
     },
+
+    {
+      icon: <IconImage className="h-5 w-5 text-indigo-200" />,
+      text: "Copy script and open Image generator",
+      bgColor: "bg-indigo-500",
+      iconBgColor: "bg-indigo-700",
+      textColor: "text-indigo-200",
+      href: "/image-generator",
+      isLink: true,
+    },
     {
       icon: <IconHeadphones className="h-5 w-5 text-amber-200" />,
-      text: "Record & Get Feedback",
+      text: "Copy script and open RECORD yourself",
       bgColor: "bg-amber-500",
       iconBgColor: "bg-amber-700",
       textColor: "text-amber-200",
@@ -104,20 +114,11 @@ export function ActionButtons({
     },
     {
       icon: <IconMusic className="h-5 w-5 text-orange-200" />,
-      text: "Add Sound Effects & Music",
+      text: "Copy and open Sound Effects",
       bgColor: "bg-orange-500",
       iconBgColor: "bg-orange-700",
       textColor: "text-orange-200",
       href: "/sound-effects",
-      isLink: true,
-    },
-    {
-      icon: <IconImage className="h-5 w-5 text-indigo-200" />,
-      text: "Create Images for Your Script",
-      bgColor: "bg-indigo-500",
-      iconBgColor: "bg-indigo-700",
-      textColor: "text-indigo-200",
-      href: "/image-generator",
       isLink: true,
     },
   ];
@@ -226,7 +227,7 @@ export function ActionButtons({
                       rel="noopener noreferrer"
                       className="block w-full"
                     >
-                      <div className="flex items-center rounded-lg border border-black bg-white px-4 py-3 transition-all hover:bg-gray-700">
+                      <div className="flex items-center rounded-lg border border-black bg-white px-4 py-3 transition-all hover:bg-gray-300">
                         {" "}
                         {/* Changed bg-white to bg-gray-800 and hover states */}
                         <div
@@ -246,7 +247,7 @@ export function ActionButtons({
                       onClick={button.action}
                       className="w-full text-left"
                     >
-                      <div className="flex items-center rounded-lg border border-black bg-white px-4 py-3 transition-all hover:bg-gray-700">
+                      <div className="flex items-center rounded-lg border border-black bg-white px-4 py-3 transition-all hover:bg-gray-300">
                         {" "}
                         {/* Changed bg-white to bg-gray-800 and hover states */}
                         <div
