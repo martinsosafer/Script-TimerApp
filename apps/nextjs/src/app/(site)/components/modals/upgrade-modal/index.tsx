@@ -3,6 +3,7 @@ import Image from "next/image";
 
 import type { Session } from "@voiceai/auth";
 import { IconClose } from "@voiceai/ui/@/components/ui/icons";
+import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 import { upgrade } from "~/app/actions/checkoutActions";
 import { poppins, roboto } from "~/app/fonts";
@@ -28,14 +29,26 @@ export default function UpgradeModal({
 
   async function handleConfirm() {
     setIsLoading(true);
-    await upgrade(
-      priceId,
-      session!.user.subscription!.planId!,
-      session!.user.id,
-    );
-    setIsLoading(false);
-    window.location.reload();
-    onClose();
+    try {
+      await upgrade(
+        priceId,
+        session!.user.subscription!.planId!,
+        session!.user.id,
+      );
+      setIsLoading(false);
+      window.location.reload();
+      onClose();
+      return toast({
+        title: "Subscription updated",
+        description: "Your plan has been updated!",
+      });
+    } catch (error) {
+      onClose();
+      return toast({
+        title: "Something went wrong",
+        description: "Please, try again later",
+      });
+    }
   }
 
   return (
