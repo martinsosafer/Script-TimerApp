@@ -1,7 +1,11 @@
 import Image from "next/image";
 
 import { auth } from "@voiceai/auth";
-import { IlustrationTodayOnly } from "@voiceai/ui/@/ilustrations";
+import {
+  IlustrationPlagiarismDetection,
+  IlustrationTodayOnly,
+  IlustrationVoiceSoundfx,
+} from "@voiceai/ui/@/ilustrations";
 
 import { poppins, roboto } from "~/app/fonts";
 import BoosterCard from "./BoosterCard/BoosterCard";
@@ -31,7 +35,7 @@ export default async function BoostersPage() {
         </p>
       </header>
 
-      <main className="flex flex-col items-center gap-6 px-3 py-8">
+      <main className="flex flex-col items-center gap-8 px-3 pb-[72px] pt-8">
         <p
           className={`bg-cp-accent-lightest w-full rounded-lg px-[12px] py-[8px] text-sm/none leading-[25px] text-[#212121] shadow-md lg:max-w-5xl lg:px-[24px] lg:py-[12px]`}
         >
@@ -40,7 +44,9 @@ export default async function BoostersPage() {
           active).
         </p>
 
+        {/* Images Boost */}
         <BoosterCard
+          type="images"
           amount={300}
           title="Images Boost"
           price={77}
@@ -80,6 +86,41 @@ export default async function BoostersPage() {
               className={`rounded-lg`}
             />
           }
+        />
+
+        {/* Plagiarism Boost */}
+        <BoosterCard
+          type="plagiarism"
+          amount={150000}
+          amountDescription="words"
+          title="Ai and Plagiarism Detection"
+          price={88}
+          description="Tested at 99.12% Accurate"
+          detailsList={[
+            "Plagiarism & AI detection",
+            "Source links to original",
+            "GPT, Claude, Gemini detection",
+            "Over 100 languages",
+            "Paraphrasing detection",
+            "Text spinner detection",
+          ]}
+          imageMain={<IlustrationPlagiarismDetection />}
+        />
+
+        {/* Voice Boost */}
+        <BoosterCard
+          type="voice"
+          amount={250000}
+          title="Voice Credit, Voice Cloning & Sound Effects"
+          price={96}
+          description="Boost your credits and create more:"
+          detailsList={[
+            "Voice overs",
+            "Clone voices",
+            "Record and get feedback",
+            "Sound Effects",
+          ]}
+          imageMain={<IlustrationVoiceSoundfx />}
         />
       </main>
     </>
