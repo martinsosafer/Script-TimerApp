@@ -3645,7 +3645,6 @@ export {
   IconPause,
   IconMusic,
   IconMic,
-  HappyToHelpDraw,
   IconArrowUpDown,
   IconClock,
   IconVolumeX,
