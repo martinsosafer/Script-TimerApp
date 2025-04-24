@@ -21,7 +21,7 @@ export async function POST(request: Request) {
 
   try {
     const existingUser = await db.query.users.findFirst({
-      where: (users, { eq }) => eq(users.email, email),
+      where: (users, { eq }) => eq(users.email, email.toLowerCase()),
     });
     if (!existingUser) {
       throw new Error("User with this email does not exist");
