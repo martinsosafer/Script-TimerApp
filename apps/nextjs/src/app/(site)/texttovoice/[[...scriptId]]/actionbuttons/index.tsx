@@ -41,37 +41,31 @@ export function ActionButtons({
 }: ActionButtonsProps) {
   const hasPlayedRef = useRef(false);
   const prevAudioSourceRef = useRef<string | null>(null);
+  const hasAudio = !!audioSource;
 
-  // Handle audio playback exactly once when audio appears
   useEffect(() => {
     if (!showPlayer || !audioSource || !audioRef.current) {
-      // Reset flags when player is hidden
       hasPlayedRef.current = false;
       return;
     }
 
-    // Only play if we have a new audio source and haven't played yet
     if (audioSource !== prevAudioSourceRef.current && !hasPlayedRef.current) {
       const handlePlayback = async () => {
         try {
-          // Reset and load new audio
           resetAudio();
           audioRef.current!.src = audioSource;
           await audioRef.current!.load();
 
-          // Attempt playback
           const playPromise = audioRef.current!.play();
 
           if (playPromise !== undefined) {
             await playPromise;
             setShowConfetti(true);
-            // Mark as played and store current source
             hasPlayedRef.current = true;
             prevAudioSourceRef.current = audioSource;
           }
         } catch (error) {
           console.error("Playback error:", error);
-          // Fallback - let user click play button
         }
       };
 
@@ -82,47 +76,47 @@ export function ActionButtons({
 
   const buttonData = [
     {
-      icon: <PencilIcon className="h-5 w-5 text-blue-600" />,
+      icon: <PencilIcon className="h-5 w-5 text-blue-200" />,
       text: "Rewrite Your Script",
       bgColor: "bg-blue-500",
-      iconBgColor: "bg-blue-200",
-      textColor: "text-blue-600",
+      iconBgColor: "bg-blue-700",
+      textColor: "text-blue-200",
       action: () => scrollToTab2(),
       isLink: false,
     },
     {
-      icon: <IconHeadphones className="h-5 w-5 text-amber-600" />,
+      icon: <IconHeadphones className="h-5 w-5 text-amber-200" />,
       text: "Record & Get Feedback",
       bgColor: "bg-amber-500",
-      iconBgColor: "bg-amber-200",
-      textColor: "text-amber-600",
+      iconBgColor: "bg-amber-700",
+      textColor: "text-amber-200",
       href: "/speechcoach",
       isLink: true,
     },
     {
-      icon: <IconBot className="h-5 w-5 text-teal-600" />,
+      icon: <IconBot className="h-5 w-5 text-teal-200" />,
       text: "Translate Your Script",
       bgColor: "bg-teal-500",
-      iconBgColor: "bg-teal-200",
-      textColor: "text-teal-600",
+      iconBgColor: "bg-teal-700",
+      textColor: "text-teal-200",
       href: "/chat",
       isLink: true,
     },
     {
-      icon: <IconMusic className="h-5 w-5 text-orange-600" />,
+      icon: <IconMusic className="h-5 w-5 text-orange-200" />,
       text: "Add Sound Effects & Music",
       bgColor: "bg-orange-500",
-      iconBgColor: "bg-orange-200",
-      textColor: "text-orange-600",
+      iconBgColor: "bg-orange-700",
+      textColor: "text-orange-200",
       href: "/sound-effects",
       isLink: true,
     },
     {
-      icon: <IconImage className="h-5 w-5 text-indigo-600" />,
+      icon: <IconImage className="h-5 w-5 text-indigo-200" />,
       text: "Create Images for Your Script",
       bgColor: "bg-indigo-500",
-      iconBgColor: "bg-indigo-200",
-      textColor: "text-indigo-600",
+      iconBgColor: "bg-indigo-700",
+      textColor: "text-indigo-200",
       href: "/image-generator",
       isLink: true,
     },
@@ -130,26 +124,39 @@ export function ActionButtons({
 
   return (
     <div className={`w-full ${poppins.className}`}>
-      <AnimatePresence>
-        {showPlayer && (
+      <motion.div
+        className="bg-cp-primary mx-auto mt-4 w-full max-w-[1340px] overflow-hidden rounded-lg shadow-lg" // Changed bg-gray-100 to bg-cp-primary
+        layout
+        transition={{ duration: 0.3 }}
+      >
+        <div className="flex flex-col md:flex-row">
+          {/* Left Column - Dynamic Content */}
           <motion.div
-            className="mx-auto mt-4 w-full max-w-6xl overflow-hidden rounded-lg bg-gray-100 shadow-md"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            className={`flex w-full flex-col items-center justify-center p-6 md:w-1/2 ${
+              hasAudio ? "min-h-[300px]" : "min-h-[200px]"
+            }`}
+            layout
           >
-            <div className="flex flex-col md:flex-row">
-              {/* Left Column - Audio Player */}
-              <div className="flex w-full flex-col items-center justify-center p-5 text-black md:w-1/2">
-                <div className="mb-3">
+            {hasAudio ? (
+              <>
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="mb-3"
+                >
                   <StarIcon className="h-16 w-16 text-yellow-400" />
-                </div>
-                <h2 className="mb-3 text-2xl font-bold">
+                </motion.div>
+                <h2 className="mb-3 text-3xl font-bold text-white">
+                  {" "}
+                  {/* Changed text-black to text-white */}
                   Great <span className="text-yellow-400">Work</span>
                 </h2>
-                <div className="mb-3 text-center">
-                  <p className="mb-1 text-black">Your audio is ready to play</p>
+                <div className="mb-4 text-center">
+                  <p className="text-lg text-white">
+                    {" "}
+                    {/* Changed text-black to text-white */}
+                    Your audio is ready to play
+                  </p>
                 </div>
                 <div className="w-full px-4">
                   <AudioPlayerControls
@@ -160,72 +167,107 @@ export function ActionButtons({
                     setShowConfetti={setShowConfetti}
                   />
                 </div>
-              </div>
-
-              {/* Right Column - Action Buttons */}
-              <div className="w-full p-5 md:w-1/2">
-                <h2 className="mb-4 text-2xl font-semibold text-gray-800">
-                  Create high-impact{" "}
-                  <span className="text-yellow-500">scripts</span>
+              </>
+            ) : (
+              <>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="mb-4"
+                >
+                  <IconBot className="text-cp-secondary h-16 w-16" />
+                </motion.div>
+                <h2 className="mb-3 text-3xl font-bold text-white">
+                  {" "}
+                  {/* Changed text color */}
+                  Start <span className="text-cp-secondary">Creating</span>
                 </h2>
-                <div className="space-y-2">
-                  {buttonData.map((button, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ y: 20, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{
-                        type: "spring",
-                        stiffness: 300,
-                        damping: 24,
-                        delay: 0.1 + index * 0.1,
-                      }}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
+                <p className="text-lg font-normal text-gray-200">
+                  {" "}
+                  {/* Changed text-gray-600 to text-gray-200 */}
+                  Generate your audio to unlock full features
+                </p>
+              </>
+            )}
+          </motion.div>
+
+          {/* Right Column - Always Visible Action Buttons */}
+          <motion.div
+            className="w-full p-6 md:w-1/2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            <h2 className="mb-5 text-2xl font-semibold text-white">
+              {" "}
+              {/* Changed text-gray-800 to text-white */}
+              {hasAudio ? "Enhance your" : "Create"} content{" "}
+              <span className="text-yellow-400">like a pro</span>{" "}
+              {/* Changed from yellow-500 to yellow-400 for better contrast */}
+            </h2>
+            <div className="space-y-3">
+              {buttonData.map((button, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 24,
+                    delay: index * 0.05,
+                  }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  {button.isLink ? (
+                    <Link
+                      href={button.href || "#"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block w-full"
                     >
-                      {button.isLink ? (
-                        <Link
-                          href={button.href || "#"}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="block w-full"
+                      <div className="flex items-center rounded-lg border border-black bg-white px-4 py-3 transition-all hover:bg-gray-700">
+                        {" "}
+                        {/* Changed bg-white to bg-gray-800 and hover states */}
+                        <div
+                          className={`flex h-10 w-10 items-center justify-center rounded-full ${button.iconBgColor}`}
                         >
-                          <div className="flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 transition-all hover:bg-gray-50">
-                            <div
-                              className={`flex h-10 w-10 items-center justify-center rounded-full ${button.iconBgColor}`}
-                            >
-                              {button.icon}
-                            </div>
-                            <span className="ml-4 font-medium text-gray-800">
-                              {button.text}
-                            </span>
-                          </div>
-                        </Link>
-                      ) : (
-                        <button
-                          onClick={button.action}
-                          className="w-full text-left"
+                          {button.icon}
+                        </div>
+                        <span className="ml-4 font-medium text-gray-800">
+                          {" "}
+                          {/* Changed text-gray-800 to text-white */}
+                          {button.text}
+                        </span>
+                      </div>
+                    </Link>
+                  ) : (
+                    <button
+                      onClick={button.action}
+                      className="w-full text-left"
+                    >
+                      <div className="flex items-center rounded-lg border border-black bg-white px-4 py-3 transition-all hover:bg-gray-700">
+                        {" "}
+                        {/* Changed bg-white to bg-gray-800 and hover states */}
+                        <div
+                          className={`flex h-10 w-10 items-center justify-center rounded-full ${button.iconBgColor}`}
                         >
-                          <div className="flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 transition-all hover:bg-gray-50">
-                            <div
-                              className={`flex h-10 w-10 items-center justify-center rounded-full ${button.iconBgColor}`}
-                            >
-                              {button.icon}
-                            </div>
-                            <span className="ml-4 font-medium text-gray-800">
-                              {button.text}
-                            </span>
-                          </div>
-                        </button>
-                      )}
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
+                          {button.icon}
+                        </div>
+                        <span className="ml-4 font-medium text-gray-800">
+                          {" "}
+                          {/* Changed text-gray-800 to text-white */}
+                          {button.text}
+                        </span>
+                      </div>
+                    </button>
+                  )}
+                </motion.div>
+              ))}
             </div>
           </motion.div>
-        )}
-      </AnimatePresence>
+        </div>
+      </motion.div>
     </div>
   );
 }
