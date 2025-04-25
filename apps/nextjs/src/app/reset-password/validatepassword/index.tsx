@@ -4,7 +4,7 @@ import ValidateEmailForm from "../validate-email-form";
 
 export default function ValidatePassword() {
   return (
-    <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[370px] gap-1">
+    <div className="mx-auto flex w-full flex-col justify-center gap-1 space-y-6 sm:w-[370px]">
       <div className="flex flex-col space-y-2 text-center  text-[#212121]">
         <h1 className="font-poppins text-2xl font-semibold tracking-tight">
           Reset your Password

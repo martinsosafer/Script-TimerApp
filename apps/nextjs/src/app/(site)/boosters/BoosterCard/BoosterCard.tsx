@@ -89,7 +89,7 @@ const BoosterCard = ({
             className="p-0 text-white"
             onClick={() => setIsOpen(!isOpen)}
           >
-            See more
+            {!isOpen ? "See more" : "See less"}
           </Button>
         </div>
       </div>
