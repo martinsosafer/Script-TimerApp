@@ -77,17 +77,34 @@ export function ActionButtons({
   const buttonData = [
     {
       icon: <PencilIcon className="h-5 w-5 text-blue-200" />,
-      text: "Redo Voice",
+      text: "Redo voice over",
       bgColor: "bg-blue-500",
       iconBgColor: "bg-blue-700",
       textColor: "text-blue-200",
-      action: () => scrollToTab2(),
+      action: () => scrollToTab2(), // Assuming this is for redoing voice over
       isLink: false,
     },
-
+    {
+      icon: <IconMusic className="h-5 w-5 text-orange-200" />,
+      text: "Create Sound Effects & Music",
+      bgColor: "bg-orange-500",
+      iconBgColor: "bg-orange-700",
+      textColor: "text-orange-200",
+      href: "/sound-effects",
+      isLink: true,
+    },
+    {
+      icon: <IconBot className="h-5 w-5 text-teal-200" />,
+      text: "Copy script and open Ai Script Writer",
+      bgColor: "bg-teal-500",
+      iconBgColor: "bg-teal-700",
+      textColor: "text-teal-200",
+      href: "/chat", // Or "/script-writer" if you have a different route
+      isLink: true,
+    },
     {
       icon: <IconImage className="h-5 w-5 text-indigo-200" />,
-      text: "Copy script and open Image generator",
+      text: "Copy script and open Image Generator",
       bgColor: "bg-indigo-500",
       iconBgColor: "bg-indigo-700",
       textColor: "text-indigo-200",
@@ -96,29 +113,11 @@ export function ActionButtons({
     },
     {
       icon: <IconHeadphones className="h-5 w-5 text-amber-200" />,
-      text: "Copy script and open RECORD yourself",
+      text: "Copy script and Record Yourself",
       bgColor: "bg-amber-500",
       iconBgColor: "bg-amber-700",
       textColor: "text-amber-200",
       href: "/speechcoach",
-      isLink: true,
-    },
-    {
-      icon: <IconBot className="h-5 w-5 text-teal-200" />,
-      text: "Translate Your Script",
-      bgColor: "bg-teal-500",
-      iconBgColor: "bg-teal-700",
-      textColor: "text-teal-200",
-      href: "/chat",
-      isLink: true,
-    },
-    {
-      icon: <IconMusic className="h-5 w-5 text-orange-200" />,
-      text: "Copy and open Sound Effects",
-      bgColor: "bg-orange-500",
-      iconBgColor: "bg-orange-700",
-      textColor: "text-orange-200",
-      href: "/sound-effects",
       isLink: true,
     },
   ];
