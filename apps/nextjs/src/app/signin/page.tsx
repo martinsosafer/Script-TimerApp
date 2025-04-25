@@ -5,7 +5,6 @@ import { auth } from "@voiceai/auth";
 
 import "~/styles/globals.css";
 
-import Logo from "../(site)/components/logo";
 import Header from "../register/subcomponents/header";
 import AnimatedGifs from "./animtadgifs";
 import FormSwitcher from "./formswitcher";

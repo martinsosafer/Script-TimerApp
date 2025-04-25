@@ -28,6 +28,7 @@ export async function upgrade(
 
     console.log("priceId", priceId);
     console.log("subscription", subscription.items.data[0]);
+    // console.log("SUSCRIPTION_FULL", subscription);
     const updatedSubscription = await stripe.subscriptions.update(
       subscriptionId,
       {
@@ -39,8 +40,8 @@ export async function upgrade(
         ],
       },
     );
-
-    if (!updatedSubscription) {
+    // Possible statuses: active | incomplete | incomplete_expired | past_due | trialing | canceled | unpaid
+    if (!updatedSubscription || updatedSubscription.status !== "active") {
       throw new Error("Failed to update subscription");
     }
 
@@ -104,7 +105,10 @@ export async function upgrade(
       })
       .where(eq(schema.imgCredit.userId, userId))
       .execute();
+
+    console.log(`> Subscription for userId ${userId} updated successfully <`);
   } catch (error) {
     console.error(error);
+    throw error;
   }
 }

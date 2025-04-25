@@ -3,6 +3,7 @@ import Image from "next/image";
 
 import type { Session } from "@voiceai/auth";
 import { IconClose } from "@voiceai/ui/@/components/ui/icons";
+import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 import { upgrade } from "~/app/actions/checkoutActions";
 import { poppins, roboto } from "~/app/fonts";
@@ -13,25 +14,41 @@ interface UpgradeProps {
   onClose: () => void;
   session: Session | null;
   priceId: string;
+  period: "monthly" | "yearly";
+  selectedPlan?: string | null;
 }
 
 export default function UpgradeModal({
   onClose,
   session,
   priceId,
+  period,
+  selectedPlan,
 }: UpgradeProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   async function handleConfirm() {
     setIsLoading(true);
-    await upgrade(
-      priceId,
-      session!.user.subscription!.planId!,
-      session!.user.id,
-    );
-    setIsLoading(false);
-    window.location.reload();
-    onClose();
+    try {
+      await upgrade(
+        priceId,
+        session!.user.subscription!.planId!,
+        session!.user.id,
+      );
+      setIsLoading(false);
+      window.location.reload();
+      onClose();
+      return toast({
+        title: "Subscription updated",
+        description: "Your plan has been updated!",
+      });
+    } catch (error) {
+      onClose();
+      return toast({
+        title: "Something went wrong",
+        description: "Please, try again later",
+      });
+    }
   }
 
   return (
@@ -66,6 +83,14 @@ export default function UpgradeModal({
                   Your ability to create is about to improve.
                 </p>
               </div>
+              <p className={`${roboto.className} text-center text-[18px]`}>
+                You're about to change your current plan{" "}
+                {session?.user?.subscription?.status} to:
+              </p>
+              <p
+                className={`${roboto.className} text-cp-accent pt-3 text-center text-xl font-bold`}
+              >{`${selectedPlan} (${period})`}</p>
+
               <p
                 className={`${roboto.className} mt-8 w-[300px] text-center text-[18px]`}
               >
