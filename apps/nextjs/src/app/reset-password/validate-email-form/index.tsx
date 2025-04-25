@@ -34,38 +34,46 @@ export default function ValidateEmailForm() {
       onSubmit={handleSendResetMail}
       className="mx-auto flex w-full max-w-md flex-col gap-2"
     >
-      <div className="flex flex-col space-y-2">
-        <label htmlFor="email" className="text-sm font-normal text-black">
-          Enter your email adress
-        </label>
-        <input
-          name="email"
-          type="email"
-          placeholder="Email adress"
-          className="rounded-md border border-gray-300 px-3 py-2"
-          required
-        />
-      </div>
+      {!error && !success ? (
+        <div className="flex flex-col space-y-2">
+          <label htmlFor="email" className="text-sm font-normal text-black">
+            Enter your email address
+          </label>
+          <input
+            name="email"
+            type="email"
+            placeholder="Email address"
+            className="rounded-md border border-gray-300 px-3 py-2"
+            required
+          />
+        </div>
+      ) : null}
+
       {error && (
-        <p className="text-center text-sm font-semibold text-red-800">
+        <p className="py-4 text-center text-lg font-semibold text-[#FF3B3B]">
           {error}
         </p>
       )}
+
       {success && (
-        <p className="text-center text-sm font-semibold text-primary">
-          Email validation successful, please check your email.
-        </p>
+        <div className="py-4 text-center text-lg font-semibold text-primary">
+          <p>Email validation successful!</p>
+          <p>Please check your email</p>
+        </div>
       )}
-      <button
-        type="submit"
-        className="mt-4 flex cursor-pointer items-center justify-center rounded-md bg-primary py-2 font-semibold text-white"
-      >
-        {loading ? (
-          <IconSpinner className="h-6 w-6 animate-spin" />
-        ) : (
-          "Send Reset Link"
-        )}
-      </button>
+
+      {!error && !success ? (
+        <button
+          type="submit"
+          className="mt-4 flex cursor-pointer items-center justify-center rounded-md bg-primary py-2 font-semibold text-white"
+        >
+          {loading ? (
+            <IconSpinner className="h-6 w-6 animate-spin" />
+          ) : (
+            "Send Reset Link"
+          )}
+        </button>
+      ) : null}
     </form>
   );
 }
