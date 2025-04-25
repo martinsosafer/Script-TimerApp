@@ -262,6 +262,11 @@ const useStreamingAudio = () => {
     setShowPlayer(false);
     setAudioSource(null);
   };
+  const onAudioReady = (callback: () => void) => {
+    if (audioRef.current) {
+      audioRef.current.oncanplaythrough = callback;
+    }
+  };
 
   return {
     audioSource,
@@ -271,6 +276,7 @@ const useStreamingAudio = () => {
     toggleAudioRef,
     handleStreaming,
     handleCloseAudio,
+    onAudioReady,
   };
 };
 
