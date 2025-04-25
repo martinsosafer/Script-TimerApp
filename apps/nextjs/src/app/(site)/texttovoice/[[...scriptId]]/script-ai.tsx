@@ -2,15 +2,8 @@
 
 import * as React from "react";
 import { useParams } from "next/navigation";
-import ArrowDownOnSquareIcon from "@heroicons/react/24/outline/ArrowDownOnSquareIcon";
 import ReactConfetti from "react-confetti";
 
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@voiceai/ui/@/components/ui/hover-card";
-import { IconClose, Icons } from "@voiceai/ui/@/components/ui/icons";
 import { Tabs } from "@voiceai/ui/@/components/ui/tabs";
 import { useCopyToClipboard } from "@voiceai/ui/@/hooks/use-copy-to-clipboard";
 
@@ -25,8 +18,14 @@ import { fetchUserCredits } from "~/lib/get11LabsCredits";
 import NoSessionModal from "../../components/modals/no-session-modal";
 import TabOne from "../../components/texttospeech/Tab1";
 import TabTwo from "../../components/texttospeech/Tab2";
-import { SpeedButton } from "../../components/texttospeech/Tab2/buttonmenu.tsx/speedbutton";
+import { ActionButtons } from "./actionbuttons";
+import { AudioPlayerControls } from "./audioplayer";
 import { characters, getTotalCredits } from "./utils";
+
+interface SubscriptionData {
+  status: number | string | null | undefined;
+  userId: string | null | undefined;
+}
 
 export function ScriptAI({
   subData,
@@ -44,7 +43,10 @@ export function ScriptAI({
     refreshSubscriptionData,
   } = useSubscription();
 
-  // Script AI parameters
+  const audioPlayerRef = React.useRef<HTMLDivElement>(null);
+  const tabTwoRef = React.useRef<HTMLDivElement>(null);
+  const actionButtonsRef = React.useRef<HTMLDivElement>(null);
+
   const [showConfetti, setShowConfetti] = React.useState(false);
   const [script, setScript] = React.useState("");
   const [richContent, setRichContent] = React.useState("");
@@ -53,25 +55,18 @@ export function ScriptAI({
   const [stability, setStability] = React.useState([0.5]);
   const [loading, setLoading] = React.useState(false);
 
-  // If script is selected from URL path parameter, load in state from db
   const { scriptId } = useParams();
-
-  // Script details
   useScriptDetails(scriptId, setScript);
 
-  // Handle change for editor
-  const handleEditorChange = (content) => {
+  const handleEditorChange = (content: string) => {
     setScript(content);
   };
 
-  // Revise script grammar/spelling with AI
   const { revisedScript, checkAndPublish, setRevisedScript } =
     useReviseScript(setLoading);
 
-  // Save voice on db and generate it
-  const { generateVoice, error } = useGenerateVoice(setLoading);
+  const { generateVoice } = useGenerateVoice(setLoading);
 
-  // Generate audio voice
   const [audio, setAudio] = React.useState<string>("");
   const [openFreeModal, setOpenFreeModal] = React.useState(false);
 
@@ -83,21 +78,36 @@ export function ScriptAI({
     toggleAudioRef,
     handleStreaming,
     handleCloseAudio,
+    onAudioReady,
   } = useStreamingAudio();
 
-  const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 });
+  React.useEffect(() => {
+    if (showPlayer && actionButtonsRef.current) {
+      setTimeout(() => {
+        actionButtonsRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }, 300);
+    }
+  }, [showPlayer, audioSource]);
 
-  const onCopy = () => {
-    if (isCopied) return;
-    copyToClipboard(revisedScript);
+  const headerRef = React.useRef<HTMLHeadingElement>(null);
+  const scrollToHeader = () => {
+    headerRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
   };
+
+  const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 });
+  const onCopy = () => !isCopied && copyToClipboard(revisedScript);
 
   const { wordCount, minutes, formattedSeconds, speedCategory } =
     calculateLengthTime(script);
 
   const [credits, setCredits] = React.useState(initialCredits);
 
-  // Function to refetch credits
   const refetchCredits = async () => {
     try {
       const userId = subData?.userId;
@@ -110,14 +120,11 @@ export function ScriptAI({
   };
 
   React.useEffect(() => {
-    if (subData) {
-      refetchCredits();
-    }
+    subData && refetchCredits();
   }, [subData]);
 
   const totalCredits = getTotalCredits(subData?.status);
 
-  // Header subtitle content
   const subtitleContent = subData?.status ? (
     <div>
       <p className="font-base mb-2 text-center">
@@ -152,69 +159,33 @@ export function ScriptAI({
     </div>
   );
 
-  // Styles
-  const containerStyle = {
-    position: "relative",
-    bottom: "40px",
-    left: "65%",
-    transform: "translateX(-50%)",
-    maxWidth: "570px",
-    width: "100%",
-    height: "80px",
-    backgroundColor: "#3B82F6",
-    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: "10px",
-    borderRadius: "8px",
-    zIndex: 0,
-    opacity: 1,
-    transition: "opacity 0.5s ease-in-out",
-    border: "1px solid black",
-  };
-
-  const audioStyle = {
-    flex: 1,
-    height: "50px",
-    backgroundColor: "transparent",
-    border: "none",
-  };
-
-  const buttonStyle = {
-    backgroundColor: "#F97316",
-    border: "1px solid black",
-    borderRadius: "4px",
-    color: "white",
-    padding: "8px",
-    cursor: "pointer",
-    fontFamily: "Poppins, sans-serif",
-    fontWeight: "bold",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    transition: "background-color 0.3s",
-    width: "40px",
-    height: "40px",
-    marginLeft: "4px",
-  };
-
-  const buttonHoverStyle = {
-    ...buttonStyle,
-    backgroundColor: "#e76f00",
-  };
-
-  const disabledButtonStyle = {
-    ...buttonStyle,
-    backgroundColor: "#f7a07a",
-    cursor: "not-allowed",
-    opacity: 0.6,
+  const resetAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      audioRef.current.src = "";
+    }
   };
 
   return (
     <>
-      {/* Integrated Header */}
+      {showConfetti && (
+        <div className="pointer-events-none fixed inset-0 z-[9999]">
+          <ReactConfetti
+            width={window.innerWidth}
+            height={window.innerHeight}
+            numberOfPieces={1000}
+            recycle={false}
+            gravity={0.1}
+            initialVelocityX={2}
+            initialVelocityY={10}
+            colors={["#0123e7", "#eb8806"]}
+            style={{ position: "fixed" }}
+          />
+        </div>
+      )}
       <header
+        ref={headerRef}
         className={`my-3 flex w-full flex-col items-center justify-center p-6 lg:mb-[40px] lg:mt-[60px] lg:p-0 ${poppins.className}`}
       >
         <h2 className="text-cp-primary w-full text-center text-[28px] font-bold lg:w-[650px] lg:text-[42px]">
@@ -225,7 +196,6 @@ export function ScriptAI({
         </h4>
       </header>
 
-      {/* Main Content */}
       <div className="mb-32 h-full flex-col md:flex">
         <Tabs defaultValue="complete" className="flex-1">
           <div className="container mb-4 h-full">
@@ -240,7 +210,9 @@ export function ScriptAI({
                 similarity={similarity}
                 setSimilarity={setSimilarity}
               />
+
               <TabTwo
+                ref={tabTwoRef}
                 script={script}
                 subData={subData}
                 setOpenFreeModal={setOpenFreeModal}
@@ -280,99 +252,22 @@ export function ScriptAI({
           </div>
         </Tabs>
 
-        {/* Audio Controls */}
-        <div style={containerStyle} className="mt-14">
-          <audio ref={audioRef} controls="controls" style={audioStyle} />
-          <div
-            className="controls-container"
-            style={{ display: "flex", gap: "10px" }}
-          >
-            <SpeedButton
-              audioRef={audioRef}
-              buttonStyle={buttonStyle}
-              buttonHoverStyle={buttonHoverStyle}
-              disabledButtonStyle={disabledButtonStyle}
-            />
-            <HoverCard>
-              <HoverCardTrigger asChild>
-                <button
-                  onClick={() => {
-                    if (downloadLink) {
-                      const anchor = document.createElement("a");
-                      anchor.href = downloadLink;
-                      anchor.download = "audio.mp3";
-                      anchor.click();
-                      URL.revokeObjectURL(downloadLink);
-                      setShowConfetti(true);
-                    }
-                  }}
-                  disabled={loading || !downloadLink}
-                  style={
-                    !downloadLink || loading ? disabledButtonStyle : buttonStyle
-                  }
-                  onMouseOver={(e) =>
-                    !downloadLink || loading
-                      ? null
-                      : (e.currentTarget.style.backgroundColor =
-                          buttonHoverStyle.backgroundColor)
-                  }
-                  onMouseOut={(e) =>
-                    !downloadLink || loading
-                      ? null
-                      : (e.currentTarget.style.backgroundColor =
-                          buttonStyle.backgroundColor)
-                  }
-                >
-                  {loading ? (
-                    <Icons.spinner
-                      className="h-6 w-6"
-                      style={{ color: "white" }}
-                    />
-                  ) : (
-                    <ArrowDownOnSquareIcon
-                      width={24}
-                      style={{ color: "white" }}
-                    />
-                  )}
-                </button>
-              </HoverCardTrigger>
-              {!isSubscriptionActive && (
-                <HoverCardContent className="w-[200px] text-sm" side="left">
-                  Download audio file.
-                </HoverCardContent>
-              )}
-            </HoverCard>
-            <button
-              onClick={handleCloseAudio}
-              style={buttonStyle}
-              onMouseOver={(e) =>
-                (e.currentTarget.style.backgroundColor =
-                  buttonHoverStyle.backgroundColor)
-              }
-              onMouseOut={(e) =>
-                (e.currentTarget.style.backgroundColor =
-                  buttonStyle.backgroundColor)
-              }
-            >
-              <IconClose width={24} style={{ color: "white" }} />
-            </button>
-          </div>
-          {showConfetti && (
-            <ReactConfetti
-              width={window.innerWidth}
-              height={window.innerHeight}
-              numberOfPieces={1000}
-              recycle={false}
-              gravity={0.1}
-              initialVelocityX={2}
-              initialVelocityY={10}
-              colors={["#0123e7", "#eb8806"]}
-            />
-          )}
+        {/* ActionButtons with all props */}
+        <div ref={actionButtonsRef} className="w-full">
+          <ActionButtons
+            showPlayer={showPlayer}
+            scrollToTab2={scrollToHeader}
+            audioRef={audioRef}
+            downloadLink={downloadLink}
+            loading={loading}
+            isSubscriptionActive={isSubscriptionActive}
+            setShowConfetti={setShowConfetti}
+            audioSource={audioSource}
+            resetAudio={resetAudio}
+          />
         </div>
       </div>
 
-      {/* No Session Modal */}
       <NoSessionModal
         subData={subData}
         openModal={openFreeModal}

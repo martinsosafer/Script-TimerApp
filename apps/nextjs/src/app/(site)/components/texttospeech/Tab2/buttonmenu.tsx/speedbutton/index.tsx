@@ -3,17 +3,26 @@ import { Menu, Transition } from "@headlessui/react";
 
 import { IconPlay } from "@voiceai/ui/@/components/ui/icons";
 
+interface SpeedButtonProps {
+  audioRef: React.RefObject<HTMLAudioElement>;
+  buttonStyle: React.CSSProperties;
+  buttonHoverStyle: React.CSSProperties;
+  disabledButtonStyle: React.CSSProperties;
+}
+
 export const SpeedButton = ({
   audioRef,
   buttonStyle,
   buttonHoverStyle,
   disabledButtonStyle,
-}) => {
+}: SpeedButtonProps) => {
   const [selectedSpeed, setSelectedSpeed] = useState("1x");
 
-  const handleSpeedChange = (speed) => {
+  const handleSpeedChange = (speed: string) => {
     setSelectedSpeed(speed);
-    audioRef.current.playbackRate = parseFloat(speed);
+    if (audioRef.current) {
+      audioRef.current.playbackRate = parseFloat(speed);
+    }
   };
 
   return (
@@ -22,14 +31,14 @@ export const SpeedButton = ({
         <Menu.Button
           style={buttonStyle}
           className="text-sm"
-          onMouseOver={(e) =>
-            (e.currentTarget.style.backgroundColor =
-              buttonHoverStyle.backgroundColor)
-          }
-          onMouseOut={(e) =>
-            (e.currentTarget.style.backgroundColor =
-              buttonStyle.backgroundColor)
-          }
+          onMouseOver={(e) => {
+            e.currentTarget.style.backgroundColor =
+              buttonHoverStyle.backgroundColor!;
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.backgroundColor =
+              buttonStyle.backgroundColor!;
+          }}
         >
           {selectedSpeed} <IconPlay className="ml-1 h-5 w-5" />
         </Menu.Button>
@@ -46,9 +55,9 @@ export const SpeedButton = ({
         <Menu.Items
           className="absolute w-16 rounded-md bg-tertiary shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
           style={{
-            right: 0, // Align to the right of the button
-            bottom: "100%", // Position above the button
-            transform: "translateY(-10px)", // Adjust vertical positioning
+            right: 0,
+            bottom: "100%",
+            transform: "translateY(-10px)",
           }}
         >
           {["0.5x", "0.75x", "1x", "1.25x", "1.5x", "2x"].map((speed) => (
