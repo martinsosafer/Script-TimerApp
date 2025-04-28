@@ -20,10 +20,10 @@ import { Slider } from "@voiceai/ui/@/components/ui/slider";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 import { poppins } from "~/app/fonts";
+import { STARTING_11CL_CREDITS } from "~/constants/credits";
 import NoSessionModal from "../../../../components/modals/no-session-modal";
 import { getElevenLabsUserCredits } from "../../../actions";
 import type { SessionProps } from "../../../types";
-import { getTotalCredits } from "../../../utils";
 
 export function SoundEffectsGenerator({ subData }: SessionProps) {
   const [text, setText] = useState("");
@@ -38,7 +38,10 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
   const [credits, setCredits] = useState<number | undefined>(0);
   const [isLoadingCredits, setIsLoadingCredits] = useState(false);
 
-  const totalCredits = getTotalCredits(subData?.status);
+  const totalCredits =
+    STARTING_11CL_CREDITS[
+      subData?.status as keyof typeof STARTING_11CL_CREDITS
+    ];
 
   const audioPLayerStyle = {
     boxShadow: "0px 1px 3px 0px rgba(0,0,0,0.4)",
