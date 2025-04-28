@@ -17,6 +17,7 @@ import { poppins } from "~/app/fonts";
 import { AudioPlayerControls } from "../audioplayer";
 
 interface ActionButtonsProps {
+  script: string;
   showPlayer: boolean;
   scrollToTab2: () => void;
   audioRef: React.RefObject<HTMLAudioElement>;
@@ -38,6 +39,7 @@ export function ActionButtons({
   setShowConfetti,
   audioSource,
   resetAudio,
+  script,
 }: ActionButtonsProps) {
   const hasPlayedRef = useRef(false);
   const prevAudioSourceRef = useRef<string | null>(null);
@@ -74,6 +76,32 @@ export function ActionButtons({
     }
   }, [showPlayer, audioSource, audioRef, setShowConfetti, resetAudio]);
 
+  const handleCopyAndOpen = (url: string) => {
+    // Copy script to clipboard
+    navigator.clipboard
+      .writeText(script)
+      .then(() => {
+        console.log("Script copied to clipboard");
+        // Open new tab
+        window.open(url, "_blank");
+      })
+      .catch((err) => {
+        console.error("Failed to copy script: ", err);
+        // Fallback for browsers that don't support clipboard API
+        const textarea = document.createElement("textarea");
+        textarea.value = script;
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand("copy");
+          window.open(url, "_blank");
+        } catch (err) {
+          console.error("Fallback copy failed: ", err);
+        }
+        document.body.removeChild(textarea);
+      });
+  };
+
   const buttonData = [
     {
       icon: <PencilIcon className="h-5 w-5 text-blue-200" />,
@@ -81,7 +109,7 @@ export function ActionButtons({
       bgColor: "bg-blue-500",
       iconBgColor: "bg-blue-700",
       textColor: "text-blue-200",
-      action: () => scrollToTab2(), // Assuming this is for redoing voice over
+      action: () => scrollToTab2(),
       isLink: false,
     },
     {
@@ -90,7 +118,7 @@ export function ActionButtons({
       bgColor: "bg-orange-500",
       iconBgColor: "bg-orange-700",
       textColor: "text-orange-200",
-      href: "/sound-effects",
+      href: "/soundeffects",
       isLink: true,
     },
     {
@@ -99,8 +127,9 @@ export function ActionButtons({
       bgColor: "bg-teal-500",
       iconBgColor: "bg-teal-700",
       textColor: "text-teal-200",
-      href: "/chat", // Or "/script-writer" if you have a different route
+      href: "/chat",
       isLink: true,
+      hasCopyAction: true,
     },
     {
       icon: <IconImage className="h-5 w-5 text-indigo-200" />,
@@ -110,6 +139,7 @@ export function ActionButtons({
       textColor: "text-indigo-200",
       href: "/image-generator",
       isLink: true,
+      hasCopyAction: true,
     },
     {
       icon: <IconHeadphones className="h-5 w-5 text-amber-200" />,
@@ -119,13 +149,14 @@ export function ActionButtons({
       textColor: "text-amber-200",
       href: "/speechcoach",
       isLink: true,
+      hasCopyAction: true,
     },
   ];
 
   return (
     <div className={`w-full ${poppins.className}`}>
       <motion.div
-        className="bg-cp-primary mx-auto mt-4 w-full max-w-[1340px] overflow-hidden rounded-lg shadow-lg" // Changed bg-gray-100 to bg-cp-primary
+        className="bg-cp-primary mx-auto mt-4 w-full max-w-[1340px] overflow-hidden rounded-lg shadow-lg"
         layout
         transition={{ duration: 0.3 }}
       >
@@ -147,14 +178,10 @@ export function ActionButtons({
                   <StarIcon className="h-16 w-16 text-yellow-400" />
                 </motion.div>
                 <h2 className="mb-3 text-3xl font-bold text-white">
-                  {" "}
-                  {/* Changed text-black to text-white */}
                   Great <span className="text-yellow-400">Work</span>
                 </h2>
                 <div className="mb-4 text-center">
                   <p className="text-lg text-white">
-                    {" "}
-                    {/* Changed text-black to text-white */}
                     Your audio is ready to play
                   </p>
                 </div>
@@ -178,13 +205,9 @@ export function ActionButtons({
                   <IconBot className="text-cp-secondary h-16 w-16" />
                 </motion.div>
                 <h2 className="mb-3 text-3xl font-bold text-white">
-                  {" "}
-                  {/* Changed text color */}
                   Start <span className="text-cp-secondary">Creating</span>
                 </h2>
                 <p className="text-lg font-normal text-gray-200">
-                  {" "}
-                  {/* Changed text-gray-600 to text-gray-200 */}
                   Generate your audio to unlock full features
                 </p>
               </>
@@ -198,11 +221,8 @@ export function ActionButtons({
             animate={{ opacity: 1 }}
           >
             <h2 className="mb-5 text-2xl font-semibold text-white">
-              {" "}
-              {/* Changed text-gray-800 to text-white */}
               {hasAudio ? "Enhance your" : "Create"} content{" "}
-              <span className="text-yellow-400">like a pro</span>{" "}
-              {/* Changed from yellow-500 to yellow-400 for better contrast */}
+              <span className="text-yellow-400">like a pro</span>
             </h2>
             <div className="space-y-3">
               {buttonData.map((button, index) => (
@@ -220,43 +240,39 @@ export function ActionButtons({
                   whileTap={{ scale: 0.98 }}
                 >
                   {button.isLink ? (
-                    <Link
-                      href={button.href || "#"}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block w-full"
+                    <button
+                      onClick={() => {
+                        if (button.text.toLowerCase().includes("copy")) {
+                          handleCopyAndOpen(button.href || "#");
+                        } else {
+                          window.open(button.href, "_blank");
+                        }
+                      }}
+                      className="block w-full text-left"
                     >
                       <div className="flex items-center rounded-lg border border-black bg-white px-4 py-3 transition-all hover:bg-gray-300">
-                        {" "}
-                        {/* Changed bg-white to bg-gray-800 and hover states */}
                         <div
                           className={`flex h-10 w-10 items-center justify-center rounded-full ${button.iconBgColor}`}
                         >
                           {button.icon}
                         </div>
                         <span className="ml-4 font-medium text-gray-800">
-                          {" "}
-                          {/* Changed text-gray-800 to text-white */}
                           {button.text}
                         </span>
                       </div>
-                    </Link>
+                    </button>
                   ) : (
                     <button
                       onClick={button.action}
                       className="w-full text-left"
                     >
                       <div className="flex items-center rounded-lg border border-black bg-white px-4 py-3 transition-all hover:bg-gray-300">
-                        {" "}
-                        {/* Changed bg-white to bg-gray-800 and hover states */}
                         <div
                           className={`flex h-10 w-10 items-center justify-center rounded-full ${button.iconBgColor}`}
                         >
                           {button.icon}
                         </div>
                         <span className="ml-4 font-medium text-gray-800">
-                          {" "}
-                          {/* Changed text-gray-800 to text-white */}
                           {button.text}
                         </span>
                       </div>
