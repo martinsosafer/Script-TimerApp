@@ -61,12 +61,10 @@ export default async function BoostersPage() {
           descriptionEnd="and more!"
           imageMain={
             <Image
-              src={"/boostersImages/boosters_imageGeneration2.png"}
+              src={"/boostersImages/boosters_imageGeneration.png"}
               alt="image generation"
-              // width={410}
-              // height={472}
               fill
-              className={`rounded-2xl object-contain object-top`}
+              className={`mt-9 object-contain`}
               priority
             />
           }
@@ -75,7 +73,7 @@ export default async function BoostersPage() {
               src={"/boostersImages/boosters_creationLab.png"}
               alt="Creation Lab"
               fill
-              className={`rounded-lg`}
+              className={`rounded-lg object-contain`}
             />
           }
           imageBottomRight={
@@ -83,7 +81,7 @@ export default async function BoostersPage() {
               src={"/boostersImages/boosters_storyboard.png"}
               alt="Storyboard"
               fill
-              className={`rounded-lg`}
+              className={`rounded-lg object-contain`}
             />
           }
         />
