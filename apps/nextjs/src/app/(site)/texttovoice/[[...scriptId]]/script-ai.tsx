@@ -264,6 +264,7 @@ export function ScriptAI({
             setShowConfetti={setShowConfetti}
             audioSource={audioSource}
             resetAudio={resetAudio}
+            script={script}
           />
         </div>
       </div>
