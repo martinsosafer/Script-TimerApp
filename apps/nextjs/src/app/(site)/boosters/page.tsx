@@ -8,10 +8,47 @@ import {
 } from "@voiceai/ui/@/ilustrations";
 
 import { poppins, roboto } from "~/app/fonts";
+import {
+  STARTING_11CL_CREDITS,
+  STARTING_CL_CREDITS,
+  STARTING_IMG_CREDITS,
+} from "~/constants/credits";
+import {
+  getImageCredits,
+  getPlagiarismCredits,
+  getVoiceCredits,
+} from "./actions";
 import BoosterCard from "./BoosterCard/BoosterCard";
 
 export default async function BoostersPage() {
   const session = await auth();
+  const userId = session?.user.id;
+  const userPlan = session?.user.subscription?.status;
+
+  const imageCredits = await getImageCredits(userId ?? "");
+  const imageCreditsPercentage =
+    (100 * (imageCredits?.credits ?? 0)) /
+    STARTING_IMG_CREDITS[userPlan as keyof typeof STARTING_IMG_CREDITS];
+
+  const plagiarismCredits = await getPlagiarismCredits(userId ?? "");
+  const plagiarismCreditsPercentage =
+    (100 * (plagiarismCredits?.credits ?? 0)) /
+    STARTING_CL_CREDITS[userPlan as keyof typeof STARTING_CL_CREDITS];
+
+  const voiceCredits = await getVoiceCredits(userId ?? "");
+  const voiceCreditsPercentage =
+    (100 * (voiceCredits?.credits ?? 0)) /
+    STARTING_11CL_CREDITS[userPlan as keyof typeof STARTING_11CL_CREDITS];
+
+  // console.log("session", session);
+  // console.log("imageCredits", imageCredits);
+  // console.log("imageCreditsPercentage", imageCreditsPercentage);
+
+  // console.log("plagiarismCredits", plagiarismCredits);
+  // console.log("plagiarismCreditsPercentage", plagiarismCreditsPercentage);
+
+  console.log("voiceCredits", voiceCredits);
+  console.log("voiceCreditsPercentage", voiceCreditsPercentage);
 
   return (
     <>
@@ -47,6 +84,7 @@ export default async function BoostersPage() {
         {/* Images Boost */}
         <BoosterCard
           type="images"
+          creditsPercentage={imageCreditsPercentage}
           amount={300}
           title="Images Boost"
           price={77}
@@ -89,6 +127,7 @@ export default async function BoostersPage() {
         {/* Plagiarism Boost */}
         <BoosterCard
           type="plagiarism"
+          creditsPercentage={plagiarismCreditsPercentage}
           amount={150000}
           amountDescription="words"
           title="Ai and Plagiarism Detection"
@@ -102,12 +141,15 @@ export default async function BoostersPage() {
             "Paraphrasing detection",
             "Text spinner detection",
           ]}
-          imageMain={<IlustrationPlagiarismDetection />}
+          imageMain={
+            <IlustrationPlagiarismDetection className="max-md:w-[300px] max-sm:w-[200px]" />
+          }
         />
 
         {/* Voice Boost */}
         <BoosterCard
           type="voice"
+          creditsPercentage={voiceCreditsPercentage}
           amount={250000}
           title="Voice Credit, Voice Cloning & Sound Effects"
           price={96}
@@ -118,7 +160,9 @@ export default async function BoostersPage() {
             "Record and get feedback",
             "Sound Effects",
           ]}
-          imageMain={<IlustrationVoiceSoundfx />}
+          imageMain={
+            <IlustrationVoiceSoundfx className="max-md:w-[300px] max-sm:w-[200px]" />
+          }
         />
       </main>
     </>
