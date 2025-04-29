@@ -1,4 +1,3 @@
-// components/VoiceDropdown.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -24,6 +23,7 @@ interface VoiceDropdownProps {
   onSelect: (voice: Voice) => void;
   onSearch: (query: string) => void;
   onToggleFavorite: (voice: Voice) => void;
+  onClose: () => void; // Add this new prop
 }
 
 export function VoiceDropdown({
@@ -34,11 +34,30 @@ export function VoiceDropdown({
   onSelect,
   onSearch,
   onToggleFavorite,
+  onClose,
 }: VoiceDropdownProps) {
   if (!isOpen) return null;
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest(".voice-dropdown-container")) {
+        onClose();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [onClose]);
+
+  const handleSelect = (voice: Voice) => {
+    onSelect(voice);
+    onClose();
+  };
 
   return (
-    <div className="absolute left-0 top-16 z-50 w-64 rounded-md border bg-card shadow-lg">
+    <div className="voice-dropdown-container absolute left-0 top-full z-50 mt-2 w-64 rounded-md border bg-card shadow-lg">
       <div className="p-2">
         <div className="relative mb-2">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -87,7 +106,7 @@ export function VoiceDropdown({
               <button
                 key={voice.id}
                 className="flex w-full items-center gap-3 rounded-md p-2 text-left hover:bg-muted"
-                onClick={() => onSelect(voice)}
+                onClick={() => handleSelect(voice)}
               >
                 <Avatar className="h-10 w-10 border">
                   <AvatarImage

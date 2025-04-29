@@ -14,6 +14,7 @@ export function useAudioManagement(initialActors: ActorSection[]) {
         id: crypto.randomUUID(),
         voice: null,
         text: "",
+        lastGeneratedText: "",
         audioUrl: null,
         audioBlob: null,
         isPlaying: false,

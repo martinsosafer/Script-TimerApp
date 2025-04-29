@@ -13,6 +13,8 @@ export interface ActorSection {
   id: string;
   voice: Voice | null;
   text: string;
+  lastGeneratedText: string;
+  lastGeneratedVoiceId?: string;
   audioUrl: string | null;
   audioBlob: Blob | null;
   isPlaying: boolean;

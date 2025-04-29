@@ -13,6 +13,7 @@ interface GenerateButtonProps {
   isGenerating: boolean;
   isPlaying: boolean;
   hasAudio: boolean;
+  needsRegeneration?: boolean;
   disabled?: boolean;
   onClick: () => void;
 }
@@ -21,6 +22,7 @@ export function GenerateButton({
   isGenerating,
   isPlaying,
   hasAudio,
+  needsRegeneration = false,
   disabled = false,
   onClick,
 }: GenerateButtonProps) {
@@ -41,7 +43,7 @@ export function GenerateButton({
           <Pause className="mr-2 h-4 w-4" />
           Pause
         </>
-      ) : hasAudio ? (
+      ) : hasAudio && !needsRegeneration ? (
         <>
           <Play className="mr-2 h-4 w-4" />
           Play
