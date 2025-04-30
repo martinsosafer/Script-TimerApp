@@ -47,8 +47,8 @@ export default async function BoostersPage() {
   // console.log("plagiarismCredits", plagiarismCredits);
   // console.log("plagiarismCreditsPercentage", plagiarismCreditsPercentage);
 
-  console.log("voiceCredits", voiceCredits);
-  console.log("voiceCreditsPercentage", voiceCreditsPercentage);
+  // console.log("voiceCredits", voiceCredits);
+  // console.log("voiceCreditsPercentage", voiceCreditsPercentage);
 
   return (
     <>
