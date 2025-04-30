@@ -35,10 +35,9 @@ export function AudioControls({
           <span className="text-xs text-muted-foreground">Delay:</span>
           <Input
             type="number"
-            min="0"
             step="100"
             value={delay}
-            onChange={(e) => onDelayChange(Number(e.target.value) || 0)}
+            onChange={(e) => onDelayChange(Number(e.target.value))} // Remove the || 0 to allow negatives
             className="h-7 w-20 text-xs"
           />
           <span className="text-xs text-muted-foreground">ms</span>

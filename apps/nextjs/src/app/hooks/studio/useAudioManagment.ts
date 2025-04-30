@@ -78,10 +78,24 @@ export function useAudioManagement(initialActors: ActorSection[]) {
   };
 
   const toggleActorMute = (actorId: string) => {
-    setActors(
-      actors.map((actor) => {
+    setActors((prevActors) =>
+      prevActors.map((actor) => {
         if (actor.id === actorId) {
-          return { ...actor, muted: !actor.muted };
+          if (actor.muted) {
+            return {
+              ...actor,
+              muted: false,
+              volume: actor.previousVolume ?? 1,
+              previousVolume: undefined,
+            };
+          } else {
+            return {
+              ...actor,
+              muted: true,
+              previousVolume: actor.volume,
+              volume: 0,
+            };
+          }
         }
         return actor;
       }),

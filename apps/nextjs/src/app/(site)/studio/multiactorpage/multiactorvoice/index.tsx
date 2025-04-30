@@ -376,6 +376,7 @@ export default function MultiActorVoice({
           </TooltipProvider>
 
           <div className="flex items-center gap-2">
+            <span className="text-sm">Master Volume</span>
             <Volume className="h-4 w-4 text-muted-foreground" />
             <Slider
               className="w-24"

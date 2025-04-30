@@ -40,45 +40,18 @@ export default async function IndexPage() {
 
   const subtitle = (
     <>
-      {subData?.status ? (
-        <div>
-          <p className="font-base mb-2 text-center">
-            You can add your own voices by recording or uploading sound files
-            below.
-          </p>
-          {basePlan !== "FREE" && (
-            <p className="font-base mb-2 text-center">
-              As a{" "}
-              <span className="text-cp-primary font-semibold">
-                {basePlan === "1" || basePlan === "2"
-                  ? `Tier ${basePlan} user`
-                  : basePlan}
-              </span>{" "}
-              user, you can create up to
-              <span className="text-cp-primary font-bold">
-                {" "}
-                {voicesAmount[basePlan]}{" "}
-              </span>{" "}
-              cloned voices.
-            </p>
-          )}
-        </div>
-      ) : (
-        <div className="flex flex-col">
-          <p className="font-base text-center">
-            This is where you choose and create your voice overs.
-          </p>
-          <p className="font-base mb-2 text-center">
-            Log in to Script Timer and start creating now.
-          </p>
-        </div>
-      )}
+      <div>
+        <p className="font-base mb-2 text-center">
+          Youv’e got a screenplay, book, news, podcast, table read… This is your
+          home!  Create long form, multiple actor voice overs below
+        </p>
+      </div>
     </>
   );
 
   return (
     <div>
-      <PageHeader title="Voice Cloning" subtitle={subtitle} />
+      <PageHeader title="Multi-Voice Studio" subtitle={subtitle} />
       <MultiActorPage />
     </div>
   );

@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 
 import type { ActorSection, MergeType } from "~/constants/types/voice";
@@ -28,9 +30,8 @@ export function useAudioMerge({ actors, masterVolume }: UseAudioMergeProps) {
       const audioContext = new (window.AudioContext ||
         (window as any).webkitAudioContext)();
 
-      const sortedActors = [...actorsWithAudio].sort(
-        (a, b) => a.delay - b.delay,
-      );
+      // Sort actors by their original order (assuming the order in the array is the intended sequence)
+      const sortedActors = [...actorsWithAudio];
 
       let result: Blob;
       if (mergeType === "sequential") {
@@ -69,6 +70,7 @@ export function useAudioMerge({ actors, masterVolume }: UseAudioMergeProps) {
     const audioBuffers: AudioBuffer[] = [];
     const volumes: number[] = [];
 
+    // First, decode all audio buffers
     for (const actor of sortedActors) {
       if (!actor.audioBlob) continue;
       const arrayBuffer = await actor.audioBlob.arrayBuffer();
@@ -77,50 +79,93 @@ export function useAudioMerge({ actors, masterVolume }: UseAudioMergeProps) {
       volumes.push(actor.muted ? 0 : actor.volume);
     }
 
-    let totalLength = 0;
+    // Calculate the start times for each actor based on the previous actor's end time
+    const startTimes: number[] = [];
+    let currentTime = 0;
+
     for (let i = 0; i < sortedActors.length; i++) {
       if (i === 0) {
-        totalLength += audioBuffers[i].duration;
+        // First actor always starts at 0
+        startTimes.push(0);
+        currentTime = audioBuffers[0].duration * 1000; // Convert to ms
       } else {
-        const delayInSeconds =
-          (sortedActors[i].delay - sortedActors[i - 1].delay) / 1000;
-        totalLength += Math.max(0, delayInSeconds) + audioBuffers[i].duration;
+        // Calculate when this actor should start based on previous actor's end time
+        const previousEndTime =
+          startTimes[i - 1] + audioBuffers[i - 1].duration * 1000;
+
+        // Apply the delay (can be negative for overlap)
+        const delay = sortedActors[i].delay;
+        const startTime = previousEndTime + delay;
+
+        // Ensure we don't have a negative start time
+        startTimes.push(Math.max(0, startTime));
+
+        // Update current time to the end of this actor's audio
+        currentTime = startTimes[i] + audioBuffers[i].duration * 1000;
       }
     }
+
+    // Convert start times from ms to seconds
+    const startTimesInSeconds = startTimes.map((time) => time / 1000);
+
+    // Calculate total length needed for the merged buffer
+    const totalDuration = Math.max(
+      ...startTimesInSeconds.map(
+        (startTime, i) => startTime + audioBuffers[i].duration,
+      ),
+    );
 
     const sampleRate = audioBuffers[0].sampleRate;
     const numberOfChannels = audioBuffers[0].numberOfChannels;
 
+    // Create buffer with enough space for all audio
+    const totalLengthInSamples = Math.ceil(totalDuration * sampleRate);
     const mergedBuffer = audioContext.createBuffer(
       numberOfChannels,
-      totalLength * sampleRate,
+      totalLengthInSamples,
       sampleRate,
     );
 
-    let offset = 0;
+    // Mix all audio at their respective positions
     for (let i = 0; i < audioBuffers.length; i++) {
       const buffer = audioBuffers[i];
       const volume = volumes[i];
-
-      if (i > 0) {
-        const delayInSeconds =
-          (sortedActors[i].delay - sortedActors[i - 1].delay) / 1000;
-        if (delayInSeconds > 0) {
-          offset += delayInSeconds * sampleRate;
-        }
-      }
+      const startSample = Math.floor(startTimesInSeconds[i] * sampleRate);
 
       for (let channel = 0; channel < numberOfChannels; channel++) {
         const mergedChannelData = mergedBuffer.getChannelData(channel);
         const bufferChannelData = buffer.getChannelData(channel);
 
         for (let j = 0; j < bufferChannelData.length; j++) {
-          mergedChannelData[j + offset] =
-            bufferChannelData[j] * volume * masterVolume;
+          if (
+            startSample + j >= 0 &&
+            startSample + j < mergedChannelData.length
+          ) {
+            mergedChannelData[startSample + j] +=
+              bufferChannelData[j] * volume * masterVolume;
+          }
+        }
+      }
+    }
+
+    // Normalize audio to prevent clipping
+    for (let channel = 0; channel < numberOfChannels; channel++) {
+      const mergedChannelData = mergedBuffer.getChannelData(channel);
+      let max = 0;
+
+      for (let i = 0; i < mergedChannelData.length; i++) {
+        const abs = Math.abs(mergedChannelData[i]);
+        if (abs > max) {
+          max = abs;
         }
       }
 
-      offset += buffer.length;
+      if (max > 1) {
+        const gain = 0.9 / max;
+        for (let i = 0; i < mergedChannelData.length; i++) {
+          mergedChannelData[i] *= gain;
+        }
+      }
     }
 
     return finalizeMergedAudio(mergedBuffer);
@@ -131,52 +176,92 @@ export function useAudioMerge({ actors, masterVolume }: UseAudioMergeProps) {
     audioContext: AudioContext,
     overlapDuration: number,
   ): Promise<Blob> => {
+    // For the overlap mode, we'll use the same sequential logic but with the specified overlap duration
     const audioBuffers: AudioBuffer[] = [];
     const volumes: number[] = [];
-    const delays: number[] = [];
 
+    // First, decode all audio buffers
     for (const actor of sortedActors) {
       if (!actor.audioBlob) continue;
       const arrayBuffer = await actor.audioBlob.arrayBuffer();
       const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
       audioBuffers.push(audioBuffer);
       volumes.push(actor.muted ? 0 : actor.volume);
-      delays.push(actor.delay);
     }
 
-    let maxEndTime = 0;
-    for (let i = 0; i < audioBuffers.length; i++) {
-      const endTime = delays[i] / 1000 + audioBuffers[i].duration;
-      if (endTime > maxEndTime) {
-        maxEndTime = endTime;
+    // Calculate the start times for each actor based on the previous actor's end time
+    const startTimes: number[] = [];
+    let currentTime = 0;
+
+    for (let i = 0; i < sortedActors.length; i++) {
+      if (i === 0) {
+        // First actor always starts at 0
+        startTimes.push(0);
+        currentTime = audioBuffers[0].duration * 1000; // Convert to ms
+      } else {
+        // Calculate when this actor should start based on previous actor's end time
+        const previousEndTime =
+          startTimes[i - 1] + audioBuffers[i - 1].duration * 1000;
+
+        // Apply the delay (can be negative for overlap) or use the specified overlap
+        const delay =
+          sortedActors[i].delay !== 0
+            ? sortedActors[i].delay
+            : -overlapDuration;
+        const startTime = previousEndTime + delay;
+
+        // Ensure we don't have a negative start time
+        startTimes.push(Math.max(0, startTime));
+
+        // Update current time to the end of this actor's audio
+        currentTime = startTimes[i] + audioBuffers[i].duration * 1000;
       }
     }
+
+    // Convert start times from ms to seconds
+    const startTimesInSeconds = startTimes.map((time) => time / 1000);
+
+    // Calculate total length needed for the merged buffer
+    const totalDuration = Math.max(
+      ...startTimesInSeconds.map(
+        (startTime, i) => startTime + audioBuffers[i].duration,
+      ),
+    );
 
     const sampleRate = audioBuffers[0].sampleRate;
     const numberOfChannels = audioBuffers[0].numberOfChannels;
 
+    // Create buffer with enough space for all audio
+    const totalLengthInSamples = Math.ceil(totalDuration * sampleRate);
     const mergedBuffer = audioContext.createBuffer(
       numberOfChannels,
-      maxEndTime * sampleRate,
+      totalLengthInSamples,
       sampleRate,
     );
 
+    // Mix all audio at their respective positions
     for (let i = 0; i < audioBuffers.length; i++) {
       const buffer = audioBuffers[i];
       const volume = volumes[i];
-      const delayInSamples = Math.floor((delays[i] / 1000) * sampleRate);
+      const startSample = Math.floor(startTimesInSeconds[i] * sampleRate);
 
       for (let channel = 0; channel < numberOfChannels; channel++) {
         const mergedChannelData = mergedBuffer.getChannelData(channel);
         const bufferChannelData = buffer.getChannelData(channel);
 
         for (let j = 0; j < bufferChannelData.length; j++) {
-          mergedChannelData[j + delayInSamples] +=
-            bufferChannelData[j] * volume * masterVolume;
+          if (
+            startSample + j >= 0 &&
+            startSample + j < mergedChannelData.length
+          ) {
+            mergedChannelData[startSample + j] +=
+              bufferChannelData[j] * volume * masterVolume;
+          }
         }
       }
     }
 
+    // Normalize audio to prevent clipping
     for (let channel = 0; channel < numberOfChannels; channel++) {
       const mergedChannelData = mergedBuffer.getChannelData(channel);
       let max = 0;

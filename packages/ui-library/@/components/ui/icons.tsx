@@ -390,20 +390,6 @@ function IconSeparator({ className, ...props }: React.ComponentProps<"svg">) {
   );
 }
 
-function IconArrowDown({ className, ...props }: React.ComponentProps<"svg">) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 256 256"
-      fill="currentColor"
-      className={cn("h-4 w-4", className)}
-      {...props}
-    >
-      <path d="m205.66 149.66-72 72a8 8 0 0 1-11.32 0l-72-72a8 8 0 0 1 11.32-11.32L120 196.69V40a8 8 0 0 1 16 0v156.69l58.34-58.35a8 8 0 0 1 11.32 11.32Z" />
-    </svg>
-  );
-}
-
 function IconArrowRight({ className, ...props }: React.ComponentProps<"svg">) {
   return (
     <svg
@@ -3536,6 +3522,54 @@ function IconVolume2({
     </svg>
   );
 }
+function IconArrowUp({
+  color = "currentColor",
+  className,
+  ...props
+}: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={`h-4 w-4 ${className}`}
+      {...props}
+    >
+      <path d="m5 12 7-7 7 7" />
+      <path d="M12 19V5" />
+    </svg>
+  );
+}
+function IconArrowDown({
+  color = "currentColor",
+  className,
+  ...props
+}: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={`h-4 w-4 ${className}`}
+      {...props}
+    >
+      <path d="M12 5v14" />
+      <path d="m19 12-7 7-7-7" />
+    </svg>
+  );
+}
 
 export {
   IconEdit,
@@ -3544,7 +3578,6 @@ export {
   IconVercel,
   IconGitHub,
   IconSeparator,
-  IconArrowDown,
   IconArrowRight,
   IconUser,
   IconPlus,
@@ -3650,4 +3683,6 @@ export {
   IconVolumeX,
   IconSettings,
   IconVolume2,
+  IconArrowUp,
+  IconArrowDown,
 };

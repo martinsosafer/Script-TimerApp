@@ -21,6 +21,7 @@ export interface ActorSection {
   autoPlay: boolean;
   isGenerating: boolean;
   volume: number;
+  previousVolume?: number;
   muted: boolean;
   delay: number;
 }

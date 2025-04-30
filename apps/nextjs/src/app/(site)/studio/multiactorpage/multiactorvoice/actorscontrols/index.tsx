@@ -3,15 +3,17 @@
 
 import { Button } from "@voiceai/ui";
 import {
-  IconArrowUpDown as ArrowUpDown,
   IconCopy as Copy,
+  IconArrowDown,
+  IconArrowUp,
   IconTrash as Trash,
 } from "@voiceai/ui/@/components/ui/icons";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@voiceai/ui/@/components/ui/tooltip";
-
-
-
-
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@voiceai/ui/@/components/ui/tooltip";
 
 interface ActorControlsProps {
   actorId: string;
@@ -42,7 +44,7 @@ export function ActorControls({
               onClick={() => onReorder(actorId, "up")}
               disabled={index === 0}
             >
-              <ArrowUpDown className="h-4 w-4 rotate-90" />
+              <IconArrowUp className="h-4 w-4 " />
               <span className="sr-only">Move up</span>
             </Button>
           </TooltipTrigger>
@@ -62,7 +64,7 @@ export function ActorControls({
               onClick={() => onReorder(actorId, "down")}
               disabled={index === totalActors - 1}
             >
-              <ArrowUpDown className="h-4 w-4 -rotate-90" />
+              <IconArrowDown className="h-4 w-4 " />
               <span className="sr-only">Move down</span>
             </Button>
           </TooltipTrigger>
