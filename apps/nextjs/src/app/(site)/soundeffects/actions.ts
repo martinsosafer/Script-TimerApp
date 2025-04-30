@@ -21,8 +21,7 @@ export async function getElevenLabsUserCredits(userId: string) {
 }
 
 // Compare Vercel Blobs with Neon list and update dB
-// Note: If you remove a sound from Vercel, it will not be removed from dB
-//      and it will not be removed from the user favorites (handle manually on Neon)
+// Note: If you remove a sound from Vercel, it will not be removed from dB (handle manually on Neon)
 export async function updateSoundfxFromVercel() {
   try {
     // Get Vercel Blob Sound Effects
