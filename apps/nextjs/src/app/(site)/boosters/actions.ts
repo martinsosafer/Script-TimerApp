@@ -54,7 +54,7 @@ export async function getVoiceCredits(userId: string) {
   }
 }
 
-// Create Images booster
+// Add booster by type
 export async function addBooster({
   subData,
   type,
@@ -67,6 +67,7 @@ export async function addBooster({
     const subscriptionId = subData?.planId;
     const priceIdByType = priceId[type as keyof typeof priceId];
 
+    // console.log("subscriptionId", subscriptionId);
     // console.log("priceIdByType", priceIdByType);
 
     const subscription = await stripe.subscriptions.retrieve(subscriptionId!);
@@ -78,17 +79,60 @@ export async function addBooster({
 
     // Check if user already has a booster, and if it has credits
     // If user has a booster, return toast with credits left (ask Maury)
+    if (type === "IMAGES") {
+      const imgBoosterCredits = await db.query.imgBooster.findFirst({
+        where: (credits, { eq }) => eq(credits.userId, subData?.userId),
+      });
+      if (imgBoosterCredits?.credits ?? 0 > 0) {
+        return {
+          title: "Booster already added",
+          description: `You already have a ${type.toLowerCase()} booster with ${
+            imgBoosterCredits?.credits
+          } credits left. Please use them before adding a new one.`,
+        };
+      }
+    }
+
+    if (type === "PLAGIARISM") {
+      const clBoosterCredits = await db.query.clBooster.findFirst({
+        where: (credits, { eq }) => eq(credits.userId, subData?.userId),
+      });
+      if (clBoosterCredits?.credits ?? 0 > 0) {
+        return {
+          title: "Booster already added",
+          description: `You already have a ${type.toLowerCase()} booster with ${
+            clBoosterCredits?.credits
+          } credits left. Please use them before adding a new one.`,
+        };
+      }
+    }
+
+    if (type === "VOICE") {
+      const voiceBoosterCredits = await db.query.elevenLabsBooster.findFirst({
+        where: (credits, { eq }) => eq(credits.userId, subData?.userId),
+      });
+      if (voiceBoosterCredits?.credits ?? 0 > 0) {
+        return {
+          title: "Booster already added",
+          description: `You already have a ${type.toLowerCase()} booster with ${
+            voiceBoosterCredits?.credits
+          } credits left. Please use them before adding a new one.`,
+        };
+      }
+    }
 
     // Make payment and confirm
     // const boosterPayment = await stripe.checkout.sessions.create({
     //   mode: "payment", // One-time payment
-    //   customer: subscriptionId!,
+    //   customer: subscriptionId!, // Customer ID from subscription
     //   line_items: [
     //     {
     //       price: priceIdByType,
     //       quantity: 1,
     //     },
     //   ],
+    // success_url: `${process.env.HOST_URL}/success?sessionId={CHECKOUT_SESSION_ID}`,
+    // cancel_url: `${process.env.HOST_URL}/plans`,
     // });
     // console.log("boosterPayment", boosterPayment);
 

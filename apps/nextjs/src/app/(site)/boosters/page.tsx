@@ -64,7 +64,7 @@ export default async function BoostersPage() {
         </p>
       </header>
 
-      <main className="flex flex-col items-center gap-8 px-3 pb-[84px] pt-8">
+      <main className="flex flex-col items-center gap-8 px-3 pb-20 pt-8 lg:pb-28">
         <p
           className={`bg-cp-accent-lightest w-full rounded-lg px-[12px] py-[8px] text-sm/none leading-[25px] text-[#212121] shadow-md lg:max-w-5xl lg:px-[24px] lg:py-[12px]`}
         >

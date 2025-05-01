@@ -41,6 +41,7 @@ const BoosterCard = ({
   imageBottomRight,
 }: BoosterCardProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const cardHeight = {
     IMAGES: "h-[1030px]",
@@ -59,12 +60,20 @@ const BoosterCard = ({
   }) => {
     if (!subData) return;
 
-    // Open new modal and show Booster info
+    setIsLoading(true);
+
+    // Open new modal and show Booster and payment info
     // Handle payment from modal (similar to upgrade plan)
 
     try {
       const result = await addBooster({ subData, type });
-      console.log("result", result);
+      // console.log("result", result);
+      if (result?.title && result.description) {
+        return toast({
+          title: result.title,
+          description: result.description,
+        });
+      }
 
       // return success toast with info
 
@@ -79,12 +88,14 @@ const BoosterCard = ({
         description: error.message as string,
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <article
-      className={`bg-cp-primary flex flex-col gap-3 rounded-2xl p-10 shadow-xl max-lg:p-6 max-sm:p-5 lg:max-w-5xl ${isOpen ? `${cardHeight[type]}` : "h-[450px] max-sm:h-[400px]"} w-full max-w-5xl overflow-hidden transition-[height] duration-500 ease-in-out`}
+      className={`bg-cp-primary shadow-cp-gray-400 flex flex-col gap-3 rounded-2xl p-10 shadow-lg max-lg:p-6 max-sm:p-5 lg:max-w-5xl ${isOpen ? `${cardHeight[type]}` : "h-[450px] max-sm:h-[400px]"} w-full max-w-5xl overflow-hidden transition-[height] duration-500 ease-in-out`}
     >
       <p className="text-cp-accent-lightest col-start-1 col-end-3 text-lg max-sm:text-sm">
         <strong>{creditsPercentage <= 10 ? "10% credits left -" : null}</strong>{" "}
@@ -124,9 +135,16 @@ const BoosterCard = ({
                 className={`${poppins.className} disabled:bg-cp-secondary-light font-semibold`}
                 variant="accent"
                 onClick={() => handleAddBooster({ type, subData })}
-                disabled={!subData}
+                disabled={isLoading || !subData}
               >
-                ADD NOW
+                {isLoading ? (
+                  <div className="flex items-center justify-center">
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                    <span className="ml-2">Adding...</span>
+                  </div>
+                ) : (
+                  "ADD NOW"
+                )}
               </Button>
             </span>
 
