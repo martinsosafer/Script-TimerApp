@@ -3,13 +3,15 @@
 import { useState } from "react";
 
 import { Button } from "@voiceai/ui";
+import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 import { poppins, roboto } from "~/app/fonts";
-import type { SessionProps } from "../types";
+import { addBooster } from "../actions";
+import type { SubData } from "../types";
 
 interface BoosterCardProps {
-  subData?: SessionProps;
-  type: "images" | "plagiarism" | "voice";
+  subData?: SubData;
+  type: "IMAGES" | "PLAGIARISM" | "VOICE";
   creditsPercentage: number;
   amount: number;
   amountDescription?: string;
@@ -41,9 +43,9 @@ const BoosterCard = ({
   const [isOpen, setIsOpen] = useState(false);
 
   const cardHeight = {
-    images: "h-[1030px]",
-    plagiarism: "h-[684px]",
-    voice: "h-[630px]",
+    IMAGES: "h-[1030px]",
+    PLAGIARISM: "h-[684px]",
+    VOICE: "h-[630px]",
   };
 
   const amountFormat = new Intl.NumberFormat("en-US").format(amount);
@@ -52,24 +54,32 @@ const BoosterCard = ({
     type,
     subData,
   }: {
-    type: string;
-    subData: SessionProps | undefined;
+    type: "IMAGES" | "PLAGIARISM" | "VOICE";
+    subData: SubData | undefined;
   }) => {
     if (!subData) return;
 
-    if (type === "images") {
-      // Add images action
-    }
-    if (type === "plagiarism") {
-      // Add plagiarism action
-    }
-    if (type === "voice") {
-      // Add voice action
-    }
+    // Open new modal and show Booster info
+    // Handle payment from modal (similar to upgrade plan)
 
-    console.log("BUY BOOSTER");
+    try {
+      const result = await addBooster({ subData, type });
+      console.log("result", result);
 
-    // Add booster action
+      // return success toast with info
+
+      return toast({
+        title: "Booster added!",
+        description: `You have successfully added the ${type.toLowerCase()} booster`,
+      });
+    } catch (error: any) {
+      console.error("Error adding booster:", error.message);
+      return toast({
+        title: "Something went wrong",
+        description: error.message as string,
+        variant: "destructive",
+      });
+    }
   };
 
   return (

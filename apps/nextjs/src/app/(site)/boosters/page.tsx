@@ -19,13 +19,13 @@ import {
   getVoiceCredits,
 } from "./actions";
 import BoosterCard from "./BoosterCard/BoosterCard";
-import type { SessionProps } from "./types";
+import type { SubData } from "./types";
 
 export default async function BoostersPage() {
   const session = await auth();
   const userId = session?.user.id;
   const userPlan = session?.user.subscription?.status;
-  const subData = session?.user.subscription as SessionProps | undefined;
+  const subData = session?.user.subscription as SubData | undefined;
 
   const imageCredits = await getImageCredits(userId ?? "");
   const imageCreditsPercentage =
@@ -41,8 +41,6 @@ export default async function BoostersPage() {
   const voiceCreditsPercentage =
     (100 * (voiceCredits?.credits ?? 0)) /
     STARTING_11CL_CREDITS[userPlan as keyof typeof STARTING_11CL_CREDITS];
-
-  // console.log("subData", subData);
 
   return (
     <>
@@ -78,7 +76,7 @@ export default async function BoostersPage() {
         {/* Images Boost */}
         <BoosterCard
           subData={subData}
-          type="images"
+          type="IMAGES"
           creditsPercentage={imageCreditsPercentage}
           amount={300}
           title="Images"
@@ -122,7 +120,7 @@ export default async function BoostersPage() {
         {/* Plagiarism Boost */}
         <BoosterCard
           subData={subData}
-          type="plagiarism"
+          type="PLAGIARISM"
           creditsPercentage={plagiarismCreditsPercentage}
           amount={150000}
           amountDescription="words"
@@ -145,7 +143,7 @@ export default async function BoostersPage() {
         {/* Voice Boost */}
         <BoosterCard
           subData={subData}
-          type="voice"
+          type="VOICE"
           creditsPercentage={voiceCreditsPercentage}
           amount={250000}
           amountDescription="characters"

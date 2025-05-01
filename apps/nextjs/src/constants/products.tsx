@@ -182,3 +182,17 @@ export const TEST_PRICES_ID: Record<string, ProductId> = {
     yearly: "price_1P6hGSK0GRmjhtz7ZYvDKJNz",
   },
 };
+
+// Boosters price Ids
+export const BOOSTER_PRICE_ID = {
+  IMAGES: "price_1QCnrsK0GRmjhtz7i6LxQNwf",
+  PLAGIARISM: "price_1QCnpCK0GRmjhtz7khOdf2wj",
+  VOICE: "price_1QFO4IK0GRmjhtz76Zh60uTH",
+};
+
+// Booster test price Ids
+export const TEST_BOOSTER_PRICE_ID = {
+  IMAGES: "price_testImagesIdPrice", // Add test price ID for images
+  PLAGIARISM: "price_testPlagiarismIdPrice", // Add test price ID for plagiarism
+  VOICE: "price_testVoiceIdPrice", // Add test price ID for voice
+};
