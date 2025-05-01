@@ -5,8 +5,10 @@ import { useState } from "react";
 import { Button } from "@voiceai/ui";
 
 import { poppins, roboto } from "~/app/fonts";
+import type { SessionProps } from "../types";
 
 interface BoosterCardProps {
+  subData?: SessionProps;
   type: "images" | "plagiarism" | "voice";
   creditsPercentage: number;
   amount: number;
@@ -22,6 +24,7 @@ interface BoosterCardProps {
 }
 
 const BoosterCard = ({
+  subData,
   type,
   creditsPercentage,
   amount,
@@ -44,6 +47,30 @@ const BoosterCard = ({
   };
 
   const amountFormat = new Intl.NumberFormat("en-US").format(amount);
+
+  const handleAddBooster = async ({
+    type,
+    subData,
+  }: {
+    type: string;
+    subData: SessionProps | undefined;
+  }) => {
+    if (!subData) return;
+
+    if (type === "images") {
+      // Add images action
+    }
+    if (type === "plagiarism") {
+      // Add plagiarism action
+    }
+    if (type === "voice") {
+      // Add voice action
+    }
+
+    console.log("BUY BOOSTER");
+
+    // Add booster action
+  };
 
   return (
     <article
@@ -84,8 +111,10 @@ const BoosterCard = ({
                 ${price}
               </p>
               <Button
-                className={`${poppins.className} font-semibold`}
+                className={`${poppins.className} disabled:bg-cp-secondary-light font-semibold`}
                 variant="accent"
+                onClick={() => handleAddBooster({ type, subData })}
+                disabled={!subData}
               >
                 ADD NOW
               </Button>

@@ -19,11 +19,13 @@ import {
   getVoiceCredits,
 } from "./actions";
 import BoosterCard from "./BoosterCard/BoosterCard";
+import type { SessionProps } from "./types";
 
 export default async function BoostersPage() {
   const session = await auth();
   const userId = session?.user.id;
   const userPlan = session?.user.subscription?.status;
+  const subData = session?.user.subscription as SessionProps | undefined;
 
   const imageCredits = await getImageCredits(userId ?? "");
   const imageCreditsPercentage =
@@ -40,15 +42,7 @@ export default async function BoostersPage() {
     (100 * (voiceCredits?.credits ?? 0)) /
     STARTING_11CL_CREDITS[userPlan as keyof typeof STARTING_11CL_CREDITS];
 
-  // console.log("session", session);
-  // console.log("imageCredits", imageCredits);
-  // console.log("imageCreditsPercentage", imageCreditsPercentage);
-
-  // console.log("plagiarismCredits", plagiarismCredits);
-  // console.log("plagiarismCreditsPercentage", plagiarismCreditsPercentage);
-
-  // console.log("voiceCredits", voiceCredits);
-  // console.log("voiceCreditsPercentage", voiceCreditsPercentage);
+  // console.log("subData", subData);
 
   return (
     <>
@@ -83,10 +77,11 @@ export default async function BoostersPage() {
 
         {/* Images Boost */}
         <BoosterCard
+          subData={subData}
           type="images"
           creditsPercentage={imageCreditsPercentage}
           amount={300}
-          title="Images Boost"
+          title="Images"
           price={77}
           description="Create images like these for:"
           detailsList={[
@@ -126,6 +121,7 @@ export default async function BoostersPage() {
 
         {/* Plagiarism Boost */}
         <BoosterCard
+          subData={subData}
           type="plagiarism"
           creditsPercentage={plagiarismCreditsPercentage}
           amount={150000}
@@ -148,10 +144,12 @@ export default async function BoostersPage() {
 
         {/* Voice Boost */}
         <BoosterCard
+          subData={subData}
           type="voice"
           creditsPercentage={voiceCreditsPercentage}
           amount={250000}
-          title="Voice Credit, Voice Cloning & Sound Effects"
+          amountDescription="characters"
+          title="Voice Overs, Voice Cloning & Sound Effects"
           price={96}
           description="Boost your credits and create more:"
           detailsList={[

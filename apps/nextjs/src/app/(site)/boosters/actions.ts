@@ -40,3 +40,26 @@ export async function getVoiceCredits(userId: string) {
     throw error;
   }
 }
+
+export async function postImgBooster(userId: string) {
+  // Check if user already has a booster
+  // If user has a booster, return toast
+
+  // Make payment and confirm
+  // create booster and show confirmation toast
+  
+  // if error: show error toast
+
+  // try {
+  //   const credits = await db
+  //     .update(db.imgCredit)
+  //     .set({ credits: 100 })
+  //     .where((credits, { eq }) => eq(credits.userId, userId))
+  //     .returning()
+  //     .execute();
+  //   return credits;
+  // } catch (error) {
+  //   console.error(error);
+  //   throw error;
+  // }
+}
