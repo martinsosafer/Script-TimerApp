@@ -39,8 +39,8 @@ export default function UpgradeModal({
       window.location.reload();
       onClose();
       return toast({
-        title: "Subscription updated",
-        description: "Your plan has been updated!",
+        title: "Subscription updated!",
+        description: "Your plan has been updated",
       });
     } catch (error) {
       onClose();
