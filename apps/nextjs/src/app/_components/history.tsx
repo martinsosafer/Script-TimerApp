@@ -52,8 +52,8 @@ export const History = ({ ...rest }) => {
       subscriptionData.status === "CREATOR" ||
       subscriptionData.status === "STUDENT" ||
       subscriptionData.status === "BUSINESS" ||
-      subscriptionData.status == 1 ||
-      subscriptionData.status == 2);
+      subscriptionData.status == "1" ||
+      subscriptionData.status == "2");
 
   const { mutateAsync: downloadGeneration } = api.history.download.useMutation({
     onSuccess(data) {
