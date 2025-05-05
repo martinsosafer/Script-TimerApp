@@ -13,6 +13,8 @@ This app is a vitual assistant for content creators.
 
 ## Description
 
+Script Timer Ai is an application that uses multiple Ai models to assist with multimedia content creation.
+
 ## Project Stack
 
 ## Environments
