@@ -139,7 +139,6 @@ export async function checkAndInsertCredits(userId: string) {
   const clCreditStatus = await db.query.clCredits.findFirst({
     where: (clCredits, { eq }) => eq(clCredits.userId, userId),
   });
-
   if (!clCreditStatus) {
     await db
       .insert(schema.clCredits)
@@ -153,7 +152,6 @@ export async function checkAndInsertCredits(userId: string) {
   const imgCreditStatus = await db.query.imgCredit.findFirst({
     where: (imgCredit, { eq }) => eq(imgCredit.userId, userId),
   });
-
   if (!imgCreditStatus) {
     await db
       .insert(schema.imgCredit)
@@ -167,13 +165,25 @@ export async function checkAndInsertCredits(userId: string) {
   const openAiCreditStatus = await db.query.openAiCredit.findFirst({
     where: (openAiCredit, { eq }) => eq(openAiCredit.userId, userId),
   });
-
   if (!openAiCreditStatus) {
     await db
       .insert(schema.openAiCredit)
       .values({
         userId,
         credits: STARTING_OPENAI_CREDITS[subscriptionStatus?.status ?? "FREE"],
+      })
+      .execute();
+  }
+
+  const elevenLabsCreditStatus = await db.query.elevenLabsCredit.findFirst({
+    where: (elevenLabsCredit, { eq }) => eq(elevenLabsCredit.userId, userId),
+  });
+  if (!elevenLabsCreditStatus) {
+    await db
+      .insert(schema.elevenLabsCredit)
+      .values({
+        userId,
+        credits: STARTING_11CL_CREDITS[subscriptionStatus?.status ?? "FREE"],
       })
       .execute();
   }

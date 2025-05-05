@@ -108,6 +108,7 @@ export const {
         where: (subscriptions, { eq }) => eq(subscriptions.userId, userId),
       });
 
+      // Check if the user has an AppSumo subscription and remove the old subscription if they do.
       if (appSumoSubscription) {
         if (subscriptionStatus) {
           await db

@@ -1,3 +1,36 @@
+# Script Timer Ai
+
+This app is a vitual assistant for content creators.
+
+- [Description](#description)
+- [Project Stack](#project-stack)
+- [Environments](#environments)
+- [Scripts](#scripts)
+- [Dependnecies](#dependencies)
+- [Linter](#linter)
+- [Payments](#payments)
+- [Credits](#Credits)
+
+## Description
+
+## Project Stack
+
+## Environments
+
+## Scripts
+
+## Dependencies
+
+## Linter
+
+## Payments
+
+## Credits
+
+---
+
+### - Old Docs -
+
 # Create T3 App
 
 This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
