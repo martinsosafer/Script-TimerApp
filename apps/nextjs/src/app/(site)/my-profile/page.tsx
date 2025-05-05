@@ -3,10 +3,12 @@ import { Stripe } from "stripe";
 
 import { auth } from "@voiceai/auth";
 import { and, db } from "@voiceai/db";
-import {
-  IconPencilLine,
-  IconUserRound,
-} from "@voiceai/ui/@/components/ui/icons";
+
+import { poppins, roboto } from "~/app/fonts";
+// import {
+//   IconPencilLine,
+//   IconUserRound,
+// } from "@voiceai/ui/@/components/ui/icons";
 
 import type { I_AppSumoSubscription } from "~/constants/types/subscriptions";
 import { getCredits } from "./actions";
@@ -57,30 +59,35 @@ export default async function MyProfile() {
     await getAppSumoDetails(session?.user.id ?? "");
 
   const credits = await getCredits(session?.user.id ?? "");
-  console.log("creditssss", credits);
+
   if (!session) {
     redirect("/");
   }
 
   return (
-    <div className="flex h-full w-full justify-center bg-[#FAFAFA] py-10">
-      <div className="flex w-[1024px] flex-col items-center overflow-hidden rounded-3xl bg-white shadow-lg shadow-gray-500">
+    <main className="flex h-full w-full justify-center px-1 pb-16 pt-10">
+      <section className="shadow-cp-gray-300 flex max-w-5xl flex-col items-center overflow-hidden rounded-2xl bg-white shadow-lg">
         <div className="h-[100px] w-full bg-gradient-to-b from-[#0066FF] to-[#13EBCDCC]" />
-        <div className="flex w-full flex-col p-8">
-          <div className="mt-[-80px] flex flex-col items-start">
-            <div className="relative flex h-40 w-40 cursor-pointer items-center justify-center rounded-full border-8 border-white bg-gray-400">
+        <div className="flex w-full flex-col px-3 pb-8 lg:px-8">
+          <header className="mt-[-86px] flex flex-col items-start">
+            {/* Image */}
+            {/* <div className="relative flex h-40 w-40 cursor-pointer items-center justify-center rounded-full border-8 border-white bg-gray-400">
               <IconUserRound className="h-20 w-20 text-white" />
               <div className="absolute bottom-0 right-0 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
                 <IconPencilLine className="h-6 w-6 text-gray-600" />
               </div>
-            </div>
+            </div> */}
+
             <div className="p-4">
-              <h1 className="text-xl font-semibold text-gray-600">
+              <h1 className="text-cp-white-ghost text-xl font-semibold">
                 {session?.user.name}
               </h1>
-              <p className="text-md text-gray-600">{session?.user.email}</p>
+              <p className={`${poppins.className} text-md text-cp-black`}>
+                {session?.user.email}
+              </p>
             </div>
-          </div>
+          </header>
+
           <SubscriptionDetails
             subscription={isAppSumo ? appSumoSubscription : stripeSubscription}
             credits={credits?.[0]}
@@ -88,7 +95,7 @@ export default async function MyProfile() {
             plan={session?.user.subscription?.status}
           />
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }
