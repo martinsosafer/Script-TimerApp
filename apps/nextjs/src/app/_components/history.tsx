@@ -40,7 +40,15 @@ export const History = ({ ...rest }) => {
   const { data, isLoading, refetch } = api.history.list.useQuery();
   const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
 
-  console.log("Subscription Data HISTORY: ", subscriptionData);
+  // Filter sound effects from list
+  const dataVoicesOnly = data?.filter(
+    (item: { metadata: { type: string } | unknown }) => {
+      return (
+        (item?.metadata as { type: string })?.type !== "textToSoundEffects"
+      );
+    },
+  );
+
   const isSubscriptionActive =
     subscriptionData &&
     (subscriptionData.status === "CREATORCLMO" ||
@@ -52,8 +60,8 @@ export const History = ({ ...rest }) => {
       subscriptionData.status === "CREATOR" ||
       subscriptionData.status === "STUDENT" ||
       subscriptionData.status === "BUSINESS" ||
-      subscriptionData.status == 1 ||
-      subscriptionData.status == 2);
+      subscriptionData.status == "1" ||
+      subscriptionData.status == "2");
 
   const { mutateAsync: downloadGeneration } = api.history.download.useMutation({
     onSuccess(data) {
@@ -179,7 +187,7 @@ export const History = ({ ...rest }) => {
       </TableHeader>
       <TableBody>
         {!isLoading &&
-          data?.map((history, index) => (
+          dataVoicesOnly?.map((history, index) => (
             <TableRow key={history.history_id}>
               <TableCell>{history.prompt}</TableCell>
               <TableCell>-{history.prompt.length}</TableCell>
@@ -306,7 +314,7 @@ export const History = ({ ...rest }) => {
             <TableCell colSpan={4}>Loading...</TableCell>
           </TableRow>
         )}
-        {!isLoading && !data && (
+        {!isLoading && !dataVoicesOnly && (
           <TableRow>
             <TableCell colSpan={4}>No data available.</TableCell>
           </TableRow>

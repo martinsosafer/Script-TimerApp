@@ -28,7 +28,7 @@ export async function upgrade(
 
     console.log("priceId", priceId);
     console.log("subscription", subscription.items.data[0]);
-    // console.log("SUSCRIPTION_FULL", subscription);
+
     const updatedSubscription = await stripe.subscriptions.update(
       subscriptionId,
       {

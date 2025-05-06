@@ -14,7 +14,9 @@ export default async function LandingPage() {
   const session = await auth();
   const userId = session?.user.id ?? "";
   const userMail = session?.user.email ?? "";
+
   await monthlyCreditsReset(userId);
+  
   const trialExpiration =
     session?.user.subscription?.trialExpiration &&
     session?.user.subscription?.status === "FREE_TRIAL"
