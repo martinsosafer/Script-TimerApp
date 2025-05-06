@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@voiceai/ui";
 import Textarea from "@voiceai/ui/@/components/textarea-autosize";
@@ -164,6 +164,14 @@ export default function MultiActorVoice({
 
   const [isMergedAudioPlaying, setIsMergedAudioPlaying] = useState(false);
   const [autoPlayMerged, setAutoPlayMerged] = useState(false);
+  // Add a ref to track if we're currently processing the master button action
+  const isProcessingRef = useRef(false);
+  // Add a ref to store generated audio blobs
+  const generatedAudioBlobsRef = useRef(new Map());
+  // Add a counter to track completed audio generations
+  const [completedGenerations, setCompletedGenerations] = useState(0);
+  // Add a ref to track total expected generations
+  const totalGenerationsRef = useRef(0);
 
   const handleGenerateAndPlayAudio = async (actor: ActorSection) => {
     if (actor.isPlaying) {
@@ -171,51 +179,75 @@ export default function MultiActorVoice({
       return;
     }
 
-    // Always generate if no audio exists
-    if (!actor.audioUrl) {
-      await generateAndPlayAudio(actor, async (a) => {
-        return await generateAudioForActor(a, (id, blob) => {
-          drawWaveform(id, blob);
-          setActors((prev) =>
-            prev.map((actor) =>
-              actor.id === id
-                ? {
-                    ...actor,
-                    lastGeneratedText: actor.text,
-                    lastGeneratedVoiceId: actor.voice?.id,
-                  }
-                : actor,
-            ),
-          );
-        });
-      });
-      return;
-    }
+    // Set generating state
+    setActors((prev) =>
+      prev.map((a) => (a.id === actor.id ? { ...a, isGenerating: true } : a)),
+    );
 
-    // Only check for changes if audio exists
-    const needsNewAudio =
-      actor.lastGeneratedText !== actor.text ||
-      actor.lastGeneratedVoiceId !== actor.voice?.id;
-
-    if (needsNewAudio) {
-      await generateAndPlayAudio(actor, async (a) => {
-        return await generateAudioForActor(a, (id, blob) => {
-          drawWaveform(id, blob);
-          setActors((prev) =>
-            prev.map((actor) =>
-              actor.id === id
-                ? {
-                    ...actor,
-                    lastGeneratedText: actor.text,
-                    lastGeneratedVoiceId: actor.voice?.id,
-                  }
-                : actor,
-            ),
-          );
+    try {
+      // Always generate if no audio exists
+      if (!actor.audioUrl) {
+        await generateAndPlayAudio(actor, async (a) => {
+          const blob = await generateAudioForActor(a, (id, blob) => {
+            if (blob) {
+              drawWaveform(id, blob);
+              setActors((prev) =>
+                prev.map((actor) =>
+                  actor.id === id
+                    ? {
+                        ...actor,
+                        lastGeneratedText: actor.text,
+                        lastGeneratedVoiceId: actor.voice?.id,
+                        isGenerating: false,
+                      }
+                    : actor,
+                ),
+              );
+            }
+          });
+          return blob;
         });
-      });
-    } else {
-      togglePlayAudio(actor.id);
+        return;
+      }
+
+      // Only check for changes if audio exists
+      const needsNewAudio =
+        actor.lastGeneratedText !== actor.text ||
+        actor.lastGeneratedVoiceId !== actor.voice?.id;
+
+      if (needsNewAudio) {
+        await generateAndPlayAudio(actor, async (a) => {
+          const blob = await generateAudioForActor(a, (id, blob) => {
+            if (blob) {
+              drawWaveform(id, blob);
+              setActors((prev) =>
+                prev.map((actor) =>
+                  actor.id === id
+                    ? {
+                        ...actor,
+                        lastGeneratedText: actor.text,
+                        lastGeneratedVoiceId: actor.voice?.id,
+                        isGenerating: false,
+                      }
+                    : actor,
+                ),
+              );
+            }
+          });
+          return blob;
+        });
+      } else {
+        togglePlayAudio(actor.id);
+      }
+    } catch (error) {
+      console.error("Error generating audio:", error);
+    } finally {
+      // Ensure generating state is reset
+      setActors((prev) =>
+        prev.map((a) =>
+          a.id === actor.id ? { ...a, isGenerating: false } : a,
+        ),
+      );
     }
   };
 
@@ -253,10 +285,80 @@ export default function MultiActorVoice({
     }
   }, [mergedAudioUrl, autoPlayMerged]);
 
+  // Effect to handle merging audio when all generations are complete
+  useEffect(() => {
+    const mergeAudio = async () => {
+      // Only proceed if all generations are complete and we have blobs to merge
+      if (
+        completedGenerations > 0 &&
+        completedGenerations === totalGenerationsRef.current &&
+        generatedAudioBlobsRef.current.size > 0
+      ) {
+        try {
+          console.log(
+            `All ${completedGenerations} generations complete. Starting merge...`,
+          );
+
+          // Create a new map with only non-muted actors
+          const audioMapForMerging = new Map();
+
+          // Get all actors with voice and text
+          const validActors = actors.filter(
+            (actor) => actor.voice && actor.text.trim() && !actor.muted,
+          );
+
+          // Add each actor's audio to the map in the correct order
+          for (const actor of validActors) {
+            const audioData = generatedAudioBlobsRef.current.get(actor.id);
+            if (audioData) {
+              console.log(`Adding actor ${actor.id} to merge map`);
+              audioMapForMerging.set(actor.id, audioData);
+            }
+          }
+
+          if (audioMapForMerging.size > 0) {
+            console.log(`Merging ${audioMapForMerging.size} audio files...`);
+
+            // Directly merge the audio files
+            await mergeAudioFiles(
+              mergeType,
+              overlapDuration,
+              audioMapForMerging,
+              drawMergedWaveform,
+            );
+
+            setAutoPlayMerged(true);
+          } else {
+            console.warn("No audio to merge after filtering");
+          }
+        } catch (error) {
+          console.error("Error merging audio:", error);
+        } finally {
+          // Reset the counter after merging
+          setCompletedGenerations(0);
+        }
+      }
+    };
+
+    mergeAudio();
+  }, [
+    completedGenerations,
+    actors,
+    mergeType,
+    overlapDuration,
+    mergeAudioFiles,
+    drawMergedWaveform,
+  ]);
+
   const isAnyAudioPlaying =
     actors.some((a) => a.isPlaying) || isMergedAudioPlaying;
 
+  // Completely rewritten handleMasterButtonClick function
   const handleMasterButtonClick = async () => {
+    // If already processing, return to prevent multiple executions
+    if (isProcessingRef.current) return;
+
+    // If audio is playing, stop it
     if (isAnyAudioPlaying) {
       stopAllAudio();
       if (mergedAudioRef.current) {
@@ -267,66 +369,106 @@ export default function MultiActorVoice({
       return;
     }
 
+    // Set processing flag
+    isProcessingRef.current = true;
+
+    // Clear previous generated blobs and reset counters
+    generatedAudioBlobsRef.current.clear();
+    setCompletedGenerations(0);
+
     try {
-      // Generate audio for all actors that need it
-      const generationPromises = actors
-        .filter((actor) => actor.voice && actor.text.trim())
-        .map(async (actor) => {
-          // Always generate fresh audio when using master button
-          const blob = await generateAudioForActor(
-            actor,
-            (id, generatedBlob) => {
+      // Get actors with voice and text
+      const actorsToGenerate = actors.filter(
+        (actor) => actor.voice && actor.text.trim(),
+      );
+
+      if (actorsToGenerate.length === 0) {
+        isProcessingRef.current = false;
+        return;
+      }
+
+      // Set the total expected generations
+      totalGenerationsRef.current = actorsToGenerate.length;
+
+      console.log(`Starting generation for ${actorsToGenerate.length} actors`);
+
+      // Set generating state for all actors that need generation
+      setActors((prev) =>
+        prev.map((a) =>
+          actorsToGenerate.some((actor) => actor.id === a.id)
+            ? { ...a, isGenerating: true }
+            : a,
+        ),
+      );
+
+      // Generate audio for all actors
+      for (let i = 0; i < actorsToGenerate.length; i++) {
+        const actor = actorsToGenerate[i];
+        try {
+          console.log(
+            `Generating audio for actor ${actor.id} (${i + 1}/${actorsToGenerate.length})`,
+          );
+
+          // Generate audio for this actor
+          await generateAudioForActor(actor, (id, generatedBlob) => {
+            if (generatedBlob) {
+              console.log(`Generated blob for actor ${id}`);
               drawWaveform(id, generatedBlob);
+
+              // Store the blob in our ref
+              generatedAudioBlobsRef.current.set(id, {
+                blob: generatedBlob,
+                delay: actor.delay,
+                muted: actor.muted,
+                volume: actor.volume,
+              });
+
+              // Update actor state
               setActors((prevActors) =>
                 prevActors.map((a) =>
-                  a.id === actor.id
+                  a.id === id
                     ? {
                         ...a,
                         audioBlob: generatedBlob,
                         audioUrl: URL.createObjectURL(generatedBlob),
                         lastGeneratedText: a.text,
+                        lastGeneratedVoiceId: a.voice?.id,
+                        isGenerating: false,
                       }
                     : a,
                 ),
               );
-            },
+
+              // Increment the completed generations counter
+              setCompletedGenerations((prev) => prev + 1);
+            }
+          });
+        } catch (error) {
+          console.error(`Error generating audio for actor ${actor.id}:`, error);
+          setActors((prev) =>
+            prev.map((a) =>
+              a.id === actor.id ? { ...a, isGenerating: false } : a,
+            ),
           );
-          return { id: actor.id, blob };
-        });
-
-      const generatedResults = await Promise.all(generationPromises);
-      const latestBlobs = new Map(
-        generatedResults.map((result) => [result.id, result.blob]),
-      );
-
-      // Create merged audio using the latest generated blobs
-      const actorsWithAudio = actors.filter(
-        (actor) =>
-          actor.voice && actor.text.trim() && latestBlobs.has(actor.id),
-      );
-
-      if (actorsWithAudio.length >= 1) {
-        await mergeAudioFiles(
-          "sequential",
-          overlapDuration,
-          new Map(
-            actors.map((actor) => [
-              actor.id,
-              {
-                // Use the newly generated blob from latestBlobs
-                blob: latestBlobs.get(actor.id) || actor.audioBlob!,
-                delay: actor.delay,
-                muted: actor.muted,
-                volume: actor.volume,
-              },
-            ]),
-          ),
-          drawMergedWaveform,
-        );
-        setAutoPlayMerged(true);
+        }
       }
+
+      // Reset generating states after all generation attempts
+      setActors((prev) =>
+        prev.map((a) => (a.isGenerating ? { ...a, isGenerating: false } : a)),
+      );
+
+      console.log(
+        `Generation complete. Generated ${generatedAudioBlobsRef.current.size} audio blobs`,
+      );
+
+      // The merging will be triggered by the useEffect when completedGenerations equals totalGenerationsRef.current
     } catch (error) {
-      console.error("Error in audio generation/merging:", error);
+      console.error("Error in audio generation:", error);
+      setCompletedGenerations(0);
+    } finally {
+      // Reset processing flag
+      isProcessingRef.current = false;
     }
   };
 
@@ -338,6 +480,7 @@ export default function MultiActorVoice({
       cleanupMergedAudio();
     };
   }, []);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (activeActorId && !event.target.closest(".actor-voice-container")) {
@@ -465,7 +608,7 @@ export default function MultiActorVoice({
                       }}
                       onSearch={setSearchQuery}
                       onToggleFavorite={toggleFavorite}
-                      onClose={() => setActiveActorId(null)} // Add this line
+                      onClose={() => setActiveActorId(null)}
                     />
                   )}
                 </div>
@@ -559,7 +702,7 @@ export default function MultiActorVoice({
             variant="default"
             className="w-full max-w-xs py-6 text-lg"
             onClick={handleMasterButtonClick}
-            disabled={isGenerating || isMergingAudio}
+            disabled={isGenerating || isMergingAudio || isProcessingRef.current}
           >
             {isAnyAudioPlaying ? (
               <>
@@ -568,7 +711,7 @@ export default function MultiActorVoice({
               </>
             ) : (
               <>
-                {isGenerating || isMergingAudio ? (
+                {isGenerating || isMergingAudio || isProcessingRef.current ? (
                   <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                 ) : (
                   <Mic className="mr-2 h-5 w-5" />

@@ -16,44 +16,85 @@ export function useAudioMerge({ actors, masterVolume }: UseAudioMergeProps) {
   const mergeAudioFiles = async (
     mergeType: MergeType,
     overlapDuration: number,
+    audioMap: Map<
+      string,
+      { blob: Blob; delay: number; muted: boolean; volume: number }
+    >,
     onWaveformReady?: (blob: Blob) => void,
-  ) => {
-    const actorsWithAudio = actors.filter((actor) => actor.audioBlob);
-    if (actorsWithAudio.length < 2) {
-      console.error("Need at least two audio files to merge");
+  ): Promise<string | null> => {
+    if (audioMap.size === 0) {
+      console.error("No audio files to merge");
       return null;
     }
 
     setIsMergingAudio(true);
 
     try {
+      console.log(`Starting audio merge with ${audioMap.size} files`);
+
       const audioContext = new (window.AudioContext ||
         (window as any).webkitAudioContext)();
 
-      // Sort actors by their original order (assuming the order in the array is the intended sequence)
-      const sortedActors = [...actorsWithAudio];
+      // Create a sorted array of audio entries based on actor order
+      const sortedAudioEntries = Array.from(audioMap.entries())
+        .map(([id, data]) => ({
+          id,
+          blob: data.blob,
+          delay: data.delay,
+          muted: data.muted,
+          volume: data.volume,
+          // Find the index of this actor in the original actors array
+          index: actors.findIndex((actor) => actor.id === id),
+        }))
+        .sort((a, b) => a.index - b.index)
+        .filter((entry) => entry.index !== -1 && !entry.muted); // Filter out any entries not found in actors or muted
+
+      if (sortedAudioEntries.length === 0) {
+        console.warn("No valid audio entries to merge");
+        return null;
+      }
+
+      console.log(
+        `Sorted ${sortedAudioEntries.length} audio entries for merging`,
+      );
+
+      // Log the IDs of actors being merged
+      sortedAudioEntries.forEach((entry, index) => {
+        console.log(
+          `Merging actor at position ${index}: ID ${entry.id}, index in actors: ${entry.index}`,
+        );
+      });
 
       let result: Blob;
       if (mergeType === "sequential") {
-        result = await mergeSequential(sortedActors, audioContext);
+        result = await mergeSequential(sortedAudioEntries, audioContext);
       } else {
         result = await mergeWithOverlap(
-          sortedActors,
+          sortedAudioEntries,
           audioContext,
           overlapDuration,
         );
       }
 
-      if (mergedAudioUrl) URL.revokeObjectURL(mergedAudioUrl);
+      if (!result) {
+        console.error("Failed to create merged audio");
+        return null;
+      }
+
+      // Clean up previous URL if it exists
+      if (mergedAudioUrl) {
+        URL.revokeObjectURL(mergedAudioUrl);
+      }
+
+      // Create new URL from blob
       const url = URL.createObjectURL(result);
       setMergedAudioUrl(url);
 
-      if (onWaveformReady) {
-        setTimeout(() => {
-          onWaveformReady(result);
-        }, 500);
+      if (onWaveformReady && result) {
+        onWaveformReady(result);
       }
 
+      console.log("Audio merge completed successfully");
       return url;
     } catch (error) {
       console.error("Error merging audio:", error);
@@ -64,26 +105,49 @@ export function useAudioMerge({ actors, masterVolume }: UseAudioMergeProps) {
   };
 
   const mergeSequential = async (
-    sortedActors: ActorSection[],
+    sortedAudioEntries: {
+      id: string;
+      blob: Blob;
+      delay: number;
+      muted: boolean;
+      volume: number;
+      index: number;
+    }[],
     audioContext: AudioContext,
   ): Promise<Blob> => {
+    console.log(
+      `Starting sequential merge with ${sortedAudioEntries.length} entries`,
+    );
+
     const audioBuffers: AudioBuffer[] = [];
     const volumes: number[] = [];
+    const delays: number[] = [];
+    const mutedStates: boolean[] = [];
 
     // First, decode all audio buffers
-    for (const actor of sortedActors) {
-      if (!actor.audioBlob) continue;
-      const arrayBuffer = await actor.audioBlob.arrayBuffer();
-      const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-      audioBuffers.push(audioBuffer);
-      volumes.push(actor.muted ? 0 : actor.volume);
+    for (const entry of sortedAudioEntries) {
+      try {
+        console.log(`Decoding audio for entry ${entry.id}`);
+        const arrayBuffer = await entry.blob.arrayBuffer();
+        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+        audioBuffers.push(audioBuffer);
+        volumes.push(entry.volume);
+        delays.push(entry.delay);
+        mutedStates.push(entry.muted);
+      } catch (error) {
+        console.error(`Error decoding audio for entry ${entry.id}:`, error);
+      }
+    }
+
+    if (audioBuffers.length === 0) {
+      throw new Error("Failed to decode any audio buffers");
     }
 
     // Calculate the start times for each actor based on the previous actor's end time
     const startTimes: number[] = [];
     let currentTime = 0;
 
-    for (let i = 0; i < sortedActors.length; i++) {
+    for (let i = 0; i < sortedAudioEntries.length; i++) {
       if (i === 0) {
         // First actor always starts at 0
         startTimes.push(0);
@@ -94,7 +158,7 @@ export function useAudioMerge({ actors, masterVolume }: UseAudioMergeProps) {
           startTimes[i - 1] + audioBuffers[i - 1].duration * 1000;
 
         // Apply the delay (can be negative for overlap)
-        const delay = sortedActors[i].delay;
+        const delay = delays[i];
         const startTime = previousEndTime + delay;
 
         // Ensure we don't have a negative start time
@@ -129,8 +193,12 @@ export function useAudioMerge({ actors, masterVolume }: UseAudioMergeProps) {
     // Mix all audio at their respective positions
     for (let i = 0; i < audioBuffers.length; i++) {
       const buffer = audioBuffers[i];
-      const volume = volumes[i];
+      const volume = mutedStates[i] ? 0 : volumes[i];
       const startSample = Math.floor(startTimesInSeconds[i] * sampleRate);
+
+      console.log(
+        `Mixing audio ${i + 1}/${audioBuffers.length} at position ${startTimesInSeconds[i]}s with volume ${volume}`,
+      );
 
       for (let channel = 0; channel < numberOfChannels; channel++) {
         const mergedChannelData = mergedBuffer.getChannelData(channel);
@@ -172,28 +240,50 @@ export function useAudioMerge({ actors, masterVolume }: UseAudioMergeProps) {
   };
 
   const mergeWithOverlap = async (
-    sortedActors: ActorSection[],
+    sortedAudioEntries: {
+      id: string;
+      blob: Blob;
+      delay: number;
+      muted: boolean;
+      volume: number;
+      index: number;
+    }[],
     audioContext: AudioContext,
     overlapDuration: number,
   ): Promise<Blob> => {
-    // For the overlap mode, we'll use the same sequential logic but with the specified overlap duration
+    console.log(
+      `Starting overlap merge with ${sortedAudioEntries.length} entries and overlap of ${overlapDuration}ms`,
+    );
+
     const audioBuffers: AudioBuffer[] = [];
     const volumes: number[] = [];
+    const delays: number[] = [];
+    const mutedStates: boolean[] = [];
 
     // First, decode all audio buffers
-    for (const actor of sortedActors) {
-      if (!actor.audioBlob) continue;
-      const arrayBuffer = await actor.audioBlob.arrayBuffer();
-      const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-      audioBuffers.push(audioBuffer);
-      volumes.push(actor.muted ? 0 : actor.volume);
+    for (const entry of sortedAudioEntries) {
+      try {
+        console.log(`Decoding audio for entry ${entry.id}`);
+        const arrayBuffer = await entry.blob.arrayBuffer();
+        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+        audioBuffers.push(audioBuffer);
+        volumes.push(entry.volume);
+        delays.push(entry.delay);
+        mutedStates.push(entry.muted);
+      } catch (error) {
+        console.error(`Error decoding audio for entry ${entry.id}:`, error);
+      }
+    }
+
+    if (audioBuffers.length === 0) {
+      throw new Error("Failed to decode any audio buffers");
     }
 
     // Calculate the start times for each actor based on the previous actor's end time
     const startTimes: number[] = [];
     let currentTime = 0;
 
-    for (let i = 0; i < sortedActors.length; i++) {
+    for (let i = 0; i < sortedAudioEntries.length; i++) {
       if (i === 0) {
         // First actor always starts at 0
         startTimes.push(0);
@@ -204,10 +294,7 @@ export function useAudioMerge({ actors, masterVolume }: UseAudioMergeProps) {
           startTimes[i - 1] + audioBuffers[i - 1].duration * 1000;
 
         // Apply the delay (can be negative for overlap) or use the specified overlap
-        const delay =
-          sortedActors[i].delay !== 0
-            ? sortedActors[i].delay
-            : -overlapDuration;
+        const delay = delays[i] !== 0 ? delays[i] : -overlapDuration;
         const startTime = previousEndTime + delay;
 
         // Ensure we don't have a negative start time
@@ -242,8 +329,12 @@ export function useAudioMerge({ actors, masterVolume }: UseAudioMergeProps) {
     // Mix all audio at their respective positions
     for (let i = 0; i < audioBuffers.length; i++) {
       const buffer = audioBuffers[i];
-      const volume = volumes[i];
+      const volume = mutedStates[i] ? 0 : volumes[i];
       const startSample = Math.floor(startTimesInSeconds[i] * sampleRate);
+
+      console.log(
+        `Mixing audio ${i + 1}/${audioBuffers.length} at position ${startTimesInSeconds[i]}s with volume ${volume}`,
+      );
 
       for (let channel = 0; channel < numberOfChannels; channel++) {
         const mergedChannelData = mergedBuffer.getChannelData(channel);
