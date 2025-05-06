@@ -8,3 +8,5 @@ export interface SubData {
 export interface SessionProps {
   subData: SubData | null | undefined;
 }
+
+export type BoosterType = "IMAGES" | "PLAGIARISM" | "VOICE" | "MASTERCLASS";

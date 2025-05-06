@@ -160,6 +160,9 @@ export default async function BoostersPage() {
             <IlustrationVoiceSoundfx className="max-md:w-[300px] max-sm:w-[200px]" />
           }
         />
+
+        {/* Masterclasses Boost */}
+        {/* <BoosterCard subData={subData} type="MASTERCLASS" /> */}
       </main>
     </>
   );

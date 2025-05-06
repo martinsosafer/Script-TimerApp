@@ -7,7 +7,7 @@ import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 import { poppins, roboto } from "~/app/fonts";
 import { addBooster } from "../actions";
-import type { SubData } from "../types";
+import type { BoosterType, SubData } from "../types";
 
 interface BoosterCardProps {
   subData?: SubData;
@@ -55,10 +55,19 @@ const BoosterCard = ({
     type,
     subData,
   }: {
-    type: "IMAGES" | "PLAGIARISM" | "VOICE";
+    type: BoosterType;
     subData: SubData | undefined;
   }) => {
     if (!subData) return;
+
+    // Check if the user has a paid plan
+    if (subData.status === "FREE" || subData.status === "FREE_TRIAL") {
+      return toast({
+        title: "Upgrade your plan",
+        description: "You need to upgrade your plan to add boosters",
+        variant: "destructive",
+      });
+    }
 
     setIsLoading(true);
 
@@ -67,19 +76,13 @@ const BoosterCard = ({
 
     try {
       const result = await addBooster({ subData, type });
-      // console.log("result", result);
-      if (result?.title && result.description) {
-        return toast({
-          title: result.title,
-          description: result.description,
-        });
-      }
+      console.log("result", result);
+
 
       // return success toast with info
-
       return toast({
         title: "Booster added!",
-        description: `You have successfully added the ${type.toLowerCase()} booster`,
+        description: `You have successfully added a ${type.toLowerCase()} booster`,
       });
     } catch (error: any) {
       console.error("Error adding booster:", error.message);
