@@ -18,6 +18,7 @@ export async function upgrade(
   priceId: string,
   subscriptionId: string,
   userId: string,
+  discountCode?: string,
 ) {
   try {
     const subscription = await stripe.subscriptions.retrieve(subscriptionId);
@@ -42,7 +43,9 @@ export async function upgrade(
     );
     // Possible statuses: active | incomplete | incomplete_expired | past_due | trialing | canceled | unpaid
     if (!updatedSubscription || updatedSubscription.status !== "active") {
-      throw new Error("Failed to update subscription");
+      throw new Error(
+        "Failed to update subscription:" + updatedSubscription.status,
+      );
     }
 
     const product = await stripe.products.retrieve(

@@ -55,14 +55,15 @@ export default function UpgradeModal({
     <div
       className={`fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50 p-4 backdrop-blur ${poppins.className}`}
     >
-      <div className="bg-cp-bakground relative h-[545px] w-[925px] overflow-hidden rounded-xl border border-primary shadow-xl">
-        <button className="absolute right-4 top-4" onClick={onClose}>
-          <IconClose className="h-5 w-5 text-white" />
+      <div className="bg-cp-bakground relative h-[700px] w-[98%] overflow-hidden rounded-xl border border-primary shadow-xl md:w-[925px] lg:h-[545px]">
+        <button className="absolute right-4 top-4 z-20" onClick={onClose}>
+          <IconClose className="max-md:text-cp-gray-500 h-5 w-5 text-white hover:text-gray-300" />
         </button>
-        <div className="flex h-full">
+
+        <div className="flex h-full flex-col md:flex-row">
           {/* Left section */}
-          <div className="flex h-full w-[400px] flex-col items-center justify-center bg-gray-100">
-            <div className="relative flex h-[330px] w-[330px] items-center justify-center">
+          <div className="flex h-[180px] w-full flex-col items-center justify-center bg-gray-100  md:h-full md:w-[400px]">
+            <div className="relative flex h-[330px] w-[330px] items-center justify-center px-4 pt-8 lg:h-[442px] lg:w-[328px] lg:px-[36px] lg:pt-[52px]">
               <Image
                 src={Director}
                 alt="Trial is about to expire image"
@@ -73,36 +74,50 @@ export default function UpgradeModal({
           </div>
 
           {/* Right section */}
-          <div className="bg-cp-primary flex w-[525px] flex-col items-center pb-[60px] text-white">
-            <div className="flex w-[375px] flex-grow flex-col items-center justify-start px-[75px] pt-[60px]">
-              <div className="mb-[44px] h-[85px] w-[375px] items-center">
-                <h2 className="mb-[12px] text-center text-[24px] font-bold leading-[28px]">
+          <div className="bg-cp-primary z-10 flex h-full w-full flex-col items-center pb-14 text-white md:pb-20">
+            <div className="flex w-full min-w-[90%] flex-grow flex-col items-center justify-start gap-3 px-7 pt-10 md:pt-16">
+              <div className="pb-2 items-center">
+                <h2 className="pb-[12px] text-center text-[24px] font-bold leading-[28px]">
                   Happy to help you!
                 </h2>
-                <p className="text-center text-[16px] font-bold leading-[22px]">
+                <p className="text-center text-[16px] font-bold leading-[22px] text-wrap">
                   Your ability to create is about to improve.
                 </p>
               </div>
-              <p className={`${roboto.className} text-center text-[18px]`}>
+            </div>
+
+            <div className="flex-1 items-center px-6 pb-1">
+              <p className={`${roboto.className} text-center text-lg`}>
                 You're about to change your current plan{" "}
                 {session?.user?.subscription?.status} to:
               </p>
               <p
-                className={`${roboto.className} text-cp-accent pt-3 text-center text-xl font-bold`}
+                className={`${roboto.className} text-cp-accent pt-3 text-center text-2xl font-bold`}
               >{`${selectedPlan} (${period})`}</p>
+            </div>
 
+            <div className="pt-4">
+              <Button
+                type="secondary"
+                label="I have a discount cupon"
+                className="border-cp-gray-300 text-cp-gray-300 hover:border-cp-white hover:text-cp-white text-sm"
+                onClick={() => console.log("Discount cupon clicked")}
+              />
+            </div>
+
+            <div className="flex flex-col items-center gap-4">
               <p
-                className={`${roboto.className} mt-8 w-[300px] text-center text-[18px]`}
+                className={`${poppins.className} w-[80%] pt-6 text-center text-base`}
               >
                 Please confirm below, and start creating more, safer, better,
                 and faster.
               </p>
+              <Button
+                label={isLoading ? "Upgrading..." : "Yes, let's do this"}
+                onClick={handleConfirm}
+                type="accent"
+              />
             </div>
-            <Button
-              label={isLoading ? "Upgrading..." : "Yes, let's do this"}
-              onClick={handleConfirm}
-              type="accent"
-            />
           </div>
         </div>
       </div>
