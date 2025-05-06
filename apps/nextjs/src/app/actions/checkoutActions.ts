@@ -18,7 +18,7 @@ export async function upgrade(
   priceId: string,
   subscriptionId: string,
   userId: string,
-  discountCode?: string,
+  discountCoupon?: string,
 ) {
   try {
     const subscription = await stripe.subscriptions.retrieve(subscriptionId);
@@ -27,8 +27,20 @@ export async function upgrade(
       throw new Error("Subscription not found");
     }
 
-    console.log("priceId", priceId);
-    console.log("subscription", subscription.items.data[0]);
+    // Validate Discount Coupon
+    if (discountCoupon) {
+      const promotionCode = await stripe.promotionCodes.list({
+        code: discountCoupon,
+        active: true,
+      });
+
+      if (!promotionCode.data[0]) {
+        throw new Error("Invalid discount coupon code: " + discountCoupon);
+      }
+    }
+
+    // console.log("priceId", priceId);
+    // console.log("subscription", subscription.items.data[0]);
 
     const updatedSubscription = await stripe.subscriptions.update(
       subscriptionId,
@@ -112,6 +124,6 @@ export async function upgrade(
     console.log(`> Subscription for userId ${userId} updated successfully <`);
   } catch (error) {
     console.error(error);
-    throw error;
+    return { message: error };
   }
 }

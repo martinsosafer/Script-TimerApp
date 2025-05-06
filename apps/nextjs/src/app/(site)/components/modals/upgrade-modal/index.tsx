@@ -1,8 +1,10 @@
 import { useState } from "react";
 import Image from "next/image";
+import { set } from "zod";
 
 import type { Session } from "@voiceai/auth";
 import { IconClose } from "@voiceai/ui/@/components/ui/icons";
+import { Input } from "@voiceai/ui/@/components/ui/input";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 import { upgrade } from "~/app/actions/checkoutActions";
@@ -26,6 +28,8 @@ export default function UpgradeModal({
   selectedPlan,
 }: UpgradeProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const [isDiscountCoupon, setIsDiscountCoupon] = useState(false);
+  const [discountCoupon, setDiscountCoupon] = useState("");
 
   async function handleConfirm() {
     setIsLoading(true);
@@ -34,20 +38,23 @@ export default function UpgradeModal({
         priceId,
         session!.user.subscription!.planId!,
         session!.user.id,
+        discountCoupon.trim(),
       );
       setIsLoading(false);
-      window.location.reload();
       onClose();
-      return toast({
+      toast({
         title: "Subscription updated!",
         description: "Your plan has been updated",
       });
     } catch (error) {
-      onClose();
-      return toast({
+      console.log("error", error);
+      toast({
         title: "Something went wrong",
-        description: "Please, try again later",
+        description: error?.message || "Please, try again later",
       });
+      onClose();
+    } finally {
+      window.location.reload();
     }
   }
 
@@ -74,19 +81,22 @@ export default function UpgradeModal({
           </div>
 
           {/* Right section */}
-          <div className="bg-cp-primary z-10 flex h-full w-full flex-col items-center pb-14 text-white md:pb-20">
-            <div className="flex w-full min-w-[90%] flex-grow flex-col items-center justify-start gap-3 px-7 pt-10 md:pt-16">
-              <div className="pb-2 items-center">
+          <form
+            onSubmit={handleConfirm}
+            className="bg-cp-primary z-10 flex h-full w-full flex-col items-center pb-14 text-white md:pb-20"
+          >
+            <div className="flex w-full min-w-[90%] flex-col items-center justify-start gap-3 px-7 pt-10 md:pt-16">
+              <div className="items-center">
                 <h2 className="pb-[12px] text-center text-[24px] font-bold leading-[28px]">
                   Happy to help you!
                 </h2>
-                <p className="text-center text-[16px] font-bold leading-[22px] text-wrap">
+                <p className="text-wrap text-center text-[16px] font-bold leading-[22px]">
                   Your ability to create is about to improve.
                 </p>
               </div>
             </div>
 
-            <div className="flex-1 items-center px-6 pb-1">
+            <div className="flex flex-1 flex-col items-center justify-center px-6 pb-1">
               <p className={`${roboto.className} text-center text-lg`}>
                 You're about to change your current plan{" "}
                 {session?.user?.subscription?.status} to:
@@ -96,13 +106,33 @@ export default function UpgradeModal({
               >{`${selectedPlan} (${period})`}</p>
             </div>
 
+            {/* Discount Coupon */}
             <div className="pt-4">
-              <Button
-                type="secondary"
-                label="I have a discount cupon"
-                className="border-cp-gray-300 text-cp-gray-300 hover:border-cp-white hover:text-cp-white text-sm"
-                onClick={() => console.log("Discount cupon clicked")}
-              />
+              {isDiscountCoupon ? (
+                <div
+                  className={`border-cp-gray-500 bg-cp-white flex h-12 w-60 items-center gap-2 rounded-lg border-2 p-2`}
+                >
+                  <input
+                    type="text"
+                    value={discountCoupon}
+                    onChange={(e) =>
+                      setDiscountCoupon(e.currentTarget.value.toUpperCase())
+                    }
+                    className="placeholder:text-cp-gray-400 text-cp-black w-full bg-transparent outline-none"
+                    placeholder="Enter your coupon"
+                  />
+                  <button onClick={() => setIsDiscountCoupon(false)}>
+                    <IconClose className={`h-5 w-5 text-gray-500`} />
+                  </button>
+                </div>
+              ) : (
+                <Button
+                  type="secondary"
+                  label="I have a discount coupon"
+                  className="border-cp-gray-300 text-cp-gray-300 hover:border-cp-white hover:text-cp-white w-60 text-sm"
+                  onClick={() => setIsDiscountCoupon(true)}
+                />
+              )}
             </div>
 
             <div className="flex flex-col items-center gap-4">
@@ -114,11 +144,12 @@ export default function UpgradeModal({
               </p>
               <Button
                 label={isLoading ? "Upgrading..." : "Yes, let's do this"}
-                onClick={handleConfirm}
+                // onClick={handleConfirm}
                 type="accent"
+                buttonType="submit"
               />
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
