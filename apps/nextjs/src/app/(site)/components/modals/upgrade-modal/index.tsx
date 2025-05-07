@@ -29,16 +29,19 @@ export default function UpgradeModal({
 }: UpgradeProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [isDiscountCoupon, setIsDiscountCoupon] = useState(false);
-  const [discountCoupon, setDiscountCoupon] = useState("");
+  const [discountCoupon, setDiscountCoupon] = useState<string | undefined>();
 
   async function handleConfirm() {
     setIsLoading(true);
+    // const discountCouponTrimmed = discountCoupon
+    //   ? discountCoupon?.replaceAll(" ", "")
+    //   : undefined;
     try {
       await upgrade(
         priceId,
         session!.user.subscription!.planId!,
         session!.user.id,
-        discountCoupon.trim(),
+        discountCoupon?.trim(),
       );
       setIsLoading(false);
       onClose();
@@ -46,15 +49,15 @@ export default function UpgradeModal({
         title: "Subscription updated!",
         description: "Your plan has been updated",
       });
-    } catch (error) {
-      console.log("error", error);
-      toast({
-        title: "Something went wrong",
-        description: error?.message || "Please, try again later",
-      });
+      return window.location.reload();
+    } catch (error: any) {
+      console.log("error", error.message);
       onClose();
-    } finally {
-      window.location.reload();
+      return toast({
+        title: "Something went wrong",
+        description: (error?.message as string) || "Please, try again later",
+        variant: "destructive",
+      });
     }
   }
 
@@ -81,10 +84,7 @@ export default function UpgradeModal({
           </div>
 
           {/* Right section */}
-          <form
-            onSubmit={handleConfirm}
-            className="bg-cp-primary z-10 flex h-full w-full flex-col items-center pb-14 text-white md:pb-20"
-          >
+          <div className="bg-cp-primary z-10 flex h-full w-full flex-col items-center pb-14 text-white md:pb-20">
             <div className="flex w-full min-w-[90%] flex-col items-center justify-start gap-3 px-7 pt-10 md:pt-16">
               <div className="items-center">
                 <h2 className="pb-[12px] text-center text-[24px] font-bold leading-[28px]">
@@ -121,7 +121,12 @@ export default function UpgradeModal({
                     className="placeholder:text-cp-gray-400 text-cp-black w-full bg-transparent outline-none"
                     placeholder="Enter your coupon"
                   />
-                  <button onClick={() => setIsDiscountCoupon(false)}>
+                  <button
+                    onClick={() => {
+                      setDiscountCoupon("");
+                      setIsDiscountCoupon(false);
+                    }}
+                  >
                     <IconClose className={`h-5 w-5 text-gray-500`} />
                   </button>
                 </div>
@@ -129,7 +134,7 @@ export default function UpgradeModal({
                 <Button
                   type="secondary"
                   label="I have a discount coupon"
-                  className="border-cp-gray-300 text-cp-gray-300 hover:border-cp-white hover:text-cp-white w-60 text-sm"
+                  className="border-cp-white-ghost text-cp-white-ghost hover:border-cp-white hover:text-cp-white w-60 text-sm"
                   onClick={() => setIsDiscountCoupon(true)}
                 />
               )}
@@ -146,10 +151,10 @@ export default function UpgradeModal({
                 label={isLoading ? "Upgrading..." : "Yes, let's do this"}
                 // onClick={handleConfirm}
                 type="accent"
-                buttonType="submit"
+                onClick={handleConfirm}
               />
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>
