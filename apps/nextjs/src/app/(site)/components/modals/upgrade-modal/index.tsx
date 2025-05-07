@@ -1,10 +1,8 @@
 import { useState } from "react";
 import Image from "next/image";
-import { set } from "zod";
 
 import type { Session } from "@voiceai/auth";
 import { IconClose } from "@voiceai/ui/@/components/ui/icons";
-import { Input } from "@voiceai/ui/@/components/ui/input";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 import { upgrade } from "~/app/actions/checkoutActions";
