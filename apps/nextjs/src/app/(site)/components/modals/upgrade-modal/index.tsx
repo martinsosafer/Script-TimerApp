@@ -116,7 +116,7 @@ export default function UpgradeModal({
                     type="text"
                     value={discountCoupon}
                     onChange={(e) =>
-                      setDiscountCoupon(e.currentTarget.value.toUpperCase())
+                      setDiscountCoupon(e.currentTarget.value)
                     }
                     className="placeholder:text-cp-gray-400 text-cp-black w-full bg-transparent outline-none"
                     placeholder="Enter your coupon"
@@ -134,7 +134,7 @@ export default function UpgradeModal({
                 <Button
                   type="secondary"
                   label="I have a discount coupon"
-                  className="border-cp-white-ghost text-cp-white-ghost hover:border-cp-white hover:text-cp-white w-60 text-sm"
+                  className="border-cp-white-ghost text-cp-gray-300 hover:border-cp-white hover:text-cp-white w-60 text-sm"
                   onClick={() => setIsDiscountCoupon(true)}
                 />
               )}
@@ -148,9 +148,8 @@ export default function UpgradeModal({
                 and faster.
               </p>
               <Button
-                label={isLoading ? "Upgrading..." : "Yes, let's do this"}
-                // onClick={handleConfirm}
                 type="accent"
+                label={isLoading ? "Upgrading..." : "Yes, let's do this"}
                 onClick={handleConfirm}
               />
             </div>

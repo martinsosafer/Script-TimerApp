@@ -20,8 +20,7 @@ export async function upgrade(
   userId: string,
   discountCoupon?: string | null,
 ) {
-  // console.log("discountCoupon", discountCoupon);
-  let promotionCodeId;
+  let promotionCodeId: string | undefined = undefined;
 
   try {
     const subscription = await stripe.subscriptions.retrieve(subscriptionId);
@@ -29,8 +28,6 @@ export async function upgrade(
     if (!subscription.items.data[0]) {
       throw new Error("Subscription not found");
     }
-
-    // console.log("subscription", subscription);
 
     // Validate Discount Coupon
     if (discountCoupon) {
@@ -47,13 +44,6 @@ export async function upgrade(
       promotionCodeId = promotionCode.data[0].id;
     }
 
-    // console.log("promotionCodeId", promotionCodeId);
-
-    //   // console.log("priceId", priceId);
-    //   // console.log("subscription", subscription.items.data[0]);
-    //   console.log("subscriptionId", subscriptionId);
-    // console.log("promotionCodeId", promotionCodeId);
-
     const updatedSubscription = await stripe.subscriptions.update(
       subscriptionId,
       {
@@ -64,6 +54,11 @@ export async function upgrade(
           },
         ],
         discounts: [{ promotion_code: promotionCodeId }],
+        metadata: {
+          userId: userId,
+          priceId: priceId,
+          coupon: discountCoupon ?? "-",
+        },
       },
     );
     // Possible statuses: active | incomplete | incomplete_expired | past_due | trialing | canceled | unpaid
@@ -73,70 +68,69 @@ export async function upgrade(
       );
     }
 
-    return console.log("updatedSubscription", updatedSubscription);
+    // Confirm stripe payment
+    const product = await stripe.products.retrieve(
+      updatedSubscription.items.data[0]?.price.product as string,
+    );
 
-    // const product = await stripe.products.retrieve(
-    //   updatedSubscription.items.data[0]?.price.product as string,
-    // );
+    if (!product) {
+      throw new Error("Product not found");
+    }
 
-    // return console.log("product", product);
+    const updgradedPlan = product.name;
 
-    //   if (!product) {
-    //     throw new Error("Product not found");
-    //   }
+    const newPlan = plans[updgradedPlan];
 
-    //   const updgradedPlan = product.name;
+    await db
+      .update(schema.subscriptions)
+      .set({
+        plan: "CUSTOM",
+        status: newPlan,
+      })
+      .where(eq(schema.subscriptions.userId, userId))
+      .execute();
 
-    //   const newPlan = plans[updgradedPlan];
+    await db
+      .update(schema.clCredits)
+      .set({
+        credits:
+          STARTING_CL_CREDITS[newPlan as keyof typeof STARTING_CL_CREDITS],
+      })
+      .where(eq(schema.clCredits.userId, userId))
+      .execute();
 
-    //   await db
-    //     .update(schema.subscriptions)
-    //     .set({
-    //       plan: "CUSTOM",
-    //       status: newPlan,
-    //     })
-    //     .where(eq(schema.subscriptions.userId, userId))
-    //     .execute();
+    await db
+      .update(schema.elevenLabsCredit)
+      .set({
+        credits:
+          STARTING_11CL_CREDITS[newPlan as keyof typeof STARTING_11CL_CREDITS],
+      })
+      .where(eq(schema.elevenLabsCredit.userId, userId))
+      .execute();
 
-    //   await db
-    //     .update(schema.clCredits)
-    //     .set({
-    //       credits:
-    //         STARTING_CL_CREDITS[newPlan as keyof typeof STARTING_CL_CREDITS],
-    //     })
-    //     .where(eq(schema.clCredits.userId, userId))
-    //     .execute();
+    await db
+      .update(schema.openAiCredit)
+      .set({
+        credits:
+          STARTING_OPENAI_CREDITS[
+            newPlan as keyof typeof STARTING_OPENAI_CREDITS
+          ],
+      })
+      .where(eq(schema.openAiCredit.userId, userId))
+      .execute();
 
-    //   await db
-    //     .update(schema.elevenLabsCredit)
-    //     .set({
-    //       credits:
-    //         STARTING_11CL_CREDITS[newPlan as keyof typeof STARTING_11CL_CREDITS],
-    //     })
-    //     .where(eq(schema.elevenLabsCredit.userId, userId))
-    //     .execute();
+    await db
+      .update(schema.imgCredit)
+      .set({
+        credits:
+          STARTING_IMG_CREDITS[newPlan as keyof typeof STARTING_IMG_CREDITS],
+      })
+      .where(eq(schema.imgCredit.userId, userId))
+      .execute();
 
-    //   await db
-    //     .update(schema.openAiCredit)
-    //     .set({
-    //       credits:
-    //         STARTING_OPENAI_CREDITS[
-    //           newPlan as keyof typeof STARTING_OPENAI_CREDITS
-    //         ],
-    //     })
-    //     .where(eq(schema.openAiCredit.userId, userId))
-    //     .execute();
-
-    //   await db
-    //     .update(schema.imgCredit)
-    //     .set({
-    //       credits:
-    //         STARTING_IMG_CREDITS[newPlan as keyof typeof STARTING_IMG_CREDITS],
-    //     })
-    //     .where(eq(schema.imgCredit.userId, userId))
-    //     .execute();
-
-    //   console.log(`> Subscription for userId ${userId} updated successfully <`);
+    return console.log(
+      `> Subscription for userId ${userId} updated successfully <`,
+    );
   } catch (error) {
     console.error(error);
     throw error;
