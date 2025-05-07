@@ -118,7 +118,7 @@ export function VoiceDropdown({
                 <div>
                   <p className="font-medium">{voice.name}</p>
                   <p className="text-sm lowercase text-muted-foreground">
-                    {voice.gender} • {voice.type}
+                    {voice.gender}
                   </p>
                 </div>
                 <Button

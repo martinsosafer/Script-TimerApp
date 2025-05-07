@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 
 import { Button } from "@voiceai/ui";
 import Textarea from "@voiceai/ui/@/components/textarea-autosize";
 import {
   IconSpinner as Loader2,
   IconMic as Mic,
-  IconStop as Pause,
   IconPlus as Plus,
   IconSave as Save,
   IconSettings as Settings,
@@ -57,6 +57,19 @@ interface ActorSection {
   lastGeneratedVoiceId?: string;
 }
 
+// Define border colors array for actor cards
+const borderColors = [
+  "border-blue-500",
+  "border-orange-500",
+  "border-purple-500",
+  "border-green-500",
+  "border-pink-500",
+  "border-yellow-500",
+  "border-red-500",
+  "border-indigo-500",
+  "border-teal-500",
+];
+
 export default function MultiActorVoice({
   allVoices = [],
 }: MultiActorVoiceProps) {
@@ -74,6 +87,20 @@ export default function MultiActorVoice({
     duplicateActor,
     reorderActors,
   } = useAudioManagement([
+    {
+      id: crypto.randomUUID(),
+      voice: null,
+      text: "",
+      lastGeneratedText: "",
+      audioUrl: null,
+      audioBlob: null,
+      isPlaying: false,
+      autoPlay: false,
+      isGenerating: false,
+      volume: 1,
+      muted: false,
+      delay: 0,
+    },
     {
       id: crypto.randomUUID(),
       voice: null,
@@ -164,6 +191,8 @@ export default function MultiActorVoice({
 
   const [isMergedAudioPlaying, setIsMergedAudioPlaying] = useState(false);
   const [autoPlayMerged, setAutoPlayMerged] = useState(false);
+  const [buttonAnimating, setButtonAnimating] = useState(false);
+  const [mergedAudioAnimating, setMergedAudioAnimating] = useState(false);
   // Add a ref to track if we're currently processing the master button action
   const isProcessingRef = useRef(false);
   // Add a ref to store generated audio blobs
@@ -327,7 +356,26 @@ export default function MultiActorVoice({
               drawMergedWaveform,
             );
 
+            // Make sure no individual actor audio will play automatically
+            setActors((prev) =>
+              prev.map((actor) => ({
+                ...actor,
+                autoPlay: false,
+                isPlaying: false,
+              })),
+            );
+
+            // Stop any currently playing audio
+            stopAllAudio();
+
             setAutoPlayMerged(true);
+            // Add animation to button and merged audio when audio is merged
+            setButtonAnimating(true);
+            setMergedAudioAnimating(true);
+            setTimeout(() => {
+              setButtonAnimating(false);
+              setMergedAudioAnimating(false);
+            }, 1500);
           } else {
             console.warn("No audio to merge after filtering");
           }
@@ -348,6 +396,7 @@ export default function MultiActorVoice({
     overlapDuration,
     mergeAudioFiles,
     drawMergedWaveform,
+    stopAllAudio,
   ]);
 
   const isAnyAudioPlaying =
@@ -358,7 +407,7 @@ export default function MultiActorVoice({
     // If already processing, return to prevent multiple executions
     if (isProcessingRef.current) return;
 
-    // If audio is playing, stop it
+    // If audio is playing, stop it but don't change button text
     if (isAnyAudioPlaying) {
       stopAllAudio();
       if (mergedAudioRef.current) {
@@ -396,7 +445,7 @@ export default function MultiActorVoice({
       setActors((prev) =>
         prev.map((a) =>
           actorsToGenerate.some((actor) => actor.id === a.id)
-            ? { ...a, isGenerating: true }
+            ? { ...a, isGenerating: true, autoPlay: false, isPlaying: false }
             : a,
         ),
       );
@@ -423,7 +472,7 @@ export default function MultiActorVoice({
                 volume: actor.volume,
               });
 
-              // Update actor state
+              // Update actor state but ensure autoPlay is false
               setActors((prevActors) =>
                 prevActors.map((a) =>
                   a.id === id
@@ -434,6 +483,8 @@ export default function MultiActorVoice({
                         lastGeneratedText: a.text,
                         lastGeneratedVoiceId: a.voice?.id,
                         isGenerating: false,
+                        autoPlay: false,
+                        isPlaying: false,
                       }
                     : a,
                 ),
@@ -497,8 +548,6 @@ export default function MultiActorVoice({
   return (
     <div className="container mx-auto max-w-4xl py-6">
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Multi-Actor Voice Generator</h1>
-
         <div className="flex items-center gap-2">
           <TooltipProvider>
             <Tooltip>
@@ -555,7 +604,10 @@ export default function MultiActorVoice({
 
       <div className="grid gap-6">
         {actors.map((actor, index) => (
-          <div key={actor.id} className="rounded-lg border bg-card shadow-sm">
+          <div
+            key={actor.id}
+            className={`rounded-lg border ${borderColors[index] || "border-gray-500"} bg-card shadow-sm`}
+          >
             <div className="flex items-center justify-between border-b p-3">
               <div className="flex items-center gap-2">
                 <span className="flex h-6 w-6 items-center justify-center rounded-full bg-muted text-xs font-medium">
@@ -641,17 +693,6 @@ export default function MultiActorVoice({
                   }}
                 />
 
-                {actor.audioUrl && (
-                  <div className="mt-3">
-                    <canvas
-                      ref={(el) => (waveformCanvasRefs.current[actor.id] = el)}
-                      className="h-12 w-full rounded bg-muted/30"
-                      width={300}
-                      height={50}
-                    />
-                  </div>
-                )}
-
                 <div className="mt-3 flex justify-end">
                   <GenerateButton
                     isGenerating={actor.isGenerating}
@@ -672,7 +713,12 @@ export default function MultiActorVoice({
                   onEnded={() => handleAudioEnded(actor.id)}
                   onLoadedData={() => {
                     const audioElement = audioRefs.current[actor.id];
-                    if (audioElement && actor.autoPlay) {
+                    // Only auto-play if this wasn't triggered by the master button
+                    if (
+                      audioElement &&
+                      actor.autoPlay &&
+                      !isProcessingRef.current
+                    ) {
                       audioElement.play();
                       setActors((prevActors) =>
                         prevActors.map((a) =>
@@ -689,46 +735,58 @@ export default function MultiActorVoice({
           </div>
         ))}
 
-        <Button
-          variant="outline"
-          className="flex items-center justify-center gap-2 py-6"
-          onClick={addNewActor}
+        <motion.div
+          className="w-full"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
         >
-          <Plus className="h-5 w-5" />
-          Add Another Actor
-        </Button>
-        <div className="mb-4 flex items-center justify-center">
           <Button
             variant="default"
-            className="w-full max-w-xs py-6 text-lg"
-            onClick={handleMasterButtonClick}
-            disabled={isGenerating || isMergingAudio || isProcessingRef.current}
+            className="text-md flex w-full items-center justify-center gap-2 bg-blue-400 py-8 shadow-md hover:bg-blue-600"
+            onClick={addNewActor}
           >
-            {isAnyAudioPlaying ? (
-              <>
-                <Pause className="mr-2 h-5 w-5" />
-                Stop All Audio
-              </>
-            ) : (
-              <>
-                {isGenerating || isMergingAudio || isProcessingRef.current ? (
-                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                ) : (
-                  <Mic className="mr-2 h-5 w-5" />
-                )}
-                Generate & Play All
-              </>
-            )}
+            <Plus className="h-6 w-6" />
+            Add Another Actor
           </Button>
-        </div>
+        </motion.div>
+
         {mergedAudioUrl && (
-          <div className="mt-4 rounded-lg border bg-card p-4 shadow-sm">
-            <div className="mt-4 w-full">
-              <canvas
+          <motion.div
+            className="mb-6 mt-4 rounded-lg border bg-card p-4 shadow-sm"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{
+              opacity: 1,
+              y: 0,
+              scale: 1,
+            }}
+            transition={{
+              duration: 0.7,
+              ease: "easeInOut",
+            }}
+          >
+            <motion.div
+              className="w-full"
+              initial={{ opacity: 0.8 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, ease: "easeInOut" }}
+            >
+              <motion.canvas
                 ref={mergedWaveformCanvasRef}
                 className="mb-3 h-24 w-full rounded bg-muted/30"
                 width={600}
                 height={100}
+                animate={
+                  mergedAudioAnimating
+                    ? {
+                        boxShadow: [
+                          "0px 0px 0px rgba(0,0,0,0)",
+                          "0px 0px 15px rgba(59, 130, 246, 0.3)",
+                          "0px 0px 0px rgba(0,0,0,0)",
+                        ],
+                      }
+                    : {}
+                }
+                transition={{ duration: 2, ease: "easeInOut" }}
               />
               <audio
                 ref={mergedAudioRef}
@@ -737,16 +795,53 @@ export default function MultiActorVoice({
                 className="w-full"
               />
               <div className="mt-2 flex justify-end">
-                <Button variant="outline" size="lg" asChild>
-                  <a href={mergedAudioUrl} download="combined-voices.wav">
-                    <Save className="mr-2 h-5 w-5" />
-                    Download Combined Audio
-                  </a>
-                </Button>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Button variant="outline" size="lg" asChild>
+                    <a href={mergedAudioUrl} download="combined-voices.wav">
+                      <Save className="mr-2 h-5 w-5" />
+                      Download Combined Audio
+                    </a>
+                  </Button>
+                </motion.div>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         )}
+
+        <div className="mb-4 flex items-center justify-center">
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            animate={
+              buttonAnimating
+                ? {
+                    scale: [1, 1.05, 1],
+                  }
+                : {}
+            }
+            transition={{ duration: 1, ease: "easeInOut" }}
+            className="w-full max-w-xs"
+          >
+            <Button
+              variant="default"
+              className="w-full py-6 text-lg"
+              onClick={handleMasterButtonClick}
+              disabled={
+                isGenerating || isMergingAudio || isProcessingRef.current
+              }
+            >
+              {isGenerating || isMergingAudio || isProcessingRef.current ? (
+                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+              ) : (
+                <Mic className="mr-2 h-5 w-5" />
+              )}
+              Generate & Play All
+            </Button>
+          </motion.div>
+        </div>
       </div>
     </div>
   );
