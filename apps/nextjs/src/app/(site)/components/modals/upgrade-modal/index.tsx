@@ -31,9 +31,6 @@ export default function UpgradeModal({
 
   async function handleConfirm() {
     setIsLoading(true);
-    // const discountCouponTrimmed = discountCoupon
-    //   ? discountCoupon?.replaceAll(" ", "")
-    //   : undefined;
     try {
       await upgrade(
         priceId,
