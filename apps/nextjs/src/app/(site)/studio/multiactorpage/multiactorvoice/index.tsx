@@ -380,12 +380,16 @@ export default function MultiActorVoice({
           if (audioMapForMerging.size > 0) {
             console.log(`Merging ${audioMapForMerging.size} audio files...`);
 
-            // Directly merge the audio files
-            await mergeAudioFiles(
+            // Directly merge the audio files and ensure waveform is drawn
+            const mergeResult = await mergeAudioFiles(
               mergeType,
               overlapDuration,
               audioMapForMerging,
-              drawMergedWaveform,
+              // Force drawing the waveform even if it's the first click
+              (blob) => {
+                console.log("Drawing merged waveform immediately");
+                drawMergedWaveform(blob);
+              },
             );
 
             // Make sure no individual actor audio will play automatically
@@ -456,6 +460,19 @@ export default function MultiActorVoice({
     // Clear previous generated blobs and reset counters
     generatedAudioBlobsRef.current.clear();
     setCompletedGenerations(0);
+
+    // Clear any existing merged waveform canvas
+    if (mergedWaveformCanvasRef.current) {
+      const ctx = mergedWaveformCanvasRef.current.getContext("2d");
+      if (ctx) {
+        ctx.clearRect(
+          0,
+          0,
+          mergedWaveformCanvasRef.current.width,
+          mergedWaveformCanvasRef.current.height,
+        );
+      }
+    }
 
     try {
       // Get actors with voice and text
