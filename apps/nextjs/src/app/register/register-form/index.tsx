@@ -13,11 +13,7 @@ export default function RegisterForm() {
 
   const code = searchParams.get("code");
 
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
@@ -25,7 +21,6 @@ export default function RegisterForm() {
     setLoading(true);
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-
     try {
       const response = await fetch(`/api/auth/register/`, {
         method: "POST",
@@ -83,8 +78,6 @@ export default function RegisterForm() {
         </label>
         <div className="flex items-center justify-between rounded-md border border-gray-300 px-3 py-2">
           <input
-            value={password}
-            onChange={(e) => setPassword(e.currentTarget.value)}
             name="password"
             type={passwordVisible ? "text" : "password"}
             placeholder="Create a password"
@@ -97,30 +90,9 @@ export default function RegisterForm() {
           />
         </div>
       </div>
-      <div className="flex flex-col space-y-2">
-        <label htmlFor="password" className="text-sm font-semibold">
-          Confirm Password
-        </label>
-        <div className="flex items-center justify-between rounded-md border border-gray-300 px-3 py-2">
-          <input
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.currentTarget.value)}
-            name="confirmPassword"
-            type={confirmPasswordVisible ? "text" : "password"}
-            placeholder="Please confirm your password."
-            className="w-full outline-none"
-            required
-          />
-          <IconEye
-            className={`${confirmPasswordVisible && "text-gray-400"} cursor-pointer`}
-            onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)}
-          />
-        </div>
-      </div>
       <button
         type="submit"
-        className={`flex items-center justify-center rounded-md py-2 font-semibold text-white ${password !== confirmPassword ? "cursor-not-allowed bg-gray-400" : "cursor-pointer bg-primary"}`}
-        disabled={password !== confirmPassword}
+        className={`flex cursor-pointer items-center justify-center rounded-md bg-primary py-2 font-semibold text-white`}
       >
         {loading ? (
           <IconSpinner className="h-6 w-6 animate-spin" />

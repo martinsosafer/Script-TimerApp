@@ -31,6 +31,7 @@ function RegularCard({
   interval,
   setIsUpgrading,
   noSessionCheckout,
+  setSelectedPlan,
 }: {
   type: "FREE" | "EDUCATION" | "CREATOR" | "BUSINESS";
   period: "monthly" | "yearly";
@@ -38,6 +39,7 @@ function RegularCard({
   interval: string | undefined;
   setIsUpgrading?: () => void;
   noSessionCheckout?: () => void;
+  setSelectedPlan?: (plan: string | null) => void;
 }) {
   function setHasPlan() {
     if (
@@ -50,6 +52,11 @@ function RegularCard({
       if (session?.user.subscription?.status === type) return true;
       else if (
         session?.user.subscription?.status === "STUDENTCLMO" &&
+        type === "EDUCATION"
+      )
+        return true;
+      else if (
+        session?.user.subscription?.status === "STUDENT" &&
         type === "EDUCATION"
       )
         return true;
@@ -72,6 +79,11 @@ function RegularCard({
       )
         return true;
       else if (
+        session?.user.subscription?.status === "STUDENT" &&
+        type === "EDUCATION"
+      )
+        return true;
+      else if (
         session?.user.subscription?.status === "CREATORCLYR" &&
         type === "CREATOR"
       )
@@ -85,6 +97,7 @@ function RegularCard({
 
     return false;
   }
+
   return (
     <>
       {type === "CREATOR" ? (
@@ -137,6 +150,8 @@ function RegularCard({
                 hasPlan={setHasPlan()}
                 upgradeAction={setIsUpgrading}
                 noSessionCheckout={noSessionCheckout}
+                setSelectedPlan={setSelectedPlan}
+                cardPlan={type}
               />
             </div>
           </div>
@@ -184,6 +199,8 @@ function RegularCard({
             hasPlan={setHasPlan()}
             upgradeAction={setIsUpgrading}
             noSessionCheckout={noSessionCheckout}
+            setSelectedPlan={setSelectedPlan}
+            cardPlan={type}
           />
         </div>
       )}
@@ -197,6 +214,7 @@ export default function PlansCards({
   interval,
   setIsUpgrading,
   setPriceId,
+  setSelectedPlan,
 }: {
   period: "monthly" | "yearly";
   session: Session | null;
@@ -205,6 +223,7 @@ export default function PlansCards({
   setIsUpgrading: (value: boolean) => void;
   priceId: string;
   setPriceId: (value: string) => void;
+  setSelectedPlan: (value: string | null) => void;
 }) {
   const router = useRouter();
   const { setProductId } = useSharedState();
@@ -233,6 +252,7 @@ export default function PlansCards({
           setProductId(productIds.EDUCATION![period]);
           router.push("/register?origin=checkout");
         }}
+        setSelectedPlan={setSelectedPlan}
       />
       <RegularCard
         type="CREATOR"
@@ -247,6 +267,7 @@ export default function PlansCards({
           setProductId(productIds.CREATOR![period]);
           router.push("/register?origin=checkout");
         }}
+        setSelectedPlan={setSelectedPlan}
       />
       <RegularCard
         type="BUSINESS"
@@ -261,6 +282,7 @@ export default function PlansCards({
           setProductId(productIds.BUSINESS![period]);
           router.push("/register?origin=checkout");
         }}
+        setSelectedPlan={setSelectedPlan}
       />
     </section>
   );
