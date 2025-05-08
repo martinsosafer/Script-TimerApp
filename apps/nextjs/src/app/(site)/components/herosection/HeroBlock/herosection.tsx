@@ -87,7 +87,7 @@ export default function HeroSection() {
               <div className="flex h-[391px] w-[312px] flex-col items-center pb-6  lg:h-[452px] lg:w-[439px]">
                 <div className="relative h-[331px] w-[312px]  lg:h-[368px] lg:w-[452px]">
                   <i className="absolute left-[120px] top-[100px] z-10 lg:left-[183px] lg:top-[116px]">
-                    <IconPlayBorder className="stroke-cp-white-ghost group-hover:stroke-cp-secondary h-24 w-24 transition duration-300 ease-in-out lg:h-28 lg:w-28" />
+                    <IconPlayBorder className="stroke-cp-white-ghost group-hover:stroke-cp-secondary-light h-24 w-24 transition duration-300 ease-in-out lg:h-28 lg:w-28" />
                   </i>
                   <Image
                     src={HeroImg}
