@@ -263,6 +263,7 @@ async function handleElevenLabsGeneration(body: any) {
     voice_settings: {
       similarity_boost: body.similarity,
       stability: body.stability,
+      speed: body.speed,
     },
   };
 

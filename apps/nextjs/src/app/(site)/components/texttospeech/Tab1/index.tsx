@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import { SimilaritySelector } from "../../similarity-selector";
+import { SpeedSelector } from "../../speed-selector";
 import { StabilitySelector } from "../../stability-selector";
 import VoiceWidget from "../voicewidget/voicewidget";
 
@@ -13,6 +14,8 @@ const TabOne = ({
   setStability,
   similarity,
   setSimilarity,
+  speed,
+  setSpeed,
 }) => {
   const [selectedVoiceType, setSelectedVoiceType] = useState(null);
 
@@ -38,6 +41,11 @@ const TabOne = ({
           value={similarity}
           onValueChange={setSimilarity}
           disabled={selectedVoiceType === "GOOGLE"} // Disable if Google voice is selected
+        />
+        <SpeedSelector
+          value={speed}
+          onValueChange={setSpeed}
+          disabled={selectedVoiceType === "GOOGLE"}
         />
       </div>
     </div>
