@@ -21,6 +21,7 @@ import {
   TooltipTrigger,
 } from "@voiceai/ui/@/components/ui/tooltip";
 
+import { SpeedButton } from "~/app/(site)/components/texttospeech/Tab2/buttonmenu.tsx/speedbutton";
 import { useAudioGeneration } from "~/app/hooks/studio/useAudioGeneration";
 import { useAudioManagement } from "~/app/hooks/studio/useAudioManagment";
 import { useAudioMerge } from "~/app/hooks/studio/useAudioMerge";
@@ -193,6 +194,7 @@ export default function MultiActorVoice({
   const [autoPlayMerged, setAutoPlayMerged] = useState(false);
   const [buttonAnimating, setButtonAnimating] = useState(false);
   const [mergedAudioAnimating, setMergedAudioAnimating] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
   // Add a ref to track if we're currently processing the master button action
   const isProcessingRef = useRef(false);
   // Add a ref to store generated audio blobs
@@ -201,6 +203,36 @@ export default function MultiActorVoice({
   const [completedGenerations, setCompletedGenerations] = useState(0);
   // Add a ref to track total expected generations
   const totalGenerationsRef = useRef(0);
+
+  // Define button styles for speed and download buttons
+  const buttonBaseStyle = {
+    backgroundColor: "#1E88E5",
+    border: "none",
+    borderRadius: "8px",
+    color: "white",
+    padding: "8px",
+    cursor: "pointer",
+    fontWeight: "bold",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    transition: "background-color 0.3s",
+    width: "40px",
+    height: "40px",
+    marginLeft: "8px",
+  };
+
+  const buttonHoverStyle = {
+    ...buttonBaseStyle,
+    backgroundColor: "#1976D2",
+  };
+
+  const disabledButtonStyle = {
+    ...buttonBaseStyle,
+    backgroundColor: "#90CAF9",
+    cursor: "not-allowed",
+    opacity: 0.6,
+  };
 
   const handleGenerateAndPlayAudio = async (actor: ActorSection) => {
     if (actor.isPlaying) {
@@ -752,7 +784,7 @@ export default function MultiActorVoice({
 
         {mergedAudioUrl && (
           <motion.div
-            className="mb-6 mt-4 rounded-lg border bg-card p-4 shadow-sm"
+            className="mb-6 mt-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{
               opacity: 1,
@@ -788,24 +820,72 @@ export default function MultiActorVoice({
                 }
                 transition={{ duration: 2, ease: "easeInOut" }}
               />
-              <audio
-                ref={mergedAudioRef}
-                controls
-                src={mergedAudioUrl}
-                className="w-full"
-              />
-              <div className="mt-2 flex justify-end">
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Button variant="outline" size="lg" asChild>
-                    <a href={mergedAudioUrl} download="combined-voices.wav">
-                      <Save className="mr-2 h-5 w-5" />
-                      Download Combined Audio
-                    </a>
-                  </Button>
-                </motion.div>
+
+              {/* Audio Player with Styled Container */}
+              <div
+                style={{
+                  position: "relative",
+                  marginTop: "14px",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  maxWidth: "1000px",
+                  width: "100%",
+                  height: "60px",
+                  backgroundColor: "#BDF3F0",
+                  boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.1)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  padding: "10px 15px",
+                  borderRadius: "8px",
+                  zIndex: 0,
+                  opacity: 1,
+                  transition: "opacity 0.5s ease-in-out",
+                  border: "none",
+                }}
+              >
+                <audio
+                  ref={mergedAudioRef}
+                  controls
+                  src={mergedAudioUrl}
+                  style={{
+                    flex: 1,
+                    height: "40px",
+                    backgroundColor: "transparent",
+                    border: "none",
+                  }}
+                />
+
+                <div style={{ display: "flex", gap: "10px" }}>
+                  <SpeedButton
+                    audioRef={mergedAudioRef}
+                    buttonStyle={buttonBaseStyle}
+                    buttonHoverStyle={buttonHoverStyle}
+                    disabledButtonStyle={disabledButtonStyle}
+                  />
+                  <button
+                    onClick={() => {
+                      if (mergedAudioUrl) {
+                        const anchor = document.createElement("a");
+                        anchor.href = mergedAudioUrl;
+                        anchor.download = "combined-voices.wav";
+                        anchor.click();
+                        setShowConfetti(true);
+                      }
+                    }}
+                    style={buttonBaseStyle}
+                    onMouseOver={(e) => {
+                      e.currentTarget.style.backgroundColor =
+                        buttonHoverStyle.backgroundColor;
+                    }}
+                    onMouseOut={(e) => {
+                      e.currentTarget.style.backgroundColor =
+                        buttonBaseStyle.backgroundColor;
+                    }}
+                  >
+                    <Save className="h-5 w-5" style={{ color: "white" }} />
+                  </button>
+                </div>
               </div>
             </motion.div>
           </motion.div>
