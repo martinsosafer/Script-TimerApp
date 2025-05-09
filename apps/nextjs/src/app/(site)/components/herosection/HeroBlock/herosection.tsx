@@ -48,41 +48,44 @@ export default function HeroSection() {
       <div
         className={`from-cp-primary relative mx-auto flex justify-center bg-gradient-to-br to-[#000000] lg:h-[554px]`}
       >
-        <div className="flex max-w-[1024px] flex-col items-center justify-items-center gap-[24px] py-[24px] lg:flex-row lg:justify-between lg:gap-[90px]">
+        <div className="flex max-w-[1024px] flex-col items-start justify-items-center gap-[24px] pb-[24px] pt-[24px] lg:flex-row lg:justify-between lg:gap-[80px] lg:pt-16">
           {/* Text Content */}
-          <div className="h-[266px]  w-[312px] lg:h-[414px] lg:w-[409px] lg:text-start">
+          <div className="h-[230px] w-[316px] lg:h-[414px] lg:w-[409px] lg:text-start">
             <RevealText>
-              <div className="h-[76px] lg:h-[210px] lg:w-[409px]">
-                <h1 className="mb-[16px] text-[32px]  font-bold leading-[38.3px] text-white lg:mb-6 lg:text-[58px]  lg:leading-[70px]">
-                  <span className="text-cyan-300">Automate </span>
-                  {""}content production
+              <div className="h-[120px] lg:h-[210px] lg:w-[409px]">
+                <h1 className="pb-[16px] text-3xl font-bold leading-[38.3px] text-white lg:pb-6 lg:text-[52px]  lg:leading-[60px]">
+                  <span className="text-cyan-300">Create Voices </span>
+                  <br />
+                  {""} & Scripts
+                  <br />
+                  in seconds
                 </h1>
               </div>
             </RevealText>
             <RevealText>
-              <div className="  h-[125px] lg:mb-[36px] lg:h-[112px]  lg:w-[409px] ">
+              <div className="h-[100px] lg:mb-[36px] lg:h-[112px]  lg:w-[409px] ">
                 <p className="text-[18px] font-normal leading-[25px] text-white lg:text-[20px] lg:leading-[28px]">
-                  The tools supported by AI will automate{" "}
+                  Text to Speech, AI Voices, Script Writing,{" "}
                   <br className="hidden lg:block" />
-                  your creative process: Writing viral posts,{" "}
-                  <br className="hidden lg:block" />
+                  Image Creation to make your scripts amazing.{" "}
+                  {/* <br className="hidden lg:block" />
                   presos, promos, voice overs, images,{" "}
                   <br className="hidden lg:block" />
-                  and much more.
+                  and much more. */}
                 </p>
               </div>
             </RevealText>
-            <RevealText>
+            {/* <RevealText>
               <div className="flex justify-center ">
                 <p className="text-cp-secondary-lightest text-center text-[18px]  font-bold leading-[25px] lg:text-[20px] lg:leading-[28px]">
                   What do you want to create?
                 </p>
               </div>
-            </RevealText>
+            </RevealText> */}
           </div>
 
           {/* Hero Image & Button */}
-          <MotionTransition className="flex flex-col justify-start lg:mt-[42px]">
+          <MotionTransition className="flex flex-col justify-start">
             <button onClick={toggleModal} className="w-full">
               <div className="flex h-[391px] w-[312px] flex-col items-center pb-6  lg:h-[452px] lg:w-[439px]">
                 <div className="relative h-[331px] w-[312px]  lg:h-[368px] lg:w-[452px]">
@@ -97,7 +100,7 @@ export default function HeroSection() {
                     priority
                   />
                 </div>
-                <div className="border-cp-secondary hover:border-cp-secondary-light mt-4 flex  w-full items-center justify-center rounded-md border-2 lg:mt-[22px]">
+                {/* <div className="border-cp-secondary hover:border-cp-secondary-light mt-4 flex  w-full items-center justify-center rounded-md border-2 lg:mt-[22px]">
                   <button
                     className="text-cp-secondary hover:text-cp-secondary-light flex cursor-pointer items-center px-2 py-3 text-center text-sm font-semibold leading-[22px] lg:py-[13px] lg:text-[16px]"
                     onClick={toggleModal}
@@ -118,7 +121,7 @@ export default function HeroSection() {
                       />
                     </svg>
                   </button>
-                </div>
+                </div> */}
               </div>
             </button>
           </MotionTransition>
