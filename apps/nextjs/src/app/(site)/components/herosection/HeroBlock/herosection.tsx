@@ -1,135 +1,100 @@
-"use client";
+// "use client";
 
-import React, { useState } from "react";
-import Image from "next/image";
-import { AnimatePresence, motion } from "framer-motion";
+// import React, { useState } from "react";
+import Link from "next/link";
 
-import { IconPlayBorder } from "@voiceai/ui/@/components/ui/icons";
+// import { AnimatePresence, motion } from "framer-motion";
+
+import { Button } from "@voiceai/ui";
 
 import { RevealText } from "~/app/animations/RevealText";
 import { poppins } from "~/app/fonts";
-import HeroImg from "../../../../../../public/HeroImg.png";
 import MotionTransition from "../MotionTransition/MotionTransition";
 
 export default function HeroSection() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const toggleModal = () => setIsModalOpen(!isModalOpen);
+  // const toggleModal = () => setIsModalOpen(!isModalOpen);
 
-  const modalVariants = {
-    hidden: { opacity: 0, scale: 0.8, y: 50 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      y: 0,
-      transition: {
-        type: "spring",
-        damping: 25,
-        stiffness: 300,
-        duration: 0.5,
-      },
-    },
-    exit: {
-      opacity: 0,
-      scale: 0.8,
-      y: 50,
-      transition: { duration: 0.3 },
-    },
-  };
+  // const modalVariants = {
+  //   hidden: { opacity: 0, scale: 0.8, y: 50 },
+  //   visible: {
+  //     opacity: 1,
+  //     scale: 1,
+  //     y: 0,
+  //     transition: {
+  //       type: "spring",
+  //       damping: 25,
+  //       stiffness: 300,
+  //       duration: 0.5,
+  //     },
+  //   },
+  //   exit: {
+  //     opacity: 0,
+  //     scale: 0.8,
+  //     y: 50,
+  //     transition: { duration: 0.3 },
+  //   },
+  // };
 
-  const overlayVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: 0.3 } },
-    exit: { opacity: 0, transition: { duration: 0.3, delay: 0.1 } },
-  };
+  // const overlayVariants = {
+  //   hidden: { opacity: 0 },
+  //   visible: { opacity: 1, transition: { duration: 0.3 } },
+  //   exit: { opacity: 0, transition: { duration: 0.3, delay: 0.1 } },
+  // };
 
   return (
-    <div className={`${poppins.className}`}>
+    <>
       <div
-        className={`from-cp-primary relative mx-auto flex justify-center bg-gradient-to-br to-[#000000] lg:h-[554px]`}
+        className={`${poppins.className} from-cp-primary relative mx-auto flex justify-center bg-gradient-to-br to-[#000000] pb-16 pt-10 lg:py-20`}
       >
-        <div className="flex max-w-[1024px] flex-col items-start justify-items-center gap-[24px] pb-[24px] pt-[24px] lg:flex-row lg:justify-between lg:gap-[80px] lg:pt-16">
-          {/* Text Content */}
-          <div className="h-[230px] w-[316px] lg:h-[414px] lg:w-[409px] lg:text-start">
-            <RevealText>
-              <div className="h-[120px] lg:h-[210px] lg:w-[409px]">
-                <h1 className="pb-[16px] text-3xl font-bold leading-[38.3px] text-white lg:pb-6 lg:text-[52px]  lg:leading-[60px]">
+        <div className="flex flex-col gap-10">
+          <div className="flex h-full max-w-[1024px] flex-col items-start justify-items-center gap-[24px] lg:flex-row lg:justify-between lg:gap-12">
+            {/* Text Content (left) */}
+            <div className="flex w-[316px] flex-col gap-3 lg:w-[50%] lg:text-start">
+              <RevealText>
+                <h1 className="text-3xl font-bold leading-[38.3px] text-white lg:text-[52px]  lg:leading-[60px]">
                   <span className="text-cyan-300">Create Voices </span>
                   <br />
                   {""} & Scripts
                   <br />
                   in seconds
                 </h1>
-              </div>
-            </RevealText>
-            <RevealText>
-              <div className="h-[100px] lg:mb-[36px] lg:h-[112px]  lg:w-[409px] ">
+              </RevealText>
+              <RevealText>
                 <p className="text-[18px] font-normal leading-[25px] text-white lg:text-[20px] lg:leading-[28px]">
                   Text to Speech, AI Voices, Script Writing,{" "}
                   <br className="hidden lg:block" />
                   Image Creation to make your scripts amazing.{" "}
-                  {/* <br className="hidden lg:block" />
-                  presos, promos, voice overs, images,{" "}
-                  <br className="hidden lg:block" />
-                  and much more. */}
                 </p>
-              </div>
-            </RevealText>
-            {/* <RevealText>
-              <div className="flex justify-center ">
-                <p className="text-cp-secondary-lightest text-center text-[18px]  font-bold leading-[25px] lg:text-[20px] lg:leading-[28px]">
-                  What do you want to create?
-                </p>
-              </div>
-            </RevealText> */}
-          </div>
+              </RevealText>
+            </div>
 
-          {/* Hero Image & Button */}
-          <MotionTransition className="flex flex-col justify-start">
-            <button onClick={toggleModal} className="w-full">
-              <div className="flex h-[391px] w-[312px] flex-col items-center pb-6  lg:h-[452px] lg:w-[439px]">
-                <div className="relative h-[331px] w-[312px]  lg:h-[368px] lg:w-[452px]">
-                  <i className="absolute left-[120px] top-[100px] z-10 lg:left-[183px] lg:top-[116px]">
-                    <IconPlayBorder className="stroke-cp-white-ghost group-hover:stroke-cp-secondary-light h-24 w-24 transition duration-300 ease-in-out lg:h-28 lg:w-28" />
-                  </i>
-                  <Image
-                    src={HeroImg}
-                    alt="Hero image"
-                    fill
-                    className="rounded-lg object-cover"
-                    priority
+            {/* Video (right) */}
+            <div className="flex h-full items-center w-[50%]">
+              <MotionTransition>
+                <div className="outline-cp-primary-lightest h-[176px] w-[312px]  self-center rounded-lg outline lg:h-[255px] lg:w-[452px]">
+                  <iframe
+                    src="https://player.vimeo.com/video/1020211350?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                    className="h-full w-full"
+                    allow="autoplay; fullscreen; picture-in-picture"
+                    title="Script-Timer Ai Onboarding video"
                   />
                 </div>
-                {/* <div className="border-cp-secondary hover:border-cp-secondary-light mt-4 flex  w-full items-center justify-center rounded-md border-2 lg:mt-[22px]">
-                  <button
-                    className="text-cp-secondary hover:text-cp-secondary-light flex cursor-pointer items-center px-2 py-3 text-center text-sm font-semibold leading-[22px] lg:py-[13px] lg:text-[16px]"
-                    onClick={toggleModal}
-                  >
-                    Speed your results with this video
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="ml-2 h-4 w-4"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="#F59E0B"
-                      strokeWidth="3"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M7 17L17 7M7 7h10v10"
-                      />
-                    </svg>
-                  </button>
-                </div> */}
-              </div>
-            </button>
-          </MotionTransition>
+              </MotionTransition>
+            </div>
+          </div>
+          {/* Bottom (center) */}
+          <Link href="/texttovoice" className="flex w-full justify-center">
+            <Button variant="accent" size="lg">
+              Listen to your script here
+            </Button>
+          </Link>
         </div>
       </div>
 
       {/* Modal */}
-      <AnimatePresence>
+      {/* <AnimatePresence>
         {isModalOpen && (
           <motion.div
             className="fixed inset-0 z-50 flex items-center justify-center"
@@ -174,7 +139,7 @@ export default function HeroSection() {
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
-    </div>
+      </AnimatePresence> */}
+    </>
   );
 }
