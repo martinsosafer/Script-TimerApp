@@ -46,14 +46,14 @@ export default function HeroSection() {
   return (
     <>
       <div
-        className={`${poppins.className} from-cp-primary relative mx-auto flex justify-center bg-gradient-to-br to-[#000000] pb-16 pt-10 lg:py-20`}
+        className={`${poppins.className} from-cp-primary relative flex justify-center bg-gradient-to-br to-[#000000] pb-16 pt-10 lg:py-20`}
       >
         <div className="flex flex-col gap-10">
           <div className="flex h-full max-w-[1024px] flex-col items-start justify-items-center gap-[24px] lg:flex-row lg:justify-between lg:gap-12">
             {/* Text Content (left) */}
-            <div className="flex w-[316px] flex-col gap-3 lg:w-[50%] lg:text-start">
+            <div className="flex w-full flex-col gap-3 px-4 md:max-w-xl lg:w-[50%] lg:text-start">
               <RevealText>
-                <h1 className="text-3xl font-bold leading-[38.3px] text-white lg:text-[52px]  lg:leading-[60px]">
+                <h1 className="text-3xl font-bold leading-[38.3px] text-white md:text-[52px] md:leading-[60px]">
                   <span className="text-cyan-300">Create Voices </span>
                   <br />
                   {""} & Scripts
@@ -71,7 +71,7 @@ export default function HeroSection() {
             </div>
 
             {/* Video (right) */}
-            <div className="flex h-full items-center w-[50%]">
+            <div className="flex h-full w-full items-center justify-center px-4 lg:w-[50%]">
               <MotionTransition>
                 <div className="outline-cp-primary-lightest h-[176px] w-[312px]  self-center rounded-lg outline lg:h-[255px] lg:w-[452px]">
                   <iframe
