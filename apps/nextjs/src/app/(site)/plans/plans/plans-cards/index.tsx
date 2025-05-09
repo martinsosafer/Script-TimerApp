@@ -56,6 +56,11 @@ function RegularCard({
       )
         return true;
       else if (
+        session?.user.subscription?.status === "STUDENT" &&
+        type === "EDUCATION"
+      )
+        return true;
+      else if (
         session?.user.subscription?.status === "CREATORCLMO" &&
         type === "CREATOR"
       )
@@ -70,6 +75,11 @@ function RegularCard({
       if (session?.user.subscription?.status === type) return true;
       else if (
         session?.user.subscription?.status === "STUDENTCLYR" &&
+        type === "EDUCATION"
+      )
+        return true;
+      else if (
+        session?.user.subscription?.status === "STUDENT" &&
         type === "EDUCATION"
       )
         return true;

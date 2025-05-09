@@ -79,7 +79,7 @@ export default function Explore({
           <Image alt="Voice Ai" src="/Speech Coach.png" fill />
         </div>
         <div className="relative mt-[48px] h-[242px] w-[893px]">
-          <Image alt="Voice Ai" src="/Images (Experimental).png" fill />
+          <Image alt="Voice AI" src="/Images (Experimental).png" fill />
         </div>
         <div className="mt-[48px] flex flex-col items-center">
           <div className="relative  flex h-[380px] w-[893px]">
