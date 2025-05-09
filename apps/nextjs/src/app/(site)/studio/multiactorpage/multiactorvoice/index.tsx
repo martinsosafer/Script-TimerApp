@@ -22,6 +22,7 @@ import {
 } from "@voiceai/ui/@/components/ui/tooltip";
 
 import { SimilaritySelector } from "~/app/(site)/components/similarity-selector";
+import { SpeedSelector } from "~/app/(site)/components/speed-selector";
 import { StabilitySelector } from "~/app/(site)/components/stability-selector";
 import { SpeedButton } from "~/app/(site)/components/texttospeech/Tab2/buttonmenu.tsx/speedbutton";
 import { useAudioGeneration } from "~/app/hooks/studio/useAudioGeneration";
@@ -108,7 +109,7 @@ export default function MultiActorVoice({
       delay: 0,
       stability: [0.5],
       similarity: [0.5],
-      speed: [1],
+      speed: [1.0],
     },
     {
       id: crypto.randomUUID(),
@@ -125,6 +126,7 @@ export default function MultiActorVoice({
       delay: 0,
       stability: [0.5],
       similarity: [0.5],
+      speed: [1.0],
     },
   ]);
 
@@ -766,7 +768,17 @@ export default function MultiActorVoice({
                     }}
                     disabled={actor.voice?.type === "GOOGLE"}
                   />
-
+                  <SpeedSelector
+                    value={actor.speed}
+                    onValueChange={(value) => {
+                      setActors((prev) =>
+                        prev.map((a) =>
+                          a.id === actor.id ? { ...a, speed: value } : a,
+                        ),
+                      );
+                    }}
+                    disabled={actor.voice?.type === "GOOGLE"}
+                  />
                   <div className="mt-3 flex justify-end">
                     <GenerateButton
                       isGenerating={actor.isGenerating}

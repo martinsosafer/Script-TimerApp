@@ -42,7 +42,7 @@ export default async function IndexPage() {
     <>
       <div>
         <p className="font-base mb-2 text-center">
-          Youv’e got a screenplay, book, news, podcast, table read… This is your
+          You’ve got a screenplay, book, news, podcast, table read… This is your
           home!  Create long form, multiple actor voice overs below
         </p>
       </div>

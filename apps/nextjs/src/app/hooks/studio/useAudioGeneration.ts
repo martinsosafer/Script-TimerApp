@@ -5,11 +5,13 @@ import type { ActorSection } from "~/constants/types/voice";
 interface UseAudioGenerationProps {
   stability: number;
   similarity: number;
+  speed: number;
   setActors: React.Dispatch<React.SetStateAction<ActorSection[]>>;
   actors: ActorSection[];
 }
 
 export function useAudioGeneration({
+  speed,
   stability,
   similarity,
   setActors,
@@ -39,6 +41,7 @@ export function useAudioGeneration({
           voice_actor: actor.voice.type,
           stability: actor.stability[0],
           similarity: actor.similarity[0],
+          speed: actor.speed[0],
         }),
       });
 
