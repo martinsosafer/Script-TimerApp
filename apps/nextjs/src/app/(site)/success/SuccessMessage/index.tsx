@@ -52,7 +52,7 @@ export default function SuccessMessage() {
           </RevealText>
           <RevealText>
             <p className="mt-[25px] justify-start text-start text-[20px] font-normal leading-[28px]">
-              You have upgraded your Co-Producer <br /> to create the highest
+              You have upgraded Script-Timer Ai <br /> to create the highest
               quality content,
               <br /> faster than ever before!
             </p>

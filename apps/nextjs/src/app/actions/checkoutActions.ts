@@ -18,7 +18,10 @@ export async function upgrade(
   priceId: string,
   subscriptionId: string,
   userId: string,
+  discountCoupon?: string | null,
 ) {
+  let promotionCodeId: string | undefined = undefined;
+
   try {
     const subscription = await stripe.subscriptions.retrieve(subscriptionId);
 
@@ -26,8 +29,21 @@ export async function upgrade(
       throw new Error("Subscription not found");
     }
 
-    console.log("priceId", priceId);
-    console.log("subscription", subscription.items.data[0]);
+    // Validate Discount Coupon
+    if (discountCoupon) {
+      const promotionCode = await stripe.promotionCodes.list({
+        code: discountCoupon,
+        active: true,
+        limit: 1,
+      });
+
+      if (!promotionCode?.data[0]) {
+        throw new Error("Invalid discount coupon: " + discountCoupon);
+      }
+
+      promotionCodeId = promotionCode.data[0].id;
+    }
+
     const updatedSubscription = await stripe.subscriptions.update(
       subscriptionId,
       {
@@ -37,18 +53,25 @@ export async function upgrade(
             price: priceId,
           },
         ],
+        discounts: [{ promotion_code: promotionCodeId }],
+        metadata: {
+          userId: userId,
+          priceId: priceId,
+          coupon: discountCoupon ?? "-",
+        },
       },
     );
-
-    if (!updatedSubscription) {
-      throw new Error("Failed to update subscription");
+    // Possible statuses: active | incomplete | incomplete_expired | past_due | trialing | canceled | unpaid
+    if (!updatedSubscription || updatedSubscription.status !== "active") {
+      throw new Error(
+        "Failed to update subscription: " + updatedSubscription.status,
+      );
     }
 
+    // Confirm stripe payment
     const product = await stripe.products.retrieve(
       updatedSubscription.items.data[0]?.price.product as string,
     );
-
-    console.log("product", product);
 
     if (!product) {
       throw new Error("Product not found");
@@ -104,7 +127,12 @@ export async function upgrade(
       })
       .where(eq(schema.imgCredit.userId, userId))
       .execute();
+
+    return console.log(
+      `> Subscription for userId ${userId} updated successfully <`,
+    );
   } catch (error) {
     console.error(error);
+    throw error;
   }
 }

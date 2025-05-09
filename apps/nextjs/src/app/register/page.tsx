@@ -16,6 +16,7 @@ export default async function Register() {
   if (session) {
     redirect("/");
   }
+
   return (
     <div className="container relative min-h-full flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
       {/* Gradient div moved to the left */}
@@ -33,6 +34,7 @@ export default async function Register() {
             </div>
 
             <RegisterForm />
+
             <GoogleForm />
             <div className="relative">
               <div className="text-md relative mb-2 mt-2 flex justify-center">

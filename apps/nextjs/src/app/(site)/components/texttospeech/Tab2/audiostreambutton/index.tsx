@@ -16,6 +16,7 @@ const AudioStreamButtons = ({
   selectedModel,
   stability,
   similarity,
+  speed,
   audioRef,
   handleStreaming,
 
@@ -36,6 +37,7 @@ const AudioStreamButtons = ({
         message: firstTenWords,
         stability: stability[0],
         similarity: similarity[0],
+        speed: speed[0],
         setLoading,
         audioRef,
       });
@@ -58,6 +60,7 @@ const AudioStreamButtons = ({
         message: script,
         stability: stability[0],
         similarity: similarity[0],
+        speed: speed[0],
         setLoading,
         audioRef,
       });

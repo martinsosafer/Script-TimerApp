@@ -5,8 +5,8 @@ import type { Session } from "@voiceai/auth";
 export async function getSubscription(planId: string | null | undefined) {
   const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 
-  console.log("stripeSecret", stripeSecretKey);
-  console.log("planId", planId);
+  // console.log("stripeSecret", stripeSecretKey);
+  // console.log("planId", planId);
 
   if (!stripeSecretKey) {
     throw new Error("Stripe secret key is not defined.");
