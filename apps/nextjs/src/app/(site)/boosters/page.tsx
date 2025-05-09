@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import { auth } from "@voiceai/auth";
 import {
+  IlustrationMasterclasses,
   IlustrationPlagiarismDetection,
   IlustrationTodayOnly,
   IlustrationVoiceSoundfx,
@@ -80,7 +81,6 @@ export default async function BoostersPage() {
           creditsPercentage={imageCreditsPercentage}
           amount={300}
           title="Images"
-          price={77}
           description="Create images like these for:"
           detailsList={[
             "Storyboards",
@@ -125,7 +125,6 @@ export default async function BoostersPage() {
           amount={150000}
           amountDescription="words"
           title="Ai and Plagiarism Detection"
-          price={88}
           description="Tested at 99.12% Accurate"
           detailsList={[
             "Plagiarism & AI detection",
@@ -148,7 +147,6 @@ export default async function BoostersPage() {
           amount={250000}
           amountDescription="characters"
           title="Voice Overs, Voice Cloning & Sound Effects"
-          price={96}
           description="Boost your credits and create more:"
           detailsList={[
             "Voice overs",
@@ -162,7 +160,27 @@ export default async function BoostersPage() {
         />
 
         {/* Masterclasses Boost */}
-        {/* <BoosterCard subData={subData} type="MASTERCLASS" /> */}
+        <BoosterCard
+          subData={subData}
+          type="MASTERCLASS"
+          creditsPercentage={100}
+          amount={1}
+          amountDescription="year access"
+          title="Masterclasses"
+          description="Get access to our Masterclasses"
+          detailsList={[
+            "Stories That Transform Marketing",
+            "How to Create Stunning Videos",
+            "Present and Win Your Audience",
+            "Create with Hollywood Movie Storylines",
+            "How to Build Rapport with Your Audience",
+            "Customer Journey Mapping With Generative AI",
+          ]}
+          descriptionEnd="and more!"
+          imageMain={
+            <IlustrationMasterclasses className="h-[458px] w-[458px] max-md:w-[300px] max-sm:w-[200px]" />
+          }
+        />
       </main>
     </>
   );

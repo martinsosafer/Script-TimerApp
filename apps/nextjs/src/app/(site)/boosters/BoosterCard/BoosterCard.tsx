@@ -6,17 +6,17 @@ import { Button } from "@voiceai/ui";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 import { poppins, roboto } from "~/app/fonts";
+import { BOOSTER_PRICE } from "~/constants/products";
 import { addBooster } from "../actions";
 import type { BoosterType, SubData } from "../types";
 
 interface BoosterCardProps {
   subData?: SubData;
-  type: "IMAGES" | "PLAGIARISM" | "VOICE";
+  type: BoosterType;
   creditsPercentage: number;
   amount: number;
   amountDescription?: string;
   title: string;
-  price: number;
   description: string;
   detailsList: string[];
   descriptionEnd?: string;
@@ -32,7 +32,6 @@ const BoosterCard = ({
   amount,
   amountDescription,
   title,
-  price,
   description,
   detailsList,
   descriptionEnd,
@@ -47,6 +46,7 @@ const BoosterCard = ({
     IMAGES: "h-[1030px]",
     PLAGIARISM: "h-[684px]",
     VOICE: "h-[630px]",
+    MASTERCLASS: "h-[716px]",
   };
 
   const amountFormat = new Intl.NumberFormat("en-US").format(amount);
@@ -78,7 +78,6 @@ const BoosterCard = ({
       const result = await addBooster({ subData, type });
       console.log("result", result);
 
-
       // return success toast with info
       return toast({
         title: "Booster added!",
@@ -98,7 +97,7 @@ const BoosterCard = ({
 
   return (
     <article
-      className={`bg-cp-primary shadow-cp-gray-400 flex flex-col gap-3 rounded-2xl p-10 shadow-lg max-lg:p-6 max-sm:p-5 lg:max-w-5xl ${isOpen ? `${cardHeight[type]}` : "h-[450px] max-sm:h-[400px]"} w-full max-w-5xl overflow-hidden transition-[height] duration-500 ease-in-out`}
+      className={`bg-cp-primary shadow-cp-gray-400 flex flex-col gap-3 rounded-2xl p-10 shadow-lg max-lg:p-6 max-sm:p-5 lg:max-w-5xl ${isOpen ? `${cardHeight[type]}` : "h-[450px] max-lg:h-[420px] max-sm:h-[400px]"} w-full max-w-5xl overflow-hidden transition-[height] duration-500 ease-in-out`}
     >
       <p className="text-cp-accent-lightest col-start-1 col-end-3 text-lg max-sm:text-sm">
         <strong>{creditsPercentage <= 10 ? "10% credits left -" : null}</strong>{" "}
@@ -132,7 +131,7 @@ const BoosterCard = ({
               <p
                 className={`${poppins.className} text-center text-[42px]/[52px] font-bold text-white max-sm:text-4xl`}
               >
-                ${price}
+                ${BOOSTER_PRICE[type]}
               </p>
               <Button
                 className={`${poppins.className} disabled:bg-cp-secondary-light font-semibold`}

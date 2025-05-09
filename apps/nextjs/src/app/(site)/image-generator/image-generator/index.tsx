@@ -11,6 +11,7 @@ import {
 } from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
+import { findBooster } from "~/app/actions/boostersActions";
 import JokesLoader from "../../components/jokes-loader";
 import NoSessionModal from "../../components/modals/no-session-modal";
 import Tabs from "../../components/tabs";
@@ -47,6 +48,7 @@ export default function ImageGenerator({
 
     const finalPrompt = `${String(prompt)}:\n ${String(text)}.`;
     setLoading(true);
+    // await findBooster({userId, type: "IMAGES"});
     if (credits < 1) {
       toast({
         title: "Insufficient Credits",

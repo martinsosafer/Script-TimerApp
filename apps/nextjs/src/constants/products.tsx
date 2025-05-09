@@ -183,25 +183,9 @@ export const TEST_PRICES_ID: Record<string, ProductId> = {
   },
 };
 
-// Boosters Price Ids
-export const BOOSTER_PRICE_ID = {
-  IMAGES: "price_1QCnrsK0GRmjhtz7i6LxQNwf",
-  PLAGIARISM: "price_1QCnpCK0GRmjhtz7khOdf2wj",
-  VOICE: "price_1QFO4IK0GRmjhtz76Zh60uTH",
-  MASTERCLASS: "price_1RKO5uK0GRmjhtz75dHkxhA3",
-};
-
-// Booster Test Price Ids
-export const TEST_BOOSTER_PRICE_ID = {
-  IMAGES: "price_1QCo5pK0GRmjhtz7xHwa1iLQ",
-  PLAGIARISM: "price_1QCo6BK0GRmjhtz7EH8gPYTO",
-  VOICE: "price_1QDQGbK0GRmjhtz7PlmBTbX3",
-  MASTERCLASS: "price_1QmN8cK0GRmjhtz7KgLgTQLW",
-};
-
 export const BOOSTER_PRICE = {
   IMAGES: 77,
   PLAGIARISM: 88,
   VOICE: 96,
-  MASTERCLASS: 1,
+  MASTERCLASS: 97,
 };
