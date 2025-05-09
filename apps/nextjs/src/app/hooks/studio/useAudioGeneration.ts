@@ -37,8 +37,8 @@ export function useAudioGeneration({
           text: actor.text,
           voice_id: actor.voice.external_id,
           voice_actor: actor.voice.type,
-          stability,
-          similarity,
+          stability: actor.stability[0],
+          similarity: actor.similarity[0],
         }),
       });
 

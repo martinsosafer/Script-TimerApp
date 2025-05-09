@@ -24,6 +24,8 @@ export interface ActorSection {
   previousVolume?: number;
   muted: boolean;
   delay: number;
+  stability: number[];
+  similarity: number[];
 }
 
 export type MergeType = "sequential" | "overlap";

@@ -23,6 +23,8 @@ export function useAudioManagement(initialActors: ActorSection[]) {
         volume: 1,
         muted: false,
         delay: 0,
+        stability: [0.5],
+        similarity: [0.5],
       },
     ]);
   };

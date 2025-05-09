@@ -21,6 +21,8 @@ import {
   TooltipTrigger,
 } from "@voiceai/ui/@/components/ui/tooltip";
 
+import { SimilaritySelector } from "~/app/(site)/components/similarity-selector";
+import { StabilitySelector } from "~/app/(site)/components/stability-selector";
 import { SpeedButton } from "~/app/(site)/components/texttospeech/Tab2/buttonmenu.tsx/speedbutton";
 import { useAudioGeneration } from "~/app/hooks/studio/useAudioGeneration";
 import { useAudioManagement } from "~/app/hooks/studio/useAudioManagment";
@@ -54,6 +56,9 @@ interface ActorSection {
   volume: number;
   muted: boolean;
   delay: number;
+  stability: number[];
+  similarity: number[];
+  speed: number[];
   lastGeneratedText?: string;
   lastGeneratedVoiceId?: string;
 }
@@ -101,6 +106,9 @@ export default function MultiActorVoice({
       volume: 1,
       muted: false,
       delay: 0,
+      stability: [0.5],
+      similarity: [0.5],
+      speed: [1],
     },
     {
       id: crypto.randomUUID(),
@@ -115,6 +123,8 @@ export default function MultiActorVoice({
       volume: 1,
       muted: false,
       delay: 0,
+      stability: [0.5],
+      similarity: [0.5],
     },
   ]);
 
@@ -123,10 +133,6 @@ export default function MultiActorVoice({
     setActiveActorId,
     showAdvancedSettings,
     setShowAdvancedSettings,
-    stability,
-    setStability,
-    similarity,
-    setSimilarity,
     masterVolume,
     setMasterVolume,
     mergeType,
@@ -174,8 +180,6 @@ export default function MultiActorVoice({
 
   const { isGenerating, generateAudioForActor, generateAllAudio } =
     useAudioGeneration({
-      stability,
-      similarity,
       setActors,
       actors,
     });
@@ -633,8 +637,6 @@ export default function MultiActorVoice({
 
       <SettingsPanel
         isOpen={showAdvancedSettings}
-        stability={stability}
-        similarity={similarity}
         mergeType={mergeType}
         overlapDuration={overlapDuration}
         filterType={filterType}
@@ -642,8 +644,6 @@ export default function MultiActorVoice({
         favoriteVoicesOnly={favoriteVoicesOnly}
         genderOptions={genderOptions}
         typeOptions={typeOptions}
-        onStabilityChange={setStability}
-        onSimilarityChange={setSimilarity}
         onMergeTypeChange={setMergeType}
         onOverlapDurationChange={setOverlapDuration}
         onFilterTypeChange={setFilterType}
@@ -742,15 +742,41 @@ export default function MultiActorVoice({
                   }}
                 />
 
-                <div className="mt-3 flex justify-end">
-                  <GenerateButton
-                    isGenerating={actor.isGenerating}
-                    isPlaying={actor.isPlaying}
-                    hasAudio={!!actor.audioUrl}
-                    needsRegeneration={needsRegeneration(actor)}
-                    disabled={!actor.voice || !actor.text.trim()}
-                    onClick={() => handleGenerateAndPlayAudio(actor)}
+                <div className="mt-3">
+                  <StabilitySelector
+                    value={actor.stability}
+                    onValueChange={(value) => {
+                      setActors((prev) =>
+                        prev.map((a) =>
+                          a.id === actor.id ? { ...a, stability: value } : a,
+                        ),
+                      );
+                    }}
+                    disabled={actor.voice?.type === "GOOGLE"}
                   />
+
+                  <SimilaritySelector
+                    value={actor.similarity}
+                    onValueChange={(value) => {
+                      setActors((prev) =>
+                        prev.map((a) =>
+                          a.id === actor.id ? { ...a, similarity: value } : a,
+                        ),
+                      );
+                    }}
+                    disabled={actor.voice?.type === "GOOGLE"}
+                  />
+
+                  <div className="mt-3 flex justify-end">
+                    <GenerateButton
+                      isGenerating={actor.isGenerating}
+                      isPlaying={actor.isPlaying}
+                      hasAudio={!!actor.audioUrl}
+                      needsRegeneration={needsRegeneration(actor)}
+                      disabled={!actor.voice || !actor.text.trim()}
+                      onClick={() => handleGenerateAndPlayAudio(actor)}
+                    />
+                  </div>
                 </div>
               </div>
 
