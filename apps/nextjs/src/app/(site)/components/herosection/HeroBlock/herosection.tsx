@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 
+import { IconPlayBorder } from "@voiceai/ui/@/components/ui/icons";
+
 import { RevealText } from "~/app/animations/RevealText";
 import { poppins } from "~/app/fonts";
 import HeroImg from "../../../../../../public/HeroImg.png";
@@ -84,6 +86,9 @@ export default function HeroSection() {
             <button onClick={toggleModal} className="w-full">
               <div className="flex h-[391px] w-[312px] flex-col items-center pb-6  lg:h-[452px] lg:w-[439px]">
                 <div className="relative h-[331px] w-[312px]  lg:h-[368px] lg:w-[452px]">
+                  <i className="absolute left-[120px] top-[100px] z-10 lg:left-[183px] lg:top-[116px]">
+                    <IconPlayBorder className="stroke-cp-white-ghost group-hover:stroke-cp-secondary-light h-24 w-24 transition duration-300 ease-in-out lg:h-28 lg:w-28" />
+                  </i>
                   <Image
                     src={HeroImg}
                     alt="Hero image"
@@ -92,9 +97,9 @@ export default function HeroSection() {
                     priority
                   />
                 </div>
-                <div className="border-cp-secondary mt-4 flex w-full  items-center justify-center rounded-md border-2 lg:mt-[22px]">
-                  <span
-                    className="text-cp-secondary flex cursor-pointer items-center px-2 py-3 text-center text-sm font-semibold leading-[22px] lg:py-[13px] lg:text-[16px]"
+                <div className="border-cp-secondary hover:border-cp-secondary-light mt-4 flex  w-full items-center justify-center rounded-md border-2 lg:mt-[22px]">
+                  <button
+                    className="text-cp-secondary hover:text-cp-secondary-light flex cursor-pointer items-center px-2 py-3 text-center text-sm font-semibold leading-[22px] lg:py-[13px] lg:text-[16px]"
                     onClick={toggleModal}
                   >
                     Speed your results with this video
@@ -112,7 +117,7 @@ export default function HeroSection() {
                         d="M7 17L17 7M7 7h10v10"
                       />
                     </svg>
-                  </span>
+                  </button>
                 </div>
               </div>
             </button>
