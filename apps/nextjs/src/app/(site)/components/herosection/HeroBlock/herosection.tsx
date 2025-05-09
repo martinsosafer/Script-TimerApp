@@ -35,9 +35,9 @@ export default function HeroSection() {
             </div>
 
             {/* Video (right) */}
-            <div className="flex h-full w-full items-center justify-center px-4 lg:w-[50%]">
+            <div className="flex h-full w-full items-center justify-center lg:w-[50%]">
               <MotionTransition>
-                <div className="outline-cp-primary-lightest h-[176px] w-[312px]  self-center rounded-lg outline lg:h-[254px] lg:w-[452px]">
+                <div className="outline-cp-primary-lightest h-[182px] w-[326px]  rounded-lg outline lg:h-[264px] lg:w-[468px]">
                   <iframe
                     src="https://player.vimeo.com/video/1020211350?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
                     className="h-full w-full"
