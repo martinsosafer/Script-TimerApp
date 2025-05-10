@@ -10,9 +10,9 @@ export default function HeroSection() {
   return (
     <>
       <div
-        className={`${poppins.className} from-cp-primary relative flex justify-center bg-gradient-to-br to-[#000000] pb-16 pt-10 lg:py-20`}
+        className={`${poppins.className} from-cp-primary relative flex justify-center bg-gradient-to-br to-[#000000] pb-16 pt-10 lg:pb-16 lg:pt-20`}
       >
-        <div className="flex flex-col gap-10">
+        <div className="flex flex-col gap-14">
           <div className="flex h-full max-w-[1024px] flex-col items-start justify-items-center gap-[24px] lg:flex-row lg:justify-between lg:gap-12">
             {/* Text Content (left) */}
             <div className="flex w-full max-w-[600px] flex-col gap-3 px-4 md:max-w-lg lg:w-[50%] lg:text-start">
@@ -50,9 +50,15 @@ export default function HeroSection() {
           </div>
           {/* Bottom (center) */}
           <Link href="/texttovoice" className="flex w-full justify-center">
-            <Button variant="accent" size="lg">
-              Listen to your script here
-            </Button>
+            <RevealText>
+              <Button
+                variant="accent"
+                size="lg"
+                className="md:px-11 md:py-8 md:text-lg"
+              >
+                Start by listening to your scripts here
+              </Button>
+            </RevealText>
           </Link>
         </div>
       </div>
