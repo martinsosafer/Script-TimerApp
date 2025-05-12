@@ -23,7 +23,7 @@ export default function FormSwitcher({
             highlightSignUp ? "text-primary" : "text-slate-500"
           }`}
         >
-          Log In
+          Login
         </Link>
 
         {/* Sign Up link */}
@@ -33,7 +33,7 @@ export default function FormSwitcher({
             highlightRegister ? "text-primary" : "text-slate-500"
           }`}
         >
-          Sign Up
+          Sign In
         </Link>
 
         {/* The blue and black lines */}
