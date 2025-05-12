@@ -7,7 +7,7 @@ import AnimatedGifs from "../signin/animtadgifs";
 import { LoginWithEmailForm } from "../signin/email-login";
 import FormSwitcher from "../signin/formswitcher";
 import GoogleForm from "./google-form";
-import RegisterForm from "./register-form";
+// import RegisterForm from "./register-form";
 import Header from "./subcomponents/header";
 
 export default async function Register() {
