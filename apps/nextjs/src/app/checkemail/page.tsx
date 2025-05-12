@@ -29,19 +29,22 @@ export default function CheckEmail() {
         {" "}
         {/* Added relative z-10 to ensure content appears above confetti */}
         <div className="flex flex-col items-center justify-center text-center">
-          <h1 className="mb-6 text-6xl font-bold leading-tight text-white">
+          <h1 className="mb-6 text-4xl font-bold leading-tight text-white md:text-6xl">
             Your email was sent. Congrats!
           </h1>
-          <p className="mb-8 text-xl text-cyan-300">
+          <p className="pb-1 text-base text-cyan-300 md:text-xl">
             Please check your email to verify and open your free access. Get
             ready to save time, money, and stress:
+          </p>
+          <p className="text-cp-white-ghost pb-8 text-xs md:text-sm">
+            If you don't find our email, please check your spam folder
           </p>
           <p className="mb-12 text-2xl font-semibold text-white">
             In minutes! - not weeks
           </p>
 
           <h2 className="mb-8 text-4xl font-bold">
-            <span className="text-cyan-300">Watch how Co-Producer</span>
+            <span className="text-cyan-300">Watch how Script-Timer Ai</span>
             <br />
             <span className="text-white">saves you time, money and stress</span>
           </h2>
