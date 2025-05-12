@@ -71,6 +71,7 @@ const BoosterCard = ({
 
     setIsLoading(true);
 
+    // ToDo
     // Open new modal and show Booster and payment info
     // Handle payment from modal (similar to upgrade plan)
 

@@ -154,6 +154,15 @@ export async function addBooster({
     //     })
     //     .execute();
     // }
+    // if (type === "MASTERCLASS") {
+    //   await db
+    //     .insert(schema.masterclassBooster)
+    //     .values({
+    //       userId: subData?.userId,
+    //       valid_until: new Date(),
+    //     })
+    //     .execute();
+    // }
   } catch (error) {
     console.error(error);
     throw error;
