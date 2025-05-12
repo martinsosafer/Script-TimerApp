@@ -205,7 +205,7 @@ export default function ChatInteraction({
         <Tabs options={promptOptions} />
         {isUsingMagicPrompt && (
           <p
-            className={`${roboto.className} bg-cp-accent-lightest mt-7 w-full rounded-lg p-4 text-[16px] shadow-md lg:p-6 lg:text-lg`}
+            className={`${roboto.className} bg-cp-accent-lightest text-cp-black mt-7 w-full rounded-lg px-[12px] py-[8px] text-sm leading-[25px] shadow-md lg:px-[24px] lg:py-[12px]`}
           >
             Use the quick-search bar or follow the steps below to get the best
             results with our pre built prompts.
