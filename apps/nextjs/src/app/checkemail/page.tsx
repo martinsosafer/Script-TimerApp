@@ -3,9 +3,6 @@
 import React from "react";
 import ReactConfetti from "react-confetti"; // Make sure this is imported
 
-import { Card, CardContent } from "@voiceai/ui/@/components/ui/card";
-import { IconCheck } from "@voiceai/ui/@/components/ui/icons";
-
 import { poppins } from "../fonts";
 
 export default function CheckEmail() {
@@ -52,6 +49,7 @@ export default function CheckEmail() {
               className="h-full w-full rounded-lg"
               allow="autoplay; fullscreen; picture-in-picture"
               allowFullScreen
+              title="Script-Timer Video"
             />
           </div>
         </div>
