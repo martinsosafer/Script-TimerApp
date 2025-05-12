@@ -10,6 +10,7 @@ This app is a vitual assistant for content creators.
 - [Linter](#linter)
 - [Payments](#payments)
 - [Credits](#Credits)
+- [Email](#Email)
 
 ## Description
 
@@ -28,6 +29,13 @@ Script Timer Ai is an application that uses multiple Ai models to assist with mu
 ## Payments
 
 ## Credits
+
+## Email
+
+Resend is the dependency used to send emails to users.
+The singleton is located at: `/packages/email/resend/client.ts`
+
+When a user request for an access login through email and password (to create an account) or with "Send me a link" on the `/register` page, Next Auth triggers `/packages/auth/send-verification-
 
 ---
 

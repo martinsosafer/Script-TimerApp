@@ -41,7 +41,9 @@ export default async function Register() {
                 <span className="bg-background px-2 text-black">or</span>
               </div>
             </div>
+
             <LoginWithEmailForm />
+            
             <div className="mt-5">
               <p className="px-8 text-center text-sm text-black">
                 By signing in, you agree to our{" "}
