@@ -64,6 +64,18 @@ interface ActorSection {
   lastGeneratedVoiceId?: string;
 }
 
+// Function to get consistent color for a voice
+const getVoiceColor = (voice: Voice | null) => {
+  if (!voice) return "border-gray-200"; // Default color for no voice
+
+  // Use the voice ID to consistently map to the same color
+  const colorIndex =
+    voice.id.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0) %
+    borderColors.length;
+
+  return borderColors[colorIndex];
+};
+
 // Define border colors array for actor cards
 const borderColors = [
   "border-blue-500",
@@ -657,7 +669,7 @@ export default function MultiActorVoice({
         {actors.map((actor, index) => (
           <div
             key={actor.id}
-            className={`rounded-lg border ${borderColors[index] || "border-gray-500"} bg-card shadow-sm`}
+            className={`rounded-lg border ${getVoiceColor(actor.voice)} bg-card shadow-sm`}
           >
             <div className="flex items-center justify-between border-b p-3">
               <div className="flex items-center gap-2">
@@ -745,40 +757,57 @@ export default function MultiActorVoice({
                 />
 
                 <div className="mt-3">
-                  <StabilitySelector
-                    value={actor.stability}
-                    onValueChange={(value) => {
-                      setActors((prev) =>
-                        prev.map((a) =>
-                          a.id === actor.id ? { ...a, stability: value } : a,
-                        ),
-                      );
-                    }}
-                    disabled={actor.voice?.type === "GOOGLE"}
-                  />
-
-                  <SimilaritySelector
-                    value={actor.similarity}
-                    onValueChange={(value) => {
-                      setActors((prev) =>
-                        prev.map((a) =>
-                          a.id === actor.id ? { ...a, similarity: value } : a,
-                        ),
-                      );
-                    }}
-                    disabled={actor.voice?.type === "GOOGLE"}
-                  />
-                  <SpeedSelector
-                    value={actor.speed}
-                    onValueChange={(value) => {
-                      setActors((prev) =>
-                        prev.map((a) =>
-                          a.id === actor.id ? { ...a, speed: value } : a,
-                        ),
-                      );
-                    }}
-                    disabled={actor.voice?.type === "GOOGLE"}
-                  />
+                  {actor.voice?.type === "GOOGLE" && (
+                    <div className="text-cp-primary text-[12px] font-bold mb-2">
+                      Modulation is not available for this voice
+                    </div>
+                  )}
+                  <div className="flex flex-row gap-4">
+                    <div className="flex-1">
+                      <StabilitySelector
+                        value={actor.stability}
+                        onValueChange={(value) => {
+                          setActors((prev) =>
+                            prev.map((a) =>
+                              a.id === actor.id
+                                ? { ...a, stability: value }
+                                : a,
+                            ),
+                          );
+                        }}
+                        disabled={actor.voice?.type === "GOOGLE"}
+                        showDisabledText={false}
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <SimilaritySelector
+                        value={actor.similarity}
+                        onValueChange={(value) => {
+                          setActors((prev) =>
+                            prev.map((a) =>
+                              a.id === actor.id
+                                ? { ...a, similarity: value }
+                                : a,
+                            ),
+                          );
+                        }}
+                        disabled={actor.voice?.type === "GOOGLE"}
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <SpeedSelector
+                        value={actor.speed}
+                        onValueChange={(value) => {
+                          setActors((prev) =>
+                            prev.map((a) =>
+                              a.id === actor.id ? { ...a, speed: value } : a,
+                            ),
+                          );
+                        }}
+                        disabled={actor.voice?.type === "GOOGLE"}
+                      />
+                    </div>
+                  </div>
                   <div className="mt-3 flex justify-end">
                     <GenerateButton
                       isGenerating={actor.isGenerating}
