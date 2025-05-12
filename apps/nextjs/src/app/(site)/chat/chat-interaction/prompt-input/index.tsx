@@ -37,6 +37,8 @@ export default function PromptInput({
   additionalFields,
   isUsingMagicPrompt,
 }: PromptInputProps) {
+  const router = useRouter();
+
   function placeholderText() {
     if (isInputMinimized) {
       return "We are procesing your entry, please see the response below.";
@@ -46,8 +48,6 @@ export default function PromptInput({
     }
     return "Topic, Audience, Goals, Problems solved, or current script.  I will help you improve it.";
   }
-
-  const router = useRouter();
 
   return (
     <div className={`${roboto.className} flex w-full flex-col items-center`}>
@@ -111,6 +111,7 @@ export default function PromptInput({
         </div>
 
         <Button
+          buttonType="submit"
           disabled={!isEnabled}
           type="primary"
           label={loadingMessages ? "" : "Create"}
