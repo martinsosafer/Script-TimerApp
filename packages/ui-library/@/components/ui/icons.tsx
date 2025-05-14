@@ -3746,5 +3746,7 @@ export {
   IconPop,
   IconTechnical,
   IconBotBig,
-  IconPlayBorder,
+  IconArrowUpDown,
+  IconClock,
+  IconVolumeX,
 };
