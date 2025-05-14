@@ -32,6 +32,7 @@ const TabTwo = ({
   handleStreaming,
   stability,
   similarity,
+  speed,
   generateVoice,
   revisedScript,
   setRevisedScript,
@@ -98,6 +99,7 @@ const TabTwo = ({
                   selectedModel={selectedModel}
                   stability={stability}
                   similarity={similarity}
+                  speed={speed}
                   audioRef={audioRef}
                   handleStreaming={handleStreaming}
                   refetchCredits={refetchCredits}
