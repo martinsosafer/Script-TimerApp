@@ -3570,7 +3570,60 @@ function IconArrowDown({
     </svg>
   );
 }
-
+function IconPlayBorder({
+  className,
+  // color = "#212121",
+  ...props
+}: React.ComponentProps<"svg">) {
+  return (
+    <div className="group">
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={cn("h-15 w-15", className)}
+        {...props}
+      >
+        <path
+          d="M6 3L20 12L6 21V3Z"
+          // stroke="#212121"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </div>
+  );
+}
+function IconPlayBorder({
+  className,
+  // color = "#212121",
+  ...props
+}: React.ComponentProps<"svg">) {
+  return (
+    <div className="group">
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={cn("h-15 w-15", className)}
+        {...props}
+      >
+        <path
+          d="M6 3L20 12L6 21V3Z"
+          // stroke="#212121"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </div>
+  );
+}
 export {
   IconEdit,
   IconNextChat,
@@ -3678,11 +3731,20 @@ export {
   IconPause,
   IconMusic,
   IconMic,
-  IconArrowUpDown,
-  IconClock,
-  IconVolumeX,
-  IconSettings,
-  IconVolume2,
-  IconArrowUp,
-  IconArrowDown,
+  IconAlerts,
+  IconAmbient,
+  IconBassDrops,
+  IconClocks,
+  IconKeyboards,
+  IconPeople,
+  IconSuspense,
+  IconTechnology,
+  IconVideogames,
+  IconWooshes,
+  IconCinematic,
+  IconHipHop,
+  IconPop,
+  IconTechnical,
+  IconBotBig,
+  IconPlayBorder,
 };
