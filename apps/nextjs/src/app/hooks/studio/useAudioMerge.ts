@@ -7,9 +7,16 @@ import type { ActorSection, MergeType } from "~/constants/types/voice";
 interface UseAudioMergeProps {
   actors: ActorSection[];
   masterVolume: number;
+  subData: {
+    status: string;
+  };
 }
 
-export function useAudioMerge({ actors, masterVolume }: UseAudioMergeProps) {
+export function useAudioMerge({
+  actors,
+  masterVolume,
+  subData,
+}: UseAudioMergeProps) {
   const [isMergingAudio, setIsMergingAudio] = useState(false);
   const [mergedAudioUrl, setMergedAudioUrl] = useState<string | null>(null);
 
@@ -389,8 +396,65 @@ export function useAudioMerge({ actors, masterVolume }: UseAudioMergeProps) {
     source.connect(offlineContext.destination);
     source.start(0);
 
-    const renderedBuffer = await offlineContext.startRendering();
-    return bufferToWave(renderedBuffer, renderedBuffer.length);
+    // Check if we need to add the watermark
+    if (subData.status === "FREE" || subData.status === "FREE_TRIAL") {
+      try {
+        console.log("Adding watermark audio for FREE or FREE_TRIAL user");
+
+        // Fetch the watermark audio
+        const watermarkUrl =
+          "https://8ipgp5xevb8hkgbh.public.blob.vercel-storage.com/PreRecordAudios/audio-sORMVq66zP6j2KqqUEBO4HShxFgYE1.mp3";
+        const response = await fetch(watermarkUrl);
+        const arrayBuffer = await response.arrayBuffer();
+
+        // Decode the watermark audio
+        const watermarkBuffer =
+          await offlineContext.decodeAudioData(arrayBuffer);
+
+        // Create a source for the watermark
+        const watermarkSource = offlineContext.createBufferSource();
+        watermarkSource.buffer = watermarkBuffer;
+        watermarkSource.connect(offlineContext.destination);
+
+        // Schedule the watermark to play after the main audio
+        watermarkSource.start(mergedBuffer.duration);
+
+        // Extend the offline context duration to include the watermark
+        const newOfflineContext = new OfflineAudioContext(
+          mergedBuffer.numberOfChannels,
+          Math.ceil(
+            (mergedBuffer.duration + watermarkBuffer.duration) *
+              mergedBuffer.sampleRate,
+          ),
+          mergedBuffer.sampleRate,
+        );
+
+        // Add the main audio to the new context
+        const mainSource = newOfflineContext.createBufferSource();
+        mainSource.buffer = mergedBuffer;
+        mainSource.connect(newOfflineContext.destination);
+        mainSource.start(0);
+
+        // Add the watermark to the new context
+        const newWatermarkSource = newOfflineContext.createBufferSource();
+        newWatermarkSource.buffer = watermarkBuffer;
+        newWatermarkSource.connect(newOfflineContext.destination);
+        newWatermarkSource.start(mergedBuffer.duration);
+
+        // Render the combined audio
+        const renderedBuffer = await newOfflineContext.startRendering();
+        return bufferToWave(renderedBuffer, renderedBuffer.length);
+      } catch (error) {
+        console.error("Error adding watermark:", error);
+        // Fall back to the original audio if watermark fails
+        const renderedBuffer = await offlineContext.startRendering();
+        return bufferToWave(renderedBuffer, renderedBuffer.length);
+      }
+    } else {
+      // No watermark needed, just render the original audio
+      const renderedBuffer = await offlineContext.startRendering();
+      return bufferToWave(renderedBuffer, renderedBuffer.length);
+    }
   };
 
   const bufferToWave = (abuffer: AudioBuffer, len: number): Blob => {

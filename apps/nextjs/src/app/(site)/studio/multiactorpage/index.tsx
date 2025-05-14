@@ -3,7 +3,7 @@
 import { api } from "~/utils/api";
 import MultiActorVoice from "./multiactorvoice";
 
-export default function MultiActorPage() {
+export default function MultiActorPage({ subData }) {
   // Use tRPC hooks for data fetching
   const { data: voicesData, isLoading: voicesLoading } =
     api.voice.publicVoices.useQuery();
@@ -20,7 +20,7 @@ export default function MultiActorPage() {
 
   return (
     <div className="container mx-auto py-4">
-      <MultiActorVoice allVoices={voicesData} />
+      <MultiActorVoice allVoices={voicesData} subData={subData} />
     </div>
   );
 }

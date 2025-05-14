@@ -46,13 +46,13 @@ const characters: Record<string | number, string> = {
 
 export const metadata: Metadata = {
   title: "Studio",
-  description: "do some stuff here",
+  description: "Create Multiple Voice chats or stories in here",
 };
 
 export default async function IndexPage() {
   const session = await auth();
   const subData = session?.user.subscription;
-  console.log("subdata", subData);
+  console.log("THis is the data we need", subData);
 
   // Use planId instead of plan
   const basePlan = subData?.status ?? "FREE";
@@ -78,9 +78,9 @@ export default async function IndexPage() {
         </p>
 
         {/* Add credit information similar to ScriptAI component */}
-        {basePlan && basePlan !== "FREE" ? (
+        {subData ? (
           <div>
-            <p className="font-base mb-2 text-center">
+            <p className="font-base  text-center">
               On your current plan, <br />
               <span className="text-cp-primary font-semibold">
                 {basePlan == 1 || basePlan == 2
@@ -93,7 +93,7 @@ export default async function IndexPage() {
               </span>{" "}
               per script.
             </p>
-            <p className="font-base mb-2 text-center">
+            <p className="font-base  text-center">
               You have{" "}
               <span className="text-cp-primary font-bold">{credits}</span>{" "}
               characters left of{" "}
@@ -113,7 +113,7 @@ export default async function IndexPage() {
   return (
     <div>
       <PageHeader title="Multi-Voice Studio" subtitle={subtitle} />
-      <MultiActorPage />
+      <MultiActorPage subData={subData} />
     </div>
   );
 }

@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 
@@ -43,6 +45,7 @@ import { VoiceAvatar } from "./voiceavatar/index";
 interface MultiActorVoiceProps {
   allVoices?: Voice[];
   userPlan?: string;
+  subData?: string;
 }
 
 interface ActorSection {
@@ -65,15 +68,42 @@ interface ActorSection {
 }
 
 // Function to get consistent color for a voice
-const getVoiceColor = (voice: Voice | null) => {
+const getVoiceColor = (
+  voice: Voice | null,
+  index: number,
+  allActors: ActorSection[],
+) => {
   if (!voice) return "border-gray-200"; // Default color for no voice
 
-  // Use the voice ID to consistently map to the same color
-  const colorIndex =
-    voice.id.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0) %
-    borderColors.length;
+  // Check if this voice has appeared in positions 0 or 1 before
+  // If so, use that color consistently
+  for (let i = 0; i < allActors.length; i++) {
+    const actor = allActors[i];
+    if (actor.voice && actor.voice.id === voice.id) {
+      // If this voice was previously in position 0, always use blue
+      if (i === 0) return "border-blue-500";
+      // If this voice was previously in position 1, always use orange
+      if (i === 1) return "border-orange-500";
+      break; // Only check the first occurrence
+    }
+  }
 
-  return borderColors[colorIndex];
+  // If this is a new voice in position 0 or 1, assign the fixed colors
+  if (index === 0) return "border-blue-500";
+  if (index === 1) return "border-orange-500";
+
+  // For other positions with voices that haven't been in positions 0 or 1,
+  // create a consistent mapping based on voice ID
+  const voiceId = voice.id;
+
+  // Use the voice ID to consistently map to the same color
+  // Skip the first two colors (blue and orange) that are reserved for the first two positions
+  const availableColors = borderColors.slice(2);
+  const colorIndex =
+    voiceId.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0) %
+    availableColors.length;
+
+  return availableColors[colorIndex];
 };
 
 // Define border colors array for actor cards
@@ -89,8 +119,24 @@ const borderColors = [
   "border-teal-500",
 ];
 
+// Define character limits based on subscription plans
+const CHAR_LIMITS: Record<string, number> = {
+  FREE: 500,
+  FREE_TRIAL: 1600,
+  STUDENT: 2000,
+  CREATOR: 5000,
+  BUSINESS: 10000,
+  STUDENTCLMO: 2000,
+  CREATORCLMO: 5000,
+  BUSINESSCLMO: 10000,
+  STUDENTCLYR: 2000,
+  CREATORCLYR: 5000,
+  BUSINESSCLYR: 10000,
+};
+
 export default function MultiActorVoice({
   allVoices = [],
+  subData,
 }: MultiActorVoiceProps) {
   const {
     actors,
@@ -206,6 +252,7 @@ export default function MultiActorVoice({
   } = useAudioMerge({
     actors,
     masterVolume,
+    subData,
   });
 
   const [isMergedAudioPlaying, setIsMergedAudioPlaying] = useState(false);
@@ -213,6 +260,9 @@ export default function MultiActorVoice({
   const [buttonAnimating, setButtonAnimating] = useState(false);
   const [mergedAudioAnimating, setMergedAudioAnimating] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [showCharLimitModal, setShowCharLimitModal] = useState<string | null>(
+    null,
+  );
   // Add a ref to track if we're currently processing the master button action
   const isProcessingRef = useRef(false);
   // Add a ref to store generated audio blobs
@@ -612,6 +662,12 @@ export default function MultiActorVoice({
     };
   }, [activeActorId]);
 
+  // Function to get character limit based on subscription status
+  const getCharLimit = () => {
+    if (!subData?.status) return CHAR_LIMITS.FREE;
+    return CHAR_LIMITS[subData.status] || CHAR_LIMITS.FREE;
+  };
+
   return (
     <div className="container mx-auto max-w-4xl py-6">
       <div className="mb-6 flex items-center justify-between">
@@ -669,7 +725,7 @@ export default function MultiActorVoice({
         {actors.map((actor, index) => (
           <div
             key={actor.id}
-            className={`rounded-lg border ${getVoiceColor(actor.voice)} bg-card shadow-sm`}
+            className={`rounded-lg border-4 ${getVoiceColor(actor.voice, index, actors)} bg-card shadow-sm`}
           >
             <div className="flex items-center justify-between border-b p-3">
               <div className="flex items-center gap-2">
@@ -692,7 +748,7 @@ export default function MultiActorVoice({
             </div>
 
             <div className="flex flex-col md:flex-row">
-              <div className="actor-voice-container relative flex items-center gap-4 p-4 md:w-1/3">
+              <div className="actor-voice-container relative flex items-start gap-4 p-4 md:w-1/3">
                 <div className="relative">
                   <VoiceAvatar
                     voice={actor.voice}
@@ -739,22 +795,43 @@ export default function MultiActorVoice({
               </div>
 
               <div className="flex flex-1 flex-col p-4">
-                <Textarea
-                  placeholder="Enter the text for this actor..."
-                  className="min-h-[80px] flex-1 resize-none rounded-md border-2 border-muted text-base focus:border-primary focus:ring-1 focus:ring-primary"
-                  value={actor.text}
-                  onChange={(e) => {
-                    updateActorText(actor.id, e.target.value);
-                    // Clear existing audio when text changes
-                    setActors((prev) =>
-                      prev.map((a) =>
-                        a.id === actor.id
-                          ? { ...a, audioUrl: null, audioBlob: null }
-                          : a,
-                      ),
-                    );
-                  }}
-                />
+                <div className="relative w-full">
+                  <Textarea
+                    placeholder="Enter the text for this actor..."
+                    className="min-h-[80px] w-full flex-1 resize-none rounded-md border-2 border-muted text-base focus:border-primary focus:ring-1 focus:ring-primary"
+                    value={actor.text}
+                    onChange={(e) => {
+                      const newText = e.target.value;
+                      const charLimit = getCharLimit();
+
+                      // Check if the new text exceeds the character limit
+                      if (newText.length > charLimit) {
+                        setShowCharLimitModal(actor.id);
+                      } else {
+                        updateActorText(actor.id, newText);
+                        // Clear existing audio when text changes
+                        setActors((prev) =>
+                          prev.map((a) =>
+                            a.id === actor.id
+                              ? { ...a, audioUrl: null, audioBlob: null }
+                              : a,
+                          ),
+                        );
+                      }
+                    }}
+                  />
+                  <div className="mt-1 text-right text-sm">
+                    <span
+                      className={
+                        actor.text.length > getCharLimit() * 0.9
+                          ? "text-red-500 font-medium"
+                          : "text-gray-600"
+                      }
+                    >
+                      {actor.text.length} / {getCharLimit()}
+                    </span>
+                  </div>
+                </div>
 
                 <div className="mt-3">
                   {actor.voice?.type === "GOOGLE" && (
@@ -1007,6 +1084,40 @@ export default function MultiActorVoice({
           </motion.div>
         </div>
       </div>
+      {/* Character Limit Modal */}
+      {showCharLimitModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
+            <h3 className="mb-4 text-lg font-medium">
+              Character Limit Reached
+            </h3>
+            <p className="mb-4">
+              You've reached the character limit of {getCharLimit()} for your{" "}
+              {subData?.status || "FREE"} plan. Please upgrade your plan to
+              increase your character limit or reduce your text.
+            </p>
+            <div className="flex justify-end gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setShowCharLimitModal(null)}
+              >
+                Close
+              </Button>
+              <Button
+                variant="default"
+                onClick={() => {
+                  // Add your upgrade plan logic here
+                  setShowCharLimitModal(null);
+                }}
+              >
+                <Link href="/plans" target="_blank">
+                  Upgrade Plan
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

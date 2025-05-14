@@ -1,4 +1,9 @@
+"use client";
+
+import type React from "react";
+
 import { useState } from "react";
+import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 import type { ActorSection } from "~/constants/types/voice";
 
@@ -30,7 +35,7 @@ export function useAudioGeneration({
     );
 
     try {
-      const response = await fetch("/api/voice", {
+      const response = await fetch("/api/voiceStudio", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -84,6 +89,16 @@ export function useAudioGeneration({
       return objectUrl;
     } catch (error) {
       console.error("Error generating audio:", error);
+
+      // Add toast notification for error
+      toast({
+        title: "Error",
+        description:
+          error instanceof Error
+            ? error.message
+            : "Failed to generate audio. Please try again later.",
+      });
+
       setActors(
         actors.map((a) =>
           a.id === actor.id ? { ...a, isGenerating: false } : a,

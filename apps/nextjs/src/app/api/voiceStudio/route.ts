@@ -6,8 +6,7 @@ import { db, eq, schema } from "@voiceai/db";
 import { elevenLabsCredit } from "@voiceai/db/schema/11LabsCredits";
 
 function addWatermark(message: string) {
-  const suffix = "Thank you for using Script-Timer AI";
-  return `${message} -  - ${suffix}`;
+  return `${message} - `;
 }
 
 // Vercel endpoint execution limit
