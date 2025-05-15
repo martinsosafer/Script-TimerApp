@@ -93,7 +93,7 @@ export default function CheckEmail() {
                 <p>• Make sure your inbox is not full</p>
                 <p>• If you use Gmail, check the "Promotions" tab</p>
                 <p>
-                  • If you still can't find the email click, please write to
+                  • If you still can't find the email, please write to
                   maury@co-producer.ai
                 </p>
               </div>
