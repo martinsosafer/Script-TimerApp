@@ -42,11 +42,11 @@ const TabOne = ({
           onValueChange={setSimilarity}
           disabled={selectedVoiceType === "GOOGLE"} // Disable if Google voice is selected
         />
-        <SpeedSelector
+        {/* <SpeedSelector
           value={speed}
           onValueChange={setSpeed}
           disabled={selectedVoiceType === "GOOGLE"}
-        />
+        /> */}
       </div>
     </div>
   );
