@@ -42,7 +42,7 @@ export function ScriptAI({
     isSubscriptionActive,
     refreshSubscriptionData,
   } = useSubscription();
-
+  console.log("VoicesData", favoriteVoices);
   const audioPlayerRef = React.useRef<HTMLDivElement>(null);
   const tabTwoRef = React.useRef<HTMLDivElement>(null);
   const actionButtonsRef = React.useRef<HTMLDivElement>(null);

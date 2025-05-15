@@ -41,7 +41,7 @@ import { AudioControls } from "./audiocontrols/index";
 import { GenerateButton } from "./generatebutton/index";
 import { SettingsPanel } from "./settingspanel/index";
 import { VoiceAvatar } from "./voiceavatar/index";
-
+import { useSubscription } from "~/app/hooks/texttovoice/useSubscription";
 interface MultiActorVoiceProps {
   allVoices?: Voice[];
   userPlan?: string;
@@ -187,7 +187,7 @@ export default function MultiActorVoice({
       speed: [1.0],
     },
   ]);
-
+  const { favoriteVoices } = useSubscription();
   const {
     activeActorId,
     setActiveActorId,
@@ -762,6 +762,7 @@ export default function MultiActorVoice({
 
                   {activeActorId === actor.id && (
                     <VoiceDropdown
+                      favoriteVoices={favoriteVoices}
                       isOpen={activeActorId === actor.id}
                       voices={filteredVoices}
                       recentlyUsed={recentlyUsedVoices}
