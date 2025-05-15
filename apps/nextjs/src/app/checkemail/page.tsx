@@ -94,7 +94,7 @@ export default function CheckEmail() {
                 <p>• If you use Gmail, check the "Promotions" tab</p>
                 <p>
                   • If you still can't find the email click, please write to
-                  maury@script-timer.ai
+                  maury@co-producer.ai
                 </p>
               </div>
             )}
