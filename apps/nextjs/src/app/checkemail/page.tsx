@@ -1,28 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
 import ReactConfetti from "react-confetti"; // Make sure this is imported
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@voiceai/ui/@/components/ui/accordion";
-import {
-  IconChevronDown,
-  IconChevronUpDown,
-} from "@voiceai/ui/@/components/ui/icons";
-
-// import { resend } from "../../../../../packages/email/resend/client";
 import { poppins } from "../fonts";
 
 export default function CheckEmail() {
-  const [isAccordionOpen, setIsAccordionOpen] = useState(false);
-  // console.log("resend", resend);
   return (
     <div
-      className={`min-h-screen bg-gradient-to-tr from-black to-blue-500 p-8 ${poppins.className}`}
+      className={`h-full w-full bg-gradient-to-tr from-black to-blue-500 ${poppins.className} flex`}
     >
       {/* Confetti will cover the whole page */}
       <ReactConfetti
@@ -36,11 +21,11 @@ export default function CheckEmail() {
         colors={["#0123e7", "#eb8806"]}
       />
 
-      <div className="relative z-10 mx-auto h-full max-w-6xl">
+      <div className="relative z-10 flex flex-1 justify-center px-3 py-8">
         {" "}
         {/* Added relative z-10 to ensure content appears above confetti */}
-        <div className="flex flex-col items-center justify-center text-center">
-          <h1 className="mb-6 text-4xl font-bold leading-tight text-white md:text-6xl">
+        <div className="flex h-full max-w-6xl flex-col items-center justify-start text-center ">
+          <h1 className="pb-6 text-4xl font-bold leading-tight text-white md:text-6xl">
             Your email was sent. Congrats!
           </h1>
           <p className="pb-1 text-base text-cyan-300 md:text-xl">
@@ -51,7 +36,7 @@ export default function CheckEmail() {
             In minutes! - not weeks
           </p>
 
-          <h2 className="mb-8 text-4xl font-bold">
+          <h2 className="pb-8 text-xl font-bold md:text-4xl">
             <span className="text-cyan-300">Watch how Script-Timer Ai</span>
             <br />
             <span className="text-white">saves you time, money and stress</span>
@@ -67,62 +52,22 @@ export default function CheckEmail() {
             />
           </div>
 
-          <div className=" w-full max-w-3xl pt-6">
-            <div className="bg-cp-background flex justify-between rounded-lg">
-              <p className="text-cp-black px-4 py-2 text-left text-base">
-                Need help with the login email?
+          <div className=" w-full max-w-3xl pt-7 text-sm lg:text-base">
+            <p className="text-cp-accent pb-2 text-left">
+              Need help with the login email?
+            </p>
+
+            <div className="text-cp-white flex flex-col gap-1 p-1 text-left">
+              <p>
+                • Check your spam folder. If it's there, please mark it as "not
+                spam"
               </p>
-              <button
-                onClick={() => setIsAccordionOpen(!isAccordionOpen)}
-                className="px-3"
-              >
-                {isAccordionOpen ? (
-                  <IconChevronDown style={{ transform: `rotate(180deg)` }} />
-                ) : (
-                  <IconChevronDown />
-                )}
-              </button>
+              <p>• If you use Gmail, check the "Promotions" tab</p>
+              <p>
+                • If you still can't find the email, please write to
+                maury@co-producer.ai
+              </p>
             </div>
-
-            {isAccordionOpen && (
-              <div className="text-cp-white flex flex-col gap-2 p-4 text-left">
-                <p>
-                  • Check your spam folder. If it's there, please mark it as
-                  "not spam"
-                </p>
-                <p>• Make sure your inbox is not full</p>
-                <p>• If you use Gmail, check the "Promotions" tab</p>
-                <p>
-                  • If you still can't find the email, please write to
-                  maury@co-producer.ai
-                </p>
-              </div>
-            )}
-
-            {/* <Accordion type="single" collapsible className="w-full">
-              <AccordionItem value="item-1">
-                <AccordionTrigger className="bg-cp-background text-cp-black border-none px-6 font-bold shadow-sm">
-                  <span>What to do if you can't find our login email</span>
-                </AccordionTrigger>
-                <AccordionContent className="text-cp-white p-2 text-left md:p-6">
-                  <p>
-                    • Check your spam folder. If it's there, please mark it as
-                    "not spam"
-                  </p>
-                  <p>• Make sure your inbox is not full</p>
-                  <p>• If you use Gmail, check the "Promotions" tab</p>
-                  <p>
-                    • If you still can't find the email click{" "}
-                    <button
-                      className="text-cp-accent-light px-2 text-lg font-bold leading-none underline"
-                      onClick={() => console.log("CLICK")}
-                    >
-                      here
-                    </button>
-                  </p>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion> */}
           </div>
         </div>
       </div>
