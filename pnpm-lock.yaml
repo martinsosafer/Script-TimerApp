@@ -315,6 +315,9 @@ importers:
       react-media-recorder:
         specifier: ^1.7.1
         version: 1.7.1
+      react-resizable-panels:
+        specifier: ^2.1.7
+        version: 2.1.7(react-dom@18.2.0)(react@18.2.0)
       react-select:
         specifier: ^5.8.2
         version: 5.8.2(@types/react@18.3.4)(react-dom@18.2.0)(react@18.2.0)
@@ -348,6 +351,9 @@ importers:
       use-debounce:
         specifier: ^10.0.0
         version: 10.0.3(react@18.2.0)
+      wavesurfer.js:
+        specifier: ^7.9.4
+        version: 7.9.4
       zod:
         specifier: ^3.22.2
         version: 3.23.8
@@ -18547,6 +18553,16 @@ packages:
       use-sidecar: 1.1.2(@types/react@18.3.4)(react@18.2.0)
     dev: false
 
+  /react-resizable-panels@2.1.7(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-JtT6gI+nURzhMYQYsx8DKkx6bSoOGFp7A3CwMrOb8y5jFHFyqwo9m68UhmXRw57fRVJksFn1TSlm3ywEQ9vMgA==}
+    peerDependencies:
+      react: ^16.14.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc
+      react-dom: ^16.14.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
   /react-select@5.8.2(@types/react@18.3.4)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-a/LkOckoI62710gGPQSQqUp7A10fGbH/ya3/IR49qaq3XoBvwymgD5mJgtiHxBDsutyEQfdKNycWVh8Cg8UCjw==}
     peerDependencies:
@@ -21178,6 +21194,10 @@ packages:
 
   /warn-once@0.1.1:
     resolution: {integrity: sha512-VkQZJbO8zVImzYFteBXvBOZEl1qL175WH8VmZcxF2fZAoudNhNDvHi+doCaAEdU2l2vtcIwa2zn0QK5+I1HQ3Q==}
+    dev: false
+
+  /wavesurfer.js@7.9.4:
+    resolution: {integrity: sha512-ahOMvrOKo5jULNnXq8Ske8v/ZStoNNTDjYohvgLNerUFuh+6fJSt7wlxFesEXmnlcTnjMy5/tIzhn9KusjO6bg==}
     dev: false
 
   /wcwidth@1.0.1:

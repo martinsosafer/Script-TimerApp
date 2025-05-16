@@ -17,12 +17,9 @@ function VoiceWidget({
   refreshSubscriptionData,
   subData,
 }) {
-  console.log("VoiceWidget SubData: ", subData);
   const { data: allVoices, refetch } = subData
     ? api.voice.list.useQuery({ name: "" })
     : api.voice.publicVoices.useQuery();
-
-  console.log("VoiceWidget AllVoices: ", allVoices);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [currentFavPage, setCurrentFavPage] = useState(1);
