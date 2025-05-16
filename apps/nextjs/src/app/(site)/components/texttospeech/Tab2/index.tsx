@@ -33,6 +33,7 @@ const TabTwo = ({
   stability,
   similarity,
   speed,
+  style,
   generateVoice,
   revisedScript,
   setRevisedScript,
@@ -48,7 +49,7 @@ const TabTwo = ({
 }) => {
   return (
     <div className="md:order-2">
-      <div className="rounded-lg bg-gray-100 p-[31px] shadow-md dark:bg-slate-400">
+      <div className="rounded-lg bg-gray-100 p-[31px] shadow-md dark:bg-slate-400 h-[740px]">
         <ButtonsMenu
           script={script}
           subData={subData}
@@ -77,7 +78,7 @@ const TabTwo = ({
               openAiCredits={openAiCredits}
             />
 
-            <div className=" mb-4 mt-6 flex flex-col items-center justify-center">
+            <div className=" mb-4 mt-10 flex flex-col items-center justify-center">
               <ScriptInfoBadge
                 wordCount={wordCount}
                 minutes={minutes}
@@ -100,6 +101,7 @@ const TabTwo = ({
                   stability={stability}
                   similarity={similarity}
                   speed={speed}
+                  style={style}
                   audioRef={audioRef}
                   handleStreaming={handleStreaming}
                   refetchCredits={refetchCredits}

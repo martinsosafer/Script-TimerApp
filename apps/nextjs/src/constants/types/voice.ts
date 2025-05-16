@@ -27,6 +27,7 @@ export interface ActorSection {
   stability: number[];
   similarity: number[];
   speed: number[];
+  style: number[];
 }
 
 export type MergeType = "sequential" | "overlap";
