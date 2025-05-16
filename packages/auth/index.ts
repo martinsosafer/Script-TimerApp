@@ -162,7 +162,7 @@ export const {
           EnterYourEmail: dbUser?.email,
           YoureWorkingOn: dbUser?.app_sumo_license_key
             ? "AppSumo User"
-            : "Script Timer User",
+            : "Script-Timer User",
         };
         await CreateCognitoEntry(payload, userId);
       }
