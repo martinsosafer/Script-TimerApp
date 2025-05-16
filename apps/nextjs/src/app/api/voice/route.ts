@@ -264,6 +264,7 @@ async function handleElevenLabsGeneration(body: any) {
       similarity_boost: body.similarity,
       stability: body.stability,
       speed: body.speed,
+      style: body.style,
     },
   };
 

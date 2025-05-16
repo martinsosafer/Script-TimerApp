@@ -17,6 +17,7 @@ const AudioStreamButtons = ({
   stability,
   similarity,
   speed,
+  style,
   audioRef,
   handleStreaming,
 
@@ -38,6 +39,7 @@ const AudioStreamButtons = ({
         stability: stability[0],
         similarity: similarity[0],
         speed: speed[0],
+        style: style[0],
         setLoading,
         audioRef,
       });
@@ -61,6 +63,7 @@ const AudioStreamButtons = ({
         stability: stability[0],
         similarity: similarity[0],
         speed: speed[0],
+        style: style[0],
         setLoading,
         audioRef,
       });

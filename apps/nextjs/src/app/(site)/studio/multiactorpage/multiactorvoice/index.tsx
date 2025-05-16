@@ -42,6 +42,7 @@ import { GenerateButton } from "./generatebutton/index";
 import { SettingsPanel } from "./settingspanel/index";
 import { VoiceAvatar } from "./voiceavatar/index";
 import { useSubscription } from "~/app/hooks/texttovoice/useSubscription";
+import { StyleSelector } from "~/app/(site)/components/style-selector";
 interface MultiActorVoiceProps {
   allVoices?: Voice[];
   userPlan?: string;
@@ -63,6 +64,7 @@ interface ActorSection {
   stability: number[];
   similarity: number[];
   speed: number[];
+  style: number[];
   lastGeneratedText?: string;
   lastGeneratedVoiceId?: string;
 }
@@ -168,6 +170,7 @@ export default function MultiActorVoice({
       stability: [0.5],
       similarity: [0.5],
       speed: [1.0],
+      style: [0],
     },
     {
       id: crypto.randomUUID(),
@@ -185,6 +188,7 @@ export default function MultiActorVoice({
       stability: [0.5],
       similarity: [0.5],
       speed: [1.0],
+      style: [0],
     },
   ]);
   const { favoriteVoices } = useSubscription();
@@ -885,6 +889,19 @@ export default function MultiActorVoice({
                         disabled={actor.voice?.type === "GOOGLE"}
                       />
                     </div>
+                    <div className="flex-1">
+                      <StyleSelector
+                        value={actor.style}
+                        onValueChange={(value) => {
+                          setActors((prev) =>
+                            prev.map((a) =>
+                              a.id === actor.id ? { ...a, style: value } : a,
+                            ),
+                          );
+                        }}
+                        disabled={actor.voice?.type === "GOOGLE"}
+                      />
+                    </div>
                   </div>
                   <div className="mt-3 flex justify-end">
                     <GenerateButton
@@ -1086,7 +1103,28 @@ export default function MultiActorVoice({
         </div>
       </div>
       {/* Character Limit Modal */}
-      {showCharLimitModal && (
+      {showCharLimitModal && subData?.status === "BUSINESS" && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
+            <h3 className="mb-4 text-lg font-medium">
+              Character Limit Reached
+            </h3>
+            <p className="mb-4">
+              You've reached the 10,000 character limit for the BUSINESS plan.
+            </p>
+            <div className="flex justify-end">
+              <Button
+                variant="outline"
+                onClick={() => setShowCharLimitModal(null)}
+              >
+                Close
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showCharLimitModal && subData?.status !== "BUSINESS" && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
             <h3 className="mb-4 text-lg font-medium">
@@ -1106,10 +1144,7 @@ export default function MultiActorVoice({
               </Button>
               <Button
                 variant="default"
-                onClick={() => {
-                  // Add your upgrade plan logic here
-                  setShowCharLimitModal(null);
-                }}
+                onClick={() => setShowCharLimitModal(null)}
               >
                 <Link href="/plans" target="_blank">
                   Upgrade Plan
