@@ -30,7 +30,7 @@ export default async function RegisterDirect() {
           </div>
 
           <p className={`${poppins.className} text-center`}>
-            Register and start creating with Script-Timer features today!
+            Register and start creating with Script Timer tools today!
           </p>
 
           <RegisterForm />

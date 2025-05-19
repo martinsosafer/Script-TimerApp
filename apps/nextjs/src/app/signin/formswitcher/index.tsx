@@ -23,10 +23,10 @@ export default function FormSwitcher({
             highlightSignUp ? "text-primary" : "text-slate-500"
           }`}
         >
-          Login
+          Log In
         </Link>
 
-        {/* Sign Up link */}
+        {/* Sign In link */}
         <Link
           href={isCheckingOut ? "/register?origin=checkout" : "/register"}
           className={`ml-16 font-poppins font-medium ${

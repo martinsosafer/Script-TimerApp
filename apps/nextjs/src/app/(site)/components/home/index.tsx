@@ -54,6 +54,7 @@ export default function Home({
     }
   }, []);
 
+  // Redirect to plans-lp page
   // if (
   //   (session &&
   //     session.user.subscription?.status === "FREE_TRIAL" &&
