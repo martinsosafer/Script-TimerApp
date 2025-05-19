@@ -64,9 +64,15 @@ export default function CheckEmail() {
               </p>
               <p>{`• If you use Gmail, check the "Promotions" tab`}</p>
               <p>{`• Try using a different email account`}</p>
-              <p>
-                {`• If you still can't find the email, please write to
-                maury@co-producer.ai`}
+              <p className="flex gap-1">
+                {`• Or register by using our direct access`}{" "}
+                <a
+                  href="/register-direct"
+                  target="_blank"
+                  className="text-cp-accent-light underline"
+                >
+                  here
+                </a>
               </p>
             </div>
           </div>
