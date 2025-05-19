@@ -7,7 +7,7 @@ import AnimatedGifs from "../signin/animtadgifs";
 import { LoginWithEmailForm } from "../signin/email-login";
 import FormSwitcher from "../signin/formswitcher";
 import GoogleForm from "./google-form";
-// import RegisterForm from "./register-form";
+import RegisterForm from "./register-form";
 import Header from "./subcomponents/header";
 
 export default async function Register() {
@@ -34,17 +34,17 @@ export default async function Register() {
               <FormSwitcher highlightSignUp={false} highlightRegister={true} />
             </div>
 
-            <LoginWithEmailForm />
-
-            {/* <RegisterForm /> */}
+            <RegisterForm />
 
             <GoogleForm />
 
-            {/* <div className="relative">
-              <div className="text-md relative mb-2 mt-2 flex justify-center">
+            <div className="relative">
+              <div className="text-md relative flex justify-center pt-2 pb-1">
                 <span className="bg-background px-2 text-black">or</span>
               </div>
-            </div> */}
+            </div>
+
+            <LoginWithEmailForm />
 
             <div className="mt-5">
               <p className="px-8 text-center text-sm text-black">

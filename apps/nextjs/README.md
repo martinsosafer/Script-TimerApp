@@ -35,11 +35,13 @@ Script Timer Ai is an application that uses multiple Ai models to assist with mu
 **Resend** is the dependency used to send emails to users.
 The singleton is located at: `/packages/email/resend/client.ts`
 
-### Register and Login
+### Register
 
-- When a user request for an access login through email and password (to create an account) or with "Send me a link" on the `/register` page, Next Auth triggers `/packages/auth/send-verification-request.ts`.
+- When a user request an email link (to create an account) on the pop-up modal or with "Send me a link" on the `/register` page, Next Auth triggers `/packages/auth/send-verification-request.ts`.
 
 - If the email was delivered successfully, the app redirects to `/checkemail` to inform the user.
+
+> Resend will bounce fake or blacklisted emails and label as "Bounced" (red). If the email is sent successfully, but the user email account sends it to the Span folder it will be labeled as "Complained" (yelllow) on the Resend dashboard.
 
 > To **test** if the Resend service is working correctly use:
 >

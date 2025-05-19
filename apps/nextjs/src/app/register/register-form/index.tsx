@@ -5,6 +5,7 @@ import type { FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { IconEye, IconSpinner } from "@voiceai/ui/@/components/ui/icons";
+import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -38,7 +39,11 @@ export default function RegisterForm() {
         router.push("/signin");
       }
     } catch (error) {
-      alert(error);
+      toast({
+        title: "Something went wrong",
+        description: `${error as string}`,
+        variant: "destructive",
+      });
       console.log("ERROR", error);
     }
     setLoading(false);
@@ -47,10 +52,10 @@ export default function RegisterForm() {
   return (
     <form
       onSubmit={handleSignUp}
-      className="mx-auto flex w-full max-w-md flex-col space-y-2"
+      className="mx-auto flex w-full max-w-md flex-col gap-3"
     >
-      <div className="flex flex-col space-y-2">
-        <label htmlFor="email" className="text-sm font-semibold">
+      <div className="flex flex-col">
+        <label htmlFor="email" className="text-cp-black text-sm font-semibold">
           Full Name
         </label>
         <input
@@ -60,8 +65,8 @@ export default function RegisterForm() {
           required
         />
       </div>
-      <div className="flex flex-col space-y-2">
-        <label htmlFor="email" className="text-sm font-semibold">
+      <div className="flex flex-col">
+        <label htmlFor="email" className="text-cp-black text-sm font-semibold">
           Email
         </label>
         <input
@@ -72,8 +77,11 @@ export default function RegisterForm() {
           required
         />
       </div>
-      <div className="flex flex-col space-y-2">
-        <label htmlFor="password" className="text-sm font-semibold">
+      <div className="flex flex-col">
+        <label
+          htmlFor="password"
+          className="text-cp-black text-sm font-semibold"
+        >
           Password
         </label>
         <div className="flex items-center justify-between rounded-md border border-gray-300 px-3 py-2">
