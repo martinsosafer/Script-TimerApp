@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 
 import { Button } from "@voiceai/ui";
@@ -28,7 +27,7 @@ import { cn } from "@voiceai/ui/@/lib/utils";
 import { poppins } from "~/app/fonts";
 import { servicesData } from "./servicesdata";
 
-const iconComponents = {
+const iconComponents: Record<string, React.ElementType> = {
   IconAudioLines,
   IconBookPlus,
   IconBrainCog,
@@ -87,11 +86,9 @@ export default function ServiceSection() {
     <div
       className={`${poppins.className} flex h-full w-full flex-col items-center justify-center gap-6 bg-[#E2E8F0] py-[32px] lg:py-[60px]`}
     >
-      {/* <div className="h-[68px] w-[263px] lg:h-[50px] lg:w-[478px] "> */}
       <h2 className="text-cp-primary text-center text-[28px] font-bold leading-[34px]  lg:whitespace-nowrap lg:text-[42px] lg:leading-[50px] ">
         Improve your skills with our Ai tools
       </h2>
-      {/* </div> */}
       <div className=" mx-auto h-[305px] w-[312px] flex-col items-center justify-center lg:mx-auto lg:h-[467px] lg:w-[1274px] lg:max-w-5xl lg:items-center lg:justify-center lg:px-[83px]">
         <div
           className={cn(
@@ -100,7 +97,7 @@ export default function ServiceSection() {
           )}
         >
           {currentServices.map((service) => {
-            const Icon = iconComponents[service.icon] || (() => null);
+            const Icon = iconComponents[service.icon] ?? (() => null);
 
             return (
               <Card
