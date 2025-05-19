@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 
 import { api } from "~/utils/api";
 
@@ -36,6 +36,9 @@ export default function VoiceGenerationDashboard() {
   const [emailSearch, setEmailSearch] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
   const [selectedTier, setSelectedTier] = useState("");
+  const [expandedPrompts, setExpandedPrompts] = useState<
+    Record<number, boolean>
+  >({});
 
   if (isLoading) return <div>Loading voice generation data...</div>;
   if (isError) return <div>Error loading data</div>;
@@ -55,10 +58,25 @@ export default function VoiceGenerationDashboard() {
     // AppSumo tier filter
     const tierMatch =
       selectedTier === "" ||
-      (item.isAppSumo === true && item.appSumoTier === parseInt(selectedTier));
+      (item.isAppSumo === true &&
+        item.appSumoTier === Number.parseInt(selectedTier));
 
     return emailMatch && (item.isAppSumo ? tierMatch : statusMatch);
   });
+
+  // Toggle prompt expansion
+  const togglePrompt = (index: number) => {
+    setExpandedPrompts((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
+  };
+
+  // Calculate credit spend based on prompt length
+  const calculateCreditSpend = (prompt: string) => {
+    if (!prompt) return 0;
+    return prompt.length;
+  };
 
   return (
     <div className="p-4">
@@ -131,43 +149,74 @@ export default function VoiceGenerationDashboard() {
               <th className="border p-2">User Type</th>
               <th className="border p-2">Status/Tier</th>
               <th className="border p-2">Voice Type</th>
+              <th className="border p-2">Prompt</th>
+              <th className="border p-2">Credit Spend</th>
               <th className="border p-2">Last Used</th>
             </tr>
           </thead>
           <tbody>
-            {filteredData.map((generation, index) => (
-              <tr key={index}>
-                <td className="border p-2">{generation.email}</td>
-                <td className="border p-2">
-                  {generation.isAppSumo ? (
-                    <span className="font-semibold text-purple-600">
-                      AppSumo
-                    </span>
-                  ) : (
-                    <span className="text-blue-600">Regular</span>
-                  )}
-                </td>
-                <td className="border p-2">
-                  {generation.isAppSumo ? (
-                    <span>Tier {generation.appSumoTier}</span>
-                  ) : (
-                    <span>{generation.status}</span>
-                  )}
-                </td>
-                <td className="border p-2">
-                  {generation.generationType === "11LABS" ? (
-                    <span className="text-blue-600">11 Labs</span>
-                  ) : generation.generationType === "GOOGLE" ? (
-                    <span className="text-green-600">Google</span>
-                  ) : (
-                    <span className="text-gray-600">Other</span>
-                  )}
-                </td>
-                <td className="border p-2">
-                  {new Date(generation.createdAt).toLocaleDateString()}
-                </td>
-              </tr>
-            ))}
+            {filteredData.map((generation, index) => {
+              const creditSpend = calculateCreditSpend(generation.prompt);
+              return (
+                <tr key={index}>
+                  <td className="border p-2">{generation.email}</td>
+                  <td className="border p-2">
+                    {generation.isAppSumo ? (
+                      <span className="font-semibold text-purple-600">
+                        AppSumo
+                      </span>
+                    ) : (
+                      <span className="text-blue-600">Regular</span>
+                    )}
+                  </td>
+                  <td className="border p-2">
+                    {generation.isAppSumo ? (
+                      <span>Tier {generation.appSumoTier}</span>
+                    ) : (
+                      <span>{generation.status}</span>
+                    )}
+                  </td>
+                  <td className="border p-2">
+                    {generation.generationType === "11LABS" ? (
+                      <span className="text-blue-600">11 Labs</span>
+                    ) : generation.generationType === "GOOGLE" ? (
+                      <span className="text-green-600">Google</span>
+                    ) : (
+                      <span className="text-gray-600">Other</span>
+                    )}
+                  </td>
+                  <td className="border p-2">
+                    {generation.prompt ? (
+                      <div>
+                        <div
+                          className={
+                            expandedPrompts[index] ? "" : "line-clamp-2"
+                          }
+                        >
+                          {generation.prompt}
+                        </div>
+                        {generation.prompt.length > 100 && (
+                          <button
+                            onClick={() => togglePrompt(index)}
+                            className="mt-1 text-xs text-blue-600 hover:underline"
+                          >
+                            {expandedPrompts[index] ? "Show less" : "Show more"}
+                          </button>
+                        )}
+                      </div>
+                    ) : (
+                      <span className="text-gray-400">No prompt</span>
+                    )}
+                  </td>
+                  <td className="border p-2 text-right">
+                    {creditSpend.toLocaleString()}
+                  </td>
+                  <td className="border p-2">
+                    {new Date(generation.createdAt).toLocaleDateString()}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
