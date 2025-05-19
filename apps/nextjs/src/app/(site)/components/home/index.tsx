@@ -47,21 +47,23 @@ export default function Home({
       }
     }
     if (appSumoCode) {
-      updateSumoUser();
+      updateSumoUser().catch((error) => {
+        console.error("Error updating AppSumo user:", error);
+      });
       router.push("/");
     }
   }, []);
 
-  if (
-    (session &&
-      session.user.subscription?.status === "FREE_TRIAL" &&
-      origin === "login") ||
-    (session &&
-      session.user.subscription?.status === "FREE" &&
-      origin === "login")
-  ) {
-    router.push("/plans-lp");
-  }
+  // if (
+  //   (session &&
+  //     session.user.subscription?.status === "FREE_TRIAL" &&
+  //     origin === "login") ||
+  //   (session &&
+  //     session.user.subscription?.status === "FREE" &&
+  //     origin === "login")
+  // ) {
+  //   router.push("/plans-lp");
+  // }
 
   useEffect(() => {
     if (!user) {

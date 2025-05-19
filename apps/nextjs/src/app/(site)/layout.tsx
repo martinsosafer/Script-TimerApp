@@ -20,18 +20,20 @@ import TutorialWidget from "./components/tutorial-widget";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "ScriptTimerLandingPage",
-  description: "Using AI for Voice",
+  title: "Script-Timer Ai",
+  description: "Create Voices & Scripts in seconds",
   openGraph: {
-    title: "LandingPage",
-    description: "Using AI for Voice",
-    url: "https://voiceai-tesserakt.vercel.app/",
-    siteName: "VoiceAI",
+    title: "Script-Timer Ai",
+    description: "Create Voices & Scripts in seconds",
+    url: "https://app.script-timer.com/",
+    siteName: "Script-Timer Ai",
   },
   twitter: {
+    title: "Script-Timer Ai",
+    description: "Create Voices & Scripts in seconds",
     card: "summary_large_image",
-    site: "@gerryg",
-    creator: "@gerryg",
+    // site: "@gerryg",
+    // creator: "@gerryg",
   },
 };
 
