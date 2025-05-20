@@ -154,7 +154,7 @@ export const sendVerificationRequest = async ({
         </div>
 
         <div class="footer">
-            <p>©Co-Producer by Script-Timer | Empowering Creators</p>
+            <p>©Script-Timer | Empowering Creators</p>
         </div>
     </div>
 </body>

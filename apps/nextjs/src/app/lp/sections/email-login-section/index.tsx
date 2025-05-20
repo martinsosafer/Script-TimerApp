@@ -20,7 +20,7 @@ export default function EmailLoginSection({
   async function handleLogin() {
     setLoading(true);
     try {
-      await createUser(values);
+      await createUser({ ...values, appSumoCode: null });
     } catch (error) {
       alert(
         "An error occurred while signing in. Please check your credentials",

@@ -23,7 +23,6 @@ interface ButtonProps {
   className?: string;
   iconPosition?: "left" | "right";
   iconColor?: string;
-  buttonType?: "button" | "submit" | "reset";
 }
 
 const defaultStyle = `${poppins.className} rounded-md py-[12px] px-[24px] flex items-center justify-center text-center text-[16px]`;
@@ -54,7 +53,6 @@ export default function Button({
   width = "w-auto",
   disabled = false,
   className = "",
-  buttonType = "button", // Default value
 }: ButtonProps) {
   const fontWeight = type !== "custom" ? "font-semibold" : "";
 
@@ -66,7 +64,6 @@ export default function Button({
       onClick={onClick}
       disabled={disabled}
       aria-label={label} // Added accessibility
-      type={buttonType}
     >
       {iconPosition === "left" && Icon && (
         <Icon
