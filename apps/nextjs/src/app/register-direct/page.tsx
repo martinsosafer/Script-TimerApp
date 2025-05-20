@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -5,7 +6,6 @@ import { auth } from "@voiceai/auth";
 
 import { poppins } from "../fonts";
 import RegisterForm from "../register/register-form";
-import Header from "../register/subcomponents/header";
 import AnimatedGifs from "../signin/animtadgifs";
 
 export default async function RegisterDirect() {
@@ -25,12 +25,19 @@ export default async function RegisterDirect() {
       {/* Right Side */}
       <section className="flex w-full justify-center gap-4 pt-8">
         <div className="flex max-w-[350px] flex-col gap-5">
-          <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-            <Header />
+          <div className="mx-auto flex w-full justify-center  space-y-6 sm:w-[350px]">
+            <div className="relative h-[48px] w-[287px] p-4">
+              <Image
+                src={"/ScriptTimerLogoPrimary.png"}
+                alt="Script-Timer AI Logo"
+                fill
+                priority
+              />
+            </div>
           </div>
 
           <p className={`${poppins.className} text-center`}>
-            Register and start creating with Script Timer tools today!
+            Create a login below and get direct access to the suite of tools
           </p>
 
           <RegisterForm />
