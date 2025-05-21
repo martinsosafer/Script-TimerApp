@@ -12,10 +12,10 @@ export function PromptingGuideAccordion() {
 
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="item-1" className="border-[#898F98]">
-          <AccordionTrigger className="px-0 text-sm text-[#212121] lg:px-3 lg:text-base">
+          <AccordionTrigger className="text-cp-black px-0 text-sm lg:px-3 lg:text-base">
             Simple effects
           </AccordionTrigger>
-          <AccordionContent className="px-1 text-xs text-[#212121] lg:px-6 lg:text-sm">
+          <AccordionContent className="text-cp-black px-1 text-xs lg:px-6 lg:text-sm">
             <>
               <p>For basic sound effects, use clear, concise descriptions:</p>
               <p>{`• "Glass shattering on concrete"`}</p>
@@ -26,10 +26,10 @@ export function PromptingGuideAccordion() {
         </AccordionItem>
 
         <AccordionItem value="item-2" className="border-[#898F98]">
-          <AccordionTrigger className="px-0 text-sm text-[#212121] lg:px-3 lg:text-base">
+          <AccordionTrigger className="text-cp-black px-0 text-sm lg:px-3 lg:text-base">
             Complex sequences
           </AccordionTrigger>
-          <AccordionContent className="px-1 text-xs text-[#212121] lg:px-6 lg:text-sm">
+          <AccordionContent className="text-cp-black px-1 text-xs lg:px-6 lg:text-sm">
             <>
               <p>
                 For multi-part sound effects, describe the sequence of events:
@@ -43,10 +43,10 @@ export function PromptingGuideAccordion() {
         </AccordionItem>
 
         <AccordionItem value="item-3" className="border-[#898F98]">
-          <AccordionTrigger className="px-0 text-sm text-[#212121] lg:px-3 lg:text-base">
+          <AccordionTrigger className="text-cp-black px-0 text-sm lg:px-3 lg:text-base">
             Musical elements
           </AccordionTrigger>
-          <AccordionContent className="px-1 text-xs text-[#212121] lg:px-6 lg:text-sm">
+          <AccordionContent className="text-cp-black px-1 text-xs lg:px-6 lg:text-sm">
             <>
               <p>The API also supports generation of musical components:</p>
               <p>{`• "90s hip-hop drum loop, 90 BPM"`}</p>
@@ -57,10 +57,10 @@ export function PromptingGuideAccordion() {
         </AccordionItem>
 
         <AccordionItem value="item-4" className="border-[#898F98]">
-          <AccordionTrigger className="px-0 text-sm text-[#212121] lg:px-3 lg:text-base">
+          <AccordionTrigger className="text-cp-black px-0 text-sm lg:px-3 lg:text-base">
             Audio terminology
           </AccordionTrigger>
-          <AccordionContent className="px-1 text-xs text-[#212121] lg:px-6 lg:text-sm">
+          <AccordionContent className="text-cp-black px-1 text-xs lg:px-6 lg:text-sm">
             <>
               <p>Common terms that can enhance your prompts:</p>
               <p>

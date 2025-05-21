@@ -15,12 +15,14 @@ interface StabilitySelectorProps {
   value: SliderProps["value"];
   onValueChange?: SliderProps["onValueChange"];
   disabled?: boolean;
+  showDisabledText?: boolean; // New prop
 }
 
 export function StabilitySelector({
   value,
   onValueChange,
   disabled = false,
+  showDisabledText = true, // Default to showing text
 }: StabilitySelectorProps) {
   return (
     <div className={`mt-1 grid gap-2 ${disabled ? "cursor-not-allowed" : ""}`}>
@@ -35,11 +37,12 @@ export function StabilitySelector({
                 >
                   Stability
                 </Label>
-                {disabled && (
-                  <span className="text-cp-primary text-[12px] font-bold">
-                    Modulation is not available for this voice
-                  </span>
-                )}
+                {disabled &&
+                  showDisabledText && ( // Conditionally show text
+                    <span className="text-cp-primary text-[12px] font-bold">
+                      Modulation is not available for this voice
+                    </span>
+                  )}
               </div>
               <span className="w-12 rounded-md border border-transparent px-2 py-0.5 text-right text-sm text-muted-foreground hover:border-border">
                 {value}

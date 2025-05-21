@@ -10,11 +10,12 @@ import { IconSpinner } from "@voiceai/ui/@/components/ui/icons";
 import { createUser } from "./actions";
 
 export function LoginWithEmailForm() {
+  const [loading, setLoading] = React.useState(false);
+
   const searchParams = useSearchParams();
 
   const code = searchParams.get("code");
 
-  const [loading, setLoading] = React.useState(false);
   async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
     setLoading(true);
     try {

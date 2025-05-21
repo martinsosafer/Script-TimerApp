@@ -5,7 +5,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className="h-screen overflow-x-hidden md:h-[calc(100%-10px)]">
+        {children}
+      </body>
     </html>
   );
 }

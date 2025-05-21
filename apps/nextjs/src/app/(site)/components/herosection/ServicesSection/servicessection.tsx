@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 
 import { Button } from "@voiceai/ui";
@@ -28,7 +27,7 @@ import { cn } from "@voiceai/ui/@/lib/utils";
 import { poppins } from "~/app/fonts";
 import { servicesData } from "./servicesdata";
 
-const iconComponents = {
+const iconComponents: Record<string, React.ElementType> = {
   IconAudioLines,
   IconBookPlus,
   IconBrainCog,
@@ -85,27 +84,25 @@ export default function ServiceSection() {
 
   return (
     <div
-      className={`${poppins.className} h-full w-full items-center justify-center bg-[#E2E8F0] py-[32px] lg:py-[60px] `}
+      className={`${poppins.className} flex h-full w-full flex-col items-center justify-center gap-6 bg-[#E2E8F0] py-[32px] lg:py-[60px]`}
     >
-      <div className="mx-auto h-[68px] w-[263px] lg:h-[50px] lg:w-[478px] ">
-        <h2 className="text-cp-primary text-center text-[28px] font-bold leading-[34px]  lg:whitespace-nowrap lg:text-[42px] lg:leading-[50px] ">
-          Bring Your Ideas to Life
-        </h2>
-      </div>
-      <div className=" mx-auto  mt-6 h-[305px] w-[312px] flex-col items-center justify-center lg:mx-auto lg:h-[467px] lg:w-[1274px] lg:items-center lg:justify-center lg:px-[83px] ">
+      <h2 className="text-cp-primary text-center text-[28px] font-bold leading-[34px]  lg:whitespace-nowrap lg:text-[42px] lg:leading-[50px] ">
+        Improve your skills with our Ai tools
+      </h2>
+      <div className=" mx-auto h-[305px] w-[312px] flex-col items-center justify-center lg:mx-auto lg:h-[467px] lg:w-[1274px] lg:max-w-5xl lg:items-center lg:justify-center lg:px-[83px]">
         <div
           className={cn(
-            "mt-8 grid grid-cols-1 gap-4 lg:mt-[48px] lg:grid-cols-2 lg:gap-6 lg:px-[120px]",
+            "grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-6 lg:pt-10 ",
             fade ? "opacity-0 transition-opacity duration-300" : "opacity-100",
           )}
         >
           {currentServices.map((service) => {
-            const Icon = iconComponents[service.icon] || (() => null);
+            const Icon = iconComponents[service.icon] ?? (() => null);
 
             return (
               <Card
                 key={service.id}
-                className="h-[94px] w-[312px] rounded-lg border-none shadow-sm transition-shadow hover:shadow-md lg:flex lg:h-[125px] lg:w-[417px] lg:items-center lg:justify-center"
+                className="h-[94px] w-[312px] rounded-lg border-none shadow-md transition-shadow hover:shadow-lg lg:flex lg:h-[125px] lg:w-[417px] lg:items-center lg:justify-center"
               >
                 <Link
                   href={service.link}
@@ -131,7 +128,8 @@ export default function ServiceSection() {
           })}
         </div>
       </div>
-      <div className="mx-auto mt-6 flex items-center justify-center gap-4 lg:mt-[16px]">
+
+      <div className="flex items-center justify-center gap-4 lg:pt-[16px]">
         {/* Mobile navigation with dots */}
         <div className="flex items-center justify-center gap-4">
           <Button

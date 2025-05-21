@@ -1,17 +1,13 @@
 "use client";
 
-import React from "react";
 import ReactConfetti from "react-confetti"; // Make sure this is imported
-
-import { Card, CardContent } from "@voiceai/ui/@/components/ui/card";
-import { IconCheck } from "@voiceai/ui/@/components/ui/icons";
 
 import { poppins } from "../fonts";
 
 export default function CheckEmail() {
   return (
     <div
-      className={`min-h-screen bg-gradient-to-tr from-black to-blue-500 p-8 ${poppins.className}`}
+      className={`h-[calc(h-full -10px)] w-full bg-gradient-to-tr from-black to-blue-500 ${poppins.className} flex`}
     >
       {/* Confetti will cover the whole page */}
       <ReactConfetti
@@ -25,23 +21,23 @@ export default function CheckEmail() {
         colors={["#0123e7", "#eb8806"]}
       />
 
-      <div className="relative z-10 mx-auto max-w-6xl">
+      <div className="relative z-10 flex flex-1 justify-center px-3 py-8">
         {" "}
         {/* Added relative z-10 to ensure content appears above confetti */}
-        <div className="flex flex-col items-center justify-center text-center">
-          <h1 className="mb-6 text-6xl font-bold leading-tight text-white">
+        <div className="flex h-full max-w-6xl flex-col items-center justify-start text-center ">
+          <h1 className="pb-6 text-4xl font-bold leading-tight text-white md:text-6xl">
             Your email was sent. Congrats!
           </h1>
-          <p className="mb-8 text-xl text-cyan-300">
+          <p className="pb-1 text-base text-cyan-300 md:text-xl">
             Please check your email to verify and open your free access. Get
             ready to save time, money, and stress:
           </p>
-          <p className="mb-12 text-2xl font-semibold text-white">
+          <p className="pb-8 text-2xl font-semibold text-white">
             In minutes! - not weeks
           </p>
 
-          <h2 className="mb-8 text-4xl font-bold">
-            <span className="text-cyan-300">Watch how Co-Producer</span>
+          <h2 className="pb-8 text-xl font-bold md:text-4xl">
+            <span className="text-cyan-300">Watch how Script-Timer Ai</span>
             <br />
             <span className="text-white">saves you time, money and stress</span>
           </h2>
@@ -52,7 +48,33 @@ export default function CheckEmail() {
               className="h-full w-full rounded-lg"
               allow="autoplay; fullscreen; picture-in-picture"
               allowFullScreen
+              title="Script-Timer Video"
             />
+          </div>
+
+          <div className=" w-full max-w-3xl pt-7 text-sm lg:text-base">
+            <p className="text-cp-accent-light pb-1 text-left">
+              Need help with the login email?
+            </p>
+
+            <div className="text-cp-white flex flex-col gap-1 p-1 text-left">
+              <p>
+                {`• Check your Spam folder. If it's there, please mark it as "not
+                spam"`}
+              </p>
+              <p>{`• If you use Gmail, check the "Promotions" tab`}</p>
+              <p>{`• Try using a different email account`}</p>
+              <p className="flex gap-1">
+                {`• Or register by using our direct access`}{" "}
+                <a
+                  href="/register-direct"
+                  target="_blank"
+                  className="text-cp-accent-light underline"
+                >
+                  here
+                </a>
+              </p>
+            </div>
           </div>
         </div>
       </div>

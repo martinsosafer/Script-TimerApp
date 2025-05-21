@@ -22,6 +22,8 @@ const useStreamingAudio = () => {
     similarity,
     setLoading,
     userPlan,
+    speed,
+    style,
   }: {
     voice_id: any;
     voice_actor: any;
@@ -30,6 +32,8 @@ const useStreamingAudio = () => {
     similarity: any;
     setLoading: any;
     userPlan: any;
+    speed: any;
+    style: any;
   }) => {
     if (!message || message.trim() === "") {
       toast({
@@ -95,6 +99,8 @@ const useStreamingAudio = () => {
           voice_actor,
           stability,
           similarity,
+          speed,
+          style,
         }),
       });
 

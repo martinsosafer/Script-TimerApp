@@ -102,7 +102,7 @@ export const sendVerificationRequest = async ({
 <body>
     <div class="container">
         <div class="header">
-            <h1>Welcome to Co-Producer</h1>
+            <h1>Welcome to Script-Timer!</h1>
         </div>
 
         <p>Hi,</p>
@@ -154,7 +154,7 @@ export const sendVerificationRequest = async ({
         </div>
 
         <div class="footer">
-            <p>©Co-Producer by Script-Timer | Empowering Creators</p>
+            <p>©Script-Timer | Empowering Creators</p>
         </div>
     </div>
 </body>

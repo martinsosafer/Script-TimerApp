@@ -53,6 +53,8 @@ export function ScriptAI({
   const [selectedModel, setSelectedModel] = React.useState(null);
   const [similarity, setSimilarity] = React.useState([0.5]);
   const [stability, setStability] = React.useState([0.5]);
+  const [speed, setSpeed] = React.useState([1.0]);
+  const [style, setStyle] = React.useState([0]);
   const [loading, setLoading] = React.useState(false);
 
   const { scriptId } = useParams();
@@ -209,6 +211,10 @@ export function ScriptAI({
                 setStability={setStability}
                 similarity={similarity}
                 setSimilarity={setSimilarity}
+                speed={speed}
+                setSpeed={setSpeed}
+                style={style}
+                setStyle={setStyle}
               />
 
               <TabTwo
@@ -236,6 +242,8 @@ export function ScriptAI({
                 handleStreaming={handleStreaming}
                 stability={stability}
                 similarity={similarity}
+                speed={speed}
+                style={style}
                 generateVoice={generateVoice}
                 revisedScript={revisedScript}
                 setRevisedScript={setRevisedScript}

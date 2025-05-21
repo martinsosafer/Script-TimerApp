@@ -21,9 +21,9 @@ export default async function ResetPassword() {
       </div>
 
       <div className="flex items-center justify-center p-4">
-        <div className="mx-auto flex h-full flex-col justify-center gap-2 space-y-6 pt-6 sm:w-[360px]">
-          <div className="flex flex-col items-center space-y-2 text-center">
-            <div className="relative h-[48px] w-[287px] p-5">
+        <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+          <div className="flex flex-col items-center justify-center gap-2 pb-2">
+            <div className="relative h-[48px] w-[287px] p-4">
               <Image
                 src={"/ScriptTimerLogoPrimary.png"}
                 alt="Script-Timer AI Logo"
@@ -31,8 +31,7 @@ export default async function ResetPassword() {
                 priority
               />
             </div>
-
-            <h3 className="font-poppins text-2xl font-normal text-tertiary">
+            <h3 className="font-poppins text-xl font-normal text-tertiary">
               Bring your projects to life
             </h3>
           </div>

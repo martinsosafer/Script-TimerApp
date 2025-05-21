@@ -34,21 +34,18 @@ export default function ValidateEmailForm() {
       onSubmit={handleSendResetMail}
       className="mx-auto flex w-full max-w-md flex-col gap-2"
     >
-      {!error && !success ? (
-        <div className="flex flex-col space-y-2">
-          <label htmlFor="email" className="text-sm font-normal text-black">
-            Enter your email address
-          </label>
-          <input
-            name="email"
-            type="email"
-            placeholder="Email address"
-            className="rounded-md border border-gray-300 px-3 py-2"
-            required
-          />
-        </div>
-      ) : null}
-
+      <div className="flex flex-col gap-1">
+        <label htmlFor="email" className="text-cp-black text-sm font-semibold">
+          Enter your email address
+        </label>
+        <input
+          name="email"
+          type="email"
+          placeholder="Email adress"
+          className="rounded-md border border-gray-300 px-3 py-2"
+          required
+        />
+      </div>
       {error && (
         <p className="py-4 text-center text-lg font-semibold text-[#FF3B3B]">
           {error}

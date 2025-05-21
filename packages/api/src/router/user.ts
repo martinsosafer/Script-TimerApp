@@ -180,6 +180,8 @@ export const userRouter = createTRPCRouter({
         status: schema.subscriptions.status,
         generationType: schema.generations.type,
         createdAt: schema.generations.created_at,
+        // Add the prompt column here
+        prompt: schema.generations.prompt,
         // Add AppSumo info
         isAppSumo:
           sql<boolean>`CASE WHEN ${schema.appSumoSubscription.id} IS NOT NULL THEN true ELSE false END`.as(
@@ -218,6 +220,7 @@ export const userRouter = createTRPCRouter({
         schema.subscriptions.status,
         schema.generations.type,
         schema.generations.created_at,
+        schema.generations.prompt, // Add prompt to GROUP BY
         // Add AppSumo columns to GROUP BY
         schema.appSumoSubscription.id,
         schema.appSumoSubscription.plan_id,
