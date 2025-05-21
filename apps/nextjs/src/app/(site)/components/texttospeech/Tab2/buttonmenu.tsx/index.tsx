@@ -15,9 +15,16 @@ import {
   IconPlus,
   Icons,
   PencilIcon,
+  BurgerIcon as MenuIcon,
 } from "@voiceai/ui/@/components/ui/icons";
 import { TabsList, TabsTrigger } from "@voiceai/ui/@/components/ui/tabs";
 import { MagicWandIcon, SpeakerLoudIcon } from "@voiceai/ui/@/icons/icons";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@voiceai/ui/@/components/ui/dropdown-menu";
 
 import { HistoryButton } from "../../../history-button";
 import { SaveScript } from "../../../save-script";
@@ -34,21 +41,61 @@ const ButtonsMenu = ({
   toggleAudioRef,
   audio,
   isSubscriptionActive,
-
   audioRef,
-
   showPlayer,
   downloadLink,
   loading,
   setShowConfetti,
-
   handleCloseAudio,
   showConfetti,
 }) => {
   return (
-    <div className="ml-auto flex w-full space-x-2 sm:justify-end">
+    <div className="ml-auto flex w-full lg:w-auto space-x-1 lg:space-x-2">
+      {/* Mobile menu - dropdown for smaller screens */}
+      <div className="lg:hidden">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm" className="px-2">
+              <MenuIcon className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuItem asChild>
+              <Link href="/texttovoice" className="w-full">
+                <IconPlus className="mr-2 h-4 w-4" />
+                New Script
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={subData ? undefined : () => setOpenFreeModal(true)}
+            >
+              <SaveScript
+                script={script}
+                subData={subData?.status}
+                richContent={richContent}
+                mobile
+              />
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <HistoryButton
+                subData={subData?.status}
+                setOpenFreeModal={() => setOpenFreeModal(true)}
+                mobile
+              />
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={subData ? undefined : () => setOpenFreeModal(true)}
+            >
+              <Icons.SoundLibrary className="mr-2 h-4 w-4" />
+              Library
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+      {/* Desktop buttons - hidden on mobile */}
       <Tooltip>
-        <TooltipTrigger>
+        <TooltipTrigger className="hidden lg:block">
           <Link href="/texttovoice">
             <Button
               type="button"
@@ -56,7 +103,7 @@ const ButtonsMenu = ({
               className="rounded-xl bg-primary px-2 font-bold"
             >
               <IconPlus className="mr-2 h-4 w-4" />
-              New Script
+              <span className="hidden lg:inline">New Script</span>
               <span className="sr-only">Library</span>
             </Button>
           </Link>
@@ -64,10 +111,12 @@ const ButtonsMenu = ({
         <TooltipContent>Start a new fresh story</TooltipContent>
       </Tooltip>
 
-      <ScriptSelector script={script} />
+      <div className="hidden lg:block">
+        <ScriptSelector script={script} />
+      </div>
 
       <Tooltip>
-        <TooltipTrigger>
+        <TooltipTrigger className="hidden lg:block">
           <button onClick={subData ? undefined : () => setOpenFreeModal(true)}>
             <SaveScript
               script={script}
@@ -80,7 +129,7 @@ const ButtonsMenu = ({
       </Tooltip>
 
       <Tooltip>
-        <TooltipTrigger>
+        <TooltipTrigger className="hidden lg:block">
           <HistoryButton
             subData={subData?.status}
             setOpenFreeModal={() => setOpenFreeModal(true)}
@@ -89,6 +138,7 @@ const ButtonsMenu = ({
         <TooltipContent>Your full voice-over history</TooltipContent>
       </Tooltip>
 
+      {/* Always visible buttons (mobile and desktop) */}
       <Tooltip>
         <TooltipTrigger>
           {subData ? (
@@ -97,11 +147,11 @@ const ButtonsMenu = ({
             <Button
               type="button"
               size="sm"
-              className="rounded-xl bg-primary px-3 font-bold hover:text-tertiary"
+              className="rounded-xl bg-primary px-2 lg:px-3 font-bold hover:text-tertiary"
               onClick={() => setOpenFreeModal(true)}
             >
-              <Icons.SoundLibrary className="mr-2 h-4 w-4" />
-              Library
+              <Icons.SoundLibrary className="h-4 w-4 lg:mr-2" />
+              <span className="hidden lg:inline">Library</span>
               <span className="sr-only">Library</span>
             </Button>
           )}
@@ -121,11 +171,10 @@ const ButtonsMenu = ({
             <Button
               type="button"
               size="sm"
-              className="rounded-xl bg-primary px-3 font-bold hover:text-tertiary"
+              className="rounded-xl bg-primary px-2 lg:px-3 font-bold hover:text-tertiary"
               onClick={subData ? undefined : () => setOpenFreeModal(true)}
             >
-              <MagicWandIcon />
-              <SpeakerLoudIcon />
+              <MagicWandIcon className="h-4 w-4" />
               <span className="sr-only">Player</span>
             </Button>
           )}

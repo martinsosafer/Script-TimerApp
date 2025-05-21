@@ -74,7 +74,7 @@ export default async function IndexPage() {
       <div>
         <p className="font-base mb-2 text-center">
           You've got a screenplay, book, news, podcast, table read… This is your
-          home! Create long form, multiple actor voice overs below
+          home! Create long form, multiple actor voice overs below.
         </p>
 
         {/* Add credit information similar to ScriptAI component */}

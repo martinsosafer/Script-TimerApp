@@ -419,15 +419,16 @@ function TextEditor({
         className,
       )}
     >
-      <div className="ml-1 flex flex-col items-center justify-center gap-2 md:flex-row lg:justify-start">
-        <div className="flex gap-1">
+      {/* Buttons container */}
+      <div className="ml-1 flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-start">
+        {/* Mobile: First row (all editor buttons in scrollable container) */}
+        <div className="flex gap-1 overflow-x-auto pb-1 lg:contents">
+          {/* Text formatting buttons */}
           <Button
             variant="ghost"
             className={classNames(
-              "rounded-full border border-slate-500 bg-white",
-              {
-                "is-active": editor.isActive("bold"),
-              },
+              "rounded-full border border-slate-500 bg-white flex-shrink-0",
+              { "is-active": editor.isActive("bold") },
             )}
             onClick={toggleBold}
           >
@@ -436,10 +437,8 @@ function TextEditor({
           <Button
             variant="ghost"
             className={classNames(
-              "rounded-full border border-slate-500 bg-white",
-              {
-                "is-active": editor.isActive("underline"),
-              },
+              "rounded-full border border-slate-500 bg-white flex-shrink-0",
+              { "is-active": editor.isActive("underline") },
             )}
             onClick={toggleUnderline}
           >
@@ -448,20 +447,18 @@ function TextEditor({
           <Button
             variant="ghost"
             className={classNames(
-              "rounded-full border border-slate-500 bg-white",
-              {
-                "is-active": editor.isActive("italic"),
-              },
+              "rounded-full border border-slate-500 bg-white flex-shrink-0",
+              { "is-active": editor.isActive("italic") },
             )}
             onClick={toggleItalic}
           >
             <FontItalicIcon className="h-5 w-5" />
           </Button>
-        </div>
-        <div className="flex gap-1">
+
+          {/* Action buttons */}
           <Button
             variant="ghost"
-            className="rounded-full border border-slate-500 bg-white"
+            className="rounded-full border border-slate-500 bg-white flex-shrink-0"
             onClick={() => editor.chain().focus().undo().run()}
             disabled={!editor.can().undo()}
           >
@@ -469,7 +466,7 @@ function TextEditor({
           </Button>
           <Button
             variant="ghost"
-            className="rounded-full border border-slate-500 bg-white"
+            className="rounded-full border border-slate-500 bg-white flex-shrink-0"
             onClick={() => editor.chain().focus().redo().run()}
             disabled={!editor.can().redo()}
           >
@@ -477,19 +474,21 @@ function TextEditor({
           </Button>
           <Button
             variant="ghost"
-            className="rounded-full border border-slate-500 bg-white"
+            className="rounded-full border border-slate-500 bg-white flex-shrink-0"
             disabled={!isCopyEnabled}
             onClick={copyToClipboard}
           >
             <IconCopy className="h-5 w-5" />
           </Button>
         </div>
-        <div className="flex gap-1">
+
+        {/* Mobile: Second row (download/translate - centered) */}
+        <div className="flex justify-center gap-1 lg:contents">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
-                className="rounded-full border border-slate-500 bg-white"
+                className="rounded-full border border-slate-500 bg-white flex-shrink-0"
               >
                 <ArrowDownOnSquareIcon className="h-5 w-5" />
               </Button>
@@ -514,7 +513,7 @@ function TextEditor({
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
-                className="rounded-full border border-slate-500 bg-white"
+                className="rounded-full border border-slate-500 bg-white flex-shrink-0"
                 disabled={isTranslating}
               >
                 {isTranslating ? (
@@ -553,6 +552,7 @@ function TextEditor({
         </div>
       </div>
 
+      {/* Editor content */}
       <div className="relative mt-2 h-[408px] min-h-0 flex-shrink overflow-x-auto overflow-y-auto">
         <EditorContent
           key={editorKey}

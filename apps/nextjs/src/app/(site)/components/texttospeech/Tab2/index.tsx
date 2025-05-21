@@ -48,8 +48,8 @@ const TabTwo = ({
   openAiCredits,
 }) => {
   return (
-    <div className="md:order-2">
-      <div className="rounded-lg bg-gray-100 p-[31px] shadow-md dark:bg-slate-400 h-[740px]">
+    <div className="lg:order-2">
+      <div className="rounded-lg bg-gray-100 lg:p-[31px]  p-[2px]   shadow-md dark:bg-slate-400 h-[740px]">
         <ButtonsMenu
           script={script}
           subData={subData}
@@ -84,7 +84,7 @@ const TabTwo = ({
                 minutes={minutes}
                 formattedSeconds={formattedSeconds}
               />
-              <div className=" mt-3 flex w-[570px] justify-between">
+              <div className=" mt-3 flex w-[570px] lg:justify-between justify-center">
                 <div style={{ minWidth: "150px" }}>
                   {" "}
                   {/* Container with fixed width */}
