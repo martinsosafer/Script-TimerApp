@@ -74,113 +74,115 @@ export default async function BoostersPage() {
           active).
         </p>
 
-        {/* Images Boost */}
-        <BoosterCard
-          subData={subData}
-          type="IMAGES"
-          creditsPercentage={imageCreditsPercentage}
-          amount={300}
-          title="Images"
-          description="Create images like these for:"
-          detailsList={[
-            "Storyboards",
-            "Websites",
-            "Email",
-            "Book Covers",
-            "Social Media Posts",
-          ]}
-          descriptionEnd="and more!"
-          imageMain={
-            <Image
-              src={"/boostersImages/boosters_imageGeneration.png"}
-              alt="image generation"
-              fill
-              className={`mt-9 object-contain`}
-              priority
-            />
-          }
-          imageBottomLeft={
-            <Image
-              src={"/boostersImages/boosters_creationLab.png"}
-              alt="Creation Lab"
-              fill
-              className={`rounded-lg object-contain`}
-            />
-          }
-          imageBottomRight={
-            <Image
-              src={"/boostersImages/boosters_storyboard.png"}
-              alt="Storyboard"
-              fill
-              className={`rounded-lg object-contain`}
-            />
-          }
-        />
+        <div className="flex flex-col gap-20">
+          {/* Images Boost */}
+          <BoosterCard
+            subData={subData}
+            type="IMAGES"
+            creditsPercentage={imageCreditsPercentage}
+            amount={300}
+            title="Images"
+            description="Create images like these for:"
+            detailsList={[
+              "Storyboards",
+              "Websites",
+              "Email",
+              "Book Covers",
+              "Social Media Posts",
+            ]}
+            descriptionEnd="and more!"
+            imageMain={
+              <Image
+                src={"/boostersImages/boosters_imageGeneration.png"}
+                alt="image generation"
+                fill
+                className={`mt-9 object-contain`}
+                priority
+              />
+            }
+            imageBottomLeft={
+              <Image
+                src={"/boostersImages/boosters_creationLab.png"}
+                alt="Creation Lab"
+                fill
+                className={`rounded-lg object-contain`}
+              />
+            }
+            imageBottomRight={
+              <Image
+                src={"/boostersImages/boosters_storyboard.png"}
+                alt="Storyboard"
+                fill
+                className={`rounded-lg object-contain`}
+              />
+            }
+          />
 
-        {/* Plagiarism Boost */}
-        <BoosterCard
-          subData={subData}
-          type="PLAGIARISM"
-          creditsPercentage={plagiarismCreditsPercentage}
-          amount={150000}
-          amountDescription="words"
-          title="Ai and Plagiarism Detection"
-          description="Tested at 99.12% Accurate"
-          detailsList={[
-            "Plagiarism & AI detection",
-            "Source links to original",
-            "GPT, Claude, Gemini detection",
-            "Over 100 languages",
-            "Paraphrasing detection",
-            "Text spinner detection",
-          ]}
-          imageMain={
-            <IlustrationPlagiarismDetection className="max-md:w-[300px] max-sm:w-[200px]" />
-          }
-        />
+          {/* Plagiarism Boost */}
+          <BoosterCard
+            subData={subData}
+            type="PLAGIARISM"
+            creditsPercentage={plagiarismCreditsPercentage}
+            amount={150000}
+            amountDescription="words"
+            title="Ai and Plagiarism Detection"
+            description="Tested at 99.12% Accurate"
+            detailsList={[
+              "Plagiarism & AI detection",
+              "Source links to original",
+              "GPT, Claude, Gemini detection",
+              "Over 100 languages",
+              "Paraphrasing detection",
+              "Text spinner detection",
+            ]}
+            imageMain={
+              <IlustrationPlagiarismDetection className="max-md:w-[300px] max-sm:w-[200px]" />
+            }
+          />
 
-        {/* Voice Boost */}
-        <BoosterCard
-          subData={subData}
-          type="VOICE"
-          creditsPercentage={voiceCreditsPercentage}
-          amount={250000}
-          amountDescription="characters"
-          title="Voice Overs, Voice Cloning & Sound Effects"
-          description="Boost your credits and create more:"
-          detailsList={[
-            "Voice overs",
-            "Clone voices",
-            "Record and get feedback",
-            "Sound Effects",
-          ]}
-          imageMain={
-            <IlustrationVoiceSoundfx className="max-md:w-[300px] max-sm:w-[200px]" />
-          }
-        />
+          {/* Voice Boost */}
+          <BoosterCard
+            subData={subData}
+            type="VOICE"
+            creditsPercentage={voiceCreditsPercentage}
+            amount={250000}
+            amountDescription="characters"
+            title="Voice Overs, Voice Cloning & Sound Effects"
+            description="Boost your credits and create more:"
+            detailsList={[
+              "Voice overs",
+              "Clone voices",
+              "Record and get feedback",
+              "Sound Effects",
+            ]}
+            imageMain={
+              <IlustrationVoiceSoundfx className="max-md:w-[300px] max-sm:w-[200px]" />
+            }
+          />
 
-        {/* Masterclasses Boost */}
-        <BoosterCard
-          subData={subData}
-          type="MASTERCLASS"
-          creditsPercentage={100}
-          amount={1}
-          amountDescription="year access"
-          title="Masterclasses"
-          description="Get access to our Masterclasses"
-          detailsList={[
-            "Stories That Transform Marketing",
-            "How to Create Stunning Videos",
-            "Present and Win Your Audience",
-            "Create with Hollywood Movie Storylines",
-            "How to Build Rapport with Your Audience",
-            "Customer Journey Mapping With Generative AI",
-          ]}
-          descriptionEnd="and more!"
-          imageMain={
-            <IlustrationMasterclasses className="h-[458px] w-[458px] max-md:w-[300px] max-sm:w-[200px]" />
-          }
-        />
+          {/* Masterclasses Boost */}
+          <BoosterCard
+            subData={subData}
+            type="MASTERCLASS"
+            creditsPercentage={100}
+            amount={1}
+            amountDescription="year access"
+            title="Masterclasses"
+            description="Get access to our Masterclasses"
+            detailsList={[
+              "Stories That Transform Marketing",
+              "How to Create Stunning Videos",
+              "Present and Win Your Audience",
+              "Create with Hollywood Movie Storylines",
+              "How to Build Rapport with Your Audience",
+              "Customer Journey Mapping With Generative AI",
+            ]}
+            descriptionEnd="and more!"
+            imageMain={
+              <IlustrationMasterclasses className="h-[458px] w-[458px] max-md:w-[300px] max-sm:w-[200px]" />
+            }
+          />
+        </div>
       </main>
     </>
   );

@@ -12,6 +12,7 @@ import * as generation from "./schema/generation";
 import * as imgBooster from "./schema/imgBooster";
 import * as imgCredit from "./schema/imgCredit";
 import * as landingPage from "./schema/landingPage";
+import * as masterclassBooster from "./schema/masterclassBooster";
 import * as monthlySpecials from "./schema/monthlySpecials";
 import * as openAiCredit from "./schema/openAiCredit";
 import * as plagiarism from "./schema/plagiarism";
@@ -47,6 +48,7 @@ export const schema = {
   ...elevenLabsBooster,
   ...clBooster,
   ...imgBooster,
+  ...masterclassBooster,
 };
 
 export { pgTable as tableCreator } from "./schema/_table";

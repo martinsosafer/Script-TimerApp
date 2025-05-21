@@ -61,7 +61,10 @@ const BoosterCard = ({
     if (!subData) return;
 
     // Check if the user has a paid plan
-    if (subData.status === "FREE" || subData.status === "FREE_TRIAL") {
+    if (
+      (subData.status === "FREE" || subData.status === "FREE_TRIAL") &&
+      type !== "MASTERCLASS"
+    ) {
       return toast({
         title: "Upgrade your plan",
         description: "You need to upgrade your plan to add boosters",

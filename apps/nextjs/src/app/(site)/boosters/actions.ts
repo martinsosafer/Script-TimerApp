@@ -74,8 +74,9 @@ export async function addBooster({
     // console.log("subscriptionId", subscriptionId);
     // console.log("priceIdByType", priceIdByType);
 
+    // Get stripe subscription Id
     const subscription = await stripe.subscriptions.retrieve(subscriptionId!);
-
+    // Throw error if subscription not found
     if (!subscription.items.data[0]) {
       throw new Error("Subscription not found");
     }

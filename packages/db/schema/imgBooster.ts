@@ -3,7 +3,7 @@ import { integer, pgEnum, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { pgTable } from "./_table";
 import { users } from "./auth";
 
-export const status = pgEnum("status", ["active", "inactive", "completed"]);
+export const status = pgEnum("status", ["ACTIVE", "INACTIVE", "COMPLETED"]);
 
 export const imgBooster = pgTable("img_booster", {
   id: uuid("id").notNull().primaryKey().defaultRandom(),
@@ -12,7 +12,7 @@ export const imgBooster = pgTable("img_booster", {
     .unique()
     .references(() => users.id, { onDelete: "cascade" }),
   credits: integer("credits").notNull().default(300),
-  status: status("status").notNull().default("inactive"),
+  status: status("status").notNull().default("INACTIVE"),
   created_at: timestamp("created_at").notNull().defaultNow(),
   updated_at: timestamp("updated_at").notNull().defaultNow(),
 });
