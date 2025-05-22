@@ -18,7 +18,7 @@ export default function Header() {
           <h3 className="text-cp-black justify-center text-center font-poppins text-xl font-semibold leading-[28px]">
             To upgrade
           </h3>
-          <h3 className="text-cp-black mt-1 justify-center text-center font-poppins text-xl font-semibold leading-[28px]">
+          <h3 className="text-cp-black justify-center text-center font-poppins text-xl font-semibold leading-[28px]">
             Log in & choose your plan
           </h3>
         </>
