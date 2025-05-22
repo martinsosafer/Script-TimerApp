@@ -28,7 +28,8 @@ export default async function Register() {
       <div className="p-4">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
           <Header />
-          <div>
+
+          <div className="flex flex-col gap-2">
             <div className="flex items-center justify-center">
               <FormSwitcher highlightSignUp={false} highlightRegister={true} />
             </div>
@@ -36,12 +37,15 @@ export default async function Register() {
             <RegisterForm />
 
             <GoogleForm />
+
             <div className="relative">
-              <div className="text-md relative mb-2 mt-2 flex justify-center">
+              <div className="text-md relative flex justify-center pt-2 pb-1">
                 <span className="bg-background px-2 text-black">or</span>
               </div>
             </div>
+
             <LoginWithEmailForm />
+
             <div className="mt-5">
               <p className="px-8 text-center text-sm text-black">
                 By signing in, you agree to our{" "}

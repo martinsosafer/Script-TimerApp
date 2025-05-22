@@ -111,7 +111,6 @@ export default function PromptInput({
         </div>
 
         <Button
-          buttonType="submit"
           disabled={!isEnabled}
           type="primary"
           label={loadingMessages ? "" : "Create"}

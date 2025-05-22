@@ -34,9 +34,9 @@ export default function ValidateEmailForm() {
       onSubmit={handleSendResetMail}
       className="mx-auto flex w-full max-w-md flex-col gap-2"
     >
-      <div className="flex flex-col space-y-2">
-        <label htmlFor="email" className="text-sm font-normal text-black">
-          Enter your email adress
+      <div className="flex flex-col gap-1">
+        <label htmlFor="email" className="text-cp-black text-sm font-semibold">
+          Enter your email address
         </label>
         <input
           name="email"

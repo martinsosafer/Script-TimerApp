@@ -10,6 +10,7 @@ This app is a vitual assistant for content creators.
 - [Linter](#linter)
 - [Payments](#payments)
 - [Credits](#Credits)
+- [Email](#Email)
 
 ## Description
 
@@ -28,6 +29,25 @@ Script Timer Ai is an application that uses multiple Ai models to assist with mu
 ## Payments
 
 ## Credits
+
+## Email
+
+**Resend** is the dependency used to send emails to users.
+The singleton is located at: `/packages/email/resend/client.ts`
+
+### Register
+
+- When a user request an email link (to create an account) on the pop-up modal or with "Send me a link" on the `/register` page, Next Auth triggers `/packages/auth/send-verification-request.ts`.
+
+- If the email was delivered successfully, the app redirects to `/checkemail` to inform the user.
+
+> Resend will bounce fake or blacklisted emails and label as "Bounced" (red). If the email is sent successfully, but the user email account sends it to the Span folder it will be labeled as "Complained" (yelllow) on the Resend dashboard.
+
+> To **test** if the Resend service is working correctly use:
+>
+> `delivered@resend.dev` - Email being delivered.
+>
+> `bounced@resend.dev` - Email bouncing.
 
 ---
 

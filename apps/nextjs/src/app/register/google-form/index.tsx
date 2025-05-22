@@ -26,9 +26,9 @@ export default function GoogleForm() {
       </div>
       <form
         action={handleSignUp}
-        className="mx-auto flex w-full max-w-md flex-col space-y-4 pt-4"
+        className="mx-auto flex w-full max-w-md flex-col space-y-4 pt-3"
       >
-        <button className="flex w-full items-center justify-center gap-3 rounded-md bg-slate-100 px-3 py-1.5 text-black shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] ">
+        <button className="text-cp-black flex w-full items-center justify-center gap-3 rounded-md bg-slate-100 px-3 py-1.5 shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] ">
           <svg
             className="h-5 w-5"
             xmlns="http://www.w3.org/2000/svg"
