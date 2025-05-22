@@ -88,7 +88,7 @@ const AudioStreamButtons = ({
     <>
       <HoverCard openDelay={200}>
         <HoverCardTrigger asChild>
-          <div>
+          <div className="mr-5 lg:mr-0">
             <CustomButton
               type="secondary"
               onClick={
