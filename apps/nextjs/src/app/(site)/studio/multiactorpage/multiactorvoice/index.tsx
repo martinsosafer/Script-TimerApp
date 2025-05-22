@@ -386,10 +386,16 @@ export default function MultiActorVoice({
 
   // Update the needsRegeneration function
   const needsRegeneration = (actor: ActorSection) => {
-    return (
+    const needs =
       actor.lastGeneratedText !== actor.text ||
-      actor.lastGeneratedVoiceId !== actor.voice?.id
-    );
+      actor.lastGeneratedVoiceId !== actor.voice?.id;
+    console.log(`Actor ${actor.id} needs regeneration: ${needs}`, {
+      lastGeneratedText: actor.lastGeneratedText,
+      currentText: actor.text,
+      lastGeneratedVoiceId: actor.lastGeneratedVoiceId,
+      currentVoiceId: actor.voice?.id,
+    });
+    return needs;
   };
 
   useEffect(() => {
@@ -463,6 +469,8 @@ export default function MultiActorVoice({
                 drawMergedWaveform(blob);
               },
             );
+
+            // No need for additional function call here, the audio is already saved during generation
 
             // Make sure no individual actor audio will play automatically
             setActors((prev) =>
@@ -571,6 +579,9 @@ export default function MultiActorVoice({
         ),
       );
 
+      // Track successfully generated actors
+      const successfullyGeneratedActors = [];
+
       // Generate audio for all actors
       for (let i = 0; i < actorsToGenerate.length; i++) {
         const actor = actorsToGenerate[i];
@@ -591,6 +602,14 @@ export default function MultiActorVoice({
                 delay: actor.delay,
                 muted: actor.muted,
                 volume: actor.volume,
+              });
+
+              // Track this actor as successfully generated
+              successfullyGeneratedActors.push({
+                id,
+                blob: generatedBlob,
+                text: actor.text,
+                voiceId: actor.voice?.id,
               });
 
               // Update actor state but ensure autoPlay is false
@@ -633,6 +652,37 @@ export default function MultiActorVoice({
       console.log(
         `Generation complete. Generated ${generatedAudioBlobsRef.current.size} audio blobs`,
       );
+
+      // Ensure all actors are properly updated with their generated audio
+      if (successfullyGeneratedActors.length > 0) {
+        console.log(
+          `Updating ${successfullyGeneratedActors.length} actors with their generated audio`,
+        );
+
+        // Force a final update to ensure all actors have their audio properly set
+        setActors((prevActors) => {
+          return prevActors.map((actor) => {
+            const generatedActor = successfullyGeneratedActors.find(
+              (ga) => ga.id === actor.id,
+            );
+
+            if (generatedActor) {
+              console.log(`Updating actor ${actor.id} with generated audio`);
+              return {
+                ...actor,
+                audioBlob: generatedActor.blob,
+                audioUrl: URL.createObjectURL(generatedActor.blob),
+                lastGeneratedText: generatedActor.text,
+                lastGeneratedVoiceId: generatedActor.voiceId,
+                isGenerating: false,
+                autoPlay: false,
+                isPlaying: false,
+              };
+            }
+            return actor;
+          });
+        });
+      }
 
       // The merging will be triggered by the useEffect when completedGenerations equals totalGenerationsRef.current
     } catch (error) {

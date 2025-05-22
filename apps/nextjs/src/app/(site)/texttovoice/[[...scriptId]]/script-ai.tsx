@@ -198,70 +198,76 @@ export function ScriptAI({
         </h4>
       </header>
 
-      <div className="mb-32 h-full flex-col md:flex">
+      <div className="mb-32 h-full flex flex-col">
         <Tabs defaultValue="complete" className="flex-1">
-          <div className="container mb-4 h-full">
-            <div className="grid h-full items-stretch gap-6 md:grid-cols-[400px_1fr]">
-              <TabOne
-                setSelectedModel={setSelectedModel}
-                favoriteVoices={favoriteVoices}
-                refreshSubscriptionData={refreshSubscriptionData}
-                subData={subData}
-                stability={stability}
-                setStability={setStability}
-                similarity={similarity}
-                setSimilarity={setSimilarity}
-                speed={speed}
-                setSpeed={setSpeed}
-                style={style}
-                setStyle={setStyle}
-              />
+          <div className="container mb-4 h-full px-4 lg:px-0">
+            <div className="flex flex-col h-full gap-6 lg:grid lg:grid-cols-[400px_1fr] lg:items-stretch">
+              {/* TabOne - Will be full width on mobile, 400px on desktop */}
+              <div className="w-full lg:w-auto">
+                <TabOne
+                  setSelectedModel={setSelectedModel}
+                  favoriteVoices={favoriteVoices}
+                  refreshSubscriptionData={refreshSubscriptionData}
+                  subData={subData}
+                  stability={stability}
+                  setStability={setStability}
+                  similarity={similarity}
+                  setSimilarity={setSimilarity}
+                  speed={speed}
+                  setSpeed={setSpeed}
+                  style={style}
+                  setStyle={setStyle}
+                />
+              </div>
 
-              <TabTwo
-                ref={tabTwoRef}
-                script={script}
-                subData={subData}
-                setOpenFreeModal={setOpenFreeModal}
-                richContent={richContent}
-                setRichContent={setRichContent}
-                toggleAudioRef={toggleAudioRef}
-                audio={audio}
-                isSubscriptionActive={isSubscriptionActive}
-                audioRef={audioRef}
-                showPlayer={showPlayer}
-                handleCloseAudio={handleCloseAudio}
-                downloadLink={downloadLink}
-                loading={loading}
-                setShowConfetti={setShowConfetti}
-                showConfetti={showConfetti}
-                speedCategory={speedCategory}
-                wordCount={wordCount}
-                minutes={minutes}
-                formattedSeconds={formattedSeconds}
-                selectedModel={selectedModel}
-                handleStreaming={handleStreaming}
-                stability={stability}
-                similarity={similarity}
-                speed={speed}
-                style={style}
-                generateVoice={generateVoice}
-                revisedScript={revisedScript}
-                setRevisedScript={setRevisedScript}
-                checkAndPublish={checkAndPublish}
-                setScript={setScript}
-                setLoading={setLoading}
-                handleEditorChange={handleEditorChange}
-                onCopy={onCopy}
-                isCopied={isCopied}
-                refetchCredits={refetchCredits}
-                openAiCredits={openAiCredits}
-              />
+              {/* TabTwo - Will be full width on mobile, remaining space on desktop */}
+              <div className="w-full lg:w-auto">
+                <TabTwo
+                  ref={tabTwoRef}
+                  script={script}
+                  subData={subData}
+                  setOpenFreeModal={setOpenFreeModal}
+                  richContent={richContent}
+                  setRichContent={setRichContent}
+                  toggleAudioRef={toggleAudioRef}
+                  audio={audio}
+                  isSubscriptionActive={isSubscriptionActive}
+                  audioRef={audioRef}
+                  showPlayer={showPlayer}
+                  handleCloseAudio={handleCloseAudio}
+                  downloadLink={downloadLink}
+                  loading={loading}
+                  setShowConfetti={setShowConfetti}
+                  showConfetti={showConfetti}
+                  speedCategory={speedCategory}
+                  wordCount={wordCount}
+                  minutes={minutes}
+                  formattedSeconds={formattedSeconds}
+                  selectedModel={selectedModel}
+                  handleStreaming={handleStreaming}
+                  stability={stability}
+                  similarity={similarity}
+                  speed={speed}
+                  style={style}
+                  generateVoice={generateVoice}
+                  revisedScript={revisedScript}
+                  setRevisedScript={setRevisedScript}
+                  checkAndPublish={checkAndPublish}
+                  setScript={setScript}
+                  setLoading={setLoading}
+                  handleEditorChange={handleEditorChange}
+                  onCopy={onCopy}
+                  isCopied={isCopied}
+                  refetchCredits={refetchCredits}
+                  openAiCredits={openAiCredits}
+                />
+              </div>
             </div>
           </div>
         </Tabs>
 
-        {/* ActionButtons with all props */}
-        <div ref={actionButtonsRef} className="w-full">
+        {/* ActionButtons - Full width on both */}
+        <div ref={actionButtonsRef} className="w-full px-4 lg:px-0">
           <ActionButtons
             showPlayer={showPlayer}
             scrollToTab2={scrollToHeader}
