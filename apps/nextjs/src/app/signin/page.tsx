@@ -28,6 +28,7 @@ export default async function SignIn() {
       <div className="p-4">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
           <Header />
+
           <div>
             <div className="flex items-center justify-center">
               <FormSwitcher highlightSignUp={true} highlightRegister={false} />
@@ -35,7 +36,9 @@ export default async function SignIn() {
             <div className="mb-5 flex items-center justify-center text-center font-semibold">
               <p>Your voice matters, let's get started</p>
             </div>
+
             <SignUpForm />
+
             <div className="mt-5">
               <p className="px-8 text-center text-sm text-black">
                 By signing in, you agree to our{" "}
