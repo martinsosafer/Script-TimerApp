@@ -56,10 +56,10 @@ export default function LoginForm() {
   return (
     <form
       onSubmit={handleLogin}
-      className="mx-auto flex w-full max-w-md flex-col space-y-4"
+      className="mx-auto flex w-full max-w-md flex-col gap-3 pt-4"
     >
-      <div className="flex flex-col space-y-2">
-        <label htmlFor="email" className="text-sm font-normal text-black">
+      <div className="flex flex-col">
+        <label htmlFor="email" className="text-cp-black text-sm font-bold">
           Email
         </label>
         <input
@@ -69,8 +69,8 @@ export default function LoginForm() {
           className="rounded-md border border-gray-300 px-3 py-2"
         />
       </div>
-      <div className="flex flex-col space-y-2">
-        <label htmlFor="password" className="text-sm font-normal text-black">
+      <div className="flex flex-col">
+        <label htmlFor="password" className="text-cp-black text-sm font-bold">
           Password
         </label>
         <div className="flex items-center justify-between rounded-md border border-gray-300 px-3 py-2">
@@ -87,11 +87,11 @@ export default function LoginForm() {
         </div>
       </div>
       <div className="flex items-end justify-end">
-        <p className=" text-end text-sm text-black">
+        <p className=" text-cp-gray-500 text-end text-sm">
           Forgot your Password?{" "}
           <Link
             href="/reset-password"
-            className="font-semibold text-primary underline-offset-4"
+            className="text-cp-primary-light hover:text-cp-primary font-semibold underline-offset-4"
           >
             Reset it here
           </Link>{" "}

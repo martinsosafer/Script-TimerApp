@@ -1,17 +1,45 @@
 "use client";
 
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 export default function Header() {
+  const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const origin = searchParams.get("origin");
 
   const isCheckingOut = origin === "checkout";
 
+  const handleMessage = () => {
+    if (isCheckingOut && pathname === "/signin") {
+      return (
+        <>
+          <h3 className="text-cp-black justify-center text-center font-poppins text-xl font-semibold leading-[28px]">
+            To upgrade
+          </h3>
+          <h3 className="text-cp-black justify-center text-center font-poppins text-xl font-semibold leading-[28px]">
+            Log in & choose your plan
+          </h3>
+        </>
+      );
+    }
+    if (isCheckingOut && pathname === "/register") {
+      return (
+        <h3 className="text-cp-black justify-center text-center font-poppins text-xl font-semibold leading-[28px]">
+          Create your free account
+        </h3>
+      );
+    }
+    return (
+      <h3 className="text-cp-secondary justify-center text-center font-poppins text-xl font-normal leading-[28px]">
+        Bring your projects to life
+      </h3>
+    );
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center gap-3 text-center">
+    <div className="flex flex-col items-center justify-center gap-4 text-center">
       <div className="relative h-[48px] w-[287px] p-4">
         <Image
           src={"/ScriptTimerLogoPrimary.png"}
@@ -20,22 +48,8 @@ export default function Header() {
           priority
         />
       </div>
-      <div className="justify-center text-center">
-        {isCheckingOut ? (
-          <>
-            <h3 className="justify-center text-center font-poppins text-2xl font-semibold leading-[28px] text-black">
-              To upgrade
-            </h3>
-            <h3 className="mt-1 justify-center text-center font-poppins text-2xl font-semibold leading-[28px] text-black">
-              Log in & choose your plan
-            </h3>
-          </>
-        ) : (
-          <h3 className="text-cp-secondary justify-center text-center font-poppins text-xl font-normal leading-[28px]">
-            Bring your projects to life
-          </h3>
-        )}
-      </div>
+
+      <div className="justify-center text-center">{handleMessage()}</div>
     </div>
   );
 }
