@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@voiceai/ui";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
@@ -42,6 +43,8 @@ const BoosterCard = ({
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  const router = useRouter();
+
   const cardHeight = {
     IMAGES: "h-[1030px]",
     PLAGIARISM: "h-[684px]",
@@ -58,7 +61,8 @@ const BoosterCard = ({
     type: BoosterType;
     subData: SubData | undefined;
   }) => {
-    if (!subData) return;
+    // Resend to /register if user account
+    if (!subData) return router.push("/register?origin=boosters");
 
     // Check if the user has a paid plan
     if (
@@ -85,7 +89,7 @@ const BoosterCard = ({
       // return success toast with info
       return toast({
         title: "Booster added!",
-        description: `You have successfully added a ${type.toLowerCase()} booster`,
+        description: `You have successfully added ${type.toLowerCase()} booster`,
       });
     } catch (error: any) {
       console.error("Error adding booster:", error.message);
@@ -141,7 +145,6 @@ const BoosterCard = ({
                 className={`${poppins.className} disabled:bg-cp-secondary-light font-semibold`}
                 variant="accent"
                 onClick={() => handleAddBooster({ type, subData })}
-                disabled={isLoading || !subData}
               >
                 {isLoading ? (
                   <div className="flex items-center justify-center">

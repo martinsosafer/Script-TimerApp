@@ -128,24 +128,24 @@ export async function addBooster({
     // Check if payment was not successful and throw error
 
     // Insert booster in dB
-    // if (type === "IMAGES") {
-    //   await db
-    //     .insert(schema.imgBooster)
-    //     .values({
-    //       userId: subData?.userId,
-    //       credits: BOOSTER_START_CREDITS.IMAGES,
-    //     })
-    //     .execute();
-    // }
-    // if (type === "PLAGIARISM") {
-    //   await db
-    //     .insert(schema.clBooster)
-    //     .values({
-    //       userId: subData?.userId,
-    //       credits: BOOSTER_START_CREDITS.PLAGIARISM,
-    //     })
-    //     .execute();
-    // }
+    if (type === "IMAGES") {
+      await db
+        .insert(schema.imgBooster)
+        .values({
+          userId: subData?.userId,
+          credits: BOOSTER_START_CREDITS.IMAGES,
+        })
+        .execute();
+    }
+    if (type === "PLAGIARISM") {
+      await db
+        .insert(schema.clBooster)
+        .values({
+          userId: subData?.userId,
+          credits: BOOSTER_START_CREDITS.PLAGIARISM,
+        })
+        .execute();
+    }
     // if (type === "VOICE") {
     //   await db
     //     .insert(schema.elevenLabsBooster)

@@ -9,6 +9,7 @@ export default function Header() {
   const origin = searchParams.get("origin");
 
   const isCheckingOut = origin === "checkout";
+  const isBooster = origin === "booster"; // Add to handler and create new text for boosters
 
   return (
     <div className="flex flex-col items-center justify-center gap-3 text-center">
