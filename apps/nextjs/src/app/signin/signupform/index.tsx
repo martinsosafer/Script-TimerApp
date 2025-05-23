@@ -6,7 +6,7 @@ import LoginForm from "../form-login";
 
 export default function SignUpForm() {
   return (
-    <div className={cn("grid gap-2")}>
+    <div className={cn("grid gap-6")}>
       <LoginForm />
 
       <div className="text-md flex justify-center">
@@ -50,9 +50,11 @@ export default function SignUpForm() {
           </span>
         </button>
       </form>
+
       <div className="text-md flex justify-center">
         <span className="text-md bg-background px-2 text-black">or</span>
       </div>
+
       <LoginWithEmailForm />
     </div>
   );

@@ -14,7 +14,7 @@ export default function FormSwitcher({
   const isCheckingOut = origin === "checkout";
 
   return (
-    <div style={{ textAlign: "center", margin: "20px" }}>
+    <div style={{ textAlign: "center" }}>
       <div className="relative inline-block">
         {/* Log In link */}
         <Link
@@ -26,14 +26,14 @@ export default function FormSwitcher({
           Log In
         </Link>
 
-        {/* Sign In link */}
+        {/* Create link */}
         <Link
           href={isCheckingOut ? "/register?origin=checkout" : "/register"}
           className={`ml-16 font-poppins font-medium ${
             highlightRegister ? "text-primary" : "text-slate-500"
           }`}
         >
-          Sign In
+          Create
         </Link>
 
         {/* The blue and black lines */}

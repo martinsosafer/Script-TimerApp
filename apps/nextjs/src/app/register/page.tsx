@@ -26,10 +26,10 @@ export default async function Register() {
 
       {/* Form moved to the right */}
       <div className="p-4">
-        <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+        <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[360px]">
           <Header />
 
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-4">
             <div className="flex items-center justify-center">
               <FormSwitcher highlightSignUp={false} highlightRegister={true} />
             </div>
@@ -39,7 +39,7 @@ export default async function Register() {
             <GoogleForm />
 
             <div className="relative">
-              <div className="text-md relative flex justify-center pt-2 pb-1">
+              <div className="text-md relative flex justify-center pb-1 pt-2">
                 <span className="bg-background px-2 text-black">or</span>
               </div>
             </div>

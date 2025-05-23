@@ -26,16 +26,16 @@ export default async function SignIn() {
 
       {/* Form visible on all screen sizes */}
       <div className="p-4">
-        <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+        <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[360px]">
           <Header />
 
           <div>
             <div className="flex items-center justify-center">
               <FormSwitcher highlightSignUp={true} highlightRegister={false} />
             </div>
-            <div className="mb-5 flex items-center justify-center text-center font-semibold">
+            {/* <div className="mb-5 flex items-center justify-center text-center font-semibold">
               <p>Your voice matters, let's get started</p>
-            </div>
+            </div> */}
 
             <SignUpForm />
 
