@@ -43,6 +43,7 @@ import { SettingsPanel } from "./settingspanel/index";
 import { VoiceAvatar } from "./voiceavatar/index";
 import { useSubscription } from "~/app/hooks/texttovoice/useSubscription";
 import { StyleSelector } from "~/app/(site)/components/style-selector";
+
 interface MultiActorVoiceProps {
   allVoices?: Voice[];
   userPlan?: string;
@@ -275,6 +276,8 @@ export default function MultiActorVoice({
   const [completedGenerations, setCompletedGenerations] = useState(0);
   // Add a ref to track total expected generations
   const totalGenerationsRef = useRef(0);
+  // NEW: Add state to track batch processing
+  const [isBatchProcessing, setIsBatchProcessing] = useState(false);
 
   // Define button styles for speed and download buttons
   const buttonBaseStyle = {
@@ -470,8 +473,6 @@ export default function MultiActorVoice({
               },
             );
 
-            // No need for additional function call here, the audio is already saved during generation
-
             // Make sure no individual actor audio will play automatically
             setActors((prev) =>
               prev.map((actor) => ({
@@ -500,6 +501,8 @@ export default function MultiActorVoice({
         } finally {
           // Reset the counter after merging
           setCompletedGenerations(0);
+          // Reset batch processing flag
+          setIsBatchProcessing(false);
         }
       }
     };
@@ -518,10 +521,10 @@ export default function MultiActorVoice({
   const isAnyAudioPlaying =
     actors.some((a) => a.isPlaying) || isMergedAudioPlaying;
 
-  // Completely rewritten handleMasterButtonClick function
+  // FIXED: Completely rewritten handleMasterButtonClick function with better race condition handling
   const handleMasterButtonClick = async () => {
     // If already processing, return to prevent multiple executions
-    if (isProcessingRef.current) return;
+    if (isProcessingRef.current || isBatchProcessing) return;
 
     // If audio is playing, stop it but don't change button text
     if (isAnyAudioPlaying) {
@@ -534,12 +537,30 @@ export default function MultiActorVoice({
       return;
     }
 
-    // Set processing flag
+    // Set processing flags IMMEDIATELY
     isProcessingRef.current = true;
+    setIsBatchProcessing(true);
 
     // Clear previous generated blobs and reset counters
     generatedAudioBlobsRef.current.clear();
     setCompletedGenerations(0);
+
+    // IMMEDIATELY clear all autoPlay flags and stop any audio
+    setActors((prev) =>
+      prev.map((a) => ({
+        ...a,
+        autoPlay: false,
+        isPlaying: false,
+      })),
+    );
+
+    // Clear audio element states immediately
+    Object.values(audioRefs.current).forEach((audioElement) => {
+      if (audioElement) {
+        audioElement.pause();
+        audioElement.currentTime = 0;
+      }
+    });
 
     // Clear any existing merged waveform canvas
     if (mergedWaveformCanvasRef.current) {
@@ -562,6 +583,7 @@ export default function MultiActorVoice({
 
       if (actorsToGenerate.length === 0) {
         isProcessingRef.current = false;
+        setIsBatchProcessing(false);
         return;
       }
 
@@ -688,6 +710,7 @@ export default function MultiActorVoice({
     } catch (error) {
       console.error("Error in audio generation:", error);
       setCompletedGenerations(0);
+      setIsBatchProcessing(false);
     } finally {
       // Reset processing flag
       isProcessingRef.current = false;
@@ -974,11 +997,13 @@ export default function MultiActorVoice({
                   onEnded={() => handleAudioEnded(actor.id)}
                   onLoadedData={() => {
                     const audioElement = audioRefs.current[actor.id];
-                    // Only auto-play if this wasn't triggered by the master button
+                    // FIXED: Enhanced conditions to prevent autoplay during batch processing
                     if (
                       audioElement &&
                       actor.autoPlay &&
-                      !isProcessingRef.current
+                      !isProcessingRef.current &&
+                      !isBatchProcessing &&
+                      completedGenerations === 0 // Ensure we're not in the middle of batch generation
                     ) {
                       audioElement.play();
                       setActors((prevActors) =>
@@ -1139,10 +1164,16 @@ export default function MultiActorVoice({
               className="w-full py-6 text-lg"
               onClick={handleMasterButtonClick}
               disabled={
-                isGenerating || isMergingAudio || isProcessingRef.current
+                isGenerating ||
+                isMergingAudio ||
+                isProcessingRef.current ||
+                isBatchProcessing
               }
             >
-              {isGenerating || isMergingAudio || isProcessingRef.current ? (
+              {isGenerating ||
+              isMergingAudio ||
+              isProcessingRef.current ||
+              isBatchProcessing ? (
                 <Loader2 className="mr-2 h-5 w-5 animate-spin" />
               ) : (
                 <Mic className="mr-2 h-5 w-5" />
