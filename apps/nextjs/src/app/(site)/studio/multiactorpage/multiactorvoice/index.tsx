@@ -757,7 +757,7 @@ export default function MultiActorVoice({
                   size="sm"
                   onClick={() => setShowAdvancedSettings(!showAdvancedSettings)}
                 >
-                  <Settings className="mr-2 h-4 w-4" />
+                  <Settings className="lg:mr-2 mr-0 h-4 w-4" />
                   Advanced Settings
                 </Button>
               </TooltipTrigger>
@@ -804,12 +804,12 @@ export default function MultiActorVoice({
             key={actor.id}
             className={`rounded-lg border-4 ${getVoiceColor(actor.voice, index, actors)} bg-card shadow-sm`}
           >
-            <div className="flex items-center justify-between border-b p-3">
+            <div className="flex items-center justify-between border-b p-2 lg:p-3">
               <div className="flex items-center gap-2">
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-muted text-xs font-medium">
+                <span className="flex h-5 w-5 lg:h-6 lg:w-6 items-center justify-center rounded-full bg-muted text-xs font-medium">
                   {index + 1}
                 </span>
-                <h3 className="font-medium">
+                <h3 className="text-sm lg:text-base font-medium">
                   {actor.voice?.name || "Select a voice"}
                 </h3>
               </div>
@@ -824,8 +824,8 @@ export default function MultiActorVoice({
               />
             </div>
 
-            <div className="flex flex-col md:flex-row">
-              <div className="actor-voice-container relative flex items-start gap-4 p-4 md:w-1/3">
+            <div className="flex flex-col lg:flex-row">
+              <div className="actor-voice-container relative flex flex-col lg:flex-row items-start gap-2 lg:gap-4 p-2 lg:p-4 lg:w-1/3">
                 <div className="relative">
                   <VoiceAvatar
                     voice={actor.voice}
@@ -846,7 +846,6 @@ export default function MultiActorVoice({
                       searchQuery={searchQuery}
                       onSelect={(voice) => {
                         updateActorVoice(actor.id, voice);
-                        // Clear existing audio when voice changes
                         setActors((prev) =>
                           prev.map((a) =>
                             a.id === actor.id
@@ -872,22 +871,20 @@ export default function MultiActorVoice({
                 />
               </div>
 
-              <div className="flex flex-1 flex-col p-4">
+              <div className="flex flex-1 flex-col p-2 lg:p-4">
                 <div className="relative w-full">
                   <Textarea
                     placeholder="Enter the text for this actor..."
-                    className="min-h-[80px] w-full flex-1 resize-none rounded-md border-2 border-muted text-base focus:border-primary focus:ring-1 focus:ring-primary"
+                    className="min-h-[100px] lg:min-h-[80px] w-full flex-1 resize-none rounded-md border-2 border-muted text-sm lg:text-base focus:border-primary focus:ring-1 focus:ring-primary"
                     value={actor.text}
                     onChange={(e) => {
                       const newText = e.target.value;
                       const charLimit = getCharLimit();
 
-                      // Check if the new text exceeds the character limit
                       if (newText.length > charLimit) {
                         setShowCharLimitModal(actor.id);
                       } else {
                         updateActorText(actor.id, newText);
-                        // Clear existing audio when text changes
                         setActors((prev) =>
                           prev.map((a) =>
                             a.id === actor.id
@@ -898,7 +895,7 @@ export default function MultiActorVoice({
                       }
                     }}
                   />
-                  <div className="mt-1 text-right text-sm">
+                  <div className="mt-1 text-right text-xs lg:text-sm">
                     <span
                       className={
                         actor.text.length > getCharLimit() * 0.9
@@ -913,12 +910,12 @@ export default function MultiActorVoice({
 
                 <div className="mt-3">
                   {actor.voice?.type === "GOOGLE" && (
-                    <div className="text-cp-primary text-[12px] font-bold mb-2">
+                    <div className="text-cp-primary text-xs lg:text-[12px] font-bold mb-2">
                       Modulation is not available for this voice
                     </div>
                   )}
-                  <div className="flex flex-row gap-4">
-                    <div className="flex-1">
+                  <div className="grid grid-cols-2 lg:flex lg:flex-row gap-2 lg:gap-4">
+                    <div className="col-span-2 lg:flex-1">
                       <StabilitySelector
                         value={actor.stability}
                         onValueChange={(value) => {
@@ -934,7 +931,7 @@ export default function MultiActorVoice({
                         showDisabledText={false}
                       />
                     </div>
-                    <div className="flex-1">
+                    <div className="col-span-2 lg:flex-1">
                       <SimilaritySelector
                         value={actor.similarity}
                         onValueChange={(value) => {
@@ -949,7 +946,7 @@ export default function MultiActorVoice({
                         disabled={actor.voice?.type === "GOOGLE"}
                       />
                     </div>
-                    <div className="flex-1">
+                    <div className="col-span-1 lg:flex-1">
                       <SpeedSelector
                         value={actor.speed}
                         onValueChange={(value) => {
@@ -962,7 +959,7 @@ export default function MultiActorVoice({
                         disabled={actor.voice?.type === "GOOGLE"}
                       />
                     </div>
-                    <div className="flex-1">
+                    <div className="col-span-1 lg:flex-1">
                       <StyleSelector
                         value={actor.style}
                         onValueChange={(value) => {
@@ -976,7 +973,7 @@ export default function MultiActorVoice({
                       />
                     </div>
                   </div>
-                  <div className="mt-3 flex justify-end">
+                  <div className="mt-3 flex justify-center lg:justify-end">
                     <GenerateButton
                       isGenerating={actor.isGenerating}
                       isPlaying={actor.isPlaying}

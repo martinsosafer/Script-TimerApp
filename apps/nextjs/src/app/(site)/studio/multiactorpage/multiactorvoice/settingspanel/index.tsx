@@ -57,10 +57,13 @@ export function SettingsPanel({
 
   return (
     <div className="mb-6 rounded-lg border bg-card p-4 shadow-sm">
-      <h3 className="mb-3 font-medium">Advanced Settings</h3>
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div className="space-y-2">
-          <Label htmlFor="stability">Voice Stability: {stability}</Label>
+      <h3 className="mb-3 text-lg lg:text-xl font-medium">Advanced Settings</h3>
+      <div className="grid gap-4 lg:grid-cols-2">
+        {/* Stability */}
+        <div className="space-y-2 px-2 lg:px-0">
+          <Label className="text-sm lg:text-base" htmlFor="stability">
+            Voice Stability: {stability}
+          </Label>
           <Slider
             id="stability"
             value={[stability]}
@@ -69,13 +72,16 @@ export function SettingsPanel({
             step={0.01}
             onValueChange={(value) => onStabilityChange(value[0])}
           />
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs lg:text-sm text-muted-foreground">
             Higher values make the voice more stable and consistent
           </p>
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="similarity">Voice Similarity: {similarity}</Label>
+        {/* Similarity */}
+        <div className="space-y-2 px-2 lg:px-0">
+          <Label className="text-sm lg:text-base" htmlFor="similarity">
+            Voice Similarity: {similarity}
+          </Label>
           <Slider
             id="similarity"
             value={[similarity]}
@@ -84,18 +90,19 @@ export function SettingsPanel({
             step={0.01}
             onValueChange={(value) => onSimilarityChange(value[0])}
           />
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs lg:text-sm text-muted-foreground">
             Higher values make the voice more similar to the original
           </p>
         </div>
 
-        <div className="space-y-2">
-          <Label>Merge Type</Label>
+        {/* Merge Type */}
+        <div className="space-y-2 px-2 lg:px-0">
+          <Label className="text-sm lg:text-base">Merge Type</Label>
           <Select
             value={mergeType}
             onValueChange={(value: MergeType) => onMergeTypeChange(value)}
           >
-            <SelectTrigger>
+            <SelectTrigger className="w-full lg:w-[200px]">
               <SelectValue placeholder="Select merge type" />
             </SelectTrigger>
             <SelectContent>
@@ -105,14 +112,15 @@ export function SettingsPanel({
               <SelectItem value="overlap">Overlap (Mix together)</SelectItem>
             </SelectContent>
           </Select>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs lg:text-sm text-muted-foreground">
             Choose how to combine multiple audio clips
           </p>
         </div>
 
+        {/* Overlap Duration */}
         {mergeType === "overlap" && (
-          <div className="space-y-2">
-            <Label htmlFor="overlap">
+          <div className="space-y-2 px-2 lg:px-0">
+            <Label className="text-sm lg:text-base" htmlFor="overlap">
               Overlap Duration: {overlapDuration}ms
             </Label>
             <Slider
@@ -123,15 +131,16 @@ export function SettingsPanel({
               step={50}
               onValueChange={(value) => onOverlapDurationChange(value[0])}
             />
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs lg:text-sm text-muted-foreground">
               How much audio clips should overlap when merging
             </p>
           </div>
         )}
       </div>
 
+      {/* Voice Filters */}
       <div className="mt-4 space-y-2">
-        <Label>Voice Filters</Label>
+        <Label className="text-sm lg:text-base">Voice Filters</Label>
         <div className="flex flex-wrap gap-2">
           <Select
             value={filterType}
@@ -140,7 +149,7 @@ export function SettingsPanel({
               onFilterValueChange("");
             }}
           >
-            <SelectTrigger className="w-[150px]">
+            <SelectTrigger className="w-full lg:w-[150px]">
               <SelectValue placeholder="Filter by" />
             </SelectTrigger>
             <SelectContent>
@@ -152,7 +161,7 @@ export function SettingsPanel({
 
           {filterType === "gender" && (
             <Select value={filterValue} onValueChange={onFilterValueChange}>
-              <SelectTrigger className="w-[150px]">
+              <SelectTrigger className="w-full lg:w-[150px]">
                 <SelectValue placeholder="Select gender" />
               </SelectTrigger>
               <SelectContent>
@@ -167,7 +176,7 @@ export function SettingsPanel({
 
           {filterType === "type" && (
             <Select value={filterValue} onValueChange={onFilterValueChange}>
-              <SelectTrigger className="w-[150px]">
+              <SelectTrigger className="w-full lg:w-[150px]">
                 <SelectValue placeholder="Select type" />
               </SelectTrigger>
               <SelectContent>
@@ -180,13 +189,15 @@ export function SettingsPanel({
             </Select>
           )}
 
-          <div className="flex items-center space-x-2">
+          <div className="flex w-full lg:w-auto items-center space-x-2">
             <Switch
               id="favorites-only"
               checked={favoriteVoicesOnly}
               onCheckedChange={onFavoriteVoicesOnlyChange}
             />
-            <Label htmlFor="favorites-only">Favorites only</Label>
+            <Label className="text-sm lg:text-base" htmlFor="favorites-only">
+              Favorites only
+            </Label>
           </div>
         </div>
       </div>
