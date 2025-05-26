@@ -62,7 +62,7 @@ const BoosterCard = ({
     subData: SubData | undefined;
   }) => {
     // Resend to /register if user account
-    if (!subData) return router.push("/register?origin=boosters");
+    if (!subData) return router.push("/register?origin=booster");
 
     // Check if the user has a paid plan
     if (
