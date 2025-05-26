@@ -1025,10 +1025,10 @@ export default function MultiActorVoice({
         >
           <Button
             variant="default"
-            className="text-md flex w-full items-center justify-center gap-2 bg-blue-400 py-8 shadow-md hover:bg-blue-600"
+            className="text-sm lg:text-md flex w-full items-center justify-center gap-2 bg-blue-400 py-6 lg:py-8 shadow-md hover:bg-blue-600"
             onClick={addNewActor}
           >
-            <Plus className="h-6 w-6" />
+            <Plus className="h-5 w-5 lg:h-6 lg:w-6" />
             Add Another Actor
           </Button>
         </motion.div>
@@ -1055,7 +1055,7 @@ export default function MultiActorVoice({
             >
               <motion.canvas
                 ref={mergedWaveformCanvasRef}
-                className="mb-3 h-24 w-full rounded bg-muted/30"
+                className="mb-3 h-16 lg:h-24 w-full rounded bg-muted/30"
                 width={600}
                 height={100}
                 animate={
@@ -1074,6 +1074,7 @@ export default function MultiActorVoice({
 
               {/* Audio Player with Styled Container */}
               <div
+                className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2 lg:gap-0"
                 style={{
                   position: "relative",
                   marginTop: "14px",
@@ -1081,13 +1082,10 @@ export default function MultiActorVoice({
                   transform: "translateX(-50%)",
                   maxWidth: "1000px",
                   width: "100%",
-                  height: "60px",
+                  minHeight: "60px",
                   backgroundColor: "#BDF3F0",
                   boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.1)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  padding: "10px 15px",
+                  padding: "10px 12px",
                   borderRadius: "8px",
                   zIndex: 0,
                   opacity: 1,
@@ -1100,14 +1098,22 @@ export default function MultiActorVoice({
                   controls
                   src={mergedAudioUrl}
                   style={{
-                    flex: 1,
+                    width: "100%",
                     height: "40px",
                     backgroundColor: "transparent",
                     border: "none",
                   }}
+                  className="lg:flex-1"
                 />
 
-                <div style={{ display: "flex", gap: "10px" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "8px",
+                    justifyContent: "center",
+                  }}
+                  className="lg:gap-3"
+                >
                   <SpeedButton
                     audioRef={mergedAudioRef}
                     buttonStyle={buttonBaseStyle}
@@ -1134,7 +1140,10 @@ export default function MultiActorVoice({
                         buttonBaseStyle.backgroundColor;
                     }}
                   >
-                    <Save className="h-5 w-5" style={{ color: "white" }} />
+                    <Save
+                      className="h-4 w-4 lg:h-5 lg:w-5"
+                      style={{ color: "white" }}
+                    />
                   </button>
                 </div>
               </div>
@@ -1154,11 +1163,11 @@ export default function MultiActorVoice({
                 : {}
             }
             transition={{ duration: 1, ease: "easeInOut" }}
-            className="w-full max-w-xs"
+            className="w-full max-w-xs lg:max-w-sm"
           >
             <Button
               variant="default"
-              className="w-full py-6 text-lg"
+              className="w-full py-4 lg:py-6 text-base lg:text-lg"
               onClick={handleMasterButtonClick}
               disabled={
                 isGenerating ||
@@ -1171,9 +1180,9 @@ export default function MultiActorVoice({
               isMergingAudio ||
               isProcessingRef.current ||
               isBatchProcessing ? (
-                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                <Loader2 className="mr-2 h-4 w-4 lg:h-5 lg:w-5 animate-spin" />
               ) : (
-                <Mic className="mr-2 h-5 w-5" />
+                <Mic className="mr-2 h-4 w-4 lg:h-5 lg:w-5" />
               )}
               Generate & Play All
             </Button>
@@ -1182,18 +1191,19 @@ export default function MultiActorVoice({
       </div>
       {/* Character Limit Modal */}
       {showCharLimitModal && subData?.status === "BUSINESS" && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
-            <h3 className="mb-4 text-lg font-medium">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+          <div className="w-full max-w-sm lg:max-w-md rounded-lg bg-white p-4 lg:p-6 shadow-lg">
+            <h3 className="mb-3 lg:mb-4 text-base lg:text-lg font-medium">
               Character Limit Reached
             </h3>
-            <p className="mb-4">
+            <p className="mb-3 lg:mb-4 text-sm lg:text-base">
               You've reached the 10,000 character limit for the BUSINESS plan.
             </p>
             <div className="flex justify-end">
               <Button
                 variant="outline"
                 onClick={() => setShowCharLimitModal(null)}
+                className="text-sm lg:text-base"
               >
                 Close
               </Button>
@@ -1203,26 +1213,28 @@ export default function MultiActorVoice({
       )}
 
       {showCharLimitModal && subData?.status !== "BUSINESS" && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
-            <h3 className="mb-4 text-lg font-medium">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+          <div className="w-full max-w-sm lg:max-w-md rounded-lg bg-white p-4 lg:p-6 shadow-lg">
+            <h3 className="mb-3 lg:mb-4 text-base lg:text-lg font-medium">
               Character Limit Reached
             </h3>
-            <p className="mb-4">
+            <p className="mb-3 lg:mb-4 text-sm lg:text-base">
               You've reached the character limit of {getCharLimit()} for your{" "}
               {subData?.status || "FREE"} plan. Please upgrade your plan to
               increase your character limit or reduce your text.
             </p>
-            <div className="flex justify-end gap-2">
+            <div className="flex flex-col gap-2 lg:flex-row lg:justify-end">
               <Button
                 variant="outline"
                 onClick={() => setShowCharLimitModal(null)}
+                className="text-sm lg:text-base order-2 lg:order-1"
               >
                 Close
               </Button>
               <Button
                 variant="default"
                 onClick={() => setShowCharLimitModal(null)}
+                className="text-sm lg:text-base order-1 lg:order-2"
               >
                 <Link href="/plans" target="_blank">
                   Upgrade Plan
