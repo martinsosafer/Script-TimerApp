@@ -4,7 +4,6 @@ import { auth, signIn, signOut } from "@voiceai/auth";
 
 import "~/styles/globals.css";
 
-import Head from "next/head";
 import { headers } from "next/headers";
 
 import { Toaster } from "@voiceai/ui/@/components/ui/toaster";
@@ -52,9 +51,6 @@ export default async function Layout(props: { children: React.ReactNode }) {
 
   return (
     <div className="bg-cp-background flex min-h-screen w-full flex-col justify-between">
-      <Head>
-        <meta name="referrer" content="origin" />
-      </Head>
       <TRPCReactProvider headers={headers()}>
         <Newnavbar
           signOut={signOutServer}
