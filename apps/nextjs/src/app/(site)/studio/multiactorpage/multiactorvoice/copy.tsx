@@ -318,7 +318,10 @@ export default function MultiActorVoice({
         }),
       });
 
-      if (!response.ok) throw new Error("Failed to fetch audio");
+      if (!response.ok)
+        throw new Error(
+          "Failed to generate audio,please check if you are logged in",
+        );
       if (!response.body) throw new Error("Response body is null");
 
       const reader = response.body.getReader();
