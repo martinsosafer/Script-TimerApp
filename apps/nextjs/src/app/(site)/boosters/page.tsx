@@ -6,7 +6,7 @@ import {
   IlustrationPlagiarismDetection,
   IlustrationTodayOnly,
   IlustrationVoiceSoundfx,
-} from "@voiceai/ui/@/ilustrations";
+} from "@voiceai/ui/@/illustrations";
 
 import { poppins, roboto } from "~/app/fonts";
 import {
@@ -96,6 +96,7 @@ export default async function BoostersPage() {
                 src={"/boostersImages/boosters_imageGeneration.png"}
                 alt="image generation"
                 fill
+                sizes="100vw"
                 className={`mt-9 object-contain`}
                 priority
               />
@@ -105,6 +106,7 @@ export default async function BoostersPage() {
                 src={"/boostersImages/boosters_creationLab.png"}
                 alt="Creation Lab"
                 fill
+                sizes="100vw"
                 className={`rounded-lg object-contain`}
               />
             }
@@ -113,6 +115,7 @@ export default async function BoostersPage() {
                 src={"/boostersImages/boosters_storyboard.png"}
                 alt="Storyboard"
                 fill
+                sizes="100vw"
                 className={`rounded-lg object-contain`}
               />
             }

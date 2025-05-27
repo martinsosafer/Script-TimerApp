@@ -52,14 +52,14 @@ export default function ImageGenerator({
     if (credits < 1) {
       toast({
         title: "Insufficient Credits",
-        description: "You do not have enough credits to generate this image.",
+        description: "You do not have enough credits to generate this image",
       });
       setLoading(false);
     } else if (finalPrompt.length > 3950) {
       toast({
         title: "Prompt Too Long",
         description:
-          "The prompt you entered is too long. Please shorten it and try again.",
+          "The prompt you entered is too long. Please shorten it and try again",
       });
       setLoading(false);
     } else {
@@ -168,7 +168,7 @@ export default function ImageGenerator({
 
         <button
           type="submit"
-          className="flex w-full items-center justify-center rounded-md bg-primary p-3 text-white"
+          className="text-cp-white bg-cp-secondary flex w-full items-center justify-center rounded-md p-3"
         >
           {loading ? (
             <IconSpinner className="h-6 w-6 animate-spin" />

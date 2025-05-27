@@ -62,9 +62,8 @@ const BoosterCard = ({
     type: BoosterType;
     subData: SubData | undefined;
   }) => {
-    //   // Resend to /register if no user account found
+    //   // Resend to register if no user account found
     if (!subData) return router.push("/register?origin=booster");
-
     // Check if user has a paid plan
     if (
       (subData.status === "FREE" || subData.status === "FREE_TRIAL") &&
@@ -73,7 +72,7 @@ const BoosterCard = ({
       return toast({
         title: "Upgrade your plan",
         description: "You need to upgrade your plan to add boosters",
-        variant: "destructive",
+        // variant: "destructive",
       });
     }
 

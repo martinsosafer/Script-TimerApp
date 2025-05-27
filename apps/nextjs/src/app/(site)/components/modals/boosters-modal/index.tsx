@@ -1,7 +1,7 @@
 import { Button } from "@voiceai/ui";
 import { IconClose } from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
-import { IlustrationTransformYourCareer } from "@voiceai/ui/@/ilustrations";
+import { IlustrationTransformYourCareer } from "@voiceai/ui/@/illustrations";
 
 import { addBooster } from "~/app/(site)/boosters/actions";
 import type { BoosterType, SubData } from "~/app/(site)/boosters/types";
@@ -75,7 +75,7 @@ export default function BoostersModal({
           </div>
 
           {/* Right section */}
-          <div className="bg-cp-primary text-cp-white z-10 flex h-full w-full flex-col items-center pb-14 md:pb-16">
+          <div className="bg-cp-primary text-cp-white z-10 flex h-full w-full flex-col items-center pb-12 md:pb-16">
             <div className="flex w-full min-w-[90%] flex-col items-center justify-start gap-3 px-7 pt-10 md:pt-16">
               <div className="items-center">
                 <h2 className="pb-[12px] text-center text-[24px] font-bold leading-[28px]">
@@ -99,7 +99,7 @@ export default function BoostersModal({
               </p>
             </div>
 
-            <div className="flex flex-col items-center gap-4 px-3">
+            <div className="flex flex-col items-center gap-4 px-3 md:px-10">
               <p
                 className={`${poppins.className} pt-6 text-center text-base lg:w-[80%]`}
               >
@@ -108,7 +108,7 @@ export default function BoostersModal({
               </p>
 
               <Button
-                className={`${poppins.className} disabled:bg-cp-secondary-light w-full max-w-80
+                className={`${poppins.className} disabled:bg-cp-secondary-light w-full
                  py-6 text-base font-semibold`}
                 variant="accent"
                 onClick={() => handleAddBooster({ type, subData })}
