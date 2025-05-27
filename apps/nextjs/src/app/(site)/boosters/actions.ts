@@ -90,7 +90,7 @@ export async function addBooster({
       throw new Error("Payment failed: " + paymentIntent.status);
     }
 
-    // Check if payment was not successful and throw error
+    // Retrieve payment (double check)
     const paymentIntentRetrieve = await stripe.paymentIntents.retrieve(
       paymentIntent.id,
     );
