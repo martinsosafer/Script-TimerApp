@@ -91,7 +91,11 @@ export default function Checker({
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ text, planCredits, boosterCredits }),
+          body: JSON.stringify({
+            text,
+            planCredits: planCredits,
+            boosterCredits: boosterCredits,
+          }),
         });
       } catch (error) {
         console.error(error);
@@ -199,7 +203,7 @@ export default function Checker({
 
               <button
                 type="submit"
-                className="bg-cp-secondary text-cp-white disabled:bg-cp-secondary-light hover:bg-cp-secondary-light flex h-[58px] min-w-[200px] items-center justify-center rounded-md p-2 disabled:text-gray-100"
+                className="bg-cp-secondary text-cp-white disabled:bg-cp-secondary-lightest hover:bg-cp-secondary-light flex h-[58px] min-w-[200px] items-center justify-center rounded-md p-2 disabled:text-gray-100"
                 disabled={loading}
               >
                 {loading ? (

@@ -56,7 +56,7 @@ export async function POST(
   { params }: { params: { status: string; id: string } },
 ) {
   const { status, id } = params;
-
+console.log("Webhook status:", status, "ID:", id);
   if (status !== "completed") {
     return NextResponse.json({ error: "Weebhook Eror" }, { status: 500 });
   }
