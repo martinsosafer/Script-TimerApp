@@ -115,10 +115,11 @@ export async function PUT(request: Request) {
         base64: base64,
         filename: "text.txt",
         properties: {
-          //sandbox: true,
+          // sandbox: true,
           webhooks: {
             //newResult: `https://calm-queens-obey.loca.lt/webhook/plagiarism-result`,
-            status: `${process.env.HOST_URL}/api/webhook/plagiarism-result/{STATUS}/${id}`,
+            status: `https://easy-glasses-admire.loca.lt/api/webhook/plagiarism-result/{STATUS}/${id}`, // Use LocalTunnel for testing webhook!!
+            // status: `${process.env.HOST_URL}/api/webhook/plagiarism-result/{STATUS}/${id}`,
           },
           includeHtml: true,
           developerPayload: session?.user.id,

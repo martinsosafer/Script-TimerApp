@@ -47,7 +47,7 @@ export default function ScansHistory({
               {scanHistory?.map((item: PlagiarismScan) => {
                 return (
                   <div
-                    key={`${item.id}`}
+                    key={`${item?.id}`}
                     className="group flex w-full items-center justify-between hover:bg-gray-100"
                   >
                     <div
