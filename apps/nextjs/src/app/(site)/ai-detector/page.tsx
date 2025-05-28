@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { auth } from "@voiceai/auth";
 
 import PageHeader from "../components/page-header";
-import { getCredits } from "../plagiarism-detector/actions";
+import { getClCredits } from "../plagiarism-detector/actions";
 import AiChecker from "./checker";
 
 export const metadata: Metadata = {
@@ -13,7 +13,10 @@ export const metadata: Metadata = {
 
 export default async function indexPage() {
   const session = await auth();
-  const credit = await getCredits(session?.user.id ?? "");
+  const { totalCredits, planCredits, boosterCredits } = (await getClCredits(
+    session?.user.id ?? "",
+  )) as { totalCredits: number; planCredits: number; boosterCredits: number };
+
   return (
     <div className="flex w-full flex-col items-center">
       <PageHeader
@@ -21,7 +24,7 @@ export default async function indexPage() {
         subtitle="Check plagiarism and detect possible AI-generated content"
       />
 
-      <AiChecker userId={session?.user.id} credits={credit?.credits ?? 0} />
+      <AiChecker userId={session?.user.id} credits={totalCredits ?? 0} />
     </div>
   );
 }

@@ -7,8 +7,10 @@ import type { CheckResult } from "~/app/(site)/ai-detector/checker";
 import { nanoid } from "~/utils/helpers";
 
 export async function POST(request: Request) {
-  const { text } = (await request.json()) as {
+  const { text, planCredits, boosterCredits } = (await request.json()) as {
     text: string;
+    planCredits: number;
+    boosterCredits: number;
   };
 
   const session = await auth();
@@ -27,7 +29,7 @@ export async function POST(request: Request) {
         }),
       },
     );
-
+console.log("RESPONSE", response);
     const token = (await response.json()) as { access_token: string };
 
     const aiCheckResponse = await fetch(
@@ -43,14 +45,14 @@ export async function POST(request: Request) {
         }),
       },
     );
-
+console.log("aiCheckResponse", aiCheckResponse);
     const aiCheckResult = (await aiCheckResponse.json()) as CheckResult;
 
-    if (session?.user.id) {
+    if (session?.user.id && aiCheckResult) {
       const fetchedCredits = await db.query.clCredits.findFirst({
         where: (clCredits, { eq }) => eq(clCredits.userId, session?.user.id),
       });
-
+console.log("scanCredits", aiCheckResult.scannedDocument.actualCredits);
       if (
         fetchedCredits?.credits &&
         fetchedCredits.credits >= aiCheckResult.scannedDocument.actualCredits
