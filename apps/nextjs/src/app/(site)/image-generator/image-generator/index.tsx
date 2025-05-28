@@ -21,9 +21,13 @@ import { downloadImage } from "../utils";
 
 export default function ImageGenerator({
   credits,
+  planCredits,
+  boosterCredits,
   userId,
 }: {
   credits: number;
+  planCredits: number;
+  boosterCredits: number;
   userId: string | undefined;
 }) {
   const [image, setImage] = useState<string | null>(null);
@@ -69,7 +73,11 @@ export default function ImageGenerator({
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ text: finalPrompt }),
+          body: JSON.stringify({
+            text: finalPrompt,
+            planCredits,
+            boosterCredits,
+          }),
         });
 
         const url = (await result.json()) as string;

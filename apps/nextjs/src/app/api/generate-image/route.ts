@@ -2,7 +2,7 @@ import { fal } from "@fal-ai/client";
 import { kv } from "@vercel/kv";
 
 import { auth } from "@voiceai/auth";
-import { db, eq, schema, sql } from "@voiceai/db";
+import { and, db, eq, schema, sql } from "@voiceai/db";
 
 import { nanoid } from "~/utils/helpers";
 
@@ -17,14 +17,18 @@ export async function POST(req: Request): Promise<Response> {
     return new Response("Unauthorized", { status: 401 });
   }
   try {
-    const data = (await req.json()) as { text: string };
+    const data = (await req.json()) as {
+      text: string;
+      planCredits: number;
+      boosterCredits: number;
+    };
 
     const response = await fal.subscribe("fal-ai/luma-photon", {
       input: {
         prompt: data.text,
         // image_size: { width: 1792, height: 1024 },
         // num_images: 1,
-        aspect_ratio: "16:9"
+        aspect_ratio: "16:9",
       },
       logs: true,
     });
@@ -32,10 +36,24 @@ export async function POST(req: Request): Promise<Response> {
     const image_url = response?.data?.images[0]?.url ?? "";
 
     if (image_url) {
-      await db
-        .update(schema.imgCredit)
-        .set({ credits: sql`${schema.imgCredit.credits} - 1` })
-        .where(eq(schema.imgCredit.userId, session?.user.id));
+      if (data.planCredits === 0 && data.boosterCredits > 0) {
+        // Find booster with credits
+        const booster = await db.query.imgBooster.findFirst({
+          where: (booster, { eq, gt }) =>
+            and(eq(booster.userId, session?.user.id), gt(booster.credits, 0)),
+        });
+        // Substract credit from booster
+        await db
+          .update(schema.imgBooster)
+          .set({ credits: sql`${schema.imgBooster.credits} - 1` })
+          .where(eq(schema.imgBooster.id, booster?.id ?? ""));
+      } else {
+        // Substract credit from plan
+        await db
+          .update(schema.imgCredit)
+          .set({ credits: sql`${schema.imgCredit.credits} - 1` })
+          .where(eq(schema.imgCredit.userId, session?.user.id));
+      }
 
       const id = nanoid();
       const createdAt = Date.now();

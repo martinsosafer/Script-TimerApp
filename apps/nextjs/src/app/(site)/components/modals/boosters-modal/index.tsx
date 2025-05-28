@@ -32,9 +32,7 @@ export default function BoostersModal({
     try {
       setIsLoading(true);
 
-      const result = await addBooster({ subData, type });
-
-      console.log("result", result);
+      await addBooster({ subData, type });
 
       // return success toast with info
       return toast({

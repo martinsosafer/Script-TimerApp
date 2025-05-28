@@ -4,7 +4,7 @@ import { db } from "@voiceai/db";
 
 export async function getImgCredits(userId: string) {
   try {
-    const credits = await db.query.imgCredit.findFirst({
+    const planCredits = await db.query.imgCredit.findFirst({
       where: (credits, { eq }) => eq(credits.userId, userId),
     });
 
@@ -20,9 +20,13 @@ export async function getImgCredits(userId: string) {
       );
     }
 
-    const totalCredits = (credits?.credits ?? 0) + totalBoosterCredits;
+    const totalCredits = (planCredits?.credits ?? 0) + totalBoosterCredits;
 
-    return totalCredits;
+    return {
+      totalCredits,
+      planCredits: planCredits?.credits ?? 0,
+      boosterCredits: totalBoosterCredits,
+    };
   } catch (error) {
     console.error(error);
   }
