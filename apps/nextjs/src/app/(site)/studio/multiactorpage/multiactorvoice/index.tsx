@@ -41,8 +41,10 @@ import { AudioControls } from "./audiocontrols/index";
 import { GenerateButton } from "./generatebutton/index";
 import { SettingsPanel } from "./settingspanel/index";
 import { VoiceAvatar } from "./voiceavatar/index";
+
 import { useSubscription } from "~/app/hooks/texttovoice/useSubscription";
 import { StyleSelector } from "~/app/(site)/components/style-selector";
+import MergedAudioPlayer from "./studioPlayer";
 
 interface MultiActorVoiceProps {
   allVoices?: Voice[];
@@ -1032,125 +1034,6 @@ export default function MultiActorVoice({
             Add Another Actor
           </Button>
         </motion.div>
-
-        {mergedAudioUrl && (
-          <motion.div
-            className="mb-6 mt-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{
-              opacity: 1,
-              y: 0,
-              scale: 1,
-            }}
-            transition={{
-              duration: 0.7,
-              ease: "easeInOut",
-            }}
-          >
-            <motion.div
-              className="w-full"
-              initial={{ opacity: 0.8 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, ease: "easeInOut" }}
-            >
-              <motion.canvas
-                ref={mergedWaveformCanvasRef}
-                className="mb-3 h-16 lg:h-24 w-full rounded bg-muted/30"
-                width={600}
-                height={100}
-                animate={
-                  mergedAudioAnimating
-                    ? {
-                        boxShadow: [
-                          "0px 0px 0px rgba(0,0,0,0)",
-                          "0px 0px 15px rgba(59, 130, 246, 0.3)",
-                          "0px 0px 0px rgba(0,0,0,0)",
-                        ],
-                      }
-                    : {}
-                }
-                transition={{ duration: 2, ease: "easeInOut" }}
-              />
-
-              {/* Audio Player with Styled Container */}
-              <div
-                className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2 lg:gap-0"
-                style={{
-                  position: "relative",
-                  marginTop: "14px",
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                  maxWidth: "1000px",
-                  width: "100%",
-                  minHeight: "60px",
-                  backgroundColor: "#BDF3F0",
-                  boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.1)",
-                  padding: "10px 12px",
-                  borderRadius: "8px",
-                  zIndex: 0,
-                  opacity: 1,
-                  transition: "opacity 0.5s ease-in-out",
-                  border: "none",
-                }}
-              >
-                <audio
-                  ref={mergedAudioRef}
-                  controls
-                  src={mergedAudioUrl}
-                  style={{
-                    width: "100%",
-                    height: "40px",
-                    backgroundColor: "transparent",
-                    border: "none",
-                  }}
-                  className="lg:flex-1"
-                />
-
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "8px",
-                    justifyContent: "center",
-                  }}
-                  className="lg:gap-3"
-                >
-                  <SpeedButton
-                    audioRef={mergedAudioRef}
-                    buttonStyle={buttonBaseStyle}
-                    buttonHoverStyle={buttonHoverStyle}
-                    disabledButtonStyle={disabledButtonStyle}
-                  />
-                  <button
-                    onClick={() => {
-                      if (mergedAudioUrl) {
-                        const anchor = document.createElement("a");
-                        anchor.href = mergedAudioUrl;
-                        anchor.download = "combined-voices.wav";
-                        anchor.click();
-                        setShowConfetti(true);
-                      }
-                    }}
-                    style={buttonBaseStyle}
-                    onMouseOver={(e) => {
-                      e.currentTarget.style.backgroundColor =
-                        buttonHoverStyle.backgroundColor;
-                    }}
-                    onMouseOut={(e) => {
-                      e.currentTarget.style.backgroundColor =
-                        buttonBaseStyle.backgroundColor;
-                    }}
-                  >
-                    <Save
-                      className="h-4 w-4 lg:h-5 lg:w-5"
-                      style={{ color: "white" }}
-                    />
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-
         <div className="mb-4 flex items-center justify-center">
           <motion.div
             whileHover={{ scale: 1.02 }}
@@ -1188,6 +1071,18 @@ export default function MultiActorVoice({
             </Button>
           </motion.div>
         </div>
+        {mergedAudioUrl && (
+          <MergedAudioPlayer
+            mergedAudioUrl={mergedAudioUrl}
+            mergedAudioRef={mergedAudioRef}
+            mergedWaveformCanvasRef={mergedWaveformCanvasRef}
+            mergedAudioAnimating={mergedAudioAnimating}
+            setShowConfetti={setShowConfetti}
+            buttonBaseStyle={buttonBaseStyle}
+            buttonHoverStyle={buttonHoverStyle}
+            disabledButtonStyle={disabledButtonStyle}
+          />
+        )}
       </div>
       {/* Character Limit Modal */}
       {showCharLimitModal && subData?.status === "BUSINESS" && (

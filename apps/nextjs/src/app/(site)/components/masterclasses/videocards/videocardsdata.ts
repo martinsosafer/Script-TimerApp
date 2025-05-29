@@ -865,7 +865,7 @@ const videoCardData: Video[] = [
     videoUrl:
       "https://player.vimeo.com/video/1053883585?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
     description:
-      "The explosion of AI is helping and replacing marketing professionals. As a marketer, it means you need to step up your game and learn AI tools. As a brand, it means your sales will thrive or die based on the stories you tell more than ever before.",
+      "AI is reshaping marketing—learn the tools or fall behind, and remember: your brand lives or dies by the stories you tell.",
   },
   {
     course: "Customer Journey Mapping With Generative AI",
