@@ -26,6 +26,7 @@ export function useAudioManagement(initialActors: ActorSection[]) {
         stability: [0.5],
         similarity: [0.5],
         speed: [1.0],
+        style: [0.0],
       },
     ]);
   };

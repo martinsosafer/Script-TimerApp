@@ -11,6 +11,7 @@ interface UseAudioGenerationProps {
   stability: number;
   similarity: number;
   speed: number;
+  style: number;
   setActors: React.Dispatch<React.SetStateAction<ActorSection[]>>;
   actors: ActorSection[];
 }
@@ -47,12 +48,13 @@ export function useAudioGeneration({
           stability: actor.stability[0],
           similarity: actor.similarity[0],
           speed: actor.speed[0],
+          style: actor.style[0],
         }),
       });
 
       if (!response.ok)
         throw new Error(
-          "Failed to fetch audio, please check if you are logged in.",
+          "Failed to fetch audio, please make sure you are logged in.",
         );
       if (!response.body) throw new Error("Response body is null");
 
