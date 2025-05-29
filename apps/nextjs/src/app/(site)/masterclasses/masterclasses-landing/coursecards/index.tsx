@@ -108,9 +108,7 @@ export default function CourseListing({
     .filter((video): video is Video => video !== undefined);
 
   return (
-    <div
-      className={`bg-cp-primary h-[3008px] lg:h-[2600px]  ${poppins.className}`}
-    >
+    <div className={`bg-cp-primary h-full lg:h-full  ${poppins.className}`}>
       <div className="mx-auto max-w-[944px] items-center space-y-8 py-[60px]">
         <div className=" mx-[24px] text-start">
           <h2 className="text-cp-secondary-lightest text-[28px] font-bold  leading-[33.6px] lg:text-[42px] lg:leading-[50px]  ">
