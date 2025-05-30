@@ -116,7 +116,7 @@ export default function AiChecker({ userId, credits }: CheckerProps) {
             }
             className="flex w-full flex-col items-end gap-2"
           >
-            <div className="min-h-[500px] w-full rounded-sm border-2 border-gray-300 p-4">
+            <div className="bg-cp-white min-h-[500px] w-full rounded-sm border-2 border-gray-300 p-4">
               {aiCheckResult && (
                 <div className="flex h-full flex-col items-center justify-between">
                   <div>
@@ -157,7 +157,8 @@ export default function AiChecker({ userId, credits }: CheckerProps) {
 
               <button
                 type="submit"
-                className="flex h-[58px] min-w-[200px] items-center justify-center rounded-md bg-primary p-2 text-white"
+                className="bg-cp-secondary text-cp-white disabled:bg-cp-secondary-lightest hover:bg-cp-secondary-light flex h-[58px] min-w-[200px] items-center justify-center rounded-md p-2 disabled:text-gray-100"
+                disabled={loading}
               >
                 {loading ? (
                   <span className="flex gap-2">

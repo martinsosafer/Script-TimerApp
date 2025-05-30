@@ -56,7 +56,7 @@ export async function POST(
   { params }: { params: { status: string; id: string } },
 ) {
   const { status, id } = params;
-console.log("Webhook status:", status, "ID:", id);
+
   if (status !== "completed") {
     return NextResponse.json({ error: "Weebhook Eror" }, { status: 500 });
   }
@@ -92,6 +92,8 @@ console.log("Webhook status:", status, "ID:", id);
     };
 
     await db.insert(schema.plagiarism).values(payload).execute();
+
+    // Boosters logic here
 
     const fetchedCredits = await db.query.clCredits.findFirst({
       where: (clCredits, { eq }) => eq(clCredits.userId, developerPayload),

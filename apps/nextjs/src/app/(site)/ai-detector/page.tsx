@@ -13,9 +13,7 @@ export const metadata: Metadata = {
 
 export default async function indexPage() {
   const session = await auth();
-  const { totalCredits, planCredits, boosterCredits } = (await getClCredits(
-    session?.user.id ?? "",
-  )) as { totalCredits: number; planCredits: number; boosterCredits: number };
+  const credits = await getClCredits(session?.user.id ?? "");
 
   return (
     <div className="flex w-full flex-col items-center">
@@ -24,7 +22,7 @@ export default async function indexPage() {
         subtitle="Check plagiarism and detect possible AI-generated content"
       />
 
-      <AiChecker userId={session?.user.id} credits={totalCredits ?? 0} />
+      <AiChecker userId={session?.user.id} credits={credits ?? 0} />
     </div>
   );
 }

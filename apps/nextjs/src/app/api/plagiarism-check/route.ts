@@ -76,10 +76,8 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  const { text, planCredits, boosterCredits } = (await request.json()) as {
+  const { text } = (await request.json()) as {
     text: string;
-    planCredits: number;
-    boosterCredits: number;
   };
 
   const session = await auth();
@@ -115,11 +113,10 @@ export async function PUT(request: Request) {
         base64: base64,
         filename: "text.txt",
         properties: {
-          // sandbox: true,
+          // sandbox: true, // For testing API - never on production!
           webhooks: {
-            //newResult: `https://calm-queens-obey.loca.lt/webhook/plagiarism-result`,
-            status: `https://easy-glasses-admire.loca.lt/api/webhook/plagiarism-result/{STATUS}/${id}`, // Use LocalTunnel for testing webhook!!
-            // status: `${process.env.HOST_URL}/api/webhook/plagiarism-result/{STATUS}/${id}`,
+            //newResult: `https://calm-queens-obey.loca.lt/webhook/plagiarism-result`, // Use LocalTunnel for testing webhook!!
+            status: `${process.env.HOST_URL}/api/webhook/plagiarism-result/{STATUS}/${id}`,
           },
           includeHtml: true,
           developerPayload: session?.user.id,

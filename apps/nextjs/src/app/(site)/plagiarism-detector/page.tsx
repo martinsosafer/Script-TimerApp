@@ -15,9 +15,7 @@ export default async function indexPage() {
   const session = await auth();
   const scanHistory = await getScans(session?.user.id ?? "");
 
-  const { totalCredits, planCredits, boosterCredits } = (await getClCredits(
-    session?.user.id ?? "",
-  )) as { totalCredits: number; planCredits: number; boosterCredits: number };
+  const credits = (await getClCredits(session?.user.id ?? ""))!;
 
   return (
     <div className="flex w-full flex-col items-center">
@@ -28,9 +26,7 @@ export default async function indexPage() {
       <Checker
         userId={session?.user.id}
         scans={scanHistory}
-        credits={totalCredits ?? 0}
-        planCredits={planCredits}
-        boosterCredits={boosterCredits}
+        credits={credits ?? 0}
       />
     </div>
   );

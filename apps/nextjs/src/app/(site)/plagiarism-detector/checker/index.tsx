@@ -23,8 +23,6 @@ interface CheckerProps {
   userId: string | undefined;
   scans: PlagiarismPayload[] | [];
   credits: number;
-  planCredits: number;
-  boosterCredits: number;
 }
 
 export interface CheckResult {
@@ -32,13 +30,7 @@ export interface CheckResult {
   summary: { ai: number };
 }
 
-export default function Checker({
-  userId,
-  scans,
-  credits,
-  planCredits,
-  boosterCredits,
-}: CheckerProps) {
+export default function Checker({ userId, scans, credits }: CheckerProps) {
   const router = useRouter();
   const [scansHistory, setScansHistory] = useState<PlagiarismPayload[] | []>(
     scans,
@@ -93,8 +85,6 @@ export default function Checker({
           },
           body: JSON.stringify({
             text,
-            planCredits: planCredits,
-            boosterCredits: boosterCredits,
           }),
         });
       } catch (error) {
