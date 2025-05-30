@@ -16,7 +16,7 @@ export async function getImageCredits(userId: string) {
       where: (credits, { eq }) => eq(credits.userId, userId),
     });
 
-    return credits;
+    return credits ?? 0;
   } catch (error) {
     console.error(error);
     throw error;
