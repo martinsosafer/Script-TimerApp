@@ -1,4 +1,8 @@
+import { useState } from "react";
 import { displayData } from "./utils";
+import { Button } from "@voiceai/ui";
+import BoostersModal from "../../components/modals/boosters-modal";
+import type { SubData } from "../../boosters/types";
 
 interface CreditRowProps {
   subscription:
@@ -20,13 +24,24 @@ interface CreditRowProps {
     | "2";
   type: "cl_credit" | "11labs_credit" | "img_credit" | "openai_credit";
   creditsLeft: number;
+  subData: SubData;
+  allCredits?: {
+    totalCredits: number;
+    planCredits: number;
+    boosterCredits: number;
+  };
 }
 
 export default function CreditRow({
   subscription,
   type,
   creditsLeft,
+  subData,
+  allCredits,
 }: CreditRowProps) {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isBoostersModalOpen, setIsBoostersModalOpen] = useState(false);
+
   const subscriptionData = displayData[subscription];
   if (!subscriptionData?.[type]) {
     console.error(`Invalid subscription or type: ${subscription}, ${type}`);
@@ -37,29 +52,77 @@ export default function CreditRow({
 
   const creditsUsed = credits - creditsLeft;
 
-  // Multiply creditsLeft by 250 if type is "cl_credit"
-  const displayedCreditsLeft =
-    type === "cl_credit" ? creditsLeft * 250 : creditsLeft;
-
   const displayedCreditsUsed =
     type === "cl_credit" ? creditsUsed * 250 : creditsUsed;
 
+  const handleType = (type: CreditRowProps["type"]) => {
+    if (type === "cl_credit") return "PLAGIARISM";
+    if (type === "11labs_credit") return "VOICES";
+    if (type === "img_credit") return "IMAGES";
+    if (type === "openai_credit") return "MASTERCLASS";
+  };
+
+  const handleCreditsLeft = (type: CreditRowProps["type"]) => {
+    if (type === "img_credit") {
+      return allCredits?.totalCredits;
+    }
+    // Multiply creditsLeft by 250 if type is "cl_credit"
+    if (type === "cl_credit") {
+      return creditsLeft * 250;
+    }
+    return creditsLeft;
+  };
+
   return (
-    <div className="mt-3 flex gap-4 px-12 py-2">
-      <div className="flex flex-col">
-        <span className="px-2 text-xs text-gray-400">{label} credits used</span>
-        <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
-          {displayedCreditsUsed}
+    <>
+      <div className="flex gap-4 pl-12 pr-0 py-2 items-end">
+        <div className="flex flex-col">
+          <span className="px-2 text-xs text-gray-400">
+            {label} credits used
+          </span>
+          <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
+            {displayedCreditsUsed}
+          </div>
         </div>
-      </div>
-      <div className="flex flex-col">
-        <span className="px-2 text-xs text-gray-400">
-          {label} credits remaining
-        </span>
-        <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
-          {displayedCreditsLeft}
+
+        <div className="flex flex-col">
+          <span className="px-2 text-xs text-gray-400">
+            {label} credits remaining
+          </span>
+          <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
+            {handleCreditsLeft(type)}
+          </div>
         </div>
+
+        {type !== "cl_credit" &&
+        type !== "openai_credit" &&
+        type !== "11labs_credit" ? (
+          <Button
+            className="text-base h-10 w-full"
+            disabled={subscription === "FREE" || subscription == "FREE_TRIAL"}
+            onClick={() => setIsBoostersModalOpen(true)}
+          >
+            {isLoading ? (
+              <div className="flex items-center justify-center">
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                <span className="ml-2">Adding...</span>
+              </div>
+            ) : (
+              "Add Booster"
+            )}
+          </Button>
+        ) : null}
       </div>
-    </div>
+
+      {isBoostersModalOpen && (
+        <BoostersModal
+          type={handleType(type)!}
+          subData={subData}
+          setIsBoostersModalOpen={setIsBoostersModalOpen}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+        />
+      )}
+    </>
   );
 }

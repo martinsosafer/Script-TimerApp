@@ -13,6 +13,8 @@ import { poppins, roboto } from "~/app/fonts";
 import type { I_AppSumoSubscription } from "~/constants/types/subscriptions";
 import { getCredits } from "./actions";
 import SubscriptionDetails from "./subscription-details";
+import type { SubData } from "../boosters/types";
+import { getImgCredits } from "../image-generator/actions";
 
 async function getSubscription(planId: string | null | undefined) {
   const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
@@ -35,6 +37,7 @@ async function getSubscription(planId: string | null | undefined) {
     return undefined;
   }
 }
+
 async function getAppSumoDetails(userId: string) {
   return await db.query.appSumoSubscription.findFirst({
     where: (appSumoSubscription, { eq }) =>
@@ -47,6 +50,10 @@ async function getAppSumoDetails(userId: string) {
 
 export default async function MyProfile() {
   const session = await auth();
+  if (!session) {
+    redirect("/");
+  }
+
   const isAppSumo = ["1", "2"].includes(
     session?.user.subscription?.status ?? "",
   );
@@ -60,12 +67,10 @@ export default async function MyProfile() {
 
   const credits = await getCredits(session?.user.id ?? "");
 
-  if (!session) {
-    redirect("/");
-  }
+  const imgCredits = await getImgCredits(session?.user.id ?? "");
 
   return (
-    <main className="flex h-full w-full justify-center px-1 pb-16 pt-10">
+    <main className="flex h-full w-full justify-center px-1 pb-20 pt-10">
       <section className="shadow-cp-gray-300 flex max-w-5xl flex-col items-center overflow-hidden rounded-2xl bg-white shadow-lg">
         <div className="h-[100px] w-full bg-gradient-to-b from-[#0066FF] to-[#13EBCDCC]" />
         <div className="flex w-full flex-col px-3 pb-8 lg:px-8">
@@ -93,6 +98,8 @@ export default async function MyProfile() {
             credits={credits?.[0]}
             isAppSumo={isAppSumo}
             plan={session?.user.subscription?.status}
+            subData={session?.user.subscription as SubData}
+            imgCredits={imgCredits}
           />
         </div>
       </section>

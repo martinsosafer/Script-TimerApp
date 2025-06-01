@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { addBooster } from "~/app/(site)/boosters/actions";
 import type { BoosterType, SubData } from "~/app/(site)/boosters/types";
 import { poppins, roboto } from "~/app/fonts";
+import { usePathname } from "next/navigation";
 
 interface BoostersModalProps {
   setIsBoostersModalOpen: (isBoostersModalOpen: boolean) => void;
@@ -23,6 +24,7 @@ export default function BoostersModal({
   isLoading,
   setIsLoading,
 }: BoostersModalProps) {
+  const pathname = usePathname();
   const router = useRouter();
 
   const handleAddBooster = async ({
@@ -41,10 +43,14 @@ export default function BoostersModal({
         title: "Booster added!",
         description: `You have successfully added ${type.toLowerCase()} booster`,
       });
-      if (type === "VOICES") return router.push("/texttovoice");
-      if (type === "IMAGES") return router.push("/image-generator");
-      if (type === "MASTERCLASS") return router.push("/masterclasses");
+      if (type === "VOICES" && pathname !== "/my-profile")
+        return router.push("/texttovoice");
+      if (type === "IMAGES" && pathname !== "/my-profile")
+        return router.push("/image-generator");
+      if (type === "MASTERCLASS" && pathname !== "/my-profile")
+        return router.push("/masterclasses");
       // if (type === "PLAGIARISM") return router.push("/plagiarism-detector");
+      return window.location.reload();
     } catch (error: any) {
       console.error("Error adding booster:", error.message);
       return toast({

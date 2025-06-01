@@ -7,9 +7,16 @@ import type {
   I_Subscription,
 } from "~/constants/types/subscriptions";
 import CreditRow from "../credits-row";
+import type { SubData } from "../../boosters/types";
+
+type CreditsKey =
+  | "cl_credit"
+  | "11labs_credit"
+  | "img_credit"
+  | "openai_credit";
 
 type Credits = Record<
-  "cl_credit" | "11labs_credit" | "img_credit" | "openai_credit",
+  CreditsKey,
   {
     credits: number;
     id: string;
@@ -34,6 +41,12 @@ interface SubscriptionDetailsProps {
   credits?: Credits | null | undefined;
   isAppSumo: boolean;
   plan?: string;
+  subData: SubData;
+  imgCredits: {
+    totalCredits: number;
+    planCredits: number;
+    boosterCredits: number;
+  };
 }
 
 export default function SubscriptionDetails({
@@ -41,6 +54,8 @@ export default function SubscriptionDetails({
   credits,
   isAppSumo,
   plan,
+  subData,
+  imgCredits,
 }: SubscriptionDetailsProps) {
   //const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
   const router = useRouter();
@@ -65,6 +80,11 @@ export default function SubscriptionDetails({
     );
     return daysLeft;
   }
+
+  const handleAllCredits = (key: CreditsKey) => {
+    if (key === "img_credit") return imgCredits;
+    return;
+  };
 
   const renderAppSumoDetails = () => (
     <div className="space-y-4">
@@ -116,12 +136,13 @@ export default function SubscriptionDetails({
         <div className="flex flex-col">
           <span className="px-2 text-xs text-gray-400">Status</span>
           <div className="flex h-[40px] w-[300px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
-            {(subscription as I_Subscription)?.status ===
-            ("FREE" || "FREE_TRIAL")
+            {plan === "FREE"
               ? "No Subscription"
-              : (subscription as I_Subscription)?.plan?.active
-                ? "Active"
-                : "Inactive"}
+              : plan === "FREE_TRIAL"
+                ? "No Subscription"
+                : (subscription as I_Subscription)?.status
+                  ? "Active"
+                  : "Inactive"}
           </div>
         </div>
       </div>
@@ -179,7 +200,7 @@ export default function SubscriptionDetails({
         </span>
         <p className="text-xl font-semibold text-gray-700">Usage Report</p>
       </div>
-      <div className="mt-3 flex flex-col gap-4 py-2">
+      <div className="pt-3 flex flex-col gap-4 pb-2">
         {Object.keys(credits ?? {})?.map((key) => {
           if (!credits) return null;
           const credit = credits[key]?.credits ?? 0;
@@ -187,13 +208,7 @@ export default function SubscriptionDetails({
             <CreditRow
               key={key}
               creditsLeft={credit}
-              type={
-                key as
-                  | "cl_credit"
-                  | "11labs_credit"
-                  | "img_credit"
-                  | "openai_credit"
-              }
+              type={key as CreditsKey}
               subscription={
                 (isAppSumo
                   ? ((
@@ -202,10 +217,13 @@ export default function SubscriptionDetails({
                   : (subscription as I_Subscription)?.status.toUpperCase()) ??
                 plan
               }
+              subData={subData}
+              allCredits={handleAllCredits(key as CreditsKey)}
             />
           );
         })}
       </div>
+
       <div className="flex gap-4 px-12 py-2">
         {!isAppSumo && (
           <div className="flex flex-col">
