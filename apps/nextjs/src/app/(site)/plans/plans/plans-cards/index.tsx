@@ -233,12 +233,14 @@ export default function PlansCards({
       className="mt-[52px] flex w-[1024px] items-center justify-center gap-4"
       id="plan-cards"
     >
-      <RegularCard
-        type="FREE"
-        period={period}
-        session={session}
-        interval={interval}
-      />
+      {!session && (
+        <RegularCard
+          type="FREE"
+          period={period}
+          session={session}
+          interval={interval}
+        />
+      )}
       <RegularCard
         type="EDUCATION"
         period={period}
