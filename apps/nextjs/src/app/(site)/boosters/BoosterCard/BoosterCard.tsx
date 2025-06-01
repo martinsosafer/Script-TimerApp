@@ -49,7 +49,7 @@ const BoosterCard = ({
   const cardHeight = {
     IMAGES: "h-[1030px]",
     PLAGIARISM: "h-[684px]",
-    VOICE: "h-[630px]",
+    VOICES: "h-[630px]",
     MASTERCLASS: "h-[716px]",
   };
 

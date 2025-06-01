@@ -111,21 +111,12 @@ export async function addBooster({
         })
         .execute();
     }
-    if (type === "PLAGIARISM") {
-      await db
-        .insert(schema.clBooster)
-        .values({
-          userId: subData?.userId,
-          credits: BOOSTER_START_CREDITS.PLAGIARISM,
-        })
-        .execute();
-    }
-    if (type === "VOICE") {
+    if (type === "VOICES") {
       await db
         .insert(schema.elevenLabsBooster)
         .values({
           userId: subData?.userId,
-          credits: BOOSTER_START_CREDITS.VOICE,
+          credits: BOOSTER_START_CREDITS.VOICES,
         })
         .execute();
     }
@@ -142,6 +133,15 @@ export async function addBooster({
         })
         .execute();
     }
+    // if (type === "PLAGIARISM") {
+    //   await db
+    //     .insert(schema.clBooster)
+    //     .values({
+    //       userId: subData?.userId,
+    //       credits: BOOSTER_START_CREDITS.PLAGIARISM,
+    //     })
+    //     .execute();
+    // }
   } catch (error) {
     console.error(error);
     throw error;

@@ -3,21 +3,21 @@ import Image from "next/image";
 import { auth } from "@voiceai/auth";
 import {
   IlustrationMasterclasses,
-  IlustrationPlagiarismDetection,
   IlustrationTodayOnly,
   IlustrationVoiceSoundfx,
+  // IlustrationPlagiarismDetection,
 } from "@voiceai/ui/@/illustrations";
 
 import { poppins, roboto } from "~/app/fonts";
 import {
   STARTING_11CL_CREDITS,
-  STARTING_CL_CREDITS,
   STARTING_IMG_CREDITS,
+  // STARTING_CL_CREDITS,
 } from "~/constants/credits";
 import {
   getImageCredits,
-  getPlagiarismCredits,
   getVoiceCredits,
+  // getPlagiarismCredits,
 } from "./actions";
 import BoosterCard from "./BoosterCard/BoosterCard";
 import type { SubData } from "./types";
@@ -28,20 +28,24 @@ export default async function BoostersPage() {
   const userPlan = session?.user.subscription?.status;
   const subData = session?.user.subscription as SubData | undefined;
 
-  const imageCredits = await getImageCredits(userId ?? "");
-  const imageCreditsPercentage =
-    (100 * (imageCredits?.credits ?? 0)) /
-    STARTING_IMG_CREDITS[userPlan as keyof typeof STARTING_IMG_CREDITS];
-
-  const plagiarismCredits = await getPlagiarismCredits(userId ?? "");
-  const plagiarismCreditsPercentage =
-    (100 * (plagiarismCredits?.credits ?? 0)) /
-    STARTING_CL_CREDITS[userPlan as keyof typeof STARTING_CL_CREDITS];
-
   const voiceCredits = await getVoiceCredits(userId ?? "");
   const voiceCreditsPercentage =
     (100 * (voiceCredits?.credits ?? 0)) /
     STARTING_11CL_CREDITS[userPlan as keyof typeof STARTING_11CL_CREDITS];
+
+  const imageCredits = await getImageCredits(userId ?? "");
+  const imageCreditsValue =
+    typeof imageCredits === "object" && imageCredits !== null
+      ? imageCredits.credits
+      : 0;
+  const imageCreditsPercentage =
+    (100 * imageCreditsValue) /
+    STARTING_IMG_CREDITS[userPlan as keyof typeof STARTING_IMG_CREDITS];
+
+  // const plagiarismCredits = await getPlagiarismCredits(userId ?? "");
+  // const plagiarismCreditsPercentage =
+  //   (100 * (plagiarismCredits?.credits ?? 0)) /
+  //   STARTING_CL_CREDITS[userPlan as keyof typeof STARTING_CL_CREDITS];
 
   return (
     <>
@@ -78,7 +82,7 @@ export default async function BoostersPage() {
           {/* Voice Boost */}
           <BoosterCard
             subData={subData}
-            type="VOICE"
+            type="VOICES"
             creditsPercentage={voiceCreditsPercentage}
             amount={250000}
             amountDescription="characters"

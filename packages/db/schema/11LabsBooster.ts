@@ -9,7 +9,7 @@ export const elevenLabsBooster = pgTable("11labs_booster", {
   userId: text("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
-  credits: integer("credits").notNull().default(BOOSTER_START_CREDITS.VOICE),
+  credits: integer("credits").notNull().default(BOOSTER_START_CREDITS.VOICES),
   created_at: timestamp("created_at").notNull().defaultNow(),
   updated_at: timestamp("updated_at").notNull().defaultNow(),
 });

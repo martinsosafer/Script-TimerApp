@@ -186,6 +186,6 @@ export const TEST_PRICES_ID: Record<string, ProductId> = {
 export const BOOSTER_PRICE = {
   IMAGES: 77,
   PLAGIARISM: 88,
-  VOICE: 96,
+  VOICES: 96,
   MASTERCLASS: 97,
 };
