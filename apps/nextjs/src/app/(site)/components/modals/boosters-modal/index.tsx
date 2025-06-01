@@ -2,6 +2,7 @@ import { Button } from "@voiceai/ui";
 import { IconClose } from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 import { IlustrationTransformYourCareer } from "@voiceai/ui/@/illustrations";
+import { useRouter } from "next/navigation";
 
 import { addBooster } from "~/app/(site)/boosters/actions";
 import type { BoosterType, SubData } from "~/app/(site)/boosters/types";
@@ -22,6 +23,8 @@ export default function BoostersModal({
   isLoading,
   setIsLoading,
 }: BoostersModalProps) {
+  const router = useRouter();
+
   const handleAddBooster = async ({
     type,
     subData,
@@ -34,11 +37,14 @@ export default function BoostersModal({
 
       await addBooster({ subData, type });
 
-      // return success toast with info
-      return toast({
+      toast({
         title: "Booster added!",
         description: `You have successfully added ${type.toLowerCase()} booster`,
       });
+      if (type === "VOICES") return router.push("/texttovoice");
+      if (type === "IMAGES") return router.push("/image-generator");
+      if (type === "MASTERCLASS") return router.push("/masterclasses");
+      // if (type === "PLAGIARISM") return router.push("/plagiarism-detector");
     } catch (error: any) {
       console.error("Error adding booster:", error.message);
       return toast({

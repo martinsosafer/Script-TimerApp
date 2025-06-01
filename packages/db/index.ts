@@ -5,7 +5,7 @@ import * as elevenLabsBooster from "./schema/11LabsBooster";
 import * as elevenLabsCredit from "./schema/11LabsCredits";
 import * as appSumoSubscription from "./schema/appSumoSubscrition";
 import * as auth from "./schema/auth";
-// import * as clBooster from "./schema/copyLeaksBooster";
+import * as clBooster from "./schema/copyLeaksBooster";
 import * as clCredit from "./schema/copyLeaksCredit";
 import * as credit from "./schema/credit";
 import * as generation from "./schema/generation";
@@ -46,7 +46,7 @@ export const schema = {
   ...appSumoSubscription,
   ...soundEffects,
   ...elevenLabsBooster,
-  // ...clBooster,
+  ...clBooster,
   ...imgBooster,
   ...masterclassBooster,
 };
