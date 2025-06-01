@@ -172,6 +172,7 @@ export default function SubscriptionDetails({
         </button>
       </div>
 
+      {/* Usage Report */}
       <div className="mt-6 flex items-center gap-3">
         <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary font-semibold text-white">
           2
@@ -179,7 +180,7 @@ export default function SubscriptionDetails({
         <p className="text-xl font-semibold text-gray-700">Usage Report</p>
       </div>
       <div className="mt-3 flex flex-col gap-4 py-2">
-        {Object.keys(credits ?? {}).map((key) => {
+        {Object.keys(credits ?? {})?.map((key) => {
           if (!credits) return null;
           const credit = credits[key]?.credits ?? 0;
           return (
@@ -198,7 +199,8 @@ export default function SubscriptionDetails({
                   ? ((
                       subscription as I_AppSumoSubscription
                     )?.tier?.toString() as "1" | "2")
-                  : (subscription as I_Subscription)?.status) ?? plan
+                  : (subscription as I_Subscription)?.status.toUpperCase()) ??
+                plan
               }
             />
           );
