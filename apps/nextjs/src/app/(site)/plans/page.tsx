@@ -1,4 +1,7 @@
+import Link from "next/link";
+
 import { auth } from "@voiceai/auth";
+import { IllustrationCornerTriangle } from "@voiceai/ui/@/illustrations";
 
 import { poppins } from "~/app/fonts";
 import PageHeader from "../components/page-header";
@@ -22,10 +25,25 @@ export default async function NewPlansPage() {
     <div
       className={`bg-cp-background flex w-full flex-col items-center ${poppins.className}`}
     >
-      <PageHeader
-        title="Choose a plan"
-        subtitle="Transform your ideas into perfect scripts, voice overs, and images in any language."
-      />
+      <IllustrationCornerTriangle className="absolute right-[-16px] top-[62px] max-lg:h-[187px] max-lg:w-[198px] lg:right-0 lg:top-[109px]" />
+      <Link
+        className="text-cp-white hover:text-cp-primary-light transition duration-700"
+        href={"/boosters"}
+      >
+        <h3 className="absolute right-[-10px] top-[104px] rotate-45 text-[18px] font-bold lg:top-[170px] lg:text-2xl">
+          Add Boosters!
+        </h3>
+        <p className="absolute right-[60px] top-[194px] rotate-45 text-sm max-lg:invisible">
+          Click here
+        </p>
+      </Link>
+
+      <div className="max-md:px-10 max-md:pt-5 max-sm:px-0 max-sm:pt-10">
+        <PageHeader
+          title="Choose a plan"
+          subtitle="Transform your ideas into perfect scripts, voice overs, and images in any language."
+        />
+      </div>
       <Plans
         session={session}
         subscription={(subscription?.plan as Plan) ?? null}

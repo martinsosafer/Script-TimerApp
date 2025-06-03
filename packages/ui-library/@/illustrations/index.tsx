@@ -579,3 +579,77 @@ export function IlustrationTransformYourCareer({
     </svg>
   );
 }
+
+export function IllustrationCornerTriangle({
+  className,
+  width = 238,
+  height = 290,
+  ...props
+}: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      width={width}
+      height={height}
+      viewBox={`0 119 ${Number(width) + 2} ${Number(height) + 2}`}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={`${className}`}
+      {...props}
+    >
+      <g filter="url(#filter0_d_6206_13455)">
+        <path
+          d="M248.961 122.032L4.29405 122.032L248.959 354.675L248.961 122.032Z"
+          fill="url(#paint0_linear_6206_13455)"
+        />
+      </g>
+      <defs>
+        <filter
+          id="filter0_d_6206_13455"
+          x="0.294922"
+          y="122.031"
+          width="252.666"
+          height="240.643"
+          filterUnits="userSpaceOnUse"
+          color-interpolation-filters="sRGB"
+        >
+          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feColorMatrix
+            in="SourceAlpha"
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+            result="hardAlpha"
+          />
+          <feOffset dy="4" />
+          <feGaussianBlur stdDeviation="2" />
+          <feComposite in2="hardAlpha" operator="out" />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+          />
+          <feBlend
+            mode="normal"
+            in2="BackgroundImageFix"
+            result="effect1_dropShadow_6206_13455"
+          />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="effect1_dropShadow_6206_13455"
+            result="shape"
+          />
+        </filter>
+        <linearGradient
+          id="paint0_linear_6206_13455"
+          x1="426.252"
+          y1="235.193"
+          x2="-96.4373"
+          y2="470.244"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stop-color="#FF9900" />
+          <stop offset="1" stop-color="white" />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+}
