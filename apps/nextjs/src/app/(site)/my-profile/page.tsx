@@ -11,10 +11,10 @@ import { poppins, roboto } from "~/app/fonts";
 // } from "@voiceai/ui/@/components/ui/icons";
 
 import type { I_AppSumoSubscription } from "~/constants/types/subscriptions";
-import { getCredits } from "./actions";
-import SubscriptionDetails from "./subscription-details";
 import type { SubData } from "../boosters/types";
 import { getImgCredits } from "../image-generator/actions";
+import { getCredits } from "./actions";
+import SubscriptionDetails from "./subscription-details";
 
 async function getSubscription(planId: string | null | undefined) {
   const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
@@ -71,7 +71,7 @@ export default async function MyProfile() {
 
   return (
     <main className="flex h-full w-full justify-center px-1 pb-20 pt-10">
-      <section className="shadow-cp-gray-300 flex max-w-5xl flex-col items-center overflow-hidden rounded-2xl bg-white shadow-lg">
+      <section className="shadow-cp-gray-300 flex w-full max-w-4xl flex-col items-center overflow-hidden rounded-2xl bg-white shadow-lg">
         <div className="h-[100px] w-full bg-gradient-to-b from-[#0066FF] to-[#13EBCDCC]" />
         <div className="flex w-full flex-col px-3 pb-8 lg:px-8">
           <header className="mt-[-86px] flex flex-col items-start">

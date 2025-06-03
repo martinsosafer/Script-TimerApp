@@ -6,8 +6,8 @@ import type {
   I_AppSumoSubscription,
   I_Subscription,
 } from "~/constants/types/subscriptions";
-import CreditRow from "../credits-row";
 import type { SubData } from "../../boosters/types";
+import CreditRow from "../credits-row";
 
 type CreditsKey =
   | "cl_credit"
@@ -42,11 +42,13 @@ interface SubscriptionDetailsProps {
   isAppSumo: boolean;
   plan?: string;
   subData: SubData;
-  imgCredits: {
-    totalCredits: number;
-    planCredits: number;
-    boosterCredits: number;
-  };
+  imgCredits:
+    | {
+        totalCredits: number;
+        planCredits: number;
+        boosterCredits: number;
+      }
+    | undefined;
 }
 
 export default function SubscriptionDetails({
@@ -87,55 +89,55 @@ export default function SubscriptionDetails({
   };
 
   const renderAppSumoDetails = () => (
-    <div className="space-y-4">
-      <div className="flex gap-4 px-12 py-2">
-        <div className="flex flex-col">
+    <>
+      <div className="flex w-full flex-col gap-5 px-5 py-2 pt-4 md:flex-row md:px-12">
+        <div className="flex w-full flex-col md:w-[50%]">
           <span className="px-2 text-xs text-gray-400">Plan Tier</span>
-          <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
+          <div className="flex h-[40px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
             Tier {(subscription as I_AppSumoSubscription)?.tier} -{" "}
             {(subscription as I_AppSumoSubscription)?.tier === 1
               ? "1 year of access"
               : "2 years of access"}
           </div>
         </div>
-        <div className="flex flex-col">
+        <div className="flex w-full flex-col md:w-[50%]">
           <span className="px-2 text-xs text-gray-400">License Key</span>
-          <div className="flex h-[40px] w-[350px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
+          <div className="flex h-[40px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
             {(subscription as I_AppSumoSubscription)?.license_key || "N/A"}
           </div>
         </div>
       </div>
-      <div className="flex gap-4 px-12 py-2">
-        <div className="flex flex-col">
+      <div className="flex w-full flex-col gap-5 px-5 py-2 pt-4 md:flex-row md:px-12">
+        <div className="flex w-full flex-col md:w-[50%]">
           <span className="px-2 text-xs text-gray-400">Status</span>
-          <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
+          <div className="flex h-[40px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
             Active
           </div>
         </div>
-        <div className="flex flex-col">
+        <div className="flex w-full flex-col md:w-[50%]">
           <span className="px-2 text-xs text-gray-400">Purchase Date</span>
-          <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
+          <div className="flex h-[40px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
             {(
               subscription as I_AppSumoSubscription
             )?.created_at?.toLocaleDateString() ?? "N/A"}
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 
   const renderStripeDetails = () => (
     <>
-      <div className="mt-3 flex gap-4 px-12 py-2">
-        <div className="flex flex-col">
+      <div className="flex w-full flex-col gap-5 px-5 py-2 pt-4 md:flex-row md:px-12">
+        <div className="flex w-full flex-col md:w-[50%]">
           <span className="px-2 text-xs text-gray-400">Plan</span>
-          <div className="flex h-[40px] w-[300px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
+          <div className="flex h-[40px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
             {plan}
           </div>
         </div>
-        <div className="flex flex-col">
+        <div className="flex w-full flex-col md:w-[50%]">
           <span className="px-2 text-xs text-gray-400">Status</span>
-          <div className="flex h-[40px] w-[300px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
+          <div className="flex h-[40px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
             {plan === "FREE"
               ? "No Subscription"
               : plan === "FREE_TRIAL"
@@ -146,10 +148,10 @@ export default function SubscriptionDetails({
           </div>
         </div>
       </div>
-      <div className="flex gap-4 px-12 py-2">
-        <div className="flex flex-col">
+      <div className="flex w-full flex-col gap-5 px-5 py-2 pt-4 md:flex-row md:px-12">
+        <div className="flex w-full flex-col md:w-[50%]">
           <span className="px-2 text-xs text-gray-400">Next Billing Date</span>
-          <div className="flex h-[40px] w-[300px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
+          <div className="flex h-[40px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
             {(subscription as I_Subscription)?.current_period_end
               ? getBillingDate(
                   (subscription as I_Subscription)?.current_period_end,
@@ -157,11 +159,11 @@ export default function SubscriptionDetails({
               : "No Billing Date"}
           </div>
         </div>
-        <div className="flex flex-col">
+        <div className="flex w-full flex-col md:w-[50%]">
           <span className="px-2 text-xs text-gray-400">
             Next Billing Amount
           </span>
-          <div className="flex h-[40px] w-[300px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
+          <div className="flex h-[40px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
             {getBillingAmount(
               (subscription as I_Subscription)?.plan?.amount ?? 0,
             )}
@@ -172,7 +174,7 @@ export default function SubscriptionDetails({
   );
 
   return (
-    <div className="mt-6 flex w-full flex-col">
+    <div className="mt-6 flex w-full flex-col pb-6">
       <div className="flex items-center gap-3">
         <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary font-semibold text-white">
           1
@@ -181,16 +183,10 @@ export default function SubscriptionDetails({
           Subscription Details
         </p>
       </div>
-      <div className="flex w-full items-start justify-between">
-        <div>{isAppSumo ? renderAppSumoDetails() : renderStripeDetails()}</div>
-        <button
-          className="mt-10 flex w-[200px] items-center justify-center rounded-lg bg-blue-200 px-4 py-2 text-primary hover:bg-blue-300 hover:font-semibold"
-          onClick={() =>
-            router.push(isAppSumo ? "https://appsumo.com" : "/plans")
-          }
-        >
-          {isAppSumo ? "Manage AppSumo License" : "Manage Subscription"}
-        </button>
+      <div className="flex w-full items-center justify-between">
+        <div className="w-full">
+          {isAppSumo ? renderAppSumoDetails() : renderStripeDetails()}
+        </div>
       </div>
 
       {/* Usage Report */}
@@ -198,9 +194,9 @@ export default function SubscriptionDetails({
         <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary font-semibold text-white">
           2
         </span>
-        <p className="text-xl font-semibold text-gray-700">Usage Report</p>
+        <p className="text-xl font-semibold text-gray-700">Usage</p>
       </div>
-      <div className="pt-3 flex flex-col gap-4 pb-2">
+      <div className="flex flex-col pb-2 pt-3 md:gap-3">
         {Object.keys(credits ?? {})?.map((key) => {
           if (!credits) return null;
           const credit = credits[key]?.credits ?? 0;
@@ -224,15 +220,28 @@ export default function SubscriptionDetails({
         })}
       </div>
 
-      <div className="flex gap-4 px-12 py-2">
+      <div className="flex w-full px-5 py-2 md:gap-5 md:px-12">
         {!isAppSumo && (
-          <div className="flex flex-col">
+          <div className="flex w-full flex-col md:w-[50%]">
             <span className="px-2 text-xs text-gray-400">Reset In</span>
-            <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
+            <div className="flex h-[40px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
               {`Reset In ${getDaysLeftInMonth()} ${getDaysLeftInMonth() === 1 ? "day" : "days"}`}
             </div>
           </div>
         )}
+        <div className="w-0 md:w-[50%]" />
+      </div>
+
+      <div className="flex w-full px-5 pt-10 md:gap-5 md:px-12">
+        <button
+          className="flex w-full items-center justify-center rounded-lg bg-blue-200 px-4 py-2 text-primary hover:bg-blue-300 md:w-[50%]"
+          onClick={() =>
+            router.push(isAppSumo ? "https://appsumo.com" : "/plans")
+          }
+        >
+          {isAppSumo ? "Manage AppSumo License" : "Manage Subscription"}
+        </button>
+        <div className="w-0 md:w-[50%]" />
       </div>
     </div>
   );

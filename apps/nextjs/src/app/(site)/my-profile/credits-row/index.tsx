@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { displayData } from "./utils";
+
 import { Button } from "@voiceai/ui";
-import BoostersModal from "../../components/modals/boosters-modal";
+
 import type { SubData } from "../../boosters/types";
+import BoostersModal from "../../components/modals/boosters-modal";
+import { displayData } from "./utils";
 
 interface CreditRowProps {
   subscription:
@@ -48,12 +50,12 @@ export default function CreditRow({
     return null; // Or handle the error appropriately
   }
 
-  const { label, credits } = subscriptionData[type];
+  const { label } = subscriptionData[type];
 
-  const creditsUsed = credits - creditsLeft;
-
-  const displayedCreditsUsed =
-    type === "cl_credit" ? creditsUsed * 250 : creditsUsed;
+  // const { label, credits } = subscriptionData[type];
+  // const creditsUsed = credits - creditsLeft;
+  // const displayedCreditsUsed =
+  //   type === "cl_credit" ? creditsUsed * 250 : creditsUsed;
 
   const handleType = (type: CreditRowProps["type"]) => {
     if (type === "cl_credit") return "PLAGIARISM";
@@ -75,21 +77,21 @@ export default function CreditRow({
 
   return (
     <>
-      <div className="flex gap-4 pl-12 pr-0 py-2 items-end">
-        <div className="flex flex-col">
+      <div className="flex w-full flex-col items-center justify-between gap-3 px-5 py-2 md:flex-row md:items-end md:gap-5 md:px-12">
+        {/* <div className="flex flex-col">
           <span className="px-2 text-xs text-gray-400">
             {label} credits used
           </span>
           <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
             {displayedCreditsUsed}
           </div>
-        </div>
+        </div> */}
 
-        <div className="flex flex-col">
+        <div className="flex w-full flex-col md:w-[50%]">
           <span className="px-2 text-xs text-gray-400">
             {label} credits remaining
           </span>
-          <div className="flex h-[40px] w-[280px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
+          <div className="flex h-[40px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
             {handleCreditsLeft(type)}
           </div>
         </div>
@@ -98,7 +100,7 @@ export default function CreditRow({
         type !== "openai_credit" &&
         type !== "11labs_credit" ? (
           <Button
-            className="text-base h-10 w-full"
+            className="bg-cp-secondary-light hover:bg-cp-secondary h-10 w-full text-base md:w-[50%]"
             disabled={subscription === "FREE" || subscription == "FREE_TRIAL"}
             onClick={() => setIsBoostersModalOpen(true)}
           >
@@ -111,7 +113,9 @@ export default function CreditRow({
               "Add Booster"
             )}
           </Button>
-        ) : null}
+        ) : (
+          <div className="w-[50%]" />
+        )}
       </div>
 
       {isBoostersModalOpen && (

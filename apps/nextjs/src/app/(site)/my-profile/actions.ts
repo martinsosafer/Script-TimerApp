@@ -6,20 +6,20 @@ export async function getCredits(userId: string) {
   try {
     const result = await db
       .select()
-      .from(schema.clCredits)
+      .from(schema.elevenLabsCredit)
       .leftJoin(
         schema.openAiCredit,
-        eq(schema.clCredits.userId, schema.openAiCredit.userId),
-      )
-      .leftJoin(
-        schema.elevenLabsCredit,
-        eq(schema.clCredits.userId, schema.elevenLabsCredit.userId),
+        eq(schema.elevenLabsCredit.userId, schema.openAiCredit.userId),
       )
       .leftJoin(
         schema.imgCredit,
-        eq(schema.clCredits.userId, schema.imgCredit.userId),
+        eq(schema.elevenLabsCredit.userId, schema.imgCredit.userId),
       )
-      .where(eq(schema.clCredits.userId, userId));
+      .leftJoin(
+        schema.clCredits,
+        eq(schema.elevenLabsCredit.userId, schema.clCredits.userId),
+      )
+      .where(eq(schema.elevenLabsCredit.userId, userId));
     return result;
   } catch (error) {
     console.error(error);
