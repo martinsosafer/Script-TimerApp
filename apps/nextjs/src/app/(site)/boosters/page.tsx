@@ -78,9 +78,9 @@ export default async function BoostersPage() {
           active).
         </p>
 
-        <div className="flex flex-col gap-20">
+        <div className="flex w-full flex-col items-center gap-20">
           {/* Voice Boost */}
-          <BoosterCard
+          {/* <BoosterCard
             subData={subData}
             type="VOICES"
             creditsPercentage={voiceCreditsPercentage}
@@ -97,10 +97,10 @@ export default async function BoostersPage() {
             imageMain={
               <IlustrationVoiceSoundfx className="max-md:w-[300px] max-sm:w-[200px]" />
             }
-          />
+          /> */}
 
           {/* Masterclasses Boost */}
-          <BoosterCard
+          {/* <BoosterCard
             subData={subData}
             type="MASTERCLASS"
             creditsPercentage={100}
@@ -120,7 +120,7 @@ export default async function BoostersPage() {
             imageMain={
               <IlustrationMasterclasses className="h-[458px] w-[458px] max-md:w-[300px] max-sm:w-[200px]" />
             }
-          />
+          /> */}
 
           {/* Images Boost */}
           <BoosterCard

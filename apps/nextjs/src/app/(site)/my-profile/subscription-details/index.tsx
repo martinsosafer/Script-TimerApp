@@ -59,7 +59,6 @@ export default function SubscriptionDetails({
   subData,
   imgCredits,
 }: SubscriptionDetailsProps) {
-  //const { data: subscriptionData } = api.subscription.mySubscription.useQuery();
   const router = useRouter();
 
   function getBillingDate(date: number) {
@@ -189,7 +188,7 @@ export default function SubscriptionDetails({
         </div>
       </div>
 
-      {/* Usage Report */}
+      {/* Usage */}
       <div className="mt-6 flex items-center gap-3">
         <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary font-semibold text-white">
           2

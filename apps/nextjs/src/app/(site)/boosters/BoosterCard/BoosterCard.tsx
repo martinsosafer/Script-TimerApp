@@ -81,8 +81,8 @@ const BoosterCard = ({
 
   return (
     <>
-      <article
-        className={`bg-cp-primary shadow-cp-gray-400 flex flex-col gap-3 rounded-2xl p-10 shadow-lg max-lg:p-6 max-sm:p-5 lg:max-w-5xl ${isOpen ? `${cardHeight[type]}` : "h-[450px] max-lg:h-[420px] max-sm:h-[400px]"} w-full max-w-5xl overflow-hidden transition-[height] duration-500 ease-in-out`}
+      <section
+        className={`bg-cp-primary shadow-cp-gray-400 flex flex-col gap-3 rounded-2xl p-10 shadow-lg max-lg:p-6 max-sm:p-5 lg:max-w-5xl ${isOpen ? `${cardHeight[type]}` : "h-[450px] max-lg:h-[420px] max-sm:h-[400px]"} w-full md:max-w-5xl overflow-hidden transition-[height] duration-500 ease-in-out`}
       >
         <p className="text-cp-accent-lightest col-start-1 col-end-3 text-lg max-sm:text-sm">
           <strong>
@@ -108,7 +108,7 @@ const BoosterCard = ({
             </span>
 
             <h3
-              className={`${poppins.className} h-[130px] text-4xl font-bold text-white max-sm:w-[126%] max-sm:text-2xl`}
+              className={`${poppins.className} h-[130px] text-4xl font-bold text-white max-sm:w-[126%] max-sm:text-2xl max-md:text-3xl`}
             >
               {title}
             </h3>
@@ -181,7 +181,7 @@ const BoosterCard = ({
 
           <div className="relative h-full w-full">{imageBottomRight}</div>
         </div>
-      </article>
+      </section>
 
       {isBoostersModalOpen && (
         <BoostersModal
