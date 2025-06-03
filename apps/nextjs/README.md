@@ -8,6 +8,7 @@ This app is a vitual assistant for content creators.
 - [Scripts](#scripts)
 - [Dependnecies](#dependencies)
 - [Linter](#linter)
+- [Neon Database](#neon-database)
 - [Payments](#payments)
 - [Credits](#Credits)
 - [Email](#Email)
@@ -23,6 +24,8 @@ Script Timer Ai is an application that uses multiple Ai models to assist with mu
 ## Scripts
 
 ## Dependencies
+
+## Neon Database
 
 ## Linter
 

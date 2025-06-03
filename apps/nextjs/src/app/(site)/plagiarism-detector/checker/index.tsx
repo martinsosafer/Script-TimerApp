@@ -66,14 +66,14 @@ export default function Checker({ userId, scans, credits }: CheckerProps) {
     if (Math.ceil(words.length / 250) > creditsLeft) {
       toast({
         title: "Insufficient Credits",
-        description: "You do not have enough credits to perform this scan.",
+        description: "You do not have enough credits to perform this scan",
       });
       setLoading(false);
     } else if (text.length < 350) {
       toast({
         title: "More Text Required",
         description:
-          "Our Plagiarism Detector requires 350 characters or more for accuracy purposes.",
+          "Our Plagiarism Detector requires 350 characters or more for accuracy purposes",
       });
       setLoading(false);
     } else {
@@ -83,7 +83,9 @@ export default function Checker({ userId, scans, credits }: CheckerProps) {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ text }),
+          body: JSON.stringify({
+            text,
+          }),
         });
       } catch (error) {
         console.error(error);
@@ -159,7 +161,7 @@ export default function Checker({ userId, scans, credits }: CheckerProps) {
             }
             className="flex w-[75%] flex-col items-end gap-2"
           >
-            <div className="min-h-[500px] w-full rounded-sm border-2 border-gray-300 p-4">
+            <div className="bg-cp-white min-h-[500px] w-full rounded-sm border-2 border-gray-300 p-4">
               {!loading && plagiarismCheck && (
                 <PlagiarismResult result={plagiarismCheck} />
               )}
@@ -191,7 +193,8 @@ export default function Checker({ userId, scans, credits }: CheckerProps) {
 
               <button
                 type="submit"
-                className="flex h-[58px] min-w-[200px] items-center justify-center rounded-md bg-primary p-2 text-white"
+                className="bg-cp-secondary text-cp-white disabled:bg-cp-secondary-lightest hover:bg-cp-secondary-light flex h-[58px] min-w-[200px] items-center justify-center rounded-md p-2 disabled:text-gray-100"
+                disabled={loading}
               >
                 {loading ? (
                   <span className="flex gap-2">

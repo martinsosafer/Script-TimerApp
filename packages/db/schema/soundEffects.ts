@@ -27,10 +27,10 @@ export const userToSoundfx = pgTable(
   {
     userId: text("user_id")
       .notNull()
-      .references(() => users.id),
+      .references(() => users.id, { onDelete: "cascade" }),
     soundfxId: uuid("soundfx_id")
       .notNull()
-      .references(() => soundfx.id),
+      .references(() => soundfx.id, { onDelete: "cascade" }),
   },
   (t) => ({ pk: primaryKey(t.userId, t.soundfxId) }),
 );

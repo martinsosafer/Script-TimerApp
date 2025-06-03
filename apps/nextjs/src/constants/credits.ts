@@ -166,3 +166,12 @@ export const WEBCAM_DURATION_LIMITS: Record<Plan, number> = {
   "1": 600,
   "2": 600,
 };
+
+type BoosterType = "IMAGES" | "PLAGIARISM" | "VOICES" | "MASTERCLASS";
+
+export const BOOSTER_START_CREDITS: Record<BoosterType, number> = {
+  IMAGES: 300,
+  PLAGIARISM: 600,
+  VOICES: 250000,
+  MASTERCLASS: 0,
+};

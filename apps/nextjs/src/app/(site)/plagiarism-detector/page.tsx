@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { auth } from "@voiceai/auth";
 
 import PageHeader from "../components/page-header";
-import { getCredits, getScans } from "./actions";
+import { getClCredits, getScans } from "./actions";
 import Checker from "./checker";
 
 export const metadata: Metadata = {
@@ -14,7 +14,8 @@ export const metadata: Metadata = {
 export default async function indexPage() {
   const session = await auth();
   const scanHistory = await getScans(session?.user.id ?? "");
-  const credit = await getCredits(session?.user.id ?? "");
+
+  const credits = (await getClCredits(session?.user.id ?? ""))!;
 
   return (
     <div className="flex w-full flex-col items-center">
@@ -25,7 +26,7 @@ export default async function indexPage() {
       <Checker
         userId={session?.user.id}
         scans={scanHistory}
-        credits={credit?.credits ?? 0}
+        credits={credits ?? 0}
       />
     </div>
   );

@@ -47,25 +47,30 @@ export default function ValidateEmailForm() {
         />
       </div>
       {error && (
-        <p className="text-center text-sm font-semibold text-red-800">
+        <p className="py-4 text-center text-lg font-semibold text-[#FF3B3B]">
           {error}
         </p>
       )}
+
       {success && (
-        <p className="text-center text-sm font-semibold text-primary">
-          Email validation successful, please check your email.
-        </p>
+        <div className="py-4 text-center text-lg font-semibold text-primary">
+          <p>Email validation successful!</p>
+          <p>Please check your email</p>
+        </div>
       )}
-      <button
-        type="submit"
-        className="mt-4 flex cursor-pointer items-center justify-center rounded-md bg-primary py-2 font-semibold text-white"
-      >
-        {loading ? (
-          <IconSpinner className="h-6 w-6 animate-spin" />
-        ) : (
-          "Send Reset Link"
-        )}
-      </button>
+
+      {!error && !success ? (
+        <button
+          type="submit"
+          className="mt-4 flex cursor-pointer items-center justify-center rounded-md bg-primary py-2 font-semibold text-white"
+        >
+          {loading ? (
+            <IconSpinner className="h-6 w-6 animate-spin" />
+          ) : (
+            "Send Reset Link"
+          )}
+        </button>
+      ) : null}
     </form>
   );
 }

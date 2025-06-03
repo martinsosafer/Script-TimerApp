@@ -182,3 +182,10 @@ export const TEST_PRICES_ID: Record<string, ProductId> = {
     yearly: "price_1P6hGSK0GRmjhtz7ZYvDKJNz",
   },
 };
+
+export const BOOSTER_PRICE = {
+  IMAGES: 77,
+  PLAGIARISM: 88,
+  VOICES: 96,
+  MASTERCLASS: 97,
+};

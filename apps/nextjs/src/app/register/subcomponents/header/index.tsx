@@ -10,6 +10,7 @@ export default function Header() {
   const origin = searchParams.get("origin");
 
   const isCheckingOut = origin === "checkout";
+  const isBooster = origin === "booster";
 
   const handleMessage = () => {
     if (isCheckingOut && pathname === "/signin") {
@@ -28,6 +29,20 @@ export default function Header() {
       return (
         <h3 className="text-cp-black justify-center text-center font-poppins text-xl font-semibold leading-[28px]">
           Create your free account
+        </h3>
+      );
+    }
+    if (isBooster && pathname === "/register") {
+      return (
+        <h3 className="text-cp-black justify-center text-center font-poppins text-xl leading-[28px]">
+          Create your free account to add your booster
+        </h3>
+      );
+    }
+    if (isBooster && pathname === "/signin") {
+      return (
+        <h3 className="text-cp-black justify-center text-center font-poppins text-xl leading-[28px]">
+          Log In to add your booster
         </h3>
       );
     }

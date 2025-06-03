@@ -46,7 +46,7 @@ export async function POST(request: Request) {
 
     const aiCheckResult = (await aiCheckResponse.json()) as CheckResult;
 
-    if (session?.user.id) {
+    if (session?.user.id && aiCheckResult) {
       const fetchedCredits = await db.query.clCredits.findFirst({
         where: (clCredits, { eq }) => eq(clCredits.userId, session?.user.id),
       });
@@ -113,9 +113,9 @@ export async function PUT(request: Request) {
         base64: base64,
         filename: "text.txt",
         properties: {
-          //sandbox: true,
+          // sandbox: true, // For testing API - never on production!
           webhooks: {
-            //newResult: `https://calm-queens-obey.loca.lt/webhook/plagiarism-result`,
+            //newResult: `https://calm-queens-obey.loca.lt/webhook/plagiarism-result`, // Use LocalTunnel for testing webhook!!
             status: `${process.env.HOST_URL}/api/webhook/plagiarism-result/{STATUS}/${id}`,
           },
           includeHtml: true,
@@ -123,6 +123,7 @@ export async function PUT(request: Request) {
         },
       }),
     });
+
     return NextResponse.json({
       message: `success for ${process.env.HOST_URL}`,
     });

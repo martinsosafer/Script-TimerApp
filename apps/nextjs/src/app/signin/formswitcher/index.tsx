@@ -12,13 +12,34 @@ export default function FormSwitcher({
   const origin = searchParams.get("origin");
 
   const isCheckingOut = origin === "checkout";
+  const isBooster = origin === "booster";
+
+  const handleSigninOrigin = () => {
+    if (isCheckingOut) {
+      return "/signin?origin=checkout";
+    }
+    if (isBooster) {
+      return "/signin?origin=booster";
+    }
+    return "/signin";
+  };
+
+  const handleRegisterOrigin = () => {
+    if (isCheckingOut) {
+      return "/register?origin=checkout";
+    }
+    if (isBooster) {
+      return "/register?origin=booster";
+    }
+    return "/register";
+  };
 
   return (
     <div style={{ textAlign: "center" }}>
       <div className="relative inline-block">
         {/* Log In link */}
         <Link
-          href={isCheckingOut ? "/signin?origin=checkout" : "/signin"}
+          href={handleSigninOrigin()}
           className={`mr-16 font-poppins font-medium ${
             highlightSignUp ? "text-primary" : "text-slate-500"
           }`}
@@ -28,7 +49,7 @@ export default function FormSwitcher({
 
         {/* Create link */}
         <Link
-          href={isCheckingOut ? "/register?origin=checkout" : "/register"}
+          href={handleRegisterOrigin()}
           className={`ml-16 font-poppins font-medium ${
             highlightRegister ? "text-primary" : "text-slate-500"
           }`}

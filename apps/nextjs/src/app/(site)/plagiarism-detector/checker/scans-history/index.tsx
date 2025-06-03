@@ -32,7 +32,7 @@ export default function ScansHistory({
 }: ScansHistoryProps) {
   const [isLoading, setIsLoading] = useState(false);
   return (
-    <div className="flex h-full min-h-[580px] w-[25%] flex-col justify-between rounded-sm border-2 border-gray-300 p-2">
+    <div className="bg-cp-white flex h-full min-h-[580px] w-[25%] flex-col justify-between rounded-sm border-2 border-gray-300 p-2">
       <div>
         <p className="text-md p-2 text-start font-semibold text-gray-900">
           Plagiarism Scans History
@@ -44,10 +44,10 @@ export default function ScansHistory({
             </p>
           ) : (
             <>
-              {scanHistory.map((item: PlagiarismScan) => {
+              {scanHistory?.map((item: PlagiarismScan) => {
                 return (
                   <div
-                    key={`${item.id}`}
+                    key={`${item?.id}`}
                     className="group flex w-full items-center justify-between hover:bg-gray-100"
                   >
                     <div
@@ -67,7 +67,7 @@ export default function ScansHistory({
                         <IconCopyright className="mt-1" />
                       </div>
 
-                      <p className="w-full">{item.title}</p>
+                      <p className="w-full">{item?.title}</p>
                     </div>
                     <div className="flex gap-1">
                       <button
@@ -84,7 +84,7 @@ export default function ScansHistory({
                         onClick={async () => {
                           setIsLoading(true);
                           await deleteScan(item.id);
-                          const newScanHistory = scanHistory.filter(
+                          const newScanHistory = scanHistory?.filter(
                             (chat) => chat.id !== item.id,
                           );
                           setScansHistory(newScanHistory);
@@ -108,7 +108,7 @@ export default function ScansHistory({
       </div>
       <div className="flex h-10 w-full items-center justify-center rounded-md bg-primary text-white">
         {" "}
-        {creditsLeft ? creditsLeft * 250 : "No"} credits left
+        {creditsLeft ? creditsLeft * 250 : "No"} words left
       </div>
     </div>
   );

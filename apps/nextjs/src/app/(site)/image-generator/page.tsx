@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { auth } from "@voiceai/auth";
 
 import PageHeader from "../components/page-header";
-import { getCredits } from "./actions";
+import { getImgCredits } from "./actions";
 import ImageGenerator from "./image-generator";
 
 export const metadata: Metadata = {
@@ -15,7 +15,9 @@ export const metadata: Metadata = {
 export default async function indexPage() {
   const session = await auth();
   const userId = session?.user.id;
-  const credits = await getCredits(userId ?? "");
+  const { totalCredits, planCredits, boosterCredits } = (await getImgCredits(
+    userId ?? "",
+  )) as { totalCredits: number; planCredits: number; boosterCredits: number };
 
   return (
     <div className="flex flex-col items-center">
@@ -23,7 +25,12 @@ export default async function indexPage() {
         title="I am your Image Generator"
         subtitle="I am specially designed for storyboards, but you can create any image you like"
       />
-      <ImageGenerator credits={credits?.credits ?? 0} userId={userId} />
+      <ImageGenerator
+        credits={totalCredits ?? 0}
+        planCredits={planCredits}
+        boosterCredits={boosterCredits}
+        userId={userId}
+      />
     </div>
   );
 }

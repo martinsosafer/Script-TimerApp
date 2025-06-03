@@ -93,6 +93,8 @@ export async function POST(
 
     await db.insert(schema.plagiarism).values(payload).execute();
 
+    // Boosters logic here
+
     const fetchedCredits = await db.query.clCredits.findFirst({
       where: (clCredits, { eq }) => eq(clCredits.userId, developerPayload),
     });

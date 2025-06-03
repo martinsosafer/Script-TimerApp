@@ -1,14 +1,18 @@
 import { neon, neonConfig } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 
+import * as elevenLabsBooster from "./schema/11LabsBooster";
 import * as elevenLabsCredit from "./schema/11LabsCredits";
 import * as appSumoSubscription from "./schema/appSumoSubscrition";
 import * as auth from "./schema/auth";
+import * as clBooster from "./schema/copyLeaksBooster";
 import * as clCredit from "./schema/copyLeaksCredit";
 import * as credit from "./schema/credit";
 import * as generation from "./schema/generation";
+import * as imgBooster from "./schema/imgBooster";
 import * as imgCredit from "./schema/imgCredit";
 import * as landingPage from "./schema/landingPage";
+import * as masterclassBooster from "./schema/masterclassBooster";
 import * as monthlySpecials from "./schema/monthlySpecials";
 import * as openAiCredit from "./schema/openAiCredit";
 import * as plagiarism from "./schema/plagiarism";
@@ -41,6 +45,10 @@ export const schema = {
   ...promptSubcategory,
   ...appSumoSubscription,
   ...soundEffects,
+  ...elevenLabsBooster,
+  ...clBooster,
+  ...imgBooster,
+  ...masterclassBooster,
 };
 
 export { pgTable as tableCreator } from "./schema/_table";

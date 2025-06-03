@@ -14,39 +14,6 @@ export const characters: Record<string, string> = {
   "2": "5000 characters",
 };
 
-// Function to get total credits based on the subscription status
-export const getTotalCredits = (status: string | undefined): number => {
-  if (!status) return 0;
-
-  switch (status) {
-    case "FREE":
-    case "FREE_TRIAL":
-      return 2000;
-
-    case "STUDENT":
-    case "STUDENTCLMO":
-    case "STUDENTCLYR":
-      return 40000;
-
-    case "CREATOR":
-    case "CREATORCLMO":
-    case "CREATORCLYR":
-      return 80000;
-
-    case "BUSINESS":
-    case "BUSINESSCLMO":
-    case "BUSINESSCLYR":
-      return 125000;
-    case "1":
-      return 50000;
-    case "2":
-      return 100000;
-
-    default:
-      return 0;
-  }
-};
-
 // Get sound or music name from URL
 export const formatSoundNameFromUrl = (pathname: string) => {
   const splitPath = pathname.split("/");
