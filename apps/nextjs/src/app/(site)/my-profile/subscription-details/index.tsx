@@ -1,6 +1,8 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+
+import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 import type {
   I_AppSumoSubscription,
@@ -60,6 +62,8 @@ export default function SubscriptionDetails({
   imgCredits,
 }: SubscriptionDetailsProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const btParam = searchParams.get("bt");
 
   function getBillingDate(date: number) {
     return new Date(date * 1000).toLocaleDateString();
@@ -86,6 +90,15 @@ export default function SubscriptionDetails({
     if (key === "img_credit") return imgCredits;
     return;
   };
+
+  // Show Booster toast for AppSumo users
+  if (btParam) {
+    toast({
+      title: "Booster added!",
+      description: `You have successfully added ${btParam} booster`,
+    });
+    return router.push("/my-profile");
+  }
 
   const renderAppSumoDetails = () => (
     <>

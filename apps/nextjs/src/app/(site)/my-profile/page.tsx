@@ -3,7 +3,6 @@ import { Stripe } from "stripe";
 
 import { auth } from "@voiceai/auth";
 import { and, db } from "@voiceai/db";
-import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 import { poppins, roboto } from "~/app/fonts";
 // import {
@@ -49,11 +48,7 @@ async function getAppSumoDetails(userId: string) {
   });
 }
 
-export default async function MyProfile({
-  searchParams,
-}: {
-  searchParams: { bt?: string };
-}) {
+export default async function MyProfile() {
   const session = await auth();
   if (!session) {
     redirect("/");
@@ -73,16 +68,6 @@ export default async function MyProfile({
   const credits = await getCredits(session?.user.id ?? "");
 
   const imgCredits = await getImgCredits(session?.user.id ?? "");
-
-  // Show Booster toast for AppSumo users
-  if (searchParams.bt) {
-    toast({
-      title: "Booster added!",
-      description: `You have successfully added ${searchParams.bt} booster`,
-    });
-    // return redirect("/my-profile");
-    // return window.location.reload();
-  }
 
   return (
     <main className="flex h-full w-full justify-center px-1 pb-20 pt-10">

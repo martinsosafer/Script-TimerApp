@@ -52,7 +52,7 @@ export default function BoostersModal({
         const {
           session: { url },
         } = await res.json();
-        return window.location.href = url as string;
+        return (window.location.href = url as string);
       } else {
         // Regular users
         await addBooster({ subData, type });
@@ -62,13 +62,15 @@ export default function BoostersModal({
         title: "Booster added!",
         description: `You have successfully added ${type.toLowerCase()} booster`,
       });
+
       if (type === "VOICES" && pathname !== "/my-profile")
         return router.push("/texttovoice");
       if (type === "IMAGES" && pathname !== "/my-profile")
         return router.push("/image-generator");
       if (type === "MASTERCLASS" && pathname !== "/my-profile")
         return router.push("/masterclasses");
-      // if (type === "PLAGIARISM") return router.push("/plagiarism-detector");
+      if (type === "PLAGIARISM") return router.push("/plagiarism-detector");
+
       return window.location.reload();
     } catch (error: any) {
       console.error("Error adding booster:", error.message);

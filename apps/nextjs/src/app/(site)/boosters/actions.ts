@@ -49,7 +49,7 @@ export async function getVoiceCredits(userId: string) {
   }
 }
 
-// Add booster by type
+// Add booster by type (Stripe)
 export async function addBooster({
   subData,
   type,
@@ -124,7 +124,6 @@ export async function addBooster({
       const now = new Date();
       const nextYear = new Date();
       nextYear.setFullYear(now.getFullYear() + 1);
-
       await db
         .insert(schema.masterclassBooster)
         .values({
@@ -158,9 +157,6 @@ export async function addBoosterAppSumo({
   type: BoosterType;
   sessionId: string;
 }) {
-  console.log("sessionId", sessionId);
-  console.log("subData", subData);
-  console.log("type", type);
   try {
     // Retrieve payment
     const session = await stripe.checkout.sessions.retrieve(sessionId);
@@ -173,13 +169,10 @@ export async function addBoosterAppSumo({
       throw new Error("Session userId does not match subData userId");
     }
 
-    console.log("session", session);
     // Check if payment was not successful
     const paymentIntentRetrieve = await stripe.paymentIntents.retrieve(
       session?.payment_intent as string,
     );
-
-    console.log("paymentIntentRetrieve", paymentIntentRetrieve);
 
     if (
       !paymentIntentRetrieve ||
