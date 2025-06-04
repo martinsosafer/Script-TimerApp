@@ -27,7 +27,7 @@ interface BoosterCardProps {
 }
 
 const BoosterCard = ({
-  // subData,
+  subData,
   type,
   creditsPercentage,
   amount,
@@ -43,14 +43,6 @@ const BoosterCard = ({
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isBoostersModalOpen, setIsBoostersModalOpen] = useState(false);
-
-      // DELETE!!!
-      const subData = {
-        userId: "f98cef60-59b1-4a14-bb96-a7007c94ee21",
-        status: "1",
-        planId: "initial_plan_id",
-        trialExpiration: null,
-      };
 
   const router = useRouter();
 
@@ -90,7 +82,7 @@ const BoosterCard = ({
   return (
     <>
       <section
-        className={`bg-cp-primary shadow-cp-gray-400 flex flex-col gap-3 rounded-2xl p-10 shadow-lg max-lg:p-6 max-sm:p-5 lg:max-w-5xl ${isOpen ? `${cardHeight[type]}` : "h-[450px] max-lg:h-[420px] max-sm:h-[400px]"} w-full md:max-w-5xl overflow-hidden transition-[height] duration-500 ease-in-out`}
+        className={`bg-cp-primary shadow-cp-gray-400 flex flex-col gap-3 rounded-2xl p-10 shadow-lg max-lg:p-6 max-sm:p-5 lg:max-w-5xl ${isOpen ? `${cardHeight[type]}` : "h-[450px] max-lg:h-[420px] max-sm:h-[400px]"} w-full overflow-hidden transition-[height] duration-500 ease-in-out md:max-w-5xl`}
       >
         <p className="text-cp-accent-lightest col-start-1 col-end-3 text-lg max-sm:text-sm">
           <strong>
@@ -116,7 +108,7 @@ const BoosterCard = ({
             </span>
 
             <h3
-              className={`${poppins.className} h-[130px] text-4xl font-bold text-white max-sm:w-[126%] max-sm:text-2xl max-md:text-3xl`}
+              className={`${poppins.className} h-[130px] text-4xl font-bold text-white max-md:text-3xl max-sm:w-[126%] max-sm:text-2xl`}
             >
               {title}
             </h3>
