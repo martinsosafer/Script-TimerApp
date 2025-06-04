@@ -40,8 +40,11 @@ export async function POST(req: NextRequest) {
           planId: `AppSumo Tier ${data.subData.status}`,
         },
       },
+      metadata: {
+        userId: data.subData.userId,
+      },
       allow_promotion_codes: true,
-      success_url: `${hostURL}/boosters?sessionId={CHECKOUT_SESSION_ID}`,
+      success_url: `${hostURL}/boosters?sessionId={CHECKOUT_SESSION_ID}&type=${data.type}`,
       cancel_url: `${hostURL}/boosters`,
     });
 

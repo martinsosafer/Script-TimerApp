@@ -5,7 +5,7 @@ import { IconClose } from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 import { IlustrationTransformYourCareer } from "@voiceai/ui/@/illustrations";
 
-import { addBooster, addBoosterAppSumo } from "~/app/(site)/boosters/actions";
+import { addBooster } from "~/app/(site)/boosters/actions";
 import type { BoosterType, SubData } from "~/app/(site)/boosters/types";
 import { poppins, roboto } from "~/app/fonts";
 
@@ -36,6 +36,7 @@ export default function BoostersModal({
   }) => {
     try {
       setIsLoading(true);
+      // AppSumo users
       if (subData.status === "1" || subData.status === "2") {
         const res = await fetch("api/checkout-booster", {
           method: "POST",
@@ -49,13 +50,11 @@ export default function BoostersModal({
         });
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const {
-          session,
           session: { url },
         } = await res.json();
-        window.location.href = url as string;
-        console.log("SESSION", session); // FIX STRIPE RESEND FOR CREATE BOOSTER !!!
-        await addBoosterAppSumo({ subData, type, session });
+        return window.location.href = url as string;
       } else {
+        // Regular users
         await addBooster({ subData, type });
       }
 

@@ -152,56 +152,41 @@ export async function addBooster({
 export async function addBoosterAppSumo({
   subData,
   type,
-  session,
+  sessionId,
 }: {
   subData: SubData;
   type: BoosterType;
-  session: any;
+  sessionId: string;
 }) {
-  console.log("session", session);
+  console.log("sessionId", sessionId);
+  console.log("subData", subData);
+  console.log("type", type);
   try {
-    // const subscriptionId = subData?.planId;
+    // Retrieve payment
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
 
-    // // Get stripe subscription Id
-    // const subscription = await stripe.subscriptions.retrieve(subscriptionId!);
-    // // Throw error if subscription not found
-    // if (!subscription.items.data[0]) {
-    //   throw new Error("Subscription not found");
-    // }
+    if (!session) {
+      throw new Error("Session not found");
+    }
 
-    // const stripeCustomerId = subscription?.customer as string;
-    // const paymentMethodId = subscription?.default_payment_method as string;
+    if (session?.metadata?.userId !== subData?.userId) {
+      throw new Error("Session userId does not match subData userId");
+    }
 
-    // // Booster payment
-    // const paymentIntent = await stripe.paymentIntents.create({
-    //   amount: BOOSTER_PRICE[type] * 100, // Amount in cents
-    //   currency: "usd",
-    //   customer: stripeCustomerId,
-    //   payment_method: paymentMethodId,
-    //   off_session: true,
-    //   confirm: true,
-    //   description: `${type} Booster`,
-    //   metadata: {
-    //     userId: subData?.userId,
-    //     boosterType: type,
-    //   },
-    // });
+    console.log("session", session);
+    // Check if payment was not successful
+    const paymentIntentRetrieve = await stripe.paymentIntents.retrieve(
+      session?.payment_intent as string,
+    );
 
-    // // Check if payment was not successful and throw error
-    // if (!paymentIntent || paymentIntent.status !== "succeeded") {
-    //   throw new Error("Payment failed: " + paymentIntent.status);
-    // }
+    console.log("paymentIntentRetrieve", paymentIntentRetrieve);
 
-    // // Retrieve payment (double check)
-    // const paymentIntentRetrieve = await stripe.paymentIntents.retrieve(
-    //   paymentIntent.id,
-    // );
-    // if (
-    //   !paymentIntentRetrieve ||
-    //   paymentIntentRetrieve.status !== "succeeded"
-    // ) {
-    //   throw new Error("Payment failed: " + paymentIntentRetrieve.status);
-    // }
+    if (
+      !paymentIntentRetrieve ||
+      paymentIntentRetrieve.status !== "succeeded"
+    ) {
+      throw new Error("Payment failed: " + paymentIntentRetrieve.status);
+    }
 
     // Insert booster in dB
     if (type === "IMAGES") {
@@ -226,7 +211,6 @@ export async function addBoosterAppSumo({
       const now = new Date();
       const nextYear = new Date();
       nextYear.setFullYear(now.getFullYear() + 1);
-
       await db
         .insert(schema.masterclassBooster)
         .values({
@@ -244,6 +228,7 @@ export async function addBoosterAppSumo({
     //     })
     //     .execute();
     // }
+    return true;
   } catch (error) {
     console.error(error);
     throw error;

@@ -1,6 +1,8 @@
 import Image from "next/image";
+import { redirect } from "next/navigation";
 
 import { auth } from "@voiceai/auth";
+import { toast } from "@voiceai/ui/@/components/ui/toast";
 import {
   IllustrationTodayOnly,
   IlustrationMasterclasses,
@@ -15,18 +17,37 @@ import {
   // STARTING_CL_CREDITS,
 } from "~/constants/credits";
 import {
+  addBoosterAppSumo,
   getImageCredits,
   getVoiceCredits,
   // getPlagiarismCredits,
 } from "./actions";
 import BoosterCard from "./BoosterCard/BoosterCard";
-import type { SubData } from "./types";
+import type { BoosterType, SubData } from "./types";
 
-export default async function BoostersPage() {
+export default async function BoostersPage({
+  searchParams,
+}: {
+  searchParams: { sessionId?: string; type?: string };
+}) {
   const session = await auth();
   const userId = session?.user.id;
   const userPlan = session?.user.subscription?.status;
   const subData = session?.user.subscription as SubData | undefined;
+
+  // AppSumo payment
+  if (searchParams.sessionId && searchParams.type && subData) {
+    const sessionId = searchParams.sessionId;
+    const type = searchParams.type as BoosterType;
+    if (sessionId && type) {
+      await addBoosterAppSumo({
+        subData,
+        type,
+        sessionId,
+      });
+      return redirect(`/my-profile?bt=${type.toLowerCase()}`);
+    }
+  }
 
   const voiceCredits = await getVoiceCredits(userId ?? "");
   const voiceCreditsPercentage =

@@ -26,15 +26,15 @@ export default async function NewPlansPage() {
       className={`bg-cp-background flex w-full flex-col items-center ${poppins.className}`}
     >
       {/* Add Boosters */}
-      <IllustrationCornerTriangle className="absolute right-[-16px] top-[62px] max-lg:h-[187px] max-lg:w-[198px] lg:right-0 lg:top-[109px]" />
+      <IllustrationCornerTriangle className="absolute right-[-16px] top-[62px] max-lg:h-[187px] max-lg:w-[198px] lg:right-0 lg:top-[108px]" />
       <Link
         className="text-cp-white hover:text-cp-primary-light transition duration-700"
         href={"/boosters"}
       >
-        <h3 className="absolute right-[-10px] top-[104px] rotate-45 text-[18px] font-bold lg:top-[170px] lg:text-2xl">
-          Add Boosters!
+        <h3 className="absolute right-[-10px] top-[106px] rotate-45 text-[18px] font-bold lg:top-[174px] lg:text-2xl">
+          ADD BOOSTERS!
         </h3>
-        <p className="absolute right-[60px] top-[194px] rotate-45 text-sm max-lg:invisible">
+        <p className="absolute right-[64px] top-[196px] rotate-45 text-sm max-lg:invisible">
           Click here
         </p>
       </Link>

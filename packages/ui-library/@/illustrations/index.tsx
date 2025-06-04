@@ -583,7 +583,7 @@ export function IlustrationTransformYourCareer({
 export function IllustrationCornerTriangle({
   className,
   width = 238,
-  height = 290,
+  height = 300,
   ...props
 }: React.ComponentProps<"svg">) {
   return (
