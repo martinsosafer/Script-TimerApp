@@ -49,7 +49,7 @@ export async function getVoiceCredits(userId: string) {
   }
 }
 
-// Add booster by type
+// Add booster by type (Stripe)
 export async function addBooster({
   subData,
   type,
@@ -124,7 +124,6 @@ export async function addBooster({
       const now = new Date();
       const nextYear = new Date();
       nextYear.setFullYear(now.getFullYear() + 1);
-
       await db
         .insert(schema.masterclassBooster)
         .values({
@@ -142,6 +141,87 @@ export async function addBooster({
     //     })
     //     .execute();
     // }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+// Add booster by type for AppSumo users (no Stripe subscription)
+export async function addBoosterAppSumo({
+  subData,
+  type,
+  sessionId,
+}: {
+  subData: SubData;
+  type: BoosterType;
+  sessionId: string;
+}) {
+  try {
+    // Retrieve payment
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+    if (!session) {
+      throw new Error("Session not found");
+    }
+
+    if (session?.metadata?.userId !== subData?.userId) {
+      throw new Error("Session userId does not match subData userId");
+    }
+
+    // Check if payment was not successful
+    const paymentIntentRetrieve = await stripe.paymentIntents.retrieve(
+      session?.payment_intent as string,
+    );
+
+    if (
+      !paymentIntentRetrieve ||
+      paymentIntentRetrieve.status !== "succeeded"
+    ) {
+      throw new Error("Payment failed: " + paymentIntentRetrieve.status);
+    }
+
+    // Insert booster in dB
+    if (type === "IMAGES") {
+      await db
+        .insert(schema.imgBooster)
+        .values({
+          userId: subData?.userId,
+          credits: BOOSTER_START_CREDITS.IMAGES,
+        })
+        .execute();
+    }
+    if (type === "VOICES") {
+      await db
+        .insert(schema.elevenLabsBooster)
+        .values({
+          userId: subData?.userId,
+          credits: BOOSTER_START_CREDITS.VOICES,
+        })
+        .execute();
+    }
+    if (type === "MASTERCLASS") {
+      const now = new Date();
+      const nextYear = new Date();
+      nextYear.setFullYear(now.getFullYear() + 1);
+      await db
+        .insert(schema.masterclassBooster)
+        .values({
+          userId: subData?.userId,
+          valid_until: nextYear,
+        })
+        .execute();
+    }
+    // if (type === "PLAGIARISM") {
+    //   await db
+    //     .insert(schema.clBooster)
+    //     .values({
+    //       userId: subData?.userId,
+    //       credits: BOOSTER_START_CREDITS.PLAGIARISM,
+    //     })
+    //     .execute();
+    // }
+    return true;
   } catch (error) {
     console.error(error);
     throw error;

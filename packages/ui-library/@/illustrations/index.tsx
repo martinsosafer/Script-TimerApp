@@ -1,6 +1,6 @@
 import React from "react";
 
-export function IlustrationTodayOnly({
+export function IllustrationTodayOnly({
   className,
   width = 245,
   height = 233,
@@ -34,7 +34,7 @@ export function IlustrationTodayOnly({
           width="252.664"
           height="240.643"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
           <feFlood flood-opacity="0" result="BackgroundImageFix" />
           <feColorMatrix
@@ -70,8 +70,8 @@ export function IlustrationTodayOnly({
           y2="470.244"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FF9900" />
-          <stop offset="1" stop-color="white" />
+          <stop stopColor="#FF9900" />
+          <stop offset="1" stopColor="white" />
         </linearGradient>
       </defs>
     </svg>
@@ -583,7 +583,7 @@ export function IlustrationTransformYourCareer({
 export function IllustrationCornerTriangle({
   className,
   width = 238,
-  height = 290,
+  height = 300,
   ...props
 }: React.ComponentProps<"svg">) {
   return (
@@ -610,7 +610,7 @@ export function IllustrationCornerTriangle({
           width="252.666"
           height="240.643"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
           <feFlood flood-opacity="0" result="BackgroundImageFix" />
           <feColorMatrix
@@ -646,8 +646,8 @@ export function IllustrationCornerTriangle({
           y2="470.244"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FF9900" />
-          <stop offset="1" stop-color="white" />
+          <stop stopColor="#FF9900" />
+          <stop offset="1" stopColor="white" />
         </linearGradient>
       </defs>
     </svg>

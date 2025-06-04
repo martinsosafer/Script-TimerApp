@@ -1,9 +1,11 @@
 import Image from "next/image";
+import { redirect } from "next/navigation";
 
 import { auth } from "@voiceai/auth";
+import { toast } from "@voiceai/ui/@/components/ui/toast";
 import {
+  IllustrationTodayOnly,
   IlustrationMasterclasses,
-  IlustrationTodayOnly,
   IlustrationVoiceSoundfx,
   // IlustrationPlagiarismDetection,
 } from "@voiceai/ui/@/illustrations";
@@ -15,18 +17,37 @@ import {
   // STARTING_CL_CREDITS,
 } from "~/constants/credits";
 import {
+  addBoosterAppSumo,
   getImageCredits,
   getVoiceCredits,
   // getPlagiarismCredits,
 } from "./actions";
 import BoosterCard from "./BoosterCard/BoosterCard";
-import type { SubData } from "./types";
+import type { BoosterType, SubData } from "./types";
 
-export default async function BoostersPage() {
+export default async function BoostersPage({
+  searchParams,
+}: {
+  searchParams: { sessionId?: string; type?: string };
+}) {
   const session = await auth();
   const userId = session?.user.id;
   const userPlan = session?.user.subscription?.status;
   const subData = session?.user.subscription as SubData | undefined;
+
+  // AppSumo payment
+  if (searchParams.sessionId && searchParams.type && subData) {
+    const sessionId = searchParams.sessionId;
+    const type = searchParams.type as BoosterType;
+    if (sessionId && type) {
+      await addBoosterAppSumo({
+        subData,
+        type,
+        sessionId,
+      });
+      return redirect(`/my-profile?bt=${type.toLowerCase()}`);
+    }
+  }
 
   const voiceCredits = await getVoiceCredits(userId ?? "");
   const voiceCreditsPercentage =
@@ -50,7 +71,7 @@ export default async function BoostersPage() {
   return (
     <>
       <header className="from-cp-primary relative bg-gradient-to-br to-black py-[75px] text-center">
-        <IlustrationTodayOnly className="absolute right-0 top-0 max-lg:h-[187px] max-lg:w-[198px] max-md:h-[115px] max-md:w-[120px]" />
+        <IllustrationTodayOnly className="absolute right-0 top-0 max-lg:h-[187px] max-lg:w-[198px] max-md:h-[115px] max-md:w-[120px]" />
 
         <p
           className={`${poppins.className} text-2xl/8 text-[#13EBDC] max-md:text-xl`}

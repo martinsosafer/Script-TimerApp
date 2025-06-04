@@ -208,7 +208,7 @@ function SuccessPage({ userSession, subscription }: PlansProps) {
     planId: string,
     userId: string,
   ) {
-    console.log("PLAN and ID", name, planId, userId);
+    // console.log("PLAN and ID", name, planId, userId);
     if (name === Plans.STUDENT) {
       handleStudent(userId, planId);
     }

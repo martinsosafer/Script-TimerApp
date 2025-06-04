@@ -1,13 +1,13 @@
+import { usePathname, useRouter } from "next/navigation";
+
 import { Button } from "@voiceai/ui";
 import { IconClose } from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 import { IlustrationTransformYourCareer } from "@voiceai/ui/@/illustrations";
-import { useRouter } from "next/navigation";
 
 import { addBooster } from "~/app/(site)/boosters/actions";
 import type { BoosterType, SubData } from "~/app/(site)/boosters/types";
 import { poppins, roboto } from "~/app/fonts";
-import { usePathname } from "next/navigation";
 
 interface BoostersModalProps {
   setIsBoostersModalOpen: (isBoostersModalOpen: boolean) => void;
@@ -36,20 +36,41 @@ export default function BoostersModal({
   }) => {
     try {
       setIsLoading(true);
-
-      await addBooster({ subData, type });
+      // AppSumo users
+      if (subData.status === "1" || subData.status === "2") {
+        const res = await fetch("api/checkout-booster", {
+          method: "POST",
+          body: JSON.stringify({
+            subData,
+            type,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const {
+          session: { url },
+        } = await res.json();
+        return (window.location.href = url as string);
+      } else {
+        // Regular users
+        await addBooster({ subData, type });
+      }
 
       toast({
         title: "Booster added!",
         description: `You have successfully added ${type.toLowerCase()} booster`,
       });
+
       if (type === "VOICES" && pathname !== "/my-profile")
         return router.push("/texttovoice");
       if (type === "IMAGES" && pathname !== "/my-profile")
         return router.push("/image-generator");
       if (type === "MASTERCLASS" && pathname !== "/my-profile")
         return router.push("/masterclasses");
-      // if (type === "PLAGIARISM") return router.push("/plagiarism-detector");
+      if (type === "PLAGIARISM") return router.push("/plagiarism-detector");
+
       return window.location.reload();
     } catch (error: any) {
       console.error("Error adding booster:", error.message);
@@ -104,9 +125,15 @@ export default function BoostersModal({
               <p
                 className={`${roboto.className} text-cp-accent pt-3 text-center text-2xl font-bold`}
               >{`${type} BOOSTER`}</p>
-              <p className={`${roboto.className} pt-3 text-center text-lg`}>
-                using your subscription payment method
-              </p>
+              {subData.status !== "1" && subData.status !== "2" ? (
+                <p className={`${roboto.className} pt-3 text-center text-lg`}>
+                  using your subscription payment method
+                </p>
+              ) : (
+                <p className={`${roboto.className} pt-3 text-center text-lg`}>
+                  using credit card payment
+                </p>
+              )}
             </div>
 
             <div className="flex flex-col items-center gap-4 px-3 md:px-10">
