@@ -1,13 +1,13 @@
+import { usePathname, useRouter } from "next/navigation";
+
 import { Button } from "@voiceai/ui";
 import { IconClose } from "@voiceai/ui/@/components/ui/icons";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 import { IlustrationTransformYourCareer } from "@voiceai/ui/@/illustrations";
-import { useRouter } from "next/navigation";
 
-import { addBooster } from "~/app/(site)/boosters/actions";
+import { addBooster, addBoosterAppSumo } from "~/app/(site)/boosters/actions";
 import type { BoosterType, SubData } from "~/app/(site)/boosters/types";
 import { poppins, roboto } from "~/app/fonts";
-import { usePathname } from "next/navigation";
 
 interface BoostersModalProps {
   setIsBoostersModalOpen: (isBoostersModalOpen: boolean) => void;
@@ -36,8 +36,28 @@ export default function BoostersModal({
   }) => {
     try {
       setIsLoading(true);
-
-      await addBooster({ subData, type });
+      if (subData.status === "1" || subData.status === "2") {
+        const res = await fetch("api/checkout-booster", {
+          method: "POST",
+          body: JSON.stringify({
+            subData,
+            type,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const {
+          session,
+          session: { url },
+        } = await res.json();
+        window.location.href = url as string;
+        console.log("SESSION", session); // FIX STRIPE RESEND FOR CREATE BOOSTER !!!
+        await addBoosterAppSumo({ subData, type, session });
+      } else {
+        await addBooster({ subData, type });
+      }
 
       toast({
         title: "Booster added!",
@@ -104,9 +124,15 @@ export default function BoostersModal({
               <p
                 className={`${roboto.className} text-cp-accent pt-3 text-center text-2xl font-bold`}
               >{`${type} BOOSTER`}</p>
-              <p className={`${roboto.className} pt-3 text-center text-lg`}>
-                using your subscription payment method
-              </p>
+              {subData.status !== "1" && subData.status !== "2" ? (
+                <p className={`${roboto.className} pt-3 text-center text-lg`}>
+                  using your subscription payment method
+                </p>
+              ) : (
+                <p className={`${roboto.className} pt-3 text-center text-lg`}>
+                  using credit card payment
+                </p>
+              )}
             </div>
 
             <div className="flex flex-col items-center gap-4 px-3 md:px-10">

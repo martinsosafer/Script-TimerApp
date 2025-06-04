@@ -2,8 +2,8 @@ import Image from "next/image";
 
 import { auth } from "@voiceai/auth";
 import {
+  IllustrationTodayOnly,
   IlustrationMasterclasses,
-  IlustrationTodayOnly,
   IlustrationVoiceSoundfx,
   // IlustrationPlagiarismDetection,
 } from "@voiceai/ui/@/illustrations";
@@ -50,7 +50,7 @@ export default async function BoostersPage() {
   return (
     <>
       <header className="from-cp-primary relative bg-gradient-to-br to-black py-[75px] text-center">
-        <IlustrationTodayOnly className="absolute right-0 top-0 max-lg:h-[187px] max-lg:w-[198px] max-md:h-[115px] max-md:w-[120px]" />
+        <IllustrationTodayOnly className="absolute right-0 top-0 max-lg:h-[187px] max-lg:w-[198px] max-md:h-[115px] max-md:w-[120px]" />
 
         <p
           className={`${poppins.className} text-2xl/8 text-[#13EBDC] max-md:text-xl`}

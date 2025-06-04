@@ -27,7 +27,7 @@ interface BoosterCardProps {
 }
 
 const BoosterCard = ({
-  subData,
+  // subData,
   type,
   creditsPercentage,
   amount,
@@ -43,6 +43,14 @@ const BoosterCard = ({
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isBoostersModalOpen, setIsBoostersModalOpen] = useState(false);
+
+      // DELETE!!!
+      const subData = {
+        userId: "f98cef60-59b1-4a14-bb96-a7007c94ee21",
+        status: "1",
+        planId: "initial_plan_id",
+        trialExpiration: null,
+      };
 
   const router = useRouter();
 
