@@ -66,7 +66,7 @@ const AudioPlayerList = ({
   return (
     <>
       <div className="flex w-full flex-col gap-3">
-        {soundsList?.map((sound: SoundTypeNeon, i) => (
+        {soundsList?.map((sound: SoundTypeNeon) => (
           <div
             key={sound?.id}
             className="flex w-full items-center justify-between gap-2 rounded-lg p-4 shadow-md max-md:flex-col max-md:items-start max-sm:p-2"
