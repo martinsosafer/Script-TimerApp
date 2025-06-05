@@ -70,7 +70,7 @@ export default function Explore({
           <span className="w-[122px] text-center">BUSINESS</span>
         </div>
         <div className="relative h-[860px] w-[893px]">
-          <Image alt="Voice Ai" src="/Voice AI.png" fill />
+          <Image alt="Voice Ai" src="/Voice AI_2.png" fill />
         </div>
         <div className="relative mt-[48px] h-[242px] w-[893px]">
           <Image alt="Voice Ai" src="/Script Writing.png" fill />
