@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 
 import { auth } from "@voiceai/auth";
 
-import PageHeader from "../components/page-header";
-import MultiActorPage from "./multiactorpage";
 import { fetchUserCredits } from "~/lib/get11LabsCredits";
+import PageHeader from "../components/page-header";
 import { getTotalCredits } from "../texttovoice/[[...scriptId]]/utils";
+import MultiActorPage from "./multiactorpage";
 
 const voicesAmount: Record<string, number> = {
   FREE: 0,
@@ -31,7 +31,7 @@ const characters: Record<string | number, string> = {
   FREE_TRIAL: "1000",
   STUDENT: "2,000",
   CREATOR: "5,000",
-  BUSINESS: "|10,000",
+  BUSINESS: "10,000",
   STUDENTCLMO: "2,000",
   CREATORCLMO: "5,000",
   BUSINESSCLMO: "10,000",

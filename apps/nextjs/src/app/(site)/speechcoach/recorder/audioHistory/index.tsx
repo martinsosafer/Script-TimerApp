@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import {
+  IconDownload,
   IconMusic as Music,
   IconTrash as TrashIcon,
   IconXCircle as X,
@@ -16,6 +17,7 @@ interface AudioRecording {
   filename: string;
   uploadedAt: string;
   aiContent?: { type: string; content: string }[];
+  downloadUrl?: string;
 }
 
 interface AudioHistoryProps {
@@ -31,7 +33,6 @@ const AudioHistory: React.FC<AudioHistoryProps> = ({
   onLoadMore,
   userId,
 }) => {
-  console.log("Audios", savedAudios);
   const [selectedAudio, setSelectedAudio] = useState<AudioRecording | null>(
     null,
   );
@@ -133,21 +134,22 @@ const AudioHistory: React.FC<AudioHistoryProps> = ({
       setLocalSavedAudios((prev) =>
         prev.filter((rec) => rec.url !== urlToDelete),
       );
-    } catch (error) {
+    } catch (error: any) {
       console.error("Delete error:", error);
       alert(error.message || "Failed to delete recording.");
     }
   };
+
   return (
     <div className="mt-[20px]">
       <Separator className="bg-cp-primary mb-8 h-1" />
 
       <h3 className="mb-4 text-lg font-semibold">Audio Recording History</h3>
 
-      {sortedRecordings.length > 0 ? (
+      {sortedRecordings?.length > 0 ? (
         <>
           <ul className="space-y-4">
-            {displayedRecordings.map((recording, index) => (
+            {displayedRecordings?.map((recording, index) => (
               <motion.li
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
@@ -156,16 +158,18 @@ const AudioHistory: React.FC<AudioHistoryProps> = ({
               >
                 <div className="flex items-center">
                   {/* Audio Icon */}
-                  <div
+                  <button
                     className="flex h-16 w-16 cursor-pointer items-center justify-center rounded-md bg-gray-200"
                     onClick={() => setSelectedAudio(recording)}
                   >
                     <Music className="h-8 w-8 text-gray-500" />
-                  </div>
+                  </button>
 
                   {/* Info */}
                   <div className="ml-4 flex flex-1 flex-col justify-center">
-                    <span className="font-medium">{recording.filename}</span>
+                    <span className="text-sm font-semibold">
+                      {recording.filename}
+                    </span>
                     <audio
                       controls
                       src={recording.url}
@@ -174,10 +178,16 @@ const AudioHistory: React.FC<AudioHistoryProps> = ({
                   </div>
 
                   {/* Upload Date */}
-                  <div className="ml-4 flex items-center gap-4">
-                    <div className="text-sm text-gray-500">
+                  <div className="flex items-center gap-3 pl-4">
+                    <div className="text-xs text-gray-500">
                       {formatDate(recording.uploadedAt)}
                     </div>
+                    <a
+                      href={recording.downloadUrl}
+                      className="text-cp-primary hover:text-cp-primary-light"
+                    >
+                      <IconDownload className="h-5 w-5" />
+                    </a>
                     <button
                       onClick={() => handleDelete(recording.url)}
                       className="text-red-500 hover:text-red-700"

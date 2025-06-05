@@ -26,7 +26,7 @@ async function getSavedAudios(userId: string) {
 
     return blobs.map((blob) => {
       const fullPath = blob.pathname.split(`RecordedAudio/${userId}/`)[1];
-      const recordingPattern = fullPath.match(
+      const recordingPattern = fullPath?.match(
         /(recording-\d{2}\/\d{2}\/\d{4}-)/,
       );
       const filename = recordingPattern ? recordingPattern[1] : fullPath;
@@ -45,6 +45,7 @@ async function getSavedAudios(userId: string) {
         url: blob.url,
         filename,
         uploadedAt: formattedDate,
+        downloadUrl: blob.downloadUrl,
       };
     });
   } catch (error) {
@@ -60,7 +61,7 @@ async function getSavedWebcam(userId: string) {
     });
     return blobs.map((blob) => {
       const fullPath = blob.pathname.split(`RecordedWebcam/${userId}/`)[1];
-      const recordingPattern = fullPath.match(
+      const recordingPattern = fullPath?.match(
         /(recording-\d{2}\/\d{2}\/\d{4}-)/,
       );
       const filename = recordingPattern ? recordingPattern[1] : fullPath;
@@ -150,7 +151,7 @@ export default async function IndexPage() {
 
     // Compare and combine savedAudios with aiContents
     savedAudios = savedAudios.map((audioItem) => {
-      const matchingAIContents = aiContents.filter(
+      const matchingAIContents = aiContents?.filter(
         (aiItem) => aiItem.uploadUrl === audioItem.url,
       );
 
@@ -169,7 +170,7 @@ export default async function IndexPage() {
 
     // Compare and combine savedWebcam with aiContents
     savedWebcam = savedWebcam.map((webcamItem) => {
-      const matchingAIContents = aiContents.filter(
+      const matchingAIContents = aiContents?.filter(
         (aiItem) => aiItem.uploadUrl === webcamItem.url,
       );
 

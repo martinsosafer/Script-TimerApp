@@ -2,7 +2,6 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 
 import { auth } from "@voiceai/auth";
-import { toast } from "@voiceai/ui/@/components/ui/toast";
 import {
   IllustrationTodayOnly,
   IlustrationMasterclasses,
