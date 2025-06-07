@@ -55,7 +55,7 @@ const BoosterCard = ({
 
   const amountFormat = new Intl.NumberFormat("en-US").format(amount);
 
-  const handleBoostersModal = ({
+  const handleBoosterModal = ({
     type,
     subData,
   }: {
@@ -123,7 +123,7 @@ const BoosterCard = ({
                 <Button
                   className={`${poppins.className} disabled:bg-cp-secondary-light font-semibold`}
                   variant="accent"
-                  onClick={() => handleBoostersModal({ type, subData })}
+                  onClick={() => handleBoosterModal({ type, subData })}
                 >
                   {isLoading ? (
                     <div className="flex items-center justify-center">

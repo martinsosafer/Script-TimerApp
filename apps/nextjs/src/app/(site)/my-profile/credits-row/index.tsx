@@ -96,9 +96,7 @@ export default function CreditRow({
           </div>
         </div>
 
-        {type !== "cl_credit" &&
-        type !== "openai_credit" &&
-        type !== "11labs_credit" ? (
+        {type !== "cl_credit" && type !== "openai_credit" ? (
           <Button
             className="bg-cp-secondary-light hover:bg-cp-secondary h-10 w-full text-base md:w-[50%]"
             disabled={subscription === "FREE" || subscription == "FREE_TRIAL"}

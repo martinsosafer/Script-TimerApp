@@ -16,6 +16,8 @@ export const metadata: Metadata = {
 export default async function ScriptPage() {
   const session = await auth();
   let credits = 0;
+  let totalCreditsVar = 0;
+  let boosterCreditsVar = 0;
 
   if (session?.user.id && session?.user.subscription?.status) {
     await set11LabsCreditsBasedOnPlan(
@@ -24,7 +26,10 @@ export default async function ScriptPage() {
     );
 
     try {
-      credits = await fetchUserCredits(session.user.id);
+      const data = await fetchUserCredits(session.user.id);
+      credits = data.planCredits;
+      totalCreditsVar = data.totalCredits;
+      boosterCreditsVar = data.boosterCredits;
     } catch (error) {
       console.error("Error fetching user credits:", error);
     }
@@ -36,7 +41,9 @@ export default async function ScriptPage() {
   return (
     <ScriptAI
       subData={subData}
-      initialCredits={credits}
+      planCredits={credits}
+      totalCredits={totalCreditsVar}
+      boosterCredits={boosterCreditsVar}
       openAiCredits={openAiCredits}
     />
   );

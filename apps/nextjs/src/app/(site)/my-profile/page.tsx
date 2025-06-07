@@ -67,6 +67,7 @@ export default async function MyProfile() {
 
   const credits = await getCredits(session?.user.id ?? "");
 
+  // const 11labsCredits 
   const imgCredits = await getImgCredits(session?.user.id ?? "");
 
   return (

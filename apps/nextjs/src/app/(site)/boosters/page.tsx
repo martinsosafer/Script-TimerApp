@@ -100,24 +100,25 @@ export default async function BoostersPage({
 
         <div className="flex w-full flex-col items-center gap-20">
           {/* Voice Boost */}
-          {/* <BoosterCard
+          <BoosterCard
             subData={subData}
             type="VOICES"
             creditsPercentage={voiceCreditsPercentage}
             amount={250000}
             amountDescription="characters"
-            title="Voice Overs, Voice Cloning & Sound Effects"
-            description="Boost your credits and create more:"
+            title="Voice Overs"
+            // title="Voice Overs, Voice Cloning & Sound Effects"
+            description="Boost your credits and create more"
             detailsList={[
               "Voice overs",
-              "Clone voices",
-              "Record and get feedback",
-              "Sound Effects",
+              // "Clone voices",
+              // "Record and get feedback",
+              // "Sound Effects",
             ]}
             imageMain={
               <IlustrationVoiceSoundfx className="max-md:w-[300px] max-sm:w-[200px]" />
             }
-          /> */}
+          />
 
           {/* Masterclasses Boost */}
           {/* <BoosterCard

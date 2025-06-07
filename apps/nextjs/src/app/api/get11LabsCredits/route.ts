@@ -29,11 +29,32 @@ export async function GET(req: { url: string }) {
       );
     }
 
-    // Return the user's credit information
-    return new NextResponse(JSON.stringify({ credits: userCredit.credits }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
+    // Get booster credits if available
+    const boosterCredits = await db.query.elevenLabsBooster.findMany({
+      where: (booster, { eq }) => eq(booster.userId, userId),
     });
+    let totalBoosterCredits = 0;
+    if (boosterCredits.length > 0) {
+      totalBoosterCredits = boosterCredits.reduce(
+        (acc, booster) => acc + booster.credits,
+        0,
+      );
+    }
+    // Calculate total credits
+    const totalCredits = (userCredit.credits ?? 0) + totalBoosterCredits;
+
+    // Return the user's credit information
+    return new NextResponse(
+      JSON.stringify({
+        planCredits: userCredit.credits,
+        totalCredits: totalCredits,
+        boosterCredits: totalBoosterCredits,
+      }),
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   } catch (error) {
     return new NextResponse(
       JSON.stringify({ error: "Error fetching user credits." }),
