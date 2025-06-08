@@ -29,13 +29,21 @@ interface SubscriptionData {
 
 export function ScriptAI({
   subData,
-  initialCredits,
+  planCredits, // Total plan credits available
+  totalCredits, // Plan + Boosters credits available
+  boosterCredits, // Sum of all booster credits
   openAiCredits,
 }: {
   subData: SubscriptionData | null | undefined;
-  initialCredits: number;
+  planCredits: number;
+  totalCredits: number;
+  boosterCredits: number;
   openAiCredits: number;
 }) {
+  // console.log("totalCredits:", totalCredits);
+  // console.log("boosterCredits:", boosterCredits);
+  // console.log("planCredits:", planCredits);
+
   const {
     subscriptionData,
     favoriteVoices,
@@ -108,24 +116,24 @@ export function ScriptAI({
   const { wordCount, minutes, formattedSeconds, speedCategory } =
     calculateLengthTime(script);
 
-  const [credits, setCredits] = React.useState(initialCredits);
+  const [credits, setCredits] = React.useState(totalCredits);
 
   const refetchCredits = async () => {
     try {
       const userId = subData?.userId;
       if (!userId) return;
-      const newCredits = await fetchUserCredits(userId);
-      setCredits(newCredits);
+      const { totalCredits } = await fetchUserCredits(userId);
+      setCredits(totalCredits);
     } catch (error) {
       console.error("Error refetching credits:", error);
     }
   };
 
   React.useEffect(() => {
-    subData && refetchCredits();
+    if (subData) void refetchCredits();
   }, [subData]);
 
-  const totalCredits = getTotalCredits(subData?.status);
+  // const initialPlanCredits = getTotalCredits(subData?.status);
 
   const subtitleContent = subData?.status ? (
     <div>
@@ -133,7 +141,7 @@ export function ScriptAI({
         This is where you choose and create your voice overs. On your current
         plan, <br />
         <span className="text-cp-primary font-semibold">
-          {subData.status == 1 || subData.status == 2
+          {subData.status === "1" || subData.status === "2"
             ? `AppSumoTier ${subData.status}`
             : subData.status}
         </span>
@@ -145,10 +153,14 @@ export function ScriptAI({
       </p>
       <p className="font-base mb-2 text-center">
         You have <span className="text-cp-primary font-bold">{credits}</span>{" "}
-        characters left of{" "}
-        <span className="text-cp-primary font-bold">{totalCredits}</span> total
-        monthly characters.
+        characters left.
       </p>
+      {/* <p className="font-base mb-2 text-center">
+        You have <span className="text-cp-primary font-bold">{credits}</span>{" "}
+        characters left of{" "}
+        <span className="text-cp-primary font-bold">{initialPlanCredits}</span>{" "}
+        total monthly characters.
+      </p> */}
     </div>
   ) : (
     <div className="flex flex-col">
@@ -186,6 +198,7 @@ export function ScriptAI({
           />
         </div>
       )}
+
       <header
         ref={headerRef}
         className={`my-3 flex w-full flex-col items-center justify-center p-6 lg:mb-[40px] lg:mt-[60px] lg:p-0 ${poppins.className}`}

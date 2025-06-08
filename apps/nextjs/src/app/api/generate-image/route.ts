@@ -34,6 +34,8 @@ export async function POST(req: Request): Promise<Response> {
     });
 
     const image_url = response?.data?.images[0]?.url ?? "";
+    console.log("planCredits", data.planCredits);
+    console.log("boosterCredits", data.boosterCredits);
 
     if (image_url) {
       if (data.planCredits === 0 && data.boosterCredits > 0) {
@@ -45,9 +47,12 @@ export async function POST(req: Request): Promise<Response> {
         // Substract credit from booster
         await db
           .update(schema.imgBooster)
-          .set({ credits: sql`${schema.imgBooster.credits} - 1` })
+          .set({
+            credits: sql`${schema.imgBooster.credits} - 1`,
+            updated_at: new Date(),
+          })
           .where(eq(schema.imgBooster.id, booster?.id ?? ""));
-      } else {
+      } else if (data.planCredits > 0) {
         // Substract credit from plan
         await db
           .update(schema.imgCredit)

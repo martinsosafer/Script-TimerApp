@@ -24,6 +24,8 @@ import {
 import BoosterCard from "./BoosterCard/BoosterCard";
 import type { BoosterType, SubData } from "./types";
 
+import { BOOSTER_START_CREDITS } from "~/constants/credits";
+
 export default async function BoostersPage({
   searchParams,
 }: {
@@ -100,24 +102,26 @@ export default async function BoostersPage({
 
         <div className="flex w-full flex-col items-center gap-20">
           {/* Voice Boost */}
-          {/* <BoosterCard
+          <BoosterCard
             subData={subData}
             type="VOICES"
             creditsPercentage={voiceCreditsPercentage}
-            amount={250000}
+            amount={BOOSTER_START_CREDITS.VOICES}
             amountDescription="characters"
-            title="Voice Overs, Voice Cloning & Sound Effects"
-            description="Boost your credits and create more:"
+            title="Voice Overs & Sound Effects"
+            // title="Voice Overs, Voice Cloning & Sound Effects"
+            description="Boost your credits and create more"
             detailsList={[
+              "Text to Voice",
               "Voice overs",
-              "Clone voices",
-              "Record and get feedback",
+              // "Clone voices",
+              // "Record and get feedback",
               "Sound Effects",
             ]}
             imageMain={
               <IlustrationVoiceSoundfx className="max-md:w-[300px] max-sm:w-[200px]" />
             }
-          /> */}
+          />
 
           {/* Masterclasses Boost */}
           {/* <BoosterCard
@@ -147,7 +151,7 @@ export default async function BoostersPage({
             subData={subData}
             type="IMAGES"
             creditsPercentage={imageCreditsPercentage}
-            amount={300}
+            amount={BOOSTER_START_CREDITS.IMAGES}
             title="Images"
             description="Create images like these for:"
             detailsList={[

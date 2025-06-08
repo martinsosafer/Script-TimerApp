@@ -55,7 +55,7 @@ const BoosterCard = ({
 
   const amountFormat = new Intl.NumberFormat("en-US").format(amount);
 
-  const handleBoostersModal = ({
+  const handleBoosterModal = ({
     type,
     subData,
   }: {
@@ -86,7 +86,7 @@ const BoosterCard = ({
       >
         <p className="text-cp-accent-lightest col-start-1 col-end-3 text-lg max-sm:text-sm">
           <strong>
-            {creditsPercentage <= 10 ? "10% credits left -" : null}
+            {creditsPercentage <= 10 ? "10% plan credits left -" : null}
           </strong>{" "}
           Add this booster and keep creating like a pro!
         </p>
@@ -123,7 +123,7 @@ const BoosterCard = ({
                 <Button
                   className={`${poppins.className} disabled:bg-cp-secondary-light font-semibold`}
                   variant="accent"
-                  onClick={() => handleBoostersModal({ type, subData })}
+                  onClick={() => handleBoosterModal({ type, subData })}
                 >
                   {isLoading ? (
                     <div className="flex items-center justify-center">

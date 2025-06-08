@@ -1,4 +1,8 @@
-export async function fetchUserCredits(userId: string): Promise<number> {
+export async function fetchUserCredits(userId: string): Promise<{
+  planCredits: number;
+  totalCredits: number;
+  boosterCredits: number;
+}> {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_HOST_URL;
     const response = await fetch(
@@ -17,14 +21,18 @@ export async function fetchUserCredits(userId: string): Promise<number> {
       throw new Error(errorData.error || "Failed to fetch user credits");
     }
 
-    const data = await response.json();
-    console.log("API Response Data:", data);
+    const { planCredits, totalCredits, boosterCredits } = await response.json();
+    // console.log("API Response Data:", { credits, totalCredits, boosterCredits });
 
-    if (data.credits === undefined) {
+    if (planCredits === undefined) {
       console.warn("Credits are undefined in API response");
     }
 
-    return data.credits;
+    return {
+      planCredits: (planCredits as number) || 0,
+      totalCredits: (totalCredits as number) || 0,
+      boosterCredits: (boosterCredits as number) || 0,
+    };
   } catch (error) {
     console.error("Error fetching user credits:", error);
     throw error;

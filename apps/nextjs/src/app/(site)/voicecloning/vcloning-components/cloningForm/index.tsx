@@ -93,7 +93,7 @@ export default function VoiceCloningForm({
     setIsModalOpen(false);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!subData) {

@@ -60,15 +60,20 @@ export default async function IndexPage() {
 
   // Fetch user credits
   let credits = 0;
+  let totalCreditsVar = 0;
+  let boosterCreditsVar = 0;
   if (subData?.userId) {
     try {
-      credits = await fetchUserCredits(subData.userId);
+      const data = await fetchUserCredits(subData.userId);
+      credits = data.planCredits;
+      totalCreditsVar = data.totalCredits;
+      boosterCreditsVar = data.boosterCredits;
     } catch (error) {
       console.error("Error fetching credits:", error);
     }
   }
 
-  const totalCredits = getTotalCredits(basePlan);
+  // const totalCredits = getTotalCredits(basePlan);
 
   const subtitle = (
     <>
@@ -84,7 +89,7 @@ export default async function IndexPage() {
             <p className="font-base  text-center">
               On your current plan, <br />
               <span className="text-cp-primary font-semibold">
-                {basePlan == 1 || basePlan == 2
+                {basePlan === "1" || basePlan === "2"
                   ? `AppSumoTier ${basePlan}`
                   : basePlan}
               </span>
@@ -96,11 +101,18 @@ export default async function IndexPage() {
             </p>
             <p className="font-base  text-center">
               You have{" "}
+              <span className="text-cp-primary font-bold">
+                {totalCreditsVar}
+              </span>{" "}
+              characters left.
+            </p>
+            {/* <p className="font-base  text-center">
+              You have{" "}
               <span className="text-cp-primary font-bold">{credits}</span>{" "}
               characters left of{" "}
               <span className="text-cp-primary font-bold">{totalCredits}</span>{" "}
               total monthly characters.
-            </p>
+            </p> */}
           </div>
         ) : (
           <p className="font-base mb-2 text-center">

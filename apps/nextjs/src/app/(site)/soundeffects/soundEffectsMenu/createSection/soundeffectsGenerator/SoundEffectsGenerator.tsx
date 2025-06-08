@@ -9,7 +9,6 @@ import {
   HoverCardTrigger,
 } from "@voiceai/ui/@/components/ui/hover-card";
 import {
-  IconBotBig,
   IconDownload,
   IconInfo,
   IconMusic,
@@ -20,10 +19,11 @@ import { Slider } from "@voiceai/ui/@/components/ui/slider";
 import { toast } from "@voiceai/ui/@/components/ui/toast";
 
 import { poppins } from "~/app/fonts";
-import { STARTING_11CL_CREDITS } from "~/constants/credits";
+// import { STARTING_11CL_CREDITS } from "~/constants/credits";
 import NoSessionModal from "../../../../components/modals/no-session-modal";
 import { getElevenLabsUserCredits } from "../../../actions";
 import type { SessionProps } from "../../../types";
+import { IllustrationBot } from "@voiceai/ui/@/illustrations";
 
 export function SoundEffectsGenerator({ subData }: SessionProps) {
   const [text, setText] = useState("");
@@ -38,10 +38,10 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
   const [credits, setCredits] = useState<number | undefined>(0);
   const [isLoadingCredits, setIsLoadingCredits] = useState(false);
 
-  const totalCredits =
-    STARTING_11CL_CREDITS[
-      subData?.status as keyof typeof STARTING_11CL_CREDITS
-    ];
+  // const totalCredits =
+  //   STARTING_11CL_CREDITS[
+  //     subData?.status as keyof typeof STARTING_11CL_CREDITS
+  //   ];
 
   const audioPLayerStyle = {
     boxShadow: "0px 1px 3px 0px rgba(0,0,0,0.4)",
@@ -51,7 +51,7 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
   // Update user credits
   const creditsUpdate = async (userId: string) => {
     const updatedCredits = await getElevenLabsUserCredits(userId);
-    setCredits(updatedCredits?.credits);
+    setCredits(updatedCredits);
     setIsLoadingCredits(false);
   };
 
@@ -109,10 +109,10 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
     }
   };
 
-  const handleSubDataStatus = (status: string | number) => {
-    if (status === 1 || status === 2) return `AppSumoTier ${status}`;
-    return status;
-  };
+  // const handleSubDataStatus = (status: string | number) => {
+  //   if (status === "1" || status === "2") return `AppSumoTier ${status}`;
+  //   return status;
+  // };
 
   return (
     <>
@@ -230,12 +230,12 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
                 <strong>1 second=40 credits</strong> - Credits remaining: 
                 <strong>{isLoadingCredits ? "..." : credits}</strong>
               </p>
-              <p>
+              {/* <p>
                 Your current plan{" "}
                 <strong>{handleSubDataStatus(subData?.status)}</strong>{" "}
                 includes 
                 <strong>{totalCredits}</strong> credits
-              </p>
+              </p> */}
             </div>
           ) : null}
 
@@ -293,7 +293,7 @@ export function SoundEffectsGenerator({ subData }: SessionProps) {
                 Here is your customized sound!
               </p>
               <i>
-                <IconBotBig className="max-lg:h-[136px] max-sm:h-[100px]" />
+                <IllustrationBot className="max-lg:h-[136px] max-sm:h-[100px]" />
               </i>
             </div>
           </div>
