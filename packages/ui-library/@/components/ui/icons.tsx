@@ -3679,6 +3679,7 @@ export {
   IconPause,
   IconMusic,
   IconMic,
+  IconBotBig,
   IconArrowUpDown,
   IconClock,
   IconVolumeX,

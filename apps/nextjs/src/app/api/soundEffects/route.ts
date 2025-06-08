@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { ElevenLabsClient } from "elevenlabs";
 
 import { auth } from "@voiceai/auth";
-import { db, eq, schema } from "@voiceai/db";
+import { and, db, eq, schema, sql } from "@voiceai/db";
 import { elevenLabsCredit } from "@voiceai/db/schema/11LabsCredits";
 
 interface ElevenLabsParams {
@@ -32,11 +32,24 @@ export async function POST(req: Request) {
     const creditsNeeded = Math.ceil(elevenlabsRequest.duration_seconds * 40);
 
     // Fetch user credits from elevenLabsCredit table
-    const userCredits = await db.query.elevenLabsCredit.findFirst({
+    const planCredits = await db.query.elevenLabsCredit.findFirst({
       where: eq(elevenLabsCredit.userId, userId),
     });
+    // Check boosters credits
+    const boosterCredits = await db.query.elevenLabsBooster.findMany({
+      where: (booster, { eq }) => eq(booster.userId, userId),
+    });
+    let totalBoosterCredits = 0;
+    if (boosterCredits.length > 0) {
+      totalBoosterCredits = boosterCredits.reduce(
+        (acc, booster) => acc + booster.credits,
+        0,
+      );
+    }
 
-    if (!userCredits || userCredits.credits < creditsNeeded) {
+    const totalCredits = (planCredits?.credits ?? 0) + totalBoosterCredits;
+
+    if (!totalCredits || totalCredits < creditsNeeded) {
       return NextResponse.json(
         { error: "Not enough credits to process the request" },
         {
@@ -65,13 +78,85 @@ export async function POST(req: Request) {
     }
 
     // Subtract credits
-    await db
-      .update(elevenLabsCredit)
-      .set({
-        credits: userCredits.credits - creditsNeeded,
-        updated_at: new Date(),
-      })
-      .where(eq(elevenLabsCredit.userId, userId));
+    // await db
+    //   .update(elevenLabsCredit)
+    //   .set({
+    //     credits: planCredits.credits - creditsNeeded,
+    //     updated_at: new Date(),
+    //   })
+    //   .where(eq(elevenLabsCredit.userId, userId));
+
+    // Deduct credits
+    if (planCredits?.credits! > 0 && planCredits?.credits! < creditsNeeded) {
+      // Not enough plan credits, use boosters
+      const remainingCredits = creditsNeeded - planCredits?.credits!;
+      if (totalBoosterCredits < remainingCredits) {
+        return new NextResponse(
+          JSON.stringify({
+            error: "Not enough credits to process the request.",
+          }),
+          { status: 403, headers: { "Content-Type": "application/json" } },
+        );
+      }
+      // Substract from plan first
+      await db
+        .update(elevenLabsCredit)
+        .set({
+          credits: 0,
+          updated_at: new Date(),
+        })
+        .where(eq(elevenLabsCredit.userId, userId));
+      // Substract remaining from boosters
+      // Deduct remaining credits from boosters with the least credits first
+      let creditsToDeduct = remainingCredits;
+      const boosters = await db.query.elevenLabsBooster.findMany({
+        where: (booster, { eq, gt }) =>
+          and(eq(booster.userId, userId), gt(booster.credits, 0)),
+        orderBy: (booster, { asc }) => [asc(booster.credits)],
+      });
+      for (const booster of boosters) {
+        if (creditsToDeduct <= 0) break;
+        const deduct = Math.min(booster.credits, creditsToDeduct);
+        await db
+          .update(schema.elevenLabsBooster)
+          .set({
+            credits: sql`${schema.elevenLabsBooster.credits} - ${deduct}`,
+            updated_at: new Date(),
+          })
+          .where(eq(schema.elevenLabsBooster.id, booster.id));
+        creditsToDeduct -= deduct;
+      }
+    } else if (planCredits?.credits === 0 && totalBoosterCredits > 0) {
+      // Find booster with credits
+      // Deduct credits from boosters with the least credits first
+      let creditsToDeduct = creditsNeeded;
+      const boosters = await db.query.elevenLabsBooster.findMany({
+        where: (booster, { eq, gt }) =>
+          and(eq(booster.userId, userId), gt(booster.credits, 0)),
+        orderBy: (booster, { asc }) => [asc(booster.credits)],
+      });
+      for (const booster of boosters) {
+        if (creditsToDeduct <= 0) break;
+        const deduct = Math.min(booster.credits, creditsToDeduct);
+        await db
+          .update(schema.elevenLabsBooster)
+          .set({
+            credits: sql`${schema.elevenLabsBooster.credits} - ${deduct}`,
+            updated_at: new Date(),
+          })
+          .where(eq(schema.elevenLabsBooster.id, booster.id));
+        creditsToDeduct -= deduct;
+      }
+    } else {
+      // Substract credit from plan
+      await db
+        .update(elevenLabsCredit)
+        .set({
+          credits: planCredits?.credits! - creditsNeeded,
+          updated_at: new Date(),
+        })
+        .where(eq(elevenLabsCredit.userId, userId));
+    }
 
     // const base64 = await readableToBase64(response);
 
