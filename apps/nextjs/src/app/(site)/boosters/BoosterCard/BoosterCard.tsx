@@ -86,7 +86,7 @@ const BoosterCard = ({
       >
         <p className="text-cp-accent-lightest col-start-1 col-end-3 text-lg max-sm:text-sm">
           <strong>
-            {creditsPercentage <= 10 ? "10% credits left -" : null}
+            {creditsPercentage <= 10 ? "10% plan credits left -" : null}
           </strong>{" "}
           Add this booster and keep creating like a pro!
         </p>

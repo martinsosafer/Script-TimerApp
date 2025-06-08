@@ -102,7 +102,7 @@ export const displayData = {
       credits: STARTING_CL_CREDITS.FREE,
     },
     "11labs_credit": {
-      label: "Voice",
+      label: "Voice and Sound Fx",
       credits: STARTING_11CL_CREDITS.FREE,
     },
     img_credit: {
@@ -120,7 +120,7 @@ export const displayData = {
       credits: STARTING_CL_CREDITS.FREE_TRIAL,
     },
     "11labs_credit": {
-      label: "Voice",
+      label: "Voice and Sound Fx",
       credits: STARTING_11CL_CREDITS.FREE_TRIAL,
     },
     img_credit: {
@@ -138,7 +138,7 @@ export const displayData = {
       credits: STARTING_CL_CREDITS.STUDENT,
     },
     "11labs_credit": {
-      label: "Voice",
+      label: "Voice and Sound Fx",
       credits: STARTING_11CL_CREDITS.STUDENT,
     },
     img_credit: {
@@ -156,7 +156,7 @@ export const displayData = {
       credits: STARTING_CL_CREDITS.CREATOR,
     },
     "11labs_credit": {
-      label: "Voice",
+      label: "Voice and Sound Fx",
       credits: STARTING_11CL_CREDITS.CREATOR,
     },
     img_credit: {
@@ -174,7 +174,7 @@ export const displayData = {
       credits: STARTING_CL_CREDITS.BUSINESS,
     },
     "11labs_credit": {
-      label: "Voice",
+      label: "Voice and Sound Fx",
       credits: STARTING_11CL_CREDITS.BUSINESS,
     },
     img_credit: {
@@ -192,7 +192,7 @@ export const displayData = {
       credits: STARTING_CL_CREDITS.STUDENTCLMO,
     },
     "11labs_credit": {
-      label: "Voice",
+      label: "Voice and Sound Fx",
       credits: STARTING_11CL_CREDITS.STUDENTCLMO,
     },
     img_credit: {
@@ -210,7 +210,7 @@ export const displayData = {
       credits: STARTING_CL_CREDITS.CREATORCLMO,
     },
     "11labs_credit": {
-      label: "Voice",
+      label: "Voice and Sound Fx",
       credits: STARTING_11CL_CREDITS.CREATORCLMO,
     },
     img_credit: {
@@ -228,7 +228,7 @@ export const displayData = {
       credits: STARTING_CL_CREDITS.BUSINESSCLMO,
     },
     "11labs_credit": {
-      label: "Voice",
+      label: "Voice and Sound Fx",
       credits: STARTING_11CL_CREDITS.BUSINESSCLMO,
     },
     img_credit: {
@@ -246,7 +246,7 @@ export const displayData = {
       credits: STARTING_CL_CREDITS.STUDENTCLYR,
     },
     "11labs_credit": {
-      label: "Voice",
+      label: "Voice and Sound Fx",
       credits: STARTING_11CL_CREDITS.STUDENTCLYR,
     },
     img_credit: {
@@ -264,7 +264,7 @@ export const displayData = {
       credits: STARTING_CL_CREDITS.CREATORCLYR,
     },
     "11labs_credit": {
-      label: "Voice",
+      label: "Voice and Sound Fx",
       credits: STARTING_11CL_CREDITS.CREATORCLYR,
     },
     img_credit: {
@@ -282,7 +282,7 @@ export const displayData = {
       credits: STARTING_CL_CREDITS.BUSINESSCLYR,
     },
     "11labs_credit": {
-      label: "Voice",
+      label: "Voice and Sound Fx",
       credits: STARTING_11CL_CREDITS.BUSINESSCLYR,
     },
     img_credit: {
@@ -300,7 +300,7 @@ export const displayData = {
       credits: STARTING_CL_CREDITS.ACTIVE,
     },
     "11labs_credit": {
-      label: "Voice",
+      label: "Voice and Sound Fx",
       credits: STARTING_11CL_CREDITS.ACTIVE,
     },
     img_credit: {
@@ -318,7 +318,7 @@ export const displayData = {
       credits: STARTING_CL_CREDITS.INACTIVE,
     },
     "11labs_credit": {
-      label: "Voice",
+      label: "Voice and Sound Fx",
       credits: STARTING_11CL_CREDITS.INACTIVE,
     },
     img_credit: {
@@ -336,7 +336,7 @@ export const displayData = {
       credits: STARTING_CL_CREDITS.PAUSED,
     },
     "11labs_credit": {
-      label: "Voice",
+      label: "Voice and Sound Fx",
       credits: STARTING_11CL_CREDITS.PAUSED,
     },
     img_credit: {
@@ -354,7 +354,7 @@ export const displayData = {
       credits: STARTING_CL_CREDITS["1"],
     },
     "11labs_credit": {
-      label: "Voice",
+      label: "Voice and Sound Fx",
       credits: STARTING_11CL_CREDITS["1"],
     },
     img_credit: {
@@ -372,7 +372,7 @@ export const displayData = {
       credits: STARTING_CL_CREDITS["2"],
     },
     "11labs_credit": {
-      label: "Voice",
+      label: "Voice and Sound Fx",
       credits: STARTING_11CL_CREDITS["2"],
     },
     img_credit: {
