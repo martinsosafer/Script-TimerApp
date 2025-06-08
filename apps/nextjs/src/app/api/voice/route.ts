@@ -119,8 +119,7 @@ export async function POST(req: Request) {
     }
 
     const totalCredits = (planCredits?.credits ?? 0) + totalBoosterCredits;
-    // console.log("totalCredits:", totalCredits);
-    // console.log("text length:", body.text.length);
+
     if (!totalCredits || totalCredits < body.text.length) {
       return new NextResponse(
         JSON.stringify({
@@ -154,6 +153,7 @@ export async function POST(req: Request) {
         .update(schema.elevenLabsBooster)
         .set({
           credits: sql`${schema.elevenLabsBooster.credits} - ${remainingCredits}`,
+          updated_at: new Date(),
         })
         .where(eq(schema.elevenLabsBooster.userId, userId));
     } else if (planCredits?.credits === 0 && totalBoosterCredits > 0) {
@@ -166,6 +166,7 @@ export async function POST(req: Request) {
         .update(schema.elevenLabsBooster)
         .set({
           credits: sql`${schema.elevenLabsBooster.credits} - ${body.text.length}`,
+          updated_at: new Date(),
         })
         .where(eq(schema.elevenLabsBooster.id, booster?.id ?? ""));
     } else {
