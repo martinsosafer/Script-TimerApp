@@ -149,32 +149,52 @@ export async function POST(req: Request) {
         })
         .where(eq(elevenLabsCredit.userId, userId));
       // Substract remaining from boosters
-      await db
-        .update(schema.elevenLabsBooster)
-        .set({
-          credits: sql`${schema.elevenLabsBooster.credits} - ${remainingCredits}`,
-          updated_at: new Date(),
-        })
-        .where(eq(schema.elevenLabsBooster.userId, userId));
-    } else if (planCredits?.credits === 0 && totalBoosterCredits > 0) {
-      // Find booster with credits
-      const booster = await db.query.elevenLabsBooster.findFirst({
+      // Deduct remaining credits from boosters with the least credits first
+      let creditsToDeduct = remainingCredits;
+      const boosters = await db.query.elevenLabsBooster.findMany({
         where: (booster, { eq, gt }) =>
           and(eq(booster.userId, userId), gt(booster.credits, 0)),
+        orderBy: (booster, { asc }) => [asc(booster.credits)],
       });
-      await db
-        .update(schema.elevenLabsBooster)
-        .set({
-          credits: sql`${schema.elevenLabsBooster.credits} - ${body.text.length}`,
-          updated_at: new Date(),
-        })
-        .where(eq(schema.elevenLabsBooster.id, booster?.id ?? ""));
+      for (const booster of boosters) {
+        if (creditsToDeduct <= 0) break;
+        const deduct = Math.min(booster.credits, creditsToDeduct);
+        await db
+          .update(schema.elevenLabsBooster)
+          .set({
+            credits: sql`${schema.elevenLabsBooster.credits} - ${deduct}`,
+            updated_at: new Date(),
+          })
+          .where(eq(schema.elevenLabsBooster.id, booster.id));
+        creditsToDeduct -= deduct;
+      }
+    } else if (planCredits?.credits === 0 && totalBoosterCredits > 0) {
+      // Find booster with credits
+      // Deduct credits from boosters with the least credits first
+      let creditsToDeduct = body.text.length as number;
+      const boosters = await db.query.elevenLabsBooster.findMany({
+        where: (booster, { eq, gt }) =>
+          and(eq(booster.userId, userId), gt(booster.credits, 0)),
+        orderBy: (booster, { asc }) => [asc(booster.credits)],
+      });
+      for (const booster of boosters) {
+        if (creditsToDeduct <= 0) break;
+        const deduct = Math.min(booster.credits, creditsToDeduct);
+        await db
+          .update(schema.elevenLabsBooster)
+          .set({
+            credits: sql`${schema.elevenLabsBooster.credits} - ${deduct}`,
+            updated_at: new Date(),
+          })
+          .where(eq(schema.elevenLabsBooster.id, booster.id));
+        creditsToDeduct -= deduct;
+      }
     } else {
       // Substract credit from plan
       await db
         .update(elevenLabsCredit)
         .set({
-          credits: planCredits?.credits - body.text.length,
+          credits: planCredits?.credits! - body.text.length,
           updated_at: new Date(),
         })
         .where(eq(elevenLabsCredit.userId, userId));

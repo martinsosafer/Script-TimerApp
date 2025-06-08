@@ -51,6 +51,13 @@ interface SubscriptionDetailsProps {
         boosterCredits: number;
       }
     | undefined;
+  elevenLabsCredits:
+    | {
+        totalCredits: number;
+        planCredits: number;
+        boosterCredits: number;
+      }
+    | undefined;
 }
 
 export default function SubscriptionDetails({
@@ -60,6 +67,7 @@ export default function SubscriptionDetails({
   plan,
   subData,
   imgCredits,
+  elevenLabsCredits,
 }: SubscriptionDetailsProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -87,6 +95,7 @@ export default function SubscriptionDetails({
   }
 
   const handleAllCredits = (key: CreditsKey) => {
+    if (key === "11labs_credit") return elevenLabsCredits;
     if (key === "img_credit") return imgCredits;
     return;
   };

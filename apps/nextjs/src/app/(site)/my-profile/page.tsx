@@ -15,6 +15,7 @@ import type { SubData } from "../boosters/types";
 import { getImgCredits } from "../image-generator/actions";
 import { getCredits } from "./actions";
 import SubscriptionDetails from "./subscription-details";
+import { fetchUserCredits } from "~/lib/get11LabsCredits";
 
 async function getSubscription(planId: string | null | undefined) {
   const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
@@ -67,7 +68,11 @@ export default async function MyProfile() {
 
   const credits = await getCredits(session?.user.id ?? "");
 
-  // const 11labsCredits 
+  // Voices credits
+  const elevenLabsCredits = await fetchUserCredits(
+    session?.user.id ?? "",
+  );
+  // Images credits 
   const imgCredits = await getImgCredits(session?.user.id ?? "");
 
   return (
@@ -101,6 +106,7 @@ export default async function MyProfile() {
             plan={session?.user.subscription?.status}
             subData={session?.user.subscription as SubData}
             imgCredits={imgCredits}
+            elevenLabsCredits={elevenLabsCredits}
           />
         </div>
       </section>

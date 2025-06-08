@@ -65,6 +65,9 @@ export default function CreditRow({
   };
 
   const handleCreditsLeft = (type: CreditRowProps["type"]) => {
+    if (type === "11labs_credit") {
+      return allCredits?.totalCredits
+    }
     if (type === "img_credit") {
       return allCredits?.totalCredits;
     }
