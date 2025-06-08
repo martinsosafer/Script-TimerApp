@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 
 import { auth } from "@voiceai/auth";
 
-import { fetchUserCredits } from "~/app/actions/user11LabsCredits";
+import { fetchUserCredits } from "~/lib/get11LabsCredits";
 import { set11LabsCreditsBasedOnPlan } from "~/lib/set11labsCredits";
 import { History } from "../../_components/history";
 import PageHeader from "../components/page-header";
 import {
   characters,
-  getTotalCredits,
+  // getTotalCredits,
 } from "../texttovoice/[[...scriptId]]/utils";
 
 export const metadata: Metadata = {
@@ -18,9 +18,9 @@ export const metadata: Metadata = {
 
 export default async function HistoryPage() {
   const session = await auth();
-
-  // Initialize credits variable
-  let credits = 0;
+  // let planCredits = 0;
+  let totalCredits = 0;
+  // let boosterCredits = 0;
 
   if (session?.user.id && session?.user.subscription?.status) {
     // Set credits based on the user's subscription plan
@@ -30,7 +30,10 @@ export default async function HistoryPage() {
     );
 
     try {
-      credits = await fetchUserCredits(session.user.id);
+      const data = await fetchUserCredits(session.user.id);
+      // planCredits = data.planCredits;
+      totalCredits = data.totalCredits;
+      // boosterCredits = data.boosterCredits;
     } catch (error) {
       console.error("Error fetching user credits:", error);
     }
@@ -38,7 +41,7 @@ export default async function HistoryPage() {
 
   const subData = session?.user.subscription;
 
-  const totalCredits = getTotalCredits(subData?.status);
+  // const totalCredits = getTotalCredits(subData?.status);
 
   const subtitle = (
     <>
@@ -60,11 +63,16 @@ export default async function HistoryPage() {
           </p>
           <p className="font-base mb-2 text-center">
             You have{" "}
+            <span className="text-cp-primary font-bold">{totalCredits}</span>{" "}
+            characters left.
+          </p>
+          {/* <p className="font-base mb-2 text-center">
+            You have{" "}
             <span className="text-cp-primary font-bold">{credits}</span>{" "}
             characters left of{" "}
             <span className="text-cp-primary font-bold">{totalCredits}</span>{" "}
             total monthly characters.
-          </p>
+          </p> */}
         </div>
       ) : (
         <div className="flex flex-col">

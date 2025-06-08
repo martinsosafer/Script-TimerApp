@@ -141,7 +141,7 @@ export function ScriptAI({
         This is where you choose and create your voice overs. On your current
         plan, <br />
         <span className="text-cp-primary font-semibold">
-          {subData.status == 1 || subData.status == 2
+          {subData.status === "1" || subData.status === "2"
             ? `AppSumoTier ${subData.status}`
             : subData.status}
         </span>
@@ -198,7 +198,7 @@ export function ScriptAI({
           />
         </div>
       )}
-      
+
       <header
         ref={headerRef}
         className={`my-3 flex w-full flex-col items-center justify-center p-6 lg:mb-[40px] lg:mt-[60px] lg:p-0 ${poppins.className}`}

@@ -32,7 +32,6 @@ export const metadata: Metadata = {
 export default async function IndexPage() {
   const session = await auth();
   const subData = session?.user.subscription;
-  console.log("subdata", subData);
 
   // Use planId instead of plan
   const basePlan = subData?.status ?? "FREE";
