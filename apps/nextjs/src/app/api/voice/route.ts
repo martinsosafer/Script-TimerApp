@@ -146,6 +146,7 @@ export async function POST(req: Request) {
         .update(elevenLabsCredit)
         .set({
           credits: 0,
+          updated_at: new Date(),
         })
         .where(eq(elevenLabsCredit.userId, userId));
       // Substract remaining from boosters
