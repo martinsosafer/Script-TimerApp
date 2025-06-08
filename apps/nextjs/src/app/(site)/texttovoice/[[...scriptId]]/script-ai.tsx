@@ -40,11 +40,10 @@ export function ScriptAI({
   boosterCredits: number;
   openAiCredits: number;
 }) {
-  console.log("totalCredits:", totalCredits);
-  console.log("boosterCredits:", boosterCredits);
-  console.log("planCredits:", planCredits);
+  // console.log("totalCredits:", totalCredits);
+  // console.log("boosterCredits:", boosterCredits);
+  // console.log("planCredits:", planCredits);
 
-  
   const {
     subscriptionData,
     favoriteVoices,
@@ -131,7 +130,7 @@ export function ScriptAI({
   };
 
   React.useEffect(() => {
-    subData && refetchCredits();
+    if (subData) void refetchCredits();
   }, [subData]);
 
   // const initialPlanCredits = getTotalCredits(subData?.status);
@@ -199,6 +198,7 @@ export function ScriptAI({
           />
         </div>
       )}
+      
       <header
         ref={headerRef}
         className={`my-3 flex w-full flex-col items-center justify-center p-6 lg:mb-[40px] lg:mt-[60px] lg:p-0 ${poppins.className}`}
