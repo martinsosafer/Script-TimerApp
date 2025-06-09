@@ -39,7 +39,6 @@ export async function get11LabsPlanAndBoosterCredits(userId: string) {
     const boosterCredits = await db.query.elevenLabsBooster.findMany({
       where: eq(elevenLabsBooster.userId, userId),
     });
-    console.log("boosterCredits", boosterCredits);
     let totalBoosterCredits = 0;
     if (boosterCredits.length > 0) {
       totalBoosterCredits = boosterCredits.reduce(
@@ -50,9 +49,7 @@ export async function get11LabsPlanAndBoosterCredits(userId: string) {
 
     // Calculate total credits
     const totalCredits = (planCredits?.credits ?? 0) + totalBoosterCredits;
-    console.log("totalCredits", totalCredits);
-    console.log("planCredits", planCredits);
-    console.log("totalBoosterCredits", totalBoosterCredits);
+
     return {
       planCredits: planCredits?.credits ?? 0,
       totalCredits,

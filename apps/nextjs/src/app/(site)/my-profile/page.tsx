@@ -1,3 +1,4 @@
+import { unstable_noStore as noStore } from "next/cache";
 import { redirect } from "next/navigation";
 import { Stripe } from "stripe";
 
@@ -49,6 +50,7 @@ async function getAppSumoDetails(userId: string) {
 }
 
 export default async function MyProfile() {
+  noStore();
   const session = await auth();
   if (!session) {
     redirect("/");
