@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { Button } from "@voiceai/ui";
 
+import { BOOSTER_START_CREDITS } from "~/constants/credits";
 import type { SubData } from "../../boosters/types";
 import BoostersModal from "../../components/modals/boosters-modal";
 import { displayData } from "./utils";
@@ -78,6 +79,15 @@ export default function CreditRow({
     return creditsLeft;
   };
 
+  const handleBoosterButton = () => {
+    if (type === "11labs_credit") {
+      return `Add ${BOOSTER_START_CREDITS.VOICES} credits`;
+    }
+    if (type === "img_credit") {
+      return `Add ${BOOSTER_START_CREDITS.IMAGES} credits`;
+    }
+  };
+
   return (
     <>
       <div className="flex w-full flex-col items-center justify-between gap-3 px-5 py-2 md:flex-row md:items-end md:gap-5 md:px-12">
@@ -111,7 +121,7 @@ export default function CreditRow({
                 <span className="ml-2">Adding...</span>
               </div>
             ) : (
-              "Add Booster"
+              handleBoosterButton()
             )}
           </Button>
         ) : (

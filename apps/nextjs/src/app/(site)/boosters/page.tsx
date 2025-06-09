@@ -11,6 +11,7 @@ import {
 
 import { poppins, roboto } from "~/app/fonts";
 import {
+  BOOSTER_START_CREDITS,
   STARTING_11CL_CREDITS,
   STARTING_IMG_CREDITS,
   // STARTING_CL_CREDITS,
@@ -23,8 +24,6 @@ import {
 } from "./actions";
 import BoosterCard from "./BoosterCard/BoosterCard";
 import type { BoosterType, SubData } from "./types";
-
-import { BOOSTER_START_CREDITS } from "~/constants/credits";
 
 export default async function BoostersPage({
   searchParams,
@@ -117,6 +116,7 @@ export default async function BoostersPage({
               // "Clone voices",
               // "Record and get feedback",
               "Sound Effects",
+              "Music",
             ]}
             imageMain={
               <IlustrationVoiceSoundfx className="max-md:w-[300px] max-sm:w-[200px]" />
