@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { auth } from "@voiceai/auth";
 
 import { get11LabsPlanAndBoosterCredits } from "../my-profile/actions";
-import HeaderStudio from "./HeaderStudio";
 import MultiActorPage from "./multiactorpage";
 
 const voicesAmount: Record<string, number> = {
