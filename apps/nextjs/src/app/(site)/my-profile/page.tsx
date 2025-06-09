@@ -13,9 +13,8 @@ import { poppins, roboto } from "~/app/fonts";
 import type { I_AppSumoSubscription } from "~/constants/types/subscriptions";
 import type { SubData } from "../boosters/types";
 import { getImgCredits } from "../image-generator/actions";
-import { getCredits } from "./actions";
+import { get11LabsPlanAndBoosterCredits, getCredits } from "./actions";
 import SubscriptionDetails from "./subscription-details";
-import { fetchUserCredits } from "~/lib/get11LabsCredits";
 
 async function getSubscription(planId: string | null | undefined) {
   const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
@@ -69,10 +68,10 @@ export default async function MyProfile() {
   const credits = await getCredits(session?.user.id ?? "");
 
   // Voices credits
-  const elevenLabsCredits = await fetchUserCredits(
+  const elevenLabsCredits = await get11LabsPlanAndBoosterCredits(
     session?.user.id ?? "",
   );
-  // Images credits 
+  // Images credits
   const imgCredits = await getImgCredits(session?.user.id ?? "");
 
   return (
