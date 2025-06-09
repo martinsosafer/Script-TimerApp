@@ -6,6 +6,7 @@ import { fetchUserCredits } from "~/lib/get11LabsCredits";
 import { set11LabsCreditsBasedOnPlan } from "~/lib/set11labsCredits";
 import { History } from "../../_components/history";
 import PageHeader from "../components/page-header";
+import { get11LabsPlanAndBoosterCredits } from "../my-profile/actions";
 import {
   characters,
   // getTotalCredits,
@@ -30,10 +31,17 @@ export default async function HistoryPage() {
     );
 
     try {
-      const data = await fetchUserCredits(session.user.id);
-      // planCredits = data.planCredits;
-      totalCredits = data.totalCredits;
-      // boosterCredits = data.boosterCredits;
+      const elevenLabsCredits = await get11LabsPlanAndBoosterCredits(
+        session?.user.id ?? "",
+      );
+      // credits = elevenLabsCredits?.planCredits ?? 0;
+      totalCredits = elevenLabsCredits?.totalCredits ?? 0;
+      // boosterCredits = elevenLabsCredits?.boosterCredits ?? 0;
+
+      // const data = await fetchUserCredits(session.user.id);
+      // // planCredits = data.planCredits;
+      // totalCredits = data.totalCredits;
+      // // boosterCredits = data.boosterCredits;
     } catch (error) {
       console.error("Error fetching user credits:", error);
     }

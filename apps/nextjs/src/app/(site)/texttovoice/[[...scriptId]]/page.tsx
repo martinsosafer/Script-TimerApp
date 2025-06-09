@@ -3,9 +3,10 @@ import type { Metadata } from "next";
 
 import { auth } from "@voiceai/auth";
 
-import { fetchUserCredits } from "~/lib/get11LabsCredits";
+// import { fetchUserCredits } from "~/lib/get11LabsCredits";
 import { set11LabsCreditsBasedOnPlan } from "~/lib/set11labsCredits";
 import { getOpenAiCredits } from "../../chat/actions";
+import { get11LabsPlanAndBoosterCredits } from "../../my-profile/actions";
 import { ScriptAI } from "./script-ai";
 
 export const metadata: Metadata = {
@@ -15,9 +16,9 @@ export const metadata: Metadata = {
 
 export default async function ScriptPage() {
   const session = await auth();
-  let credits = 0;
-  let totalCreditsVar = 0;
-  let boosterCreditsVar = 0;
+  // let credits = 0;
+  let totalCredits = 0;
+  // let boosterCredits = 0;
 
   if (session?.user.id && session?.user.subscription?.status) {
     await set11LabsCreditsBasedOnPlan(
@@ -26,10 +27,18 @@ export default async function ScriptPage() {
     );
 
     try {
-      const data = await fetchUserCredits(session.user.id);
-      credits = data.planCredits;
-      totalCreditsVar = data.totalCredits;
-      boosterCreditsVar = data.boosterCredits;
+      // Voices credits
+      const elevenLabsCredits = await get11LabsPlanAndBoosterCredits(
+        session?.user.id ?? "",
+      );
+      // credits = elevenLabsCredits?.planCredits ?? 0;
+      totalCredits = elevenLabsCredits?.totalCredits ?? 0;
+      // boosterCredits = elevenLabsCredits?.boosterCredits ?? 0;
+
+      //     const data = await fetchUserCredits(session.user.id);
+      //     credits = data.planCredits;
+      //     totalCredits = data.totalCredits;
+      // boosterCredits = data.boosterCredits;
     } catch (error) {
       console.error("Error fetching user credits:", error);
     }
@@ -41,9 +50,9 @@ export default async function ScriptPage() {
   return (
     <ScriptAI
       subData={subData}
-      planCredits={credits}
-      totalCredits={totalCreditsVar}
-      boosterCredits={boosterCreditsVar}
+      // planCredits={credits}
+      totalCredits={totalCredits}
+      // boosterCredits={boosterCredits}
       openAiCredits={openAiCredits}
     />
   );
