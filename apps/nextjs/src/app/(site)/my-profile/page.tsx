@@ -12,8 +12,11 @@ import { poppins, roboto } from "~/app/fonts";
 
 import type { I_AppSumoSubscription } from "~/constants/types/subscriptions";
 import type { SubData } from "../boosters/types";
-import { getImgCredits } from "../image-generator/actions";
-import { get11LabsPlanAndBoosterCredits, getCredits } from "./actions";
+import {
+  get11LabsPlanAndBoosterCredits,
+  getCredits,
+  getImgCredits,
+} from "./actions";
 import SubscriptionDetails from "./subscription-details";
 
 async function getSubscription(planId: string | null | undefined) {

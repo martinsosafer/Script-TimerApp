@@ -4,6 +4,7 @@ import { auth } from "@voiceai/auth";
 
 import { fetchUserCredits } from "~/lib/get11LabsCredits";
 import PageHeader from "../components/page-header";
+import { get11LabsPlanAndBoosterCredits } from "../my-profile/actions";
 import { getTotalCredits } from "../texttovoice/[[...scriptId]]/utils";
 import MultiActorPage from "./multiactorpage";
 
@@ -53,21 +54,29 @@ export const metadata: Metadata = {
 export default async function IndexPage() {
   const session = await auth();
   const subData = session?.user.subscription;
-  console.log("THis is the data we need", subData);
+  // console.log("THis is the data we need", subData);
 
   // Use planId instead of plan
   const basePlan = subData?.status ?? "FREE";
 
   // Fetch user credits
-  let credits = 0;
-  let totalCreditsVar = 0;
-  let boosterCreditsVar = 0;
-  if (subData?.userId) {
+  // let credits = 0;
+  let totalCredits = 0;
+  // let boosterCreditsVar = 0;
+
+  if (subData?.userId && session?.user.subscription?.status) {
     try {
-      const data = await fetchUserCredits(subData.userId);
-      credits = data.planCredits;
-      totalCreditsVar = data.totalCredits;
-      boosterCreditsVar = data.boosterCredits;
+      const elevenLabsCredits = await get11LabsPlanAndBoosterCredits(
+        session?.user.id ?? "",
+      );
+      // credits = elevenLabsCredits?.planCredits ?? 0;
+      totalCredits = elevenLabsCredits?.totalCredits ?? 0;
+      // boosterCredits = elevenLabsCredits?.boosterCredits ?? 0;
+
+      // const data = await fetchUserCredits(subData.userId);
+      // credits = data.planCredits;
+      // totalCredits = data.totalCredits;
+      // boosterCreditsVar = data.boosterCredits;
     } catch (error) {
       console.error("Error fetching credits:", error);
     }
@@ -101,9 +110,7 @@ export default async function IndexPage() {
             </p>
             <p className="font-base  text-center">
               You have{" "}
-              <span className="text-cp-primary font-bold">
-                {totalCreditsVar}
-              </span>{" "}
+              <span className="text-cp-primary font-bold">{totalCredits}</span>{" "}
               characters left.
             </p>
             {/* <p className="font-base  text-center">

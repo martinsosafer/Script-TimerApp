@@ -35,9 +35,9 @@ export function ScriptAI({
   openAiCredits,
 }: {
   subData: SubscriptionData | null | undefined;
-  planCredits: number;
+  planCredits?: number;
   totalCredits: number;
-  boosterCredits: number;
+  boosterCredits?: number;
   openAiCredits: number;
 }) {
   const {
@@ -207,10 +207,10 @@ export function ScriptAI({
         </h4>
       </header>
 
-      <div className="mb-32 h-full flex flex-col">
+      <div className="mb-32 flex h-full flex-col">
         <Tabs defaultValue="complete" className="flex-1">
           <div className="container mb-4 h-full px-4 lg:px-0">
-            <div className="flex flex-col h-full gap-6 lg:grid lg:grid-cols-[400px_1fr] lg:items-stretch">
+            <div className="flex h-full flex-col gap-6 lg:grid lg:grid-cols-[400px_1fr] lg:items-stretch">
               {/* TabOne - Will be full width on mobile, 400px on desktop */}
               <div className="w-full lg:w-auto">
                 <TabOne

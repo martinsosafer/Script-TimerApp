@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { auth } from "@voiceai/auth";
 
 import PageHeader from "../components/page-header";
-import { getImgCredits } from "./actions";
+import { getImgCredits } from "../my-profile/actions";
 import ImageGenerator from "./image-generator";
 
 export const metadata: Metadata = {
