@@ -9,7 +9,7 @@ export async function fetchUserCredits(userId: string): Promise<{
       `${baseUrl}/api/get11LabsCredits?userId=${userId}`,
     );
 
-    console.log("Response Status:", response.status);
+    // console.log("Response Status:", response.status);
     console.log(
       "Request URL:",
       `${baseUrl}/api/get11LabsCredits?userId=${userId}`,
@@ -21,17 +21,21 @@ export async function fetchUserCredits(userId: string): Promise<{
       throw new Error(errorData.error || "Failed to fetch user credits");
     }
 
-    const { planCredits, totalCredits, boosterCredits } = await response.json();
-    // console.log("API Response Data:", { credits, totalCredits, boosterCredits });
+    const { planCredits, totalCredits, boosterCredits } =
+      (await response.json()) as {
+        planCredits?: number;
+        totalCredits?: number;
+        boosterCredits?: number;
+      };
 
     if (planCredits === undefined) {
       console.warn("Credits are undefined in API response");
     }
 
     return {
-      planCredits: (planCredits as number) || 0,
-      totalCredits: (totalCredits as number) || 0,
-      boosterCredits: (boosterCredits as number) || 0,
+      planCredits: planCredits! || 0,
+      totalCredits: totalCredits! || 0,
+      boosterCredits: boosterCredits! || 0,
     };
   } catch (error) {
     console.error("Error fetching user credits:", error);

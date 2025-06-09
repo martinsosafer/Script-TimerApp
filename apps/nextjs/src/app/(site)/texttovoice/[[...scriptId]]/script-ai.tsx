@@ -29,9 +29,9 @@ interface SubscriptionData {
 
 export function ScriptAI({
   subData,
-  planCredits, // Total plan credits available
+  // planCredits, // Total plan credits available
   totalCredits, // Plan + Boosters credits available
-  boosterCredits, // Sum of all booster credits
+  // boosterCredits, // Sum of all booster credits
   openAiCredits,
 }: {
   subData: SubscriptionData | null | undefined;
@@ -40,10 +40,6 @@ export function ScriptAI({
   boosterCredits: number;
   openAiCredits: number;
 }) {
-  // console.log("totalCredits:", totalCredits);
-  // console.log("boosterCredits:", boosterCredits);
-  // console.log("planCredits:", planCredits);
-
   const {
     subscriptionData,
     favoriteVoices,
@@ -130,7 +126,7 @@ export function ScriptAI({
   };
 
   React.useEffect(() => {
-    if (subData) void refetchCredits();
+    subData ?? refetchCredits();
   }, [subData]);
 
   // const initialPlanCredits = getTotalCredits(subData?.status);
