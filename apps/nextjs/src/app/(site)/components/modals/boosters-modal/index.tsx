@@ -8,6 +8,7 @@ import { IlustrationTransformYourCareer } from "@voiceai/ui/@/illustrations";
 import { addBooster } from "~/app/(site)/boosters/actions";
 import type { BoosterType, SubData } from "~/app/(site)/boosters/types";
 import { poppins, roboto } from "~/app/fonts";
+import { BOOSTER_PRICE } from "~/constants/products";
 
 interface BoostersModalProps {
   setIsBoostersModalOpen: (isBoostersModalOpen: boolean) => void;
@@ -125,6 +126,7 @@ export default function BoostersModal({
               <p
                 className={`${roboto.className} text-cp-accent pt-3 text-center text-2xl font-bold`}
               >{`${type} BOOSTER`}</p>
+              <p>{`for $${BOOSTER_PRICE[type]}`}</p>
               {subData.status !== "1" && subData.status !== "2" ? (
                 <p className={`${roboto.className} pt-3 text-center text-lg`}>
                   using your subscription payment method
