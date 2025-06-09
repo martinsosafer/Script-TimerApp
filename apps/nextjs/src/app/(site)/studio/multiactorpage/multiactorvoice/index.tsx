@@ -48,7 +48,7 @@ interface MultiActorVoiceProps {
   allVoices?: Voice[];
   userPlan?: string;
   subData?: string;
-  setIsGenerating?: (isGenerating: boolean) => void;
+  setIsGenerating: (isGenerating: boolean) => void;
 }
 
 interface ActorSection {
