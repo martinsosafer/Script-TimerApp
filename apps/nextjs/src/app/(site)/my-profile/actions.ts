@@ -1,6 +1,7 @@
 "use server";
 
 import { db, eq, schema } from "@voiceai/db";
+import { elevenLabsBooster } from "@voiceai/db/schema/11LabsBooster";
 import { elevenLabsCredit } from "@voiceai/db/schema/11LabsCredits";
 
 export async function getCredits(userId: string) {
@@ -36,7 +37,7 @@ export async function get11LabsPlanAndBoosterCredits(userId: string) {
 
     // Get booster credits if available
     const boosterCredits = await db.query.elevenLabsBooster.findMany({
-      where: (booster, { eq }) => eq(booster.userId, userId),
+      where: eq(elevenLabsBooster.userId, userId),
     });
     let totalBoosterCredits = 0;
     if (boosterCredits.length > 0) {
