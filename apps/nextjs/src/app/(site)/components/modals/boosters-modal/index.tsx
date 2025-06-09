@@ -126,13 +126,15 @@ export default function BoostersModal({
               <p
                 className={`${roboto.className} text-cp-accent pt-3 text-center text-2xl font-bold`}
               >{`${type} BOOSTER`}</p>
-              <p>{`for $${BOOSTER_PRICE[type]}`}</p>
+              <p
+                className={`${roboto.className} pt-3 text-center text-lg`}
+              >{`for $${BOOSTER_PRICE[type]}`}</p>
               {subData.status !== "1" && subData.status !== "2" ? (
-                <p className={`${roboto.className} pt-3 text-center text-lg`}>
+                <p className={`${roboto.className} text-center text-lg`}>
                   using your subscription payment method
                 </p>
               ) : (
-                <p className={`${roboto.className} pt-3 text-center text-lg`}>
+                <p className={`${roboto.className} text-center text-lg`}>
                   using credit card payment
                 </p>
               )}

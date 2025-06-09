@@ -2,10 +2,8 @@ import type { Metadata } from "next";
 
 import { auth } from "@voiceai/auth";
 
-import { fetchUserCredits } from "~/lib/get11LabsCredits";
-import PageHeader from "../components/page-header";
 import { get11LabsPlanAndBoosterCredits } from "../my-profile/actions";
-import { getTotalCredits } from "../texttovoice/[[...scriptId]]/utils";
+import HeaderStudio from "./HeaderStudio";
 import MultiActorPage from "./multiactorpage";
 
 const voicesAmount: Record<string, number> = {
@@ -26,26 +24,6 @@ const voicesAmount: Record<string, number> = {
   "2": 2,
 };
 
-// Add characters record similar to the one in ScriptAI component
-const characters: Record<string | number, string> = {
-  FREE: "500",
-  FREE_TRIAL: "1000",
-  STUDENT: "2,000",
-  CREATOR: "5,000",
-  BUSINESS: "10,000",
-  STUDENTCLMO: "2,000",
-  CREATORCLMO: "5,000",
-  BUSINESSCLMO: "10,000",
-  STUDENTCLYR: "2,000",
-  CREATORCLYR: "5,000",
-  BUSINESSCLYR: "10,000",
-  INACTIVE: "0",
-  ACTIVE: "500",
-  PAUSED: "0",
-  1: "5,000",
-  2: "10,000",
-};
-
 export const metadata: Metadata = {
   title: "Studio",
   description: "Create Multiple Voice chats or stories in here",
@@ -54,86 +32,24 @@ export const metadata: Metadata = {
 export default async function IndexPage() {
   const session = await auth();
   const subData = session?.user.subscription;
-  // console.log("THis is the data we need", subData);
-
-  // Use planId instead of plan
-  const basePlan = subData?.status ?? "FREE";
 
   // Fetch user credits
-  // let credits = 0;
   let totalCredits = 0;
-  // let boosterCreditsVar = 0;
 
   if (subData?.userId && session?.user.subscription?.status) {
     try {
       const elevenLabsCredits = await get11LabsPlanAndBoosterCredits(
         session?.user.id ?? "",
       );
-      // credits = elevenLabsCredits?.planCredits ?? 0;
       totalCredits = elevenLabsCredits?.totalCredits ?? 0;
-      // boosterCredits = elevenLabsCredits?.boosterCredits ?? 0;
-
-      // const data = await fetchUserCredits(subData.userId);
-      // credits = data.planCredits;
-      // totalCredits = data.totalCredits;
-      // boosterCreditsVar = data.boosterCredits;
     } catch (error) {
       console.error("Error fetching credits:", error);
     }
   }
 
-  // const totalCredits = getTotalCredits(basePlan);
-
-  const subtitle = (
-    <>
-      <div>
-        <p className="font-base mb-2 text-center">
-          You've got a screenplay, book, news, podcast, table read… This is your
-          home! Create long form, multiple actor voice overs below.
-        </p>
-
-        {/* Add credit information similar to ScriptAI component */}
-        {subData ? (
-          <div>
-            <p className="font-base  text-center">
-              On your current plan, <br />
-              <span className="text-cp-primary font-semibold">
-                {basePlan === "1" || basePlan === "2"
-                  ? `AppSumoTier ${basePlan}`
-                  : basePlan}
-              </span>
-              , you are entitled to{" "}
-              <span className="text-cp-primary font-bold">
-                {characters[basePlan]}
-              </span>{" "}
-              per script.
-            </p>
-            <p className="font-base  text-center">
-              You have{" "}
-              <span className="text-cp-primary font-bold">{totalCredits}</span>{" "}
-              characters left.
-            </p>
-            {/* <p className="font-base  text-center">
-              You have{" "}
-              <span className="text-cp-primary font-bold">{credits}</span>{" "}
-              characters left of{" "}
-              <span className="text-cp-primary font-bold">{totalCredits}</span>{" "}
-              total monthly characters.
-            </p> */}
-          </div>
-        ) : (
-          <p className="font-base mb-2 text-center">
-            Log in to Script Timer and start creating now.
-          </p>
-        )}
-      </div>
-    </>
-  );
-
   return (
-    <div>
-      <PageHeader title="Multi-Voice Studio" subtitle={subtitle} />
-      <MultiActorPage subData={subData} />
-    </div>
+    <>
+      <MultiActorPage subData={subData} totalCredits={totalCredits} />
+    </>
   );
 }

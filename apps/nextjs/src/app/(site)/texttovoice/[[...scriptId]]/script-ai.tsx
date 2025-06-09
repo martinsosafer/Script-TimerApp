@@ -14,10 +14,11 @@ import { useScriptDetails } from "~/app/hooks/texttovoice/useScriptDetails";
 import useStreamingAudio from "~/app/hooks/texttovoice/useStreamingAudio";
 import { useSubscription } from "~/app/hooks/texttovoice/useSubscription";
 import { calculateLengthTime } from "~/lib/calculate-length-time";
-import { fetchUserCredits } from "~/lib/get11LabsCredits";
+// import { fetchUserCredits } from "~/lib/get11LabsCredits";
 import NoSessionModal from "../../components/modals/no-session-modal";
 import TabOne from "../../components/texttospeech/Tab1";
 import TabTwo from "../../components/texttospeech/Tab2";
+import { get11LabsPlanAndBoosterCredits } from "../../my-profile/actions";
 import { ActionButtons } from "./actionbuttons";
 import { AudioPlayerControls } from "./audioplayer";
 import { characters, getTotalCredits } from "./utils";
@@ -29,8 +30,8 @@ interface SubscriptionData {
 
 export function ScriptAI({
   subData,
-  // planCredits, // Total plan credits available
   totalCredits, // Plan + Boosters credits available
+  // planCredits, // Total plan credits available
   // boosterCredits, // Sum of all booster credits
   openAiCredits,
 }: {
@@ -114,20 +115,29 @@ export function ScriptAI({
 
   const [credits, setCredits] = React.useState(totalCredits);
 
+  const totalCreditsUpdate = async (userId: string) => {
+    const data = await get11LabsPlanAndBoosterCredits(userId);
+    setCredits(data?.totalCredits ?? 0);
+  };
+
+  React.useEffect(() => {
+    if (subData?.userId) {
+      totalCreditsUpdate(subData.userId).catch((error) => {
+        console.error("Error fetching credits:", error);
+      });
+    }
+  }, []);
+
   const refetchCredits = async () => {
     try {
       const userId = subData?.userId;
       if (!userId) return;
-      const { totalCredits } = await fetchUserCredits(userId);
-      setCredits(totalCredits);
+      const data = await get11LabsPlanAndBoosterCredits(userId);
+      setCredits(data?.totalCredits ?? 0);
     } catch (error) {
       console.error("Error refetching credits:", error);
     }
   };
-
-  React.useEffect(() => {
-    subData ?? refetchCredits();
-  }, [subData]);
 
   // const initialPlanCredits = getTotalCredits(subData?.status);
 

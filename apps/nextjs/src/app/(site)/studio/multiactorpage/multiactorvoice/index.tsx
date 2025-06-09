@@ -1,8 +1,7 @@
 "use client";
 
-import Link from "next/link";
-
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 
 import { Button } from "@voiceai/ui";
@@ -26,6 +25,7 @@ import {
 import { SimilaritySelector } from "~/app/(site)/components/similarity-selector";
 import { SpeedSelector } from "~/app/(site)/components/speed-selector";
 import { StabilitySelector } from "~/app/(site)/components/stability-selector";
+import { StyleSelector } from "~/app/(site)/components/style-selector";
 import { SpeedButton } from "~/app/(site)/components/texttospeech/Tab2/buttonmenu.tsx/speedbutton";
 import { useAudioGeneration } from "~/app/hooks/studio/useAudioGeneration";
 import { useAudioManagement } from "~/app/hooks/studio/useAudioManagment";
@@ -34,22 +34,21 @@ import { useAudioPlayback } from "~/app/hooks/studio/useAudioPlayback";
 import { useUIState } from "~/app/hooks/studio/useUIState";
 import { useVoiceFilter } from "~/app/hooks/studio/useVoiceFilter";
 import { useWaveformVisualization } from "~/app/hooks/studio/useWaveformVisualization";
+import { useSubscription } from "~/app/hooks/texttovoice/useSubscription";
 import type { Voice } from "~/constants/types/voice";
 import { VoiceDropdown } from "./actordropdown/index";
 import { ActorControls } from "./actorscontrols/index";
 import { AudioControls } from "./audiocontrols/index";
 import { GenerateButton } from "./generatebutton/index";
 import { SettingsPanel } from "./settingspanel/index";
-import { VoiceAvatar } from "./voiceavatar/index";
-
-import { useSubscription } from "~/app/hooks/texttovoice/useSubscription";
-import { StyleSelector } from "~/app/(site)/components/style-selector";
 import MergedAudioPlayer from "./studioPlayer";
+import { VoiceAvatar } from "./voiceavatar/index";
 
 interface MultiActorVoiceProps {
   allVoices?: Voice[];
   userPlan?: string;
   subData?: string;
+  setIsGenerating?: (isGenerating: boolean) => void;
 }
 
 interface ActorSection {
@@ -142,6 +141,7 @@ const CHAR_LIMITS: Record<string, number> = {
 export default function MultiActorVoice({
   allVoices = [],
   subData,
+  setIsGenerating,
 }: MultiActorVoiceProps) {
   const {
     actors,
@@ -716,6 +716,7 @@ export default function MultiActorVoice({
     } finally {
       // Reset processing flag
       isProcessingRef.current = false;
+      setIsGenerating(true);
     }
   };
 
@@ -759,7 +760,7 @@ export default function MultiActorVoice({
                   size="sm"
                   onClick={() => setShowAdvancedSettings(!showAdvancedSettings)}
                 >
-                  <Settings className="lg:mr-2 mr-0 h-4 w-4" />
+                  <Settings className="mr-0 h-4 w-4 lg:mr-2" />
                   Advanced Settings
                 </Button>
               </TooltipTrigger>
@@ -808,10 +809,10 @@ export default function MultiActorVoice({
           >
             <div className="flex items-center justify-between border-b p-2 lg:p-3">
               <div className="flex items-center gap-2">
-                <span className="flex h-5 w-5 lg:h-6 lg:w-6 items-center justify-center rounded-full bg-muted text-xs font-medium">
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-muted text-xs font-medium lg:h-6 lg:w-6">
                   {index + 1}
                 </span>
-                <h3 className="text-sm lg:text-base font-medium">
+                <h3 className="text-sm font-medium lg:text-base">
                   {actor.voice?.name || "Select a voice"}
                 </h3>
               </div>
@@ -827,7 +828,7 @@ export default function MultiActorVoice({
             </div>
 
             <div className="flex flex-col lg:flex-row">
-              <div className="actor-voice-container relative flex flex-col lg:flex-row items-start gap-2 lg:gap-4 p-2 lg:p-4 lg:w-1/3">
+              <div className="actor-voice-container relative flex flex-col items-start gap-2 p-2 lg:w-1/3 lg:flex-row lg:gap-4 lg:p-4">
                 <div className="relative">
                   <VoiceAvatar
                     voice={actor.voice}
@@ -877,7 +878,7 @@ export default function MultiActorVoice({
                 <div className="relative w-full">
                   <Textarea
                     placeholder="Enter the text for this actor..."
-                    className="min-h-[100px] lg:min-h-[80px] w-full flex-1 resize-none rounded-md border-2 border-muted text-sm lg:text-base focus:border-primary focus:ring-1 focus:ring-primary"
+                    className="min-h-[100px] w-full flex-1 resize-none rounded-md border-2 border-muted text-sm focus:border-primary focus:ring-1 focus:ring-primary lg:min-h-[80px] lg:text-base"
                     value={actor.text}
                     onChange={(e) => {
                       const newText = e.target.value;
@@ -901,7 +902,7 @@ export default function MultiActorVoice({
                     <span
                       className={
                         actor.text.length > getCharLimit() * 0.9
-                          ? "text-red-500 font-medium"
+                          ? "font-medium text-red-500"
                           : "text-gray-600"
                       }
                     >
@@ -912,11 +913,11 @@ export default function MultiActorVoice({
 
                 <div className="mt-3">
                   {actor.voice?.type === "GOOGLE" && (
-                    <div className="text-cp-primary text-xs lg:text-[12px] font-bold mb-2">
+                    <div className="text-cp-primary mb-2 text-xs font-bold lg:text-[12px]">
                       Modulation is not available for this voice
                     </div>
                   )}
-                  <div className="grid grid-cols-2 lg:flex lg:flex-row gap-2 lg:gap-4">
+                  <div className="grid grid-cols-2 gap-2 lg:flex lg:flex-row lg:gap-4">
                     <div className="col-span-2 lg:flex-1">
                       <StabilitySelector
                         value={actor.stability}
@@ -1027,7 +1028,7 @@ export default function MultiActorVoice({
         >
           <Button
             variant="default"
-            className="text-sm lg:text-md flex w-full items-center justify-center gap-2 bg-blue-400 py-6 lg:py-8 shadow-md hover:bg-blue-600"
+            className="lg:text-md flex w-full items-center justify-center gap-2 bg-blue-400 py-6 text-sm shadow-md hover:bg-blue-600 lg:py-8"
             onClick={addNewActor}
           >
             <Plus className="h-5 w-5 lg:h-6 lg:w-6" />
@@ -1050,7 +1051,7 @@ export default function MultiActorVoice({
           >
             <Button
               variant="default"
-              className="w-full py-4 lg:py-6 text-base lg:text-lg"
+              className="w-full py-4 text-base lg:py-6 lg:text-lg"
               onClick={handleMasterButtonClick}
               disabled={
                 isGenerating ||
@@ -1063,7 +1064,7 @@ export default function MultiActorVoice({
               isMergingAudio ||
               isProcessingRef.current ||
               isBatchProcessing ? (
-                <Loader2 className="mr-2 h-4 w-4 lg:h-5 lg:w-5 animate-spin" />
+                <Loader2 className="mr-2 h-4 w-4 animate-spin lg:h-5 lg:w-5" />
               ) : (
                 <Mic className="mr-2 h-4 w-4 lg:h-5 lg:w-5" />
               )}
@@ -1086,12 +1087,12 @@ export default function MultiActorVoice({
       </div>
       {/* Character Limit Modal */}
       {showCharLimitModal && subData?.status === "BUSINESS" && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
-          <div className="w-full max-w-sm lg:max-w-md rounded-lg bg-white p-4 lg:p-6 shadow-lg">
-            <h3 className="mb-3 lg:mb-4 text-base lg:text-lg font-medium">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="w-full max-w-sm rounded-lg bg-white p-4 shadow-lg lg:max-w-md lg:p-6">
+            <h3 className="mb-3 text-base font-medium lg:mb-4 lg:text-lg">
               Character Limit Reached
             </h3>
-            <p className="mb-3 lg:mb-4 text-sm lg:text-base">
+            <p className="mb-3 text-sm lg:mb-4 lg:text-base">
               You've reached the 10,000 character limit for the BUSINESS plan.
             </p>
             <div className="flex justify-end">
@@ -1108,12 +1109,12 @@ export default function MultiActorVoice({
       )}
 
       {showCharLimitModal && subData?.status !== "BUSINESS" && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
-          <div className="w-full max-w-sm lg:max-w-md rounded-lg bg-white p-4 lg:p-6 shadow-lg">
-            <h3 className="mb-3 lg:mb-4 text-base lg:text-lg font-medium">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="w-full max-w-sm rounded-lg bg-white p-4 shadow-lg lg:max-w-md lg:p-6">
+            <h3 className="mb-3 text-base font-medium lg:mb-4 lg:text-lg">
               Character Limit Reached
             </h3>
-            <p className="mb-3 lg:mb-4 text-sm lg:text-base">
+            <p className="mb-3 text-sm lg:mb-4 lg:text-base">
               You've reached the character limit of {getCharLimit()} for your{" "}
               {subData?.status || "FREE"} plan. Please upgrade your plan to
               increase your character limit or reduce your text.
@@ -1122,14 +1123,14 @@ export default function MultiActorVoice({
               <Button
                 variant="outline"
                 onClick={() => setShowCharLimitModal(null)}
-                className="text-sm lg:text-base order-2 lg:order-1"
+                className="order-2 text-sm lg:order-1 lg:text-base"
               >
                 Close
               </Button>
               <Button
                 variant="default"
                 onClick={() => setShowCharLimitModal(null)}
-                className="text-sm lg:text-base order-1 lg:order-2"
+                className="order-1 text-sm lg:order-2 lg:text-base"
               >
                 <Link href="/plans" target="_blank">
                   Upgrade Plan

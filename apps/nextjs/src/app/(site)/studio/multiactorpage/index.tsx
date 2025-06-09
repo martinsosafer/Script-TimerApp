@@ -1,9 +1,20 @@
 "use client";
 
+import { useState } from "react";
+
 import { api } from "~/utils/api";
+import HeaderStudio from "../HeaderStudio";
+import type { SubData } from "../types";
 import MultiActorVoice from "./multiactorvoice";
 
-export default function MultiActorPage({ subData }) {
+export default function MultiActorPage({
+  subData,
+  totalCredits,
+}: {
+  subData: SubData;
+  totalCredits: number;
+}) {
+  const [isGenerating, setIsGenerating] = useState(false);
   // Use tRPC hooks for data fetching
   const { data: voicesData, isLoading: voicesLoading } =
     api.voice.publicVoices.useQuery();
@@ -19,8 +30,20 @@ export default function MultiActorPage({ subData }) {
   }
 
   return (
-    <div className="container mx-auto py-4">
-      <MultiActorVoice allVoices={voicesData} subData={subData} />
-    </div>
+    <>
+      <HeaderStudio
+        subData={subData}
+        totalCredits={totalCredits}
+        isGenerating={isGenerating}
+        setIsGenerating={setIsGenerating}
+      />
+      <div className="container mx-auto py-4">
+        <MultiActorVoice
+          allVoices={voicesData}
+          subData={subData}
+          setIsGenerating={setIsGenerating}
+        />
+      </div>
+    </>
   );
 }
