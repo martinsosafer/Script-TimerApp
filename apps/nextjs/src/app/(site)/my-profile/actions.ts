@@ -1,6 +1,8 @@
 "use server";
 
 import { db, eq, schema } from "@voiceai/db";
+import { elevenLabsBooster } from "@voiceai/db/schema/11LabsBooster";
+import { elevenLabsCredit } from "@voiceai/db/schema/11LabsCredits";
 
 export async function getCredits(userId: string) {
   try {
@@ -21,6 +23,38 @@ export async function getCredits(userId: string) {
       )
       .where(eq(schema.elevenLabsCredit.userId, userId));
     return result;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function get11LabsPlanAndBoosterCredits(userId: string) {
+  try {
+    // Get plan credits
+    const planCredits = await db.query.elevenLabsCredit.findFirst({
+      where: eq(elevenLabsCredit.userId, userId),
+    });
+
+    // Get booster credits if available
+    const boosterCredits = await db.query.elevenLabsBooster.findMany({
+      where: eq(elevenLabsBooster.userId, userId),
+    });
+    let totalBoosterCredits = 0;
+    if (boosterCredits.length > 0) {
+      totalBoosterCredits = boosterCredits.reduce(
+        (acc, booster) => acc + booster.credits,
+        0,
+      );
+    }
+
+    // Calculate total credits
+    const totalCredits = (planCredits?.credits ?? 0) + totalBoosterCredits;
+
+    return {
+      planCredits: planCredits?.credits ?? 0,
+      totalCredits,
+      boosterCredits: totalBoosterCredits,
+    };
   } catch (error) {
     console.error(error);
   }
