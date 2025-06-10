@@ -8,6 +8,7 @@ import { IlustrationTransformYourCareer } from "@voiceai/ui/@/illustrations";
 import { addBooster } from "~/app/(site)/boosters/actions";
 import type { BoosterType, SubData } from "~/app/(site)/boosters/types";
 import { poppins, roboto } from "~/app/fonts";
+import { BOOSTER_START_CREDITS } from "~/constants/credits";
 import { BOOSTER_PRICE } from "~/constants/products";
 
 interface BoostersModalProps {
@@ -16,7 +17,7 @@ interface BoostersModalProps {
   subData: SubData;
   isLoading: boolean;
   setIsLoading: (isLoading: boolean) => void;
-  setBoosterType: (type: BoosterType | null) => void;
+  setBoosterType?: (type: BoosterType | null) => void;
 }
 
 export default function BoostersModal({
@@ -60,7 +61,9 @@ export default function BoostersModal({
         // Regular users
         await addBooster({ subData, type });
       }
-      setBoosterType(null);
+      if (setBoosterType) {
+        setBoosterType(null);
+      }
       toast({
         title: "Booster added!",
         description: `You have successfully added ${type.toLowerCase()} booster`,
@@ -86,6 +89,22 @@ export default function BoostersModal({
       setIsLoading(false);
       setIsBoostersModalOpen(false);
     }
+  };
+
+  const formatNumber = (num: number) => {
+    return new Intl.NumberFormat("en-US").format(num);
+  };
+
+  const handleBoosterDescription = (type: BoosterType) => {
+    if (type === "VOICES")
+      return `${formatNumber(BOOSTER_START_CREDITS[type])} credits for $${BOOSTER_PRICE[type]}`;
+    if (type === "IMAGES")
+      return `${formatNumber(BOOSTER_START_CREDITS[type])} credits for $${BOOSTER_PRICE[type]}`;
+    if (type === "MASTERCLASS")
+      return `1 year access for $${BOOSTER_PRICE[type]}`;
+    if (type === "PLAGIARISM")
+      return `${formatNumber(BOOSTER_START_CREDITS[type])} credits for $${BOOSTER_PRICE[type]}`;
+    return "";
   };
 
   return (
@@ -128,9 +147,9 @@ export default function BoostersModal({
               <p
                 className={`${roboto.className} text-cp-accent pt-3 text-center text-2xl font-bold`}
               >{`${type} BOOSTER`}</p>
-              <p
-                className={`${roboto.className} pt-3 text-center text-lg`}
-              >{`for $${BOOSTER_PRICE[type]}`}</p>
+              <p className={`${roboto.className} pt-3 text-center text-lg`}>
+                {handleBoosterDescription(type)}
+              </p>
               {subData.status !== "1" && subData.status !== "2" ? (
                 <p className={`${roboto.className} text-center text-lg`}>
                   using your subscription payment method

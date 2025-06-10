@@ -261,7 +261,9 @@ export default function SubscriptionDetails({
             <span className="px-2 text-xs text-gray-400">
               Masterclasses status
             </span>
-            <div className="flex h-[40px] items-center rounded-lg border border-gray-400 p-4 text-gray-500">
+            <div
+              className={`flex h-[40px] items-center rounded-lg border border-gray-400 p-4 ${masterclassStatus ? "text-gray-500" : "text-gray-400"}`}
+            >
               {masterclassStatus ? "Activated" : "Not Activated"}
             </div>
           </div>

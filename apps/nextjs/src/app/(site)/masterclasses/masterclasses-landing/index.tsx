@@ -30,6 +30,7 @@ export default function MasterclasessLanding({
         subData={subData}
         setOpenNoSessionModal={() => setOpenNoSessionModal(true)}
       />
+      
       {openNoSessionModal && (
         <NoSessionModal
           page="courses"

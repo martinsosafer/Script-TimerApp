@@ -75,6 +75,19 @@ const BoosterCard = ({
         // variant: "destructive",
       });
     }
+    // Manage Masterclasses
+    if (type === "MASTERCLASS") {
+      if (
+        subData.status === "BUSINESS" ||
+        subData.status === "BUSINESSCLMO" ||
+        subData.status === "BUSINESSCLYR"
+      ) {
+        return toast({
+          title: "No need for booster",
+          description: "Your plan already includes Masterclasses",
+        });
+      }
+    }
     return setIsBoostersModalOpen(true);
   };
 
