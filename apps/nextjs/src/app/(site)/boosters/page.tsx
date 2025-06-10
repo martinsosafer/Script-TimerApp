@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 
@@ -24,6 +25,11 @@ import {
 } from "./actions";
 import BoosterCard from "./BoosterCard/BoosterCard";
 import type { BoosterType, SubData } from "./types";
+
+export const metadata: Metadata = {
+  title: "Boosters",
+  description: "Add booster packs and keep creating",
+};
 
 export default async function BoostersPage({
   searchParams,
