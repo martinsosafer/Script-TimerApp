@@ -16,6 +16,7 @@ interface BoostersModalProps {
   subData: SubData;
   isLoading: boolean;
   setIsLoading: (isLoading: boolean) => void;
+  setBoosterType: (type: BoosterType | null) => void;
 }
 
 export default function BoostersModal({
@@ -24,6 +25,7 @@ export default function BoostersModal({
   subData,
   isLoading,
   setIsLoading,
+  setBoosterType,
 }: BoostersModalProps) {
   const pathname = usePathname();
   const router = useRouter();
@@ -58,7 +60,7 @@ export default function BoostersModal({
         // Regular users
         await addBooster({ subData, type });
       }
-
+      setBoosterType(null);
       toast({
         title: "Booster added!",
         description: `You have successfully added ${type.toLowerCase()} booster`,
