@@ -106,6 +106,7 @@ export default function SubscriptionDetails({
       title: "Booster added!",
       description: `You have successfully added ${btParam} booster`,
     });
+    // Remove param after show toast
     return router.push("/my-profile");
   }
 

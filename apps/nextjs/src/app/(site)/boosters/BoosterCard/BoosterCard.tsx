@@ -75,7 +75,6 @@ const BoosterCard = ({
         // variant: "destructive",
       });
     }
-
     return setIsBoostersModalOpen(true);
   };
 
@@ -101,7 +100,7 @@ const BoosterCard = ({
                 {amountFormat}
               </h2>
               <h4
-                className={`${poppins.className} text-cp-accent text-3xl max-sm:text-xl`}
+                className={`${poppins.className} text-cp-accent text-nowrap text-3xl max-sm:text-xl`}
               >
                 {amountDescription}
               </h4>
@@ -147,8 +146,8 @@ const BoosterCard = ({
               </div>
             </div>
 
-            <div className="flex flex-col pt-9 max-sm:w-[106%]">
-              <p className="text-lg font-bold text-white max-sm:text-sm">
+            <div className="flex flex-col pt-9 max-sm:w-[150%]">
+              <p className="text-lg font-bold text-white max-sm:w-[80%] max-sm:text-sm">
                 {description}
               </p>
               {detailsList.map((detail, i) => (

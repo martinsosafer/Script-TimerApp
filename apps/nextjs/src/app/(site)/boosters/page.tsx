@@ -108,13 +108,10 @@ export default async function BoostersPage({
             amount={BOOSTER_START_CREDITS.VOICES}
             amountDescription="characters"
             title="Voice Overs & Sound Effects"
-            // title="Voice Overs, Voice Cloning & Sound Effects"
             description="Boost your credits and create more"
             detailsList={[
               "Text to Voice",
               "Voice overs",
-              // "Clone voices",
-              // "Record and get feedback",
               "Sound Effects",
               "Music",
             ]}
@@ -124,7 +121,7 @@ export default async function BoostersPage({
           />
 
           {/* Masterclasses Boost */}
-          {/* <BoosterCard
+          <BoosterCard
             subData={subData}
             type="MASTERCLASS"
             creditsPercentage={100}
@@ -144,7 +141,7 @@ export default async function BoostersPage({
             imageMain={
               <IlustrationMasterclasses className="h-[458px] w-[458px] max-md:w-[300px] max-sm:w-[200px]" />
             }
-          /> */}
+          />
 
           {/* Images Boost */}
           <BoosterCard
