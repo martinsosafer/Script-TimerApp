@@ -174,7 +174,7 @@ export default function BoostersModal({
                 </p>
               ) : (
                 <p className={`${roboto.className} text-center text-lg`}>
-                  using credit card payment
+                  using credit card or Link payment
                 </p>
               )}
             </div>
