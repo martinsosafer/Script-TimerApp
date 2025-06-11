@@ -269,7 +269,7 @@ export default function SubscriptionDetails({
           </div>
           <Button
             className="bg-cp-secondary-light hover:bg-cp-secondary h-10 w-full text-base md:w-[50%]"
-            disabled={false}
+            disabled={masterclassStatus}
             onClick={() => {
               setBoosterType("MASTERCLASS");
               setIsBoostersModalOpen(true);
@@ -318,8 +318,6 @@ export default function SubscriptionDetails({
           type={boosterType!}
           subData={subData}
           setIsBoostersModalOpen={setIsBoostersModalOpen}
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
           setBoosterType={setBoosterType}
         />
       )}

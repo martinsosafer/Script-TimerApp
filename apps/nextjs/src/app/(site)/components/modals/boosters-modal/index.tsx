@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 import { Button } from "@voiceai/ui";
@@ -15,8 +16,6 @@ interface BoostersModalProps {
   setIsBoostersModalOpen: (isBoostersModalOpen: boolean) => void;
   type: BoosterType;
   subData: SubData;
-  isLoading: boolean;
-  setIsLoading: (isLoading: boolean) => void;
   setBoosterType?: (type: BoosterType | null) => void;
 }
 
@@ -24,10 +23,9 @@ export default function BoostersModal({
   setIsBoostersModalOpen,
   type,
   subData,
-  isLoading,
-  setIsLoading,
   setBoosterType,
 }: BoostersModalProps) {
+  const [isLoading, setIsLoading] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
 
@@ -40,6 +38,7 @@ export default function BoostersModal({
   }) => {
     try {
       setIsLoading(true);
+
       // AppSumo users
       if (subData.status === "1" || subData.status === "2") {
         const res = await fetch("api/checkout-booster", {
@@ -61,6 +60,7 @@ export default function BoostersModal({
         // Regular users
         await addBooster({ subData, type });
       }
+
       if (setBoosterType) {
         setBoosterType(null);
       }
@@ -75,7 +75,8 @@ export default function BoostersModal({
         return router.push("/image-generator");
       if (type === "MASTERCLASS" && pathname !== "/my-profile")
         return router.push("/masterclasses");
-      if (type === "PLAGIARISM") return router.push("/plagiarism-detector");
+      if (type === "PLAGIARISM" && pathname !== "/my-profile")
+        return router.push("/plagiarism-detector");
 
       return window.location.reload();
     } catch (error: any) {

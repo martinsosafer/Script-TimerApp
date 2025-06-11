@@ -121,3 +121,25 @@ export async function getMasterclassStatus({
     console.error(error);
   }
 }
+
+export async function findMasterclassValidBooster({
+  userId,
+}: {
+  userId: string;
+}) {
+  try {
+    const booster = await db.query.masterclassBooster.findFirst({
+      where: (booster, { eq }) => eq(booster.userId, userId),
+    });
+
+    const actualDate = new Date();
+
+    if (booster?.id && booster?.valid_until >= actualDate) {
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    console.error(error);
+  }
+}
