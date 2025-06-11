@@ -66,18 +66,6 @@ const BoosterCard = ({
     setIsLoading(true);
     //   // Resend to register if no user account found
     if (!subData) return router.push("/register?origin=booster");
-    // Check if user has a paid plan
-    if (
-      (subData.status === "FREE" || subData.status === "FREE_TRIAL") &&
-      type !== "MASTERCLASS"
-    ) {
-      setIsLoading(false);
-      return toast({
-        title: "Upgrade your plan",
-        description: "You need to upgrade your plan to add boosters",
-        // variant: "destructive",
-      });
-    }
 
     // Manage Masterclasses
     if (type === "MASTERCLASS") {

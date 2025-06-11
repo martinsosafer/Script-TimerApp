@@ -41,7 +41,7 @@ export default async function BoostersPage({
   const userPlan = session?.user.subscription?.status;
   const subData = session?.user.subscription as SubData | undefined;
 
-  // AppSumo payment
+  // AppSumo users payment
   if (searchParams.sessionId && searchParams.type && subData) {
     const sessionId = searchParams.sessionId;
     const type = searchParams.type as BoosterType;

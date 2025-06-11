@@ -26,6 +26,7 @@ export default function BoostersModal({
   setBoosterType,
 }: BoostersModalProps) {
   const [isLoading, setIsLoading] = useState(false);
+
   const pathname = usePathname();
   const router = useRouter();
 
@@ -39,8 +40,12 @@ export default function BoostersModal({
     try {
       setIsLoading(true);
 
-      // AppSumo users
-      if (subData.status === "1" || subData.status === "2") {
+      // AppSumo users and FREE plans resend to Stripe page
+      if (
+        subData.status === "1" ||
+        subData.status === "2" ||
+        subData.planId === "initial_plan_id"
+      ) {
         const res = await fetch("api/checkout-booster", {
           method: "POST",
           body: JSON.stringify({
@@ -57,7 +62,7 @@ export default function BoostersModal({
         } = await res.json();
         return (window.location.href = url as string);
       } else {
-        // Regular users
+        // Regular users with subscription
         await addBooster({ subData, type });
       }
 
@@ -108,6 +113,18 @@ export default function BoostersModal({
     return "";
   };
 
+  const handleSubscriptionPayment = () => {
+    // AppSumo users
+    if (subData.status === "1" || subData.status === "2") {
+      return false;
+    }
+    // Free plans
+    if (subData.status === "FREE" || subData.status === "FREE_TRIAL") {
+      return false;
+    }
+    return true;
+  };
+
   return (
     <div
       className={`fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50 p-4 backdrop-blur ${poppins.className}`}
@@ -151,7 +168,7 @@ export default function BoostersModal({
               <p className={`${roboto.className} pt-3 text-center text-lg`}>
                 {handleBoosterDescription(type)}
               </p>
-              {subData.status !== "1" && subData.status !== "2" ? (
+              {handleSubscriptionPayment() ? (
                 <p className={`${roboto.className} text-center text-lg`}>
                   using your subscription payment method
                 </p>

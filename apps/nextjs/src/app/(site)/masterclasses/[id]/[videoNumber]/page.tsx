@@ -55,14 +55,15 @@ export default async function CoursePage({
       ? courseVideos[currentIndex + 1]
       : null;
 
+  const courseName = courseInfo?.title;
+
+  // Check access by plan or booster
   const plan = session?.user?.subscription?.status;
   const userId = session?.user?.id;
   const hasAccess = await getMasterclassStatus({
     status: plan!,
     userId: userId,
   });
-
-  const courseName = courseInfo?.title;
 
   return (
     <>
