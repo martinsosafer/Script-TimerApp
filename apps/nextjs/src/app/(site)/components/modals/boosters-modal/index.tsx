@@ -113,7 +113,7 @@ export default function BoostersModal({
     return "";
   };
 
-  const handleSubscriptionPayment = () => {
+  const handleSubscriptionPaymentMessage = () => {
     // AppSumo users
     if (subData.status === "1" || subData.status === "2") {
       return false;
@@ -168,7 +168,7 @@ export default function BoostersModal({
               <p className={`${roboto.className} pt-3 text-center text-lg`}>
                 {handleBoosterDescription(type)}
               </p>
-              {handleSubscriptionPayment() ? (
+              {handleSubscriptionPaymentMessage() ? (
                 <p className={`${roboto.className} text-center text-lg`}>
                   using your subscription payment method
                 </p>
