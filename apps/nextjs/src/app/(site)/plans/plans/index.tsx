@@ -54,6 +54,7 @@ export default function Plans({ session, subscription }: PlansProps) {
         setPriceId={setPriceId}
         setSelectedPlan={setSelectedPlan}
       />
+
       {isUpgrading && (
         <UpgradeModal
           onClose={() => setIsUpgrading(false)}
