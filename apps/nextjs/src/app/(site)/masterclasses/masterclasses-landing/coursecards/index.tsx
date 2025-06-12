@@ -26,6 +26,7 @@ interface CourseCardProps {
   subData?: { status?: string } | null;
   setOpenNoSessionModal: () => void;
 }
+
 function CourseCard({
   data,
   index,
@@ -33,6 +34,7 @@ function CourseCard({
   setOpenNoSessionModal,
 }: CourseCardProps) {
   const isEven = index % 2 === 0;
+  
   const handleCourseClick = (e: React.MouseEvent) => {
     if (!subData) {
       e.preventDefault();
