@@ -10,17 +10,17 @@ import Button from "../../components/button";
 
 export default function Compare({ session }: { session: Session | null }) {
   const router = useRouter();
+
   return (
     <section className="mt-[100px] flex flex-col items-center">
       <h2 className="text-cp-primary text-center text-[34px] font-bold">
         The most valuable software for creators
       </h2>
       <p className={`${roboto.className} mt-[12px] text-[16px]`}>
-        Compare the benefits your Co-Producer gives you with the tools it
-        replaces
+        Compare the benefits Script-TimerAi gives you with the tools it replaces
       </p>
       <div className="relative mt-[48px] h-[720px] w-[740px]">
-        <Image alt="Compare" src="/Compare-table.png" fill quality={100} />
+        <Image alt="Compare" src="/Compare-table_2.png" fill quality={100} />
       </div>
       <div className="flex w-[740px]">
         <div className="w-[300px]" />

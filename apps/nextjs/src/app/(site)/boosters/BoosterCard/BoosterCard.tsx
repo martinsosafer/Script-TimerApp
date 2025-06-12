@@ -9,6 +9,7 @@ import { toast } from "@voiceai/ui/@/components/ui/toast";
 import { poppins, roboto } from "~/app/fonts";
 import { BOOSTER_PRICE } from "~/constants/products";
 import BoostersModal from "../../components/modals/boosters-modal";
+import { findMasterclassValidBooster } from "../../my-profile/actions";
 import type { BoosterType, SubData } from "../types";
 
 interface BoosterCardProps {
@@ -55,27 +56,43 @@ const BoosterCard = ({
 
   const amountFormat = new Intl.NumberFormat("en-US").format(amount);
 
-  const handleBoosterModal = ({
+  const handleBoosterModal = async ({
     type,
     subData,
   }: {
     type: BoosterType;
     subData: SubData | undefined;
   }) => {
+    setIsLoading(true);
     //   // Resend to register if no user account found
     if (!subData) return router.push("/register?origin=booster");
-    // Check if user has a paid plan
-    if (
-      (subData.status === "FREE" || subData.status === "FREE_TRIAL") &&
-      type !== "MASTERCLASS"
-    ) {
-      return toast({
-        title: "Upgrade your plan",
-        description: "You need to upgrade your plan to add boosters",
-        // variant: "destructive",
-      });
-    }
 
+    // Manage Masterclasses
+    if (type === "MASTERCLASS") {
+      if (
+        subData.status === "BUSINESS" ||
+        subData.status === "BUSINESSCLMO" ||
+        subData.status === "BUSINESSCLYR"
+      ) {
+        setIsLoading(false);
+        return toast({
+          title: "No need for booster!",
+          description: "Your plan already includes Masterclasses access",
+        });
+      }
+      // Check if user has a valid Masterclass booster
+      const isValidMasterclassBooster = await findMasterclassValidBooster({
+        userId: subData.userId,
+      });
+      if (isValidMasterclassBooster) {
+        setIsLoading(false);
+        return toast({
+          title: "Masterclasses booster already active!",
+          description: "You already have an active Masterclasses booster",
+        });
+      }
+    }
+    setIsLoading(false);
     return setIsBoostersModalOpen(true);
   };
 
@@ -101,7 +118,7 @@ const BoosterCard = ({
                 {amountFormat}
               </h2>
               <h4
-                className={`${poppins.className} text-cp-accent text-3xl max-sm:text-xl`}
+                className={`${poppins.className} text-cp-accent text-nowrap text-3xl max-sm:text-xl`}
               >
                 {amountDescription}
               </h4>
@@ -147,8 +164,8 @@ const BoosterCard = ({
               </div>
             </div>
 
-            <div className="flex flex-col pt-9 max-sm:w-[106%]">
-              <p className="text-lg font-bold text-white max-sm:text-sm">
+            <div className="flex flex-col pt-9 max-sm:w-[150%]">
+              <p className="text-lg font-bold text-white max-sm:w-[80%] max-sm:text-sm">
                 {description}
               </p>
               {detailsList.map((detail, i) => (
@@ -188,8 +205,6 @@ const BoosterCard = ({
           setIsBoostersModalOpen={setIsBoostersModalOpen}
           type={type}
           subData={subData!}
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
         />
       )}
     </>

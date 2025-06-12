@@ -49,7 +49,7 @@ export async function getVoiceCredits(userId: string) {
   }
 }
 
-// Add booster by type (Stripe)
+// Add booster by type (Stripe subscription)
 export async function addBooster({
   subData,
   type,

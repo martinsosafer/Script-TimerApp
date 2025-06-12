@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 
@@ -25,6 +26,11 @@ import {
 import BoosterCard from "./BoosterCard/BoosterCard";
 import type { BoosterType, SubData } from "./types";
 
+export const metadata: Metadata = {
+  title: "Boosters",
+  description: "Add booster packs and keep creating",
+};
+
 export default async function BoostersPage({
   searchParams,
 }: {
@@ -35,7 +41,7 @@ export default async function BoostersPage({
   const userPlan = session?.user.subscription?.status;
   const subData = session?.user.subscription as SubData | undefined;
 
-  // AppSumo payment
+  // AppSumo users payment
   if (searchParams.sessionId && searchParams.type && subData) {
     const sessionId = searchParams.sessionId;
     const type = searchParams.type as BoosterType;
@@ -108,13 +114,10 @@ export default async function BoostersPage({
             amount={BOOSTER_START_CREDITS.VOICES}
             amountDescription="characters"
             title="Voice Overs & Sound Effects"
-            // title="Voice Overs, Voice Cloning & Sound Effects"
             description="Boost your credits and create more"
             detailsList={[
               "Text to Voice",
               "Voice overs",
-              // "Clone voices",
-              // "Record and get feedback",
               "Sound Effects",
               "Music",
             ]}
@@ -124,7 +127,7 @@ export default async function BoostersPage({
           />
 
           {/* Masterclasses Boost */}
-          {/* <BoosterCard
+          <BoosterCard
             subData={subData}
             type="MASTERCLASS"
             creditsPercentage={100}
@@ -144,7 +147,7 @@ export default async function BoostersPage({
             imageMain={
               <IlustrationMasterclasses className="h-[458px] w-[458px] max-md:w-[300px] max-sm:w-[200px]" />
             }
-          /> */}
+          />
 
           {/* Images Boost */}
           <BoosterCard

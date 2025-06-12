@@ -41,7 +41,7 @@ export default function VideoPage({
 }: VideoPageProps) {
   const isVideoAccessible = (videoNumber: string) => {
     if (!noAccess) return true;
-    return parseInt(videoNumber) <= 3;
+    return parseInt(videoNumber) <= 2;
   };
 
   return (

@@ -115,7 +115,7 @@ export default function Explore({
           </div>
         </div>
         <div className="relative mt-[48px] h-[345px] w-[893px]">
-          <Image alt="Voice Ai" src="/Masterclasses.png" fill />
+          <Image alt="Masterclasses" src="/Masterclasses_2.png" fill />
         </div>
         <div
           className={`${roboto.className} mb-0 mt-[8px] flex w-[893px] justify-around gap-1 text-[18px] font-bold`}
@@ -197,6 +197,7 @@ export default function Explore({
           </span>
         </div>
       </section>
+
       {addOnType && (
         <AddOnModal
           onClose={() => setAddOnType(null)}

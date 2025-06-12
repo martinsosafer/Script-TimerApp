@@ -16,6 +16,7 @@ import {
   get11LabsPlanAndBoosterCredits,
   getCredits,
   getImgCredits,
+  getMasterclassStatus,
 } from "./actions";
 import SubscriptionDetails from "./subscription-details";
 
@@ -56,7 +57,7 @@ export default async function MyProfile() {
   if (!session) {
     redirect("/");
   }
-
+  console.log("Session:", session);
   const isAppSumo = ["1", "2"].includes(
     session?.user.subscription?.status ?? "",
   );
@@ -76,6 +77,11 @@ export default async function MyProfile() {
   );
   // Images credits
   const imgCredits = await getImgCredits(session?.user.id ?? "");
+  // Masterclasses activated
+  const masterclassStatus = await getMasterclassStatus({
+    status: session?.user.subscription?.status ?? "",
+    userId: session?.user.id ?? "",
+  });
 
   return (
     <main className="flex h-full w-full justify-center px-1 pb-20 pt-10">
@@ -109,6 +115,7 @@ export default async function MyProfile() {
             subData={session?.user.subscription as SubData}
             imgCredits={imgCredits}
             elevenLabsCredits={elevenLabsCredits}
+            masterclassStatus={masterclassStatus!}
           />
         </div>
       </section>

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 
 import { auth } from "@voiceai/auth";
 
+import { getMasterclassStatus } from "~/app/(site)/my-profile/actions";
 import videoCardData from "../../../components/masterclasses/videocards/videocardsdata";
 import CourseTittle from "../../coursetittle";
 import { CourseData } from "../../dynamiccourse/coursesData";
@@ -54,14 +55,19 @@ export default async function CoursePage({
       ? courseVideos[currentIndex + 1]
       : null;
 
-  const plan = session.user.subscription?.status;
-  const noAccess =
-    plan === "FREE" || plan === "FREE_TRIAL" || plan === "STUDENT";
   const courseName = courseInfo?.title;
+
+  // Check access by plan or booster
+  const plan = session?.user?.subscription?.status;
+  const userId = session?.user?.id;
+  const hasAccess = await getMasterclassStatus({
+    status: plan!,
+    userId: userId,
+  });
 
   return (
     <>
-      {noAccess ? (
+      {!hasAccess ? (
         <DynamicCourse courseInfo={courseInfo} courseName={courseName} />
       ) : (
         <CourseTittle courseName={courseName} />
@@ -72,7 +78,7 @@ export default async function CoursePage({
         courseVideos={courseVideos}
         previousVideo={previousVideo}
         nextVideo={nextVideo}
-        noAccess={noAccess}
+        noAccess={!hasAccess}
       />
       <OtherCoursesBanner />
     </>

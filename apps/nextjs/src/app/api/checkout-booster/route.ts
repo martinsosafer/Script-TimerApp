@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
             currency: "usd",
             product_data: {
               name: `${data.type} Booster`,
-              description: `AppSumo user ${data.subData.userId}`,
+              description: `Single payment for ${data.type} booster`,
             },
             unit_amount: BOOSTER_PRICE[data.type] * 100, // Amount in cents
           },
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
         metadata: {
           boosterType: data.type,
           userId: data.subData.userId,
-          plan: `AppSumo Tier ${data.subData.status}`,
+          plan: `${data.subData.status === "1" ? "AppSumo Tier 1" : data.subData.status === "2" ? "AppSumo Tier 2" : `${data.subData.status}`}`,
         },
       },
       metadata: {

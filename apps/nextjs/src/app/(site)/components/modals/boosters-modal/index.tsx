@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 import { Button } from "@voiceai/ui";
@@ -8,23 +9,24 @@ import { IlustrationTransformYourCareer } from "@voiceai/ui/@/illustrations";
 import { addBooster } from "~/app/(site)/boosters/actions";
 import type { BoosterType, SubData } from "~/app/(site)/boosters/types";
 import { poppins, roboto } from "~/app/fonts";
+import { BOOSTER_START_CREDITS } from "~/constants/credits";
 import { BOOSTER_PRICE } from "~/constants/products";
 
 interface BoostersModalProps {
   setIsBoostersModalOpen: (isBoostersModalOpen: boolean) => void;
   type: BoosterType;
   subData: SubData;
-  isLoading: boolean;
-  setIsLoading: (isLoading: boolean) => void;
+  setBoosterType?: (type: BoosterType | null) => void;
 }
 
 export default function BoostersModal({
   setIsBoostersModalOpen,
   type,
   subData,
-  isLoading,
-  setIsLoading,
+  setBoosterType,
 }: BoostersModalProps) {
+  const [isLoading, setIsLoading] = useState(false);
+
   const pathname = usePathname();
   const router = useRouter();
 
@@ -37,8 +39,13 @@ export default function BoostersModal({
   }) => {
     try {
       setIsLoading(true);
-      // AppSumo users
-      if (subData.status === "1" || subData.status === "2") {
+
+      // AppSumo users and FREE plans resend to Stripe page
+      if (
+        subData.status === "1" ||
+        subData.status === "2" ||
+        subData.planId === "initial_plan_id"
+      ) {
         const res = await fetch("api/checkout-booster", {
           method: "POST",
           body: JSON.stringify({
@@ -55,10 +62,13 @@ export default function BoostersModal({
         } = await res.json();
         return (window.location.href = url as string);
       } else {
-        // Regular users
+        // Regular users with subscription
         await addBooster({ subData, type });
       }
 
+      if (setBoosterType) {
+        setBoosterType(null);
+      }
       toast({
         title: "Booster added!",
         description: `You have successfully added ${type.toLowerCase()} booster`,
@@ -70,7 +80,8 @@ export default function BoostersModal({
         return router.push("/image-generator");
       if (type === "MASTERCLASS" && pathname !== "/my-profile")
         return router.push("/masterclasses");
-      if (type === "PLAGIARISM") return router.push("/plagiarism-detector");
+      if (type === "PLAGIARISM" && pathname !== "/my-profile")
+        return router.push("/plagiarism-detector");
 
       return window.location.reload();
     } catch (error: any) {
@@ -84,6 +95,34 @@ export default function BoostersModal({
       setIsLoading(false);
       setIsBoostersModalOpen(false);
     }
+  };
+
+  const formatNumber = (num: number) => {
+    return new Intl.NumberFormat("en-US").format(num);
+  };
+
+  const handleBoosterDescription = (type: BoosterType) => {
+    if (type === "VOICES")
+      return `${formatNumber(BOOSTER_START_CREDITS[type])} credits for $${BOOSTER_PRICE[type]}`;
+    if (type === "IMAGES")
+      return `${formatNumber(BOOSTER_START_CREDITS[type])} credits for $${BOOSTER_PRICE[type]}`;
+    if (type === "MASTERCLASS")
+      return `1 year access for $${BOOSTER_PRICE[type]}`;
+    if (type === "PLAGIARISM")
+      return `${formatNumber(BOOSTER_START_CREDITS[type])} credits for $${BOOSTER_PRICE[type]}`;
+    return "";
+  };
+
+  const handleSubscriptionPaymentMessage = () => {
+    // AppSumo users
+    if (subData.status === "1" || subData.status === "2") {
+      return false;
+    }
+    // Free plans
+    if (subData.status === "FREE" || subData.status === "FREE_TRIAL") {
+      return false;
+    }
+    return true;
   };
 
   return (
@@ -126,16 +165,16 @@ export default function BoostersModal({
               <p
                 className={`${roboto.className} text-cp-accent pt-3 text-center text-2xl font-bold`}
               >{`${type} BOOSTER`}</p>
-              <p
-                className={`${roboto.className} pt-3 text-center text-lg`}
-              >{`for $${BOOSTER_PRICE[type]}`}</p>
-              {subData.status !== "1" && subData.status !== "2" ? (
+              <p className={`${roboto.className} pt-3 text-center text-lg`}>
+                {handleBoosterDescription(type)}
+              </p>
+              {handleSubscriptionPaymentMessage() ? (
                 <p className={`${roboto.className} text-center text-lg`}>
                   using your subscription payment method
                 </p>
               ) : (
                 <p className={`${roboto.className} text-center text-lg`}>
-                  using credit card payment
+                  using credit card or Link payment
                 </p>
               )}
             </div>

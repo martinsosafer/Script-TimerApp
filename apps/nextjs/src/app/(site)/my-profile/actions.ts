@@ -89,3 +89,57 @@ export async function getImgCredits(userId: string) {
     console.error(error);
   }
 }
+
+export async function getMasterclassStatus({
+  status,
+  userId,
+}: {
+  status: string;
+  userId: string;
+}) {
+  try {
+    // Check if user has Business plan
+    if (
+      status === "BUSINESS" ||
+      status === "BUSINESSCLMO" ||
+      status === "BUSINESSCLYR"
+    ) {
+      return true;
+    }
+
+    // Check if user has valid Masterclass booster
+    const booster = await db.query.masterclassBooster.findFirst({
+      where: (booster, { eq }) => eq(booster.userId, userId),
+    });
+    const actualDate = new Date();
+    if (booster?.id && booster?.valid_until >= actualDate) {
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function findMasterclassValidBooster({
+  userId,
+}: {
+  userId: string;
+}) {
+  try {
+    const booster = await db.query.masterclassBooster.findFirst({
+      where: (booster, { eq }) => eq(booster.userId, userId),
+    });
+
+    const actualDate = new Date();
+
+    if (booster?.id && booster?.valid_until >= actualDate) {
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    console.error(error);
+  }
+}
